@@ -303,8 +303,7 @@ const DisplaySubHelperSection = () => {
 
   return (
     <Typography variant="caption">
-      {" "}
-      View{" "}
+      &nbsp;View&nbsp;
       <Box
         component="span"
         onClick={() => handleClick(NotesRouteUri)}
@@ -316,9 +315,10 @@ const DisplaySubHelperSection = () => {
         role="link"
         tabIndex={0}
       >
-        Release Notes
-      </Box>{" "}
-      to stay up to date with all the latest features. Stuck in a problem? Visit{" "}
+        Release Notes&nbsp;
+      </Box>
+      to stay up to date with all the latest features. Stuck in a problem?
+      Visit&nbsp;
       <Box
         component="span"
         onClick={() => handleClick(FaqRouteUri)}
@@ -330,8 +330,8 @@ const DisplaySubHelperSection = () => {
         role="link"
         tabIndex={0}
       >
-        FAQ
-      </Box>{" "}
+        FAQ&nbsp;
+      </Box>
       to view our frequently asked questions.
     </Typography>
   );
@@ -398,7 +398,7 @@ export const DefaultTourStepsMapperObj = {
   [InvoiceDashboardRouteUri]: {
     element: (
       <>
-        {createHelperSentences("interpret", " the dashboard ")}
+        {createHelperSentences("interpret", "the dashboard")}
         {DisplaySubHelperSection()}
       </>
     ),
@@ -419,7 +419,7 @@ export const DefaultTourStepsMapperObj = {
       <>
         {createHelperSentences(
           "edit / update",
-          " your information and email templates ",
+          "your information and email templates",
         )}
         {DisplaySubHelperSection()}
       </>
@@ -441,7 +441,7 @@ export const DefaultTourStepsMapperObj = {
   [RentalRouteUri]: {
     element: (
       <>
-        {createHelperSentences("view", " your rental property details ")}
+        {createHelperSentences("view", "your rental property details")}
         {DisplaySubHelperSection()}
       </>
     ),
@@ -464,7 +464,7 @@ export const DefaultTourStepsMapperObj = {
   [PropertyRouteUri]: {
     element: (
       <>
-        {createHelperSentences("view", " your property details ")}
+        {createHelperSentences("view", "your property details")}
         {DisplaySubHelperSection()}
       </>
     ),

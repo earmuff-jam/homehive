@@ -394,7 +394,7 @@ export default function Settings() {
                     variant="caption"
                     sx={{ fontStyle: "italic", textTransform: "initial" }}
                   >
-                    Last login{" "}
+                    Last login&nbsp;
                     {dayjs(userData?.googleLastLoginAt).fromNow() ||
                       dayjs().fromNow()}
                   </Typography>

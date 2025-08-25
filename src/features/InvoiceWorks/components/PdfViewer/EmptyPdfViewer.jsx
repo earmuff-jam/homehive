@@ -15,8 +15,7 @@ export default function EmptyPdfViewer({ handleNavigate }) {
         sx={{ cursor: "pointer" }}
         onClick={handleNavigate}
       >
-        {" "}
-        here.
+        &nbsp;here.
       </Typography>
     </EmptyComponent>
   );

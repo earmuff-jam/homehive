@@ -106,7 +106,7 @@ const MyRental = () => {
                   sx={{ display: "flex", alignItems: "center", gap: 1 }}
                 >
                   <LocationOn />
-                  {property?.address}, {property?.city}, {property?.state}{" "}
+                  {property?.address}, {property?.city}, {property?.state}&nbsp;
                   {property?.zipcode}
                 </Typography>
               </Stack>

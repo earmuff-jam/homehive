@@ -56,7 +56,7 @@ export default function ReleaseNotes() {
         return (
           <Box key={index} mb={4} px={2}>
             <Typography variant="subtitle2" gutterBottom>
-              Version {update.version} &mdash;{" "}
+              Version {update.version} &mdash;&nbsp;
               <em>Released on {dayjs(update.date).format("MMMM-DD-YYYY")}</em>
             </Typography>
 

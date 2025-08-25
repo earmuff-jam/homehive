@@ -257,15 +257,15 @@ export default function StripeConnect() {
                   </Stack>
                   <Box>
                     <Typography variant="body2" color="text.secondary">
-                      <strong>Last 4 Bank Account:</strong>{" "}
+                      <strong>Last 4 Bank Account:</strong>&nbsp;
                       {stripeAccountData?.stripeAccountHolderLastFour || "****"}
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
-                      <strong>Bank Routing Number:</strong>{" "}
+                      <strong>Bank Routing Number:</strong>&nbsp;
                       {stripeAccountData?.stripeRoutingNumber || "******"}
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
-                      <strong>Account Holder Name:</strong>{" "}
+                      <strong>Account Holder Name:</strong>&nbsp;
                       {stripeAccountData?.stripeAccountHolderName || "*******"}
                     </Typography>
                   </Box>
