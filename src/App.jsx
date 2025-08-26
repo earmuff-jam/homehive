@@ -10,9 +10,11 @@ import { darkTheme, lightTheme } from "common/Theme";
 import { GeneratedTourSteps } from "common/Tour/TourSteps";
 import { buildAppRoutes } from "common/ValidateClientPerms";
 import Layout from "features/Layout/Layout";
+import { fetchLoggedInUser } from "features/RentWorks/common/utils";
 import { RentWorksAppRoutes } from "src/Routes";
 
 function App() {
+  const user = fetchLoggedInUser();
   const [currentThemeIdx, setCurrentThemeIdx] = useState(
     localStorage.getItem("theme") || 0,
   );
@@ -36,7 +38,7 @@ function App() {
                   />
                 }
               >
-                {buildAppRoutes(RentWorksAppRoutes)}
+                {buildAppRoutes(RentWorksAppRoutes, user?.role)}
               </Route>
               {/* force navigate to main page when routes are not found but wait until we have routes built first; prevents redirect in refresh */}
               {buildAppRoutes(RentWorksAppRoutes).length > 0 && (

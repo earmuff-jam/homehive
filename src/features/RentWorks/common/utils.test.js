@@ -15,6 +15,7 @@ const {
   formatCurrency,
   sumCentsToDollars,
   buildPaymentLineItems,
+  isFeatureEnabled,
 } = require("features/RentWorks/common/utils");
 
 const mockSampleProperty = {
@@ -29,6 +30,14 @@ const primaryTenant = {
   isSoR: false,
   isPrimary: true,
 };
+
+const mockEnabledFeatureFlags = new Map([
+  ["analytics", true],
+  ["invoicer", true],
+  ["invoicerPro", true],
+  ["userInformation", true],
+  ["sendEmail", true],
+]);
 
 describe("utils tests", () => {
   describe("validate isAssociatedPropertySoR function returns correct boolean value.", () => {
@@ -411,6 +420,37 @@ describe("utils tests", () => {
         { name: { label: "Initial Late fee", value: 0 } },
         { name: { label: "Daily Late fee", value: 0 } },
       ]);
+    });
+  });
+
+  describe("validate isFeatureEnabled function to return correct boolean values", () => {
+    it("returns true for features that are enabled", () => {
+      expect(isFeatureEnabled(mockEnabledFeatureFlags, "analytics")).toBe(true);
+      expect(isFeatureEnabled(mockEnabledFeatureFlags, "invoicer")).toBe(true);
+      expect(isFeatureEnabled(mockEnabledFeatureFlags, "sendEmail")).toBe(true);
+    });
+
+    it("returns false for features that are not in the map", () => {
+      expect(
+        isFeatureEnabled(mockEnabledFeatureFlags, "nonExistingFeature"),
+      ).toBe(false);
+    });
+
+    it("returns false for features that are explicitly disabled", () => {
+      const flags = new Map(mockEnabledFeatureFlags);
+      flags.set("analytics", false);
+
+      expect(isFeatureEnabled(flags, "analytics")).toBe(false);
+    });
+
+    it("handles empty feature flags map gracefully", () => {
+      const emptyFlags = new Map();
+      expect(isFeatureEnabled(emptyFlags, "analytics")).toBe(false);
+    });
+
+    it("handles undefined or null inputs gracefully", () => {
+      expect(isFeatureEnabled(undefined, "analytics")).toBe(false);
+      expect(isFeatureEnabled(null, "invoicer")).toBe(false);
     });
   });
 });

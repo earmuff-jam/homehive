@@ -1,5 +1,7 @@
 import { useEffect } from "react";
 
+import { v4 as uuidv4 } from "uuid";
+
 import dayjs from "dayjs";
 
 import {
@@ -22,9 +24,13 @@ import {
   Typography,
 } from "@mui/material";
 import AButton from "common/AButton";
+import CustomSnackbar from "common/CustomSnackbar/CustomSnackbar";
 import RowHeader from "common/RowHeader/RowHeader";
 import { useGetUserDataByIdQuery } from "features/Api/firebaseUserApi";
-import { useLazyGetRentByMonthQuery } from "features/Api/rentApi";
+import {
+  useCreateRentRecordMutation,
+  useLazyGetRentByMonthQuery,
+} from "features/Api/rentApi";
 import { useGetTenantByIdQuery } from "features/Api/tenantsApi";
 import {
   fetchLoggedInUser,
@@ -39,6 +45,10 @@ export default function PropertyOwnerInfoCard({
   dataTour,
 }) {
   const user = fetchLoggedInUser();
+  const { generateStripeCheckoutSession } = useGenerateStripeCheckoutSession();
+
+  const [createRentRecord, { isError: isCreatingRentRecordError, error }] =
+    useCreateRentRecordMutation();
 
   const { data: owner = {}, isLoading } = useGetUserDataByIdQuery(
     property?.createdBy,
@@ -54,13 +64,12 @@ export default function PropertyOwnerInfoCard({
   const [triggerGetRentByMonth, { data: rentMonthData = [] }] =
     useLazyGetRentByMonthQuery();
 
-  const { generateStripeCheckoutSession } = useGenerateStripeCheckoutSession();
-
   const isStripeConnectedAndValid =
     isViewingRental && owner?.stripeAccountIsActive;
 
-  const paymentCompleteForCurrentMonth =
-    rentMonthData?.find((item) => item)?.status === "paid";
+  const paymentCompleteForCurrentMonth = rentMonthData?.some(
+    (item) => item.status === "complete",
+  );
 
   const handleRentPayment = async ({
     rentAmount,
@@ -79,21 +88,34 @@ export default function PropertyOwnerInfoCard({
       return;
     }
 
-    const secureURL = await generateStripeCheckoutSession({
-      rentAmount,
-      additionalCharges,
-      initialLateFee,
-      dailyLateFee,
+    const draftData = {
+      id: uuidv4(),
+      rentAmount: Math.round(rentAmount * 100),
+      additionalCharges: Math.round(additionalCharges * 100),
+      initialLateFee: Math.round(Number(initialLateFee) || 0 * 100),
+      dailyLateFee: Math.round(Number(dailyLateFee) || 0 * 100),
       stripeOwnerAccountId, // the person who the payment must go towards
-      tenantEmail: tenantEmail,
-      propertyId: propertyId,
-      propertyOwnerId: propertyOwnerId,
-      tenantId: tenantId,
-      rentMonth: rentMonth,
-    });
+      tenantEmail,
+      propertyId,
+      propertyOwnerId,
+      tenantId,
+      rentMonth,
+    };
 
-    window.open(secureURL, "_blank", "noopener,noreferrer");
-    return;
+    const stripeCheckoutSessionData =
+      await generateStripeCheckoutSession(draftData);
+
+    const result = await createRentRecord({
+      ...draftData,
+      status: "intent", // the first step of stripe checkout
+      createdBy: tenantId, // tenant is the only one who can pay
+      createdOn: dayjs().toISOString(),
+      updatedBy: tenantId,
+      updatedOn: dayjs().toISOString(),
+    }).unwrap();
+
+    window.location.href = stripeCheckoutSessionData?.url;
+    return null;
   };
 
   useEffect(() => {
@@ -262,6 +284,12 @@ export default function PropertyOwnerInfoCard({
           </>
         )}
       </CardContent>
+      <CustomSnackbar
+        severity="warning"
+        showSnackbar={isCreatingRentRecordError}
+        setShowSnackbar={() => {}}
+        title={`${error?.message}`}
+      />
     </Card>
   );
 }

@@ -180,7 +180,8 @@ export const rentApi = createApi({
       },
       providesTags: ["rent"],
     }),
-    // creates rental record for a property once payment is confirmed
+    // creates rental record for a property
+    // occurs when user initiates stripe checkout session
     createRentRecord: builder.mutation({
       async queryFn(rentData) {
         try {
@@ -204,12 +205,19 @@ export const rentApi = createApi({
 
           const existing = await getDocs(rentQuery);
           if (!existing.empty) {
-            return {
-              error: {
-                message:
-                  "Duplicate entry found. Rent data already exists for current user for selected property.",
-              },
-            };
+            // check if any rent already has status "complete"
+            const isComplete = existing.docs.some(
+              (doc) => doc.get("status") === "complete",
+            );
+
+            if (isComplete) {
+              return {
+                error: {
+                  message:
+                    "Duplicate entry found. Rent data already exists for current user for selected property for current month.",
+                },
+              };
+            }
           }
 
           const docRef = doc(db, "rents", id);
@@ -219,7 +227,7 @@ export const rentApi = createApi({
             { merge: true },
           );
 
-          return { data: { id, tenantId, propertyId, rentMonth, ...rest } };
+          return { data: { tenantId, propertyId, rentMonth, ...rest } };
         } catch (error) {
           return {
             error: {
@@ -233,6 +241,7 @@ export const rentApi = createApi({
     }),
   }),
 });
+
 export const {
   useGetRentByIdQuery,
   useGetRentsByPropertyIdQuery,

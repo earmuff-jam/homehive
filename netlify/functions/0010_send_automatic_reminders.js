@@ -1,3 +1,13 @@
+/**
+ * File : 0010_send_automatic_reminders.js
+ *
+ * This file is used to send automatic reminders via email
+ * using Automatic Payment Reminder System (ARPS). Uses admin
+ * rights and privilidges. Requires .env variables to properly
+ * processed in the system.
+ *
+ * Must have feature flags enabled for this feature.
+ */
 import dayjs from "dayjs";
 
 import admin from "firebase-admin";
@@ -28,7 +38,7 @@ if (isLocalDevTestEnv) {
 }
 
 const db = admin.firestore();
-const REMINDER_KEY = process.env.SECRET_KEY;
+const AdminAuthorizedKey = process.env.VITE_SITE_ADMIN_AUTHORIZED_KEY;
 
 const standardReminderSettings = {
   GENERAL: [7, 3, 1, 0],
@@ -39,10 +49,11 @@ const standardReminderSettings = {
  *
  * used to retrieve rental payments and associated property. Function
  * attempts to send email to associated rentees if exists.
- * @param {*} event
+ *
+ * @param {Object} event - the event payload to be processed.
  */
 export const handler = async (event) => {
-  if (!isLocalDevTestEnv && event.queryStringParameters?.key !== REMINDER_KEY) {
+  if (!isLocalDevTestEnv && event.queryStringParameters?.key !== AdminAuthorizedKey) {
     console.error("problem fetching required token");
     return { statusCode: 401, body: "Unauthorized" };
   }

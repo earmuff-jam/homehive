@@ -3,6 +3,7 @@
  */
 import dayjs from "dayjs";
 
+import validateClientPermissions from "common/ValidateClientPerms";
 import { getAuth, signOut } from "firebase/auth";
 import { authenticatorConfig } from "src/config";
 
@@ -331,4 +332,17 @@ export const buildPaymentLineItems = (property = {}, tenant = []) => {
       },
     },
   ];
+};
+
+/**
+ * isFeatureEnabled ...
+ *
+ * function used to check if a selected feature is available or not
+ *
+ * @param {string} key - the string representation of key
+ * @returns boolean - true / false
+ */
+export const isFeatureEnabled = (key) => {
+  const enabledFlagMap = validateClientPermissions();
+  return enabledFlagMap.get(key) || false;
 };

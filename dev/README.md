@@ -28,6 +28,36 @@ To test the github action of "updating a release note" we should ensure the corr
 
 The purpose of the firestore setup is to have some analytics to trace the user steps. This does not save the user information. However, it stores a general idea of where the user traveled during his / her visit which still is anonymous.\*\*\*\*
 
+#### Stripe Payment Services Local CLI Setup
+
+To install stripe locally, to test webhook listeners, you need to have the local cli installed for stripe. Use command `brew install stripe/stripe-cli/stripe` to achieve this. Follow guide listed within here `https://docs.stripe.com/stripe-cli#install` to complete the local CLI install. After a successful install, we should be able to easily forward the webhook to respond to any api calls / requests.
+
+```
+stripe login ## if you have not
+stripe listen --forward-to localhost:4242/webhook
+stripe trigger payment_intent.succeeded ## any event to trigger the listener to
+```
+
+After the above commands are run, the stripe function that listens to the trigger should be invoked. This is also a good test for webhook handlers.
+
+`Note:`
+
+To test webhook handler locally while running `dev` in UI, forward the webhook handler with the api key like below. Run `netlify dev` in new terminal. Run `debug mode` and `attach netlify functions` from `dev/lauch.json`. This allows you to run the UI, and assume the same workflow as a client. When stripe recieves the webhook handler request, it forwards the api call to localhost:9999 which is also our debug port. If all works out, you should hit your breakpoint.
+
+```
+stripe listen --api-key sk_test_xxx --forward-to http://localhost:9999/.netlify/functions/0011_fetch_stripe_webhook
+```
+
+#### Test webhook handler functions
+
+1. Run command `node --inspect-brk /opt/homebrew/bin/netlify functions:serve` in terminal.
+2. Update your local launch.json file to be like out `dev/launch.json`.
+3. Set breakpoints in your function.
+4. Run your stripe cli to forward api calls `stripe listen --forward-to http://localhost:9999/.netlify/functions/0011_fetch_stripe_webhook`
+5. trigger event - `stripe trigger payment_intent.succeeded`
+6. Breakpoint should hit.
+7. For all webhook notifications, when you listen at step 4, you should get a secret key. Use that key for env variable `VITE_AUTH_STRIPE_WEBHOOK_SECRET` as we need it to properly execute a webhook event.
+
 ### Deployment and Git Tag
 
 `Note`: Please ensure that we have the proper commit messages built. We need the commit
