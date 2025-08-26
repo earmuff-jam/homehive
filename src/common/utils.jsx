@@ -23,9 +23,9 @@ export const PropertiesRouteUri = "/properties";
 export const InvoiceDefaultRouteUri = "/invoice";
 export const ViewInvoiceRouteUri = "/invoice/view";
 export const EditInvoiceRouteUri = "/invoice/edit";
-export const SenderInforamtionRouteUri = "invoice/sender";
+export const SenderInforamtionRouteUri = "/invoice/sender";
 export const InvoiceDashboardRouteUri = "/invoice/dashboard";
-export const RecieverInforamtionRouteUri = "invoice/reciever";
+export const RecieverInforamtionRouteUri = "/invoice/reciever";
 
 /**
  * pluralize
@@ -53,8 +53,9 @@ export function pluralize(arrLength, wordStr) {
 export function createHelperSentences(verbStr, extraClauseStr) {
   return (
     <Typography variant="caption">
-      This help / guide is designed to aide you in learning how to{" "}
-      {verbStr + extraClauseStr}? Feel free to restart the guide if necessary.
+      This help / guide is designed to aide you in learning how to&nbsp;
+      {verbStr}&nbsp;{extraClauseStr}&nbsp;. Feel free to restart the guide if
+      necessary.
     </Typography>
   );
 }

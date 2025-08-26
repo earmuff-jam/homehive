@@ -34,9 +34,6 @@ import RentalPaymentOverview from "features/RentWorks/components/Widgets/RentalP
 import { useConfirmStripePayment } from "features/RentWorks/hooks/useStripe";
 import { useAppTitle } from "hooks/useAppTitle";
 
-// TODO : handle un-identified tenants route gracefully
-// TODO : https://github.com/earmuff-jam/invoicer/issues/79
-
 const MyRental = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -90,7 +87,7 @@ const MyRental = () => {
     );
 
   return (
-    <Stack>
+    <Stack data-tour="rental-0">
       {/* Property Header */}
       <Paper elevation={0} sx={{ padding: 3, margin: "1rem 0rem" }}>
         {isPropertyLoading ? (
@@ -109,7 +106,7 @@ const MyRental = () => {
                   sx={{ display: "flex", alignItems: "center", gap: 1 }}
                 >
                   <LocationOn />
-                  {property?.address}, {property?.city}, {property?.state}{" "}
+                  {property?.address}, {property?.city}, {property?.state}&nbsp;
                   {property?.zipcode}
                 </Typography>
               </Stack>
@@ -125,6 +122,7 @@ const MyRental = () => {
         )}
         {/* Property Stats */}
         <PropertyStatistics
+          dataTour="rental-1"
           property={property}
           isPropertyLoading={isPropertyLoading}
           isAnyTenantSoR={isAnyTenantSoR}
@@ -133,34 +131,36 @@ const MyRental = () => {
       </Paper>
 
       <Grid container spacing={3}>
-        {/* Main Content */}
         <Grid item xs={12} md={8}>
-          {/* Financial Overview */}
           <FinancialOverview
             isTenantsLoading={isTenantsLoading}
             property={property}
             tenants={tenants}
             isAnyTenantSoR={isAnyTenantSoR}
+            dataTour="rental-2"
           />
-
-          {/* Documents Overview */}
-          <DocumentsOverview isPropertyLoading={isPropertyLoading} />
-
-          {/* Rental Payment Overview */}
-          <RentalPaymentOverview propertyId={property?.id} />
+          <DocumentsOverview
+            dataTour="rental-6"
+            isPropertyLoading={isPropertyLoading}
+            property={property}
+          />
+          <RentalPaymentOverview
+            dataTour="rental-7"
+            propertyId={property?.id}
+            propertyName={property?.name || "Unknown"}
+          />
         </Grid>
 
-        {/* Sidebar */}
         <Grid item xs={12} md={4}>
           <PropertyOwnerInfoCard
+            dataTour="rental-3"
             isViewingRental
             isPropertyLoading={isPropertyLoading}
             property={property}
           />
 
-          {/* Property Details */}
-          <Card sx={{ mb: 3 }}>
-            <CardContent>
+          <Card sx={{ mb: 3 }} data-tour="rental-4">
+            <CardContent data-tour="rental-5">
               <RowHeader
                 title="Property Details"
                 sxProps={{

@@ -146,7 +146,7 @@ export const RentWorksAppRoutes = [
       isLoggedInFeature: true, // only display if logged in
       enabledForRoles: [TenantRole],
       displayInNavBar: true,
-      displayHelpSelector: false,
+      displayHelpSelector: true,
       displayPrintSelector: false,
     },
   },

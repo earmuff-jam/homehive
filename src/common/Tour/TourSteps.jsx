@@ -4,8 +4,11 @@ import {
   FaqRouteUri,
   InvoiceDashboardRouteUri,
   NotesRouteUri,
+  PropertyRouteUri,
   RecieverInforamtionRouteUri,
+  RentalRouteUri,
   SenderInforamtionRouteUri,
+  SettingsRouteUri,
   ViewInvoiceRouteUri,
   createHelperSentences,
 } from "common/utils";
@@ -201,12 +204,15 @@ const MyPropertyHelpSteps = [
   {
     element: "View all payment summaries made the tenant for this property.",
   },
+  {
+    element: "View a list of all the active tenants for this property.",
+  },
 ];
 
 /**
  * SettingsHelpSteps
  *
- * User helpful steps for viewing a single property page.
+ * User helpful steps for viewing user settings
  */
 const SettingsHelpSteps = [
   {
@@ -221,15 +227,43 @@ const SettingsHelpSteps = [
   },
   {
     element:
-      "Use provided variables to customize the templates. Available variables are listed below each template.",
-  },
-  {
-    element:
-      "Save any template. You can use it via Quick Connect in properties page. This is also the same template that the app uses to draft emails.",
-  },
-  {
-    element:
       "Connect stripe and setup bank account to recieve rental payments. Property owners who opt in are required to go through stripe verification.",
+  },
+];
+
+/**
+ * RentalHelpSteps
+ *
+ * User helpful steps for viewing rental page
+ */
+const RentalHelpSteps = [
+  {
+    element: "View more details about the current property you rent.",
+  },
+  {
+    element:
+      "View brief overview of your rental home including address, total available rental bedrooms, occupancy rate and monthly rental amount including additional charges",
+  },
+  {
+    element: "View a financial projection of your rental home.",
+  },
+  {
+    element:
+      "View details about the property owner. You can email the property owner directly if you are a tenant.",
+  },
+  {
+    element: "View property details and the state it was last updated in.",
+  },
+  {
+    element:
+      "Perform quick actions against your rental property such as requesting for maintenance. (Feature TBD)",
+  },
+  {
+    element:
+      "View all documents that are available between you and the property owner.",
+  },
+  {
+    element: "View all payment summaries made by you",
   },
 ];
 
@@ -269,7 +303,7 @@ const DisplaySubHelperSection = () => {
 
   return (
     <Typography variant="caption">
-      View{" "}
+      &nbsp;View&nbsp;
       <Box
         component="span"
         onClick={() => handleClick(NotesRouteUri)}
@@ -281,9 +315,10 @@ const DisplaySubHelperSection = () => {
         role="link"
         tabIndex={0}
       >
-        Release Notes
-      </Box>{" "}
-      to stay up to date with all the latest features. Stuck in a problem? Visit{" "}
+        Release Notes&nbsp;
+      </Box>
+      to stay up to date with all the latest features. Stuck in a problem?
+      Visit&nbsp;
       <Box
         component="span"
         onClick={() => handleClick(FaqRouteUri)}
@@ -295,8 +330,8 @@ const DisplaySubHelperSection = () => {
         role="link"
         tabIndex={0}
       >
-        FAQ
-      </Box>{" "}
+        FAQ&nbsp;
+      </Box>
       to view our frequently asked questions.
     </Typography>
   );
@@ -346,7 +381,7 @@ export const DefaultTourStepsMapperObj = {
   [RecieverInforamtionRouteUri]: {
     element: (
       <>
-        {createHelperSentences("edit / update", "reciever information")}
+        {createHelperSentences("edit / update ", "reciever information")}
         {DisplaySubHelperSection()}
       </>
     ),
@@ -363,7 +398,7 @@ export const DefaultTourStepsMapperObj = {
   [InvoiceDashboardRouteUri]: {
     element: (
       <>
-        {createHelperSentences("interpret", " the dashboard ")}
+        {createHelperSentences("interpret", "the dashboard")}
         {DisplaySubHelperSection()}
       </>
     ),
@@ -379,6 +414,78 @@ export const DefaultTourStepsMapperObj = {
       RecieverInfoHelpSteps.length +
       DashboardHelpSteps.length,
   },
+  [SettingsRouteUri]: {
+    element: (
+      <>
+        {createHelperSentences(
+          "edit / update",
+          "your information and email templates",
+        )}
+        {DisplaySubHelperSection()}
+      </>
+    ),
+    start:
+      ViewPdfHelpSteps.length +
+      EditPdfHelpSteps.length +
+      SenderInfoHelpSteps.length +
+      RecieverInfoHelpSteps.length +
+      DashboardHelpSteps.length,
+    end:
+      ViewPdfHelpSteps.length +
+      EditPdfHelpSteps.length +
+      SenderInfoHelpSteps.length +
+      RecieverInfoHelpSteps.length +
+      DashboardHelpSteps.length +
+      SettingsHelpSteps.length,
+  },
+  [RentalRouteUri]: {
+    element: (
+      <>
+        {createHelperSentences("view", "your rental property details")}
+        {DisplaySubHelperSection()}
+      </>
+    ),
+    start:
+      ViewPdfHelpSteps.length +
+      EditPdfHelpSteps.length +
+      SenderInfoHelpSteps.length +
+      RecieverInfoHelpSteps.length +
+      DashboardHelpSteps.length +
+      SettingsHelpSteps.length,
+    end:
+      ViewPdfHelpSteps.length +
+      EditPdfHelpSteps.length +
+      SenderInfoHelpSteps.length +
+      RecieverInfoHelpSteps.length +
+      DashboardHelpSteps.length +
+      SettingsHelpSteps.length +
+      RentalHelpSteps.length,
+  },
+  [PropertyRouteUri]: {
+    element: (
+      <>
+        {createHelperSentences("view", "your property details")}
+        {DisplaySubHelperSection()}
+      </>
+    ),
+    start:
+      ViewPdfHelpSteps.length +
+      EditPdfHelpSteps.length +
+      SenderInfoHelpSteps.length +
+      RecieverInfoHelpSteps.length +
+      DashboardHelpSteps.length +
+      SettingsHelpSteps.length +
+      RentalHelpSteps.length,
+    end:
+      ViewPdfHelpSteps.length +
+      EditPdfHelpSteps.length +
+      SenderInfoHelpSteps.length +
+      RecieverInfoHelpSteps.length +
+      DashboardHelpSteps.length +
+      SettingsHelpSteps.length +
+      RentalHelpSteps.length +
+      MyPropertyHelpSteps.length,
+  },
 };
 
 /**
@@ -393,7 +500,8 @@ export const GeneratedTourSteps = [
   ...derieveTourSteps(SenderInfoHelpSteps, "sender"),
   ...derieveTourSteps(RecieverInfoHelpSteps, "reciever"),
   ...derieveTourSteps(DashboardHelpSteps, "dashboard"),
-  ...derieveTourSteps(MyPropertiesListHelpSteps, "properties"),
-  ...derieveTourSteps(MyPropertyHelpSteps, "property"),
   ...derieveTourSteps(SettingsHelpSteps, "settings"),
+  ...derieveTourSteps(RentalHelpSteps, "rental"),
+  ...derieveTourSteps(MyPropertyHelpSteps, "property"),
+  ...derieveTourSteps(MyPropertiesListHelpSteps, "properties"),
 ];

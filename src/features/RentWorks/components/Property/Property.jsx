@@ -61,7 +61,7 @@ const Property = () => {
   const isAnyTenantSoR = tenants?.some((tenant) => tenant.isSoR);
 
   return (
-    <Stack>
+    <Stack data-tour="property-0">
       {/* Property Header */}
       <Paper elevation={0} sx={{ padding: 3, margin: "1rem 0rem" }}>
         {isPropertyLoading ? (
@@ -79,13 +79,14 @@ const Property = () => {
                 sx={{ display: "flex", alignItems: "center", gap: 1 }}
               >
                 <LocationOn />
-                {property?.address}, {property?.city}, {property?.state}{" "}
+                {property?.address}, {property?.city}, {property?.state}&nbsp;
                 {property?.zipcode}
               </Typography>
             </Stack>
           </Box>
         )}
         <PropertyStatistics
+          dataTour="property-1"
           property={property}
           isPropertyLoading={isPropertyLoading}
           isAnyTenantSoR={isAnyTenantSoR}
@@ -102,21 +103,31 @@ const Property = () => {
             property={property}
             tenants={tenants}
             isAnyTenantSoR={isAnyTenantSoR}
+            dataTour="property-2"
           />
 
           {/* Documents Overview */}
-          <DocumentsOverview isPropertyLoading={isPropertyLoading} />
+          <DocumentsOverview
+            isPropertyLoading={isPropertyLoading}
+            property={property}
+            dataTour="property-6"
+          />
 
           {/* Tenants Overview */}
           <TenantsOverview
             property={property}
             tenants={tenants.filter((tenant) => tenant.isActive)}
             isTenantsLoading={isTenantsLoading}
+            dataTour="property-8"
             toggleAssociateTenantsPopup={toggleAssociateTenantsPopup}
           />
 
           {/* Rental Payment Overview */}
-          <RentalPaymentOverview propertyId={property?.id} />
+          <RentalPaymentOverview
+            dataTour="property-7"
+            propertyId={property?.id}
+            propertyName={property?.name || "Unknown"}
+          />
 
           <Dialog
             open={dialog}
@@ -147,12 +158,13 @@ const Property = () => {
         {/* Sidebar */}
         <Grid item xs={12} md={4}>
           <PropertyOwnerInfoCard
+            dataTour="property-3"
             property={property}
             isPropertyLoading={isPropertyLoading}
           />
 
           {/* Property Details */}
-          <Card sx={{ mb: 3 }}>
+          <Card sx={{ mb: 3 }} data-tour="property-4">
             <CardContent>
               <RowHeader
                 title="Property Details"
@@ -225,7 +237,7 @@ const Property = () => {
           </Card>
 
           {/* Quick Actions */}
-          <Card>
+          <Card data-tour="property-5">
             <CardContent>
               <RowHeader
                 title="Quick Actions"

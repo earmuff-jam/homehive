@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 
 import dayjs from "dayjs";
 
@@ -17,8 +17,6 @@ import {
 dayjs.extend(relativeTime);
 
 const ViewRentalPaymentSummary = ({ rentData = [] }) => {
-  const [tableData] = useState(rentData);
-
   const columns = useMemo(
     () => [
       {
@@ -75,7 +73,7 @@ const ViewRentalPaymentSummary = ({ rentData = [] }) => {
 
   const table = useMaterialReactTable({
     columns,
-    data: tableData,
+    data: rentData,
     enableColumnActions: false,
     enableTopToolbar: false,
     initialState: {

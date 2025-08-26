@@ -25,11 +25,14 @@ import {
   DefaultTourStepsMapperObj,
   GeneratedTourSteps,
 } from "common/Tour/TourSteps";
-import { HomeRouteUri } from "common/utils";
+import { HomeRouteUri, SettingsRouteUri } from "common/utils";
 import AppToolbar from "features/Layout/components/AppToolbar/AppToolbar";
 import BreadCrumbs from "features/Layout/components/AppToolbar/BreadCrumbs";
 import Footer from "features/Layout/components/Footer/Footer";
+import { TenantRole } from "features/Layout/components/Landing/constants";
 import NavBar from "features/Layout/components/NavBar/NavBar";
+import { retrieveTourKey } from "features/Layout/utils";
+import { fetchLoggedInUser } from "features/RentWorks/common/utils";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -73,12 +76,25 @@ export default function Layout({
   };
 
   const setTour = () => {
-    const currentTourEl = DefaultTourStepsMapperObj[currentUri];
+    const key = retrieveTourKey(currentUri, "property");
+    const currentTourEl = DefaultTourStepsMapperObj[key];
 
-    const formattedDraftTourSteps = GeneratedTourSteps.slice(
+    let formattedDraftTourSteps;
+
+    formattedDraftTourSteps = GeneratedTourSteps.slice(
       currentTourEl.start,
       currentTourEl.end,
     );
+
+    if (currentUri === SettingsRouteUri) {
+      const currentUser = fetchLoggedInUser();
+      if (currentUser.role === TenantRole) {
+        formattedDraftTourSteps = GeneratedTourSteps.slice(
+          currentTourEl.start,
+          currentTourEl.start + 1, // tenants do not have other tabs under settings
+        );
+      }
+    }
 
     setIsOpen(true);
     setCurrentStep(0);

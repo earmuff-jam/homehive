@@ -394,7 +394,7 @@ export default function Settings() {
                     variant="caption"
                     sx={{ fontStyle: "italic", textTransform: "initial" }}
                   >
-                    Last login{" "}
+                    Last login&nbsp;
                     {dayjs(userData?.googleLastLoginAt).fromNow() ||
                       dayjs().fromNow()}
                   </Typography>
@@ -430,7 +430,7 @@ export default function Settings() {
   ];
 
   return (
-    <Stack spacing={1}>
+    <Stack spacing={1} data-tour={"settings-0"}>
       <RowHeader
         title="Account Settings"
         sxProps={{
@@ -455,12 +455,13 @@ export default function Settings() {
             },
           }}
         >
-          {tabConfig.map(({ label, icon }) => (
+          {tabConfig.map(({ label, icon }, idx) => (
             <Tab
               key={label}
               label={<Typography variant="subtitle2">{label}</Typography>}
               icon={icon}
               iconPosition="start"
+              data-tour={`settings-${idx + 1}`}
             />
           ))}
         </Tabs>

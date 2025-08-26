@@ -90,6 +90,7 @@ const DetailsTableView = ({ label, caption }) => {
     data: tableData,
     enableColumnActions: false,
     enableTopToolbar: false,
+    enablePagination: tableData?.length > 0,
     initialState: {
       density: "comfortable",
     },

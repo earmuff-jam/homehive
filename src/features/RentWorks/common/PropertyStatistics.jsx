@@ -10,9 +10,10 @@ export default function PropertyStatistics({
   property,
   isAnyTenantSoR,
   tenants,
+  dataTour,
 }) {
   return (
-    <Grid container spacing={3} sx={{ mt: 2 }}>
+    <Grid container spacing={3} sx={{ mt: 2 }} data-tour={dataTour}>
       <Grid item xs={12} sm={6} md={3}>
         {isPropertyLoading ? (
           <Skeleton height="5rem" />

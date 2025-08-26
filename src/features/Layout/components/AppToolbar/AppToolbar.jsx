@@ -19,6 +19,7 @@ import validateClientPermissions from "common/ValidateClientPerms";
 import { isUserLoggedIn } from "common/utils";
 import { useGenerateUserData } from "features/InvoiceWorks/hooks/useGenerateUserData";
 import MenuOptions from "features/Layout/components/NavBar/MenuOptions";
+import { retrieveTourKey } from "features/Layout/utils";
 import { logoutUser } from "features/RentWorks/common/utils";
 import useSendEmail, { generateInvoiceHTML } from "hooks/useSendEmail";
 
@@ -62,7 +63,8 @@ export default function AppToolbar({
   };
 
   const handleHelp = () => {
-    const draftDialogTitle = DefaultTourStepsMapperObj[currentUri]?.element;
+    const key = retrieveTourKey(currentUri, "property");
+    const draftDialogTitle = DefaultTourStepsMapperObj[key]?.element;
 
     setDialog({
       title: draftDialogTitle,

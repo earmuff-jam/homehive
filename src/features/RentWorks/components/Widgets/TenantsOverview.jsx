@@ -19,9 +19,10 @@ export default function TenantsOverview({
   tenants = [],
   isTenantsLoading,
   toggleAssociateTenantsPopup,
+  dataTour,
 }) {
   return (
-    <Card sx={{ mb: 3 }}>
+    <Card sx={{ mb: 3 }} data-tour={dataTour}>
       <CardContent>
         <Stack
           direction="row"

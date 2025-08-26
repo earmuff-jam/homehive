@@ -266,7 +266,7 @@ export const useConfirmStripePayment = () => {
       }
     } catch (err) {
       console.warn("Stripe payment error:", err);
-      const message = err.message || "Unknown error";
+      const message = err?.message || "Unknown error";
       setError(message);
       return { success: false, error: message };
     } finally {
