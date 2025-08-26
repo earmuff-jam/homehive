@@ -3,6 +3,7 @@
  */
 import dayjs from "dayjs";
 
+import validateClientPermissions from "common/ValidateClientPerms";
 import { getAuth, signOut } from "firebase/auth";
 import { authenticatorConfig } from "src/config";
 

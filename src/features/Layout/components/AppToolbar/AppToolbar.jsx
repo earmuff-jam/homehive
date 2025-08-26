@@ -15,12 +15,11 @@ import {
 } from "@mui/material";
 import CustomSnackbar from "common/CustomSnackbar/CustomSnackbar";
 import { DefaultTourStepsMapperObj } from "common/Tour/TourSteps";
-import validateClientPermissions from "common/ValidateClientPerms";
 import { isUserLoggedIn } from "common/utils";
 import { useGenerateUserData } from "features/InvoiceWorks/hooks/useGenerateUserData";
 import MenuOptions from "features/Layout/components/NavBar/MenuOptions";
 import { retrieveTourKey } from "features/Layout/utils";
-import { logoutUser } from "features/RentWorks/common/utils";
+import { isFeatureEnabled, logoutUser } from "features/RentWorks/common/utils";
 import useSendEmail, { generateInvoiceHTML } from "hooks/useSendEmail";
 
 export default function AppToolbar({
@@ -48,8 +47,7 @@ export default function AppToolbar({
   const showHelp = currentRoute.config.displayHelpSelector;
   const showPrint = currentRoute.config.displayPrintSelector;
 
-  const userEnabledFlagMap = validateClientPermissions();
-  const isSendEmailFeatureEnabled = userEnabledFlagMap.get("sendEmail");
+  const isSendEmailFeatureEnabled = isFeatureEnabled("sendEmail");
 
   const handleSendEmail = () => {
     sendEmail({
@@ -134,7 +132,7 @@ export default function AppToolbar({
             handlePrint={handlePrint}
             handleSendEmail={handleSendEmail}
             handleTheme={() => changeTheme("", currentThemeIdx)}
-            isSendEmailFeatureEnabled={isSendEmailFeatureEnabled} // email feature check
+            isEmailEnabled={isSendEmailFeatureEnabled} // email feature check
             isDisabled={isDisabled} // valid data check
             isLightTheme={Number(currentThemeIdx) === 1}
             showHelpAndSupport={showHelp}
