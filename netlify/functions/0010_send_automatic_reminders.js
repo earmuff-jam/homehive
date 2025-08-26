@@ -1,3 +1,13 @@
+/**
+ * File : 0010_send_automatic_reminders.js
+ *
+ * This file is used to send automatic reminders via email
+ * using Automatic Payment Reminder System (ARPS). Uses admin
+ * rights and privilidges. Requires .env variables to properly
+ * processed in the system.
+ *
+ * Must have feature flags enabled for this feature.
+ */
 import dayjs from "dayjs";
 
 import admin from "firebase-admin";
