@@ -2,8 +2,6 @@ import React, { useState } from "react";
 
 import { Outlet, matchPath, useLocation } from "react-router-dom";
 
-import { TenantRole } from "./components/Landing/constants";
-import { retrieveTourKey } from "./utils";
 import { InfoRounded } from "@mui/icons-material";
 import {
   Box,
@@ -31,7 +29,9 @@ import { HomeRouteUri, SettingsRouteUri } from "common/utils";
 import AppToolbar from "features/Layout/components/AppToolbar/AppToolbar";
 import BreadCrumbs from "features/Layout/components/AppToolbar/BreadCrumbs";
 import Footer from "features/Layout/components/Footer/Footer";
+import { TenantRole } from "features/Layout/components/Landing/constants";
 import NavBar from "features/Layout/components/NavBar/NavBar";
+import { retrieveTourKey } from "features/Layout/utils";
 import { fetchLoggedInUser } from "features/RentWorks/common/utils";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
