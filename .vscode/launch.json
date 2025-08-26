@@ -1,18 +1,24 @@
 {
-    "version": "0.2.0",
-    "configurations": [
-      {
-        "type": "node",
-        "request": "launch",
-        "name": "Debug Netlify Functions",
-        "runtimeExecutable": "node",
-        "runtimeArgs": [
-          "--inspect",
-          "/opt/homebrew/bin/netlify",
-          "dev"
-        ],
-        "console": "integratedTerminal",
-        "internalConsoleOptions": "neverOpen"
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Debug Netlify Functions",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["--inspect", "/opt/homebrew/bin/netlify", "dev"],
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Debug Release notes generator",
+      "program": "${workspaceFolder}/dev/update-release-docs.js",
+      "skipFiles": ["<node_internals>/**"],
+      "env": {
+        "GITHUB_EVENT_PATH": "dev/sampleReleaseDocs.json"
       }
-    ]
-  }
+    }
+  ]
+}
