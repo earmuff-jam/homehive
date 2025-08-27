@@ -225,7 +225,9 @@ export default function AssociateTenantPopup({
                     sx={{ fontSize: "1rem", margin: "0.2rem" }}
                   />
                 </Tooltip>
-                <Typography variant="subtitle2">Monthly Rent Amount</Typography>
+                <Typography variant="subtitle2" disabled>
+                  Monthly Rent Amount
+                </Typography>
               </Stack>
             }
             id="rent"

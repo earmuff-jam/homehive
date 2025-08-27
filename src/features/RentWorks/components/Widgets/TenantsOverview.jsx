@@ -1,17 +1,15 @@
-import { GroupOutlined } from "@mui/icons-material";
 import {
-  Badge,
   Box,
   Card,
   CardContent,
   Skeleton,
   Stack,
   Tooltip,
-  Typography,
 } from "@mui/material";
 import AButton from "common/AButton";
 import EmptyComponent from "common/EmptyComponent";
 import RowHeader from "common/RowHeader/RowHeader";
+import TenantBadge from "features/RentWorks/components/Widgets/TenantBadge";
 import Tenants from "features/RentWorks/components/Widgets/Tenants";
 
 export default function TenantsOverview({
@@ -29,34 +27,14 @@ export default function TenantsOverview({
           justifyContent="space-between"
           sx={{ margin: "0rem 0rem 1rem 0rem" }}
         >
-          <Stack direction="row" spacing={2} alignItems="center">
-            <Box>
-              {tenants.length !== 0 ? (
-                <Tooltip title="Total number of currently active tenants">
-                  <Badge badgeContent={tenants.length} color="textSecondary">
-                    <Typography
-                      variant="h6"
-                      sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: 1,
-                      }}
-                    >
-                      <GroupOutlined color="info" />
-                    </Typography>
-                  </Badge>
-                </Tooltip>
-              ) : null}
-            </Box>
-            <RowHeader
-              title="Tenants"
-              caption={`Active tenants for ${property?.name}`}
-              sxProps={{
-                alignItems: "flex-start",
-                color: "text.secondary",
-              }}
-            />
-          </Stack>
+          <RowHeader
+            title="Tenants"
+            caption={`Active tenants for ${property?.name}`}
+            sxProps={{
+              alignItems: "flex-start",
+              color: "text.secondary",
+            }}
+          />
 
           <Stack direction="row" spacing={1} alignItems="center">
             <Box>
@@ -69,6 +47,7 @@ export default function TenantsOverview({
                 />
               </Tooltip>
             </Box>
+            <TenantBadge tenantsLength={tenants.length} />
           </Stack>
         </Stack>
         {isTenantsLoading ? (
