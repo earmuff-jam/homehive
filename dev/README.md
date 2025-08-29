@@ -1,6 +1,7 @@
 ## Developer setup and ease of guide.
 
-RentWorks app is written in JS and is used to build invoices on the fly.
+RentWorks app is written in React and is used to build invoices on the fly. It is also used to setup rental reminders via email and
+also provides support to "stripe payment services" via webhook and db connectivity supported by Firebase for ARPS system (Automatic Payment Reminder System)
 
 ### Installation
 
@@ -11,11 +12,19 @@ required variables. View file `env.sample` to view a sample of the `.env` file.
 This should be enough to run the application locally, however some of the functions might not be readily available to the
 developer. This setup generally is for quick testing, unit testing etc. To enable other features, continue below.
 
-#### Netlify functions setup
+### [FOMO] Extra Architecture and Software Overhaul
+
+Need to test something specific during dev environment? Look below.
+
+#### Test Netlify functions in dev environment
 
 To run `netlify functions` which incorporate some of the core procedures we should also install `netlify cli` in the host OS. To install `netlify cli` simply run `npm install -g netlify-cli` and run `netlify dev`. If you have already installed the CLI tool, then simply run the later command.
 
-#### Firebase setup
+#### Test Update Release Notes github action
+
+To test the github action of "updating a release note" we should ensure the correct launch.json configuration from `.vscode/launch.json`. This file ensures node is able to debug this function with ease.
+
+#### Firebase analytics information
 
 The purpose of the firestore setup is to have some analytics to trace the user steps. This does not save the user information. However, it stores a general idea of where the user traveled during his / her visit which still is anonymous.\*\*\*\*
 

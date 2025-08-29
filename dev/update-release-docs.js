@@ -9,16 +9,16 @@ const __dirname = path.dirname(__filename);
 const event = JSON.parse(
   fs.readFileSync(process.env.GITHUB_EVENT_PATH, "utf8"),
 );
-const inputs = event.inputs || {};
 
-const releaseDocsFile = path.join(__dirname, "../public/release-docs.json");
+const inputs = event.inputs || {};
+const releaseDocsOutboundFile = path.join(__dirname, "../public/release-docs.json");
 
 const version = (inputs.version || "").replace(/^v/, "");
 const date = inputs.date || "";
 const body = inputs.body || "";
 
 // --- Smart splitting ---
-const PR_SPLIT_REGEX = /\[(feature|bugfix|improvement)\]\s*-\s.*?\/pull\/\d+/gi;
+const PR_SPLIT_REGEX = /\[(feature|bugfix|maintenance)\]/gi;
 
 const matches = [...body.matchAll(PR_SPLIT_REGEX)];
 const splitPoints = matches.map((m) => m.index).filter((i) => i !== undefined);
@@ -49,9 +49,9 @@ const newEntry = {
 };
 
 let existing = [];
-if (fs.existsSync(releaseDocsFile)) {
-  existing = JSON.parse(fs.readFileSync(releaseDocsFile, "utf8"));
+if (fs.existsSync(releaseDocsOutboundFile)) {
+  existing = JSON.parse(fs.readFileSync(releaseDocsOutboundFile, "utf8"));
 }
 
 const updated = [newEntry, ...existing];
-fs.writeFileSync(releaseDocsFile, JSON.stringify(updated, null, 2));
+fs.writeFileSync(releaseDocsOutboundFile, JSON.stringify(updated, null, 2));
