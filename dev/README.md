@@ -19,6 +19,14 @@ To run `netlify functions` which incorporate some of the core procedures we shou
 
 The purpose of the firestore setup is to have some analytics to trace the user steps. This does not save the user information. However, it stores a general idea of where the user traveled during his / her visit which still is anonymous.\*\*\*\*
 
+#### Stripe Payment Services Local CLI Setup
+
+To install stripe locally, to test webhook listeners, you need to have the local cli installed for stripe.
+
+```
+brew install stripe/stripe-cli/stripe
+
+
 ### Deployment and Git Tag
 
 `Note`: Please ensure that we have the proper commit messages built. We need the commit

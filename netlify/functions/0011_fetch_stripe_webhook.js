@@ -2,13 +2,16 @@
  * File : 0011_fetch_stripe_webhook.js
  *
  * This file is used to fetch data from stripe when the event loop
- * is completed in stripe.
+ * is completed in stripe. This functionality is used by stripe to support
+ * XX event after an activity in stripe has been completed. Eg, if a payment is
+ * moved from pending to paid, then the webhook should be called by stripe to
+ * mark the payment complete in db.
  *
  * Must have feature flags enabled for this feature.
  */
 import Stripe from "stripe";
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+const stripe = new Stripe(process.env.VITE_AUTH_STRIPE_SECRET_KEY);
 
 /**
  * handler fn
@@ -21,11 +24,10 @@ export const handler = async (event) => {
   let stripeEvent;
 
   try {
-    // Verify signature with your webhook secret from Stripe Dashboard
     stripeEvent = stripe.webhooks.constructEvent(
       event.body,
       sig,
-      process.env.STRIPE_WEBHOOK_SECRET,
+      process.env.VITE_AUTH_STRIPE_WEBHOOK_SECRET,
     );
   } catch (err) {
     console.error("Webhook signature verification failed:", err.message);
