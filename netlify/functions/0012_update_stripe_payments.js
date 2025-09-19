@@ -70,10 +70,49 @@ export const handler = async (event) => {
       .doc(data.stripePaymentIntentID);
     await docRef.set(data, { merge: true });
 
-    // TODO: send email to clients
+    // send email for payment notification from clients
     if (containsMetadata) {
-    }
+      const subject = "Notification of payment attached.";
+      const text = `
+      Hi there,
+      
+      Attached is your notification of payment.
 
+      Rent Month: ${data?.rentMonth}
+      Rent Amount: $${data?.rentAmount}
+      Additional Charges: $${data?.additionalCharges}
+      Initial Late Fee: $${data?.initialLateFee}
+      Daily Late Fee: $${data?.dailyLateFee}
+
+
+      Current payment status: ${data?.status}
+
+      Thank you,
+
+      This is an auto-generated email. Please do not reply to this email.
+      `;
+
+      const response = await fetch(
+        `${process.env.VITE_SITE_URL}/.netlify/functions/0001_send_email_fn`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            to: data?.customer_email,
+            subject,
+            text,
+          }),
+        },
+      );
+
+      if (!response.ok) {
+        console.error(
+          "unable to send email notification from stripe webhook handler.",
+        );
+        // eat the exception
+        return;
+      }
+    }
     return {
       statusCode: 200,
       body: JSON.stringify({ success: true, id: docRef.id }),
@@ -85,5 +124,4 @@ export const handler = async (event) => {
     );
     throw err;
   }
-
 };
