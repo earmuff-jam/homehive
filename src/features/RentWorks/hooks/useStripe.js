@@ -180,39 +180,3 @@ export const useGetRecentTransactions = () => {
 
   return { transactions, fetchTransactions, loading, error };
 };
-
-/**
- * useFetchStripePaymentCompleteWebhook ...
- *
- * Hook to fetch the stripe webhook event handler for payment
- * related information system.
- */
-export const useFetchStripePaymentCompleteWebhook = () => {
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(false);
-
-  const fetchTransactions = async ({ stripeCheckoutSessionId }) => {
-    setLoading(true);
-    setError(null);
-
-    try {
-      const response = await fetch(
-        "/.netlify/functions/0011_fetch_stripe_webhook",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ connectedAccountId }),
-        },
-      );
-
-      const data = await response.json();
-      if (!response.ok) throw new Error(data.error || "Failed to fetch");
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  return { transactions, fetchTransactions, loading, error };
-};

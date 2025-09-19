@@ -105,7 +105,7 @@ export default function PropertyOwnerInfoCard({
     const stripeCheckoutSessionData =
       await generateStripeCheckoutSession(draftData);
 
-    const result = await createRentRecord({
+    await createRentRecord({
       ...draftData,
       status: "intent", // the first step of stripe checkout
       createdBy: tenantId, // tenant is the only one who can pay

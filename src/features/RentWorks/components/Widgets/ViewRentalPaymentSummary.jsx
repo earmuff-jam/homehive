@@ -61,11 +61,13 @@ const ViewRentalPaymentSummary = ({ rentData = [] }) => {
         Cell: ({ cell }) => cell.getValue() || "-",
       },
       {
-        accessorKey: "paidOn",
-        header: "Paid On",
+        accessorKey: "updatedOn",
+        header: "Created on",
         size: 150,
         Cell: ({ cell }) =>
-          cell.getValue() ? dayjs(cell.getValue()).format() : "-",
+          cell.getValue()
+            ? dayjs(cell.getValue()).format("YYYY-MM-DD HH:mm:ss")
+            : "-",
       },
     ],
     [],
