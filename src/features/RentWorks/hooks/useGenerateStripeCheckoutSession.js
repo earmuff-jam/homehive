@@ -5,7 +5,7 @@ import { useState } from "react";
  *
  * fn used to generate secure stripe checkout session
  *
- * @returns
+ * @ returns
  */
 export const useGenerateStripeCheckoutSession = () => {
   const [loading, setLoading] = useState(false);
@@ -33,10 +33,10 @@ export const useGenerateStripeCheckoutSession = () => {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            rentAmount: Number(rentAmount),
-            additionalCharges: Number(additionalCharges),
-            initialLateFee: Number(initialLateFee),
-            dailyLateFee: Number(dailyLateFee),
+            rentAmount,
+            additionalCharges,
+            initialLateFee,
+            dailyLateFee,
             stripeOwnerAccountId,
             propertyId,
             propertyOwnerId,
@@ -55,7 +55,7 @@ export const useGenerateStripeCheckoutSession = () => {
         );
       }
 
-      return data.url;
+      return data;
     } catch (err) {
       /* eslint-disable no-console */
       console.error(err);

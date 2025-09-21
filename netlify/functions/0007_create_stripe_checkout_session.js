@@ -47,7 +47,7 @@ export const handler = async (event) => {
               product_data: {
                 name: "Monthly Rent",
               },
-              unit_amount: Math.round(rentAmount * 100),
+              unit_amount: rentAmount,
             },
             quantity: 1,
           },
@@ -57,7 +57,7 @@ export const handler = async (event) => {
               product_data: {
                 name: "Additional Charges",
               },
-              unit_amount: Math.round(additionalCharges * 100),
+              unit_amount: additionalCharges,
             },
             quantity: 1,
           },
@@ -67,7 +67,7 @@ export const handler = async (event) => {
               product_data: {
                 name: "Initial late fee",
               },
-              unit_amount: Math.round(initialLateFee * 100),
+              unit_amount: initialLateFee,
             },
             quantity: 1,
           },
@@ -77,7 +77,7 @@ export const handler = async (event) => {
               product_data: {
                 name: "Daily late fee",
               },
-              unit_amount: Math.round(dailyLateFee * 100),
+              unit_amount: dailyLateFee,
             },
             quantity: 1,
           },
@@ -89,10 +89,10 @@ export const handler = async (event) => {
           propertyId,
           propertyOwnerId,
           rentMonth,
-          rentAmount: Math.round(rentAmount * 100),
-          additionalCharges: Math.round(additionalCharges * 100),
-          initialLateFee: Math.round(initialLateFee * 100),
-          dailyLateFee: Math.round(dailyLateFee * 100),
+          rentAmount,
+          additionalCharges,
+          initialLateFee,
+          dailyLateFee,
           customer_email: tenantEmail,
         },
         success_url:
@@ -108,7 +108,7 @@ export const handler = async (event) => {
 
     return {
       statusCode: 200,
-      body: JSON.stringify({ url: session.url }),
+      body: JSON.stringify({ id: session.id, url: session.url }),
     };
   } catch (err) {
     console.error("Stripe Checkout Error:", err.message);

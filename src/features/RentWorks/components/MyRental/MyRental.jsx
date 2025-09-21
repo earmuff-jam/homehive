@@ -1,46 +1,38 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import { useLocation, useNavigate } from "react-router-dom";
 
-import dayjs from "dayjs";
-
-import { Business, Home, LocationOn } from "@mui/icons-material";
 import {
-  Box,
-  Card,
-  CardContent,
-  Chip,
-  Grid,
+  Alert,
+  Button,
+  Grid2 as Grid,
   Paper,
   Skeleton,
   Stack,
-  Tooltip,
   Typography,
 } from "@mui/material";
 import EmptyComponent from "common/EmptyComponent";
-import RowHeader from "common/RowHeader/RowHeader";
 import { useGetUserDataByIdQuery } from "features/Api/firebaseUserApi";
 import { useGetPropertiesByPropertyIdQuery } from "features/Api/propertiesApi";
+import { useGetRentsByPropertyIdQuery } from "features/Api/rentApi";
 import {
   useGetTenantByEmailIdQuery,
   useGetTenantByPropertyIdQuery,
 } from "features/Api/tenantsApi";
+import PropertyDetails from "features/RentWorks/common/PropertyDetails";
+import PropertyHeader from "features/RentWorks/common/PropertyHeader";
 import PropertyOwnerInfoCard from "features/RentWorks/common/PropertyOwnerInfoCard";
 import PropertyStatistics from "features/RentWorks/common/PropertyStatistics";
 import { fetchLoggedInUser } from "features/RentWorks/common/utils";
 import DocumentsOverview from "features/RentWorks/components/Widgets/DocumentsOverview";
 import FinancialOverview from "features/RentWorks/components/Widgets/FinancialOverview";
 import RentalPaymentOverview from "features/RentWorks/components/Widgets/RentalPaymentOverview";
-import { useConfirmStripePayment } from "features/RentWorks/hooks/useStripe";
 import { useAppTitle } from "hooks/useAppTitle";
 
 const MyRental = () => {
   const location = useLocation();
   const navigate = useNavigate();
-
   const user = fetchLoggedInUser();
-
-  const { confirmPayment } = useConfirmStripePayment();
 
   const { data: renter, isLoading } = useGetTenantByEmailIdQuery(
     user?.googleEmailAddress,
@@ -64,7 +56,17 @@ const MyRental = () => {
       skip: !property?.createdBy,
     });
 
+  const { data: rentList = [], isLoading: isRentListForPropertyLoading } =
+    useGetRentsByPropertyIdQuery(
+      { propertyId: property?.id, currentUserEmail: user?.googleEmailAddress },
+      {
+        skip: !property?.id,
+      },
+    );
+
   useAppTitle(property?.name || "My Rental Unit");
+
+  const [alert, setAlert] = useState(false);
 
   // if home is SoR, then only each bedroom is counted as a unit
   const isAnyTenantSoR = tenants?.some((tenant) => tenant.isSoR);
@@ -74,8 +76,8 @@ const MyRental = () => {
     const success = params.get("success");
     const sessionId = params.get("session_id");
     if (Number(success) === 1 && sessionId && owner?.stripeAccountId) {
-      confirmPayment(user?.uid, sessionId, owner?.stripeAccountId);
       navigate(location?.pathname, { replace: true });
+      setAlert(true);
     }
   }, [location, isOwnerDataLoading]);
 
@@ -88,39 +90,36 @@ const MyRental = () => {
 
   return (
     <Stack data-tour="rental-0">
-      {/* Property Header */}
+      {alert && (
+        <Alert
+          severity="info"
+          action={
+            <Button
+              color="inherit"
+              size="small"
+              variant="outlined"
+              onClick={() => window.location.reload()}
+            >
+              Refresh
+            </Button>
+          }
+        >
+          <Typography sx={{ textTransform: "initial" }}>
+            To maintain data integrity and get latest payment details, please
+            refresh your browser
+          </Typography>
+        </Alert>
+      )}
       <Paper elevation={0} sx={{ padding: 3, margin: "1rem 0rem" }}>
         {isPropertyLoading ? (
           <Skeleton height="5rem" />
         ) : (
-          <Stack spacing={1}>
-            <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-              <Home color="primary" sx={{ fontSize: 40 }} />
-              <Stack>
-                <Typography variant="h4" gutterBottom>
-                  {property?.name}
-                </Typography>
-                <Typography
-                  variant="h6"
-                  color="text.secondary"
-                  sx={{ display: "flex", alignItems: "center", gap: 1 }}
-                >
-                  <LocationOn />
-                  {property?.address}, {property?.city}, {property?.state}&nbsp;
-                  {property?.zipcode}
-                </Typography>
-              </Stack>
-            </Box>
-            <Box>
-              {renter?.isPrimary ? (
-                <Chip label="Primary Renter" />
-              ) : (
-                <Chip label="Secondary Renter" />
-              )}
-            </Box>
-          </Stack>
+          <PropertyHeader
+            isRentee
+            property={property}
+            isPrimaryRenter={renter?.isPrimary}
+          />
         )}
-        {/* Property Stats */}
         <PropertyStatistics
           dataTour="rental-1"
           property={property}
@@ -146,11 +145,13 @@ const MyRental = () => {
           />
           <RentalPaymentOverview
             dataTour="rental-7"
-            propertyId={property?.id}
+            rentList={rentList}
+            isRentListForPropertyLoading={isRentListForPropertyLoading}
             propertyName={property?.name || "Unknown"}
           />
         </Grid>
 
+        {/* Sidebar */}
         <Grid item xs={12} md={4}>
           <PropertyOwnerInfoCard
             dataTour="rental-3"
@@ -158,78 +159,11 @@ const MyRental = () => {
             isPropertyLoading={isPropertyLoading}
             property={property}
           />
-
-          <Card sx={{ mb: 3 }} data-tour="rental-4">
-            <CardContent data-tour="rental-5">
-              <RowHeader
-                title="Property Details"
-                sxProps={{
-                  display: "flex",
-                  flexDirection: "row-reverse",
-                  justifyContent: "flex-end",
-                  gap: 1,
-                  textAlign: "left",
-                  variant: "subtitle2",
-                  fontWeight: "bold",
-                }}
-                caption={<Business color="primary" />}
-              />
-              {isPropertyLoading ? (
-                <Skeleton height="10rem" />
-              ) : (
-                <Stack spacing={2}>
-                  <Stack direction="row">
-                    <Stack textAlign="center" flexGrow={1}>
-                      <Typography variant="h4" color="success.main">
-                        {property?.units}
-                      </Typography>
-                      <Typography variant="subtitle2" color="text.secondary">
-                        Bedrooms
-                      </Typography>
-                    </Stack>
-                    <Stack textAlign="center" flexGrow={1}>
-                      <Typography variant="h4" color="success.main">
-                        {property?.bathrooms}
-                      </Typography>
-                      <Typography variant="subtitle2" color="text.secondary">
-                        Bathrooms
-                      </Typography>
-                    </Stack>
-                  </Stack>
-                  <Stack direction="row">
-                    <Stack textAlign="center" flexGrow={1}>
-                      <Tooltip
-                        title={dayjs(property?.createdOn).format(
-                          "MMM DD, YYYY",
-                        )}
-                      >
-                        <Stack>
-                          <Typography variant="subtitle2">
-                            {dayjs(property?.createdOn).format("MM DD YYYY")}
-                          </Typography>
-                          <Typography variant="body2" color="text.secondary">
-                            Created
-                          </Typography>
-                        </Stack>
-                      </Tooltip>
-                    </Stack>
-                    <Stack textAlign="center" flexGrow={1}>
-                      <Tooltip title={dayjs(property?.updatedOn)}>
-                        <Stack>
-                          <Typography variant="subtitle2">
-                            {dayjs(property?.updatedOn).fromNow()}
-                          </Typography>
-                          <Typography variant="body2" color="text.secondary">
-                            Last Updated
-                          </Typography>
-                        </Stack>
-                      </Tooltip>
-                    </Stack>
-                  </Stack>
-                </Stack>
-              )}
-            </CardContent>
-          </Card>
+          <PropertyDetails
+            dataTour="rental-4"
+            property={property}
+            isPropertyLoading={isPropertyLoading}
+          />
         </Grid>
       </Grid>
     </Stack>

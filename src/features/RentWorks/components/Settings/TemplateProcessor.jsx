@@ -1,12 +1,12 @@
 import dayjs from "dayjs";
 
-import validateClientPermissions from "common/ValidateClientPerms";
 import { EditInvoiceRouteUri } from "common/utils";
 import {
   CreateInvoiceEnumValue,
   PaymentReminderEnumValue,
   RenewLeaseNoticeEnumValue,
   SendDefaultInvoiceEnumValue,
+  isFeatureEnabled,
   stripHTMLForEmailMessages,
 } from "features/RentWorks/common/utils";
 import { processTemplate } from "features/RentWorks/components/Settings/common";
@@ -133,11 +133,10 @@ export const handleQuickConnectAction = (
  * @param {Object} userInformation - object containing reciever information
  */
 const formatEmail = ({ to, subject, body, html }, sendEmail) => {
-  const userEnabledFlagMap = validateClientPermissions();
-  const isSendEmailFeatureEnabled = userEnabledFlagMap.get("sendEmail");
+  const isEmailEnabled = isFeatureEnabled("sendEmail");
 
-  // if client has ability to send email, use that
-  if (isSendEmailFeatureEnabled) {
+  // if client has ability to send email, use that else just use whatever is available
+  if (isEmailEnabled) {
     sendEmail({
       to: to,
       subject: subject,

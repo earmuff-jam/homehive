@@ -27,7 +27,7 @@ export default function MenuOptions({
   isLightTheme = false,
   isSendEmailLoading = false,
   showHelpAndSupport = false,
-  isSendEmailFeatureEnabled = false,
+  isEmailEnabled = false,
   isDisabled = true,
 }) {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -94,7 +94,7 @@ export default function MenuOptions({
                 }}
               />
             </MenuItem>
-            {isSendEmailFeatureEnabled ? (
+            {isEmailEnabled ? (
               <MenuItem
                 disabled={isSendEmailLoading || isDisabled}
                 onClick={() => {

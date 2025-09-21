@@ -22,9 +22,9 @@ export const LANDING_PAGE_DETAILS = {
   features: [
     {
       icon: <ReceiptLong color="primary" sx={{ fontSize: 40 }} />,
-      title: "Simple Invoice Creation",
+      title: "Simple Workflow Creation",
       description:
-        "Create professional invoices in seconds with our intuitive interface.",
+        "Learn rental workflow in seconds with our intuitive interface.",
     },
     {
       icon: <SecurityRounded color="primary" sx={{ fontSize: 40 }} />,
@@ -45,38 +45,37 @@ export const LANDING_PAGE_DETAILS = {
   ],
   howItWorks: [
     {
-      title: "No account, no sign up",
-      description: "No sign up or sign in required. Simple and easy.",
+      title: "One click sign up",
+      description: "Easy one click to allow users to login.",
     },
     {
       title: "Set up your profile",
-      description: "Add your business information and save it for future use.",
+      description: "Add your personal information and save it for future use.",
     },
     {
-      title: "Create your first invoice",
-      description: "Use our intuitive editor to create professional invoices.",
+      title: "Setup rental workflow",
+      description: "Use our intuitive editor to create rental workflows",
     },
     {
-      title: "Print and email invoices",
-      description:
-        "Print invoices directly and email them to your client of choice.",
+      title: "Setup payments",
+      description: "Setup payments and see your rental money flow.",
     },
   ],
   testimonials: [
     {
       quote:
-        "This invoicing app has transformed how I manage my freelance business. I save hours every week on invoicing tasks.",
-      author: "Sarah J., Graphic Designer",
+        "This rental app has transformed how I manage my business. I save hours every week on rental tasks.",
+      author: "Sarah J., Client, Rental provider.",
     },
     {
       quote:
-        "The simplicity of this app is its greatest strength. I was able to send my first invoice within minutes.",
-      author: "Mark T., Consultant",
+        "The simplicity of this app is its greatest strength. I was able to accept payment from my first customer within minutes.",
+      author: "Mark T., Consultant, Rental Provider.",
     },
     {
       quote:
-        "After trying several invoicing solutions, this is the only one that perfectly balances features with ease of use.",
-      author: "Elena M., Marketing Agency",
+        "After trying several rental solutions, this is the only one that perfectly balances features with ease of use. Love that our landlord uses this",
+      author: "Elena M., Customer, Client.",
     },
   ],
 };

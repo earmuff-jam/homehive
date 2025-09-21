@@ -6,6 +6,8 @@ import dayjs from "dayjs";
 
 import {
   Button,
+  Card,
+  CardContent,
   Dialog,
   DialogActions,
   DialogContent,
@@ -15,6 +17,7 @@ import {
 } from "@mui/material";
 import AButton from "common/AButton";
 import CustomSnackbar from "common/CustomSnackbar/CustomSnackbar";
+import RowHeader from "common/RowHeader/RowHeader";
 import { useUpdatePropertyByIdMutation } from "features/Api/propertiesApi";
 import { AddPropertyTextString } from "features/RentWorks/common/constants";
 import { fetchLoggedInUser } from "features/RentWorks/common/utils";
@@ -84,66 +87,78 @@ export default function QuickActions({ property }) {
   }, [property, reset]);
 
   return (
-    <Stack spacing={1}>
-      <Button
-        variant="outlined"
-        fullWidth
-        onClick={() =>
-          setDialog({
-            title: "Edit property",
-            type: AddPropertyTextString,
-            display: true,
-          })
-        }
-      >
-        Edit Property
-      </Button>
-
-      <Button variant="outlined" fullWidth>
-        View Payment History
-      </Button>
-      <Button variant="outlined" fullWidth disabled>
-        Add Maintenance Request
-      </Button>
-      <Button variant="outlined" fullWidth disabled>
-        Generate Report
-      </Button>
-
-      {/* Edit property dialog  */}
-      <Dialog
-        open={dialog.display}
-        TransitionComponent={Transition}
-        keepMounted
-        fullWidth
-        aria-describedby="alert-dialog-slide-description"
-      >
-        <DialogTitle>{dialog.title}</DialogTitle>
-        <DialogContent>
-          {dialog.type === AddPropertyTextString && (
-            <AddProperty
-              isEditing
-              register={register}
-              errors={errors}
-              onSubmit={handleSubmit(onSubmit)}
-              isDisabled={!isValid}
-            />
-          )}
-        </DialogContent>
-        <DialogActions>
-          <AButton
-            size="small"
+    <Card data-tour="property-5">
+      <CardContent>
+        <RowHeader
+          title="Quick Actions"
+          sxProps={{
+            textAlign: "left",
+            variant: "subtitle2",
+            fontWeight: "bold",
+          }}
+        />
+        <Stack spacing={1}>
+          <Button
             variant="outlined"
-            onClick={closeDialog}
-            label="Close"
-          />
-        </DialogActions>
-      </Dialog>
+            fullWidth
+            onClick={() =>
+              setDialog({
+                title: "Edit property",
+                type: AddPropertyTextString,
+                display: true,
+              })
+            }
+          >
+            Edit Property
+          </Button>
 
-      <CustomSnackbar
-        showSnackbar={showSnackbar}
-        setShowSnackbar={setShowSnackbar}
-        title="Changes saved."
-      />
-    </Stack>
+          <Button variant="outlined" fullWidth>
+            View Payment History
+          </Button>
+          <Button variant="outlined" fullWidth disabled>
+            Add Maintenance Request
+          </Button>
+          <Button variant="outlined" fullWidth disabled>
+            Generate Report
+          </Button>
+
+          {/* Edit property dialog  */}
+          <Dialog
+            open={dialog.display}
+            TransitionComponent={Transition}
+            keepMounted
+            fullWidth
+            aria-describedby="alert-dialog-slide-description"
+          >
+            <DialogTitle>{dialog.title}</DialogTitle>
+            <DialogContent>
+              {dialog.type === AddPropertyTextString && (
+                <AddProperty
+                  isEditing
+                  register={register}
+                  errors={errors}
+                  onSubmit={handleSubmit(onSubmit)}
+                  isDisabled={!isValid}
+                />
+              )}
+            </DialogContent>
+            <DialogActions>
+              <AButton
+                size="small"
+                variant="outlined"
+                onClick={closeDialog}
+                label="Close"
+              />
+            </DialogActions>
+          </Dialog>
+
+          <CustomSnackbar
+            showSnackbar={showSnackbar}
+            setShowSnackbar={setShowSnackbar}
+            title="Changes saved."
+          />
+        </Stack>
+      </CardContent>
+    </Card>
   );
 }
