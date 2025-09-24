@@ -158,7 +158,7 @@ export default function HeroSection() {
               }}
             >
               <Box sx={{ p: 3, textAlign: "center" }}>
-                <img src="/logo.png" />
+               <img src="/logo.png" style={{  width: "100%", height: "auto" }} />
               </Box>
             </Box>
           </Grid>
