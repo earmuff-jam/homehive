@@ -51,11 +51,10 @@ export default function HeroSection() {
       const userDetails = await authenticateViaGoogle();
       const createdUser = await handleCreateUser(userDetails, OwnerRole);
 
-      if (createdUser) {
-        // force refresh
+      if (Boolean(createdUser)) {
         createdUser?.role === OwnerRole
-          ? navigate(`${PropertiesRouteUri}?refresh=${Date.now()}`)
-          : navigate(`${RentalRouteUri}?refresh=${Date.now()}`);
+          ? window.location.replace(`${PropertiesRouteUri}`)
+          : window.location.replace(`${RentalRouteUri}`);
       }
     } catch (error) {
       /* eslint-disable no-console */

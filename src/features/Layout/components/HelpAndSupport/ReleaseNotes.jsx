@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 
+import dayjs from "dayjs";
+
 import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 import {
   Box,
@@ -9,7 +11,6 @@ import {
   ListItemText,
   Typography,
 } from "@mui/material";
-import dayjs from "dayjs";
 
 const typeLabels = {
   feature: "Features",
@@ -46,7 +47,7 @@ export default function ReleaseNotes() {
           color="text.secondary"
           textTransform="initial"
         >
-          View the latest updates and changes to RentWorks.
+          View the latest updates and changes to HomeHiveSolutions.
         </Typography>
       </Box>
 

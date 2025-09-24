@@ -11,7 +11,6 @@ import {
   DialogContent,
   DialogTitle,
   FormControlLabel,
-  Slide,
   Stack,
   Tooltip,
   Typography,
@@ -33,10 +32,6 @@ import { TenantRole } from "features/Layout/components/Landing/constants";
 import NavBar from "features/Layout/components/NavBar/NavBar";
 import { retrieveTourKey } from "features/Layout/utils";
 import { fetchLoggedInUser } from "features/RentWorks/common/utils";
-
-const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
 
 const defaultDialog = {
   title: "",
@@ -71,9 +66,8 @@ export default function Layout({
 
   const closeDialog = () => setDialog(defaultDialog);
 
-  const handleChange = () => {
+  const handleChange = () =>
     setDialog((prev) => ({ ...prev, showWatermark: !prev.showWatermark }));
-  };
 
   const setTour = () => {
     const key = retrieveTourKey(currentUri, "property");
@@ -152,7 +146,6 @@ export default function Layout({
       <Dialog
         className="no-print"
         open={dialog.type === "HELP" || dialog.type === "PRINT"}
-        TransitionComponent={Transition}
         keepMounted
         onClose={() => setDialog(defaultDialog)}
         aria-describedby="alert-dialog-slide-help-box"

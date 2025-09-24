@@ -60,12 +60,8 @@ export default function NavBar({
 
         const requiresLogin = Boolean(config.isLoggedInFeature);
 
-        // only if login is required
-        // AND user is logged in
-        // OR if login not required
-        if (requiresLogin) {
-          if (!isUserLoggedIn()) return null;
-        }
+        // fallback if login is not valid
+        if (requiresLogin && !isUserLoggedIn()) return null;
 
         return (
           <ListItemButton
