@@ -1,6 +1,6 @@
 ## Developer setup and ease of guide.
 
-RentWorks app is written in React and is used to build invoices on the fly. It is also used to setup rental reminders via email and
+HomeHiveSolutions app is written in React and is used to build invoices on the fly. It is also used to setup rental reminders via email and
 also provides support to "stripe payment services" via webhook and db connectivity supported by Firebase for ARPS system (Automatic Payment Reminder System)
 
 ### Installation

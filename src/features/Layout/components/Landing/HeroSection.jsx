@@ -100,10 +100,11 @@ export default function HeroSection() {
               fontWeight="bold"
               gutterBottom
             >
-              Simple. Powerful. Professional.
+              Effortless rent management
             </Typography>
             <Typography variant="h5" sx={{ textTransform: "initial" }}>
-              Create and manage rents in seconds. No complexity, just results.
+              Take control of your rentals in seconds — no clutter, no
+              confusion.
             </Typography>
 
             <Stack>
@@ -130,13 +131,13 @@ export default function HeroSection() {
                   onClick={handleTenantLogin}
                 >
                   <Typography variant="h6">
-                    Are you a Renter?
+                    Renting with us?
                     <Box
                       component="span"
                       color="secondary.main"
                       sx={{ margin: "0rem 0.5rem", textTransform: "initial" }}
                     >
-                      Login here
+                      Access your account
                     </Box>
                   </Typography>
                 </Stack>
@@ -157,9 +158,14 @@ export default function HeroSection() {
                 alignItems: "center",
               }}
             >
-              <Box sx={{ p: 3, textAlign: "center" }}>
-               <img src="/logo.png" style={{  width: "100%", height: "auto" }} />
-              </Box>
+              <img
+                src="/logo.png"
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "cover",
+                }}
+              />
             </Box>
           </Grid>
         </Grid>

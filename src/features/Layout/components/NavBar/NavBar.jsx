@@ -92,8 +92,8 @@ export default function NavBar({
         open={openDrawer}
         onClose={handleDrawerClose}
         aria-modal="true"
-        PaperProps={
-          smScreenSizeAndHigher
+        slotProps={{
+          paper: smScreenSizeAndHigher
             ? {
                 sx: {
                   width: 300,
@@ -108,8 +108,8 @@ export default function NavBar({
                 sx: {
                   width: "100%",
                 },
-              }
-        }
+              },
+        }}
       >
         <Stack
           sx={{
@@ -119,7 +119,10 @@ export default function NavBar({
             padding: "1rem",
           }}
         >
-          <Typography variant="h5">RentWorks</Typography>
+          <Stack direction="row" spacing={2} alignItems="center">
+            <img src="/logo-no-text.png" height="100%" width="50rem" />
+            <Typography variant="h5">Homehive</Typography>
+          </Stack>
           <IconButton onClick={handleDrawerClose}>
             {theme.direction === "rtl" ? (
               <ChevronRightRounded />
