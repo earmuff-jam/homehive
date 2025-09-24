@@ -8,10 +8,10 @@ import { TourProvider } from "@reactour/tour";
 import ScrollTopProvider from "common/ScrollTop/ScrollTopProvider";
 import { darkTheme, lightTheme } from "common/Theme";
 import { GeneratedTourSteps } from "common/Tour/TourSteps";
-import { buildAppRoutes } from "common/ValidateClientPerms";
+import { buildAppRoutes } from "common/validatePerms";
 import Layout from "features/Layout/Layout";
 import { fetchLoggedInUser } from "features/RentWorks/common/utils";
-import { RentWorksAppRoutes } from "src/Routes";
+import { AppRoutes } from "src/Routes";
 
 function App() {
   const user = fetchLoggedInUser();
@@ -20,11 +20,11 @@ function App() {
   );
 
   return (
-    <ThemeProvider
-      theme={Number(currentThemeIdx) === 0 ? lightTheme : darkTheme}
-    >
-      <CssBaseline />
-      <TourProvider steps={GeneratedTourSteps}>
+    <TourProvider steps={GeneratedTourSteps}>
+      <ThemeProvider
+        theme={Number(currentThemeIdx) === 0 ? lightTheme : darkTheme}
+      >
+        <CssBaseline />
         <ScrollTopProvider>
           <BrowserRouter>
             <Routes>
@@ -32,23 +32,23 @@ function App() {
                 path="/"
                 element={
                   <Layout
-                    routes={RentWorksAppRoutes}
+                    allValidRoutes={AppRoutes}
                     currentThemeIdx={currentThemeIdx}
                     setCurrentThemeIdx={setCurrentThemeIdx}
                   />
                 }
               >
-                {buildAppRoutes(RentWorksAppRoutes, user?.role)}
+                {buildAppRoutes(AppRoutes, user?.role)}
               </Route>
               {/* force navigate to main page when routes are not found but wait until we have routes built first; prevents redirect in refresh */}
-              {buildAppRoutes(RentWorksAppRoutes).length > 0 && (
+              {buildAppRoutes(AppRoutes).length > 0 && (
                 <Route path="/*" element={<Navigate to="/" replace />} />
               )}
             </Routes>
           </BrowserRouter>
         </ScrollTopProvider>
-      </TourProvider>
-    </ThemeProvider>
+      </ThemeProvider>
+    </TourProvider>
   );
 }
 

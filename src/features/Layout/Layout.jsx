@@ -47,14 +47,14 @@ const defaultDialog = {
 };
 
 export default function Layout({
-  routes,
+  allValidRoutes,
   currentThemeIdx,
   setCurrentThemeIdx,
 }) {
   const theme = useTheme();
   const location = useLocation();
   const currentUri = location?.pathname || "";
-  const currentRoute = routes.find((route) =>
+  const currentRoute = allValidRoutes.find((route) =>
     matchPath(route.path, currentUri),
   );
 
@@ -71,9 +71,8 @@ export default function Layout({
 
   const closeDialog = () => setDialog(defaultDialog);
 
-  const handleChange = () => {
+  const handleChange = () =>
     setDialog((prev) => ({ ...prev, showWatermark: !prev.showWatermark }));
-  };
 
   const setTour = () => {
     const key = retrieveTourKey(currentUri, "property");

@@ -72,12 +72,12 @@ const Settings = lazy(
 );
 
 /**
- * RentWorksAppRoutes
+ * AppRoutes
  *
  * used to build out the route of the application. required flags are array of string that are
  * required to be met as a client permission for the route to be in operation.
  */
-export const RentWorksAppRoutes = [
+export const AppRoutes = [
   {
     id: 1,
     label: "Home",

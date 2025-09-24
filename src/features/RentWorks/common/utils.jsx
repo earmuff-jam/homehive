@@ -3,7 +3,7 @@
  */
 import dayjs from "dayjs";
 
-import validateClientPermissions from "common/ValidateClientPerms";
+import enabledFeatureFlags from "common/validatePerms";
 import { getAuth, signOut } from "firebase/auth";
 import { authenticatorConfig } from "src/config";
 
@@ -343,6 +343,6 @@ export const buildPaymentLineItems = (property = {}, tenant = []) => {
  * @returns boolean - true / false
  */
 export const isFeatureEnabled = (key) => {
-  const enabledFlagMap = validateClientPermissions();
+  const enabledFlagMap = enabledFeatureFlags();
   return enabledFlagMap.get(key) || false;
 };

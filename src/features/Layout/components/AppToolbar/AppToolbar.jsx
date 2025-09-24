@@ -15,7 +15,7 @@ import {
 } from "@mui/material";
 import CustomSnackbar from "common/CustomSnackbar/CustomSnackbar";
 import { DefaultTourStepsMapperObj } from "common/Tour/TourSteps";
-import { isUserLoggedIn } from "common/utils";
+import { isUserLoggedIn } from "common/validatePerms";
 import { useGenerateUserData } from "features/InvoiceWorks/hooks/useGenerateUserData";
 import MenuOptions from "features/Layout/components/NavBar/MenuOptions";
 import { retrieveTourKey } from "features/Layout/utils";

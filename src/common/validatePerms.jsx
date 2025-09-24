@@ -2,15 +2,21 @@ import { Route } from "react-router-dom";
 
 import AuthenticationProvider from "features/Auth/AuthenticationProvider";
 
+// static fields for feature flags associations
+const Analytics = "analytics";
+const Invoicer = "invoicer";
+const SendEmail = "sendEmail";
+const InvoicerPro = "invoicerPro";
+const UserInformation = "userInformation";
+
 /**
- * validateClientPermissions ...
+ * enabledFeatureFlags ...
  *
- * function that validates client permissions to view certain aspects of the application.
- * This is similar to feature flags or access control based on server location.
+ * provides a list of enabled feature flags.
  *
- * @returns Map of all valid client permissions
+ * @returns Map of all enabled feature flags
  */
-export default function validateClientPermissions() {
+export default function enabledFeatureFlags() {
   const invoicerAppAnalyticsEnabled = import.meta.env.VITE_ENABLE_ANALYTICS;
   const invoicerAppEnabled = import.meta.env.VITE_ENABLE_INVOICER;
   const invoicerAppProFeaturesEnabled = import.meta.env
@@ -20,11 +26,11 @@ export default function validateClientPermissions() {
   const invoicerAppSendEmailEnabled = import.meta.env.VITE_ENABLE_EMAIL_FEATURE;
 
   return new Map([
-    ["analytics", invoicerAppAnalyticsEnabled === "true"],
-    ["invoicer", invoicerAppEnabled === "true"],
-    ["invoicerPro", invoicerAppProFeaturesEnabled === "true"],
-    ["userInformation", invoicerAppUserInformationEnabled === "true"],
-    ["sendEmail", invoicerAppSendEmailEnabled === "true"],
+    [Analytics, invoicerAppAnalyticsEnabled === "true"],
+    [Invoicer, invoicerAppEnabled === "true"],
+    [InvoicerPro, invoicerAppProFeaturesEnabled === "true"],
+    [UserInformation, invoicerAppUserInformationEnabled === "true"],
+    [SendEmail, invoicerAppSendEmailEnabled === "true"],
   ]);
 }
 
@@ -47,6 +53,23 @@ export function isValidPermissions(validRouteFlags = [], requiredFlags = []) {
 }
 
 /**
+ * isUserLoggedIn ...
+ *
+ * determines if the current user is logged in and / or if the user is of a
+ * valid type. checks against the local storage only, does not attempt to
+ * communicate with the backend jobs for this.
+ *
+ * @returns user || false
+ */
+export const isUserLoggedIn = () => {
+  const currentUser = JSON.parse(localStorage.getItem("user"));
+  if (currentUser?.uid) {
+    return true;
+  }
+  return false;
+};
+
+/**
  * filterValidRoutesForNavigationBar
  *
  * function used to filter the valid routes for left side navigation bar.
@@ -60,16 +83,6 @@ export const filterValidRoutesForNavigationBar = (draftRoutes = []) => {
 /**
  * buildAppRoutes
  *
- * used to build application level routes based on the passed in available routes.
- * if all required Orgs are met and flags are on, said route is created.
- *
- * @param {Array} draftRoutes - array of draft routes that are within the application
- * @returns Array of Routes with the route element from react router dom.
- */
-
-/**
- * buildAppRoutes
- *
  * Used to build application-level routes based on the passed-in available routes.
  * If all required orgs/flags are met, the route is created. Does not take user role
  * into account while building routes.
@@ -78,7 +91,7 @@ export const filterValidRoutesForNavigationBar = (draftRoutes = []) => {
  * @returns Array of <Route> elements
  */
 export function buildAppRoutes(draftRoutes = [], roleType = "") {
-  const validRouteFlags = validateClientPermissions();
+  const validRouteFlags = enabledFeatureFlags();
 
   return draftRoutes
     .map(({ path, element, requiredFlags = [], config = {} }) => {

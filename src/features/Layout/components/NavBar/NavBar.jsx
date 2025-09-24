@@ -15,11 +15,11 @@ import {
 } from "@mui/material";
 import validateClientPermissions, {
   filterValidRoutesForNavigationBar,
+  isUserLoggedIn,
   isValidPermissions,
-} from "common/ValidateClientPerms";
-import { isUserLoggedIn } from "common/utils";
+} from "common/validatePerms";
 import { fetchLoggedInUser } from "features/RentWorks/common/utils";
-import { RentWorksAppRoutes } from "src/Routes";
+import { AppRoutes } from "src/Routes";
 
 export default function NavBar({
   openDrawer,
@@ -42,14 +42,17 @@ export default function NavBar({
     }, 200);
   };
 
-  const formattedInvoicerRoutes = (RentWorksAppRoutes = [], roleType = "") => {
-    const validRouteFlags = validateClientPermissions();
+  const formattedInvoicerRoutes = (AppRoutes = [], roleType = "") => {
+    const clientEnabledPerms = validateClientPermissions();
     const filteredNavigationRoutes =
-      filterValidRoutesForNavigationBar(RentWorksAppRoutes);
+      filterValidRoutesForNavigationBar(AppRoutes);
 
     return filteredNavigationRoutes
       .map(({ id, path, label, icon, requiredFlags, config }) => {
-        const isRouteValid = isValidPermissions(validRouteFlags, requiredFlags);
+        const isRouteValid = isValidPermissions(
+          clientEnabledPerms,
+          requiredFlags,
+        );
         if (!isRouteValid) return null;
 
         // Check role access here
@@ -134,7 +137,7 @@ export default function NavBar({
           component="nav"
           aria-labelledby="nested-list-subheader"
         >
-          {formattedInvoicerRoutes(RentWorksAppRoutes, user?.role)}
+          {formattedInvoicerRoutes(AppRoutes, user?.role)}
         </List>
       </Drawer>
     </Stack>

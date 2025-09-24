@@ -8,6 +8,9 @@ import { addDoc, collection } from "firebase/firestore";
 import { useFetchUserIp } from "hooks/useFetchIp";
 import { analyticsFirestore } from "src/config";
 
+const NavigationContext = createContext();
+const analyticsEnabled = import.meta.env.VITE_ENABLE_ANALYTICS || "false";
+
 /**
  * NavigationProvider ...
  *
@@ -15,10 +18,6 @@ import { analyticsFirestore } from "src/config";
  * wraps the application around router history, which in turn updates the firestore
  * db based on the change in the routes of the application layer.
  */
-
-const NavigationContext = createContext();
-const analyticsEnabled = import.meta.env.VITE_ENABLE_ANALYTICS || "false";
-
 export const NavigationProvider = ({ children }) => {
   useFetchUserIp();
   const { pathname } = useLocation();

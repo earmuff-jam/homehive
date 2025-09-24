@@ -2,11 +2,8 @@ import { useNavigate } from "react-router-dom";
 
 import { Box, Container, Grid, Stack, Typography } from "@mui/material";
 import AButton from "common/AButton";
-import {
-  PropertiesRouteUri,
-  RentalRouteUri,
-  isUserLoggedIn,
-} from "common/utils";
+import { PropertiesRouteUri, RentalRouteUri } from "common/utils";
+import { isUserLoggedIn } from "common/validatePerms";
 import { useCreateUserMutation } from "features/Api/firebaseUserApi";
 import { authenticateViaGoogle } from "features/Auth/AuthHelper";
 import {

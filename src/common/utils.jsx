@@ -59,20 +59,3 @@ export function createHelperSentences(verbStr, extraClauseStr) {
     </Typography>
   );
 }
-
-/**
- * isUserLoggedIn ...
- *
- * determines if the current user is logged in and / or if the user is of a
- * valid type. checks against the local storage only, does not attempt to
- * communicate with the backend jobs for this.
- *
- * @returns user || false
- */
-export const isUserLoggedIn = () => {
-  const currentUser = JSON.parse(localStorage.getItem("user"));
-  if (currentUser?.uid) {
-    return true;
-  }
-  return false;
-};
