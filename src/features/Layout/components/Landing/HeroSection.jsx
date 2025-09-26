@@ -51,7 +51,7 @@ export default function HeroSection() {
       const userDetails = await authenticateViaGoogle();
       const createdUser = await handleCreateUser(userDetails, OwnerRole);
 
-      if (Boolean(createdUser)) {
+      if (createdUser) {
         createdUser?.role === OwnerRole
           ? window.location.replace(`${PropertiesRouteUri}`)
           : window.location.replace(`${RentalRouteUri}`);

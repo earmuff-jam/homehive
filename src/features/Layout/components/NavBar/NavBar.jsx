@@ -112,7 +112,7 @@ export default function NavBar({
             flexDirection: "row",
             justifyContent: "space-between",
             alignItems: "center",
-            padding: "1rem",
+            padding: "0.4rem",
           }}
         >
           <Stack direction="row" spacing={2} alignItems="center">
