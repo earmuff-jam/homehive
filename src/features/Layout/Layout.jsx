@@ -48,6 +48,7 @@ export default function Layout({
 }) {
   const theme = useTheme();
   const location = useLocation();
+
   const currentUri = location?.pathname || "";
   const currentRoute = routes.find((route) =>
     matchPath(route.path, currentUri),
