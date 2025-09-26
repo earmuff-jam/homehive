@@ -38,7 +38,7 @@ import {
 } from "features/RentWorks/common/utils";
 import QuickConnectMenu from "features/RentWorks/components/QuickConnect/QuickConnectMenu";
 import { handleQuickConnectAction } from "features/RentWorks/components/Settings/TemplateProcessor";
-import { DefaultTemplateData } from "features/RentWorks/components/Settings/common";
+import { DefaultTemplateData } from "features/RentWorks/components/Templates/constants";
 import useSendEmail from "hooks/useSendEmail";
 
 const ViewPropertyAccordionDetails = ({
@@ -82,11 +82,7 @@ const ViewPropertyAccordionDetails = ({
     redirectTo,
     sendEmail,
   ) => {
-    const totalRent = derieveTotalRent(
-      property,
-      tenants,
-      isAnyPropertySoR,
-    );
+    const totalRent = derieveTotalRent(property, tenants, isAnyPropertySoR);
 
     let savedTemplates = {};
     savedTemplates = JSON.parse(localStorage.getItem("templates") || "{}");
@@ -152,11 +148,7 @@ const ViewPropertyAccordionDetails = ({
           </Avatar>
           <Stack flexGrow={1}>
             <Stack direction="row" spacing={1} alignItems="center">
-              <Typography
-                variant="subtitle1"
-                fontWeight={600}
-                sx={{ textTransform: "initial" }}
-              >
+              <Typography variant="subtitle1" fontWeight={600}>
                 {primaryTenantDetails?.first_name ||
                   primaryTenantDetails?.googleDisplayName ||
                   primaryTenantDetails?.email}
@@ -237,7 +229,6 @@ const ViewPropertyAccordionDetails = ({
                   alignContent: "center",
                   textOverflow: "ellipsis",
                   maxWidth: 150,
-                  textTransform: "initial",
                 }}
               >
                 {primaryTenantDetails?.phone}
@@ -255,7 +246,6 @@ const ViewPropertyAccordionDetails = ({
                   alignContent: "center",
                   textOverflow: "ellipsis",
                   maxWidth: 150,
-                  textTransform: "initial",
                 }}
               >
                 {primaryTenantDetails?.email}

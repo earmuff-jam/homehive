@@ -177,7 +177,6 @@ export default function PropertyOwnerInfoCard({
                         alignContent: "center",
                         textOverflow: "ellipsis",
                         maxWidth: 150,
-                        textTransform: "initial",
                       }}
                     >
                       {owner?.googleDisplayName ||
@@ -192,7 +191,6 @@ export default function PropertyOwnerInfoCard({
                         alignContent: "center",
                         textOverflow: "ellipsis",
                         maxWidth: 200,
-                        textTransform: "initial",
                       }}
                     >
                       {owner?.googleEmailAddress}
@@ -241,7 +239,7 @@ export default function PropertyOwnerInfoCard({
                     <Typography
                       color="textSecondary"
                       fontStyle="italic"
-                      sx={{ fontSize: "0.675rem", textTransform: "initial" }}
+                      sx={{ fontSize: "0.675rem" }}
                     >
                       Rent can be paid only if the owner has stripe setup and if
                       current month is due.

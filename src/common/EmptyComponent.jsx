@@ -24,11 +24,9 @@ export default function EmptyComponent({
       padding="2rem 0rem"
       {...sxProps}
     >
-      <Typography {...sxProps} sx={{ textTransform: "initial" }}>
-        {title}
-      </Typography>
+      <Typography {...sxProps}>{title}</Typography>
       <Stack>
-        <Typography variant="caption" sx={{ textTransform: "initial" }}>
+        <Typography variant="caption">
           {caption} {children}
         </Typography>
       </Stack>

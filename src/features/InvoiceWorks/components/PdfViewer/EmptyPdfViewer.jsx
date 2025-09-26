@@ -6,7 +6,6 @@ export default function EmptyPdfViewer({ handleNavigate }) {
     <EmptyComponent
       title="Sorry, no invoice found to display"
       caption="Create new invoice from"
-      sxProps={{ textTransform: "initial" }}
     >
       <Typography
         component={"span"}

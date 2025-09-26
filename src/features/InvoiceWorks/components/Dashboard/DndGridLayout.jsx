@@ -49,10 +49,8 @@ export default function DndGridLayout({
   if (widgets.length <= 0)
     return (
       <Stack textAlign="center">
-        <Typography variant="h5" sx={{ textTransform: "initial" }}>
-          Sorry, no matching records found
-        </Typography>
-        <Typography variant="caption" sx={{ textTransform: "initial" }}>
+        <Typography variant="h5">Sorry, no matching records found</Typography>
+        <Typography variant="caption">
           Add widgets for custom dashboard layout.
         </Typography>
       </Stack>

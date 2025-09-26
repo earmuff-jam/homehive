@@ -37,9 +37,7 @@ export default function HeroSection() {
   if (isAuthError)
     return (
       <Alert severity="error">
-        <Typography sx={{ textTransform: "initial" }}>
-          Error during log in. Please try again later.
-        </Typography>
+        <Typography>Error during log in. Please try again later.</Typography>
       </Alert>
     );
 
@@ -71,7 +69,7 @@ export default function HeroSection() {
           >
             Effortless rent management
           </Typography>
-          <Typography variant="h5" sx={{ textTransform: "initial" }}>
+          <Typography variant="h5">
             Take control of your rentals in seconds — no clutter, no confusion.
           </Typography>
 
@@ -93,7 +91,7 @@ export default function HeroSection() {
               />
             </Stack>
             {!isLoggedIn && (
-              <Stack direction="row" sx={{ textTransform: "initial" }}>
+              <Stack direction="row">
                 <Typography variant="h6">
                   Renting with us?
                   <Box
@@ -103,7 +101,6 @@ export default function HeroSection() {
                     sx={{
                       cursor: "pointer",
                       margin: "0rem 0.5rem",
-                      textTransform: "initial",
                     }}
                   >
                     Access your account

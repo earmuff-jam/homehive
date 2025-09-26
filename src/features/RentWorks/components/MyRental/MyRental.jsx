@@ -104,7 +104,7 @@ const MyRental = () => {
             </Button>
           }
         >
-          <Typography sx={{ textTransform: "initial" }}>
+          <Typography>
             To maintain data integrity and get latest payment details, please
             refresh your browser
           </Typography>

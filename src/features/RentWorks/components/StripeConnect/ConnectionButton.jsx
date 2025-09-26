@@ -39,12 +39,7 @@ export default function ConnectionButton({
   ) {
     return (
       <Stack spacing={1}>
-        <Typography
-          variant="body2"
-          color="text.secondary"
-          gutterBottom
-          sx={{ textTransform: "initial" }}
-        >
+        <Typography variant="body2" color="text.secondary" gutterBottom>
           Your Stripe account is connected. Verify your stripe account details.
         </Typography>
         <Stack direction="row" spacing={2}>

@@ -153,9 +153,7 @@ export default function Layout({
       >
         <DialogTitle>{dialog.label}</DialogTitle>
         <DialogContent>
-          <Typography sx={{ textTransform: "initial" }}>
-            {dialog.title}
-          </Typography>
+          <Typography>{dialog.title}</Typography>
           {dialog.type === "PRINT" && (
             <Stack direction="row" spacing={1} alignItems="center">
               <FormControlLabel

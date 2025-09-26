@@ -6,61 +6,50 @@ const commonTypography = {
     fontWeight: 700,
     fontSize: "2.5rem",
     lineHeight: 1.2,
-    textTransform: "capitalize",
   },
   h2: {
     fontWeight: 600,
     fontSize: "2rem",
     lineHeight: 1.3,
-    textTransform: "capitalize",
   },
   h3: {
     fontWeight: 600,
     fontSize: "1.75rem",
     lineHeight: 1.4,
-    textTransform: "capitalize",
   },
   h4: {
     fontWeight: 600,
     fontSize: "1.5rem",
     lineHeight: 1.5,
-    textTransform: "capitalize",
   },
   h5: {
     fontWeight: 600,
     fontSize: "1.25rem",
     lineHeight: 1.6,
-    textTransform: "capitalize",
   },
   h6: {
     fontWeight: 600,
     fontSize: "1rem",
     lineHeight: 2.0,
-    textTransform: "capitalize",
   },
   body1: {
     fontSize: "1rem",
     lineHeight: 1.6,
-    textTransform: "capitalize",
   },
   body2: {
     fontSize: "0.875rem",
     lineHeight: 1.6,
-    textTransform: "capitalize",
   },
   button: {
     fontWeight: 500,
-    textTransform: "capitalize",
   },
   subtitle1: {
     fontSize: "1rem",
     fontWeight: 500,
-    textTransform: "capitalize",
   },
   subtitle2: {
     fontSize: "0.875rem",
     fontWeight: 500,
-    textTransform: "capitalize",
   },
 };
 

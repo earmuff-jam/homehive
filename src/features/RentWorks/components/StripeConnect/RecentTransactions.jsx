@@ -21,7 +21,7 @@ export default function RecentTransactions({ transactions = [], loading }) {
       ) : transactions.length === 0 ? (
         <EmptyComponent
           caption="Perform transactions to begin."
-          sxProps={{ variant: "subtitle2", textTransform: "initial" }}
+          sxProps={{ variant: "subtitle2" }}
         />
       ) : (
         <List>

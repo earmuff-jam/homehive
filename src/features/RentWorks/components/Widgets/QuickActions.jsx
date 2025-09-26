@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 
 import dayjs from "dayjs";
 
@@ -34,6 +35,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 export default function QuickActions({ property }) {
+  const navigate = useNavigate();
   const user = fetchLoggedInUser();
   const [updateProperty] = useUpdatePropertyByIdMutation();
 
@@ -112,8 +114,12 @@ export default function QuickActions({ property }) {
             Edit Property
           </Button>
 
-          <Button variant="outlined" fullWidth>
-            View Payment History
+          <Button
+            variant="outlined"
+            fullWidth
+            onClick={() => navigate("/settings?tabIdx=2")}
+          >
+            View Stripe Payment History
           </Button>
           <Button variant="outlined" fullWidth disabled>
             Add Maintenance Request
