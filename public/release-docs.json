@@ -1,5 +1,61 @@
 [
   {
+    "version": "1.2.0.rc-0",
+    "date": "2025-09-27",
+    "notes": [
+      {
+        "type": "feature",
+        "value": "31 - Added support for PWA app by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/66",
+        "caption": "31 - Added support for PWA app by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/66"
+      },
+      {
+        "type": "bugfix",
+        "value": "31 - Updated vite.config.js file by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/68",
+        "caption": "31 - Updated vite.config.js file by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/68"
+      },
+      {
+        "type": "bugfix",
+        "value": "62 - Created login portal by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/69 [improvement] - 71 - Added quick connect button by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/72",
+        "caption": "62 - Created login portal by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/69 [improvement] - 71 - Added quick connect button by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/72"
+      },
+      {
+        "type": "bugfix",
+        "value": "73 - Updated user settings by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/74 [improvement] - 73 - Updated Properties and tenants relationship by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/75",
+        "caption": "73 - Updated user settings by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/74 [improvement] - 73 - Updated Properties and tenants relationship by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/75"
+      },
+      {
+        "type": "feature",
+        "value": "63 - Added stripe payments by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/76",
+        "caption": "63 - Added stripe payments by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/76"
+      },
+      {
+        "type": "feature",
+        "value": "63 - Added stripe payment services by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/80 [improvement] - 63 - Updated Stripe and Template Processor by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/84",
+        "caption": "63 - Added stripe payment services by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/80 [improvement] - 63 - Updated Stripe and Template Processor by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/84"
+      },
+      {
+        "type": "feature",
+        "value": "64 - Added the ability to send auto reminders by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/90",
+        "caption": "64 - Added the ability to send auto reminders by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/90"
+      },
+      {
+        "type": "feature",
+        "value": "64 - Added the ability to view rental payments from the client by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/91 [improvement] - 65 - Updated viewing rental summary by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/92",
+        "caption": "64 - Added the ability to view rental payments from the client by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/91 [improvement] - 65 - Updated viewing rental summary by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/92"
+      },
+      {
+        "type": "bugfix",
+        "value": "66 - Updated ability to populate release notes by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/93",
+        "caption": "66 - Updated ability to populate release notes by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/93"
+      },
+      {
+        "type": "feature",
+        "value": "94 - Added webhook support by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/96 [improvement] - 97 - Updated application to support rebranding by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/98 [improvement] - 97- Updated eslint, jest tests and tour steps by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/100",
+        "caption": "94 - Added webhook support by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/96 [improvement] - 97 - Updated application to support rebranding by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/98 [improvement] - 97- Updated eslint, jest tests and tour steps by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/100"
+      }
+    ]
+  },
+  {
     "version": "1.0.0",
     "date": "2024-04-18",
     "notes": [

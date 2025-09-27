@@ -10,7 +10,7 @@ const mailerSend = new MailerSend({
   apiKey: process.env.VITE_MAILERSEND_API_KEY,
 });
 
-const sentFrom = new Sender(process.env.VITE_MAILERSEND_VERIFIED_EMAIL_KEY);
+const sentFrom = new Sender(process.env.VITE_MAILERSEND_FROM_EMAIL);
 
 export const handler = async (event) => {
   if (event.httpMethod !== "POST") {
