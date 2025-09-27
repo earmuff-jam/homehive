@@ -70,5 +70,5 @@ jobs:
             **Date**: ${{ github.event.inputs.date }}
             **Notes**:
             ${{ github.event.inputs.body }}
-          head: ${{ env.BRANCH_NAME }}
+          branch: ${{ env.BRANCH_NAME }}
           base: main
