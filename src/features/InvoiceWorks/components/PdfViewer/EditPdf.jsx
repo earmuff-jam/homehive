@@ -7,13 +7,8 @@ import dayjs from "dayjs";
 
 import {
   AddRounded,
-  CancelRounded,
   CheckRounded,
-  DeblurRounded,
-  DraftsRounded,
   InfoRounded,
-  LocalAtmRounded,
-  PaidRounded,
   SaveRounded,
 } from "@mui/icons-material";
 import {
@@ -37,48 +32,11 @@ import EditPdfLineItemAccordion from "features/InvoiceWorks/components/PdfViewer
 import {
   BLANK_INVOICE_DETAILS_FORM,
   BLANK_INVOICE_LINE_ITEM_FORM,
+  DefaultInvoiceStatusOptions,
   InvoiceCategoryOptions,
 } from "features/InvoiceWorks/components/PdfViewer/constants";
 import { useAppTitle } from "hooks/useAppTitle";
 import { produce } from "immer";
-
-const defaultOptions = [
-  {
-    id: 1,
-    label: "Paid",
-    icon: <PaidRounded />,
-    selected: true,
-    display: true,
-  },
-  {
-    id: 2,
-    label: "Draft",
-    icon: <DraftsRounded />,
-    selected: false,
-    display: true,
-  },
-  {
-    id: 3,
-    label: "Overdue",
-    icon: <LocalAtmRounded />,
-    selected: false,
-    display: true,
-  },
-  {
-    id: 4,
-    label: "Cancelled",
-    icon: <CancelRounded />,
-    selected: false,
-    display: true,
-  },
-  {
-    id: 5,
-    label: "None",
-    icon: <DeblurRounded />,
-    selected: false,
-    display: false, // does not display status if none is selected
-  },
-];
 
 export default function EditPdf({
   title = "Edit Pdf",
@@ -100,7 +58,7 @@ export default function EditPdf({
   const [lineItems, setLineItems] = useState([]);
   const [showSnackbar, setShowSnackbar] = useState(false);
 
-  const [options, setOptions] = useState(defaultOptions);
+  const [options, setOptions] = useState(DefaultInvoiceStatusOptions);
   const [formData, setFormData] = useState(BLANK_INVOICE_DETAILS_FORM);
 
   const handleSelection = (label) => {
@@ -331,7 +289,6 @@ export default function EditPdf({
         {/* First and Last Name */}
         <Stack direction="row" spacing={2}>
           <Controller
-            dataTour="edit-pdf-1"
             name="title"
             control={control}
             rules={{
@@ -348,6 +305,7 @@ export default function EditPdf({
               <TextFieldWithLabel
                 {...field}
                 fullWidth
+                dataTour="edit-pdf-1"
                 label="Invoice Title *"
                 error={!!errors.title}
                 errorMsg={errors.title?.message}
@@ -357,7 +315,6 @@ export default function EditPdf({
           />
 
           <Controller
-            dataTour="edit-pdf-2"
             name="caption"
             control={control}
             rules={{
@@ -370,6 +327,7 @@ export default function EditPdf({
               <TextFieldWithLabel
                 {...field}
                 fullWidth
+                dataTour="edit-pdf-2"
                 label="Invoice Caption"
                 error={!!errors.caption}
                 errorMsg={errors.caption?.message}
@@ -380,7 +338,6 @@ export default function EditPdf({
         </Stack>
 
         <Controller
-          dataTour="edit-pdf-3"
           name="note"
           control={control}
           rules={{
@@ -395,6 +352,7 @@ export default function EditPdf({
               fullWidth
               multiline
               maxRows={3}
+              dataTour="edit-pdf-3"
               label="Additional Notes"
               error={!!errors.note}
               errorMsg={errors.note?.message}
@@ -445,7 +403,6 @@ export default function EditPdf({
 
         {/* Invoice Header */}
         <Controller
-          dataTour="edit-pdf-5"
           name="invoice_header"
           control={control}
           rules={{
@@ -462,6 +419,7 @@ export default function EditPdf({
             <TextFieldWithLabel
               {...field}
               fullWidth
+              dataTour="edit-pdf-5"
               label="Invoice Caption *"
               error={!!errors.title}
               errorMsg={errors.title?.message}
@@ -472,7 +430,6 @@ export default function EditPdf({
 
         {/* Tax Rate */}
         <Controller
-          dataTour="edit-pdf-6"
           name="tax_rate"
           control={control}
           render={({ field }) => (
@@ -480,6 +437,7 @@ export default function EditPdf({
               {...field}
               fullWidth
               label="Tax Rate"
+              dataTour="edit-pdf-6"
               error={!!errors.tax_rate}
               errorMsg={errors.tax_rate?.message}
               placeholder="The rate of tax in upto 2 decimal places. Eg., 8.25 "

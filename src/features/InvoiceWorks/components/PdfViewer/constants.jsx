@@ -1,4 +1,58 @@
+import React from "react";
+
 import dayjs from "dayjs";
+
+import {
+  CancelRounded,
+  DeblurRounded,
+  DraftsRounded,
+  LocalAtmRounded,
+  PaidRounded,
+} from "@mui/icons-material";
+
+/**
+ * DefaultInvoiceStatusOptions ...
+ *
+ * default invoice status options used to mark
+ * the status of the invoice
+ */
+export const DefaultInvoiceStatusOptions = [
+  {
+    id: 1,
+    label: "Paid",
+    icon: <PaidRounded />,
+    selected: true,
+    display: true,
+  },
+  {
+    id: 2,
+    label: "Draft",
+    icon: <DraftsRounded />,
+    selected: false,
+    display: true,
+  },
+  {
+    id: 3,
+    label: "Overdue",
+    icon: <LocalAtmRounded />,
+    selected: false,
+    display: true,
+  },
+  {
+    id: 4,
+    label: "Cancelled",
+    icon: <CancelRounded />,
+    selected: false,
+    display: true,
+  },
+  {
+    id: 5,
+    label: "None",
+    icon: <DeblurRounded />,
+    selected: false,
+    display: false, // does not display status if none is selected
+  },
+];
 
 /**
  * Invoice Category Options

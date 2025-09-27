@@ -25,45 +25,49 @@ export default function PdfViewer() {
 
   const handleNavigate = () => navigate(EditInvoiceRouteUri);
 
-  if (!invoice_form) {
-    return <EmptyPdfViewer handleNavigate={handleNavigate} />;
-  }
-
   return (
     <Container maxWidth="md" data-tour="view-pdf-0">
-      <Stack spacing={"2rem"}>
-        {recieverInfo ? <Salutation userInfo={recieverInfo} /> : null}
-        <RowHeader
-          title={invoice_form.title}
-          caption={invoice_form.caption}
-          showDate={true}
-          createdDate={dayjs(invoice_form?.updatedOn?.fromNow).format(
-            "DD-MM-YYYY",
-          )}
-        />
-        <Typography
-          variant="subtitle2"
-          color="text.secondary"
-          sx={{ fontStyle: "italic" }}
-        >
-          Period {invoice_form.start_date} to {invoice_form.end_date}
-        </Typography>
-        <ReportTable
-          rows={invoice_form.items || []}
-          taxRate={invoice_form.tax_rate}
-          invoiceTitle={invoice_form.invoice_header}
-          invoiceStatus={invoiceStatus}
-          showWatermark={showWatermark}
-        />
-
-        {invoice_form?.note.length > 0 && (
-          <Typography variant="caption" fontStyle="italic" fontWeight="medium">
-            Note: {invoice_form?.note}
+      {!invoice_form ? (
+        <EmptyPdfViewer handleNavigate={handleNavigate} />
+      ) : (
+        <Stack spacing={"2rem"}>
+          {recieverInfo ? <Salutation userInfo={recieverInfo} /> : null}
+          <RowHeader
+            title={invoice_form.title}
+            caption={invoice_form.caption}
+            showDate={true}
+            createdDate={dayjs(invoice_form?.updatedOn?.fromNow).format(
+              "DD-MM-YYYY",
+            )}
+          />
+          <Typography
+            variant="subtitle2"
+            color="text.secondary"
+            sx={{ fontStyle: "italic" }}
+          >
+            Period {invoice_form.start_date} to {invoice_form.end_date}
           </Typography>
-        )}
-      </Stack>
-
-      {senderInfo ? <Salutation isEnd={true} userInfo={senderInfo} /> : null}
+          <ReportTable
+            rows={invoice_form.items || []}
+            taxRate={invoice_form.tax_rate}
+            invoiceTitle={invoice_form.invoice_header}
+            invoiceStatus={invoiceStatus}
+            showWatermark={showWatermark}
+          />
+          {invoice_form?.note.length > 0 && (
+            <Typography
+              variant="caption"
+              fontStyle="italic"
+              fontWeight="medium"
+            >
+              Note: {invoice_form?.note}
+            </Typography>
+          )}
+          {senderInfo ? (
+            <Salutation isEnd={true} userInfo={senderInfo} />
+          ) : null}
+        </Stack>
+      )}
     </Container>
   );
 }

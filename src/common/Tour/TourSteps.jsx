@@ -6,6 +6,7 @@ import {
   FaqRouteUri,
   InvoiceDashboardRouteUri,
   NotesRouteUri,
+  PropertiesRouteUri,
   PropertyRouteUri,
   RecieverInforamtionRouteUri,
   RentalRouteUri,
@@ -487,6 +488,33 @@ export const DefaultTourStepsMapperObj = {
       SettingsHelpSteps.length +
       RentalHelpSteps.length +
       MyPropertyHelpSteps.length,
+  },
+  [PropertiesRouteUri]: {
+    element: (
+      <>
+        {createHelperSentences("view", "your property details")}
+        {DisplaySubHelperSection()}
+      </>
+    ),
+    start:
+      ViewPdfHelpSteps.length +
+      EditPdfHelpSteps.length +
+      SenderInfoHelpSteps.length +
+      RecieverInfoHelpSteps.length +
+      DashboardHelpSteps.length +
+      SettingsHelpSteps.length +
+      RentalHelpSteps.length +
+      MyPropertyHelpSteps.length,
+    end:
+      ViewPdfHelpSteps.length +
+      EditPdfHelpSteps.length +
+      SenderInfoHelpSteps.length +
+      RecieverInfoHelpSteps.length +
+      DashboardHelpSteps.length +
+      SettingsHelpSteps.length +
+      RentalHelpSteps.length +
+      MyPropertyHelpSteps.length +
+      MyPropertiesListHelpSteps.length,
   },
 };
 
