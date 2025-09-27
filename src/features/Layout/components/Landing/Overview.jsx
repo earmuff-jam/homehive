@@ -1,3 +1,5 @@
+import React from "react";
+
 import { Box } from "@mui/material";
 import FeatureSection from "features/Layout/components/Landing/FeatureSection";
 import HeroSection from "features/Layout/components/Landing/HeroSection";

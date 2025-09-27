@@ -1,3 +1,5 @@
+import React from "react";
+
 import { Box, Fade, useScrollTrigger } from "@mui/material";
 
 export default function ScrollTop(props) {

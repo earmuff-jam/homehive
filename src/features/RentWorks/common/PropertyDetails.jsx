@@ -1,3 +1,5 @@
+import React from "react";
+
 import dayjs from "dayjs";
 
 import { Business } from "@mui/icons-material";
@@ -70,7 +72,7 @@ export default function PropertyDetails({
                 </Tooltip>
               </Stack>
               <Stack textAlign="center" flexGrow={1}>
-                <Tooltip title={dayjs(property?.updatedOn)}>
+                <Tooltip title={dayjs(property?.updatedOn).toISOString()}>
                   <Stack>
                     <Typography variant="subtitle2">
                       {dayjs(property?.updatedOn).fromNow()}

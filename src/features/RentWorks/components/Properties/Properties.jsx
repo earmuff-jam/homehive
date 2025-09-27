@@ -16,7 +16,6 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
-  Button,
   ButtonBase,
   Dialog,
   DialogActions,
@@ -24,7 +23,6 @@ import {
   DialogTitle,
   IconButton,
   Skeleton,
-  Slide,
   Stack,
   Typography,
 } from "@mui/material";
@@ -44,10 +42,6 @@ import { fetchLoggedInUser } from "features/RentWorks/common/utils";
 import AddProperty from "features/RentWorks/components/AddProperty/AddProperty";
 import ViewPropertyAccordionDetails from "features/RentWorks/components/Properties/ViewPropertyAccordionDetails";
 import { useAppTitle } from "hooks/useAppTitle";
-
-const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
 
 const defaultDialog = {
   title: "",
@@ -77,8 +71,15 @@ export default function Properties() {
     { data: rentDetails = [], isLoading: isRentDetailsLoading },
   ] = useLazyGetRentsByPropertyIdWithFiltersQuery();
 
-  const [createProperty] = useCreatePropertyMutation();
-  const [updateProperty] = useUpdatePropertyByIdMutation();
+  const [
+    createProperty,
+    { isSuccess: isCreatePropertySuccess, isLoading: isCreatePropertyLoading },
+  ] = useCreatePropertyMutation();
+
+  const [
+    updateProperty,
+    { isSuccess: isUpdatePropertySuccess, isLoading: isUpdatePropertyLoading },
+  ] = useUpdatePropertyByIdMutation();
 
   const {
     register,
@@ -98,15 +99,14 @@ export default function Properties() {
   };
   const handleExpand = (id) => setExpanded((prev) => (prev === id ? null : id));
 
-  const handleDelete = async (propertyId) => {
+  const handleUpdate = (propertyId) => {
     if (!propertyId) return;
-    await updateProperty({
+    updateProperty({
       id: propertyId,
       isDeleted: true,
       updatedBy: user?.uid,
       updatedOn: dayjs().toISOString(),
-    }).unwrap();
-    setShowSnackbar(true);
+    });
   };
 
   const toggleAddPropertyPopup = () => {
@@ -117,7 +117,7 @@ export default function Properties() {
     });
   };
 
-  const onSubmit = async (data) => {
+  const onSubmit = (data) => {
     const result = {
       ...data,
       id: uuidv4(),
@@ -128,10 +128,15 @@ export default function Properties() {
       updatedOn: dayjs().toISOString(),
     };
 
-    await createProperty(result);
-    setShowSnackbar(true);
+    createProperty(result);
     closeDialog();
   };
+
+  useEffect(() => {
+    if (isCreatePropertySuccess || isUpdatePropertySuccess) {
+      setShowSnackbar(true);
+    }
+  }, [isCreatePropertyLoading, isUpdatePropertyLoading]);
 
   useEffect(() => {
     // update form fields if present
@@ -143,20 +148,21 @@ export default function Properties() {
   if (isLoading) return <Skeleton height="10rem" />;
 
   return (
-    <Stack>
+    <Stack data-tour="properties-0">
       <Stack direction="row" justifyContent="space-between">
         <RowHeader
           title="Properties"
           sxProps={{ fontWeight: "bold", color: "text.secondary" }}
         />
-        <Button
+        <AButton
+          data-tour="properties-1"
+          label="Add Property"
           size="small"
           variant="outlined"
+          loading={isCreatePropertyLoading || isUpdatePropertyLoading}
           endIcon={<AddRounded fontSize="small" />}
           onClick={toggleAddPropertyPopup}
-        >
-          Add Property
-        </Button>
+        />
       </Stack>
 
       <Stack padding={1} spacing={1}>
@@ -168,34 +174,36 @@ export default function Properties() {
               key={property.id}
               expanded={expanded === property.id}
               elevation={0}
+              sx={{
+                cursor: "default",
+              }}
             >
               <AccordionSummary
-                expandIcon={<ExpandMoreRounded />}
-                onClick={() => {
-                  if (property?.id) {
-                    handleExpand(property.id);
-                    triggerGetRents({
-                      propertyId: property?.id,
-                      tenantEmails: property?.rentees,
-                      rentMonth: dayjs().format("MMMM"),
-                    });
-                  }
-                }}
+                data-tour="properties-4"
+                expandIcon={
+                  <IconButton
+                    data-tour="properties-3"
+                    onClick={() => {
+                      if (property?.id) {
+                        handleExpand(property.id);
+                        triggerGetRents({
+                          propertyId: property?.id,
+                          tenantEmails: property?.rentees,
+                          rentMonth: dayjs().format("MMMM"),
+                        });
+                      }
+                    }}
+                  >
+                    <ExpandMoreRounded />
+                  </IconButton>
+                }
               >
                 <Stack flexGrow={1} spacing={0.5}>
                   <Stack direction="row" spacing={1} alignItems="flex-start">
                     <Stack spacing={0.25}>
                       <Stack direction="row" alignItems="center">
-                        <IconButton
-                          size="small"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleDelete(property.id);
-                          }}
-                        >
-                          <DeleteRounded fontSize="small" color="error" />
-                        </IconButton>
-                        <ButtonBase
+                        <Stack
+                          data-tour="properties-5"
                           onClick={(ev) => {
                             ev.stopPropagation();
                             navigate(`/property/${property?.id}`);
@@ -203,46 +211,51 @@ export default function Properties() {
                           sx={{
                             justifyContent: "left",
                             textAlign: "left",
-                            padding: "0.5rem",
                             borderRadius: 1,
                             width: "100%",
-                            "&:hover": {
-                              backgroundColor: "action.hover",
-                            },
                           }}
                         >
-                          <Typography variant="subtitle2" color="primary">
+                          <Typography variant="h6" color="text.secondary">
                             {property.name || "Unknown Property Name"}
                           </Typography>
-                        </ButtonBase>
+                        </Stack>
                       </Stack>
                       <ButtonBase
                         onClick={(ev) => {
                           ev.stopPropagation();
                           navigate(`/property/${property?.id}`);
                         }}
-                        sx={{
-                          justifyContent: "left",
-                          textAlign: "left",
-                          padding: "0.5rem",
-                          borderRadius: 1,
-                          width: "100%",
-                          "&:hover": {
-                            backgroundColor: "action.hover",
-                          },
-                        }}
                       >
-                        <Stack>
-                          <Typography variant="subtitle2">
+                        <Stack
+                          sx={{
+                            justifyContent: "left",
+                            textAlign: "left",
+                            borderRadius: 1,
+                            width: "100%",
+                          }}
+                        >
+                          <Typography variant="caption">
                             {property.address}
                           </Typography>
-                          <Typography variant="subtitle2">
+                          <Typography variant="caption">
                             {property.city} {property.state}, {property.zipcode}
                           </Typography>
                         </Stack>
                       </ButtonBase>
                     </Stack>
                   </Stack>
+                </Stack>
+                <Stack justifyContent="center">
+                  <IconButton
+                    data-tour="properties-2"
+                    size="small"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleUpdate(property.id);
+                    }}
+                  >
+                    <DeleteRounded fontSize="small" color="error" />
+                  </IconButton>
                 </Stack>
               </AccordionSummary>
               <AccordionDetails>
@@ -260,7 +273,6 @@ export default function Properties() {
 
       <Dialog
         open={dialog.display}
-        TransitionComponent={Transition}
         keepMounted
         fullWidth
         aria-describedby="alert-dialog-slide-description"

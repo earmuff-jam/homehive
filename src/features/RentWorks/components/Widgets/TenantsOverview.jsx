@@ -1,3 +1,5 @@
+import React from "react";
+
 import {
   Box,
   Card,
@@ -37,16 +39,16 @@ export default function TenantsOverview({
           />
 
           <Stack direction="row" spacing={1} alignItems="center">
-            <Box>
-              <Tooltip title="Associate tenants">
+            <Tooltip title="Associate tenants">
+              <Box>
                 <AButton
                   size="small"
                   variant="outlined"
                   onClick={() => toggleAssociateTenantsPopup()}
                   label="Associate tenants"
                 />
-              </Tooltip>
-            </Box>
+              </Box>
+            </Tooltip>
             <TenantBadge tenantsLength={tenants.length} />
           </Stack>
         </Stack>

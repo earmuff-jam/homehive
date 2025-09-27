@@ -1,3 +1,5 @@
+import React from "react";
+
 import { useNavigate } from "react-router-dom";
 
 import {
@@ -16,7 +18,7 @@ import {
 import CustomSnackbar from "common/CustomSnackbar/CustomSnackbar";
 import { DefaultTourStepsMapperObj } from "common/Tour/TourSteps";
 import { isUserLoggedIn } from "common/utils";
-import { useGenerateUserData } from "features/InvoiceWorks/hooks/useGenerateUserData";
+import { useLocalStorageData } from "features/InvoiceWorks/hooks/useGenerateUserData";
 import MenuOptions from "features/Layout/components/NavBar/MenuOptions";
 import { retrieveTourKey } from "features/Layout/utils";
 import { isFeatureEnabled, logoutUser } from "features/RentWorks/common/utils";
@@ -41,7 +43,7 @@ export default function AppToolbar({
     draftInvoiceStatusLabel,
     draftRecieverUserEmailAddress,
     isDisabled,
-  } = useGenerateUserData();
+  } = useLocalStorageData();
 
   // hide for landing page
   const showHelp = currentRoute.config.displayHelpSelector;

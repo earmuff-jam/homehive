@@ -1,4 +1,4 @@
-import { lazy } from "react";
+import React, { lazy } from "react";
 
 import {
   ContactSupportRounded,
@@ -127,7 +127,7 @@ export const RentWorksAppRoutes = [
       isLoggedInFeature: true, // only display if logged in
       enabledForRoles: [OwnerRole],
       displayInNavBar: true,
-      displayHelpSelector: false,
+      displayHelpSelector: true,
       displayPrintSelector: false,
     },
   },

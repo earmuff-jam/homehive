@@ -1,3 +1,5 @@
+import React from "react";
+
 import { Box, Container, Grid, Typography } from "@mui/material";
 import { LANDING_PAGE_DETAILS } from "features/Layout/components/Landing/constants";
 

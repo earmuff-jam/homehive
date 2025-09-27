@@ -1,9 +1,9 @@
 /**
- * useGenerateUserData
+ * useLocalStorageData
  *
- * function used to generate user data from the local storage
+ * function used to retrieve selected data fields from local storage if they exist.
  */
-export const useGenerateUserData = () => {
+export const useLocalStorageData = () => {
   const data = JSON.parse(localStorage.getItem("pdfDetails"));
 
   const draftInvoiceStatus = JSON.parse(localStorage.getItem("invoiceStatus"));
