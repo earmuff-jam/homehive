@@ -64,7 +64,12 @@ export default function ReleaseNotes() {
 
             {Object.entries(grouped).map(([type, items]) => (
               <Box key={type} mt={2}>
-                <Typography variant="body2" fontWeight={600} gutterBottom>
+                <Typography
+                  variant="body2"
+                  fontWeight={600}
+                  gutterBottom
+                  textTransform="capitalize"
+                >
                   {typeLabels[type] || type}
                 </Typography>
 
