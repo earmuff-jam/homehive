@@ -1,3 +1,5 @@
+import React from "react";
+
 import { Card, CardContent, Grid, Skeleton, Typography } from "@mui/material";
 import {
   derieveTotalRent,

@@ -1,3 +1,5 @@
+import React from "react";
+
 import { Card, CardContent, Skeleton, Stack } from "@mui/material";
 import RowHeader from "common/RowHeader/RowHeader";
 import ViewRentalPaymentSummary from "features/RentWorks/components/Widgets/ViewRentalPaymentSummary";

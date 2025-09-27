@@ -3,6 +3,8 @@
  *
  * Used to create common minor functions that can be re-used across the application
  */
+import React from "react";
+
 import { Typography } from "@mui/material";
 
 /**

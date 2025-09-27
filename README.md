@@ -9,10 +9,12 @@
 ## Overview
 
 HomeHiveSolutions is a web application designed to simplify the creation and management of invoices. With this app, users can easily create, edit, and manage invoices, keeping track of important details like client information, invoice items, totals, and dates.
-Visit [HomeHiveSolutions](https://earmuffinvoicer.netlify.app/)
+Visit [HomeHiveSolutions](https://homehivesolutions.com/) to learn more.
 
 ## Features
 
+- **Create Rental Records:** Add rental records, client information, due dates for each tenant.
+- **Connect stripe and get paid:** Add stripe payment services to get paid directly without any hassle.
 - **Create Invoice:** Add client information, due dates, and line items to create detailed invoices.
 - **Edit Invoice:** Easily modify invoices to adjust any details.
 - **Automatic Calculations:** Automatically calculates total value and standard tax. Audience members can adjust tax.

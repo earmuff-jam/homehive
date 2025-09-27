@@ -1,3 +1,5 @@
+import React from "react";
+
 import {
   Box,
   Card,
@@ -27,8 +29,8 @@ export default function FeatureSection() {
           color="text.secondary"
           sx={{ mb: 8, maxWidth: "800px", mx: "auto" }}
         >
-          Our application focuses on what matters: getting you paid
-          faster with minimal effort.
+          Our application focuses on what matters: getting you paid faster with
+          minimal effort.
         </Typography>
 
         <Grid container spacing={4}>

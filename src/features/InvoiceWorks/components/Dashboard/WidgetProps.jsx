@@ -1,3 +1,5 @@
+import React from "react";
+
 import { Box } from "@mui/material";
 import DetailsTableView from "features/InvoiceWorks/components/Widgets/DetailsTableView";
 import InvoiceTimelineChart from "features/InvoiceWorks/components/Widgets/InvoiceTimelineChart";

@@ -1,7 +1,4 @@
-/* eslint-disable */
-
-// import the function
-const { retrieveTourKey } = require("features/RentWorks/common/retrieveTourKey");
+import { retrieveTourKey } from "./utils";
 
 describe("retrieveTourKey tests", () => {
   describe("validate retrieveTourKey function behavior", () => {
