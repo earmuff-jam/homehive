@@ -1,0 +1,9 @@
+{
+  "ref": "refs/heads/main",
+  "workflow": "My Workflow Name",
+  "inputs": {
+    "version": "1.0.0",
+    "date": "2025-08-25",
+    "body": "[feature] - Added authentication /pull/123 [bugfix] - Fixed login issue /pull/124 [feature]- 7 - Added ability to add stamps to invoices by @mohit2530 in #7[feature]- 8 - Add help by @mohit2530 in #8"
+  }
+}

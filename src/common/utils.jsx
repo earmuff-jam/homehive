@@ -3,8 +3,31 @@
  *
  * Used to create common minor functions that can be re-used across the application
  */
+import React from "react";
 
 import { Typography } from "@mui/material";
+
+/**
+ * Route params
+ *
+ * used to build routes.
+ */
+
+export const HomeRouteUri = "/";
+export const FaqRouteUri = "/faq";
+export const NotesRouteUri = "/notes";
+export const SettingsRouteUri = "/settings";
+
+export const RentalRouteUri = "/rental";
+export const PropertyRouteUri = "/property/:id";
+export const PropertiesRouteUri = "/properties";
+
+export const InvoiceDefaultRouteUri = "/invoice";
+export const ViewInvoiceRouteUri = "/invoice/view";
+export const EditInvoiceRouteUri = "/invoice/edit";
+export const SenderInforamtionRouteUri = "/invoice/sender";
+export const InvoiceDashboardRouteUri = "/invoice/dashboard";
+export const RecieverInforamtionRouteUri = "/invoice/reciever";
 
 /**
  * pluralize
@@ -32,8 +55,26 @@ export function pluralize(arrLength, wordStr) {
 export function createHelperSentences(verbStr, extraClauseStr) {
   return (
     <Typography variant="caption">
-      This help / guide is designed to aide you in learning how to{" "}
-      {verbStr + extraClauseStr}? Feel free to restart the guide if necessary.
+      This help / guide is designed to aide you in learning how to&nbsp;
+      {verbStr}&nbsp;{extraClauseStr}&nbsp;. Feel free to restart the guide if
+      necessary.
     </Typography>
   );
 }
+
+/**
+ * isUserLoggedIn ...
+ *
+ * determines if the current user is logged in and / or if the user is of a
+ * valid type. checks against the local storage only, does not attempt to
+ * communicate with the backend jobs for this.
+ *
+ * @returns user || false
+ */
+export const isUserLoggedIn = () => {
+  const currentUser = JSON.parse(localStorage.getItem("user"));
+  if (currentUser?.uid) {
+    return true;
+  }
+  return false;
+};

@@ -1,33 +1,7 @@
 [
   {
-    "version": "1.0.3",
-    "date": "2025-06-10",
-    "notes": []
-  },
-  {
-    "version": "1.2.0",
-    "date": "2025-05-25",
-    "notes": [
-      {
-        "type": "feature",
-        "value": "Added PDF export for invoices",
-        "caption": "Added PDF export for invoices"
-      },
-      {
-        "type": "improvement",
-        "value": "Improved mobile responsiveness",
-        "caption": "Improved mobile responsiveness"
-      },
-      {
-        "type": "bugfix",
-        "value": "Fixed date formatting bug",
-        "caption": "Fixed date formatting bug"
-      }
-    ]
-  },
-  {
-    "version": "1.1.0",
-    "date": "2025-04-18",
+    "version": "1.0.0",
+    "date": "2024-04-18",
     "notes": [
       {
         "type": "improvement",
@@ -35,9 +9,19 @@
         "caption": "Line items now support tax calculations"
       },
       {
-        "type": "improvement",
-        "value": "Improved localStorage persistence",
-        "caption": "Improved localStorage persistence"
+        "type": "bugfix",
+        "value": "Fixed date formatting bug",
+        "caption": "Fixed date formatting bug selecting dates from mobile"
+      },
+      {
+        "type": "feature",
+        "value": "Added PDF export for invoices",
+        "caption": "Added ability to create PDF exports for invoices"
+      },
+      {
+        "type": "feature",
+        "value": "Added ability to print invoices",
+        "caption": "Added ability to print invoices with multiple watermarks, send selected invoice via email of your choice."
       }
     ]
   }

@@ -1,0 +1,43 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Debug App",
+      "runtimeExecutable": "bash",
+      "runtimeArgs": ["-c", "node --inspect $(command -v netlify) dev"],
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Debug App Functions",
+      "runtimeExecutable": "bash",
+      "runtimeArgs": [
+        "-c",
+        "node --inspect-brk $(command -v netlify) functions:serve"
+      ],
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Debug Release notes generator",
+      "program": "${workspaceFolder}/dev/update-release-docs.js",
+      "skipFiles": ["<node_internals>/**"],
+      "env": {
+        "GITHUB_EVENT_PATH": "dev/sampleReleaseDocs.json"
+      }
+    },
+    {
+      "type": "node",
+      "request": "attach",
+      "name": "Attach to Netlify Functions",
+      "port": 9229,
+      "restart": true
+    }
+  ]
+}

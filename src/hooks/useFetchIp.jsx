@@ -17,9 +17,8 @@ export const useFetchUserIp = () => {
           const response = await fetch("https://api.ipify.org/?format=json");
           const data = await response.json();
           const ip = data?.ip || "";
-          localStorage.setItem("ip", ip);  
+          localStorage.setItem("ip", ip);
         }
-        
       } catch (err) {
         /* eslint-disable no-console */
         console.error("Error retrieving user ip:", err);

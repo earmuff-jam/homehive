@@ -1,21 +1,17 @@
 /**
- * File : 0001_send_email_fn.js file
+ * File : 0001_send_email_fn.js
  *
- * This file is only used to perform netlify functions on the cloud. This enables
- * our frontend application to perform backend tasks easily. Eg, Send Email.
- *
- * Must have feature flags enabled for this feature.
+ * Netlify Function to send emails using MailerSend (no templates).
+ * Handles POST requests with `to`, `subject`, `text`, and/or `html` content.
  */
-import sgMail from "@sendgrid/mail";
+import { EmailParams, MailerSend, Recipient, Sender } from "mailersend";
 
-sgMail.setApiKey(process.env.VITE_SENDGRID_API_KEY);
+const mailerSend = new MailerSend({
+  apiKey: process.env.VITE_MAILERSEND_API_KEY,
+});
 
-/**
- * handler fn
- *
- * handler fn to handle the passed on event payload
- * @param {Object} event - The event payload passed from Netlify function
- */
+const sentFrom = new Sender(process.env.VITE_MAILERSEND_VERIFIED_EMAIL_KEY);
+
 export const handler = async (event) => {
   if (event.httpMethod !== "POST") {
     return {
@@ -24,28 +20,39 @@ export const handler = async (event) => {
     };
   }
 
-  const { to, subject, text, html } = JSON.parse(event.body);
-
-  const msg = {
-    to,
-    from: process.env.VITE_SENDGRID_VERIFIED_EMAIL_KEY,
-    subject,
-    text,
-    html,
-  };
-
   try {
-    await sgMail.send(msg);
+    const { to, subject, text, html } = JSON.parse(event.body);
+
+    if (!to || !subject || !text) {
+      return {
+        statusCode: 400,
+        body: JSON.stringify({
+          error: "Missing required fields: 'to', 'subject', and either 'text'",
+        }),
+      };
+    }
+
+    const recipients = [new Recipient(to)];
+
+    const emailParams = new EmailParams()
+      .setFrom(sentFrom)
+      .setTo(recipients)
+      .setSubject(subject);
+
+    if (text) emailParams.setText(text);
+    if (html) emailParams.setHtml(html);
+
+    await mailerSend.email.send(emailParams);
+
     return {
       statusCode: 200,
       body: JSON.stringify({ message: "Email sent successfully!" }),
     };
   } catch (error) {
+    console.error("MailerSend error:", JSON.stringify(error));
     return {
       statusCode: 500,
-      body: JSON.stringify({
-        error: `${("Unable to send email. Details: ", error)}`,
-      }),
+      body: JSON.stringify({ error: "Failed to send email." }),
     };
   }
 };

@@ -1,4 +1,8 @@
+import React from "react";
+
 import { Route } from "react-router-dom";
+
+import AuthenticationProvider from "features/Auth/AuthenticationProvider";
 
 /**
  * validateClientPermissions ...
@@ -64,14 +68,40 @@ export const filterValidRoutesForNavigationBar = (draftRoutes = []) => {
  * @param {Array} draftRoutes - array of draft routes that are within the application
  * @returns Array of Routes with the route element from react router dom.
  */
-export function buildAppRoutes(draftRoutes = []) {
-  const validRouteFlags = validateClientPermissions();
-  return draftRoutes
-    .map(({ path, element, requiredFlags }) => {
-      const isRequired = isValidPermissions(validRouteFlags, requiredFlags);
 
-      if (!isRequired) return;
-      return <Route key={path} exact path={path} element={element} />;
+/**
+ * buildAppRoutes
+ *
+ * Used to build application-level routes based on the passed-in available routes.
+ * If all required orgs/flags are met, the route is created. Does not take user role
+ * into account while building routes.
+ *
+ * @param {Array} draftRoutes - Array of draft routes within the application
+ * @returns Array of <Route> elements
+ */
+export function buildAppRoutes(draftRoutes = [], roleType = "") {
+  const validRouteFlags = validateClientPermissions();
+
+  return draftRoutes
+    .map(({ path, element, requiredFlags = [], config = {} }) => {
+      const isRouteValid = isValidPermissions(validRouteFlags, requiredFlags);
+      if (!isRouteValid) return null;
+
+      // Check role access here
+      const validRoles = config?.enabledForRoles || [];
+      if (validRoles.length > 0 && !validRoles.includes(roleType)) {
+        return null;
+      }
+
+      const requiresLogin = Boolean(config.isLoggedInFeature);
+
+      const wrappedEl = requiresLogin ? (
+        <AuthenticationProvider>{element}</AuthenticationProvider>
+      ) : (
+        element
+      );
+
+      return <Route key={path} path={path} element={wrappedEl} />;
     })
     .filter(Boolean);
 }

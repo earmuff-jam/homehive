@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 
+import { Outlet, matchPath, useLocation } from "react-router-dom";
+
+import { InfoRounded } from "@mui/icons-material";
 import {
   Box,
   Checkbox,
@@ -8,32 +11,27 @@ import {
   DialogContent,
   DialogTitle,
   FormControlLabel,
-  Slide,
   Stack,
   Tooltip,
   Typography,
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-
-import NavBar from "src/features/Layout/NavBar";
-import Footer from "src/features/Footer/Footer";
-import { Outlet, useLocation } from "react-router-dom";
-import AButton from "src/common/AButton";
-import { NavigationProvider } from "src/common/ANavigation";
 import { useTour } from "@reactour/tour";
-
+import AButton from "common/AButton";
+import { NavigationProvider } from "common/ANavigation";
 import {
   DefaultTourStepsMapperObj,
   GeneratedTourSteps,
-} from "src/common/Tour/TourSteps";
-import AppToolbar from "src/features/Layout/AppToolbar";
-import { InfoRounded } from "@mui/icons-material";
-import BreadCrumbs from "src/features/Layout/BreadCrumbs";
-
-const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
+} from "common/Tour/TourSteps";
+import { HomeRouteUri, SettingsRouteUri } from "common/utils";
+import AppToolbar from "features/Layout/components/AppToolbar/AppToolbar";
+import BreadCrumbs from "features/Layout/components/AppToolbar/BreadCrumbs";
+import Footer from "features/Layout/components/Footer/Footer";
+import { TenantRole } from "features/Layout/components/Landing/constants";
+import NavBar from "features/Layout/components/NavBar/NavBar";
+import { retrieveTourKey } from "features/Layout/utils";
+import { fetchLoggedInUser } from "features/RentWorks/common/utils";
 
 const defaultDialog = {
   title: "",
@@ -51,31 +49,47 @@ export default function Layout({
   const theme = useTheme();
   const location = useLocation();
 
+  const currentUri = location?.pathname || "";
+  const currentRoute = routes.find((route) =>
+    matchPath(route.path, currentUri),
+  );
+
   const { setIsOpen, setCurrentStep, setSteps } = useTour();
 
-  const currentUri = location?.pathname || "";
   const smScreenSizeAndHigher = useMediaQuery(theme.breakpoints.up("sm"));
   const lgScreenSizeAndHigher = useMediaQuery(theme.breakpoints.up("lg"));
 
   const [dialog, setDialog] = useState(defaultDialog);
 
   const [openDrawer, setOpenDrawer] = useState(
-    smScreenSizeAndHigher ? true : false
+    smScreenSizeAndHigher ? true : false,
   );
 
   const closeDialog = () => setDialog(defaultDialog);
 
-  const handleChange = () => {
+  const handleChange = () =>
     setDialog((prev) => ({ ...prev, showWatermark: !prev.showWatermark }));
-  };
 
   const setTour = () => {
-    const currentTourEl = DefaultTourStepsMapperObj[currentUri];
+    const key = retrieveTourKey(currentUri, "property");
+    const currentTourEl = DefaultTourStepsMapperObj[key];
 
-    const formattedDraftTourSteps = GeneratedTourSteps.slice(
+    let formattedDraftTourSteps;
+
+    formattedDraftTourSteps = GeneratedTourSteps.slice(
       currentTourEl.start,
-      currentTourEl.end
+      currentTourEl.end,
     );
+
+    if (currentUri === SettingsRouteUri) {
+      const currentUser = fetchLoggedInUser();
+      if (currentUser.role === TenantRole) {
+        formattedDraftTourSteps = GeneratedTourSteps.slice(
+          currentTourEl.start,
+          currentTourEl.start + 1, // tenants do not have other tabs under settings
+        );
+      }
+    }
 
     setIsOpen(true);
     setCurrentStep(0);
@@ -87,7 +101,7 @@ export default function Layout({
     <NavigationProvider>
       <AppToolbar
         currentUri={currentUri}
-        currentRoute={routes.find((route) => route.path === currentUri)}
+        currentRoute={currentRoute}
         handleDrawerClose={() => setOpenDrawer(false)}
         handleDrawerOpen={() => setOpenDrawer(true)}
         currentThemeIdx={currentThemeIdx}
@@ -121,10 +135,8 @@ export default function Layout({
         >
           <Box sx={{ minHeight: "90vh" }}>
             {/* no breadcrumbs on landing page */}
-            {currentUri !== "/" && (
-              <BreadCrumbs
-                currentRoute={routes.find((route) => route.path === currentUri)}
-              />
+            {currentUri !== HomeRouteUri && (
+              <BreadCrumbs currentRoute={currentRoute} />
             )}
             <Outlet context={[dialog.showWatermark]} />
           </Box>
@@ -135,16 +147,13 @@ export default function Layout({
       <Dialog
         className="no-print"
         open={dialog.type === "HELP" || dialog.type === "PRINT"}
-        TransitionComponent={Transition}
         keepMounted
         onClose={() => setDialog(defaultDialog)}
         aria-describedby="alert-dialog-slide-help-box"
       >
         <DialogTitle>{dialog.label}</DialogTitle>
         <DialogContent>
-          <Typography sx={{ textTransform: "initial" }}>
-            {dialog.title}
-          </Typography>
+          <Typography>{dialog.title}</Typography>
           {dialog.type === "PRINT" && (
             <Stack direction="row" spacing={1} alignItems="center">
               <FormControlLabel

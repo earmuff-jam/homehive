@@ -1,8 +1,10 @@
-import dayjs from "dayjs";
-import { addDoc, collection } from "firebase/firestore";
 import { useLocation } from "react-router-dom";
-import { firestore } from "src/firebaseConfig";
-import { useFetchUserIp } from "src/hooks/useFetchIp";
+
+import dayjs from "dayjs";
+
+import { addDoc, collection } from "firebase/firestore";
+import { useFetchUserIp } from "hooks/useFetchIp";
+import { analyticsFirestore } from "src/config";
 
 /**
  * useButtonAnalytics ...
@@ -20,7 +22,7 @@ export const useButtonAnalytics = () => {
     if (!label) return;
 
     try {
-      const booksCollection = collection(firestore, "analytics");
+      const booksCollection = collection(analyticsFirestore, "analytics");
       await addDoc(booksCollection, {
         ipAddress: ipAddress || "",
         label,

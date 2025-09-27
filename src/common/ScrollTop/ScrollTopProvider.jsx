@@ -1,6 +1,8 @@
+import React from "react";
+
 import { KeyboardArrowUp } from "@mui/icons-material";
 import { Box, Fab } from "@mui/material";
-import ScrollTop from "src/common/ScrollTop/ScrollToTop";
+import ScrollTop from "common/ScrollTop/ScrollToTop";
 
 /**
  * ScrollTopProvider Component

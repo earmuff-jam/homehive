@@ -1,3 +1,5 @@
+import React from "react";
+
 import { Alert, Snackbar, Typography } from "@mui/material";
 
 function CustomSnackbar({
@@ -21,8 +23,12 @@ function CustomSnackbar({
         onClick={onClick}
         sx={{ width: "100%", cursor: "pointer" }}
       >
-        <Typography variant="caption">{title}</Typography>
-        <Typography variant="caption"> {caption}</Typography>
+        <Typography variant="caption" textTransform="initial">
+          {title}
+        </Typography>
+        <Typography variant="caption" textTransform="initial">
+          {caption}
+        </Typography>
       </Alert>
     </Snackbar>
   );

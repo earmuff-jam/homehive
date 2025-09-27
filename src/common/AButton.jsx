@@ -1,5 +1,7 @@
+import React from "react";
+
 import { Button } from "@mui/material";
-import { useButtonAnalytics } from "src/hooks/useButtonAnalytics";
+import { useButtonAnalytics } from "hooks/useButtonAnalytics";
 
 const analyticsEnabled = import.meta.env.VITE_ENABLE_ANALYTICS || "false";
 
@@ -21,7 +23,9 @@ export default function AButton({ label, onClick, loading = false, ...rest }) {
   const handleClick = (ev) => {
     // log data only if analytics is enabled
     analyticsEnabled?.toLowerCase() === "true" && buttonAnalytics?.(label);
-    onClick(ev);
+    if (typeof onClick === "function") {
+      onClick(ev);
+    }
   };
 
   return (

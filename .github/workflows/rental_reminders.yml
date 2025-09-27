@@ -1,0 +1,14 @@
+name: Rental Reminder Trigger
+
+on:
+  schedule:
+    - cron: "0 9 * * *" # every day at 9 AM UTC
+
+jobs:
+  trigger:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Netlify Function
+        run: |
+          curl -X POST \
+          "${{ secrets.RENTAL_REMINDER_URL }}.netlify/functions/0010_send_automatic_reminders?key=${{ secrets.NETLIFY_REMINDER_KEY }}"

@@ -1,0 +1,21 @@
+{
+  "plugins": ["@trivago/prettier-plugin-sort-imports"],
+  "importOrder": [
+    "^react$",
+    "^react",
+    "^uuid$",
+    "^dayjs$",
+    "<THIRD_PARTY_MODULES>",
+    "",
+    "@mui/icons-material",
+    "@mui/material",
+    "@mui/",
+    "^@common/",
+    "^@features/",
+    "^@utils/",
+    "^@hooks/",
+    "^[./]"
+  ],
+  "importOrderSeparation": true,
+  "importOrderSortSpecifiers": true
+}

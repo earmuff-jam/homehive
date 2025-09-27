@@ -4,13 +4,13 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: 'Release version (e.g., v1.0.2, v1.0.3.rc-0)'
+        description: "Release version (e.g., v1.0.2, v1.0.3.rc-0)"
         required: true
       body:
-        description: 'Release notes in [Type] - Message format'
+        description: "Release notes in [Type] - Message format"
         required: true
       date:
-        description: 'Release date (e.g., 2025-05-25)'
+        description: "Release date (e.g., 2025-05-25)"
         required: true
 
 jobs:
@@ -21,13 +21,13 @@ jobs:
         uses: actions/checkout@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          fetch-depth: 0  # fetch full history so pull works
+          fetch-depth: 0 # fetch full history so pull works
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
-      
+          node-version: "20"
+
       - name: Set pull strategy to merge
         run: git config --global pull.rebase false
 
@@ -49,4 +49,3 @@ jobs:
           git add .
           git commit -m "chore: update release-docs.json for ${{ github.event.inputs.version }}" || echo "Nothing to commit"
           git push origin HEAD:main
-

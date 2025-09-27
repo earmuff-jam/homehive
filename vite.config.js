@@ -1,15 +1,15 @@
-import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
-import { VitePWA } from "vite-plugin-pwa";
 import path from "path";
+import { defineConfig } from "vite";
+import { VitePWA } from "vite-plugin-pwa";
 
 const manifestForPlugIn = {
   registerType: "prompt",
   includeAssets: ["favicon.ico", "apple-touc-icon.png", "masked-icon.svg"],
   manifest: {
-    name: "Invoicer",
-    short_name: "Invoicer",
-    description: "Invoicer application built by Earmuffjam LLC",
+    name: "HomeHiveSolutions",
+    short_name: "HomeHiveSolutions",
+    description: "HomeHiveSolutions application built by Earmuffjam LLC",
     icons: [
       {
         src: "/android-chrome-192x192.png",

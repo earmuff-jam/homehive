@@ -7,7 +7,6 @@ env:
   DOCKER_DRIVER: overlay
 
 jobs:
-
   build-frontend:
     runs-on: ubuntu-latest
     steps:
@@ -21,7 +20,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          npm ci
+          npm install
 
       - name: Run linter
         run: |

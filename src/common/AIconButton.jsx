@@ -1,5 +1,7 @@
+import React from "react";
+
 import { IconButton } from "@mui/material";
-import { useButtonAnalytics } from "src/hooks/useButtonAnalytics";
+import { useButtonAnalytics } from "hooks/useButtonAnalytics";
 
 const analyticsEnabled = import.meta.env.VITE_ENABLE_ANALYTICS || "false";
 

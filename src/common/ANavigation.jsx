@@ -1,9 +1,13 @@
 import { createContext, useContext, useEffect } from "react";
+import React from "react";
+
 import { useLocation } from "react-router-dom";
-import { useFetchUserIp } from "src/hooks/useFetchIp";
-import { addDoc, collection } from "firebase/firestore";
-import { firestore } from "src/firebaseConfig";
+
 import dayjs from "dayjs";
+
+import { addDoc, collection } from "firebase/firestore";
+import { useFetchUserIp } from "hooks/useFetchIp";
+import { analyticsFirestore } from "src/config";
 
 /**
  * NavigationProvider ...
@@ -28,7 +32,7 @@ export const NavigationProvider = ({ children }) => {
       const logUserAnalyticsToFirestore = async () => {
         try {
           if (pathname) {
-            const analytics = collection(firestore, "analytics");
+            const analytics = collection(analyticsFirestore, "analytics");
             await addDoc(analytics, {
               ipAddress: ipAddress || "",
               url: pathname,
