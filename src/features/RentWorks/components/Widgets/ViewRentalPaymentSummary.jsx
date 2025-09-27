@@ -23,12 +23,7 @@ const ViewRentalPaymentSummary = ({ rentData = [] }) => {
         accessorKey: "tenantEmail",
         header: "Tenant Email",
         size: 200,
-        Cell: ({ cell }) =>
-          (
-            <Typography sx={{ textTransform: "initial" }}>
-              {cell.getValue()}
-            </Typography>
-          ) || "-",
+        Cell: ({ cell }) => <Typography>{cell.getValue()}</Typography> || "-",
       },
       {
         header: "Amount Paid ($)",
@@ -81,9 +76,7 @@ const ViewRentalPaymentSummary = ({ rentData = [] }) => {
     initialState: {
       density: "compact",
     },
-    renderEmptyRowsFallback: () => (
-      <EmptyComponent sxProps={{ textTransform: "initial" }} />
-    ),
+    renderEmptyRowsFallback: () => <EmptyComponent />,
     mrtTheme: (theme) => ({
       baseBackgroundColor: theme.palette.transparent.main,
     }),

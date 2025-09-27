@@ -92,12 +92,7 @@ export default function Tenants({ tenants = [], property }) {
                       gap: "0.2rem",
                     }}
                   >
-                    <Typography
-                      variant="subtitle2"
-                      sx={{ textTransform: "initial" }}
-                    >
-                      {tenant.email}
-                    </Typography>
+                    <Typography variant="subtitle2">{tenant.email}</Typography>
 
                     {tenant?.isSoR && (
                       <Tooltip title="Single occupancy room rentee">

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
 import { Outlet, matchPath, useLocation } from "react-router-dom";
 
@@ -11,7 +11,6 @@ import {
   DialogContent,
   DialogTitle,
   FormControlLabel,
-  Slide,
   Stack,
   Tooltip,
   Typography,
@@ -34,10 +33,6 @@ import NavBar from "features/Layout/components/NavBar/NavBar";
 import { retrieveTourKey } from "features/Layout/utils";
 import { fetchLoggedInUser } from "features/RentWorks/common/utils";
 
-const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
-
 const defaultDialog = {
   title: "",
   label: "",
@@ -53,6 +48,7 @@ export default function Layout({
 }) {
   const theme = useTheme();
   const location = useLocation();
+
   const currentUri = location?.pathname || "";
   const currentRoute = routes.find((route) =>
     matchPath(route.path, currentUri),
@@ -71,9 +67,8 @@ export default function Layout({
 
   const closeDialog = () => setDialog(defaultDialog);
 
-  const handleChange = () => {
+  const handleChange = () =>
     setDialog((prev) => ({ ...prev, showWatermark: !prev.showWatermark }));
-  };
 
   const setTour = () => {
     const key = retrieveTourKey(currentUri, "property");
@@ -152,16 +147,13 @@ export default function Layout({
       <Dialog
         className="no-print"
         open={dialog.type === "HELP" || dialog.type === "PRINT"}
-        TransitionComponent={Transition}
         keepMounted
         onClose={() => setDialog(defaultDialog)}
         aria-describedby="alert-dialog-slide-help-box"
       >
         <DialogTitle>{dialog.label}</DialogTitle>
         <DialogContent>
-          <Typography sx={{ textTransform: "initial" }}>
-            {dialog.title}
-          </Typography>
+          <Typography>{dialog.title}</Typography>
           {dialog.type === "PRINT" && (
             <Stack direction="row" spacing={1} alignItems="center">
               <FormControlLabel

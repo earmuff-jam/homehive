@@ -1,4 +1,5 @@
 import { createApi, fakeBaseQuery } from "@reduxjs/toolkit/query/react";
+import { authenticateViaGoogle } from "features/Auth/AuthHelper";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { authenticatorFirestore as db } from "src/config";
 
@@ -29,14 +30,23 @@ export const firebaseUserApi = createApi({
       providesTags: ["User"],
     }),
     // create user in users db
-    createUser: builder.mutation({
-      async queryFn(user) {
+    authenticate: builder.mutation({
+      async queryFn(role) {
         try {
-          const userRef = doc(db, "users", user.uid);
-
-          await setDoc(userRef, user, { merge: true }); // always upsert
-
-          return { data: user };
+          const userDetails = await authenticateViaGoogle();
+          const userRef = doc(db, "users", userDetails?.uid);
+          await setDoc(userRef, { ...userDetails, role }, { merge: true });
+          if (userDetails?.uid) {
+            localStorage.setItem(
+              "user",
+              JSON.stringify({
+                uid: userDetails?.uid,
+                googleEmailAddress: userDetails?.googleEmailAddress,
+                role,
+              }),
+            );
+          }
+          return { data: userDetails };
         } catch (error) {
           return {
             error: {
@@ -48,7 +58,6 @@ export const firebaseUserApi = createApi({
       },
       invalidatesTags: ["User"],
     }),
-
     // update user in users db
     updateUserByUid: builder.mutation({
       async queryFn({ uid, newData }) {
@@ -72,7 +81,7 @@ export const firebaseUserApi = createApi({
 
 export const {
   useGetUserDataByIdQuery,
-  useCreateUserMutation,
+  useAuthenticateMutation,
   useUpdateUserByUidMutation,
   useLazyGetUserDataByIdQuery,
 } = firebaseUserApi;

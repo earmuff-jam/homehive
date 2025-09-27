@@ -282,7 +282,7 @@ const derieveTourSteps = (staticSteps, prefix) => {
     content: (
       <Typography
         variant="subtitle2"
-        sx={{ padding: "0.2rem", textTransform: "initial" }}
+        sx={{ padding: "0.2rem" }}
         padding="0.2rem"
       >
         {element}

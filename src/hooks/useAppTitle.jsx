@@ -9,6 +9,6 @@ import { useEffect } from "react";
  */
 export const useAppTitle = (title) => {
   useEffect(() => {
-    document.title = `${title} | RentWorks`;
+    document.title = `${title} | HomeHiveSolutions`;
   }, [title]);
 };

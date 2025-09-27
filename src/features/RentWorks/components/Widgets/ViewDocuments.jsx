@@ -1,9 +1,10 @@
 import { useMemo, useState } from "react";
 
+import dayjs from "dayjs";
+
 import { Stack } from "@mui/material";
 import EmptyComponent from "common/EmptyComponent";
 import RowHeader from "common/RowHeader/RowHeader";
-import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import {
   MaterialReactTable,
@@ -50,9 +51,7 @@ const ViewDocuments = ({ label, caption }) => {
     initialState: {
       density: "comfortable",
     },
-    renderEmptyRowsFallback: () => (
-      <EmptyComponent sxProps={{ textTransform: "initial" }} />
-    ),
+    renderEmptyRowsFallback: () => <EmptyComponent />,
     mrtTheme: (theme) => ({
       baseBackgroundColor: theme.palette.transparent.main,
     }),

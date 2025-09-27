@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 
 import { Controller, useForm } from "react-hook-form";
+import { useSearchParams } from "react-router-dom";
 
 import dayjs from "dayjs";
 
@@ -28,8 +29,8 @@ import RowHeader from "common/RowHeader/RowHeader";
 import TextFieldWithLabel from "common/UserInfo/TextFieldWithLabel";
 import relativeTime from "dayjs/plugin/relativeTime";
 import {
-  useCreateUserMutation,
   useGetUserDataByIdQuery,
+  useUpdateUserByUidMutation,
 } from "features/Api/firebaseUserApi";
 import { OwnerRole } from "features/Layout/components/Landing/constants";
 import { fetchLoggedInUser } from "features/RentWorks/common/utils";
@@ -44,11 +45,17 @@ export default function Settings() {
   useAppTitle("View Settings");
 
   const user = fetchLoggedInUser();
+  const [searchParams] = useSearchParams();
+
+  const currentTab = Number(searchParams.get("tabIdx")) || 0;
   const isPropertyOwner = user?.role === OwnerRole;
 
-  const [createUser] = useCreateUserMutation();
+  const [
+    updateUser,
+    { isSuccess: isUpdateUserSuccess, isLoading: isUpdateUserLoading },
+  ] = useUpdateUserByUidMutation();
 
-  const [activeTab, setActiveTab] = useState(0);
+  const [activeTab, setActiveTab] = useState(currentTab);
   const [showSnackbar, setShowSnackbar] = useState(false);
 
   const {
@@ -77,26 +84,27 @@ export default function Settings() {
     setActiveTab(newValue);
   };
 
-  const onSubmit = async (formData) => {
-    const draftData = {
-      ...formData,
-      googleAccountLinkedAt: userData?.googleAccountLinkedAt,
-      googleDisplayName: userData?.googleDisplayName,
-      googleEmailAddress: userData?.googleEmailAddress,
-      googleLastLoginAt: userData?.googleLastLoginAt,
-      googlePhotoURL: userData?.googlePhotoURL,
+  const onSubmit = (formData) => {
+    updateUser({
       uid: user?.uid,
-      updatedOn: dayjs().toISOString(),
-    };
-
-    try {
-      await createUser(draftData).unwrap();
-      setShowSnackbar(true);
-    } catch (error) {
-      /* eslint-disable no-console */
-      console.log(error);
-    }
+      newData: {
+        ...formData,
+        uid: user?.uid,
+        googleAccountLinkedAt: userData?.googleAccountLinkedAt,
+        googleDisplayName: userData?.googleDisplayName,
+        googleEmailAddress: userData?.googleEmailAddress,
+        googleLastLoginAt: userData?.googleLastLoginAt,
+        googlePhotoURL: userData?.googlePhotoURL,
+        updatedOn: dayjs().toISOString(),
+        updatedBy: user?.uid,
+      },
+    });
+    setShowSnackbar(true);
   };
+
+  useEffect(() => {
+    if (isUpdateUserSuccess) setShowSnackbar(false);
+  }, [isUpdateUserSuccess]);
 
   useEffect(() => {
     if (userData) {
@@ -134,20 +142,10 @@ export default function Settings() {
                   src={userData?.googlePhotoURL || ""}
                 />
 
-                <Typography
-                  variant="h6"
-                  fontWeight={600}
-                  color="textSecondary"
-                  sx={{ textTransform: "initial" }}
-                >
+                <Typography variant="h6" fontWeight={600} color="textSecondary">
                   {userData.googleDisplayName}
                 </Typography>
-                <Typography
-                  variant="h6"
-                  fontWeight={600}
-                  color="textSecondary"
-                  sx={{ textTransform: "initial" }}
-                >
+                <Typography variant="h6" fontWeight={600} color="textSecondary">
                   {userData.googleEmailAddress}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
@@ -388,13 +386,11 @@ export default function Settings() {
                       variant="contained"
                       type="submit"
                       disabled={!isValid}
+                      loading={isUpdateUserLoading}
                     />
                   </Box>
-                  <Typography
-                    variant="caption"
-                    sx={{ fontStyle: "italic", textTransform: "initial" }}
-                  >
-                    Last login&nbsp;
+                  <Typography variant="caption" sx={{ fontStyle: "italic" }}>
+                    Last login around&nbsp;
                     {dayjs(userData?.googleLastLoginAt).fromNow() ||
                       dayjs().fromNow()}
                   </Typography>

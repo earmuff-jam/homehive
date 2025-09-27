@@ -1,0 +1,41 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Anyone can read anyone profile data, but write only for current user
+    match /users/{userId} {
+      allow read: if request.auth != null; // anyone signed in can read all users
+      allow write: if request.auth != null && request.auth.uid == userId;
+    }
+
+    // Users can create/read/update their own properties
+    match /properties/{propertyId} {
+      allow create: if request.auth != null && request.resource.data.createdBy == request.auth.uid;
+      
+      allow read: if request.auth != null && ( resource.data.createdBy == request.auth.uid || request.auth.token.email in resource.data.rentees );
+      
+      allow update, delete: if request.auth != null && resource.data.createdBy == request.auth.uid;
+    }
+    
+    // Tenants can only be created if the user owns the linked property
+    match /tenants/{tenantId} {
+      // Allow read access to signed-in users
+      allow read: if request.auth != null;
+
+      allow create: if request.auth != null &&
+        request.resource.data.createdBy == request.auth.uid &&
+        exists(/databases/$(database)/documents/properties/$(request.resource.data.propertyId)) &&
+        get(/databases/$(database)/documents/properties/$(request.resource.data.propertyId)).data.createdBy == request.auth.uid;
+
+      allow update, delete: if request.auth != null &&
+        request.auth.uid == resource.data.createdBy;
+    }
+    
+    match /rents/{rentId} {
+      allow create: if request.auth != null &&
+        request.resource.data.createdBy == request.auth.uid;
+
+      allow read: if request.auth != null;
+      }
+  }
+}

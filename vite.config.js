@@ -7,9 +7,9 @@ const manifestForPlugIn = {
   registerType: "prompt",
   includeAssets: ["favicon.ico", "apple-touc-icon.png", "masked-icon.svg"],
   manifest: {
-    name: "RentWorks",
-    short_name: "RentWorks",
-    description: "RentWorks application built by Earmuffjam LLC",
+    name: "HomeHiveSolutions",
+    short_name: "HomeHiveSolutions",
+    description: "HomeHiveSolutions application built by Earmuffjam LLC",
     icons: [
       {
         src: "/android-chrome-192x192.png",

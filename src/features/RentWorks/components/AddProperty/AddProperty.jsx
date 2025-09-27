@@ -166,7 +166,7 @@ export default function AddProperty({
         {/* Monthy rent and Additional Rent */}
         <Stack direction="row" spacing={2}>
           <TextFieldWithLabel
-            label="Monthly Rent*"
+            label="Monthly Rent *"
             id="rent"
             placeholder="Monthly rent in USD. Eg, 2750.00"
             errorMsg={errors.rent?.message}
@@ -183,16 +183,14 @@ export default function AddProperty({
           <TextFieldWithLabel
             label={
               <Stack direction="row" alignItems="center">
-                <Tooltip title="Any extra charges assigned to the tenant such as floor replacement.">
+                <Tooltip title="Includes recurring charges such as utilities, parking, or other monthly services.">
                   <InfoRounded
                     color="secondary"
                     fontSize="small"
                     sx={{ fontSize: "1rem", margin: "0.2rem" }}
                   />
                 </Tooltip>
-                <Typography variant="subtitle2">
-                  Monthly additional charges
-                </Typography>
+                <Typography variant="subtitle2">Add ons</Typography>
               </Stack>
             }
             id="additional_rent"

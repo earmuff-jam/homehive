@@ -7,7 +7,7 @@ export default function ConnectionAlert({
   // first time user || disconnected user
   if (!stripeAlert || !isUserConnectedToStripe) {
     return (
-      <Alert severity="info" sx={{ mb: 2, textTransform: "initial" }}>
+      <Alert severity="info" sx={{ mb: 2 }}>
         Connect your Stripe account to enable online rent payments from your
         tenants. Stripe handles secure payment processing and deposits funds
         directly to your bank account.
@@ -15,10 +15,7 @@ export default function ConnectionAlert({
     );
   } else if (stripeAlert) {
     return (
-      <Alert
-        severity={stripeAlert?.type}
-        sx={{ mb: 2, textTransform: "initial" }}
-      >
+      <Alert severity={stripeAlert?.type} sx={{ mb: 2 }}>
         {stripeAlert?.msg}
         {stripeAlert?.reasons?.length > 0 && (
           <Stack sx={{ mt: 1 }}>

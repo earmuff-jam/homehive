@@ -1,5 +1,6 @@
-import { Box, Stack, Typography } from "@mui/material";
 import dayjs from "dayjs";
+
+import { Box, Stack, Typography } from "@mui/material";
 
 /**
  * RowHeader
@@ -30,9 +31,7 @@ export default function RowHeader({
           {title}
         </Typography>
         {caption ? (
-          <Typography variant="subtitle2" sx={{ textTransform: "initial" }}>
-            {caption}
-          </Typography>
+          <Typography variant="subtitle2">{caption}</Typography>
         ) : null}
         <Box sx={{ alignSelf: "flex-end" }}>{children}</Box>
       </Stack>

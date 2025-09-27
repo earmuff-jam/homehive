@@ -1,14 +1,11 @@
+import { useEffect } from "react";
+
 import { useNavigate } from "react-router-dom";
 
-import { Box, Container, Grid, Stack, Typography } from "@mui/material";
+import { Alert, Box, Grid2, Stack, Typography } from "@mui/material";
 import AButton from "common/AButton";
-import {
-  PropertiesRouteUri,
-  RentalRouteUri,
-  isUserLoggedIn,
-} from "common/utils";
-import { useCreateUserMutation } from "features/Api/firebaseUserApi";
-import { authenticateViaGoogle } from "features/Auth/AuthHelper";
+import { isUserLoggedIn } from "common/utils";
+import { useAuthenticateMutation } from "features/Api/firebaseUserApi";
 import {
   OwnerRole,
   TenantRole,
@@ -17,71 +14,36 @@ import {
 export default function HeroSection() {
   const navigate = useNavigate();
   const isLoggedIn = isUserLoggedIn();
-  const [createUser] = useCreateUserMutation();
 
-  // creates a user in the db
-  const handleCreateUser = async (user, roleType = TenantRole) => {
-    try {
-      const createdUser = await createUser({
-        ...user,
-        role: roleType,
-      }).unwrap();
+  const [
+    authenticate,
+    {
+      isSuccess: isAuthSuccess,
+      isLoading: isAuthLoading,
+      isError: isAuthError,
+    },
+  ] = useAuthenticateMutation();
 
-      // after we create the user, we update our role to keep app in sync
-      if (createdUser?.uid) {
-        localStorage.setItem(
-          "user",
-          JSON.stringify({
-            uid: createdUser.uid,
-            role: createdUser.role,
-            googleEmailAddress: createdUser?.googleEmailAddress,
-          }),
-        );
-      }
-      return createdUser;
-    } catch (err) {
-      /* eslint-disable no-console */
-      console.error("Create failed:", err);
-      throw err;
-    }
+  const handleCreateUser = (role = TenantRole) => {
+    authenticate(role);
   };
 
-  const handlePropertyOwnerLogin = async () => {
-    try {
-      const userDetails = await authenticateViaGoogle();
-      const createdUser = await handleCreateUser(userDetails, OwnerRole);
-
-      if (createdUser) {
-        // force refresh
-        createdUser?.role === OwnerRole
-          ? navigate(`${PropertiesRouteUri}?refresh=${Date.now()}`)
-          : navigate(`${RentalRouteUri}?refresh=${Date.now()}`);
-      }
-    } catch (error) {
-      /* eslint-disable no-console */
-      console.error("Unable to login. Error: ", error);
+  useEffect(() => {
+    if (!isAuthLoading && isAuthSuccess) {
+      window.location.reload();
     }
-  };
+  }, [isAuthLoading]);
 
-  const handleTenantLogin = async () => {
-    try {
-      const userDetails = await authenticateViaGoogle();
-      const createdUser = await handleCreateUser(userDetails, TenantRole);
-
-      if (createdUser) {
-        // force refresh
-        createdUser?.role === OwnerRole
-          ? navigate(`${PropertiesRouteUri}?refresh=${Date.now()}`)
-          : navigate(`${RentalRouteUri}?refresh=${Date.now()}`);
-      }
-    } catch (error) {
-      /* eslint-disable no-console */
-      console.error("Unable to login. Error: ", error);
-    }
-  };
+  if (isAuthError)
+    return (
+      <Alert severity="error">
+        <Typography>Error during log in. Please try again later.</Typography>
+      </Alert>
+    );
 
   return (
     <Box
+      padding="1rem"
       sx={{
         bgcolor: "primary.light",
         color: "primary.contrastText",
@@ -91,79 +53,88 @@ export default function HeroSection() {
         overflow: "hidden",
       }}
     >
-      <Container maxWidth="lg">
-        <Grid container spacing={4} alignItems="center">
-          <Grid item xs={12} md={6}>
-            <Typography
-              variant="h2"
-              component="h1"
-              fontWeight="bold"
-              gutterBottom
-            >
-              Simple. Powerful. Professional.
-            </Typography>
-            <Typography variant="h5" sx={{ textTransform: "initial" }}>
-              Create and manage rents in seconds. No complexity, just results.
-            </Typography>
+      <Grid2
+        container
+        spacing={2}
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+      >
+        <Grid2 item xs={12} sm={6}>
+          <Typography
+            variant="h2"
+            component="h1"
+            fontWeight="bold"
+            gutterBottom
+          >
+            Effortless rent management
+          </Typography>
+          <Typography variant="h5">
+            Take control of your rentals in seconds — no clutter, no confusion.
+          </Typography>
 
-            <Stack>
-              <Stack direction="row" spacing={1} margin="4rem 0rem 1rem 0rem">
-                {!isLoggedIn && (
-                  <AButton
-                    label="Manage Properties"
-                    variant="contained"
-                    size="large"
-                    onClick={handlePropertyOwnerLogin}
-                  />
-                )}
+          <Stack>
+            <Stack direction="row" spacing={1} margin="4rem 0rem 1rem 0rem">
+              {!isLoggedIn && (
                 <AButton
-                  label="Manage Invoices"
+                  label="Manage Properties"
                   variant="contained"
                   size="large"
-                  onClick={() => navigate("invoice/view")}
+                  onClick={() => handleCreateUser(OwnerRole)}
                 />
-              </Stack>
-              {!isLoggedIn && (
-                <Stack
-                  direction="row"
-                  sx={{ cursor: "pointer", textTransform: "initial" }}
-                  onClick={handleTenantLogin}
-                >
-                  <Typography variant="h6">
-                    Are you a Renter?
-                    <Box
-                      component="span"
-                      color="secondary.main"
-                      sx={{ margin: "0rem 0.5rem", textTransform: "initial" }}
-                    >
-                      Login here
-                    </Box>
-                  </Typography>
-                </Stack>
               )}
+              <AButton
+                label="Manage Invoices"
+                variant="contained"
+                size="large"
+                onClick={() => navigate("invoice/view")}
+              />
             </Stack>
-          </Grid>
-          <Grid item xs={12} md={6} sx={{ position: "relative" }}>
-            <Box
-              sx={{
+            {!isLoggedIn && (
+              <Stack direction="row">
+                <Typography variant="h6">
+                  Renting with us?
+                  <Box
+                    component="span"
+                    color="secondary.main"
+                    onClick={() => handleCreateUser(TenantRole)}
+                    sx={{
+                      cursor: "pointer",
+                      margin: "0rem 0.5rem",
+                    }}
+                  >
+                    Access your account
+                  </Box>
+                </Typography>
+              </Stack>
+            )}
+          </Stack>
+        </Grid2>
+        <Grid2 item xs={12} sm={6}>
+          <Box
+            sx={{
+              width: "100%",
+              height: { xs: "200px", sm: "250px", md: "300px" },
+              bgcolor: "background.paper",
+              borderRadius: 2,
+              boxShadow: 8,
+              overflow: "hidden",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <img
+              src="/logo.png"
+              style={{
                 width: "100%",
-                height: { xs: "300px", sm: "400px", md: "480px" },
-                bgcolor: "background.paper",
-                borderRadius: 2,
-                boxShadow: 8,
-                overflow: "hidden",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
+                height: "100%",
+                objectFit: "cover",
               }}
-            >
-              <Box sx={{ p: 3, textAlign: "center" }}>
-                <img src="/logo.png" />
-              </Box>
-            </Box>
-          </Grid>
-        </Grid>
-      </Container>
+            />
+          </Box>
+        </Grid2>
+      </Grid2>
     </Box>
   );
 }

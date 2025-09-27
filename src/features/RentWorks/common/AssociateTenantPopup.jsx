@@ -348,9 +348,7 @@ export default function AssociateTenantPopup({
                 }}
                 renderOption={(props, option) => (
                   <ListItem {...props}>
-                    <Typography sx={{ textTransform: "initial" }}>
-                      {option || ""}
-                    </Typography>
+                    <Typography>{option || ""}</Typography>
                   </ListItem>
                 )}
                 renderInput={(params) => (
@@ -361,7 +359,6 @@ export default function AssociateTenantPopup({
                     placeholder="Select or enter tenant email address"
                     error={!!errors.email}
                     helperText={errors.email?.message}
-                    sx={{ textTransform: "initial" }}
                   />
                 )}
               />

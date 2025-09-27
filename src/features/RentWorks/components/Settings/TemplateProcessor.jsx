@@ -6,6 +6,7 @@ import {
   PaymentReminderEnumValue,
   RenewLeaseNoticeEnumValue,
   SendDefaultInvoiceEnumValue,
+  fetchLoggedInUser,
   isFeatureEnabled,
   stripHTMLForEmailMessages,
 } from "features/RentWorks/common/utils";
@@ -22,6 +23,7 @@ export const handleQuickConnectAction = (
   redirectTo,
   sendEmail,
 ) => {
+  const user = fetchLoggedInUser();
   const templateVariables = {
     leaseEndDate: dayjs(), // the day the lease ends
     newSemiAnnualRent: property?.newSemiAnnualRent || "",
@@ -59,6 +61,7 @@ export const handleQuickConnectAction = (
       const invoiceHtml = processTemplate(
         templates.invoice.html,
         templateVariables,
+        user?.googleEmailAddress,
       );
       formatEmail(
         {
@@ -84,6 +87,7 @@ export const handleQuickConnectAction = (
       const invoiceHtml = processTemplate(
         templates.reminder.html,
         templateVariables,
+        user?.googleEmailAddress,
       );
 
       formatEmail(
@@ -110,6 +114,7 @@ export const handleQuickConnectAction = (
       const reminderHtml = processTemplate(
         templates.noticeOfLeaseRenewal.html,
         templateVariables,
+        user?.googleEmailAddress,
       );
 
       formatEmail(

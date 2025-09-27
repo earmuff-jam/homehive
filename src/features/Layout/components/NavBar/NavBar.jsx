@@ -60,12 +60,8 @@ export default function NavBar({
 
         const requiresLogin = Boolean(config.isLoggedInFeature);
 
-        // only if login is required
-        // AND user is logged in
-        // OR if login not required
-        if (requiresLogin) {
-          if (!isUserLoggedIn()) return null;
-        }
+        // fallback if login is not valid
+        if (requiresLogin && !isUserLoggedIn()) return null;
 
         return (
           <ListItemButton
@@ -92,8 +88,8 @@ export default function NavBar({
         open={openDrawer}
         onClose={handleDrawerClose}
         aria-modal="true"
-        PaperProps={
-          smScreenSizeAndHigher
+        slotProps={{
+          paper: smScreenSizeAndHigher
             ? {
                 sx: {
                   width: 300,
@@ -108,18 +104,21 @@ export default function NavBar({
                 sx: {
                   width: "100%",
                 },
-              }
-        }
+              },
+        }}
       >
         <Stack
           sx={{
             flexDirection: "row",
             justifyContent: "space-between",
             alignItems: "center",
-            padding: "1rem",
+            padding: "0.4rem",
           }}
         >
-          <Typography variant="h5">RentWorks</Typography>
+          <Stack direction="row" spacing={2} alignItems="center">
+            <img src="/logo-no-text.png" height="100%" width="50rem" />
+            <Typography variant="h5">Homehive</Typography>
+          </Stack>
           <IconButton onClick={handleDrawerClose}>
             {theme.direction === "rtl" ? (
               <ChevronRightRounded />

@@ -110,12 +110,18 @@ export default function AppToolbar({
   return (
     <AppBar elevation={0} sx={{ padding: "0.25rem 0rem" }} className="no-print">
       <Toolbar>
-        <IconButton onClick={handleDrawerOpen}>
-          <MenuOutlined />
-        </IconButton>
-        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-          RentWorks
-        </Typography>
+        <Stack
+          direction="row"
+          spacing={2}
+          alignItems="center"
+          sx={{ flexGrow: 1 }}
+        >
+          <IconButton onClick={handleDrawerOpen}>
+            <MenuOutlined />
+          </IconButton>
+          <img src="/logo-no-text.png" height="100%" width="50rem" />
+          <Typography variant="h5">Homehive</Typography>
+        </Stack>
         <Stack direction="row" spacing={1} alignItems="center">
           {isUserLoggedIn() ? (
             <Tooltip title="logout">
