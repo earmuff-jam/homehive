@@ -21,7 +21,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          fetch-depth: 0 # fetch full history so pull works
+          fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -44,8 +44,31 @@ jobs:
           BODY: ${{ github.event.inputs.body }}
         run: node dev/update-release-docs.js
 
-      - name: Commit and push changes
+      - name: Create release branch
+        run: |
+          BRANCH_NAME=release/update-docs-${{ github.run_id }}
+          git checkout -b $BRANCH_NAME
+          echo "BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_ENV
+
+      - name: Commit changes
         run: |
           git add .
           git commit -m "chore: update release-docs.json for ${{ github.event.inputs.version }}" || echo "Nothing to commit"
-          git push origin HEAD:main
+
+      - name: Push to new branch
+        run: |
+          git push origin ${{ env.BRANCH_NAME }}
+
+      - name: Create pull request
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          title: "chore: update release-docs.json for ${{ github.event.inputs.version }}"
+          body: |
+            Automated pull request to update release-docs.json for version `${{ github.event.inputs.version }}`
+
+            **Date**: ${{ github.event.inputs.date }}
+            **Notes**:
+            ${{ github.event.inputs.body }}
+          head: ${{ env.BRANCH_NAME }}
+          base: main
