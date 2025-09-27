@@ -2,7 +2,7 @@ import { useEffect } from "react";
 
 import { useNavigate } from "react-router-dom";
 
-import { Alert, Box, Container, Grid2, Stack, Typography } from "@mui/material";
+import { Alert, Box, Grid2, Stack, Typography } from "@mui/material";
 import AButton from "common/AButton";
 import { isUserLoggedIn } from "common/utils";
 import { useAuthenticateMutation } from "features/Api/firebaseUserApi";

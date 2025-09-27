@@ -102,15 +102,15 @@ export const getStripeFailureReasons = (account) => {
 /**
  * processTemplate ...
  *
- * utility file used to process templates with
- * built in variable replacement tool.
+ * utility file used to process templates with built in variable replacement tool. html body uses userEmail to prefil the email address field. Used generally to allow users to report suspicious activities.
  *
+ * @param {Object} userEmail - userEmail, not required by default
  * @param {Object} template - the template literal object
  * @param {Object} variables - the object representation of the variables that can be altered
  *
  * @returns formattedTemplate object
  */
-export const processTemplate = (template, variables) => {
+export const processTemplate = (template, variables, userEmail = "") => {
   if (typeof template !== "string") {
     /* eslint-disable no-console */
     console.error("Template must be a string. Received:", template);
@@ -123,6 +123,19 @@ export const processTemplate = (template, variables) => {
     const regex = new RegExp(`{{${key}}}`, "g");
     processedTemplate = processedTemplate.replace(regex, value || "");
   });
+
+  // disclaimers
+  if (userEmail) {
+    processedTemplate = processedTemplate.concat(
+      `
+      <div>
+        <p>
+          This email was sent via Quick Connect by ${userEmail}. Please do not reply to this email as this is an auto generated email.
+        </p>
+      </div>
+`,
+    );
+  }
 
   return processedTemplate;
 };
