@@ -30,9 +30,14 @@ if (isLocalDevTestEnv) {
 } else {
   if (!admin.apps.length) {
     admin.initializeApp({
-      credential: admin.credential.cert(
-        JSON.parse(process.env.VITE_FIREBASE_SERVICE_ACCOUNT),
-      ),
+      credential: admin.credential.cert({
+        projectId: process.env.VITE_FIREBASE_ADMIN_PROJECT_ID,
+        clientEmail: process.env.FIREBASE_ADMIN_CLIENT_EMAIL,
+        privateKey: process.env.FIREBASE_ADMIN_PRIVATE_KEY.replace(
+          /\\n/g,
+          "\n",
+        ),
+      }),
     });
   }
 }
@@ -53,7 +58,10 @@ const standardReminderSettings = {
  * @param {Object} event - the event payload to be processed.
  */
 export const handler = async (event) => {
-  if (!isLocalDevTestEnv && event.queryStringParameters?.key !== AdminAuthorizedKey) {
+  if (
+    !isLocalDevTestEnv &&
+    event.queryStringParameters?.key !== AdminAuthorizedKey
+  ) {
     console.error("problem fetching required token");
     return { statusCode: 401, body: "Unauthorized" };
   }
