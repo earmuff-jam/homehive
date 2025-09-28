@@ -9,7 +9,7 @@ import admin from "firebase-admin";
 import fs from "fs";
 import path from "path";
 
-const isLocalDevTestEnv = process.env.VITE_DEVELOPMENT_ENV;
+const isLocalDevTestEnv = process.env.IS_DEV;
 
 if (isLocalDevTestEnv) {
   if (!admin.apps.length) {
@@ -33,7 +33,7 @@ if (isLocalDevTestEnv) {
 }
 
 const db = admin.firestore();
-const AdminAuthorizedKey = process.env.VITE_SITE_ADMIN_AUTHORIZED_KEY;
+const AdminAuthorizedKey = process.env.FIREBASE_ADMIN_JWT_KEY;
 
 /**
  * handler fn ...
@@ -93,7 +93,7 @@ export const handler = async (event) => {
       `;
 
       const response = await fetch(
-        `${process.env.VITE_SITE_URL}/.netlify/functions/0001_send_email_fn`,
+        `${process.env.SITE_URL}/.netlify/functions/0001_send_email_fn`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

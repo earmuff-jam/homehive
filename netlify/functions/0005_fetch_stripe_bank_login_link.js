@@ -5,8 +5,8 @@
  */
 import Stripe from "stripe";
 
-const stripe = new Stripe(process.env.VITE_AUTH_STRIPE_CONNECTION_SECRET_KEY, {
-  apiVersion: process.env.VITE_AUTH_STRIPE_CONNECTION_API_VERSION,
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
+  apiVersion: process.env.STRIPE_API_VERSION,
 });
 
 /**
@@ -26,8 +26,8 @@ export const handler = async (event) => {
 
     const accountLink = await stripe.accountLinks.create({
       account: accountId,
-      refresh_url: process.env.VITE_AUTH_STRIPE_RETURN_URL,
-      return_url: process.env.VITE_AUTH_STRIPE_REFRESH_URL,
+      refresh_url: process.env.STRIPE_RETURN_URL,
+      return_url: process.env.STRIPE_REFRESH_URL,
       type: "account_update",
     });
 

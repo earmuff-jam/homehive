@@ -7,10 +7,10 @@
 import { EmailParams, MailerSend, Recipient, Sender } from "mailersend";
 
 const mailerSend = new MailerSend({
-  apiKey: process.env.VITE_MAILERSEND_API_KEY,
+  apiKey: process.env.MAILERSEND_API_KEY,
 });
 
-const sentFrom = new Sender(process.env.VITE_MAILERSEND_VERIFIED_EMAIL_KEY);
+const sentFrom = new Sender(process.env.MAILERSEND_EMAIL_KEY);
 
 export const handler = async (event) => {
   if (event.httpMethod !== "POST") {

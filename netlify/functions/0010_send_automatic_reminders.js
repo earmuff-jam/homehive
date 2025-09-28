@@ -14,7 +14,7 @@ import admin from "firebase-admin";
 import fs from "fs";
 import path from "path";
 
-const isLocalDevTestEnv = process.env.VITE_DEVELOPMENT_ENV;
+const isLocalDevTestEnv = process.env.IS_DEV;
 
 if (isLocalDevTestEnv) {
   if (!admin.apps.length) {
@@ -31,14 +31,14 @@ if (isLocalDevTestEnv) {
   if (!admin.apps.length) {
     admin.initializeApp({
       credential: admin.credential.cert(
-        JSON.parse(process.env.VITE_FIREBASE_SERVICE_ACCOUNT),
+        JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT),
       ),
     });
   }
 }
 
 const db = admin.firestore();
-const AdminAuthorizedKey = process.env.VITE_SITE_ADMIN_AUTHORIZED_KEY;
+const AdminAuthorizedKey = process.env.FIREBASE_ADMIN_JWT_KEY;
 
 const standardReminderSettings = {
   GENERAL: [7, 3, 1, 0],
@@ -53,7 +53,10 @@ const standardReminderSettings = {
  * @param {Object} event - the event payload to be processed.
  */
 export const handler = async (event) => {
-  if (!isLocalDevTestEnv && event.queryStringParameters?.key !== AdminAuthorizedKey) {
+  if (
+    !isLocalDevTestEnv &&
+    event.queryStringParameters?.key !== AdminAuthorizedKey
+  ) {
     console.error("problem fetching required token");
     return { statusCode: 401, body: "Unauthorized" };
   }
@@ -139,7 +142,7 @@ export const handler = async (event) => {
       if (subject && text) {
         emailPromises.push(
           fetch(
-            `${process.env.VITE_SITE_URL}/.netlify/functions/0001_send_email_fn`,
+            `${process.env.SITE_URL}/.netlify/functions/0001_send_email_fn`,
             {
               method: "POST",
               headers: { "Content-Type": "application/json" },

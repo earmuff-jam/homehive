@@ -13,7 +13,7 @@ import dayjs from "dayjs";
 
 import Stripe from "stripe";
 
-const stripe = new Stripe(process.env.VITE_AUTH_STRIPE_CONNECTION_SECRET_KEY);
+const stripe = new Stripe(process.env.STRIPE_WEBHOOK_KEY);
 
 /**
  * handler fn
@@ -30,7 +30,7 @@ export const handler = async (event) => {
     stripeEvent = stripe.webhooks.constructEvent(
       event.body,
       sig,
-      process.env.VITE_AUTH_STRIPE_WEBHOOK_SECRET,
+      process.env.STRIPE_WEBHOOK_SECRET,
     );
   } catch (err) {
     console.error("Webhook signature verification failed:", err.message);
@@ -228,7 +228,7 @@ const updateDb = async (stripeEventType, data) => {
         updatedOn: dayjs().toISOString(),
       };
       const response = await fetch(
-        `${process.env.VITE_SITE_URL}/.netlify/functions/0012_update_stripe_payments`,
+        `${process.env.SITE_URL}/.netlify/functions/0012_update_stripe_payments`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -253,7 +253,7 @@ const updateDb = async (stripeEventType, data) => {
         updatedOn: dayjs().toISOString(),
       };
       const response = await fetch(
-        `${process.env.VITE_SITE_URL}/.netlify/functions/0012_update_stripe_payments`,
+        `${process.env.SITE_URL}/.netlify/functions/0012_update_stripe_payments`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

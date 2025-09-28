@@ -7,8 +7,8 @@
  */
 import Stripe from "stripe";
 
-const stripe = new Stripe(process.env.VITE_AUTH_STRIPE_CONNECTION_SECRET_KEY, {
-  apiVersion: process.env.VITE_AUTH_STRIPE_CONNECTION_API_VERSION,
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
+  apiVersion: process.env.STRIPE_API_VERSION,
 });
 
 /**
@@ -96,10 +96,9 @@ export const handler = async (event) => {
           customer_email: tenantEmail,
         },
         success_url:
-          process.env.VITE_AUTH_STRIPE_PAYMENT_CONFIRMATION_SUCCESS_URL +
+          process.env.STRIPE_PAYMENT_SUCCESS_URL +
           "&session_id={CHECKOUT_SESSION_ID}",
-        cancel_url:
-          process.env.VITE_AUTH_STRIPE_PAYMENT_CONFIRMATION_FAILURE_URL,
+        cancel_url: process.env.STRIPE_PAYMENT_FAILURE_URL,
       },
       {
         stripeAccount: stripeOwnerAccountId, // session is created on behalf of the property owner
