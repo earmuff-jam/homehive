@@ -79,7 +79,7 @@ const useSendEmail = () => {
 
     try {
       const response = await fetch(
-        `${process.env.VITE_SITE_URL}/.netlify/functions/0001_send_email_fn`,
+        `${import.meta.env.VITE_SITE_URL}/.netlify/functions/0001_send_email_fn`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

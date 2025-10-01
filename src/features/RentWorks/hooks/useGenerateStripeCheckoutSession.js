@@ -28,7 +28,7 @@ export const useGenerateStripeCheckoutSession = () => {
 
     try {
       const response = await fetch(
-        "/.netlify/functions/0007_create_stripe_checkout_session",
+        `${import.meta.env.VITE_SITE_URL}/.netlify/functions/0007_create_stripe_checkout_session`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
