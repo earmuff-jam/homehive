@@ -2,7 +2,3 @@
   from = "/*"
   to = "/"
   status = 200
-
-
-[dev]
-functions = "netlify/functions"
