@@ -18,7 +18,7 @@ export const useCheckStripeAccountStatus = () => {
 
     try {
       const response = await fetch(
-        "/.netlify/functions/0004_fetch_stripe_account_status",
+        `${import.meta.env.VITE_SITE_URL}/.netlify/functions/0004_fetch_stripe_account_status`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
