@@ -85,12 +85,12 @@ const useSendEmail = () => {
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ to: tenantData.email, subject, text }),
+          body: JSON.stringify({ to, subject, text, html }),
         },
       );
 
       // const response = await fetch(
-      //   `${import.meta.env.VITE_SITE_URL}/api/0001_send_email_fn`,
+      //   `${import.meta.env.VITE_SITE_URL}/.netlify/functions/0001_send_email_fn`,
       //   {
       //     method: "POST",
       //     headers: { "Content-Type": "application/json" },
