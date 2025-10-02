@@ -5,15 +5,7 @@
  * specific header values.
  */
 
-/**
- * handler ...
- *
- * function used to support header control
- * @param {*} event
- * @param {string} fUrl - the forwarded url type
- * @param {string} fMethod - the forwarded method type
- */
-export const handler = async (fUrl, fMethod, event) => {
+export const handler = async (event) => {
   if (event.httpMethod === "OPTIONS") {
     return {
       statusCode: 200,
@@ -27,14 +19,14 @@ export const handler = async (fUrl, fMethod, event) => {
   }
 
   try {
+    const { fUrl, fMethod, payload } = JSON.parse(event.body);
+
     const response = await fetch(
       `${import.meta.env.VITE_SITE_URL}/.netlify/functions/${fUrl}`,
       {
         method: fMethod,
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: event.body,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
       },
     );
 
