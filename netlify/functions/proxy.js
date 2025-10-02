@@ -26,10 +26,10 @@ export const handler = async (event) => {
       {
         method: fMethod,
         headers: {
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-        "Access-Control-Allow-Headers": "Content-Type, Authorization",
-      },
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+          "Access-Control-Allow-Headers": "Content-Type, Authorization",
+        },
         body: JSON.stringify(payload),
       },
     );
@@ -46,6 +46,7 @@ export const handler = async (event) => {
       body: JSON.stringify(data),
     };
   } catch (err) {
+    console.error("unable to process requested api.", err);
     return {
       statusCode: 500,
       headers: {
