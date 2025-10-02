@@ -78,16 +78,15 @@ const useSendEmail = () => {
     setSuccess(false);
 
     try {
-      const response = await fetch(
-        "/.netlify/functions/proxy",
-        "0001_send_email_fn",
-        "GET",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ to, subject, text, html }),
-        },
-      );
+      const response = await fetch("/.netlify/functions/proxy", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          fUrl: "0001_send_email_fn",
+          fMethod: "GET",
+          payload: { to, subject, text, html },
+        }),
+      });
 
       // const response = await fetch(
       //   `${import.meta.env.VITE_SITE_URL}/.netlify/functions/0001_send_email_fn`,
