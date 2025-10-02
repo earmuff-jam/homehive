@@ -5,15 +5,17 @@
  * specific header values.
  */
 
+const DefaultHeaders = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+  "Access-Control-Allow-Headers": "Content-Type, Authorization",
+};
+
 export const handler = async (event) => {
   if (event.httpMethod === "OPTIONS") {
     return {
       statusCode: 200,
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-        "Access-Control-Allow-Headers": "Content-Type, Authorization",
-      },
+      headers: DefaultHeaders,
       body: "",
     };
   }
@@ -25,12 +27,8 @@ export const handler = async (event) => {
       `${process.env.VITE_SITE_URL}/.netlify/functions/${fUrl}`,
       {
         method: fMethod,
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-          "Access-Control-Allow-Headers": "Content-Type, Authorization",
-        },
-        body: JSON.stringify(payload),
+        headers: DefaultHeaders,
+        body: "POST" || "PUT" === fMethod ? JSON.stringify(payload) : null,
       },
     );
 
@@ -38,22 +36,14 @@ export const handler = async (event) => {
 
     return {
       statusCode: response.status,
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-        "Access-Control-Allow-Headers": "Content-Type, Authorization",
-      },
+      headers: DefaultHeaders,
       body: JSON.stringify(data),
     };
   } catch (err) {
     console.error("unable to process requested api.", err);
     return {
       statusCode: 500,
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-        "Access-Control-Allow-Headers": "Content-Type, Authorization",
-      },
+      headers: DefaultHeaders,
       body: JSON.stringify({ error: err.message }),
     };
   }
