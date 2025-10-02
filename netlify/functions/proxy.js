@@ -22,7 +22,7 @@ export const handler = async (event) => {
     const { fUrl, fMethod, payload } = JSON.parse(event.body);
 
     const response = await fetch(
-      `${import.meta.env.VITE_SITE_URL}/.netlify/functions/${fUrl}`,
+      `${process.env.VITE_SITE_URL}/.netlify/functions/${fUrl}`,
       {
         method: fMethod,
         headers: { "Content-Type": "application/json" },
