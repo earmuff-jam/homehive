@@ -4,7 +4,11 @@ import { defineConfig } from "vite";
 import { VitePWA } from "vite-plugin-pwa";
 
 const manifestForPlugIn = {
-  registerType: "prompt",
+  registerType: "autoUpdate",
+  workbox: {
+    clientsClaim: true,
+    skipWaiting: true,
+  },
   includeAssets: ["favicon.ico", "apple-touc-icon.png", "masked-icon.svg"],
   manifest: {
     name: "HomeHiveSolutions",
