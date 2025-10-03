@@ -83,7 +83,7 @@ const useSendEmail = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           fUrl: "0001_send_email_fn",
-          fMethod: "GET",
+          fMethod: "POST",
           payload: { to, subject, text, html },
         }),
       });
