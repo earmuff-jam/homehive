@@ -3,6 +3,5 @@
   to = "/"
   status = 200
 
-
-[dev]
-functions = "netlify/functions"
+[build]
+  functions = "netlify/functions"

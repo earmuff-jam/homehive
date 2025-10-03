@@ -1,0 +1,74 @@
+{
+  "workbench.startupEditor": "none",
+  "editor.wordWrap": "on",
+  "editor.renderWhitespace": "all",
+  "editor.minimap.enabled": false,
+  "files.associations": {
+    "*.sql": "sql"
+  },
+  "explorer.confirmDragAndDrop": false,
+  "explorer.confirmDelete": false,
+  "javascript.updateImportsOnFileMove.enabled": "always",
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[css]": {
+    "editor.defaultFormatter": "vscode.css-language-features"
+  },
+  "[markdown]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[html]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "extensions.ignoreRecommendations": true,
+  "[javascriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "terminal.integrated.fontSize": 15,
+  "terminal.integrated.fontWeight": "300",
+  "terminal.integrated.fontFamily":  "Fira Code",
+  "git.openRepositoryInParentFolders": "never",
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "go.toolsManagement.autoUpdate": true,
+  "editor.fontLigatures": false,
+  "update.mode": "none",
+  "editor.fontSize": 15,
+  "editor.fontFamily": "Fira Code",
+  "window.zoomLevel": 0,
+  "update.showReleaseNotes": false,
+  "gitlens.views.searchAndCompare.files.layout": "list",
+  "gitlens.views.scm.grouped.views": {
+    "commits": true,
+    "branches": true,
+    "remotes": true,
+    "stashes": true,
+    "tags": true,
+    "worktrees": true,
+    "contributors": true,
+    "fileHistory": true,
+    "repositories": true,
+    "searchAndCompare": true,
+    "launchpad": false
+  },
+  "javascript.preferences.importModuleSpecifier": "non-relative",
+  "explorer.confirmPasteNative": false,
+  "window.confirmSaveUntitledWorkspace": false,
+  "workbench.editorAssociations": {
+    "git-rebase-todo": "default"
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "workbench.colorTheme": "Vim Dark Hard",
+  "workbench.iconTheme": "vscode-great-icons",
+}

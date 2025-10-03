@@ -1,5 +1,4 @@
-import { useEffect } from "react";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import { v4 as uuidv4 } from "uuid";
 
@@ -37,6 +36,8 @@ import {
   fetchLoggedInUser,
   formatCurrency,
 } from "features/RentWorks/common/utils";
+import { getStripeFailureReasons } from "features/RentWorks/components/Settings/common";
+import { useCheckStripeAccountStatus } from "features/RentWorks/hooks/useCheckStripeAccountStatus";
 import { useGenerateStripeCheckoutSession } from "features/RentWorks/hooks/useGenerateStripeCheckoutSession";
 
 export default function PropertyOwnerInfoCard({
@@ -47,6 +48,8 @@ export default function PropertyOwnerInfoCard({
 }) {
   const user = fetchLoggedInUser();
   const { generateStripeCheckoutSession } = useGenerateStripeCheckoutSession();
+  const { checkStatus, loading: isCheckStripeAccountStatusLoading } =
+    useCheckStripeAccountStatus();
 
   const [createRentRecord, { isError: isCreatingRentRecordError, error }] =
     useCreateRentRecordMutation();
@@ -65,8 +68,7 @@ export default function PropertyOwnerInfoCard({
   const [triggerGetRentByMonth, { data: rentMonthData = [] }] =
     useLazyGetRentByMonthQuery();
 
-  const isStripeConnectedAndValid =
-    isViewingRental && owner?.stripeAccountIsActive;
+  const [stripeValid, setStripeValid] = useState(false);
 
   const paymentCompleteForCurrentMonth = rentMonthData?.some(
     (item) => item.status === "complete",
@@ -128,6 +130,23 @@ export default function PropertyOwnerInfoCard({
       });
     }
   }, [property?.id]);
+
+  useEffect(() => {
+    const checkStripeStatus = async (accountId) => {
+      try {
+        const status = await checkStatus({ accountId });
+        const reasons = getStripeFailureReasons(status);
+        if (reasons?.length <= 0) {
+          setStripeValid(true);
+        }
+      } catch (err) {
+        setStripeValid(false);
+        /* eslint-disable no-console */
+        console.error(err);
+      }
+    };
+    owner?.stripeAccountId && checkStripeStatus(owner?.stripeAccountId);
+  }, [owner?.stripeAccountId, isPropertyLoading]);
 
   if (isLoading) return <Skeleton height="10rem" />;
 
@@ -253,9 +272,8 @@ export default function PropertyOwnerInfoCard({
                   variant="contained"
                   label="Pay rent"
                   sx={{ margin: "0.4rem 0rem" }}
-                  disabled={
-                    !isStripeConnectedAndValid || paymentCompleteForCurrentMonth
-                  }
+                  loading={isCheckStripeAccountStatusLoading}
+                  disabled={!stripeValid || paymentCompleteForCurrentMonth}
                   onClick={() =>
                     handleRentPayment({
                       stripeOwnerAccountId: owner?.stripeAccountId,

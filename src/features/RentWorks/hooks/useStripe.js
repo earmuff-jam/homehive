@@ -24,7 +24,7 @@ export const useCreateStripeAccount = () => {
 
     try {
       const response = await fetch(
-        "/.netlify/functions/0002_create_stripe_account",
+        `${import.meta.env.VITE_SITE_URL}/.netlify/functions/0002_create_stripe_account`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -78,7 +78,7 @@ export const useCreateStripeAccountLink = () => {
 
     try {
       const response = await fetch(
-        "/.netlify/functions/0003_link_stripe_account",
+        `${import.meta.env.VITE_SITE_URL}/.netlify/functions/0003_link_stripe_account`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -119,7 +119,7 @@ export const useCreateLoginLinkStripeAccount = () => {
 
     try {
       const response = await fetch(
-        "/.netlify/functions/0005_fetch_stripe_bank_login_link",
+        `${import.meta.env.VITE_SITE_URL}/.netlify/functions/0005_fetch_stripe_bank_login_link`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -159,7 +159,7 @@ export const useGetRecentTransactions = () => {
 
     try {
       const response = await fetch(
-        "/.netlify/functions/0006_fetch_stripe_recent_transactions",
+        `${import.meta.env.VITE_SITE_URL}/.netlify/functions/0006_fetch_stripe_recent_transactions`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

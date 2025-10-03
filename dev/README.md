@@ -68,11 +68,11 @@ messages to be in the format of
 
 [bugfix] - 28: Add type to selected invoice by @mohit2530 in https://github.com/earmuff-jam/invoicer/pull/33
 
-[improvement] - 53: Added support for FAQ section and Whats' New Section by @mohit2530 in https://github.com/earmuff-jam/invoicer/pull/54
+[maintenance] - 53: Added support for FAQ section and Whats' New Section by @mohit2530 in https://github.com/earmuff-jam/invoicer/pull/54
 
 ```
 
-We only support `feature`, `improvement`, or `bugfix` under the release notes section.
+We only support `feature`, `maintenance`, or `bugfix` under the release notes section.
 This rule should also be implemented over the github PR process as well.
 
 Please follow the correct symantic tags for github. We tag the release, and we let github

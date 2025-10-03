@@ -16,7 +16,7 @@ import { getFirestore } from "firebase/firestore";
  */
 const isFirebaseConfigOptionsValid = ({ options }) =>
   options &&
-  !Object.values(options).some((option) => option.length === 0) &&
+  !Object.values(options).some((option) => option?.length === 0) &&
   typeof options?.apiKey === "string" &&
   typeof options?.authDomain === "string" &&
   typeof options?.projectId === "string";
