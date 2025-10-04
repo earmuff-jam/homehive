@@ -27,12 +27,13 @@ export const useGenerateStripeCheckoutSession = () => {
     setError(null);
 
     try {
-      const response = await fetch(
-        `${import.meta.env.VITE_SITE_URL}/.netlify/functions/0007_create_stripe_checkout_session`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
+      const response = await fetch("/.netlify/functions/proxy", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          fUrl: "0007_create_stripe_checkout_session",
+          fMethod: "POST",
+          payload: JSON.stringify({
             rentAmount,
             additionalCharges,
             initialLateFee,
@@ -44,11 +45,10 @@ export const useGenerateStripeCheckoutSession = () => {
             rentMonth,
             tenantEmail,
           }),
-        },
-      );
+        }),
+      });
 
       const data = await response.json();
-
       if (!response.ok || !data.url) {
         throw new Error(
           data.error || "Unable to create Stripe checkout session",
