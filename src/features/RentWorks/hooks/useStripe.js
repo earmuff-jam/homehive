@@ -84,7 +84,7 @@ export const useCreateStripeAccountLink = () => {
         body: JSON.stringify({
           fUrl: "0003_link_stripe_account",
           fMethod: "POST",
-          payload: JSON.stringify({ accountId }),
+          payload: { accountId },
         }),
       });
 
@@ -126,7 +126,7 @@ export const useCreateLoginLinkStripeAccount = () => {
         body: JSON.stringify({
           fUrl: "0005_fetch_stripe_bank_login_link",
           fMethod: "POST",
-          payload: JSON.stringify({ accountId }),
+          payload: { accountId },
         }),
       });
 
@@ -167,7 +167,7 @@ export const useGetRecentTransactions = () => {
         body: JSON.stringify({
           fUrl: "0006_fetch_stripe_recent_transactions",
           fMethod: "POST",
-          payload: JSON.stringify({ connectedAccountId }),
+          payload: { connectedAccountId },
         }),
       });
 

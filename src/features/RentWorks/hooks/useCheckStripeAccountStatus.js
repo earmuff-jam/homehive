@@ -23,7 +23,7 @@ export const useCheckStripeAccountStatus = () => {
         body: JSON.stringify({
           fUrl: "0004_fetch_stripe_account_status",
           fMethod: "POST",
-          payload: JSON.stringify({ accountId }),
+          payload: { accountId },
         }),
       });
 
