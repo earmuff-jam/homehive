@@ -57,7 +57,7 @@ const ViewRentalPaymentSummary = ({ rentData = [] }) => {
       },
       {
         accessorKey: "updatedOn",
-        header: "Created on",
+        header: "Updated on",
         size: 150,
         Cell: ({ cell }) =>
           cell.getValue()
@@ -75,6 +75,7 @@ const ViewRentalPaymentSummary = ({ rentData = [] }) => {
     enableTopToolbar: false,
     initialState: {
       density: "compact",
+      sorting: [{ id: "updatedOn", desc: true }],
     },
     renderEmptyRowsFallback: () => <EmptyComponent />,
     mrtTheme: (theme) => ({

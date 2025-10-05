@@ -10,7 +10,6 @@ import {
   Grid,
   Paper,
   Skeleton,
-  Slide,
   Stack,
 } from "@mui/material";
 import AButton from "common/AButton";
@@ -29,10 +28,6 @@ import QuickActions from "features/RentWorks/components/Widgets/QuickActions";
 import RentalPaymentOverview from "features/RentWorks/components/Widgets/RentalPaymentOverview";
 import TenantsOverview from "features/RentWorks/components/Widgets/TenantsOverview";
 import { useAppTitle } from "hooks/useAppTitle";
-
-const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
 
 const Property = () => {
   const params = useParams();
@@ -131,7 +126,6 @@ const Property = () => {
 
       <Dialog
         open={dialog}
-        TransitionComponent={Transition}
         keepMounted
         fullWidth
         aria-describedby="alert-dialog-slide-description"
