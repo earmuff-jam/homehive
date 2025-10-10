@@ -12,6 +12,7 @@ import { authenticatorConfig } from "src/config";
 
 // stripe rent status
 export const PaidRentStatusEnumValue = "paid";
+export const ManualRentStatusEnumValue = "manual";
 
 // template processor actions
 export const CreateInvoiceEnumValue = "Create_Invoice";
@@ -221,6 +222,39 @@ export function getNextMonthlyDueDate(startDate) {
 
   return nextDue.format("YYYY-MM-DD");
 }
+
+/**
+ * getColorAndLabelForCurrentMonth ...
+ *
+ * used to return color and label for the current month based on rent status.
+ *
+ * @param {String} startDate - the startDate of the tenant
+ * @param {Object} rent - the rent details for the current month
+ * @param {Number} gracePeriod - the days grace period is provided. Defaults to 3.
+ * @returns {Object} { color: string, label: string } - color and label
+ */
+export const getColorAndLabelForCurrentMonth = (
+  startDate,
+  rent,
+  gracePeriod = 3,
+) => {
+  const leaseStart = dayjs(startDate, "MM-DD-YYYY");
+
+  if (dayjs().isBefore(leaseStart, "day")) return false;
+  const graceDate = dayjs().startOf("month").add(gracePeriod, "day");
+  const pastGracePeriod = dayjs().isAfter(graceDate, "day");
+
+  if (
+    PaidRentStatusEnumValue ||
+    ManualRentStatusEnumValue === rent?.status.toLowerCase()
+  ) {
+    return { color: "success", label: "Paid" };
+  } else if (pastGracePeriod) {
+    return { color: "error", label: "Overdue" };
+  } else {
+    return { color: "warning", label: "Unpaid" };
+  }
+};
 
 /**
  * Checks if rent is currently due.

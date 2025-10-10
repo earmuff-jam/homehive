@@ -28,12 +28,11 @@ import EmptyComponent from "common/EmptyComponent";
 import { useLazyGetUserDataByIdQuery } from "features/Api/firebaseUserApi";
 import { useGetTenantByPropertyIdQuery } from "features/Api/tenantsApi";
 import {
+  ManualRentStatusEnumValue,
   PaidRentStatusEnumValue,
   derieveTotalRent,
-  getCurrentMonthPaidRent,
+  getColorAndLabelForCurrentMonth,
   getNextMonthlyDueDate,
-  getRentStatus,
-  isRentDue,
   updateDateTime,
 } from "features/RentWorks/common/utils";
 import QuickConnectMenu from "features/RentWorks/components/QuickConnect/QuickConnectMenu";
@@ -74,6 +73,20 @@ const ViewPropertyAccordionDetails = ({
   const handleCloseQuickConnect = () => setAnchorEl(null);
   const handleOpenQuickConnect = (ev) => setAnchorEl(ev.currentTarget);
 
+  const currentMonthRent = rentDetails?.find(
+    (rent) =>
+      rent.rentMonth === dayjs().format("MMMM") &&
+      (PaidRentStatusEnumValue ||
+        ManualRentStatusEnumValue === rent.status?.toLowerCase()),
+  );
+
+  const { color: statusColor, label: statusLabel } =
+    getColorAndLabelForCurrentMonth(
+      primaryTenantDetails?.start_date,
+      currentMonthRent,
+      Number(primaryTenantDetails?.grace_period),
+    );
+
   const handleQuickConnectMenuItem = (
     action,
     property,
@@ -110,21 +123,6 @@ const ViewPropertyAccordionDetails = ({
   if (!tenants || tenants.length === 0) {
     return <EmptyComponent caption="Add tenants to begin." />;
   }
-
-  const currentMonthRent = getCurrentMonthPaidRent(rentDetails);
-
-  const isDue = isRentDue(
-    primaryTenantDetails.start_date,
-    Number(primaryTenantDetails?.grace_period),
-    currentMonthRent,
-  );
-
-  const isLate = rentDetails?.length > 0 && isDue;
-
-  const { color: statusColor, label: statusLabel } = getRentStatus({
-    isPaid: currentMonthRent?.status === PaidRentStatusEnumValue,
-    isLate,
-  });
 
   return (
     <Stack spacing={2}>
