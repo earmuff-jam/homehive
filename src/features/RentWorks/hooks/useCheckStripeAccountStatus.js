@@ -17,17 +17,17 @@ export const useCheckStripeAccountStatus = () => {
     setStatus(null);
 
     try {
-      const response = await fetch(
-        `${import.meta.env.VITE_SITE_URL}/.netlify/functions/0004_fetch_stripe_account_status`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ accountId }),
-        },
-      );
+      const response = await fetch("/.netlify/functions/proxy", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          fUrl: "0004_fetch_stripe_account_status",
+          fMethod: "POST",
+          payload: { accountId },
+        }),
+      });
 
       const data = await response.json();
-
       if (!response.ok) throw new Error(data.error || "Failed to fetch status");
 
       setStatus(data);

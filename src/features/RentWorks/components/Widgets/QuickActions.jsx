@@ -6,23 +6,25 @@ import { useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
 
 import {
-  Button,
   Card,
   CardContent,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
-  Slide,
   Stack,
 } from "@mui/material";
 import AButton from "common/AButton";
 import CustomSnackbar from "common/CustomSnackbar/CustomSnackbar";
 import RowHeader from "common/RowHeader/RowHeader";
 import { useUpdatePropertyByIdMutation } from "features/Api/propertiesApi";
-import { AddPropertyTextString } from "features/RentWorks/common/constants";
+import {
+  AddPropertyTextString,
+  AddRentRecordsTextString,
+} from "features/RentWorks/common/constants";
 import { fetchLoggedInUser } from "features/RentWorks/common/utils";
 import AddProperty from "features/RentWorks/components/AddProperty/AddProperty";
+import { AddRentRecords } from "features/RentWorks/components/AddRentRecords/AddRentRecords";
 
 const defaultDialog = {
   title: "",
@@ -30,14 +32,13 @@ const defaultDialog = {
   display: false,
 };
 
-const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
-
 export default function QuickActions({ property }) {
   const navigate = useNavigate();
   const user = fetchLoggedInUser();
-  const [updateProperty] = useUpdatePropertyByIdMutation();
+  const [
+    updateProperty,
+    { isSuccess: isUpdatePropertySuccess, isLoading: isUpdatePropertyLoading },
+  ] = useUpdatePropertyByIdMutation();
 
   const {
     register,
@@ -54,7 +55,7 @@ export default function QuickActions({ property }) {
     reset();
   };
 
-  const onSubmit = async (data) => {
+  const onSubmit = (data) => {
     const result = {
       ...data,
       id: property?.id,
@@ -64,10 +65,15 @@ export default function QuickActions({ property }) {
       updatedOn: dayjs().toISOString(),
     };
 
-    await updateProperty(result);
-    setShowSnackbar(true);
-    closeDialog();
+    updateProperty(result);
   };
+
+  useEffect(() => {
+    if (isUpdatePropertySuccess) {
+      closeDialog();
+      setShowSnackbar(true);
+    }
+  }, [isUpdatePropertySuccess]);
 
   useEffect(() => {
     if (property?.id) {
@@ -100,7 +106,7 @@ export default function QuickActions({ property }) {
           }}
         />
         <Stack spacing={1}>
-          <Button
+          <AButton
             variant="outlined"
             fullWidth
             onClick={() =>
@@ -110,33 +116,49 @@ export default function QuickActions({ property }) {
                 display: true,
               })
             }
-          >
-            Edit Property
-          </Button>
-
-          <Button
+            label="Edit Property"
+          />
+          <AButton
             variant="outlined"
             fullWidth
             onClick={() => navigate("/settings?tabIdx=2")}
-          >
-            View Stripe Payment History
-          </Button>
-          <Button variant="outlined" fullWidth disabled>
-            Add Maintenance Request
-          </Button>
-          <Button variant="outlined" fullWidth disabled>
-            Generate Report
-          </Button>
+            label="View Stripe Payment History"
+          />
+          <AButton
+            variant="outlined"
+            fullWidth
+            disabled
+            label="Add Maintenance Request"
+          />
+          <AButton
+            variant="outlined"
+            fullWidth
+            label="Pay rent manually"
+            onClick={() =>
+              setDialog({
+                title: "Update rent records manually",
+                type: AddRentRecordsTextString,
+                display: true,
+              })
+            }
+          />
 
-          {/* Edit property dialog  */}
           <Dialog
             open={dialog.display}
-            TransitionComponent={Transition}
             keepMounted
             fullWidth
+            maxWidth="md"
             aria-describedby="alert-dialog-slide-description"
           >
-            <DialogTitle>{dialog.title}</DialogTitle>
+            <DialogTitle>
+              <RowHeader
+                title="Add rent records"
+                caption="Once you add a rental record manually, it can’t be edited later. Please double-check before submitting."
+                sxProps={{
+                  textAlign: "left",
+                }}
+              />
+            </DialogTitle>
             <DialogContent>
               {dialog.type === AddPropertyTextString && (
                 <AddProperty
@@ -144,7 +166,14 @@ export default function QuickActions({ property }) {
                   register={register}
                   errors={errors}
                   onSubmit={handleSubmit(onSubmit)}
-                  isDisabled={!isValid}
+                  isDisabled={!isValid || isUpdatePropertyLoading}
+                />
+              )}
+              {dialog.type === AddRentRecordsTextString && (
+                <AddRentRecords
+                  property={property}
+                  closeDialog={closeDialog}
+                  setShowSnackbar={setShowSnackbar}
                 />
               )}
             </DialogContent>
@@ -154,6 +183,7 @@ export default function QuickActions({ property }) {
                 variant="outlined"
                 onClick={closeDialog}
                 label="Close"
+                loading={isUpdatePropertyLoading}
               />
             </DialogActions>
           </Dialog>

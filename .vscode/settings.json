@@ -34,16 +34,17 @@
   },
   "terminal.integrated.fontSize": 15,
   "terminal.integrated.fontWeight": "300",
-  "terminal.integrated.fontFamily":  "Fira Code",
+  "terminal.integrated.fontFamily": "Fira Code",
+
   "git.openRepositoryInParentFolders": "never",
   "[typescript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "go.toolsManagement.autoUpdate": true,
-  "editor.fontLigatures": false,
   "update.mode": "none",
   "editor.fontSize": 15,
   "editor.fontFamily": "Fira Code",
+  "editor.fontLigatures": true,
   "window.zoomLevel": 0,
   "update.showReleaseNotes": false,
   "gitlens.views.searchAndCompare.files.layout": "list",
@@ -70,5 +71,5 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "workbench.colorTheme": "Vim Dark Hard",
-  "workbench.iconTheme": "vscode-great-icons",
+  "workbench.iconTheme": "vscode-great-icons"
 }

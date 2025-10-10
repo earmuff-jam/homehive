@@ -26,7 +26,11 @@ const TextFieldWithLabel = React.forwardRef(
     return (
       <Stack spacing={0.5} width="100%" data-tour={dataTour}>
         <Stack direction="row" spacing={1}>
-          <Typography variant="body2" fontWeight="medium">
+          <Typography
+            variant="body2"
+            color={isDisabled ? "textSecondary" : "textPrimary"}
+            fontWeight="medium"
+          >
             {label}
           </Typography>
           {labelIcon && <Tooltip title={labelIconHelper}>{labelIcon}</Tooltip>}

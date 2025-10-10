@@ -23,14 +23,15 @@ export const useCreateStripeAccount = () => {
     setSuccess(false);
 
     try {
-      const response = await fetch(
-        `${import.meta.env.VITE_SITE_URL}/.netlify/functions/0002_create_stripe_account`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email }),
-        },
-      );
+      const response = await fetch("/.netlify/functions/proxy", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          fUrl: "0002_create_stripe_account",
+          fMethod: "POST",
+          payload: JSON.stringify({ email }),
+        }),
+      });
 
       const data = await response.json();
 
@@ -77,14 +78,15 @@ export const useCreateStripeAccountLink = () => {
     }
 
     try {
-      const response = await fetch(
-        `${import.meta.env.VITE_SITE_URL}/.netlify/functions/0003_link_stripe_account`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ accountId }),
-        },
-      );
+      const response = await fetch("/.netlify/functions/proxy", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          fUrl: "0003_link_stripe_account",
+          fMethod: "POST",
+          payload: { accountId },
+        }),
+      });
 
       const data = await response.json();
 
@@ -118,14 +120,15 @@ export const useCreateLoginLinkStripeAccount = () => {
     setError(null);
 
     try {
-      const response = await fetch(
-        `${import.meta.env.VITE_SITE_URL}/.netlify/functions/0005_fetch_stripe_bank_login_link`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ accountId }),
-        },
-      );
+      const response = await fetch("/.netlify/functions/proxy", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          fUrl: "0005_fetch_stripe_bank_login_link",
+          fMethod: "POST",
+          payload: { accountId },
+        }),
+      });
 
       const data = await response.json();
       if (!response.ok || !data.url) {
@@ -158,14 +161,15 @@ export const useGetRecentTransactions = () => {
     setError(null);
 
     try {
-      const response = await fetch(
-        `${import.meta.env.VITE_SITE_URL}/.netlify/functions/0006_fetch_stripe_recent_transactions`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ connectedAccountId }),
-        },
-      );
+      const response = await fetch("/.netlify/functions/proxy", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          fUrl: "0006_fetch_stripe_recent_transactions",
+          fMethod: "POST",
+          payload: { connectedAccountId },
+        }),
+      });
 
       const data = await response.json();
       if (!response.ok) throw new Error(data.error || "Failed to fetch");
