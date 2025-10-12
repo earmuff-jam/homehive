@@ -45,6 +45,7 @@ export default [
       "react/jsx-uses-react": "error",
       "no-unused-vars": ["error"],
       "no-console": ["error", { allow: ["warn", "debug"] }],
+      "react-hooks/exhaustive-deps": "off",
     },
   },
 ];

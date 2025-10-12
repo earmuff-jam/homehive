@@ -49,7 +49,7 @@
   "update.showReleaseNotes": false,
   "gitlens.views.searchAndCompare.files.layout": "list",
   "gitlens.views.scm.grouped.views": {
-    "commits": true,
+    "commits": false,
     "branches": true,
     "remotes": true,
     "stashes": true,

@@ -133,10 +133,12 @@ export default function AppToolbar({
   }, [isAuthLoading]);
 
   if (isAuthError) {
-    console.error(JSON.stringify(authError));
     return (
       <Alert severity="error">
-        <Typography>Error during log in. Please try again later.</Typography>
+        <Stack>
+          <Typography>Error during log in. Please try again later.</Typography>
+          <Typography variant="caption">{authError?.message}</Typography>
+        </Stack>
       </Alert>
     );
   }

@@ -79,7 +79,7 @@ export const filterValidRoutesForNavigationBar = (draftRoutes = []) => {
  * @param {Array} draftRoutes - Array of draft routes within the application
  * @returns Array of <Route> elements
  */
-export function buildAppRoutes(draftRoutes = [], roleType = "") {
+export function buildAppRoutes(draftRoutes = []) {
   const validRouteFlags = validateClientPermissions();
 
   return draftRoutes

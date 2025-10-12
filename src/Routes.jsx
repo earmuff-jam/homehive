@@ -32,10 +32,6 @@ import {
   ViewInvoiceRouteUri,
 } from "common/utils";
 import SplashPage from "features/Layout/SplashPage";
-import {
-  OwnerRole,
-  TenantRole,
-} from "features/Layout/components/Landing/constants";
 import SubAppRouter from "src/SubRouter";
 
 const Overview = lazy(

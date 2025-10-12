@@ -28,14 +28,10 @@ import EmptyComponent from "common/EmptyComponent";
 import { useLazyGetUserDataByIdQuery } from "features/Api/firebaseUserApi";
 import { useGetTenantByPropertyIdQuery } from "features/Api/tenantsApi";
 import {
-  ManualRentStatusEnumValue,
-  PaidRentStatusEnumValue,
   derieveTotalRent,
   getColorAndLabelForCurrentMonth,
   getNextMonthlyDueDate,
   getRentDetails,
-  getRentStatus,
-  isRentDue,
   updateDateTime,
 } from "features/RentWorks/common/utils";
 import QuickConnectMenu from "features/RentWorks/components/QuickConnect/QuickConnectMenu";
@@ -67,47 +63,26 @@ const ViewPropertyAccordionDetails = ({
 
   const [anchorEl, setAnchorEl] = useState(null);
   
-  const primaryTenantDetails =
-  tenants?.find((tenant) => tenant.isPrimary) || tenants[0];
-  
   const isOpen = Boolean(anchorEl);
   const currentMonthRent = getRentDetails(rentDetails);
+
   const isAnyPropertySoR = tenants?.some((tenant) => tenant.isSoR);
-
-  const isDue = isRentDue(
-    primaryTenantDetails.start_date,
-    Number(primaryTenantDetails?.grace_period),
-    currentMonthRent,
-  );
-
-  const isLate = rentDetails?.length > 0 && isDue;
-
-  const { color: statusColor, label: statusLabel } = getRentStatus({
-    isPaid: currentMonthRent?.status === PaidRentStatusEnumValue,
-    isLate,
-  });
+  const primaryTenant = tenants?.find((tenant) => tenant.isPrimary);
 
   const handleCloseQuickConnect = () => setAnchorEl(null);
   const handleOpenQuickConnect = (ev) => setAnchorEl(ev.currentTarget);
 
-  const currentMonthRent = rentDetails?.find(
-    (rent) =>
-      rent.rentMonth === dayjs().format("MMMM") &&
-      (PaidRentStatusEnumValue ||
-        ManualRentStatusEnumValue === rent.status?.toLowerCase()),
-  );
-
   const { color: statusColor, label: statusLabel } =
     getColorAndLabelForCurrentMonth(
-      primaryTenantDetails?.start_date,
+      primaryTenant?.start_date,
       currentMonthRent,
-      Number(primaryTenantDetails?.grace_period),
+      Number(primaryTenant?.grace_period),
     );
 
   const handleQuickConnectMenuItem = (
     action,
     property,
-    primaryTenantDetails,
+    primaryTenant,
     propertyOwnerData,
     redirectTo,
     sendEmail,
@@ -125,8 +100,8 @@ const ViewPropertyAccordionDetails = ({
       action,
       property,
       totalRent,
-      getNextMonthlyDueDate(primaryTenantDetails?.start_date),
-      primaryTenantDetails,
+      getNextMonthlyDueDate(primaryTenant?.start_date),
+      primaryTenant,
       propertyOwnerData,
       savedTemplates,
       redirectTo,
@@ -157,16 +132,16 @@ const ViewPropertyAccordionDetails = ({
         {/* LEFT SECTION */}
         <Stack direction="row" spacing={2} flexWrap="wrap" flex={1}>
           <Avatar sx={{ bgcolor: "primary.main", mt: 0.5 }}>
-            {primaryTenantDetails?.first_name ||
-              primaryTenantDetails?.googleDisplayName ||
+            {primaryTenant?.first_name ||
+              primaryTenant?.googleDisplayName ||
               "U"}
           </Avatar>
           <Stack flexGrow={1}>
             <Stack direction="row" spacing={1} alignItems="center">
               <Typography variant="subtitle1" fontWeight={600}>
-                {primaryTenantDetails?.first_name ||
-                  primaryTenantDetails?.googleDisplayName ||
-                  primaryTenantDetails?.email}
+                {primaryTenant?.first_name ||
+                  primaryTenant?.googleDisplayName ||
+                  primaryTenant?.email}
               </Typography>
               <Tooltip title="Primary point of contact">
                 <CheckCircleOutlineRounded color="primary" fontSize="small" />
@@ -185,7 +160,7 @@ const ViewPropertyAccordionDetails = ({
                   fontSize="1.875rem"
                   color="primary"
                 >
-                  ${primaryTenantDetails?.rent}
+                  ${primaryTenant?.rent}
                 </Typography>
                 <Typography variant="subtitle2" color="textSecondary">
                   Total Monthly Rent
@@ -194,9 +169,7 @@ const ViewPropertyAccordionDetails = ({
               <Stack textAlign="center">
                 <Typography variant="subtitle2" fontSize="2rem" color="primary">
                   {dayjs(
-                    updateDateTime(
-                      dayjs(primaryTenantDetails?.start_date || ""),
-                    ),
+                    updateDateTime(dayjs(primaryTenant?.start_date || "")),
                   ).format("MMM DD")}
                 </Typography>
                 <Typography variant="subtitle2" color="textSecondary">
@@ -208,7 +181,7 @@ const ViewPropertyAccordionDetails = ({
             <Box>
               <Chip
                 icon={
-                  primaryTenantDetails?.isPaid ? (
+                  primaryTenant?.isPaid ? (
                     <PaidRounded />
                   ) : (
                     <MoneyOffCsredRounded />
@@ -246,7 +219,7 @@ const ViewPropertyAccordionDetails = ({
                   maxWidth: 150,
                 }}
               >
-                {primaryTenantDetails?.phone}
+                {primaryTenant?.phone}
               </Typography>
             </Stack>
 
@@ -263,12 +236,12 @@ const ViewPropertyAccordionDetails = ({
                   maxWidth: 150,
                 }}
               >
-                {primaryTenantDetails?.email}
+                {primaryTenant?.email}
               </Typography>
               <Tooltip title="Send Email">
                 <IconButton
                   size="small"
-                  href={`mailto:${primaryTenantDetails?.email}`}
+                  href={`mailto:${primaryTenant?.email}`}
                   target="_blank"
                 >
                   <EmailRounded fontSize="small" />
@@ -296,7 +269,7 @@ const ViewPropertyAccordionDetails = ({
                 handleQuickConnectMenuItem(
                   action,
                   property,
-                  primaryTenantDetails,
+                  primaryTenant,
                   propertyOwnerData,
                   redirectTo,
                   sendEmail,

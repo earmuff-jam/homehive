@@ -71,7 +71,7 @@ export default function PropertyOwnerInfoCard({
   const [stripeValid, setStripeValid] = useState(false);
 
   const paymentCompleteForCurrentMonth = rentMonthData?.some(
-    (item) => "paid" || "manual" === item.status,
+    (item) => item.status === "paid" || item.status === "manual",
   );
 
   const handleRentPayment = async ({

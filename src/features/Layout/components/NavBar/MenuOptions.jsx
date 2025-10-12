@@ -1,17 +1,13 @@
 import React, { useState } from "react";
 
 import {
-  BlindsRounded,
   DarkModeRounded,
   EmailOutlined,
   HelpOutlineRounded,
-  KeyboardArrowDownRounded,
   LightModeRounded,
   PrintRounded,
-  SettingsRounded,
 } from "@mui/icons-material";
 import {
-  Button,
   CircularProgress,
   Divider,
   ListItemIcon,
