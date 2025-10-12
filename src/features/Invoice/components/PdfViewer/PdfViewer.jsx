@@ -7,7 +7,6 @@ import dayjs from "dayjs";
 import { Container, Stack, Typography } from "@mui/material";
 import RowHeader from "common/RowHeader/RowHeader";
 import Salutation from "features/Invoice/components/UserInfo/Salutation";
-import { EditInvoiceRouteUri } from "common/utils";
 import EmptyPdfViewer from "features/Invoice/components/PdfViewer/EmptyPdfViewer";
 import ReportTable from "features/Invoice/components/PdfViewer/ReportTable";
 import { useAppTitle } from "hooks/useAppTitle";
@@ -23,7 +22,7 @@ export default function PdfViewer() {
   const invoice_form = JSON.parse(localStorage.getItem("pdfDetails"));
   const invoiceStatus = JSON.parse(localStorage.getItem("invoiceStatus"));
 
-  const handleNavigate = () => navigate(EditInvoiceRouteUri);
+  const handleNavigate = () => navigate("/invoice/edit");
 
   return (
     <Container maxWidth="md" data-tour="view-pdf-0">

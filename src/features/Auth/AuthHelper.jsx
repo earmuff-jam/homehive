@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
 
-import { TenantRole } from "features/Layout/components/Landing/constants";
+import { TenantRole } from "common/utils";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { authenticatorApp } from "src/config";
 

@@ -15,13 +15,14 @@ import {
 import AButton from "common/AButton";
 import CustomSnackbar from "common/CustomSnackbar/CustomSnackbar";
 import { DefaultTourStepsMapperObj } from "common/Tour/TourSteps";
-import { HomeRouteUri, isUserLoggedIn } from "common/utils";
-import { useAuthenticateMutation } from "features/Api/firebaseUserApi";
-import { useLocalStorageData } from "features/Invoice/hooks/useGenerateUserData";
 import {
+  HomeRouteUri,
   OwnerRole,
   TenantRole,
-} from "features/Layout/components/Landing/constants";
+  isUserLoggedIn,
+} from "common/utils";
+import { useAuthenticateMutation } from "features/Api/firebaseUserApi";
+import { useLocalStorageData } from "features/Invoice/hooks/useGenerateUserData";
 import MenuOptions from "features/Layout/components/NavBar/MenuOptions";
 import { retrieveTourKey } from "features/Layout/utils";
 import { isFeatureEnabled, logoutUser } from "features/Rent/utils/utils";

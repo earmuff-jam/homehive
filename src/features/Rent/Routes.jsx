@@ -1,30 +1,19 @@
-import React, { lazy } from "react";
+import React from "react";
 
 import {
+  ApartmentRounded,
   CottageRounded,
   SettingsRounded,
 } from "@mui/icons-material";
 import {
-  PropertiesRouteUri,
   PropertyRouteUri,
   RentalRouteUri,
   SettingsRouteUri,
 } from "common/utils";
-
-
-const Properties = lazy(
-  () => import("features/Rent/components/Properties/Properties"),
-);
-const Property = lazy(
-  () => import("features/Rent/components/Property/Property"),
-);
-const MyRental = lazy(
-  () => import("features/Rent/components/MyRental/MyRental"),
-);
-const Settings = lazy(
-  () => import("features/Rent/components/Settings/Settings"),
-);
-
+import MyRental from "features/Rent/components/MyRental/MyRental";
+import Properties from "features/Rent/components/Properties/Properties";
+import Property from "features/Rent/components/Property/Property";
+import Settings from "features/Rent/components/Settings/Settings";
 
 /**
  * RentalAppRoutes ...
@@ -34,27 +23,8 @@ const Settings = lazy(
 export const RentalAppRoutes = [
   {
     id: 1,
-    label: "Home",
-    path: "",
-    routeUri: "/rent",
-    element: <>Overview of the Rental App</>,
-    icon: <CottageRounded fontSize="small" />,
-    requiredFlags: ["invoicer", "invoicerPro"],
-    config: {
-      breadcrumb: {
-        value: "My properties",
-        icon: <CottageRounded fontSize="small" />,
-      },
-      isLoggedInFeature: true, // only display if logged in
-      displayInNavBar: true,
-      displayHelpSelector: true,
-      displayPrintSelector: false,
-    },
-  },
-  {
-    id: 2,
     label: "My Properties",
-    path: PropertiesRouteUri,
+    path: "",
     routeUri: "/rent/properties",
     element: <Properties />,
     icon: <CottageRounded fontSize="small" />,
@@ -71,12 +41,12 @@ export const RentalAppRoutes = [
     },
   },
   {
-    id: 3,
+    id: 2,
     label: "My Rental Unit",
     path: RentalRouteUri,
     routeUri: "/rent/rental",
     element: <MyRental />,
-    icon: <CottageRounded fontSize="small" />,
+    icon: <ApartmentRounded fontSize="small" />,
     requiredFlags: ["invoicer", "invoicerPro"],
     config: {
       breadcrumb: {
@@ -90,7 +60,7 @@ export const RentalAppRoutes = [
     },
   },
   {
-    id: 4,
+    id: 3,
     label: "Settings",
     path: SettingsRouteUri,
     routeUri: "/rent/settings",
@@ -109,7 +79,7 @@ export const RentalAppRoutes = [
     },
   },
   {
-    id: 5,
+    id: 4,
     label: "My Property",
     path: PropertyRouteUri,
     routeUri: "/rent/property/:id",
@@ -128,4 +98,3 @@ export const RentalAppRoutes = [
     },
   },
 ];
-

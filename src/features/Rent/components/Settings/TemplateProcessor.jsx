@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
 
-import { EditInvoiceRouteUri } from "common/utils";
+import { processTemplate } from "features/Rent/components/Settings/common";
 import {
   CreateInvoiceEnumValue,
   PaymentReminderEnumValue,
@@ -10,7 +10,6 @@ import {
   isFeatureEnabled,
   stripHTMLForEmailMessages,
 } from "features/Rent/utils/utils";
-import { processTemplate } from "features/Rent/components/Settings/common";
 
 export const handleQuickConnectAction = (
   action,
@@ -45,7 +44,7 @@ export const handleQuickConnectAction = (
 
   switch (action) {
     case CreateInvoiceEnumValue: {
-      redirectTo(EditInvoiceRouteUri);
+      redirectTo("/invoice/edit");
       break;
     }
 
