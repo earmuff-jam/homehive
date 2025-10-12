@@ -27,7 +27,7 @@ import { LocalizationProvider, MobileDatePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import AButton from "common/AButton";
 import CustomSnackbar from "common/CustomSnackbar/CustomSnackbar";
-import TextFieldWithLabel from "common/UserInfo/TextFieldWithLabel";
+import TextFieldWithLabel from "common/TextFieldWithLabel";
 import EditPdfLineItemAccordion from "features/Invoice/components/PdfViewer/EditPdfLineItemAccordion";
 import {
   BLANK_INVOICE_DETAILS_FORM,

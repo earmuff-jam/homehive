@@ -6,7 +6,7 @@ import dayjs from "dayjs";
 
 import { Container, Stack, Typography } from "@mui/material";
 import RowHeader from "common/RowHeader/RowHeader";
-import Salutation from "common/UserInfo/Salutation";
+import Salutation from "features/Invoice/components/UserInfo/Salutation";
 import { EditInvoiceRouteUri } from "common/utils";
 import EmptyPdfViewer from "features/Invoice/components/PdfViewer/EmptyPdfViewer";
 import ReportTable from "features/Invoice/components/PdfViewer/ReportTable";

@@ -7,8 +7,8 @@ import dayjs from "dayjs";
 import { Stack } from "@mui/material";
 import CustomSnackbar from "common/CustomSnackbar/CustomSnackbar";
 import RowHeader from "common/RowHeader/RowHeader";
-import UserInfoViewer from "common/UserInfo/UserInfoViewer";
-import { BLANK_INDIVIDUAL_INFORMATION_DETAILS } from "common/UserInfo/constants";
+import UserInfoViewer from "features/Invoice/components/UserInfo/UserInfoViewer";
+import { BLANK_INDIVIDUAL_INFORMATION_DETAILS } from "features/Invoice/components/UserInfo/constants";
 import { useAppTitle } from "hooks/useAppTitle";
 
 export default function SenderInfo() {

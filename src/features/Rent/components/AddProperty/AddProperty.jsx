@@ -2,7 +2,7 @@ import React from "react";
 
 import { InfoRounded } from "@mui/icons-material";
 import { Button, Divider, Stack, Tooltip, Typography } from "@mui/material";
-import TextFieldWithLabel from "common/UserInfo/TextFieldWithLabel";
+import TextFieldWithLabel from "common/TextFieldWithLabel";
 
 export default function AddProperty({
   register,

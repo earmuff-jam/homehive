@@ -11,7 +11,7 @@ import { Box, Divider, Stack, Typography } from "@mui/material";
 import { DateCalendar, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import AButton from "common/AButton";
-import TextFieldWithLabel from "common/UserInfo/TextFieldWithLabel";
+import TextFieldWithLabel from "common/TextFieldWithLabel";
 import { useGetUserDataByIdQuery } from "features/Api/firebaseUserApi";
 import { useCreateRentRecordMutation } from "features/Api/rentApi";
 import { useGetTenantByPropertyIdQuery } from "features/Api/tenantsApi";

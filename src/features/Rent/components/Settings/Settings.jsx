@@ -26,7 +26,7 @@ import {
 import AButton from "common/AButton";
 import CustomSnackbar from "common/CustomSnackbar/CustomSnackbar";
 import RowHeader from "common/RowHeader/RowHeader";
-import TextFieldWithLabel from "common/UserInfo/TextFieldWithLabel";
+import TextFieldWithLabel from "common/TextFieldWithLabel";
 import relativeTime from "dayjs/plugin/relativeTime";
 import {
   useGetUserDataByIdQuery,

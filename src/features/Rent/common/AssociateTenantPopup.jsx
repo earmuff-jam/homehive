@@ -25,7 +25,7 @@ import Autocomplete from "@mui/material/Autocomplete";
 import { LocalizationProvider, MobileDatePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import CustomSnackbar from "common/CustomSnackbar/CustomSnackbar";
-import TextFieldWithLabel from "common/UserInfo/TextFieldWithLabel";
+import TextFieldWithLabel from "common/TextFieldWithLabel";
 import { useUpdatePropertyByIdMutation } from "features/Api/propertiesApi";
 import {
   useCreateTenantMutation,
