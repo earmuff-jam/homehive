@@ -33,7 +33,7 @@ import {
   getNextMonthlyDueDate,
   getRentDetails,
   updateDateTime,
-} from "features/Rent/common/utils";
+} from "features/Rent/utils/utils";
 import QuickConnectMenu from "features/Rent/components/QuickConnect/QuickConnectMenu";
 import { handleQuickConnectAction } from "features/Rent/components/Settings/TemplateProcessor";
 import { DefaultTemplateData } from "features/Rent/components/Templates/constants";

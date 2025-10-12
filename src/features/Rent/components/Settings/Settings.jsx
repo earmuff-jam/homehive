@@ -33,7 +33,7 @@ import {
   useUpdateUserByUidMutation,
 } from "features/Api/firebaseUserApi";
 import { OwnerRole } from "features/Layout/components/Landing/constants";
-import { fetchLoggedInUser } from "features/Rent/common/utils";
+import { fetchLoggedInUser } from "features/Rent/utils/utils";
 import { TabPanel } from "features/Rent/components/Settings/common";
 import StripeConnect from "features/Rent/components/StripeConnect/StripeConnect";
 import Templates from "features/Rent/components/Templates/Templates";

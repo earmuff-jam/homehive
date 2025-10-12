@@ -35,7 +35,7 @@ import { LEASE_TERM_MENU_OPTIONS } from "features/Rent/common/constants";
 import {
   fetchLoggedInUser,
   isAssociatedPropertySoR,
-} from "features/Rent/common/utils";
+} from "features/Rent/utils/utils";
 
 export default function AssociateTenantPopup({
   closeDialog,

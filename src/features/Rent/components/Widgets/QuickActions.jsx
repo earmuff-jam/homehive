@@ -22,7 +22,7 @@ import {
   AddPropertyTextString,
   AddRentRecordsTextString,
 } from "features/Rent/common/constants";
-import { fetchLoggedInUser } from "features/Rent/common/utils";
+import { fetchLoggedInUser } from "features/Rent/utils/utils";
 import AddProperty from "features/Rent/components/AddProperty/AddProperty";
 import { AddRentRecords } from "features/Rent/components/AddRentRecords/AddRentRecords";
 

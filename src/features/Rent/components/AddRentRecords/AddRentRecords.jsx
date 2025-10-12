@@ -18,7 +18,7 @@ import { useGetTenantByPropertyIdQuery } from "features/Api/tenantsApi";
 import {
   fetchLoggedInUser,
   formatCurrency,
-} from "features/Rent/common/utils";
+} from "features/Rent/utils/utils";
 
 export const AddRentRecords = ({ property, setShowSnackbar, closeDialog }) => {
   const user = fetchLoggedInUser();

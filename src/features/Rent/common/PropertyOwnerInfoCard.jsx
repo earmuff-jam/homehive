@@ -35,7 +35,7 @@ import { useGetTenantByIdQuery } from "features/Api/tenantsApi";
 import {
   fetchLoggedInUser,
   formatCurrency,
-} from "features/Rent/common/utils";
+} from "features/Rent/utils/utils";
 import { getStripeFailureReasons } from "features/Rent/components/Settings/common";
 import { useCheckStripeAccountStatus } from "features/Rent/hooks/useCheckStripeAccountStatus";
 import { useGenerateStripeCheckoutSession } from "features/Rent/hooks/useGenerateStripeCheckoutSession";

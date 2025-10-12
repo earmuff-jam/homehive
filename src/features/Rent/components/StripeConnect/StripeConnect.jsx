@@ -27,7 +27,7 @@ import {
   useGetUserDataByIdQuery,
   useUpdateUserByUidMutation,
 } from "features/Api/firebaseUserApi";
-import { fetchLoggedInUser } from "features/Rent/common/utils";
+import { fetchLoggedInUser } from "features/Rent/utils/utils";
 import {
   PropertyOwnerStripeAccountType,
   StripeUserStatusEnums,

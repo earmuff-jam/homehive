@@ -23,7 +23,7 @@ import PropertyDetails from "features/Rent/common/PropertyDetails";
 import PropertyHeader from "features/Rent/common/PropertyHeader";
 import PropertyOwnerInfoCard from "features/Rent/common/PropertyOwnerInfoCard";
 import PropertyStatistics from "features/Rent/common/PropertyStatistics";
-import { fetchLoggedInUser } from "features/Rent/common/utils";
+import { fetchLoggedInUser } from "features/Rent/utils/utils";
 import DocumentsOverview from "features/Rent/components/Widgets/DocumentsOverview";
 import FinancialOverview from "features/Rent/components/Widgets/FinancialOverview";
 import RentalPaymentOverview from "features/Rent/components/Widgets/RentalPaymentOverview";

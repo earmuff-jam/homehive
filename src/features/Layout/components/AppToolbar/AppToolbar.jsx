@@ -24,7 +24,7 @@ import {
 } from "features/Layout/components/Landing/constants";
 import MenuOptions from "features/Layout/components/NavBar/MenuOptions";
 import { retrieveTourKey } from "features/Layout/utils";
-import { isFeatureEnabled, logoutUser } from "features/Rent/common/utils";
+import { isFeatureEnabled, logoutUser } from "features/Rent/utils/utils";
 import useSendEmail, { generateInvoiceHTML } from "hooks/useSendEmail";
 
 export default function AppToolbar({

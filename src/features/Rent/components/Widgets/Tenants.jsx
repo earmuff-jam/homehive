@@ -26,7 +26,7 @@ import { useUpdateTenantByIdMutation } from "features/Api/tenantsApi";
 import {
   fetchLoggedInUser,
   formatCurrency,
-} from "features/Rent/common/utils";
+} from "features/Rent/utils/utils";
 
 export default function Tenants({ tenants = [], property }) {
   const user = fetchLoggedInUser();

@@ -9,7 +9,7 @@ import {
   fetchLoggedInUser,
   isFeatureEnabled,
   stripHTMLForEmailMessages,
-} from "features/Rent/common/utils";
+} from "features/Rent/utils/utils";
 import { processTemplate } from "features/Rent/components/Settings/common";
 
 export const handleQuickConnectAction = (

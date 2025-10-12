@@ -10,7 +10,7 @@ import { darkTheme, lightTheme } from "common/Theme";
 import { GeneratedTourSteps } from "common/Tour/TourSteps";
 import { buildAppRoutes } from "common/ValidateClientPerms";
 import Layout from "features/Layout/Layout";
-import { fetchLoggedInUser } from "features/Rent/common/utils";
+import { fetchLoggedInUser } from "features/Rent/utils/utils";
 import { MainAppRoutes } from "src/Routes";
 
 function App() {

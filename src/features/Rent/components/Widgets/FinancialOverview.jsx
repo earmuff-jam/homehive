@@ -5,7 +5,7 @@ import RowHeader from "common/RowHeader/RowHeader";
 import {
   derieveTotalRent,
   formatCurrency,
-} from "features/Rent/common/utils";
+} from "features/Rent/utils/utils";
 
 export default function FinancialOverview({
   isTenantsLoading,
