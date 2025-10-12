@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import { ThemeProvider } from "@emotion/react";
 import { CssBaseline } from "@mui/material";
@@ -11,7 +11,7 @@ import { GeneratedTourSteps } from "common/Tour/TourSteps";
 import { buildAppRoutes } from "common/ValidateClientPerms";
 import Layout from "features/Layout/Layout";
 import { fetchLoggedInUser } from "features/RentWorks/common/utils";
-import { RentWorksAppRoutes } from "src/Routes";
+import { MainAppRoutes } from "src/Routes";
 
 function App() {
   const user = fetchLoggedInUser();
@@ -32,18 +32,14 @@ function App() {
                 path="/"
                 element={
                   <Layout
-                    routes={RentWorksAppRoutes}
+                    routes={MainAppRoutes}
                     currentThemeIdx={currentThemeIdx}
                     setCurrentThemeIdx={setCurrentThemeIdx}
                   />
                 }
               >
-                {buildAppRoutes(RentWorksAppRoutes, user?.role)}
+                {buildAppRoutes(MainAppRoutes, user?.role)}
               </Route>
-              {/* force navigate to main page when routes are not found but wait until we have routes built first; prevents redirect in refresh */}
-              {buildAppRoutes(RentWorksAppRoutes).length > 0 && (
-                <Route path="/*" element={<Navigate to="/" replace />} />
-              )}
             </Routes>
           </BrowserRouter>
         </ScrollTopProvider>

@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 
 import {
+  BlindsRounded,
   DarkModeRounded,
   EmailOutlined,
   HelpOutlineRounded,
   KeyboardArrowDownRounded,
   LightModeRounded,
   PrintRounded,
+  SettingsRounded,
 } from "@mui/icons-material";
 import {
   Button,
@@ -17,6 +19,7 @@ import {
   Menu,
   MenuItem,
 } from "@mui/material";
+import AIconButton from "common/AIconButton";
 
 export default function MenuOptions({
   handleHelp = () => {},
@@ -38,7 +41,7 @@ export default function MenuOptions({
 
   return (
     <>
-      <Button
+      <AIconButton
         data-tour="view-pdf-1"
         id="customized-btn"
         className="no-print"
@@ -47,10 +50,8 @@ export default function MenuOptions({
         aria-expanded={open ? "true" : undefined}
         variant="outlined"
         onClick={handleClick}
-        endIcon={<KeyboardArrowDownRounded />}
-      >
-        Options
-      </Button>
+        label={<HelpOutlineRounded />}
+      />
       <Menu
         id="customized-btn"
         elevation={0}

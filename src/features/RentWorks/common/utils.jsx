@@ -296,17 +296,21 @@ export function getRentStatus({ isPaid, isLate }) {
 }
 
 /**
- * getCurrentMonthPaidRent ...
+ * getRentDetails...
  *
- * fn used to get the current month rent.
+ * used to retrieve rent details for a specific month. defaults to
+ * the current month
  *
- * @param {Array} allRents - list of all the rents for the given property
- * @returns {Object} - current month rent
+ * @export
+ * @param {Array} [data=[]] - The data that needs to be filtered
+ * @param {string} [currentMonth=dayjs().format("MMMM")] - The specific month, defaults to current
+ * @returns {Object} - The rent details that match the provided params
  */
-export function getCurrentMonthPaidRent(allRents = []) {
-  const currentMonth = dayjs().format("MMMM"); // e.g. "July"
-
-  return allRents.find(
+export function getRentDetails(
+  data = [],
+  currentMonth = dayjs().format("MMMM"),
+) {
+  return data.find(
     (rent) =>
       rent.rentMonth === currentMonth && rent.status?.toLowerCase() === "paid",
   );

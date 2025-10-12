@@ -1,7 +1,7 @@
 {
   "workbench.startupEditor": "none",
   "editor.wordWrap": "on",
-  "editor.renderWhitespace": "all",
+  "editor.renderWhitespace": "none",
   "editor.minimap.enabled": false,
   "files.associations": {
     "*.sql": "sql"
@@ -70,6 +70,6 @@
   "[jsonc]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  "workbench.colorTheme": "Vim Dark Hard",
+  "workbench.colorTheme": "JetBrains Dark New UI",
   "workbench.iconTheme": "vscode-great-icons"
 }

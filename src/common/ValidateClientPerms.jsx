@@ -87,12 +87,6 @@ export function buildAppRoutes(draftRoutes = [], roleType = "") {
       const isRouteValid = isValidPermissions(validRouteFlags, requiredFlags);
       if (!isRouteValid) return null;
 
-      // Check role access here
-      const validRoles = config?.enabledForRoles || [];
-      if (validRoles.length > 0 && !validRoles.includes(roleType)) {
-        return null;
-      }
-
       const requiresLogin = Boolean(config.isLoggedInFeature);
 
       const wrappedEl = requiresLogin ? (

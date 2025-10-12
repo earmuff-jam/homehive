@@ -33,6 +33,9 @@ import {
   derieveTotalRent,
   getColorAndLabelForCurrentMonth,
   getNextMonthlyDueDate,
+  getRentDetails,
+  getRentStatus,
+  isRentDue,
   updateDateTime,
 } from "features/RentWorks/common/utils";
 import QuickConnectMenu from "features/RentWorks/components/QuickConnect/QuickConnectMenu";
@@ -63,12 +66,26 @@ const ViewPropertyAccordionDetails = ({
   const { sendEmail, reset, error, success } = useSendEmail();
 
   const [anchorEl, setAnchorEl] = useState(null);
-  const isOpen = Boolean(anchorEl);
-
+  
   const primaryTenantDetails =
-    tenants?.find((tenant) => tenant.isPrimary) || tenants[0];
-
+  tenants?.find((tenant) => tenant.isPrimary) || tenants[0];
+  
+  const isOpen = Boolean(anchorEl);
+  const currentMonthRent = getRentDetails(rentDetails);
   const isAnyPropertySoR = tenants?.some((tenant) => tenant.isSoR);
+
+  const isDue = isRentDue(
+    primaryTenantDetails.start_date,
+    Number(primaryTenantDetails?.grace_period),
+    currentMonthRent,
+  );
+
+  const isLate = rentDetails?.length > 0 && isDue;
+
+  const { color: statusColor, label: statusLabel } = getRentStatus({
+    isPaid: currentMonthRent?.status === PaidRentStatusEnumValue,
+    isLate,
+  });
 
   const handleCloseQuickConnect = () => setAnchorEl(null);
   const handleOpenQuickConnect = (ev) => setAnchorEl(ev.currentTarget);

@@ -1,13 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import { useNavigate } from "react-router-dom";
 
+import { MenuOutlined } from "@mui/icons-material";
 import {
-  LockOpenRounded,
-  LockRounded,
-  MenuOutlined,
-} from "@mui/icons-material";
-import {
+  Alert,
   AppBar,
   IconButton,
   Stack,
@@ -15,10 +12,16 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
+import AButton from "common/AButton";
 import CustomSnackbar from "common/CustomSnackbar/CustomSnackbar";
 import { DefaultTourStepsMapperObj } from "common/Tour/TourSteps";
 import { isUserLoggedIn } from "common/utils";
+import { useAuthenticateMutation } from "features/Api/firebaseUserApi";
 import { useLocalStorageData } from "features/InvoiceWorks/hooks/useGenerateUserData";
+import {
+  OwnerRole,
+  TenantRole,
+} from "features/Layout/components/Landing/constants";
 import MenuOptions from "features/Layout/components/NavBar/MenuOptions";
 import { retrieveTourKey } from "features/Layout/utils";
 import { isFeatureEnabled, logoutUser } from "features/RentWorks/common/utils";
@@ -35,6 +38,16 @@ export default function AppToolbar({
 }) {
   const navigate = useNavigate();
   const { sendEmail, reset, loading, error, success } = useSendEmail();
+
+  const [
+    authenticate,
+    {
+      isSuccess: isAuthSuccess,
+      isLoading: isAuthLoading,
+      isError: isAuthError,
+      error: authError,
+    },
+  ] = useAuthenticateMutation();
 
   const {
     data,
@@ -104,10 +117,29 @@ export default function AppToolbar({
     setCurrentThemeIdx(0);
   };
 
+  const handleCreateUser = (role = TenantRole) => {
+    authenticate(role);
+  };
+
   const logout = async () => {
     await logoutUser();
     navigate(`/?refresh=${Date.now()}`); // force refresh
   };
+
+  useEffect(() => {
+    if (!isAuthLoading && isAuthSuccess) {
+      window.location.reload();
+    }
+  }, [isAuthLoading]);
+
+  if (isAuthError) {
+    console.error(JSON.stringify(authError));
+    return (
+      <Alert severity="error">
+        <Typography>Error during log in. Please try again later.</Typography>
+      </Alert>
+    );
+  }
 
   return (
     <AppBar elevation={0} sx={{ padding: "0.25rem 0rem" }} className="no-print">
@@ -127,12 +159,28 @@ export default function AppToolbar({
         <Stack direction="row" spacing={1} alignItems="center">
           {isUserLoggedIn() ? (
             <Tooltip title="logout">
-              <IconButton onClick={logout}>
-                <LockRounded color="primary" fontSize="small" />
-              </IconButton>
+              <AButton
+                label="Logout"
+                variant="outlined"
+                size="small"
+                onClick={logout}
+              />
             </Tooltip>
           ) : (
-            <LockOpenRounded color="primary" fontSize="small" />
+            <>
+              <AButton
+                size="small"
+                variant="outlined"
+                label="Manage Properties"
+                onClick={() => handleCreateUser(OwnerRole)}
+              />
+              <AButton
+                size="small"
+                variant="contained"
+                label="Access Rental Account"
+                onClick={() => handleCreateUser(TenantRole)}
+              />
+            </>
           )}
           <MenuOptions
             showPrint={showPrint}

@@ -7,6 +7,7 @@ import {
   DashboardRounded,
   EditRounded,
   HomeRounded,
+  HomeWorkRounded,
   LiveHelpRounded,
   Person2Rounded,
   PictureAsPdfRounded,
@@ -19,6 +20,8 @@ import {
   FaqRouteUri,
   HomeRouteUri,
   InvoiceDashboardRouteUri,
+  MainInvoiceAppRouteUri,
+  MainRentAppRouteUri,
   NotesRouteUri,
   PropertiesRouteUri,
   PropertyRouteUri,
@@ -28,10 +31,12 @@ import {
   SettingsRouteUri,
   ViewInvoiceRouteUri,
 } from "common/utils";
+import SplashPage from "features/Layout/SplashPage";
 import {
   OwnerRole,
   TenantRole,
 } from "features/Layout/components/Landing/constants";
+import SubAppRouter from "src/SubRouter";
 
 const Overview = lazy(
   () => import("features/Layout/components/Landing/Overview"),
@@ -72,50 +77,35 @@ const Settings = lazy(
 );
 
 /**
- * RentWorksAppRoutes
+ * RentalAppRoutes ...
  *
- * used to build out the route of the application. required flags are array of string that are
- * required to be met as a client permission for the route to be in operation.
+ * routes that are built for rental app
  */
-export const RentWorksAppRoutes = [
+export const RentalAppRoutes = [
   {
     id: 1,
     label: "Home",
-    path: HomeRouteUri,
-    element: <Overview />,
-    icon: <HomeRounded fontSize="small" />,
-    requiredFlags: ["invoicer"],
-    config: {
-      breadcrumb: {
-        value: "",
-        icon: "",
-      },
-      displayInNavBar: true,
-      displayHelpSelector: false,
-      displayPrintSelector: false,
-    },
-  },
-  {
-    id: 2,
-    label: "Dashboard",
-    path: InvoiceDashboardRouteUri,
-    element: <Dashboard />,
-    icon: <DashboardCustomizeRounded fontSize="small" />,
+    path: "",
+    routeUri: "/rent",
+    element: <>Overview of the Rental App</>,
+    icon: <CottageRounded fontSize="small" />,
     requiredFlags: ["invoicer", "invoicerPro"],
     config: {
       breadcrumb: {
-        value: "View Dashboard",
-        icon: <DashboardRounded fontSize="small" />,
+        value: "My properties",
+        icon: <CottageRounded fontSize="small" />,
       },
+      isLoggedInFeature: true, // only display if logged in
       displayInNavBar: true,
       displayHelpSelector: true,
       displayPrintSelector: false,
     },
   },
   {
-    id: 3,
+    id: 2,
     label: "My Properties",
     path: PropertiesRouteUri,
+    routeUri: "/rent/properties",
     element: <Properties />,
     icon: <CottageRounded fontSize="small" />,
     requiredFlags: ["invoicer", "invoicerPro"],
@@ -125,16 +115,16 @@ export const RentWorksAppRoutes = [
         icon: <CottageRounded fontSize="small" />,
       },
       isLoggedInFeature: true, // only display if logged in
-      enabledForRoles: [OwnerRole],
       displayInNavBar: true,
       displayHelpSelector: true,
       displayPrintSelector: false,
     },
   },
   {
-    id: 4,
+    id: 3,
     label: "My Rental Unit",
     path: RentalRouteUri,
+    routeUri: "/rent/rental",
     element: <MyRental />,
     icon: <CottageRounded fontSize="small" />,
     requiredFlags: ["invoicer", "invoicerPro"],
@@ -144,84 +134,16 @@ export const RentWorksAppRoutes = [
         icon: <CottageRounded fontSize="small" />,
       },
       isLoggedInFeature: true, // only display if logged in
-      enabledForRoles: [TenantRole],
       displayInNavBar: true,
       displayHelpSelector: true,
       displayPrintSelector: false,
     },
   },
   {
-    id: 5,
-    label: "View Invoice",
-    path: ViewInvoiceRouteUri,
-    element: <PdfViewer />,
-    icon: <PictureAsPdfRounded fontSize="small" />,
-    requiredFlags: ["invoicer"],
-    config: {
-      breadcrumb: {
-        value: "View Invoice",
-        icon: <ReceiptRounded fontSize="small" />,
-      },
-      displayInNavBar: true,
-      displayHelpSelector: true,
-      displayPrintSelector: true,
-    },
-  },
-  {
-    id: 6,
-    label: "Edit Invoice",
-    path: EditInvoiceRouteUri,
-    element: <EditPdf />,
-    icon: <EditRounded fontSize="small" />,
-    requiredFlags: ["invoicer"],
-    config: {
-      breadcrumb: {
-        value: "Edit Invoice",
-        icon: <EditRounded fontSize="small" />,
-      },
-      displayInNavBar: true,
-      displayHelpSelector: true,
-      displayPrintSelector: false,
-    },
-  },
-  {
-    id: 7,
-    label: "Sender",
-    path: SenderInforamtionRouteUri,
-    element: <SenderInfo />,
-    icon: <Person2Rounded fontSize="small" />,
-    requiredFlags: ["userInformation"],
-    config: {
-      breadcrumb: {
-        value: "Sender Information",
-        icon: <Person2Rounded fontSize="small" />,
-      },
-      displayInNavBar: true,
-      displayHelpSelector: true,
-      displayPrintSelector: false,
-    },
-  },
-  {
-    id: 8,
-    label: "Reciever",
-    path: RecieverInforamtionRouteUri,
-    element: <RecieverInfo />,
-    icon: <Person2Rounded fontSize="small" />,
-    requiredFlags: ["userInformation"],
-    config: {
-      breadcrumb: {
-        value: "Reciever Information",
-        icon: <Person2Rounded fontSize="small" />,
-      },
-      displayInNavBar: true,
-      displayHelpSelector: true,
-      displayPrintSelector: false,
-    },
-  },
-  {
-    id: 9,
+    id: 4,
     label: "Settings",
     path: SettingsRouteUri,
+    routeUri: "/rent/settings",
     element: <Settings />,
     icon: <SettingsRounded fontSize="small" />,
     requiredFlags: ["invoicer", "invoicerPro"],
@@ -237,24 +159,212 @@ export const RentWorksAppRoutes = [
     },
   },
   {
-    id: 10,
-    label: "Release Notes",
-    path: NotesRouteUri,
-    element: <ReleaseNotes />,
-    icon: <WhatshotRounded fontSize="small" />,
+    id: 5,
+    label: "My Property",
+    path: PropertyRouteUri,
+    routeUri: "/rent/property/:id",
+    element: <Property />,
+    icon: <CottageRounded fontSize="small" />,
+    requiredFlags: ["invoicer", "invoicerPro"],
+    config: {
+      breadcrumb: {
+        value: "My property",
+        icon: <CottageRounded fontSize="small" />,
+      },
+      isLoggedInFeature: true, // only display if logged in
+      displayInNavBar: false,
+      displayHelpSelector: true,
+      displayPrintSelector: false,
+    },
+  },
+];
+
+/**
+ * InvoiceAppRoutes ...
+ *
+ * routes that are built for invoice app
+ */
+export const InvoiceAppRoutes = [
+  {
+    id: 1,
+    label: "Home",
+    path: "/",
+    routeUri: "/invoice",
+    element: <Overview />,
+    icon: <PictureAsPdfRounded fontSize="small" />,
     requiredFlags: ["invoicer"],
     config: {
       breadcrumb: {
-        value: "Release Notes",
-        icon: <WhatshotRounded fontSize="small" />,
+        value: "View Invoice",
+        icon: <ReceiptRounded fontSize="small" />,
       },
-      displayInNavBar: false,
+      displayInNavBar: true,
+      displayHelpSelector: true,
+      displayPrintSelector: true,
+    },
+  },
+  {
+    id: 2,
+    label: "Dashboard",
+    path: InvoiceDashboardRouteUri,
+    routeUri: "/invoice/dashboard",
+    element: <Dashboard />,
+    icon: <DashboardCustomizeRounded fontSize="small" />,
+    requiredFlags: ["invoicer", "invoicerPro"],
+    config: {
+      breadcrumb: {
+        value: "View Dashboard",
+        icon: <DashboardRounded fontSize="small" />,
+      },
+      displayInNavBar: true,
+      displayHelpSelector: true,
+      displayPrintSelector: false,
+    },
+  },
+  {
+    id: 3,
+    label: "View Invoice",
+    path: ViewInvoiceRouteUri,
+    routeUri: "/invoice/view",
+    element: <PdfViewer />,
+    icon: <PictureAsPdfRounded fontSize="small" />,
+    requiredFlags: ["invoicer"],
+    config: {
+      breadcrumb: {
+        value: "View Invoice",
+        icon: <ReceiptRounded fontSize="small" />,
+      },
+      displayInNavBar: true,
+      displayHelpSelector: true,
+      displayPrintSelector: true,
+    },
+  },
+  {
+    id: 4,
+    label: "Edit Invoice",
+    path: EditInvoiceRouteUri,
+    routeUri: "/invoice/edit",
+    element: <EditPdf />,
+    icon: <EditRounded fontSize="small" />,
+    requiredFlags: ["invoicer"],
+    config: {
+      breadcrumb: {
+        value: "Edit Invoice",
+        icon: <EditRounded fontSize="small" />,
+      },
+      displayInNavBar: true,
+      displayHelpSelector: true,
+      displayPrintSelector: false,
+    },
+  },
+  {
+    id: 5,
+    label: "Sender",
+    path: SenderInforamtionRouteUri,
+    routeUri: "/invoice/sender",
+    element: <SenderInfo />,
+    icon: <Person2Rounded fontSize="small" />,
+    requiredFlags: ["userInformation"],
+    config: {
+      breadcrumb: {
+        value: "Sender Information",
+        icon: <Person2Rounded fontSize="small" />,
+      },
+      displayInNavBar: true,
+      displayHelpSelector: true,
+      displayPrintSelector: false,
+    },
+  },
+  {
+    id: 6,
+    label: "Reciever",
+    path: RecieverInforamtionRouteUri,
+    routeUri: "/invoice/reciever",
+    element: <RecieverInfo />,
+    icon: <Person2Rounded fontSize="small" />,
+    requiredFlags: ["userInformation"],
+    config: {
+      breadcrumb: {
+        value: "Reciever Information",
+        icon: <Person2Rounded fontSize="small" />,
+      },
+      displayInNavBar: true,
+      displayHelpSelector: true,
+      displayPrintSelector: false,
+    },
+  },
+];
+
+/**
+ * MainAppRoutes ...
+ *
+ * root routes for the app
+ */
+export const MainAppRoutes = [
+  {
+    id: 1,
+    label: "Home",
+    path: HomeRouteUri,
+    element: <SplashPage />,
+    icon: <HomeRounded fontSize="small" />,
+    requiredFlags: [],
+    config: {
+      breadcrumb: {
+        value: "",
+        icon: "",
+      },
+      displayInNavBar: true,
       displayHelpSelector: false,
       displayPrintSelector: false,
     },
   },
   {
-    id: 11,
+    id: 2,
+    label: "Rent App",
+    path: "/rent/*",
+    element: (
+      <SubAppRouter
+        routes={RentalAppRoutes}
+        fallbackPath={MainRentAppRouteUri}
+      />
+    ),
+    icon: <HomeWorkRounded fontSize="small" />,
+    requiredFlags: ["invoicerPro"],
+    config: {
+      breadcrumb: {
+        value: "Rental App",
+        icon: <CottageRounded fontSize="small" />,
+      },
+      isLoggedInFeature: true,
+      displayInNavBar: true,
+      displayHelpSelector: false,
+      displayPrintSelector: false,
+    },
+  },
+  {
+    id: 3,
+    label: "Invoice App",
+    path: "/invoice/*",
+    element: (
+      <SubAppRouter
+        routes={InvoiceAppRoutes}
+        fallbackPath={MainInvoiceAppRouteUri}
+      />
+    ),
+    icon: <ReceiptRounded fontSize="small" />,
+    requiredFlags: ["invoicer"],
+    config: {
+      breadcrumb: {
+        value: "Invoice App",
+        icon: <ReceiptRounded fontSize="small" />,
+      },
+      displayInNavBar: true,
+      displayHelpSelector: false,
+      displayPrintSelector: false,
+    },
+  },
+  {
+    id: 4,
     label: "FAQ",
     path: FaqRouteUri,
     element: <FaqSection />,
@@ -271,21 +381,19 @@ export const RentWorksAppRoutes = [
     },
   },
   {
-    id: 12,
-    label: "My Properties",
-    path: PropertyRouteUri,
-    element: <Property />,
-    icon: <CottageRounded fontSize="small" />,
-    requiredFlags: ["invoicer", "invoicerPro"],
+    id: 5,
+    label: "Release Notes",
+    path: NotesRouteUri,
+    element: <ReleaseNotes />,
+    icon: <WhatshotRounded fontSize="small" />,
+    requiredFlags: ["invoicer"],
     config: {
       breadcrumb: {
-        value: "My properties",
-        icon: <CottageRounded fontSize="small" />,
+        value: "Release Notes",
+        icon: <WhatshotRounded fontSize="small" />,
       },
-      isLoggedInFeature: true, // only display if logged in
-      enabledForRoles: [OwnerRole],
       displayInNavBar: false,
-      displayHelpSelector: true,
+      displayHelpSelector: false,
       displayPrintSelector: false,
     },
   },

@@ -206,7 +206,7 @@ export default function Properties() {
                           data-tour="properties-5"
                           onClick={(ev) => {
                             ev.stopPropagation();
-                            navigate(`/property/${property?.id}`);
+                            navigate(`/rent/property/${property?.id}`);
                           }}
                           sx={{
                             justifyContent: "left",
@@ -223,7 +223,7 @@ export default function Properties() {
                       <ButtonBase
                         onClick={(ev) => {
                           ev.stopPropagation();
-                          navigate(`/property/${property?.id}`);
+                          navigate(`/rent/property/${property?.id}`);
                         }}
                       >
                         <Stack

@@ -19,9 +19,14 @@ import validateClientPermissions, {
   filterValidRoutesForNavigationBar,
   isValidPermissions,
 } from "common/ValidateClientPerms";
-import { isUserLoggedIn } from "common/utils";
+import {
+  MainInvoiceAppRouteUri,
+  MainRentAppRouteUri,
+  isUserLoggedIn,
+} from "common/utils";
+import NavigationGroup from "features/Layout/components/NavBar/NavigationGroup";
 import { fetchLoggedInUser } from "features/RentWorks/common/utils";
-import { RentWorksAppRoutes } from "src/Routes";
+import { InvoiceAppRoutes, MainAppRoutes, RentalAppRoutes } from "src/Routes";
 
 export default function NavBar({
   openDrawer,
@@ -44,43 +49,22 @@ export default function NavBar({
     }, 200);
   };
 
-  const formattedInvoicerRoutes = (RentWorksAppRoutes = [], roleType = "") => {
+  const getValidRoutes = (routes = [], roleType = "") => {
     const validRouteFlags = validateClientPermissions();
-    const filteredNavigationRoutes =
-      filterValidRoutesForNavigationBar(RentWorksAppRoutes);
+    const filteredNavigationRoutes = filterValidRoutesForNavigationBar(routes);
 
-    return filteredNavigationRoutes
-      .map(({ id, path, label, icon, requiredFlags, config }) => {
-        const isRouteValid = isValidPermissions(validRouteFlags, requiredFlags);
-        if (!isRouteValid) return null;
+    return filteredNavigationRoutes.filter(({ requiredFlags, config }) => {
+      const isRouteValid = isValidPermissions(validRouteFlags, requiredFlags);
+      if (!isRouteValid) return false;
 
-        // Check role access here
-        const validRoles = config.enabledForRoles || [];
-        if (validRoles.length > 0 && !validRoles.includes(roleType)) {
-          return null;
-        }
+      const validRoles = config?.enabledForRoles || [];
+      if (validRoles.length > 0 && !validRoles.includes(roleType)) return false;
 
-        const requiresLogin = Boolean(config.isLoggedInFeature);
+      const requiresLogin = Boolean(config?.isLoggedInFeature);
+      if (requiresLogin && !isUserLoggedIn()) return false;
 
-        // fallback if login is not valid
-        if (requiresLogin && !isUserLoggedIn()) return null;
-
-        return (
-          <ListItemButton
-            key={id}
-            selected={pathname === path}
-            onClick={() => handleMenuItemClick(path)}
-          >
-            <ListItemIcon
-              sx={{ color: pathname === path && theme.palette.primary.main }}
-            >
-              {icon}
-            </ListItemIcon>
-            <ListItemText primary={label} />
-          </ListItemButton>
-        );
-      })
-      .filter(Boolean);
+      return true;
+    });
   };
 
   return (
@@ -135,7 +119,63 @@ export default function NavBar({
           component="nav"
           aria-labelledby="nested-list-subheader"
         >
-          {formattedInvoicerRoutes(RentWorksAppRoutes, user?.role)}
+          {MainAppRoutes.map(
+            ({ id, label, icon, path, requiredFlags, config }) => {
+              const isRouteValid = isValidPermissions(
+                validateClientPermissions(),
+                requiredFlags,
+              );
+              if (!isRouteValid) return null;
+
+              const validRoles = config?.enabledForRoles || [];
+              if (validRoles.length > 0 && !validRoles.includes(user?.role))
+                return null;
+
+              const requiresLogin = Boolean(config?.isLoggedInFeature);
+              if (requiresLogin && !isUserLoggedIn()) return null;
+
+              let childRoutes = [];
+
+              if (path.startsWith(MainInvoiceAppRouteUri)) {
+                childRoutes = getValidRoutes(InvoiceAppRoutes, user?.role);
+              } else if (path.startsWith(MainRentAppRouteUri)) {
+                childRoutes = getValidRoutes(RentalAppRoutes, user?.role);
+              }
+
+              if (childRoutes.length > 0) {
+                return (
+                  <NavigationGroup
+                    key={id}
+                    label={label}
+                    icon={icon}
+                    pathname={pathname}
+                    theme={theme}
+                    navigate={handleMenuItemClick}
+                    childrenRoutes={filterValidRoutesForNavigationBar(
+                      childRoutes,
+                    )}
+                  />
+                );
+              }
+
+              return (
+                <ListItemButton
+                  key={id}
+                  selected={pathname === path}
+                  onClick={() => handleMenuItemClick(path)}
+                >
+                  <ListItemIcon
+                    sx={{
+                      color: pathname === path && theme.palette.primary.main,
+                    }}
+                  >
+                    {icon}
+                  </ListItemIcon>
+                  <ListItemText primary={label} />
+                </ListItemButton>
+              );
+            },
+          )}
         </List>
       </Drawer>
     </Stack>
