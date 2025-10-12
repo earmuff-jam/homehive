@@ -31,7 +31,7 @@ import Footer from "features/Layout/components/Footer/Footer";
 import { TenantRole } from "features/Layout/components/Landing/constants";
 import NavBar from "features/Layout/components/NavBar/NavBar";
 import { retrieveTourKey } from "features/Layout/utils";
-import { fetchLoggedInUser } from "features/RentWorks/common/utils";
+import { fetchLoggedInUser } from "features/Rent/common/utils";
 
 const defaultDialog = {
   title: "",

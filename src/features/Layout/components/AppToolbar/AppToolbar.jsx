@@ -15,16 +15,16 @@ import {
 import AButton from "common/AButton";
 import CustomSnackbar from "common/CustomSnackbar/CustomSnackbar";
 import { DefaultTourStepsMapperObj } from "common/Tour/TourSteps";
-import { isUserLoggedIn } from "common/utils";
+import { HomeRouteUri, isUserLoggedIn } from "common/utils";
 import { useAuthenticateMutation } from "features/Api/firebaseUserApi";
-import { useLocalStorageData } from "features/InvoiceWorks/hooks/useGenerateUserData";
+import { useLocalStorageData } from "features/Invoice/hooks/useGenerateUserData";
 import {
   OwnerRole,
   TenantRole,
 } from "features/Layout/components/Landing/constants";
 import MenuOptions from "features/Layout/components/NavBar/MenuOptions";
 import { retrieveTourKey } from "features/Layout/utils";
-import { isFeatureEnabled, logoutUser } from "features/RentWorks/common/utils";
+import { isFeatureEnabled, logoutUser } from "features/Rent/common/utils";
 import useSendEmail, { generateInvoiceHTML } from "hooks/useSendEmail";
 
 export default function AppToolbar({
@@ -128,7 +128,7 @@ export default function AppToolbar({
 
   useEffect(() => {
     if (!isAuthLoading && isAuthSuccess) {
-      window.location.reload();
+      window.location.replace(HomeRouteUri);
     }
   }, [isAuthLoading]);
 

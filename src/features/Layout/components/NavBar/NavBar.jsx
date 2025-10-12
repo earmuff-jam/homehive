@@ -24,9 +24,11 @@ import {
   MainRentAppRouteUri,
   isUserLoggedIn,
 } from "common/utils";
+import { InvoiceAppRoutes } from "features/Invoice/Routes";
 import NavigationGroup from "features/Layout/components/NavBar/NavigationGroup";
-import { fetchLoggedInUser } from "features/RentWorks/common/utils";
-import { InvoiceAppRoutes, MainAppRoutes, RentalAppRoutes } from "src/Routes";
+import { RentalAppRoutes } from "features/Rent/Routes";
+import { fetchLoggedInUser } from "features/Rent/common/utils";
+import { MainAppRoutes } from "src/Routes";
 
 export default function NavBar({
   openDrawer,
