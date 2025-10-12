@@ -16,7 +16,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: "20.0.0"
+          node-version: "24.10.0"
 
       - name: Install dependencies
         run: |
@@ -25,6 +25,10 @@ jobs:
       - name: Run linter
         run: |
           npm run lint
+
+      - name: Run jest tests
+        run: |
+          npm run test
 
       - name: Build frontend
         run: |
