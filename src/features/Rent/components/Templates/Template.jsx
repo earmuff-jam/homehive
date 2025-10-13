@@ -43,13 +43,13 @@ export default function Template(props) {
             }}
           />
           <Stack direction="row" spacing={1} alignItems="center">
-            <Tooltip title="Missing fields are marked in red color.">
+            <Tooltip title="Missing fields are marked in red color. Add them if needed. Eg, {{field}}">
               <InfoRounded fontSize="small" />
             </Tooltip>
             <AButton
               size="small"
               variant="outlined"
-              label="Show valid fields"
+              label="Show Filled Fields"
               onClick={handleClick}
             />
           </Stack>

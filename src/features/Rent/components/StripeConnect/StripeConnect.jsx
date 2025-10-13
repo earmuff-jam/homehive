@@ -27,7 +27,6 @@ import {
   useGetUserDataByIdQuery,
   useUpdateUserByUidMutation,
 } from "features/Api/firebaseUserApi";
-import { fetchLoggedInUser } from "features/Rent/utils/utils";
 import {
   PropertyOwnerStripeAccountType,
   StripeUserStatusEnums,
@@ -43,6 +42,7 @@ import {
   useCreateStripeAccount,
   useCreateStripeAccountLink,
 } from "features/Rent/hooks/useStripe";
+import { fetchLoggedInUser } from "features/Rent/utils/utils";
 
 export default function StripeConnect() {
   const user = fetchLoggedInUser();
@@ -325,7 +325,7 @@ export default function StripeConnect() {
                   color="text.secondary"
                   sx={{ mb: 1 }}
                 >
-                  Step-by-step instructions for connecting Stripe
+                  Instructions for connecting Stripe
                 </Typography>
                 <Button
                   size="small"
@@ -355,9 +355,19 @@ export default function StripeConnect() {
                   color="text.secondary"
                   sx={{ mb: 1 }}
                 >
-                  Get help with payment processing issues
+                  Stripe Help and Support
                 </Typography>
-                <Button size="small" variant="outlined">
+                <Button
+                  size="small"
+                  variant="outlined"
+                  onClick={() =>
+                    window.open(
+                      "https://support.stripe.com/",
+                      "_blank",
+                      "noopener,noreferrer",
+                    )
+                  }
+                >
                   Contact Us
                 </Button>
               </Box>
@@ -375,9 +385,19 @@ export default function StripeConnect() {
                   color="text.secondary"
                   sx={{ mb: 1 }}
                 >
-                  Learn about payment security and PCI compliance
+                  Learn about PCI compliance
                 </Typography>
-                <Button size="small" variant="outlined">
+                <Button
+                  size="small"
+                  variant="outlined"
+                  onClick={() =>
+                    window.open(
+                      "https://stripe.com/guides/pci-compliance",
+                      "_blank",
+                      "noopener,noreferrer",
+                    )
+                  }
+                >
                   Learn More
                 </Button>
               </Box>
