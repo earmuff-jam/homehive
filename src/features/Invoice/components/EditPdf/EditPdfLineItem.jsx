@@ -2,7 +2,7 @@ import React from "react";
 
 import { Autocomplete, Stack, TextField, Typography } from "@mui/material";
 import TextFieldWithLabel from "common/TextFieldWithLabel";
-import { InvoiceCategoryOptions } from "features/Invoice/components/PdfViewer/constants";
+import { InvoiceCategoryOptions } from "features/Invoice/constants";
 
 export default function EditPdfLineItem({
   index,

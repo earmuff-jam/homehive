@@ -7,8 +7,8 @@ import {
   rectSortingStrategy,
 } from "@dnd-kit/sortable";
 import { Box, Stack, Typography } from "@mui/material";
-import Widget from "features/Invoice/components/Dashboard/Widget";
-import WidgetProps from "features/Invoice/components/Dashboard/WidgetProps";
+import Widget from "features/Invoice/components/DndGridLayout/Widget";
+import WidgetProps from "features/Invoice/components/DndGridLayout/WidgetProps";
 
 export default function DndGridLayout({
   editMode,

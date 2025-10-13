@@ -5,10 +5,10 @@ import { useNavigate, useOutletContext } from "react-router-dom";
 import dayjs from "dayjs";
 
 import { Container, Stack, Typography } from "@mui/material";
+import EmptyComponent from "common/EmptyComponent";
 import RowHeader from "common/RowHeader/RowHeader";
-import Salutation from "features/Invoice/components/UserInfo/Salutation";
-import EmptyPdfViewer from "features/Invoice/components/PdfViewer/EmptyPdfViewer";
 import ReportTable from "features/Invoice/components/PdfViewer/ReportTable";
+import Salutation from "features/Invoice/components/UserInfo/Salutation";
 import { useAppTitle } from "hooks/useAppTitle";
 
 export default function PdfViewer() {
@@ -27,7 +27,20 @@ export default function PdfViewer() {
   return (
     <Container maxWidth="md" data-tour="view-pdf-0">
       {!invoice_form ? (
-        <EmptyPdfViewer handleNavigate={handleNavigate} />
+        <EmptyComponent
+          title="Sorry, no invoice found to display"
+          caption="Create new invoice from"
+        >
+          <Typography
+            component={"span"}
+            variant="caption"
+            color="primary"
+            sx={{ cursor: "pointer" }}
+            onClick={handleNavigate}
+          >
+            &nbsp;here.
+          </Typography>
+        </EmptyComponent>
       ) : (
         <Stack spacing={"2rem"}>
           {recieverInfo ? <Salutation userInfo={recieverInfo} /> : null}

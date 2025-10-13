@@ -10,7 +10,7 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import { WidgetTypeList } from "features/Invoice/components/Dashboard/constants";
+import { WidgetTypeList } from "features/Invoice/constants";
 
 export default function AddWidget({ handleAddWidget }) {
   return (

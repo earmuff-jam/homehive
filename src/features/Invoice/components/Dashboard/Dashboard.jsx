@@ -18,9 +18,9 @@ import {
 import CustomSnackbar from "common/CustomSnackbar/CustomSnackbar";
 import RowHeader from "common/RowHeader/RowHeader";
 import { pluralize } from "common/utils";
-import AddWidget from "features/Invoice/components/Dashboard/AddWidget";
-import DndGridLayout from "features/Invoice/components/Dashboard/DndGridLayout";
-import { WidgetTypeList } from "features/Invoice/components/Dashboard/constants";
+import AddWidget from "features/Invoice/components/AddWidget/AddWidget";
+import DndGridLayout from "features/Invoice/components/DndGridLayout/DndGridLayout";
+import { WidgetTypeList } from "features/Invoice/constants";
 import { useAppTitle } from "hooks/useAppTitle";
 
 export default function Dashboard() {

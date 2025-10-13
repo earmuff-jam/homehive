@@ -14,6 +14,7 @@ export default [
       ".netlify",
       "__mocks__",
       "**/*.test.js",
+      "*.setup.js",
     ],
   },
   {

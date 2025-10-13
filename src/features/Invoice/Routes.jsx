@@ -15,7 +15,7 @@ import {
   ViewInvoiceRouteUri,
 } from "common/utils";
 import Dashboard from "features/Invoice/components/Dashboard/Dashboard";
-import EditPdf from "features/Invoice/components/PdfViewer/EditPdf";
+import EditPdf from "features/Invoice/components/EditPdf/EditPdf";
 import PdfViewer from "features/Invoice/components/PdfViewer/PdfViewer";
 import RecieverInfo from "features/Invoice/components/RecieverInfo/RecieverInfo";
 import SenderInfo from "features/Invoice/components/SenderInfo/SenderInfo";

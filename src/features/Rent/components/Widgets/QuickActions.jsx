@@ -121,7 +121,7 @@ export default function QuickActions({ property }) {
           <AButton
             variant="outlined"
             fullWidth
-            onClick={() => navigate("/settings?tabIdx=2")}
+            onClick={() => navigate("/rent/settings?tabIdx=2")}
             label="View Stripe Payment History"
           />
           <AButton

@@ -28,13 +28,13 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import AButton from "common/AButton";
 import CustomSnackbar from "common/CustomSnackbar/CustomSnackbar";
 import TextFieldWithLabel from "common/TextFieldWithLabel";
-import EditPdfLineItemAccordion from "features/Invoice/components/PdfViewer/EditPdfLineItemAccordion";
+import EditPdfLineItemAccordion from "features/Invoice/components/EditPdf/EditPdfLineItemAccordion";
 import {
   BLANK_INVOICE_DETAILS_FORM,
   BLANK_INVOICE_LINE_ITEM_FORM,
   DefaultInvoiceStatusOptions,
   InvoiceCategoryOptions,
-} from "features/Invoice/components/PdfViewer/constants";
+} from "features/Invoice/constants";
 import { useAppTitle } from "hooks/useAppTitle";
 import { produce } from "immer";
 

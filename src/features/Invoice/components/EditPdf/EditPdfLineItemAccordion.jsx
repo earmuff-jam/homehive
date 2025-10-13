@@ -9,7 +9,7 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import EditPdfLineItem from "features/Invoice/components/PdfViewer/EditPdfLineItem";
+import EditPdfLineItem from "features/Invoice/components/EditPdf/EditPdfLineItem";
 
 export default function EditPdfLineItemAccordion({
   lineItem,
