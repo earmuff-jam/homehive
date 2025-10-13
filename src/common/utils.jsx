@@ -16,18 +16,28 @@ import { Typography } from "@mui/material";
 export const HomeRouteUri = "/";
 export const FaqRouteUri = "/faq";
 export const NotesRouteUri = "/notes";
-export const SettingsRouteUri = "/settings";
 
-export const RentalRouteUri = "/rental";
-export const PropertyRouteUri = "/property/:id";
-export const PropertiesRouteUri = "/properties";
+export const MainRentAppRouteUri = "/rent";
+export const PropertiesRouteUri = "properties";
+export const SettingsRouteUri = "settings";
+export const RentalRouteUri = "rental";
+export const PropertyRouteUri = "property/:id";
 
-export const InvoiceDefaultRouteUri = "/invoice";
-export const ViewInvoiceRouteUri = "/invoice/view";
-export const EditInvoiceRouteUri = "/invoice/edit";
-export const SenderInforamtionRouteUri = "/invoice/sender";
-export const InvoiceDashboardRouteUri = "/invoice/dashboard";
-export const RecieverInforamtionRouteUri = "/invoice/reciever";
+export const MainInvoiceAppRouteUri = "/invoice";
+export const ViewInvoiceRouteUri = "view";
+export const EditInvoiceRouteUri = "edit";
+export const SenderInforamtionRouteUri = "sender";
+export const InvoiceDashboardRouteUri = "dashboard";
+export const RecieverInforamtionRouteUri = "reciever";
+
+/**
+ * Authorized Roles
+ *
+ * Owner - the person who owns the property
+ * Tenant - the person who is renting the property
+ */
+export const OwnerRole = "Owner";
+export const TenantRole = "Tenant";
 
 /**
  * pluralize

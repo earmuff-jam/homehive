@@ -79,19 +79,13 @@ export const filterValidRoutesForNavigationBar = (draftRoutes = []) => {
  * @param {Array} draftRoutes - Array of draft routes within the application
  * @returns Array of <Route> elements
  */
-export function buildAppRoutes(draftRoutes = [], roleType = "") {
+export function buildAppRoutes(draftRoutes = []) {
   const validRouteFlags = validateClientPermissions();
 
   return draftRoutes
     .map(({ path, element, requiredFlags = [], config = {} }) => {
       const isRouteValid = isValidPermissions(validRouteFlags, requiredFlags);
       if (!isRouteValid) return null;
-
-      // Check role access here
-      const validRoles = config?.enabledForRoles || [];
-      if (validRoles.length > 0 && !validRoles.includes(roleType)) {
-        return null;
-      }
 
       const requiresLogin = Boolean(config.isLoggedInFeature);
 

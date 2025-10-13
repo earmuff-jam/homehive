@@ -1,0 +1,146 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Report Table Component tests Report Table Snapshot tests PdfViewer snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 MuiTableContainer-root css-y2ff7i-MuiPaper-root-MuiTableContainer-root"
+    style="--Paper-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12);"
+  >
+    <table
+      aria-label="spanning table"
+      class="MuiTable-root css-vf0yke-MuiTable-root"
+    >
+      <thead
+        class="MuiTableHead-root css-1a7iywq-MuiTableHead-root"
+      >
+        <tr
+          class="MuiTableRow-root MuiTableRow-head css-1xtozoh-MuiTableRow-root"
+        >
+          <th
+            class="MuiTableCell-root MuiTableCell-head MuiTableCell-alignCenter MuiTableCell-sizeMedium css-774dy1-MuiTableCell-root"
+            colspan="5"
+            scope="col"
+          >
+            Invoice Details
+          </th>
+          <th
+            class="MuiTableCell-root MuiTableCell-head MuiTableCell-alignRight MuiTableCell-sizeMedium css-1sipjqd-MuiTableCell-root"
+            scope="col"
+          >
+            Price (USD)
+          </th>
+        </tr>
+        <tr
+          class="MuiTableRow-root MuiTableRow-head css-1xtozoh-MuiTableRow-root"
+        >
+          <th
+            class="MuiTableCell-root MuiTableCell-head MuiTableCell-sizeMedium css-155k23g-MuiTableCell-root"
+            scope="col"
+          >
+            Category
+          </th>
+          <th
+            class="MuiTableCell-root MuiTableCell-head MuiTableCell-sizeMedium css-155k23g-MuiTableCell-root"
+            scope="col"
+          >
+            Description
+          </th>
+          <th
+            class="MuiTableCell-root MuiTableCell-head MuiTableCell-alignRight MuiTableCell-sizeMedium css-1sipjqd-MuiTableCell-root"
+            scope="col"
+          >
+            Qty.
+          </th>
+          <th
+            class="MuiTableCell-root MuiTableCell-head MuiTableCell-alignRight MuiTableCell-sizeMedium css-1sipjqd-MuiTableCell-root"
+            scope="col"
+          >
+            Cost
+          </th>
+          <th
+            class="MuiTableCell-root MuiTableCell-head MuiTableCell-alignRight MuiTableCell-sizeMedium css-1sipjqd-MuiTableCell-root"
+            scope="col"
+          >
+            Payment Received
+          </th>
+          <th
+            class="MuiTableCell-root MuiTableCell-head MuiTableCell-alignRight MuiTableCell-sizeMedium css-1sipjqd-MuiTableCell-root"
+            scope="col"
+          >
+            Balance Due
+          </th>
+        </tr>
+      </thead>
+      <tbody
+        class="MuiTableBody-root css-gmh7jj-MuiTableBody-root"
+      >
+        <tr
+          class="MuiTableRow-root css-1xtozoh-MuiTableRow-root"
+        >
+          <td
+            class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeMedium css-1dc80h3-MuiTableCell-root"
+            rowspan="3"
+          />
+          <td
+            class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeMedium css-qq3g53-MuiTableCell-root"
+            colspan="4"
+          >
+            Subtotal
+          </td>
+          <td
+            class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignRight MuiTableCell-sizeMedium css-1ri9by7-MuiTableCell-root"
+          >
+            0.00
+          </td>
+        </tr>
+        <tr
+          class="MuiTableRow-root css-1xtozoh-MuiTableRow-root"
+        >
+          <td
+            class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeMedium css-qq3g53-MuiTableCell-root"
+          >
+            Tax
+          </td>
+          <td
+            class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignRight MuiTableCell-sizeMedium css-1ri9by7-MuiTableCell-root"
+            colspan="3"
+          >
+            0%
+          </td>
+          <td
+            class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignRight MuiTableCell-sizeMedium css-1ri9by7-MuiTableCell-root"
+          >
+            0.00
+          </td>
+        </tr>
+        <tr
+          class="MuiTableRow-root css-1xtozoh-MuiTableRow-root"
+        >
+          <td
+            class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeMedium css-qq3g53-MuiTableCell-root"
+            colspan="4"
+          >
+            <div
+              class="MuiStack-root css-7v40v5-MuiStack-root"
+            >
+              <p
+                class="MuiTypography-root MuiTypography-body1 css-rizt0-MuiTypography-root"
+              >
+                Total
+              </p>
+              <span
+                class="MuiBox-root css-0"
+              />
+            </div>
+          </td>
+          <td
+            class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignRight MuiTableCell-sizeMedium css-1ri9by7-MuiTableCell-root"
+          >
+            0.00
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</DocumentFragment>
+`;
