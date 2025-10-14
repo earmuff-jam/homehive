@@ -10,8 +10,10 @@ import {
   Container,
   Typography,
 } from "@mui/material";
+import { useAppTitle } from "hooks/useAppTitle";
 
 export default function SplashPage() {
+  useAppTitle("Home");
   return (
     <Box
       sx={{
