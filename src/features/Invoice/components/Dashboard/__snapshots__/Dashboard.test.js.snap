@@ -1,0 +1,126 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Dashboard renders correctly and matches snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="MuiStack-root css-nen11g-MuiStack-root"
+  >
+    <div
+      class="MuiStack-root css-3y1137-MuiStack-root"
+      data-tour="dashboard-0"
+    >
+      <div
+        class="MuiStack-root css-m69qwo-MuiStack-root"
+      >
+        <span
+          aria-label="Edit widget layout"
+          class="MuiBox-root css-0"
+          data-mui-internal-clone-element="true"
+        >
+          <button
+            class="MuiButtonBase-root Mui-disabled MuiIconButton-root Mui-disabled MuiIconButton-colorPrimary MuiIconButton-sizeMedium css-1aozkzf-MuiButtonBase-root-MuiIconButton-root"
+            disabled=""
+            tabindex="-1"
+            type="button"
+          >
+            <svg
+              aria-hidden="true"
+              class="MuiSvgIcon-root MuiSvgIcon-fontSizeInherit css-1ckov0h-MuiSvgIcon-root"
+              data-testid="EditRoundedIcon"
+              focusable="false"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M3 17.46v3.04c0 .28.22.5.5.5h3.04c.13 0 .26-.05.35-.15L17.81 9.94l-3.75-3.75L3.15 17.1q-.15.15-.15.36M20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.996.996 0 0 0-1.41 0l-1.83 1.83 3.75 3.75z"
+              />
+            </svg>
+          </button>
+        </span>
+        <div
+          class="MuiStack-root css-b0cywb-MuiStack-root"
+        >
+          <h5
+            class="MuiTypography-root MuiTypography-h5 css-wj3xde-MuiTypography-root"
+          >
+            Standard layout
+          </h5>
+          <h6
+            class="MuiTypography-root MuiTypography-subtitle2 css-1ypmsg6-MuiTypography-root"
+          >
+            Displaying 0 widget
+          </h6>
+          <div
+            class="MuiBox-root css-56sg73"
+          />
+        </div>
+      </div>
+      <div
+        class="MuiStack-root css-pl8gqh-MuiStack-root"
+      >
+        <button
+          aria-label="Add Widget"
+          class="MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeMedium css-53g0n7-MuiButtonBase-root-MuiIconButton-root"
+          data-mui-internal-clone-element="true"
+          data-tour="dashboard-1"
+          tabindex="0"
+          type="button"
+        >
+          <svg
+            aria-hidden="true"
+            class="MuiSvgIcon-root MuiSvgIcon-colorPrimary MuiSvgIcon-fontSizeSmall css-os5i4q-MuiSvgIcon-root"
+            data-testid="AddRoundedIcon"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M18 13h-5v5c0 .55-.45 1-1 1s-1-.45-1-1v-5H6c-.55 0-1-.45-1-1s.45-1 1-1h5V6c0-.55.45-1 1-1s1 .45 1 1v5h5c.55 0 1 .45 1 1s-.45 1-1 1"
+            />
+          </svg>
+        </button>
+        <button
+          class="MuiButtonBase-root MuiButton-root MuiButton-outlined MuiButton-outlinedPrimary MuiButton-sizeMedium MuiButton-outlinedSizeMedium MuiButton-colorPrimary MuiButton-root MuiButton-outlined MuiButton-outlinedPrimary MuiButton-sizeMedium MuiButton-outlinedSizeMedium MuiButton-colorPrimary css-1blvszr-MuiButtonBase-root-MuiButton-root"
+          data-tour="dashboard-2"
+          tabindex="0"
+          type="button"
+        >
+          Reset
+          <span
+            class="MuiButton-icon MuiButton-endIcon MuiButton-iconSizeMedium css-1gulhci-MuiButton-endIcon"
+          >
+            <svg
+              aria-hidden="true"
+              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1umw9bq-MuiSvgIcon-root"
+              data-testid="RestartAltRoundedIcon"
+              focusable="false"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M12 5V3.21c0-.45-.54-.67-.85-.35l-2.8 2.79c-.2.2-.2.51 0 .71l2.79 2.79c.32.31.86.09.86-.36V7c3.31 0 6 2.69 6 6 0 2.72-1.83 5.02-4.31 5.75-.42.12-.69.52-.69.95 0 .65.62 1.16 1.25.97C17.57 19.7 20 16.64 20 13c0-4.42-3.58-8-8-8m-6 8c0-1.34.44-2.58 1.19-3.59.3-.4.26-.95-.09-1.31-.42-.42-1.14-.38-1.5.1-1 1.34-1.6 3-1.6 4.8 0 3.64 2.43 6.7 5.75 7.67.63.19 1.25-.32 1.25-.97 0-.43-.27-.83-.69-.95C7.83 18.02 6 15.72 6 13"
+              />
+            </svg>
+          </span>
+        </button>
+      </div>
+    </div>
+    <div
+      class="MuiBox-root css-0"
+      data-tour="dashboard-3"
+    >
+      <div
+        class="MuiStack-root css-5andtu-MuiStack-root"
+      >
+        <h5
+          class="MuiTypography-root MuiTypography-h5 css-16xl4zq-MuiTypography-root"
+        >
+          Sorry, no matching records found
+        </h5>
+        <span
+          class="MuiTypography-root MuiTypography-caption css-mpaqru-MuiTypography-root"
+        >
+          Add widgets for custom dashboard layout.
+        </span>
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;

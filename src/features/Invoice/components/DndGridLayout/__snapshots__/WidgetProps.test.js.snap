@@ -1,0 +1,47 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`WidgetProps renders DetailsTableView when id=4 1`] = `
+<DocumentFragment>
+  <div>
+    Mocked DetailsTableView
+  </div>
+</DocumentFragment>
+`;
+
+exports[`WidgetProps renders InvoiceTimelineChart when id=1 1`] = `
+<DocumentFragment>
+  <div
+    class="MuiBox-root css-16x70mu"
+  >
+    <div>
+      Mocked InvoiceTimelineChart
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`WidgetProps renders InvoiceTrendsChart when id=2 1`] = `
+<DocumentFragment>
+  <div
+    class="MuiBox-root css-16x70mu"
+  >
+    <div>
+      Mocked InvoiceTrendsChart
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`WidgetProps renders ItemTypeFreqChart when id=3 1`] = `
+<DocumentFragment>
+  <div
+    class="MuiBox-root css-16x70mu"
+  >
+    <div>
+      Mocked ItemTypeFreqChart
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`WidgetProps renders null for unknown id 1`] = `<DocumentFragment />`;

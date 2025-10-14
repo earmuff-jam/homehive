@@ -14,6 +14,7 @@ export default [
       ".netlify",
       "__mocks__",
       "**/*.test.js",
+      "*.setup.js",
     ],
   },
   {
@@ -45,6 +46,7 @@ export default [
       "react/jsx-uses-react": "error",
       "no-unused-vars": ["error"],
       "no-console": ["error", { allow: ["warn", "debug"] }],
+      "react-hooks/exhaustive-deps": "off",
     },
   },
 ];
