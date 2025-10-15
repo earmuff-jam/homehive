@@ -12,12 +12,10 @@ import {
 import EditPdfLineItem from "features/Invoice/components/EditPdf/EditPdfLineItem";
 
 export default function EditPdfLineItemAccordion({
-  lineItem,
   title,
   index,
-  handleDelete,
-  handleLineItemChange,
-  handleLineItemAutocompleteChange,
+  control,
+  onDelete,
 }) {
   return (
     <Accordion defaultExpanded>
@@ -27,19 +25,14 @@ export default function EditPdfLineItemAccordion({
         id="panel1-header"
       >
         <Stack alignItems={"center"} direction="row">
-          <IconButton size="small" onClick={() => handleDelete(index)}>
+          <IconButton size="small" onClick={() => onDelete(index)}>
             <DeleteRounded fontSize="small" color="error" />
           </IconButton>
           <Typography>{title}</Typography>
         </Stack>
       </AccordionSummary>
       <AccordionDetails>
-        <EditPdfLineItem
-          index={index}
-          formData={lineItem}
-          handleLineItemChange={handleLineItemChange}
-          handleLineItemAutocompleteChange={handleLineItemAutocompleteChange}
-        />
+         <EditPdfLineItem control={control} index={index} />
       </AccordionDetails>
     </Accordion>
   );

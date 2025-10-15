@@ -14,7 +14,7 @@ import {
 } from "chart.js";
 import EmptyComponent from "common/EmptyComponent";
 import RowHeader from "common/RowHeader/RowHeader";
-import { normalizeInvoiceItemTypeChartDataset } from "features/Invoice/components/Widgets/utils";
+import { normalizeInvoiceItemTypeChartDataset } from "features/Invoice/utils/utils";
 
 normalizeInvoiceItemTypeChartDataset;
 

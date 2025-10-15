@@ -1,0 +1,123 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`UserInfoViewer component renders correctly and matches snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="MuiContainer-root MuiContainer-maxWidthSm css-8gc8gz-MuiContainer-root"
+  >
+    <div
+      class="MuiStack-root css-1sazv7p-MuiStack-root"
+    >
+      <div
+        class="MuiStack-root css-nen11g-MuiStack-root"
+      >
+        <h5
+          class="MuiTypography-root MuiTypography-h5 css-stnzmu-MuiTypography-root"
+        >
+          Sender Information
+        </h5>
+        <h6
+          class="MuiTypography-root MuiTypography-subtitle2 css-1ypmsg6-MuiTypography-root"
+        >
+          Add details about the sender
+        </h6>
+      </div>
+      <div
+        class="MuiStack-root css-pl8gqh-MuiStack-root"
+      >
+        <div
+          data-testid="first_name"
+        >
+          <label>
+            First Name *
+          </label>
+          <input
+            placeholder="First Name"
+          />
+        </div>
+        <div
+          data-testid="last_name"
+        >
+          <label>
+            Last Name *
+          </label>
+          <input
+            placeholder="Last Name"
+          />
+        </div>
+      </div>
+      <div
+        class="MuiStack-root css-pl8gqh-MuiStack-root"
+      >
+        <div
+          data-testid="email_address"
+        >
+          <label>
+            Email address *
+          </label>
+          <input
+            placeholder="Email Address"
+          />
+        </div>
+        <div
+          data-testid="phone_number"
+        >
+          <label>
+            Phone Number *
+          </label>
+          <input
+            placeholder="Phone Number"
+          />
+        </div>
+      </div>
+      <div
+        data-testid="street_address"
+      >
+        <label>
+          Street Address *
+        </label>
+        <input
+          placeholder="Street Address"
+        />
+      </div>
+      <div
+        class="MuiStack-root css-pl8gqh-MuiStack-root"
+      >
+        <div
+          data-testid="city"
+        >
+          <label>
+            City *
+          </label>
+          <input
+            placeholder="City"
+          />
+        </div>
+        <div
+          data-testid="state"
+        >
+          <label>
+            State *
+          </label>
+          <input
+            placeholder="State"
+          />
+        </div>
+        <div
+          data-testid="zipcode"
+        >
+          <label>
+            Zip Code *
+          </label>
+          <input
+            placeholder="Zip Code"
+          />
+        </div>
+      </div>
+      <button>
+        Save
+      </button>
+    </div>
+  </div>
+</DocumentFragment>
+`;

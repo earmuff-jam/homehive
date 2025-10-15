@@ -42,7 +42,6 @@
   },
   "go.toolsManagement.autoUpdate": true,
   "update.mode": "none",
-  "editor.fontSize": 15,
   "editor.fontFamily": "Fira Code",
   "editor.fontLigatures": true,
   "window.zoomLevel": 0,
@@ -70,6 +69,6 @@
   "[jsonc]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  "workbench.colorTheme": "JetBrains Dark New UI",
+  "workbench.colorTheme": "Vim Dark Hard",
   "workbench.iconTheme": "vscode-great-icons"
 }

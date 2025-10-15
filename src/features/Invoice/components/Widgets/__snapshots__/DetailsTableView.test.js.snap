@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DetailsTableView component renders correctly and matches snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="MuiStack-root css-1sazv7p-MuiStack-root"
+    data-tour="dashboard-7"
+  >
+    <div
+      data-testid="row-header"
+    >
+      <h1>
+        Invoice Details
+      </h1>
+      <p>
+        Summary view
+      </p>
+    </div>
+    <div
+      data-testid="mock-table"
+    >
+      Mock Table (0 rows)
+    </div>
+  </div>
+</DocumentFragment>
+`;

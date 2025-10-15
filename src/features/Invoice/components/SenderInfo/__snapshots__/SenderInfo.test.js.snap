@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SenderInfo component renders correctly and matches snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="MuiStack-root css-aha7cr-MuiStack-root"
+    data-tour="sender-0"
+  >
+    <div>
+      <h1>
+        Add details about the sender
+      </h1>
+      <p>
+        Required fields are marked with an * 
+      </p>
+    </div>
+    <form>
+      <button
+        type="submit"
+      >
+        Submit
+      </button>
+    </form>
+  </div>
+</DocumentFragment>
+`;

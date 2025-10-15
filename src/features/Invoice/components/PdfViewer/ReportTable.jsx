@@ -69,7 +69,7 @@ export default function ReportTable({
             <TableRow key={index}>
               <TableCell>
                 <Typography variant="subtitle">
-                  {row?.category || ""}
+                  {row?.category?.label || ""}
                 </Typography>
               </TableCell>
               <TableCell>

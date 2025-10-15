@@ -1,105 +1,102 @@
 import React from "react";
 
+import { Controller } from "react-hook-form";
+
 import { Autocomplete, Stack, TextField, Typography } from "@mui/material";
 import TextFieldWithLabel from "common/TextFieldWithLabel";
 import { InvoiceCategoryOptions } from "features/Invoice/constants";
 
-export default function EditPdfLineItem({
-  index,
-  formData,
-  handleLineItemChange,
-  handleLineItemAutocompleteChange,
-}) {
+export default function EditPdfLineItem({ control, index }) {
   return (
     <Stack spacing={2}>
-      <Stack direction="row" spacing={2} alignItems="center">
-        <Stack>
-          <Typography variant="body2" fontWeight="medium" gutterBottom>
-            Category {formData.category.isRequired && `*`}
-          </Typography>
-          <Autocomplete
-            id="category"
-            disablePortal
-            options={InvoiceCategoryOptions}
-            sx={{ width: 300 }}
-            value={formData.category?.selectedOption || ""}
-            onChange={(event, newValue) =>
-              handleLineItemAutocompleteChange(index, "category", newValue)
-            }
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                size="small"
-                placeholder="Select type of category"
-              />
-            )}
-          />
-        </Stack>
-
-        {/* Description */}
-        <TextFieldWithLabel
-          label="Description"
-          id="descpription"
-          name="descpription"
-          placeholder="Description of charge"
-          value={formData?.descpription.value || ""}
-          handleChange={(ev) => handleLineItemChange(ev, index)}
-          errorMsg={formData.descpription["errorMsg"]}
-        />
-      </Stack>
-
-      {/* Caption */}
-      <TextFieldWithLabel
-        label="Caption"
-        id="caption"
-        name="caption"
-        placeholder="Additional details"
-        value={formData?.caption.value || ""}
-        handleChange={(ev) => handleLineItemChange(ev, index)}
-        errorMsg={formData.caption["errorMsg"]}
+      {/* Category */}
+      <Controller
+        name={`lineItems.${index}.category`}
+        control={control}
+        render={({ field }) => (
+          <Stack>
+            <Typography variant="body2" fontWeight="medium" gutterBottom>
+              Category *
+            </Typography>
+            <Autocomplete
+              options={InvoiceCategoryOptions}
+              getOptionLabel={(opt) => opt.label || ""}
+              value={field?.value || null}
+              onChange={(_, value) => field.onChange(value)}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  size="small"
+                  placeholder="Select category"
+                />
+              )}
+            />
+          </Stack>
+        )}
       />
 
-      {/* Quantity and Price */}
+      {/* Description */}
+      <Controller
+        name={`lineItems.${index}.description`}
+        control={control}
+        render={({ field }) => (
+          <TextFieldWithLabel
+            {...field}
+            label="Description"
+            placeholder="Description of charge"
+          />
+        )}
+      />
+
+      {/* Quantity + Price */}
       <Stack direction="row" spacing={2}>
-        <TextFieldWithLabel
-          label="Quantity *"
-          id="quantity"
-          name="quantity"
-          placeholder="Quantity"
-          value={formData?.quantity.value || ""}
-          handleChange={(ev) => handleLineItemChange(ev, index)}
-          errorMsg={formData.quantity["errorMsg"]}
+        <Controller
+          name={`lineItems.${index}.quantity`}
+          control={control}
+          render={({ field }) => (
+            <TextFieldWithLabel
+              {...field}
+              label="Quantity *"
+              placeholder="Quantity"
+            />
+          )}
         />
-        <TextFieldWithLabel
-          label="Price *"
-          id="price"
-          name="price"
-          placeholder="Total cost of current item in USD"
-          value={formData?.price.value || ""}
-          handleChange={(ev) => handleLineItemChange(ev, index)}
-          errorMsg={formData.price["errorMsg"]}
+        <Controller
+          name={`lineItems.${index}.price`}
+          control={control}
+          render={({ field }) => (
+            <TextFieldWithLabel
+              {...field}
+              label="Price *"
+              placeholder="USD amount"
+            />
+          )}
         />
       </Stack>
 
-      {/* Payment and Mode of Payment */}
+      {/* Payment + Payment Method */}
       <Stack direction="row" spacing={2}>
-        <TextFieldWithLabel
-          label="Payment *"
-          id="payment"
-          name="payment"
-          placeholder="Amount paid in USD."
-          value={formData?.payment.value || ""}
-          handleChange={(ev) => handleLineItemChange(ev, index)}
-          errorMsg={formData.payment["errorMsg"]}
+        <Controller
+          name={`lineItems.${index}.payment`}
+          control={control}
+          render={({ field }) => (
+            <TextFieldWithLabel
+              {...field}
+              label="Payment *"
+              placeholder="Paid in USD"
+            />
+          )}
         />
-        <TextFieldWithLabel
-          label="Mode of Payment*"
-          id="payment_method"
-          name="payment_method"
-          placeholder="Payment Method, eg., Zelle, Money Order"
-          value={formData?.payment_method.value || ""}
-          handleChange={(ev) => handleLineItemChange(ev, index)}
-          errorMsg={formData.payment_method["errorMsg"]}
+        <Controller
+          name={`lineItems.${index}.payment_method`}
+          control={control}
+          render={({ field }) => (
+            <TextFieldWithLabel
+              {...field}
+              label="Mode of Payment *"
+              placeholder="Zelle, Cash..."
+            />
+          )}
         />
       </Stack>
     </Stack>
