@@ -1,0 +1,28 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TitleCard renders correctly and matches snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation0 MuiCard-root css-8xz2hm-MuiPaper-root-MuiCard-root"
+    style="--Paper-shadow: none;"
+  >
+    <div
+      class="MuiCardContent-root css-1casv0q-MuiCardContent-root"
+    >
+      <div
+        class="MuiBox-root css-1s00k8g"
+      >
+        <h4
+          class="MuiTypography-root MuiTypography-h4 css-f84ov1-MuiTypography-root"
+        />
+      </div>
+      <p
+        class="MuiTypography-root MuiTypography-body1 MuiTypography-gutterBottom css-91oxh-MuiTypography-root"
+      />
+      <div
+        class="MuiBox-root css-ocwszi"
+      />
+    </div>
+  </div>
+</DocumentFragment>
+`;
