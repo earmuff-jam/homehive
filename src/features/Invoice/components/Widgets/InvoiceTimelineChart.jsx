@@ -13,7 +13,7 @@ import {
 } from "chart.js";
 import EmptyComponent from "common/EmptyComponent";
 import RowHeader from "common/RowHeader/RowHeader";
-import { normalizeInvoiceTimelineChartDataset } from "features/Invoice/components/Widgets/utils";
+import { normalizeInvoiceTimelineChartDataset } from "features/Invoice/utils/utils";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Title);
 
