@@ -54,6 +54,13 @@ export default function MenuOptions({
         anchorEl={anchorEl}
         open={open}
         onClose={handleClose}
+        slotProps={{
+          list: {
+            sx: {
+              padding: 0,
+            },
+          },
+        }}
         sx={{
           "& .MuiPaper-root": {
             minWidth: 180,
@@ -76,7 +83,7 @@ export default function MenuOptions({
                 handleClose();
               }}
               disableRipple
-              sx={{ gap: "0.5rem", py: 1 }}
+              sx={{ gap: "0.5rem" }}
             >
               <ListItemIcon>
                 <PrintRounded />
