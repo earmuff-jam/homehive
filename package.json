@@ -10,7 +10,8 @@
     "preview": "vite preview",
     "format": "prettier --write .",
     "test": "jest",
-    "test:update": "jest -u",
+    "testc": "jest --coverage",
+    "testu": "jest -u",
     "debug": "netlify dev --inspect"
   },
   "dependencies": {
