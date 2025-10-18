@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import { Controller, useForm } from "react-hook-form";
+import { Controller, useFieldArray, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
 import dayjs from "dayjs";
@@ -46,20 +46,30 @@ export default function EditPdf({
   const navigate = useNavigate();
 
   const {
+    watch,
     control,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isValid },
   } = useForm({
     defaultValues: {
       title: "",
+      caption: "",
+      note: "",
+      start_date: "",
+      end_date: "",
+      invoice_header: "",
+      tax_rate: "",
+      lineItems: [],
     },
   });
 
-  const [lineItems, setLineItems] = useState([]);
-  const [showSnackbar, setShowSnackbar] = useState(false);
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "lineItems",
+  });
 
+  const [showSnackbar, setShowSnackbar] = useState(false);
   const [options, setOptions] = useState(DefaultInvoiceStatusOptions);
-  const [formData, setFormData] = useState(BLANK_INVOICE_DETAILS_FORM);
 
   const handleSelection = (label) => {
     setOptions((prevItems) =>
@@ -89,128 +99,36 @@ export default function EditPdf({
     setFormData(updatedFormData);
   };
 
-  const handleLineItemAutocompleteChange = (index, fieldId, selectedOption) => {
-    const value = selectedOption?.value || "";
-
-    setLineItems((prevItems) =>
-      produce(prevItems, (draft) => {
-        let errorMsg = "";
-
-        const currentItem = draft[index];
-        const field = currentItem[fieldId];
-
-        for (const validator of field.validators) {
-          if (validator.validate(value)) {
-            errorMsg = validator.message;
-            break;
-          }
-        }
-
-        currentItem[fieldId] = {
-          ...field,
-          selectedOption,
-          value: selectedOption?.value,
-          errorMsg,
-        };
-      }),
-    );
-  };
-
-  const handleLineItemChange = (ev, index) => {
-    const { id, value } = ev.target;
-
-    setLineItems((prevItems) =>
-      produce(prevItems, (draft) => {
-        let errorMsg = "";
-
-        const currentItem = draft[index];
-        const field = currentItem[id];
-
-        for (const validator of field.validators) {
-          if (validator.validate(value)) {
-            errorMsg = validator.message;
-            break;
-          }
-        }
-
-        currentItem[id] = {
-          ...field,
-          value,
-          errorMsg,
-        };
-      }),
-    );
-  };
-
-  const handleDelete = (index) => {
-    const updatedLineItems = lineItems.filter((v, idx) => idx !== index);
-    setLineItems(() => [...updatedLineItems]);
-  };
-
   const addLineItems = () => {
-    setLineItems((prevItems) => [...prevItems, BLANK_INVOICE_LINE_ITEM_FORM]);
+    append({
+      category: "",
+      description: "",
+      caption: "",
+      quantity: "",
+      price: "",
+      payment: "",
+      payment_method: "",
+    });
   };
 
-  const submit = (ev) => {
-    ev.preventDefault();
-    const draftData = Object.entries(formData).reduce(
-      (acc, [key, valueObj]) => {
-        acc[key] = valueObj.value;
-        return acc;
-      },
-      {},
-    );
+  const submit = (data) => {
+    const lineItems = data?.lineItems;
+    const draftData = {
+      ...data,
+      items:
+        lineItems?.map((item) => ({
+          ...item,
+        })) || [],
+      updatedOn: dayjs().toISOString(),
+    };
 
-    const draftLineItemData = lineItems.map((lineItem) => {
-      return Object.entries(lineItem).reduce((acc, [key, valueObj]) => {
-        acc[key] = valueObj.value;
-        return acc;
-      }, {});
-    });
-
-    draftData["items"] = draftLineItemData;
-    draftData["updatedOn"] = dayjs().toISOString();
-
-    const invoiceStatus = options.find((option) => option.selected);
-
-    localStorage.setItem("pdfDetails", JSON.stringify(draftData));
-    localStorage.setItem("invoiceStatus", JSON.stringify(invoiceStatus));
+    const invoiceStatus = options.find((option) => option.selected) || null;
+    console.log(draftData, invoiceStatus);
+    // localStorage.setItem(
+    //   "pdfDetails",
+    //   JSON.stringify({ ...draftData, invoiceStatus }),
+    // );
     setShowSnackbar(true);
-  };
-
-  const isLineItemsDisabled = () => {
-    return lineItems.some((lineItem) => {
-      const containerErrInLineItem = Object.values(lineItem).some(
-        (el) => el.errorMsg,
-      );
-
-      const requiredFormFieldsInLineItem = Object.values(lineItem).filter(
-        (v) => v.isRequired,
-      );
-      const isRequiredFieldsEmptyInLineItem = requiredFormFieldsInLineItem.some(
-        (el) => el.value.trim() === "",
-      );
-
-      return containerErrInLineItem || isRequiredFieldsEmptyInLineItem;
-    });
-  };
-
-  const isDisabled = () => {
-    const containsErr = Object.values(formData).some((el) => el.errorMsg);
-
-    const requiredFormFields = Object.values(formData).filter(
-      (v) => v.isRequired,
-    );
-    const isRequiredFieldsEmpty = requiredFormFields.some(
-      (el) => el.value.trim() === "",
-    );
-
-    return (
-      containsErr ||
-      isRequiredFieldsEmpty ||
-      lineItems.length <= 0 ||
-      isLineItemsDisabled()
-    );
   };
 
   useEffect(() => {
@@ -277,7 +195,7 @@ export default function EditPdf({
             color="primary"
             size="small"
             sx={{ alignSelf: "flex-end" }}
-            disabled={isDisabled()}
+            disabled={!isValid}
           >
             <SaveRounded />
           </IconButton>
@@ -336,7 +254,6 @@ export default function EditPdf({
             )}
           />
         </Stack>
-
         <Controller
           name="note"
           control={control}
@@ -360,47 +277,65 @@ export default function EditPdf({
             />
           )}
         />
-
         {/* Start and end dates */}
         <Stack direction="row" spacing={2} data-tour="edit-pdf-4">
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <MobileDatePicker
-              label="Start Date *"
-              id="start_date"
-              name="start_date"
-              placeholder="Start Date"
-              value={dayjs(formData?.start_date.value)}
-              onChange={(ev) => handleDateTime(ev, "start_date")}
-              errorMsg={formData.start_date["errorMsg"]}
-              slotProps={{
-                textField: {
-                  helperText: "Start date for the selected bill",
-                  size: "small",
-                  sx: { flexGrow: 1 },
-                },
-              }}
-            />
-          </LocalizationProvider>
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <MobileDatePicker
-              label="End Date *"
-              id="end_date"
-              name="end_date"
-              placeholder="End Date"
-              value={dayjs(formData?.end_date.value)}
-              onChange={(ev) => handleDateTime(ev, "end_date")}
-              errorMsg={formData.end_date["errorMsg"]}
-              slotProps={{
-                textField: {
-                  helperText: "Due date for the selected bill",
-                  size: "small",
-                  sx: { flexGrow: 1 },
-                },
-              }}
-            />
-          </LocalizationProvider>
+          <Controller
+            name="start_date"
+            control={control}
+            defaultValue={null}
+            rules={{ required: "Start Date is required" }}
+            render={({ field, fieldState }) => (
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <MobileDatePicker
+                  label="Start Date *"
+                  value={field.value}
+                  onChange={(newValue) => field.onChange(newValue)}
+                  slotProps={{
+                    textField: {
+                      error: !!fieldState.error,
+                      helperText:
+                        fieldState.error?.message ||
+                        "Start date for the selected bill",
+                      size: "small",
+                      sx: { flexGrow: 1 },
+                    },
+                  }}
+                />
+              </LocalizationProvider>
+            )}
+          />
+          <Controller
+            name="end_date"
+            control={control}
+            defaultValue={null}
+            rules={{
+              required: "End Date is required",
+              validate: (value) =>
+                value && value?.isAfter(watch("start_date"))
+                  ? true
+                  : "End Date must be after Start Date",
+            }}
+            render={({ field, fieldState }) => (
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <MobileDatePicker
+                  label="End Date *"
+                  value={field.value}
+                  onChange={(newValue) => field.onChange(newValue)}
+                  slotProps={{
+                    textField: {
+                      error: !!fieldState.error,
+                      helperText:
+                        fieldState.error?.message ||
+                        "Due date for the selected bill",
+                      size: "small",
+                      sx: { flexGrow: 1 },
+                    },
+                  }}
+                />
+              </LocalizationProvider>
+            )}
+          />
         </Stack>
-
         {/* Invoice Header */}
         <Controller
           name="invoice_header"
@@ -427,7 +362,6 @@ export default function EditPdf({
             />
           )}
         />
-
         {/* Tax Rate */}
         <Controller
           name="tax_rate"
@@ -444,7 +378,6 @@ export default function EditPdf({
             />
           )}
         />
-
         <Paper sx={{ padding: "1rem" }} data-tour="edit-pdf-7">
           <Tooltip
             title="The current status of the invoice. Selecting 'none' will not display any status."
@@ -478,22 +411,20 @@ export default function EditPdf({
             label="Add Item"
           />
         </Stack>
-        {lineItems.map((item, index) => (
+        {fields.map((item, index) => (
           <EditPdfLineItemAccordion
-            key={index}
+            key={item.id}
             title={`Edit line ${index + 1}`}
-            lineItem={item}
+            control={control}
             index={index}
-            handleDelete={handleDelete}
-            handleLineItemChange={handleLineItemChange}
-            handleLineItemAutocompleteChange={handleLineItemAutocompleteChange}
+            onDelete={() => remove(index)}
           />
         ))}
         <AButton
           data-tour="edit-pdf-9"
           variant="contained"
           onClick={handleSubmit(submit)}
-          disabled={isDisabled()}
+          disabled={!isValid}
           label="Save"
         />
       </Stack>
@@ -502,7 +433,7 @@ export default function EditPdf({
         setShowSnackbar={setShowSnackbar}
         title="Changes saved."
         caption="View Invoice"
-        onClick={() => navigate("/view")}
+        onClick={() => navigate("/invoice/view")}
       />
     </Container>
   );

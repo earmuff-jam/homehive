@@ -5,6 +5,10 @@ import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/react";
 
 describe("Footer component", () => {
+  it("renders correctly and matches snapshot", () => {
+    const { asFragment } = render(<Footer />);
+    expect(asFragment()).toMatchSnapshot();
+  });
   it("renders footer text", () => {
     render(<Footer />);
     expect(
