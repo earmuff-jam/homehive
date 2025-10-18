@@ -16,6 +16,21 @@ export const invoiceApi = createApi({
   tagTypes: [InvoiceApiTagTypes.recieverInfo, InvoiceApiTagTypes.senderInfo],
 
   endpoints: (builder) => ({
+    getPdfDetails: builder.query({
+      queryFn: () => {
+        try {
+          return {
+            data: {
+              ...JSON.parse(localStorage.getItem("pdfDetails")),
+              invoiceStatus: JSON.parse(localStorage.getItem("invoiceStatus")),
+              recieverInfo: JSON.parse(localStorage.getItem("recieverInfo")),
+            },
+          };
+        } catch (err) {
+          return { error: err };
+        }
+      },
+    }),
     getSenderInfo: builder.query({
       queryFn: () => {
         try {
@@ -28,7 +43,6 @@ export const invoiceApi = createApi({
       },
       providesTags: [InvoiceApiTagTypes.senderInfo],
     }),
-
     getReceiverInfo: builder.query({
       queryFn: () => {
         try {
@@ -41,7 +55,6 @@ export const invoiceApi = createApi({
       },
       providesTags: [InvoiceApiTagTypes.recieverInfo],
     }),
-
     upsertSenderInfo: builder.mutation({
       queryFn: (newData) => {
         try {
@@ -56,7 +69,6 @@ export const invoiceApi = createApi({
       },
       invalidatesTags: [InvoiceApiTagTypes.senderInfo],
     }),
-
     upsertReceiverInfo: builder.mutation({
       queryFn: (newData) => {
         try {
@@ -78,6 +90,7 @@ export const invoiceApi = createApi({
 });
 
 export const {
+  useGetPdfDetailsQuery,
   useGetSenderInfoQuery,
   useGetReceiverInfoQuery,
   useUpsertSenderInfoMutation,

@@ -22,6 +22,7 @@ import {
   isUserLoggedIn,
 } from "common/utils";
 import { useAuthenticateMutation } from "features/Api/firebaseUserApi";
+import { useGetPdfDetailsQuery } from "features/Api/invoiceApi";
 import { useLocalStorageData } from "features/Invoice/hooks/useGenerateUserData";
 import MenuOptions from "features/Layout/components/NavBar/MenuOptions";
 import { retrieveTourKey } from "features/Layout/utils";
@@ -40,6 +41,9 @@ export default function AppToolbar({
   const navigate = useNavigate();
   const { sendEmail, reset, loading, error, success } = useSendEmail();
 
+  const { data: pdfDetails, isLoading } = useGetPdfDetailsQuery();
+
+  console.log(pdfDetails);
   const [
     authenticate,
     {
