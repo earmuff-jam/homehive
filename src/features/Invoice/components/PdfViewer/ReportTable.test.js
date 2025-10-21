@@ -22,7 +22,7 @@ describe("Report Table Component tests", () => {
       const mockRows = [
         {
           category: "Rent",
-          descpription: "Monthly rent",
+          description: "Monthly rent",
           caption: "April",
           quantity: 1,
           price: 1000,

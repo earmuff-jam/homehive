@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import React from "react";
 
+import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
 import dayjs from "dayjs";
@@ -8,85 +9,77 @@ import dayjs from "dayjs";
 import { Stack } from "@mui/material";
 import CustomSnackbar from "common/CustomSnackbar/CustomSnackbar";
 import RowHeader from "common/RowHeader/RowHeader";
+import {
+  useGetReceiverInfoQuery,
+  useUpsertReceiverInfoMutation,
+} from "features/Api/invoiceApi";
 import UserInfoViewer from "features/Invoice/components/UserInfo/UserInfoViewer";
-import { BLANK_INDIVIDUAL_INFORMATION_DETAILS } from "features/Invoice/components/UserInfo/constants";
 import { useAppTitle } from "hooks/useAppTitle";
 
 export default function RecieverInfo() {
   useAppTitle("Reciever Information");
   const navigate = useNavigate();
   const [showSnackbar, setShowSnackbar] = useState(false);
-  const [formData, setFormData] = useState(
-    BLANK_INDIVIDUAL_INFORMATION_DETAILS,
-  );
 
-  const handleChange = (ev) => {
-    const { id, value } = ev.target;
-    const updatedFormData = { ...formData };
-    let errorMsg = "";
-    for (const validator of updatedFormData[id].validators) {
-      if (validator.validate(value)) {
-        errorMsg = validator.message;
-        break;
-      }
-    }
-    updatedFormData[id] = {
-      ...updatedFormData[id],
-      value,
-      errorMsg,
-    };
-    setFormData(updatedFormData);
-  };
+  const {
+    data: recieverInfo,
+    isLoading: isRecieverInfoLoading,
+    isSuccess: isRecieverInfoSuccess,
+  } = useGetReceiverInfoQuery();
 
-  const submit = (ev) => {
-    ev.preventDefault();
-    const draftData = Object.entries(formData).reduce(
-      (acc, [key, valueObj]) => {
-        acc[key] = valueObj.value;
-        return acc;
-      },
-      {},
-    );
-    draftData["updatedOn"] = dayjs();
-    localStorage.setItem("recieverInfo", JSON.stringify(draftData));
-    setShowSnackbar(true);
-  };
+  const [
+    upsertRecieverInfo,
+    {
+      isLoading: isUpsertRecieverInfoLoading,
+      isSuccess: isUpsertRecieverInfoSuccess,
+    },
+  ] = useUpsertReceiverInfoMutation();
 
-  const isDisabled = () => {
-    const containsErr = Object.values(formData).reduce((acc, el) => {
-      if (el.errorMsg) {
-        return true;
-      }
-      return acc;
-    }, false);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isValid },
+    reset,
+  } = useForm({
+    mode: "onChange",
+    defaultValues: {
+      first_name: "",
+      last_name: "",
+      email_address: "",
+      phone_number: "",
+      street_address: "",
+      city: "",
+      state: "",
+      zipcode: "",
+    },
+  });
 
-    const requiredFormFields = Object.values(formData).filter(
-      (v) => v.isRequired,
-    );
-    const isRequiredFieldsEmpty = requiredFormFields.some(
-      (el) => el.value.trim() === "",
-    );
-
-    return containsErr || isRequiredFieldsEmpty;
+  const submit = (formData) => {
+    formData["updatedOn"] = dayjs();
+    upsertRecieverInfo(formData);
   };
 
   useEffect(() => {
-    const localValues = localStorage.getItem("recieverInfo");
-    const parsedValues = JSON.parse(localValues);
-    if (parsedValues) {
-      const draftProfileDetails = { ...BLANK_INDIVIDUAL_INFORMATION_DETAILS };
-      draftProfileDetails.first_name.value = parsedValues.first_name;
-      draftProfileDetails.last_name.value = parsedValues.last_name;
-      draftProfileDetails.email_address.value = parsedValues.email_address;
-      draftProfileDetails.phone_number.value = parsedValues.phone_number;
-      draftProfileDetails.street_address.value = parsedValues.street_address;
-      draftProfileDetails.city.value = parsedValues.city;
-      draftProfileDetails.state.value = parsedValues.state;
-      draftProfileDetails.zipcode.value = parsedValues.zipcode;
-      draftProfileDetails.updatedOn = parsedValues.updatedOn;
-      setFormData(draftProfileDetails);
+    if (isUpsertRecieverInfoSuccess) {
+      setShowSnackbar(true);
     }
-  }, []);
+  }, [isUpsertRecieverInfoLoading]);
+
+  useEffect(() => {
+    if (isRecieverInfoSuccess) {
+      reset({
+        first_name: recieverInfo.first_name,
+        last_name: recieverInfo.last_name,
+        email_address: recieverInfo.email_address,
+        phone_number: recieverInfo.phone_number,
+        street_address: recieverInfo.street_address,
+        city: recieverInfo.city,
+        state: recieverInfo.state,
+        zipcode: recieverInfo.zipcode,
+        updatedOn: recieverInfo.updatedOn,
+      });
+    }
+  }, [isRecieverInfoLoading]);
 
   return (
     <Stack spacing={1} alignItems="center" data-tour={"reciever-0"}>
@@ -97,10 +90,11 @@ export default function RecieverInfo() {
       <UserInfoViewer
         title="Reciever Information"
         caption="Add details about the reciever"
-        formData={formData}
-        handleChange={handleChange}
-        onSubmit={submit}
-        isDisabled={isDisabled()}
+        register={register}
+        errors={errors}
+        isDisabled={!isValid}
+        onSubmit={handleSubmit(submit)}
+        loading={isUpsertRecieverInfoLoading}
       />
       <CustomSnackbar
         showSnackbar={showSnackbar}

@@ -57,10 +57,12 @@ export default function PdfViewer() {
             color="text.secondary"
             sx={{ fontStyle: "italic" }}
           >
-            Period {invoice_form.start_date} to {invoice_form.end_date}
+            {`Period ${dayjs(invoice_form.start_date)?.format(
+              "MM-DD-YYYY",
+            )} to ${dayjs(invoice_form.end_date)?.format("MM-DD-YYYY")}`}
           </Typography>
           <ReportTable
-            rows={invoice_form.items || []}
+            rows={invoice_form.lineItems || []}
             taxRate={invoice_form.tax_rate}
             invoiceTitle={invoice_form.invoice_header}
             invoiceStatus={invoiceStatus}

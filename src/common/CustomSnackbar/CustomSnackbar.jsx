@@ -20,13 +20,22 @@ function CustomSnackbar({
         onClose={() => setShowSnackbar(false)}
         severity={severity}
         variant="filled"
-        onClick={onClick}
-        sx={{ width: "100%", cursor: "pointer" }}
       >
         <Typography variant="caption" textTransform="initial">
           {title}
         </Typography>
-        <Typography variant="caption" textTransform="initial">
+        <Typography
+          variant="caption"
+          textTransform="initial"
+          paddingLeft="0.2rem"
+          sx={{ cursor: "pointer", textDecoration: 'underline' }}
+          onClick={(e) => {
+            // prevent bubbling to parent, so that snackbar does not navigate
+            // if close button is pressed
+            e.stopPropagation();
+            onClick?.();
+          }}
+        >
           {caption}
         </Typography>
       </Alert>

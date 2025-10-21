@@ -1,16 +1,17 @@
 import React from "react";
 
-import TextFieldWithLabel from "../../../../common/TextFieldWithLabel";
 import { Container, Stack, Typography } from "@mui/material";
 import AButton from "common/AButton";
+import TextFieldWithLabel from "common/TextFieldWithLabel";
 
 export default function UserInfoViewer({
   title,
   caption,
-  formData,
-  handleChange,
-  onSubmit,
+  register,
+  errors,
   isDisabled,
+  onSubmit,
+  loading,
 }) {
   return (
     <Container
@@ -33,22 +34,42 @@ export default function UserInfoViewer({
         {/* First and Last Name */}
         <Stack direction="row" spacing={2}>
           <TextFieldWithLabel
-            label="First name *"
+            label="First Name *"
             id="first_name"
-            name="first_name"
             placeholder="First Name"
-            value={formData?.first_name.value || ""}
-            handleChange={handleChange}
-            errorMsg={formData.first_name["errorMsg"]}
+            errorMsg={errors.first_name?.message}
+            inputProps={{
+              ...register("first_name", {
+                required: "First Name is required",
+                minLength: {
+                  value: 3,
+                  message: "First Name must be at least three characters",
+                },
+                maxLength: {
+                  value: 150,
+                  message: "First Name must be less than 150 characters",
+                },
+              }),
+            }}
           />
           <TextFieldWithLabel
-            label="Last name *"
+            label="Last Name *"
             id="last_name"
-            name="last_name"
             placeholder="Last Name"
-            value={formData?.last_name.value || ""}
-            handleChange={handleChange}
-            errorMsg={formData.last_name["errorMsg"]}
+            errorMsg={errors.last_name?.message}
+            inputProps={{
+              ...register("last_name", {
+                required: "Last Name is required",
+                minLength: {
+                  value: 3,
+                  message: "Last Name must be at least three characters",
+                },
+                maxLength: {
+                  value: 150,
+                  message: "Last Name must be less than 150 characters",
+                },
+              }),
+            }}
           />
         </Stack>
 
@@ -57,20 +78,32 @@ export default function UserInfoViewer({
           <TextFieldWithLabel
             label="Email address *"
             id="email_address"
-            name="email_address"
             placeholder="Email Address"
-            value={formData?.email_address.value || ""}
-            handleChange={handleChange}
-            errorMsg={formData.email_address["errorMsg"]}
+            errorMsg={errors.email_address?.message}
+            inputProps={{
+              ...register("email_address", {
+                required: "Email Address is required",
+                pattern: {
+                  value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                  message: "Enter a valid email address",
+                },
+              }),
+            }}
           />
           <TextFieldWithLabel
             label="Phone Number *"
             id="phone_number"
-            name="phone_number"
             placeholder="Phone Number"
-            value={formData?.phone_number.value || ""}
-            handleChange={handleChange}
-            errorMsg={formData.phone_number["errorMsg"]}
+            errorMsg={errors.phone_number?.message}
+            inputProps={{
+              ...register("phone_number", {
+                required: "Phone number is required",
+                pattern: {
+                  value: /^\+?[\d\s\-().]{10,15}$/,
+                  message: "Enter a valid phone number",
+                },
+              }),
+            }}
           />
         </Stack>
 
@@ -78,11 +111,13 @@ export default function UserInfoViewer({
         <TextFieldWithLabel
           label="Street Address *"
           id="street_address"
-          name="street_address"
           placeholder="Street Address"
-          value={formData?.street_address.value || ""}
-          handleChange={handleChange}
-          errorMsg={formData.street_address["errorMsg"]}
+          errorMsg={errors.street_address?.message}
+          inputProps={{
+            ...register("street_address", {
+              required: "Street address is required",
+            }),
+          }}
         />
 
         {/* City, State, Zip Code */}
@@ -90,29 +125,45 @@ export default function UserInfoViewer({
           <TextFieldWithLabel
             label="City *"
             id="city"
-            name="city"
             placeholder="City"
-            value={formData?.city.value || ""}
-            handleChange={handleChange}
-            errorMsg={formData.city["errorMsg"]}
+            errorMsg={errors.city?.message}
+            inputProps={{
+              ...register("city", {
+                required: "City is required",
+              }),
+            }}
           />
+
           <TextFieldWithLabel
             label="State *"
             id="state"
-            name="state"
             placeholder="State"
-            value={formData?.state.value || ""}
-            handleChange={handleChange}
-            errorMsg={formData.state["errorMsg"]}
+            errorMsg={errors.state?.message}
+            inputProps={{
+              ...register("state", {
+                required: "State is required",
+                pattern: {
+                  value: /^[A-Za-z]{2}$/,
+                  message: "Enter a valid 2-letter state code",
+                },
+              }),
+            }}
           />
+
           <TextFieldWithLabel
             label="Zip Code *"
             id="zipcode"
-            name="zipcode"
             placeholder="Zip Code"
-            value={formData?.zipcode.value || ""}
-            handleChange={handleChange}
-            errorMsg={formData.zipcode["errorMsg"]}
+            errorMsg={errors.zipcode?.message}
+            inputProps={{
+              ...register("zipcode", {
+                required: "Zipcode is required",
+                pattern: {
+                  value: /^\d{5}(-\d{4})?$/,
+                  message: "Enter a valid zipcode",
+                },
+              }),
+            }}
           />
         </Stack>
         <AButton
@@ -120,6 +171,7 @@ export default function UserInfoViewer({
           variant="contained"
           onClick={onSubmit}
           disabled={isDisabled}
+          loading={loading}
         />
       </Stack>
     </Container>

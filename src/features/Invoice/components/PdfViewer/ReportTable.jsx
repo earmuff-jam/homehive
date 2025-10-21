@@ -69,13 +69,13 @@ export default function ReportTable({
             <TableRow key={index}>
               <TableCell>
                 <Typography variant="subtitle">
-                  {row?.category || ""}
+                  {row?.category?.label || ""}
                 </Typography>
               </TableCell>
               <TableCell>
                 <Stack direction="row" spacing={1} alignItems="flex-end">
                   <Typography variant="subtitle">
-                    {row.descpription || ""}
+                    {row.description || ""}
                   </Typography>
                   <Typography variant="caption">
                     <sub>{row.caption || ""}</sub>
