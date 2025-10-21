@@ -1,11 +1,6 @@
 {
-  "workbench.startupEditor": "none",
-  "editor.wordWrap": "on",
   "editor.renderWhitespace": "none",
   "editor.minimap.enabled": false,
-  "files.associations": {
-    "*.sql": "sql"
-  },
   "explorer.confirmDragAndDrop": false,
   "explorer.confirmDelete": false,
   "javascript.updateImportsOnFileMove.enabled": "always",
@@ -32,20 +27,12 @@
   "[javascriptreact]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  "terminal.integrated.fontSize": 15,
-  "terminal.integrated.fontWeight": "300",
-  "terminal.integrated.fontFamily": "Fira Code",
-
   "git.openRepositoryInParentFolders": "never",
   "[typescript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "go.toolsManagement.autoUpdate": true,
   "update.mode": "none",
-  "editor.fontSize": 15,
-  "editor.fontFamily": "Fira Code",
-  "editor.fontLigatures": true,
-  "window.zoomLevel": 0,
   "update.showReleaseNotes": false,
   "gitlens.views.searchAndCompare.files.layout": "list",
   "gitlens.views.scm.grouped.views": {
@@ -70,6 +57,4 @@
   "[jsonc]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  "workbench.colorTheme": "JetBrains Dark New UI",
-  "workbench.iconTheme": "vscode-great-icons"
 }

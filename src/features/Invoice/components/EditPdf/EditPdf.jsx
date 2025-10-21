@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import { Controller, useForm } from "react-hook-form";
+import { Controller, useFieldArray, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
 import dayjs from "dayjs";
@@ -28,13 +28,12 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import AButton from "common/AButton";
 import CustomSnackbar from "common/CustomSnackbar/CustomSnackbar";
 import TextFieldWithLabel from "common/TextFieldWithLabel";
-import EditPdfLineItemAccordion from "features/Invoice/components/EditPdf/EditPdfLineItemAccordion";
 import {
-  BLANK_INVOICE_DETAILS_FORM,
-  BLANK_INVOICE_LINE_ITEM_FORM,
-  DefaultInvoiceStatusOptions,
-  InvoiceCategoryOptions,
-} from "features/Invoice/constants";
+  useGetPdfDetailsQuery,
+  useUpsertPdfDetailsMutation,
+} from "features/Api/invoiceApi";
+import EditPdfLineItemAccordion from "features/Invoice/components/EditPdf/EditPdfLineItemAccordion";
+import { DefaultInvoiceStatusOptions } from "features/Invoice/constants";
 import { useAppTitle } from "hooks/useAppTitle";
 import { produce } from "immer";
 
@@ -46,20 +45,42 @@ export default function EditPdf({
   const navigate = useNavigate();
 
   const {
+    data: pdfDetails,
+    isLoading: isPdfDetailsLoading,
+    isSuccess: isPdfDetailsSuccess,
+  } = useGetPdfDetailsQuery();
+
+  const [
+    upsertPdf,
+    { isLoading: isUpsertPdfLoading, isSuccess: isUpsertPdfSuccess },
+  ] = useUpsertPdfDetailsMutation();
+
+  const {
+    watch,
     control,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isValid },
+    reset,
   } = useForm({
     defaultValues: {
       title: "",
+      caption: "",
+      note: "",
+      start_date: "",
+      end_date: "",
+      invoice_header: "",
+      tax_rate: "",
+      lineItems: [],
     },
   });
 
-  const [lineItems, setLineItems] = useState([]);
-  const [showSnackbar, setShowSnackbar] = useState(false);
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "lineItems",
+  });
 
+  const [showSnackbar, setShowSnackbar] = useState(false);
   const [options, setOptions] = useState(DefaultInvoiceStatusOptions);
-  const [formData, setFormData] = useState(BLANK_INVOICE_DETAILS_FORM);
 
   const handleSelection = (label) => {
     setOptions((prevItems) =>
@@ -71,193 +92,51 @@ export default function EditPdf({
     );
   };
 
-  const handleDateTime = (ev, id) => {
-    const value = dayjs(ev).format("MM-DD-YYYY");
-    const updatedFormData = { ...formData };
-    let errorMsg = "";
-    for (const validator of updatedFormData[id].validators) {
-      if (validator.validate(value)) {
-        errorMsg = validator.message;
-        break;
-      }
-    }
-    updatedFormData[id] = {
-      ...updatedFormData[id],
-      value,
-      errorMsg,
-    };
-    setFormData(updatedFormData);
-  };
-
-  const handleLineItemAutocompleteChange = (index, fieldId, selectedOption) => {
-    const value = selectedOption?.value || "";
-
-    setLineItems((prevItems) =>
-      produce(prevItems, (draft) => {
-        let errorMsg = "";
-
-        const currentItem = draft[index];
-        const field = currentItem[fieldId];
-
-        for (const validator of field.validators) {
-          if (validator.validate(value)) {
-            errorMsg = validator.message;
-            break;
-          }
-        }
-
-        currentItem[fieldId] = {
-          ...field,
-          selectedOption,
-          value: selectedOption?.value,
-          errorMsg,
-        };
-      }),
-    );
-  };
-
-  const handleLineItemChange = (ev, index) => {
-    const { id, value } = ev.target;
-
-    setLineItems((prevItems) =>
-      produce(prevItems, (draft) => {
-        let errorMsg = "";
-
-        const currentItem = draft[index];
-        const field = currentItem[id];
-
-        for (const validator of field.validators) {
-          if (validator.validate(value)) {
-            errorMsg = validator.message;
-            break;
-          }
-        }
-
-        currentItem[id] = {
-          ...field,
-          value,
-          errorMsg,
-        };
-      }),
-    );
-  };
-
-  const handleDelete = (index) => {
-    const updatedLineItems = lineItems.filter((v, idx) => idx !== index);
-    setLineItems(() => [...updatedLineItems]);
-  };
-
   const addLineItems = () => {
-    setLineItems((prevItems) => [...prevItems, BLANK_INVOICE_LINE_ITEM_FORM]);
-  };
-
-  const submit = (ev) => {
-    ev.preventDefault();
-    const draftData = Object.entries(formData).reduce(
-      (acc, [key, valueObj]) => {
-        acc[key] = valueObj.value;
-        return acc;
-      },
-      {},
-    );
-
-    const draftLineItemData = lineItems.map((lineItem) => {
-      return Object.entries(lineItem).reduce((acc, [key, valueObj]) => {
-        acc[key] = valueObj.value;
-        return acc;
-      }, {});
-    });
-
-    draftData["items"] = draftLineItemData;
-    draftData["updatedOn"] = dayjs().toISOString();
-
-    const invoiceStatus = options.find((option) => option.selected);
-
-    localStorage.setItem("pdfDetails", JSON.stringify(draftData));
-    localStorage.setItem("invoiceStatus", JSON.stringify(invoiceStatus));
-    setShowSnackbar(true);
-  };
-
-  const isLineItemsDisabled = () => {
-    return lineItems.some((lineItem) => {
-      const containerErrInLineItem = Object.values(lineItem).some(
-        (el) => el.errorMsg,
-      );
-
-      const requiredFormFieldsInLineItem = Object.values(lineItem).filter(
-        (v) => v.isRequired,
-      );
-      const isRequiredFieldsEmptyInLineItem = requiredFormFieldsInLineItem.some(
-        (el) => el.value.trim() === "",
-      );
-
-      return containerErrInLineItem || isRequiredFieldsEmptyInLineItem;
+    append({
+      category: "",
+      description: "",
+      caption: "",
+      quantity: "",
+      price: "",
+      payment: "",
+      payment_method: "",
     });
   };
 
-  const isDisabled = () => {
-    const containsErr = Object.values(formData).some((el) => el.errorMsg);
-
-    const requiredFormFields = Object.values(formData).filter(
-      (v) => v.isRequired,
-    );
-    const isRequiredFieldsEmpty = requiredFormFields.some(
-      (el) => el.value.trim() === "",
-    );
-
-    return (
-      containsErr ||
-      isRequiredFieldsEmpty ||
-      lineItems.length <= 0 ||
-      isLineItemsDisabled()
-    );
+  const submit = (data) => {
+    upsertPdf({
+      ...data,
+      updatedOn: dayjs().toISOString(),
+      end_date: dayjs(data.end_date).toISOString(),
+      start_date: dayjs(data.start_date).toISOString(),
+      invoiceStatus: options.find((option) => option.selected).label,
+    });
   };
 
   useEffect(() => {
-    const existingInvoiceStatus = localStorage.getItem("invoiceStatus");
-    const parsedExistingInvoiceStatus = JSON.parse(existingInvoiceStatus);
-
-    if (parsedExistingInvoiceStatus) {
-      handleSelection(parsedExistingInvoiceStatus.label);
+    if (isUpsertPdfSuccess) {
+      setShowSnackbar(true);
     }
+  }, [isUpsertPdfLoading]);
 
-    const localValues = localStorage.getItem("pdfDetails");
-    const parsedValues = JSON.parse(localValues);
-
-    if (parsedValues) {
-      const draftPdfDetails = produce(BLANK_INVOICE_DETAILS_FORM, (draft) => {
-        draft.title.value = parsedValues.title || "";
-        draft.caption.value = parsedValues.caption || "";
-        draft.note.value = parsedValues.note || "";
-        draft.start_date.value = parsedValues.start_date || "";
-        draft.end_date.value = parsedValues.end_date || "";
-        draft.tax_rate.value = parsedValues.tax_rate || "";
-        draft.invoice_header.value = parsedValues.invoice_header || "";
+  useEffect(() => {
+    if (isPdfDetailsSuccess) {
+      reset({
+        title: pdfDetails.title || "",
+        caption: pdfDetails.caption || "",
+        note: pdfDetails.note || "",
+        start_date: pdfDetails.start_date || dayjs(),
+        end_date: pdfDetails.end_date || dayjs(),
+        tax_rate: pdfDetails.tax_rate || "",
+        invoice_header: pdfDetails.invoice_header || "",
+        lineItems: pdfDetails.lineItems || [],
       });
-      setFormData(draftPdfDetails);
 
-      const draftLineItems = parsedValues.items.map((element) =>
-        produce(BLANK_INVOICE_LINE_ITEM_FORM, (draft) => {
-          const draftCategoryValue = element.category || "";
-
-          const selectedCategoryValue = InvoiceCategoryOptions.find(
-            (option) => option.value === draftCategoryValue,
-          );
-
-          draft.category.value = draftCategoryValue;
-          draft.category.selectedOption = selectedCategoryValue;
-
-          draft.descpription.value = element.descpription || "";
-          draft.caption.value = element.caption || "";
-          draft.quantity.value = element.quantity || "";
-          draft.price.value = element.price || "";
-          draft.payment.value = element.payment || "";
-          draft.payment_method.value = element.payment_method || "";
-        }),
-      );
-      setLineItems(draftLineItems);
+      const existingInvoiceStatus = pdfDetails?.invoiceStatus;
+      handleSelection(existingInvoiceStatus);
     }
-  }, []);
+  }, [isPdfDetailsLoading]);
 
   return (
     <Container
@@ -277,7 +156,7 @@ export default function EditPdf({
             color="primary"
             size="small"
             sx={{ alignSelf: "flex-end" }}
-            disabled={isDisabled()}
+            disabled={!isValid}
           >
             <SaveRounded />
           </IconButton>
@@ -286,7 +165,7 @@ export default function EditPdf({
           </Typography>
           <Typography variant="subtitle2">{caption}</Typography>
         </Stack>
-        {/* First and Last Name */}
+        {/* Invoice title and caption */}
         <Stack direction="row" spacing={2}>
           <Controller
             name="title"
@@ -336,7 +215,6 @@ export default function EditPdf({
             )}
           />
         </Stack>
-
         <Controller
           name="note"
           control={control}
@@ -360,59 +238,77 @@ export default function EditPdf({
             />
           )}
         />
-
         {/* Start and end dates */}
         <Stack direction="row" spacing={2} data-tour="edit-pdf-4">
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <MobileDatePicker
-              label="Start Date *"
-              id="start_date"
-              name="start_date"
-              placeholder="Start Date"
-              value={dayjs(formData?.start_date.value)}
-              onChange={(ev) => handleDateTime(ev, "start_date")}
-              errorMsg={formData.start_date["errorMsg"]}
-              slotProps={{
-                textField: {
-                  helperText: "Start date for the selected bill",
-                  size: "small",
-                  sx: { flexGrow: 1 },
-                },
-              }}
-            />
-          </LocalizationProvider>
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <MobileDatePicker
-              label="End Date *"
-              id="end_date"
-              name="end_date"
-              placeholder="End Date"
-              value={dayjs(formData?.end_date.value)}
-              onChange={(ev) => handleDateTime(ev, "end_date")}
-              errorMsg={formData.end_date["errorMsg"]}
-              slotProps={{
-                textField: {
-                  helperText: "Due date for the selected bill",
-                  size: "small",
-                  sx: { flexGrow: 1 },
-                },
-              }}
-            />
-          </LocalizationProvider>
+          <Controller
+            name="start_date"
+            control={control}
+            defaultValue={null}
+            rules={{ required: "Start Date is required" }}
+            render={({ field, fieldState }) => (
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <MobileDatePicker
+                  label="Start Date *"
+                  value={dayjs(field?.value)}
+                  onChange={(newValue) => field?.onChange(newValue)}
+                  slotProps={{
+                    textField: {
+                      error: !!fieldState.error,
+                      helperText:
+                        fieldState.error?.message ||
+                        "Start date for the selected bill",
+                      size: "small",
+                      sx: { flexGrow: 1 },
+                    },
+                  }}
+                />
+              </LocalizationProvider>
+            )}
+          />
+          <Controller
+            name="end_date"
+            control={control}
+            defaultValue={null}
+            rules={{
+              required: "End Date is required",
+              validate: (value) =>
+                value && dayjs(value)?.isAfter(watch("start_date"))
+                  ? true
+                  : "End Date must be after Start Date",
+            }}
+            render={({ field, fieldState }) => (
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <MobileDatePicker
+                  label="End Date *"
+                  value={dayjs(field?.value)}
+                  onChange={(newValue) => field?.onChange(newValue)}
+                  slotProps={{
+                    textField: {
+                      error: !!fieldState.error,
+                      helperText:
+                        fieldState.error?.message ||
+                        "Due date for the selected bill",
+                      size: "small",
+                      sx: { flexGrow: 1 },
+                    },
+                  }}
+                />
+              </LocalizationProvider>
+            )}
+          />
         </Stack>
-
         {/* Invoice Header */}
         <Controller
           name="invoice_header"
           control={control}
           rules={{
-            required: "Invoice Caption is required",
+            required: "Invoice Header is required",
             validate: (value) =>
               value.trim().length > 3 ||
-              "Invoice Caption must be more than 3 characters",
+              "Invoice Header must be more than 3 characters",
             maxLength: {
               value: 150,
-              message: "Invoice Caption should be less than 150 characters",
+              message: "Invoice Header should be less than 150 characters",
             },
           }}
           render={({ field }) => (
@@ -420,14 +316,13 @@ export default function EditPdf({
               {...field}
               fullWidth
               dataTour="edit-pdf-5"
-              label="Invoice Caption *"
+              label="Invoice Header *"
               error={!!errors.title}
               errorMsg={errors.title?.message}
               placeholder="The title of the bill. Eg., Rent Details"
             />
           )}
         />
-
         {/* Tax Rate */}
         <Controller
           name="tax_rate"
@@ -444,7 +339,6 @@ export default function EditPdf({
             />
           )}
         />
-
         <Paper sx={{ padding: "1rem" }} data-tour="edit-pdf-7">
           <Tooltip
             title="The current status of the invoice. Selecting 'none' will not display any status."
@@ -478,22 +372,20 @@ export default function EditPdf({
             label="Add Item"
           />
         </Stack>
-        {lineItems.map((item, index) => (
+        {fields.map((item, index) => (
           <EditPdfLineItemAccordion
-            key={index}
+            key={item.id}
             title={`Edit line ${index + 1}`}
-            lineItem={item}
+            control={control}
             index={index}
-            handleDelete={handleDelete}
-            handleLineItemChange={handleLineItemChange}
-            handleLineItemAutocompleteChange={handleLineItemAutocompleteChange}
+            onDelete={() => remove(index)}
           />
         ))}
         <AButton
           data-tour="edit-pdf-9"
           variant="contained"
           onClick={handleSubmit(submit)}
-          disabled={isDisabled()}
+          disabled={!isValid}
           label="Save"
         />
       </Stack>
@@ -501,8 +393,8 @@ export default function EditPdf({
         showSnackbar={showSnackbar}
         setShowSnackbar={setShowSnackbar}
         title="Changes saved."
-        caption="View Invoice"
-        onClick={() => navigate("/view")}
+        caption="View draft invoice."
+        onClick={() => navigate("/invoice/view")}
       />
     </Container>
   );

@@ -1,0 +1,39 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Salutation component renders correctly and matches snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="MuiStack-root css-u6jtrn-MuiStack-root"
+  >
+    <h6
+      class="MuiTypography-root MuiTypography-subtitle2 css-1x0mq5c-MuiTypography-root"
+    >
+      To,
+    </h6>
+    <div
+      class="MuiStack-root css-69ywkl-MuiStack-root"
+    >
+      <h6
+        class="MuiTypography-root MuiTypography-subtitle2 css-1x0mq5c-MuiTypography-root"
+      >
+        John
+      </h6>
+      <h6
+        class="MuiTypography-root MuiTypography-subtitle2 css-1x0mq5c-MuiTypography-root"
+      >
+        Doe
+      </h6>
+    </div>
+    <h6
+      class="MuiTypography-root MuiTypography-subtitle2 css-1x0mq5c-MuiTypography-root"
+    >
+      123 Main St
+    </h6>
+    <h6
+      class="MuiTypography-root MuiTypography-subtitle2 css-1x0mq5c-MuiTypography-root"
+    >
+      Austin TX, 78701
+    </h6>
+  </div>
+</DocumentFragment>
+`;

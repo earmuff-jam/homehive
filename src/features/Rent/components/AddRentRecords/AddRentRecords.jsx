@@ -15,10 +15,7 @@ import TextFieldWithLabel from "common/TextFieldWithLabel";
 import { useGetUserDataByIdQuery } from "features/Api/firebaseUserApi";
 import { useCreateRentRecordMutation } from "features/Api/rentApi";
 import { useGetTenantByPropertyIdQuery } from "features/Api/tenantsApi";
-import {
-  fetchLoggedInUser,
-  formatCurrency,
-} from "features/Rent/utils/utils";
+import { fetchLoggedInUser, formatCurrency } from "features/Rent/utils/utils";
 
 export const AddRentRecords = ({ property, setShowSnackbar, closeDialog }) => {
   const user = fetchLoggedInUser();
