@@ -48,6 +48,18 @@ export default function EditPdfLineItem({ control, index }) {
         )}
       />
 
+      <Controller
+        name={`lineItems.${index}.caption`}
+        control={control}
+        render={({ field }) => (
+          <TextFieldWithLabel
+            {...field}
+            label="Caption"
+            placeholder="Helper text for description. Eg, monthly subscription"
+          />
+        )}
+      />
+
       {/* Quantity + Price */}
       <Stack direction="row" spacing={2}>
         <Controller
@@ -82,8 +94,8 @@ export default function EditPdfLineItem({ control, index }) {
           render={({ field }) => (
             <TextFieldWithLabel
               {...field}
-              label="Payment *"
-              placeholder="Paid in USD"
+              label="Payment Recieved *"
+              placeholder="Payment received (deducted from line total)"
             />
           )}
         />

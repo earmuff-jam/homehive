@@ -75,7 +75,7 @@ export default function ReportTable({
               <TableCell>
                 <Stack direction="row" spacing={1} alignItems="flex-end">
                   <Typography variant="subtitle">
-                    {row.descpription || ""}
+                    {row.description || ""}
                   </Typography>
                   <Typography variant="caption">
                     <sub>{row.caption || ""}</sub>

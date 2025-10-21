@@ -393,7 +393,7 @@ export default function EditPdf({
         showSnackbar={showSnackbar}
         setShowSnackbar={setShowSnackbar}
         title="Changes saved."
-        caption="View Invoice"
+        caption="View draft invoice."
         onClick={() => navigate("/invoice/view")}
       />
     </Container>
