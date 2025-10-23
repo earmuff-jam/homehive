@@ -4,8 +4,6 @@
 import dayjs from "dayjs";
 
 import validateClientPermissions from "common/ValidateClientPerms";
-import { getAuth, signOut } from "firebase/auth";
-import { authenticatorConfig } from "src/config";
 
 // ---------------------------
 // enum values
@@ -80,26 +78,6 @@ export const isValid = (email) => {
  */
 export const fetchLoggedInUser = () => {
   return JSON.parse(localStorage.getItem("user"));
-};
-
-/**
- * logoutUser ...
- *
- * used to log the user out of the system. function is
- * asyncronous in nature to ensure that the logout is
- * succesful
- *
- * @returns string - the logged in userId
- */
-export const logoutUser = async () => {
-  const auth = getAuth(authenticatorConfig);
-  try {
-    await signOut(auth);
-    localStorage.removeItem("user");
-  } catch (error) {
-    /* eslint-disable no-console */
-    console.error("Error signing out:", error);
-  }
 };
 
 /**

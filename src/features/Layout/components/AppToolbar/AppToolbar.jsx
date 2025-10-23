@@ -21,11 +21,14 @@ import {
   TenantRole,
   isUserLoggedIn,
 } from "common/utils";
-import { useAuthenticateMutation } from "features/Api/firebaseUserApi";
+import {
+  useAuthenticateMutation,
+  useLogoutMutation,
+} from "features/Api/firebaseUserApi";
 import { useLocalStorageData } from "features/Invoice/hooks/useGenerateUserData";
 import MenuOptions from "features/Layout/components/NavBar/MenuOptions";
 import { retrieveTourKey } from "features/Layout/utils";
-import { isFeatureEnabled, logoutUser } from "features/Rent/utils/utils";
+import { isFeatureEnabled } from "features/Rent/utils/utils";
 import useSendEmail, { generateInvoiceHTML } from "hooks/useSendEmail";
 
 export default function AppToolbar({
@@ -50,6 +53,9 @@ export default function AppToolbar({
       error: authError,
     },
   ] = useAuthenticateMutation();
+
+  const [logout, { isSuccess: isLogoutSuccess, isLoading: isLogoutLoading }] =
+    useLogoutMutation();
 
   const {
     data,
@@ -129,16 +135,17 @@ export default function AppToolbar({
     authenticate(role);
   };
 
-  const logout = async () => {
-    await logoutUser();
-    navigate(`/?refresh=${Date.now()}`); // force refresh
-  };
-
   useEffect(() => {
     if (!isAuthLoading && isAuthSuccess) {
       window.location.replace(HomeRouteUri);
     }
   }, [isAuthLoading]);
+
+  useEffect(() => {
+    if (isLogoutSuccess) {
+      navigate(`/?refresh=${Date.now()}`);
+    }
+  }, [isLogoutLoading]);
 
   if (isAuthError) {
     return (
@@ -173,7 +180,7 @@ export default function AppToolbar({
                 label="Logout"
                 variant="outlined"
                 size="small"
-                onClick={logout}
+                onClick={() => logout()}
               />
             </Tooltip>
           ) : (
