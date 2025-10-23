@@ -24,7 +24,7 @@ export const RentalAppRoutes = [
   {
     id: 1,
     label: "My Properties",
-    path: "",
+    path: "/properties",
     routeUri: "/rent/properties",
     element: <Properties />,
     icon: <CottageRounded fontSize="small" />,

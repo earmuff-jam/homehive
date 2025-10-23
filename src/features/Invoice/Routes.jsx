@@ -29,7 +29,7 @@ export const InvoiceAppRoutes = [
   {
     id: 1,
     label: "Dashboard",
-    path: "",
+    path: "/dashboard",
     routeUri: "/invoice/dashboard",
     element: <Dashboard />,
     icon: <DashboardCustomizeRounded fontSize="small" />,

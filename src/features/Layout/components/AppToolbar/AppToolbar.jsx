@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import { MenuOutlined } from "@mui/icons-material";
 import {
@@ -37,6 +37,7 @@ export default function AppToolbar({
   handleDrawerClose,
   setDialog,
 }) {
+  const location = useLocation();
   const navigate = useNavigate();
   const { sendEmail, reset, loading, error, success } = useSendEmail();
 
@@ -59,9 +60,15 @@ export default function AppToolbar({
     isDisabled,
   } = useLocalStorageData();
 
-  // hide for landing page
-  const showHelp = currentRoute.config.displayHelpSelector;
-  const showPrint = currentRoute.config.displayPrintSelector;
+  const currentSubRoute = currentRoute?.element.props?.routes?.find(
+    (route) => route.routeUri === location?.pathname,
+  );
+  const showHelp =
+    currentRoute.config.displayHelpSelector &&
+    currentSubRoute?.config?.displayHelpSelector;
+  const showPrint =
+    currentRoute.config.displayPrintSelector &&
+    currentSubRoute?.config?.displayPrintSelector;
 
   const isSendEmailFeatureEnabled = isFeatureEnabled("sendEmail");
 
