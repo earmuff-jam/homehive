@@ -3,6 +3,11 @@
  */
 import dayjs from "dayjs";
 
+import {
+  AssignmentLateRounded,
+  MoneyOffRounded,
+  PaidRounded,
+} from "@mui/icons-material";
 import validateClientPermissions from "common/ValidateClientPerms";
 
 // ---------------------------
@@ -204,12 +209,12 @@ export function getNextMonthlyDueDate(startDate) {
 /**
  * getColorAndLabelForCurrentMonth ...
  *
- * used to return color and label for the current month based on rent status.
+ * used to return label, color and icon for the current month based on rent status.
  *
  * @param {String} startDate - the startDate of the tenant
  * @param {Object} rent - the rent details for the current month
  * @param {Number} gracePeriod - the days grace period is provided. Defaults to 3.
- * @returns {Object} { color: string, label: string } - color and label
+ * @returns {Object} { color: string, label: string, icon: React.ReactNode }
  */
 export const getColorAndLabelForCurrentMonth = (
   startDate,
@@ -223,14 +228,18 @@ export const getColorAndLabelForCurrentMonth = (
   const pastGracePeriod = dayjs().isAfter(graceDate, "day");
 
   if (
-    PaidRentStatusEnumValue ||
-    ManualRentStatusEnumValue === rent?.status.toLowerCase()
+    rent?.status.toLowerCase() === PaidRentStatusEnumValue ||
+    rent?.status.toLowerCase() === ManualRentStatusEnumValue
   ) {
-    return { color: "success", label: "Paid" };
+    return { color: "success", label: "Paid", icon: <PaidRounded /> };
   } else if (pastGracePeriod) {
-    return { color: "error", label: "Overdue" };
+    return {
+      color: "error",
+      label: "Overdue",
+      icon: <AssignmentLateRounded />,
+    };
   } else {
-    return { color: "warning", label: "Unpaid" };
+    return { color: "warning", label: "Unpaid", icon: <MoneyOffRounded /> };
   }
 };
 
@@ -290,7 +299,9 @@ export function getRentDetails(
 ) {
   return data.find(
     (rent) =>
-      rent.rentMonth === currentMonth && rent.status?.toLowerCase() === "paid",
+      rent.rentMonth === currentMonth &&
+      (PaidRentStatusEnumValue === rent.status?.toLowerCase() ||
+        ManualRentStatusEnumValue === rent.status?.toLowerCase()),
   );
 }
 
