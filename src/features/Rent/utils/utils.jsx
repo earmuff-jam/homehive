@@ -1,3 +1,5 @@
+import React from "react";
+
 /**
  * Utility file for properties
  */
