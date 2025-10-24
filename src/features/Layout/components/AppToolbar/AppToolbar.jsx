@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 
-import { useLocation, useNavigate } from "react-router-dom";
+import { matchPath, useLocation, useNavigate } from "react-router-dom";
 
 import { MenuOutlined } from "@mui/icons-material";
 import {
@@ -66,8 +66,8 @@ export default function AppToolbar({
     isDisabled,
   } = useLocalStorageData();
 
-  const currentSubRoute = currentRoute?.element.props?.routes?.find(
-    (route) => route.routeUri === location?.pathname,
+  const currentSubRoute = currentRoute?.element.props?.routes?.find((route) =>
+    matchPath(route.routeUri, location.pathname),
   );
   const showHelp =
     currentRoute.config.displayHelpSelector &&
