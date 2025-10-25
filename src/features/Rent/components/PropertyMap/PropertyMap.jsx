@@ -49,9 +49,13 @@ const PropertyMap = ({
         }),
       ],
       controls: defaultControls({
-        attribution: false,
+        attribution: true,
         rotate: false,
-        attributionOptions: { collapsed: true, collapsible: false },
+        zoom: false,
+        attributionOptions: {
+          collapsible: false,
+          collapsed: true,
+        },
       }),
       view: new View({
         center: initialCenter,
@@ -100,6 +104,25 @@ const PropertyMap = ({
           width: "inherit",
           "& .ol-viewport": {
             borderRadius: 1,
+          },
+          "& .ol-attribution": {
+            display: "flex",
+            flexDirection: "row",
+            backgroundColor: "lightgrey",
+            fontSize: "0.65rem",
+            opacity: 0.7,
+          },
+          "& .ol-attribution > button": {
+            display: 'none',
+          },
+          "& .ol-attribution > ul": {
+            display: "flex",
+            flexDirection: "row",
+            listStyle: "none",
+            alignItems: "center",
+            padding: "0rem 1rem",
+            margin: 0,
+            gap: 1
           },
         }}
       >
