@@ -20,11 +20,22 @@ import {
   ViewInvoiceRoutePath,
   ViewInvoiceRouteUri,
 } from "common/utils";
-import Dashboard from "features/Invoice/components/Dashboard/Dashboard";
-import EditPdf from "features/Invoice/components/EditPdf/EditPdf";
-import PdfViewer from "features/Invoice/components/PdfViewer/PdfViewer";
-import RecieverInfo from "features/Invoice/components/RecieverInfo/RecieverInfo";
-import SenderInfo from "features/Invoice/components/SenderInfo/SenderInfo";
+
+const Dashboard = React.lazy(
+  () => import("features/Invoice/components/Dashboard/Dashboard"),
+);
+const EditPdf = React.lazy(
+  () => import("features/Invoice/components/EditPdf/EditPdf"),
+);
+const PdfViewer = React.lazy(
+  () => import("features/Invoice/components/PdfViewer/PdfViewer"),
+);
+const RecieverInfo = React.lazy(
+  () => import("features/Invoice/components/RecieverInfo/RecieverInfo"),
+);
+const SenderInfo = React.lazy(
+  () => import("features/Invoice/components/SenderInfo/SenderInfo"),
+);
 
 /**
  * InvoiceAppRoutes ...
