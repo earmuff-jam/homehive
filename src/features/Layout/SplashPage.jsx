@@ -48,7 +48,7 @@ export default function SplashPage() {
           </Typography>
         </Box>
 
-        <Stack sx={{ direction: { sm: "column", md: "row" } }} spacing={2}>
+        <Stack direction={{ sm: "column", md: "row" }} gap={2}>
           <TitleCard
             title="Rental App"
             subtitle="Manage properties, tenants, leases, and payments in one place"

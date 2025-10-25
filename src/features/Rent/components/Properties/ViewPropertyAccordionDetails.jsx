@@ -8,8 +8,6 @@ import {
   CheckCircleOutlineRounded,
   EmailRounded,
   ExpandMoreRounded,
-  MoneyOffCsredRounded,
-  PaidRounded,
 } from "@mui/icons-material";
 import {
   Avatar,
@@ -27,6 +25,9 @@ import CustomSnackbar from "common/CustomSnackbar/CustomSnackbar";
 import EmptyComponent from "common/EmptyComponent";
 import { useLazyGetUserDataByIdQuery } from "features/Api/firebaseUserApi";
 import { useGetTenantByPropertyIdQuery } from "features/Api/tenantsApi";
+import QuickConnectMenu from "features/Rent/components/QuickConnect/QuickConnectMenu";
+import { handleQuickConnectAction } from "features/Rent/components/Settings/TemplateProcessor";
+import { DefaultTemplateData } from "features/Rent/components/Templates/constants";
 import {
   derieveTotalRent,
   getColorAndLabelForCurrentMonth,
@@ -34,9 +35,6 @@ import {
   getRentDetails,
   updateDateTime,
 } from "features/Rent/utils/utils";
-import QuickConnectMenu from "features/Rent/components/QuickConnect/QuickConnectMenu";
-import { handleQuickConnectAction } from "features/Rent/components/Settings/TemplateProcessor";
-import { DefaultTemplateData } from "features/Rent/components/Templates/constants";
 import useSendEmail from "hooks/useSendEmail";
 
 const ViewPropertyAccordionDetails = ({
@@ -62,7 +60,7 @@ const ViewPropertyAccordionDetails = ({
   const { sendEmail, reset, error, success } = useSendEmail();
 
   const [anchorEl, setAnchorEl] = useState(null);
-  
+
   const isOpen = Boolean(anchorEl);
   const currentMonthRent = getRentDetails(rentDetails);
 
@@ -72,12 +70,15 @@ const ViewPropertyAccordionDetails = ({
   const handleCloseQuickConnect = () => setAnchorEl(null);
   const handleOpenQuickConnect = (ev) => setAnchorEl(ev.currentTarget);
 
-  const { color: statusColor, label: statusLabel } =
-    getColorAndLabelForCurrentMonth(
-      primaryTenant?.start_date,
-      currentMonthRent,
-      Number(primaryTenant?.grace_period),
-    );
+  const {
+    color: statusColor,
+    label: statusLabel,
+    icon: statusIcon,
+  } = getColorAndLabelForCurrentMonth(
+    primaryTenant?.start_date,
+    currentMonthRent,
+    Number(primaryTenant?.grace_period),
+  );
 
   const handleQuickConnectMenuItem = (
     action,
@@ -180,15 +181,9 @@ const ViewPropertyAccordionDetails = ({
 
             <Box>
               <Chip
-                icon={
-                  primaryTenant?.isPaid ? (
-                    <PaidRounded />
-                  ) : (
-                    <MoneyOffCsredRounded />
-                  )
-                }
-                label={statusLabel}
                 size="small"
+                icon={statusIcon}
+                label={statusLabel}
                 color={statusColor}
                 sx={{ mt: 1 }}
               />

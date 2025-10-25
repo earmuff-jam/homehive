@@ -9,9 +9,15 @@ import {
   ReceiptRounded,
 } from "@mui/icons-material";
 import {
+  EditInvoiceRoutePath,
   EditInvoiceRouteUri,
+  InvoiceDashboardRoutePath,
+  InvoiceDashboardRouteUri,
+  RecieverInforamtionRoutePath,
   RecieverInforamtionRouteUri,
+  SenderInforamtionRoutePath,
   SenderInforamtionRouteUri,
+  ViewInvoiceRoutePath,
   ViewInvoiceRouteUri,
 } from "common/utils";
 import Dashboard from "features/Invoice/components/Dashboard/Dashboard";
@@ -29,8 +35,8 @@ export const InvoiceAppRoutes = [
   {
     id: 1,
     label: "Dashboard",
-    path: "",
-    routeUri: "/invoice/dashboard",
+    path: InvoiceDashboardRoutePath,
+    routeUri: InvoiceDashboardRouteUri,
     element: <Dashboard />,
     icon: <DashboardCustomizeRounded fontSize="small" />,
     requiredFlags: ["invoicer", "invoicerPro"],
@@ -47,8 +53,8 @@ export const InvoiceAppRoutes = [
   {
     id: 2,
     label: "View Invoice",
-    path: ViewInvoiceRouteUri,
-    routeUri: "/invoice/view",
+    path: ViewInvoiceRoutePath,
+    routeUri: ViewInvoiceRouteUri,
     element: <PdfViewer />,
     icon: <PictureAsPdfRounded fontSize="small" />,
     requiredFlags: ["invoicer"],
@@ -65,8 +71,8 @@ export const InvoiceAppRoutes = [
   {
     id: 3,
     label: "Edit Invoice",
-    path: EditInvoiceRouteUri,
-    routeUri: "/invoice/edit",
+    path: EditInvoiceRoutePath,
+    routeUri: EditInvoiceRouteUri,
     element: <EditPdf />,
     icon: <EditRounded fontSize="small" />,
     requiredFlags: ["invoicer"],
@@ -83,8 +89,8 @@ export const InvoiceAppRoutes = [
   {
     id: 4,
     label: "Sender",
-    path: SenderInforamtionRouteUri,
-    routeUri: "/invoice/sender",
+    path: SenderInforamtionRoutePath,
+    routeUri: SenderInforamtionRouteUri,
     element: <SenderInfo />,
     icon: <Person2Rounded fontSize="small" />,
     requiredFlags: ["userInformation"],
@@ -101,8 +107,8 @@ export const InvoiceAppRoutes = [
   {
     id: 5,
     label: "Reciever",
-    path: RecieverInforamtionRouteUri,
-    routeUri: "/invoice/reciever",
+    path: RecieverInforamtionRoutePath,
+    routeUri: RecieverInforamtionRouteUri,
     element: <RecieverInfo />,
     icon: <Person2Rounded fontSize="small" />,
     requiredFlags: ["userInformation"],

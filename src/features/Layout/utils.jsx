@@ -1,8 +1,9 @@
+import { PropertyRouteUri } from "common/utils";
+
 /**
  * retreiveTourKey ...
  *
- * function used to retrieve the proper key based on dynamic properties.
- * This function allows to view help from dynamic properties easily.
+ * used to return the correct key for tour steps.
  *
  * @param {string} currentUri - the string representation of the current uri
  * @param {string} expectedStrValue - the expected string value, if matched manipulates data.
@@ -12,8 +13,8 @@
 export const retrieveTourKey = (currentUri, expectedStrValue) => {
   const isDynamicPropertyPage =
     currentUri.includes(`/${expectedStrValue}/`) &&
-    currentUri.split("/")[1] === expectedStrValue;
+    currentUri.split("/")[2] === expectedStrValue;
 
   // individual properties can share the same help && support
-  return isDynamicPropertyPage ? "/property/:id" : currentUri;
+  return isDynamicPropertyPage ? PropertyRouteUri : currentUri;
 };

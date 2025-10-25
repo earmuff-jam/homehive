@@ -6,8 +6,13 @@ import {
   SettingsRounded,
 } from "@mui/icons-material";
 import {
+  PropertiesRoutePath,
+  PropertiesRouteUri,
+  PropertyRoutePath,
   PropertyRouteUri,
+  RentalRoutePath,
   RentalRouteUri,
+  SettingsRoutePath,
   SettingsRouteUri,
 } from "common/utils";
 import MyRental from "features/Rent/components/MyRental/MyRental";
@@ -24,8 +29,8 @@ export const RentalAppRoutes = [
   {
     id: 1,
     label: "My Properties",
-    path: "",
-    routeUri: "/rent/properties",
+    path: PropertiesRoutePath,
+    routeUri: PropertiesRouteUri,
     element: <Properties />,
     icon: <CottageRounded fontSize="small" />,
     requiredFlags: ["invoicer", "invoicerPro"],
@@ -43,8 +48,8 @@ export const RentalAppRoutes = [
   {
     id: 2,
     label: "My Rental Unit",
-    path: RentalRouteUri,
-    routeUri: "/rent/rental",
+    path: RentalRoutePath,
+    routeUri: RentalRouteUri,
     element: <MyRental />,
     icon: <ApartmentRounded fontSize="small" />,
     requiredFlags: ["invoicer", "invoicerPro"],
@@ -62,8 +67,8 @@ export const RentalAppRoutes = [
   {
     id: 3,
     label: "Settings",
-    path: SettingsRouteUri,
-    routeUri: "/rent/settings",
+    path: SettingsRoutePath,
+    routeUri: SettingsRouteUri,
     element: <Settings />,
     icon: <SettingsRounded fontSize="small" />,
     requiredFlags: ["invoicer", "invoicerPro"],
@@ -81,8 +86,8 @@ export const RentalAppRoutes = [
   {
     id: 4,
     label: "My Property",
-    path: PropertyRouteUri,
-    routeUri: "/rent/property/:id",
+    path: PropertyRoutePath,
+    routeUri: PropertyRouteUri,
     element: <Property />,
     icon: <CottageRounded fontSize="small" />,
     requiredFlags: ["invoicer", "invoicerPro"],
