@@ -1,5 +1,6 @@
 import react from "@vitejs/plugin-react";
 import path from "path";
+import { visualizer } from "rollup-plugin-visualizer";
 import { defineConfig } from "vite";
 import { VitePWA } from "vite-plugin-pwa";
 
@@ -51,7 +52,21 @@ const manifestForPlugIn = {
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [react(), VitePWA(manifestForPlugIn)],
+  plugins: [react(), VitePWA(manifestForPlugIn), visualizer({ open: true })],
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          react: ["react", "react-dom"],
+          mui: ["@mui/material", "@mui/icons-material"],
+          firebase: ["firebase/app", "firebase/auth", "firebase/firestore"],
+          ol: ["ol"],
+          chartjs: ["chart.js"],
+        },
+      },
+    },
+  },
+
   resolve: {
     alias: {
       common: path.resolve(__dirname, "src/common"),

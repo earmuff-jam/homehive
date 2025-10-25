@@ -12,7 +12,8 @@
     "test": "jest",
     "testc": "jest --coverage",
     "testu": "jest -u",
-    "debug": "netlify dev --inspect"
+    "debug": "netlify dev --inspect",
+    "analyzer": "npx vite-bundle-visualizer"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",
@@ -60,6 +61,7 @@
     "jest-environment-jsdom": "^29.7.0",
     "prettier": "^3.6.2",
     "react-router-dom": "^7.9.3",
+    "rollup-plugin-visualizer": "^6.0.5",
     "vite": "^5.4.19"
   }
 }

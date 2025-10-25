@@ -10,10 +10,20 @@ import {
   RentalRouteUri,
   SettingsRouteUri,
 } from "common/utils";
-import MyRental from "features/Rent/components/MyRental/MyRental";
-import Properties from "features/Rent/components/Properties/Properties";
-import Property from "features/Rent/components/Property/Property";
-import Settings from "features/Rent/components/Settings/Settings";
+
+const MyRental = React.lazy(
+  () => import("features/Rent/components/MyRental/MyRental"),
+);
+const Properties = React.lazy(
+  () => import("features/Rent/components/Properties/Properties"),
+);
+const Property = React.lazy(
+  () => import("features/Rent/components/Property/Property"),
+);
+
+const Settings = React.lazy(
+  () => import("features/Rent/components/Settings/Settings"),
+);
 
 /**
  * RentalAppRoutes ...
