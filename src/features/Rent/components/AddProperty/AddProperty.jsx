@@ -149,7 +149,7 @@ export default function AddProperty({
           id="note"
           placeholder="Additional notes "
           errorMsg={errors.note?.message}
-          multiline={true}
+          multiline
           maxRows={3}
           inputProps={{
             ...register("note", {

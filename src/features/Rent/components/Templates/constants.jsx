@@ -4,9 +4,9 @@
  * used to create default email templates to send to the client directly.
  */
 export const DefaultTemplateData = {
-  // invoice template
   invoice: {
     label: "Invoice Template",
+    caption: "Customize professional rent invoices",
     subject: "Monthly Rent Invoice - {{propertyAddress}}",
     body: "Please view your invoice details below",
     fieldsToUse: [
@@ -47,9 +47,9 @@ export const DefaultTemplateData = {
 </div>
     `,
   },
-  // late payment reminder template
   reminder: {
     label: "Rent Late Payment Reminder Template",
+    caption: "Customize friendly reminders for overdue rent payments",
     subject: "Rent Late Payment Reminder - {{propertyAddress}}",
     body: "Please view your late payment reminder",
     fieldsToUse: [
@@ -93,9 +93,9 @@ export const DefaultTemplateData = {
 </div>
 `,
   },
-  // rent regular payment reminder template
   rent: {
     label: "Rent Regular Payment Reminder Template",
+    caption: "Customize payment reminder form",
     subject: "Rent Payment Reminder - {{propertyAddress}}",
     body: "Please view your regular rent payment reminder",
     fieldsToUse: [
@@ -139,9 +139,9 @@ export const DefaultTemplateData = {
 </div>
 `,
   },
-  // notice of lease renewal template
   noticeOfLeaseRenewal: {
     label: "Notice of Lease Renewal Template",
+    caption: "Customize automatic lease renewal and expiration notices",
     subject: "Notice of Lease Expiration and Renewal - {{propertyAddress}}",
     body: "Please view your notice of renewal",
     fieldsToUse: [

@@ -116,15 +116,17 @@ export const handleQuickConnectAction = (
         user?.googleEmailAddress,
       );
 
-      formatEmail(
-        {
-          to: primaryTenant.email,
-          subject: reminderSubject,
-          body: reminderBody,
-          html: reminderHtml,
-        },
-        sendEmail,
-      );
+      console.log(reminderSubject, reminderBody, reminderHtml);
+
+      // formatEmail(
+      //   {
+      //     to: primaryTenant.email,
+      //     subject: reminderSubject,
+      //     body: reminderBody,
+      //     html: reminderHtml,
+      //   },
+      //   sendEmail,
+      // );
       break;
     }
   }
