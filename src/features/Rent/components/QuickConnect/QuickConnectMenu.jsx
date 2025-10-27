@@ -5,13 +5,7 @@ import {
   NotificationsRounded,
   ReceiptLongRounded,
 } from "@mui/icons-material";
-import {
-  Divider,
-  ListItemIcon,
-  ListItemText,
-  Menu,
-  MenuItem,
-} from "@mui/material";
+import { ListItemIcon, ListItemText, Menu, MenuItem } from "@mui/material";
 import {
   CreateInvoiceEnumValue,
   PaymentReminderEnumValue,
@@ -73,14 +67,19 @@ export default function QuickConnectMenu({
         },
         list: {
           "aria-labelledby": "quick-connect-button",
+          sx: {
+            padding: 0,
+          },
         },
       }}
     >
-      {menuItems?.map((item, index) => (
+      {menuItems?.map((item) => (
         <React.Fragment key={item.id}>
           <MenuItem
             onClick={() => handleMenuItemClick(item.action)}
-            sx={{ py: 1 }}
+            sx={{
+              padding: "0.5rem 1rem",
+            }}
           >
             <ListItemIcon>{item.icon}</ListItemIcon>
             <ListItemText
@@ -93,7 +92,6 @@ export default function QuickConnectMenu({
               }}
             />
           </MenuItem>
-          {index < menuItems.length - 1 && <Divider />}
         </React.Fragment>
       ))}
     </Menu>

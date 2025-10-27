@@ -16,18 +16,25 @@ const analyticsEnabled = import.meta.env.VITE_ENABLE_ANALYTICS || "false";
  * @param {object} rest - the props passed in as a ...rest component
  *
  */
-export default function AIconButton({ label, onClick, ...rest }) {
+const AIconButton = React.forwardRef(function AIconButton(
+  { label, onClick, ...rest },
+  ref,
+) {
   const buttonAnalytics = useButtonAnalytics();
 
   const handleClick = (ev) => {
     // log data only if analytics is enabled
-    analyticsEnabled?.toLowerCase() === "true" && buttonAnalytics?.(label);
-    onClick(ev);
+    if (analyticsEnabled?.toLowerCase() === "true") {
+      buttonAnalytics?.(label);
+    }
+    onClick?.(ev);
   };
 
   return (
-    <IconButton {...rest} onClick={handleClick}>
+    <IconButton ref={ref} {...rest} onClick={handleClick}>
       {label}
     </IconButton>
   );
-}
+});
+
+export default AIconButton;

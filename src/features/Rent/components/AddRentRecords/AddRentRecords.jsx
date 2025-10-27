@@ -118,7 +118,7 @@ export const AddRentRecords = ({ property, setShowSnackbar, closeDialog }) => {
             label="Owner First Name *"
             id="owner_first_name"
             placeholder="First Name of your property owner"
-            errorMsg={errors.name?.message}
+            errorMsg={errors.owner_first_name?.message}
             isDisabled
             inputProps={{
               ...register("owner_first_name", {
@@ -130,7 +130,7 @@ export const AddRentRecords = ({ property, setShowSnackbar, closeDialog }) => {
             label="Owner Last Name *"
             id="owner_last_name"
             placeholder="Last Name of your property owner"
-            errorMsg={errors.name?.message}
+            errorMsg={errors.owner_last_name?.message}
             isDisabled
             inputProps={{
               ...register("owner_last_name", {
@@ -143,7 +143,7 @@ export const AddRentRecords = ({ property, setShowSnackbar, closeDialog }) => {
           label="Email Address *"
           id="googleEmailAddress"
           placeholder="Email address of the property owner"
-          errorMsg={errors.name?.message}
+          errorMsg={errors.googleEmailAddress?.message}
           isDisabled
           inputProps={{
             ...register("googleEmailAddress", {
@@ -162,7 +162,7 @@ export const AddRentRecords = ({ property, setShowSnackbar, closeDialog }) => {
             label="Tenant First Name *"
             id="tenant_first_name"
             placeholder="First Name of your primary tenant"
-            errorMsg={errors.name?.message}
+            errorMsg={errors.tenant_first_name?.message}
             inputProps={{
               ...register("tenant_first_name", {
                 required: "Tenant First Name is required",
@@ -173,7 +173,7 @@ export const AddRentRecords = ({ property, setShowSnackbar, closeDialog }) => {
             label="Tenant Last Name *"
             id="tenant_last_name"
             placeholder="Last Name of your primary tenant"
-            errorMsg={errors.name?.message}
+            errorMsg={errors.tenant_last_name?.message}
             inputProps={{
               ...register("tenant_last_name", {
                 required: "Tenant Last Name is required",
@@ -185,7 +185,7 @@ export const AddRentRecords = ({ property, setShowSnackbar, closeDialog }) => {
           label="Email Address *"
           id="tenant_email_address"
           placeholder="Email address of the primary tenant"
-          errorMsg={errors.name?.message}
+          errorMsg={errors.tenant_email_address?.message}
           inputProps={{
             ...register("tenant_email_address", {
               required: "Email address is required",
@@ -204,7 +204,7 @@ export const AddRentRecords = ({ property, setShowSnackbar, closeDialog }) => {
             label="Rent Amount *"
             id="rent_amount"
             placeholder="Rent Amount"
-            errorMsg={errors.name?.message}
+            errorMsg={errors.rent_amount?.message}
             isDisabled
             inputProps={{
               ...register("rent_amount", {
@@ -216,7 +216,7 @@ export const AddRentRecords = ({ property, setShowSnackbar, closeDialog }) => {
             label="Payment Method *"
             id="payment_method"
             placeholder="Payment Method"
-            errorMsg={errors.name?.message}
+            errorMsg={errors.payment_method?.message}
             inputProps={{
               ...register("payment_method", {
                 required: "Payment Method is required",
@@ -301,7 +301,7 @@ export const AddRentRecords = ({ property, setShowSnackbar, closeDialog }) => {
             multiline
             maxRows={5}
             placeholder="Notes in less than 300 characters"
-            errorMsg={errors.name?.message}
+            errorMsg={errors.note?.message}
             inputProps={{
               ...register("note", {
                 max: {

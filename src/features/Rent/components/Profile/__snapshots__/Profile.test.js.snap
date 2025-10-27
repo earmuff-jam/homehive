@@ -1,0 +1,170 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Profile /> should render and test snapshots 1`] = `
+<DocumentFragment>
+  <div
+    class="MuiGrid-root MuiGrid-container MuiGrid-spacing-xs-3 css-1qw2a80-MuiGrid-root"
+  >
+    <div
+      class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-md-4 css-1lj5egr-MuiGrid-root"
+    >
+      <div
+        class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation0 MuiCard-root css-e9t90p-MuiPaper-root-MuiCard-root"
+        style="--Paper-shadow: none;"
+      >
+        <div
+          class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ofhj4p-MuiAvatar-root"
+        >
+          <svg
+            aria-hidden="true"
+            class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium MuiAvatar-fallback css-1mo2pzk-MuiSvgIcon-root-MuiAvatar-fallback"
+            data-testid="PersonIcon"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"
+            />
+          </svg>
+        </div>
+        <h6
+          class="MuiTypography-root MuiTypography-h6 css-3zp90o-MuiTypography-root"
+        >
+          John Doe
+        </h6>
+        <h6
+          class="MuiTypography-root MuiTypography-h6 css-3zp90o-MuiTypography-root"
+        >
+          john@example.com
+        </h6>
+        <p
+          class="MuiTypography-root MuiTypography-body2 css-1wle3ir-MuiTypography-root"
+        >
+          Owner
+        </p>
+        <div
+          class="MuiChip-root MuiChip-filled MuiChip-sizeSmall MuiChip-colorPrimary MuiChip-filledPrimary css-1nt9eff-MuiChip-root"
+        >
+          <span
+            class="MuiChip-label MuiChip-labelSmall css-eccknh-MuiChip-label"
+          >
+            Verified
+          </span>
+        </div>
+      </div>
+    </div>
+    <div
+      class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-md-8 css-9drkqd-MuiGrid-root"
+    >
+      <form>
+        <div
+          class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation0 MuiCard-root css-o3b9az-MuiPaper-root-MuiCard-root"
+          style="--Paper-shadow: none;"
+        >
+          <div
+            data-testid="row-header"
+          >
+            Personal Information
+          </div>
+          <div
+            class="MuiStack-root css-pl8gqh-MuiStack-root"
+          >
+            <input
+              data-testid="first_name"
+              id="first_name"
+              label="First Name *"
+              name="first_name"
+              placeholder="Enter your first name"
+              value=""
+            />
+            <input
+              data-testid="last_name"
+              id="last_name"
+              label="Last Name *"
+              name="last_name"
+              placeholder="Enter your Last Name"
+              value=""
+            />
+          </div>
+          <div
+            class="MuiStack-root css-pl8gqh-MuiStack-root"
+          >
+            <input
+              data-testid="email"
+              errormsg=""
+              id="email"
+              label="Email address *"
+              labelicon="[object Object]"
+              labeliconhelper="Editing an email address is prevented by default."
+              name="email"
+              placeholder="Email Address"
+              value="john@example.com"
+            />
+            <input
+              data-testid="phone"
+              id="phone"
+              label="Phone Number *"
+              name="phone"
+              placeholder="Enter your phone number"
+              value=""
+            />
+          </div>
+          <input
+            data-testid="street_address"
+            id="street_address"
+            label="Street Address *"
+            name="street_address"
+            placeholder="Enter your primary street address"
+            value=""
+          />
+          <div
+            class="MuiStack-root css-pl8gqh-MuiStack-root"
+          >
+            <input
+              data-testid="city"
+              id="city"
+              label="City *"
+              name="city"
+              placeholder="City"
+              value=""
+            />
+            <input
+              data-testid="state"
+              id="state"
+              label="State *"
+              name="state"
+              placeholder="State"
+              value=""
+            />
+            <input
+              data-testid="zipcode"
+              id="zipcode"
+              label="Zip Code *"
+              name="zipcode"
+              placeholder="Zip Code"
+              value=""
+            />
+          </div>
+          <div
+            class="MuiBox-root css-0"
+          >
+            <button
+              data-testid="save-button"
+            >
+              Save
+            </button>
+          </div>
+          <span
+            class="MuiTypography-root MuiTypography-caption css-c289yo-MuiTypography-root"
+          >
+            Last login around a few seconds ago
+          </span>
+        </div>
+      </form>
+    </div>
+    <div
+      data-testid="snackbar"
+    />
+  </div>
+</DocumentFragment>
+`;
