@@ -1,12 +1,17 @@
 import React from "react";
 
+import { useNavigate } from "react-router-dom";
+
 import { HomeRounded, ReceiptRounded } from "@mui/icons-material";
 import { Box, Container, Stack, Typography } from "@mui/material";
+import { InvoiceDashboardRouteUri, PropertiesRouteUri } from "common/utils";
 import TitleCard from "features/Layout/components/TitleCard/TitleCard";
 import { useAppTitle } from "hooks/useAppTitle";
 
 export default function SplashPage() {
   useAppTitle("Home");
+  const navigate = useNavigate();
+
   return (
     <Box
       sx={{
@@ -51,11 +56,11 @@ export default function SplashPage() {
         <Stack direction={{ sm: "column", md: "row" }} gap={2}>
           <TitleCard
             title="Rental App"
-            subtitle="Manage properties, tenants, leases, and payments in one place"
+            subtitle="Manage tenants, leases, and payments in one place"
             chipLabels={[
-              "Property Management",
-              "Tenant Tracking",
+              "Tenant Management",
               "Lease Agreements",
+              "Auto Reminders",
               "Payment Processing",
             ]}
             icon={
@@ -63,14 +68,14 @@ export default function SplashPage() {
                 sx={{ fontSize: 32, color: "primary.main", mr: 1.5 }}
               />
             }
+            onClick={() => navigate(PropertiesRouteUri)}
           />
           <TitleCard
             title="Invoicer App"
-            subtitle="Create and track professional invoices with automated reminders"
+            subtitle="Create and track professional invoices"
             chipLabels={[
               "Invoice Creation",
               "Payment Tracking",
-              "Auto Reminders",
               "Professional Templates",
             ]}
             icon={
@@ -78,6 +83,7 @@ export default function SplashPage() {
                 sx={{ fontSize: 32, color: "secondary.main", mr: 1.5 }}
               />
             }
+            onClick={() => navigate(InvoiceDashboardRouteUri)}
           />
         </Stack>
       </Container>

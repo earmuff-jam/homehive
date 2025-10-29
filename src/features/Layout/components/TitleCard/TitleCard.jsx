@@ -2,11 +2,19 @@ import React from "react";
 
 import { Box, Card, CardContent, Chip, Typography } from "@mui/material";
 
-export default function TitleCard({ title, subtitle, icon, chipLabels }) {
+export default function TitleCard({
+  title,
+  subtitle,
+  icon,
+  chipLabels,
+  onClick = () => {},
+}) {
   return (
     <Card
-      elevation={0}
+    elevation={0}
+    onClick={onClick}
       sx={{
+        cursor: "pointer",
         transition: "transform 0.2s",
         "&:hover": {
           transform: "translateY(-4px)",
