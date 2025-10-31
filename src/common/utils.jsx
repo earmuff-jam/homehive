@@ -8,9 +8,11 @@ import React from "react";
 import { Typography } from "@mui/material";
 
 export const HomeRouteUri = "/";
-export const FaqRouteUri = "/faq";
 export const NotesRouteUri = "/notes";
 
+export const FaqRoutePath = "/faq";
+
+// Default Rental App Routes
 export const MainRentAppRouteUri = "/rent";
 
 export const PropertiesRoutePath = "properties";
@@ -25,6 +27,9 @@ export const SettingsRouteUri = "/rent/settings";
 export const PropertyRoutePath = "property/:id";
 export const PropertyRouteUri = "/rent/property/:id";
 
+export const RentAppFaqRouteUri = "/rent/faq";
+
+// Default Invoice App Routes
 export const MainInvoiceAppRouteUri = "/invoice";
 
 export const InvoiceDashboardRoutePath = "dashboard";
@@ -41,6 +46,8 @@ export const SenderInforamtionRouteUri = "/invoice/sender";
 
 export const RecieverInforamtionRoutePath = "reciever";
 export const RecieverInforamtionRouteUri = "/invoice/reciever";
+
+export const InvoiceAppFaqRouteUri = "/invoice/faq";
 
 /**
  * Authorized Roles
