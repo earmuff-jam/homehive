@@ -2,6 +2,13 @@ import React from "react";
 
 import { Box, Card, CardContent, Chip, Typography } from "@mui/material";
 
+const DefaultChipColors = [
+  "primary.light",
+  "info.light",
+  "warning.light",
+  "secondary.light",
+];
+
 export default function TitleCard({
   title,
   subtitle,
@@ -11,9 +18,10 @@ export default function TitleCard({
 }) {
   return (
     <Card
-    elevation={0}
-    onClick={onClick}
+      elevation={0}
+      onClick={onClick}
       sx={{
+        width: "30rem",
         cursor: "pointer",
         transition: "transform 0.2s",
         "&:hover": {
@@ -44,8 +52,21 @@ export default function TitleCard({
             flexWrap: "wrap",
           }}
         >
-          {chipLabels?.map((label) => (
-            <Chip key={label} label={label} size="small" />
+          {chipLabels?.map((label, index) => (
+            <Chip
+              key={label}
+              label={
+                <Typography variant="caption" fontSize="0.725rem">
+                  {label}
+                </Typography>
+              }
+              size="small"
+              sx={{
+                color: "black",
+                backgroundColor:
+                  DefaultChipColors[index % DefaultChipColors.length],
+              }}
+            />
           ))}
         </Box>
       </CardContent>
