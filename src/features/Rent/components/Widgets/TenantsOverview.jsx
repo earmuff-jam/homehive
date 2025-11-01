@@ -37,7 +37,6 @@ export default function TenantsOverview({
               color: "text.secondary",
             }}
           />
-
           <Stack direction="row" spacing={1} alignItems="center">
             <Tooltip title="Associate tenants">
               <Box>

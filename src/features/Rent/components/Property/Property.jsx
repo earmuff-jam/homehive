@@ -21,12 +21,12 @@ import PropertyDetails from "features/Rent/common/PropertyDetails";
 import PropertyHeader from "features/Rent/common/PropertyHeader";
 import PropertyOwnerInfoCard from "features/Rent/common/PropertyOwnerInfoCard";
 import PropertyStatistics from "features/Rent/common/PropertyStatistics";
-import { fetchLoggedInUser } from "features/Rent/utils/utils";
 import DocumentsOverview from "features/Rent/components/Widgets/DocumentsOverview";
 import FinancialOverview from "features/Rent/components/Widgets/FinancialOverview";
 import QuickActions from "features/Rent/components/Widgets/QuickActions";
 import RentalPaymentOverview from "features/Rent/components/Widgets/RentalPaymentOverview";
 import TenantsOverview from "features/Rent/components/Widgets/TenantsOverview";
+import { fetchLoggedInUser } from "features/Rent/utils/utils";
 import { useAppTitle } from "hooks/useAppTitle";
 
 const Property = () => {
@@ -88,11 +88,6 @@ const Property = () => {
             isAnyTenantSoR={isAnyTenantSoR}
             dataTour="property-2"
           />
-          <DocumentsOverview
-            isPropertyLoading={isPropertyLoading}
-            property={property}
-            dataTour="property-6"
-          />
           <TenantsOverview
             property={property}
             tenants={tenants.filter((tenant) => tenant.isActive)}
@@ -105,6 +100,11 @@ const Property = () => {
             rentList={rentList}
             isRentListForPropertyLoading={isRentListForPropertyLoading}
             propertyName={property?.name || "Unknown"}
+          />
+          <DocumentsOverview
+            isPropertyLoading={isPropertyLoading}
+            property={property}
+            dataTour="property-6"
           />
         </Grid>
 
