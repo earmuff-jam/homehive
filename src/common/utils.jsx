@@ -7,28 +7,47 @@ import React from "react";
 
 import { Typography } from "@mui/material";
 
-/**
- * Route params
- *
- * used to build routes.
- */
-
 export const HomeRouteUri = "/";
-export const FaqRouteUri = "/faq";
 export const NotesRouteUri = "/notes";
 
-export const MainRentAppRouteUri = "/rent";
-export const PropertiesRouteUri = "properties";
-export const SettingsRouteUri = "settings";
-export const RentalRouteUri = "rental";
-export const PropertyRouteUri = "property/:id";
+export const FaqRoutePath = "/faq";
 
+// Default Rental App Routes
+export const MainRentAppRouteUri = "/rent";
+
+export const PropertiesRoutePath = "properties";
+export const PropertiesRouteUri = "/rent/properties";
+
+export const RentalRoutePath = "rental";
+export const RentalRouteUri = "/rent/rental";
+
+export const SettingsRoutePath = "settings";
+export const SettingsRouteUri = "/rent/settings";
+
+export const PropertyRoutePath = "property/:id";
+export const PropertyRouteUri = "/rent/property/:id";
+
+export const RentAppFaqRouteUri = "/rent/faq";
+
+// Default Invoice App Routes
 export const MainInvoiceAppRouteUri = "/invoice";
-export const ViewInvoiceRouteUri = "view";
-export const EditInvoiceRouteUri = "edit";
-export const SenderInforamtionRouteUri = "sender";
-export const InvoiceDashboardRouteUri = "dashboard";
-export const RecieverInforamtionRouteUri = "reciever";
+
+export const InvoiceDashboardRoutePath = "dashboard";
+export const InvoiceDashboardRouteUri = "/invoice/dashboard";
+
+export const ViewInvoiceRoutePath = "view";
+export const ViewInvoiceRouteUri = "/invoice/view";
+
+export const EditInvoiceRoutePath = "edit";
+export const EditInvoiceRouteUri = "/invoice/edit";
+
+export const SenderInforamtionRoutePath = "sender";
+export const SenderInforamtionRouteUri = "/invoice/sender";
+
+export const RecieverInforamtionRoutePath = "reciever";
+export const RecieverInforamtionRouteUri = "/invoice/reciever";
+
+export const InvoiceAppFaqRouteUri = "/invoice/faq";
 
 /**
  * Authorized Roles

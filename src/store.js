@@ -1,6 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { firebaseUserApi } from "features/Api/firebaseUserApi";
 import { invoiceApi } from "features/Api/invoiceApi";
+import { mapServiceApi } from "features/Api/mapServiceApi";
 import { propertiesApi } from "features/Api/propertiesApi";
 import { rentApi } from "features/Api/rentApi";
 import { tenantsApi } from "features/Api/tenantsApi";
@@ -12,6 +13,7 @@ export const store = configureStore({
     [tenantsApi.reducerPath]: tenantsApi.reducer,
     [rentApi.reducerPath]: rentApi.reducer,
     [invoiceApi.reducerPath]: invoiceApi.reducer,
+    [mapServiceApi.reducerPath]: mapServiceApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat([
@@ -20,5 +22,6 @@ export const store = configureStore({
       tenantsApi.middleware,
       rentApi.middleware,
       invoiceApi.middleware,
+      mapServiceApi.middleware,
     ]),
 });

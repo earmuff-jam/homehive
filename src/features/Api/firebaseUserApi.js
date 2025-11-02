@@ -1,7 +1,8 @@
 import { createApi, fakeBaseQuery } from "@reduxjs/toolkit/query/react";
 import { authenticateViaGoogle } from "features/Auth/AuthHelper";
+import { getAuth, signOut } from "firebase/auth";
 import { doc, getDoc, setDoc } from "firebase/firestore";
-import { authenticatorFirestore as db } from "src/config";
+import { authenticatorConfig, authenticatorFirestore as db } from "src/config";
 
 export const firebaseUserApi = createApi({
   reducerPath: "firebaseUserApi",
@@ -76,12 +77,33 @@ export const firebaseUserApi = createApi({
       },
       invalidatesTags: ["User"],
     }),
+    // log off users from the system
+    logout: builder.mutation({
+      async queryFn() {
+        try {
+          const auth = getAuth(authenticatorConfig);
+          await signOut(auth);
+          localStorage.removeItem("user");
+          return { data: { success: true } };
+        } catch (error) {
+          /* eslint-disable no-console */
+          console.error("Error signing out:", error);
+          return {
+            error: {
+              message: error.message,
+              code: error.code,
+            },
+          };
+        }
+      },
+    }),
   }),
 });
 
 export const {
+  useLazyGetUserDataByIdQuery,
   useGetUserDataByIdQuery,
   useAuthenticateMutation,
   useUpdateUserByUidMutation,
-  useLazyGetUserDataByIdQuery,
+  useLogoutMutation,
 } = firebaseUserApi;

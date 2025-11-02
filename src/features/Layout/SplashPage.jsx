@@ -1,12 +1,53 @@
-import React from "react";
+import React, { useEffect } from "react";
+
+import { useNavigate } from "react-router-dom";
 
 import { HomeRounded, ReceiptRounded } from "@mui/icons-material";
-import { Box, Container, Stack, Typography } from "@mui/material";
+import { Alert, Box, Container, Stack, Typography } from "@mui/material";
+import {
+  InvoiceDashboardRouteUri,
+  OwnerRole,
+  PropertiesRouteUri,
+} from "common/utils";
+import { useAuthenticateMutation } from "features/Api/firebaseUserApi";
 import TitleCard from "features/Layout/components/TitleCard/TitleCard";
 import { useAppTitle } from "hooks/useAppTitle";
 
 export default function SplashPage() {
   useAppTitle("Home");
+  const navigate = useNavigate();
+
+  const [
+    authenticate,
+    {
+      isSuccess: isAuthSuccess,
+      isLoading: isAuthLoading,
+      isError: isAuthError,
+      error: authError,
+    },
+  ] = useAuthenticateMutation();
+
+  const handleAuth = () => {
+    authenticate(OwnerRole);
+  };
+
+  useEffect(() => {
+    if (!isAuthLoading && isAuthSuccess) {
+      window.location.replace(PropertiesRouteUri);
+    }
+  }, [isAuthLoading]);
+
+  if (isAuthError) {
+    return (
+      <Alert severity="error">
+        <Stack>
+          <Typography>Error during log in. Please try again later.</Typography>
+          <Typography variant="caption">{authError?.message}</Typography>
+        </Stack>
+      </Alert>
+    );
+  }
+
   return (
     <Box
       sx={{
@@ -48,14 +89,14 @@ export default function SplashPage() {
           </Typography>
         </Box>
 
-        <Stack sx={{ direction: { sm: "column", md: "row" } }} spacing={2}>
+        <Stack direction={{ sm: "column", md: "row" }} gap={2}>
           <TitleCard
             title="Rental App"
-            subtitle="Manage properties, tenants, leases, and payments in one place"
+            subtitle="Manage tenants, leases, and payments"
             chipLabels={[
-              "Property Management",
-              "Tenant Tracking",
+              "Tenant Management",
               "Lease Agreements",
+              "Auto Reminders",
               "Payment Processing",
             ]}
             icon={
@@ -63,14 +104,14 @@ export default function SplashPage() {
                 sx={{ fontSize: 32, color: "primary.main", mr: 1.5 }}
               />
             }
+            onClick={handleAuth}
           />
           <TitleCard
             title="Invoicer App"
-            subtitle="Create and track professional invoices with automated reminders"
+            subtitle="Create and track professional invoices"
             chipLabels={[
               "Invoice Creation",
               "Payment Tracking",
-              "Auto Reminders",
               "Professional Templates",
             ]}
             icon={
@@ -78,6 +119,7 @@ export default function SplashPage() {
                 sx={{ fontSize: 32, color: "secondary.main", mr: 1.5 }}
               />
             }
+            onClick={() => navigate(InvoiceDashboardRouteUri)}
           />
         </Stack>
       </Container>
