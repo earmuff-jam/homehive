@@ -4,6 +4,7 @@ import {
   DashboardCustomizeRounded,
   DashboardRounded,
   EditRounded,
+  HelpOutlineRounded,
   Person2Rounded,
   PictureAsPdfRounded,
   ReceiptRounded,
@@ -11,6 +12,8 @@ import {
 import {
   EditInvoiceRoutePath,
   EditInvoiceRouteUri,
+  FaqRoutePath,
+  InvoiceAppFaqRouteUri,
   InvoiceDashboardRoutePath,
   InvoiceDashboardRouteUri,
   RecieverInforamtionRoutePath,
@@ -36,6 +39,8 @@ const RecieverInfo = React.lazy(
 const SenderInfo = React.lazy(
   () => import("features/Invoice/components/SenderInfo/SenderInfo"),
 );
+
+const Faq = React.lazy(() => import("features/Invoice/components/Faq/Faq"));
 
 /**
  * InvoiceAppRoutes ...
@@ -130,6 +135,24 @@ export const InvoiceAppRoutes = [
       },
       displayInNavBar: true,
       displayHelpSelector: true,
+      displayPrintSelector: false,
+    },
+  },
+  {
+    id: 6,
+    label: "Help and Support",
+    path: FaqRoutePath,
+    routeUri: InvoiceAppFaqRouteUri,
+    element: <Faq />,
+    icon: <HelpOutlineRounded fontSize="small" />,
+    requiredFlags: ["invoicer"],
+    config: {
+      breadcrumb: {
+        value: "Invoice App Frequently Asked Questions",
+        icon: <HelpOutlineRounded fontSize="small" />,
+      },
+      displayInNavBar: true,
+      displayHelpSelector: false,
       displayPrintSelector: false,
     },
   },
