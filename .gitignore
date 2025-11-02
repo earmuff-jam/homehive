@@ -141,3 +141,6 @@ dist
 
 # local dev server certificates in json
 account.json
+
+# pwa app
+dev-dist

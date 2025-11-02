@@ -52,7 +52,16 @@ const manifestForPlugIn = {
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [react(), VitePWA(manifestForPlugIn), visualizer({ open: true })],
+  plugins: [
+    react(),
+    VitePWA({
+      ...manifestForPlugIn,
+      devOptions: {
+        enabled: true,
+      },
+    }),
+    visualizer({ open: true }),
+  ],
   build: {
     rollupOptions: {
       output: {
