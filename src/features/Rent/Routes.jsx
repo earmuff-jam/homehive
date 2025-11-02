@@ -3,13 +3,16 @@ import React from "react";
 import {
   ApartmentRounded,
   CottageRounded,
+  HelpOutlineRounded,
   SettingsRounded,
 } from "@mui/icons-material";
 import {
+  FaqRoutePath,
   PropertiesRoutePath,
   PropertiesRouteUri,
   PropertyRoutePath,
   PropertyRouteUri,
+  RentAppFaqRouteUri,
   RentalRoutePath,
   RentalRouteUri,
   SettingsRoutePath,
@@ -25,9 +28,11 @@ const Properties = React.lazy(
 const Property = React.lazy(
   () => import("features/Rent/components/Property/Property"),
 );
-
 const Settings = React.lazy(
   () => import("features/Rent/components/Settings/Settings"),
+);
+const Faq = React.lazy(
+  () => import("features/Rent/components/Faq/Faq"),
 );
 
 /**
@@ -109,6 +114,24 @@ export const RentalAppRoutes = [
       isLoggedInFeature: true, // only display if logged in
       displayInNavBar: false,
       displayHelpSelector: true,
+      displayPrintSelector: false,
+    },
+  },
+  {
+    id: 5,
+    label: "Help and Support",
+    path: FaqRoutePath,
+    routeUri: RentAppFaqRouteUri,
+    element: <Faq />,
+    icon: <HelpOutlineRounded fontSize="small" />,
+    requiredFlags: ["invoicer"],
+    config: {
+      breadcrumb: {
+        value: "Invoice App Frequently Asked Questions",
+        icon: <HelpOutlineRounded fontSize="small" />,
+      },
+      displayInNavBar: true,
+      displayHelpSelector: false,
       displayPrintSelector: false,
     },
   },
