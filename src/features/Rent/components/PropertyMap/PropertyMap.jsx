@@ -33,7 +33,7 @@ const PropertyMap = ({
   const markerRef = useRef();
 
   useEffect(() => {
-    const initialCenter = fromLonLat([location.lon, location.lat]);
+    const initialCenter = fromLonLat([location?.lon, location?.lat]);
     const zoom = ZoomLevel.xl;
 
     const map = new Map({
@@ -113,7 +113,7 @@ const PropertyMap = ({
             opacity: 0.7,
           },
           "& .ol-attribution > button": {
-            display: 'none',
+            display: "none",
           },
           "& .ol-attribution > ul": {
             display: "flex",
@@ -122,7 +122,7 @@ const PropertyMap = ({
             alignItems: "center",
             padding: "0rem 1rem",
             margin: 0,
-            gap: 1
+            gap: 1,
           },
         }}
       >
@@ -140,6 +140,7 @@ const PropertyMap = ({
  * @param {Object} location The location to add a marker for
  */
 const addMarkers = (map, vectorLayer, location, markerRef) => {
+  if (!location) return;
   const { lon, lat } = location;
   if (lon && lat) {
     const geometry = new Point(fromLonLat([lon, lat]));
