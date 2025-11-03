@@ -1,41 +1,5 @@
 [
   {
-    "version": "1.0.4-rc1",
-    "date": "2025-11-02",
-    "notes": [
-      {
-        "type": "feature",
-        "value": "Added help and support to the app by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/130",
-        "caption": "Added help and support to the app by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/130"
-      },
-      {
-        "type": "feature",
-        "value": "Added ability to display map in property page view by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/138",
-        "caption": "Added ability to display map in property page view by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/138"
-      },
-      {
-        "type": "maintenance",
-        "value": "Added cleanup for widgets in invoice dashboard by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/145",
-        "caption": "Added cleanup for widgets in invoice dashboard by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/145"
-      },
-      {
-        "type": "bugfix",
-        "value": "Added the ability to navigate to respective apps when clicked by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/147",
-        "caption": "Added the ability to navigate to respective apps when clicked by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/147"
-      },
-      {
-        "type": "feature",
-        "value": "Added FaqDetails component by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/150",
-        "caption": "Added FaqDetails component by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/150"
-      },
-      {
-        "type": "maintenance",
-        "value": "Updated Tenant Section in Property Page by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/149",
-        "caption": "Updated Tenant Section in Property Page by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/149"
-      }
-    ]
-  },
-  {
     "version": "1.0.3",
     "date": "2025-10-21",
     "notes": [
