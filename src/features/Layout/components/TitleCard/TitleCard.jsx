@@ -1,6 +1,14 @@
 import React from "react";
 
-import { Box, Card, CardContent, Chip, Typography } from "@mui/material";
+import {
+  Box,
+  Card,
+  CardContent,
+  Chip,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
 
 const DefaultChipColors = [
   "primary.light",
@@ -16,12 +24,15 @@ export default function TitleCard({
   chipLabels,
   onClick = () => {},
 }) {
+  const theme = useTheme();
+  const smScreenSizeAndHigher = useMediaQuery(theme.breakpoints.up("md"));
+
   return (
     <Card
       elevation={0}
       onClick={onClick}
       sx={{
-        width: "30rem",
+        width: smScreenSizeAndHigher ? "30rem" : "inherit",
         cursor: "pointer",
         transition: "transform 0.2s",
         "&:hover": {
