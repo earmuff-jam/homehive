@@ -9,6 +9,7 @@ export default [
     ignores: [
       "dist",
       "dev",
+      "dev-dist",
       "vite.config.js",
       "netlify",
       ".netlify",
