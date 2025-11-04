@@ -22,9 +22,9 @@ import {
   AddPropertyTextString,
   AddRentRecordsTextString,
 } from "features/Rent/common/constants";
-import { fetchLoggedInUser } from "features/Rent/utils/utils";
 import AddProperty from "features/Rent/components/AddProperty/AddProperty";
 import { AddRentRecords } from "features/Rent/components/AddRentRecords/AddRentRecords";
+import { fetchLoggedInUser } from "features/Rent/utils/utils";
 
 const defaultDialog = {
   title: "",
@@ -151,13 +151,24 @@ export default function QuickActions({ property }) {
             aria-describedby="alert-dialog-slide-description"
           >
             <DialogTitle>
-              <RowHeader
-                title="Add rent records"
-                caption="Once you add a rental record manually, it can’t be edited later. Please double-check before submitting."
-                sxProps={{
-                  textAlign: "left",
-                }}
-              />
+              {dialog.type === AddPropertyTextString && (
+                <RowHeader
+                  title="Edit property"
+                  caption="Edit property values for current or previous tenant"
+                  sxProps={{
+                    textAlign: "left",
+                  }}
+                />
+              )}
+              {dialog.type === AddRentRecordsTextString && (
+                <RowHeader
+                  title="Add rent records"
+                  caption="Once you add a rental record manually, it can’t be edited later. Please double-check before submitting."
+                  sxProps={{
+                    textAlign: "left",
+                  }}
+                />
+              )}
             </DialogTitle>
             <DialogContent>
               {dialog.type === AddPropertyTextString && (

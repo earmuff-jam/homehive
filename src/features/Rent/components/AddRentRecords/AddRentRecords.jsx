@@ -8,7 +8,7 @@ import dayjs from "dayjs";
 
 import { AddRounded } from "@mui/icons-material";
 import { Box, Divider, Stack, Typography } from "@mui/material";
-import { DateCalendar, LocalizationProvider } from "@mui/x-date-pickers";
+import { LocalizationProvider, MobileDatePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import AButton from "common/AButton";
 import TextFieldWithLabel from "common/TextFieldWithLabel";
@@ -113,7 +113,7 @@ export const AddRentRecords = ({ property, setShowSnackbar, closeDialog }) => {
             Property Owner Information
           </Typography>
         </Divider>
-        <Stack direction="row" spacing={1}>
+        <Stack direction={{ xs: "column", md: "row" }} spacing={1}>
           <TextFieldWithLabel
             label="Owner First Name *"
             id="owner_first_name"
@@ -157,7 +157,7 @@ export const AddRentRecords = ({ property, setShowSnackbar, closeDialog }) => {
             Tenant Information
           </Typography>
         </Divider>
-        <Stack direction="row" spacing={1}>
+        <Stack direction={{ xs: "column", md: "row" }} spacing={1}>
           <TextFieldWithLabel
             label="Tenant First Name *"
             id="tenant_first_name"
@@ -199,7 +199,7 @@ export const AddRentRecords = ({ property, setShowSnackbar, closeDialog }) => {
           </Typography>
         </Divider>
 
-        <Stack direction="row" spacing={1}>
+        <Stack direction={{ xs: "column", md: "row" }} spacing={1}>
           <TextFieldWithLabel
             label="Rent Amount *"
             id="rent_amount"
@@ -225,15 +225,15 @@ export const AddRentRecords = ({ property, setShowSnackbar, closeDialog }) => {
           />
         </Stack>
 
-        <Stack direction="row" spacing={2} justifyContent="center">
-          <Box>
+        <Stack direction={{ xs: "column", md: "row" }} spacing={1}>
+          <Box sx={{ flex: 1 }}>
             <Controller
               name="rentMonth"
               control={control}
               defaultValue={null}
               rules={{ required: "Rent Month is required" }}
               render={({ field }) => (
-                <Box>
+                <Box width="100%">
                   <Typography
                     variant="body2"
                     color="textSecondary"
@@ -242,15 +242,14 @@ export const AddRentRecords = ({ property, setShowSnackbar, closeDialog }) => {
                     Rent Month *
                   </Typography>
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DateCalendar
-                      views={["year", "month"]}
-                      defaultValue={dayjs()}
+                    <MobileDatePicker
                       openTo="month"
-                      sx={{
-                        margin: 0,
-                        padding: 0,
-                        borderRadius: "5px",
-                        border: "0.875px solid gray",
+                      views={["year", "month"]}
+                      slotProps={{
+                        textField: {
+                          fullWidth: true,
+                          size: "small",
+                        },
                       }}
                       value={field.value ? dayjs(field.value) : null}
                       onChange={(date) => field.onChange(date)}
@@ -261,14 +260,14 @@ export const AddRentRecords = ({ property, setShowSnackbar, closeDialog }) => {
             />
           </Box>
 
-          <Box>
+          <Box sx={{ flex: 1 }}>
             <Controller
               name="rent_paid_date"
               control={control}
               defaultValue={null}
               rules={{ required: "Rent paid date is required" }}
               render={({ field }) => (
-                <Box>
+                <Box width="100%">
                   <Typography
                     variant="body2"
                     color="textSecondary"
@@ -277,15 +276,16 @@ export const AddRentRecords = ({ property, setShowSnackbar, closeDialog }) => {
                     Rent paid date *
                   </Typography>
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DateCalendar
-                      sx={{
-                        margin: "0",
-                        border: "0.875px solid gray",
-                        borderRadius: "5px",
+                    <MobileDatePicker
+                      slotProps={{
+                        textField: {
+                          fullWidth: true,
+                          size: "small",
+                        },
                       }}
+                      disablePast
                       value={field.value ? dayjs(field.value) : null}
                       onChange={(date) => field.onChange(date)}
-                      disablePast
                     />
                   </LocalizationProvider>
                 </Box>

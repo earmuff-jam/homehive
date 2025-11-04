@@ -118,7 +118,7 @@ const ViewPropertyAccordionDetails = ({
   }
 
   return (
-    <Stack spacing={2}>
+    <Stack spacing={2} flexWrap="wrap">
       <Paper
         variant="outlined"
         sx={{
@@ -131,31 +131,51 @@ const ViewPropertyAccordionDetails = ({
         }}
       >
         {/* LEFT SECTION */}
-        <Stack direction="row" spacing={2} flexWrap="wrap" flex={1}>
+        <Stack direction="row" spacing={2} flex={1}>
           <Avatar sx={{ bgcolor: "primary.main", mt: 0.5 }}>
             {primaryTenant?.first_name ||
               primaryTenant?.googleDisplayName ||
               "U"}
           </Avatar>
           <Stack flexGrow={1}>
-            <Stack direction="row" spacing={1} alignItems="center">
-              <Typography variant="subtitle1" fontWeight={600}>
-                {primaryTenant?.first_name ||
+            <Stack direction="row" spacing={1}>
+              <Tooltip
+                title={
+                  primaryTenant?.first_name ||
                   primaryTenant?.googleDisplayName ||
-                  primaryTenant?.email}
-              </Typography>
+                  primaryTenant?.email
+                }
+              >
+                <Typography
+                  flexGrow={1}
+                  variant="body2"
+                  color="primary"
+                  sx={{
+                    whiteSpace: "nowrap",
+                    overflow: "hidden",
+                    alignContent: "center",
+                    textOverflow: "ellipsis",
+                    maxWidth: 150,
+                  }}
+                >
+                  {primaryTenant?.first_name ||
+                    primaryTenant?.googleDisplayName ||
+                    primaryTenant?.email}
+                </Typography>
+              </Tooltip>
               <Tooltip title="Primary point of contact">
                 <CheckCircleOutlineRounded color="primary" fontSize="small" />
               </Tooltip>
             </Stack>
 
             <Stack
-              direction="row"
+              direction={{ md: "row", sm: "column" }}
               spacing={1}
               justifyContent="space-around"
               padding={1}
+              textAlign="center"
             >
-              <Stack textAlign="center">
+              <Stack>
                 <Typography
                   variant="subtitle2"
                   fontSize="1.875rem"
@@ -167,7 +187,7 @@ const ViewPropertyAccordionDetails = ({
                   Total Monthly Rent
                 </Typography>
               </Stack>
-              <Stack textAlign="center">
+              <Stack>
                 <Typography variant="subtitle2" fontSize="2rem" color="primary">
                   {dayjs(
                     updateDateTime(dayjs(primaryTenant?.start_date || "")),

@@ -23,10 +23,7 @@ import {
 import CustomSnackbar from "common/CustomSnackbar/CustomSnackbar";
 import { useUpdatePropertyByIdMutation } from "features/Api/propertiesApi";
 import { useUpdateTenantByIdMutation } from "features/Api/tenantsApi";
-import {
-  fetchLoggedInUser,
-  formatCurrency,
-} from "features/Rent/utils/utils";
+import { fetchLoggedInUser, formatCurrency } from "features/Rent/utils/utils";
 
 export default function Tenants({ tenants = [], property }) {
   const user = fetchLoggedInUser();
@@ -92,7 +89,22 @@ export default function Tenants({ tenants = [], property }) {
                       gap: "0.2rem",
                     }}
                   >
-                    <Typography variant="subtitle2">{tenant.email}</Typography>
+                    <Tooltip title={tenant.email}>
+                      <Typography
+                        flexGrow={1}
+                        variant="subtitle2"
+                        color="primary"
+                        sx={{
+                          whiteSpace: "nowrap",
+                          overflow: "hidden",
+                          alignContent: "center",
+                          textOverflow: "ellipsis",
+                          maxWidth: 150,
+                        }}
+                      >
+                        {tenant.email}
+                      </Typography>
+                    </Tooltip>
 
                     {tenant?.isSoR && (
                       <Tooltip title="Single occupancy room rentee">
@@ -146,6 +158,7 @@ export default function Tenants({ tenants = [], property }) {
                     textAlign: "center",
                     justifyContent: "space-around",
                   }}
+                  flexDirection={{ xs: "column", md: "row" }}
                 >
                   {tenant?.isPrimary ? (
                     <Stack>

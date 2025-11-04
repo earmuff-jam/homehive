@@ -1,12 +1,23 @@
+import React from "react";
+
+import {
+  AssignmentLateRounded,
+  CircleNotificationsRounded,
+  LoopRounded,
+  ReceiptRounded,
+} from "@mui/icons-material";
+
 /**
  * DefaultTemplateData ...
  *
  * used to create default email templates to send to the client directly.
  */
 export const DefaultTemplateData = {
-  // invoice template
   invoice: {
     label: "Invoice Template",
+    title: 'invoice',
+    icon: <ReceiptRounded fontSize="small" />,
+    caption: "Customize professional rent invoices",
     subject: "Monthly Rent Invoice - {{propertyAddress}}",
     body: "Please view your invoice details below",
     fieldsToUse: [
@@ -47,9 +58,11 @@ export const DefaultTemplateData = {
 </div>
     `,
   },
-  // late payment reminder template
   reminder: {
     label: "Rent Late Payment Reminder Template",
+    title: 'reminder',
+    icon: <AssignmentLateRounded fontSize="small" />,
+    caption: "Customize friendly reminders for overdue rent payments",
     subject: "Rent Late Payment Reminder - {{propertyAddress}}",
     body: "Please view your late payment reminder",
     fieldsToUse: [
@@ -93,9 +106,10 @@ export const DefaultTemplateData = {
 </div>
 `,
   },
-  // rent regular payment reminder template
   rent: {
     label: "Rent Regular Payment Reminder Template",
+    icon: <CircleNotificationsRounded fontSize="small" />,
+    caption: "Customize payment reminder form",
     subject: "Rent Payment Reminder - {{propertyAddress}}",
     body: "Please view your regular rent payment reminder",
     fieldsToUse: [
@@ -139,9 +153,11 @@ export const DefaultTemplateData = {
 </div>
 `,
   },
-  // notice of lease renewal template
   noticeOfLeaseRenewal: {
     label: "Notice of Lease Renewal Template",
+    title: 'noticeOfLeaseRenewal',
+    icon: <LoopRounded fontSize="small" />,
+    caption: "Customize automatic lease renewal and expiration notices",
     subject: "Notice of Lease Expiration and Renewal - {{propertyAddress}}",
     body: "Please view your notice of renewal",
     fieldsToUse: [
@@ -156,7 +172,7 @@ export const DefaultTemplateData = {
       "ownerPhone",
       "ownerEmail",
       "leaseEndDate",
-      "newSemiAnnualRent",
+      "rentIncrement",
       "oneYearRentChange",
       "responseDeadline",
     ],
@@ -192,7 +208,7 @@ options.
   <p>
     <strong>• SEMI ANNUAL LEASE RENEWAL:</strong><br />
     If you choose to switch to a semi-annual lease, please be advised that the monthly rent will increase by 
-    {{newSemiAnnualRent}}. This option provides flexibility but comes with a higher monthly cost.
+    {{rentIncrement}}. This option provides flexibility but comes with a higher monthly cost.
   </p>
 
   <p style="font-weight: bold;">

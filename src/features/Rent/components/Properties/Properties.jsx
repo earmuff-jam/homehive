@@ -38,9 +38,9 @@ import {
 } from "features/Api/propertiesApi";
 import { useLazyGetRentsByPropertyIdWithFiltersQuery } from "features/Api/rentApi";
 import { AddPropertyTextString } from "features/Rent/common/constants";
-import { fetchLoggedInUser } from "features/Rent/utils/utils";
 import AddProperty from "features/Rent/components/AddProperty/AddProperty";
 import ViewPropertyAccordionDetails from "features/Rent/components/Properties/ViewPropertyAccordionDetails";
+import { fetchLoggedInUser } from "features/Rent/utils/utils";
 import { useAppTitle } from "hooks/useAppTitle";
 
 const defaultDialog = {

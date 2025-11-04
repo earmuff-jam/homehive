@@ -22,24 +22,32 @@ export const handleQuickConnectAction = (
   redirectTo,
   sendEmail,
 ) => {
+  const today = dayjs();
   const user = fetchLoggedInUser();
+
+  const unit = primaryTenant?.term.endsWith("y") ? "year" : "month";
+  const leaseEndDate = dayjs(primaryTenant?.start_date)
+    .add(parseInt(primaryTenant?.term), unit)
+    .format("MM-DD-YYYY");
+
   const templateVariables = {
-    leaseEndDate: dayjs(), // the day the lease ends
-    newSemiAnnualRent: property?.newSemiAnnualRent || "",
-    oneYearRentChange: property?.onYearRentChange || "",
-    responseDeadline: property?.newLeaseResponseDeadline || "",
+    leaseEndDate: leaseEndDate,
+    rentIncrement: Number(property?.rent_increment) || 0,
+    oneYearRentChange:
+      Number(property?.rent || 0) + Number(property?.rent_increment || 0),
+    responseDeadline: today.add(1, "M").format("MM-DD-YYYY"), // add 30 days for response deadline
     ownerPhone: propertyOwner?.phone,
-    ownerEmail: propertyOwner?.email,
-    currentDate: dayjs().format("MMMM DD, YYYY"),
+    ownerEmail: propertyOwner?.googleEmailAddress,
+    currentDate: today.format("MMMM DD, YYYY"),
     tenantName: primaryTenant?.name || "Rentee",
     propertyAddress: `${property.address}, ${property.city}, ${property.state} ${property.zipcode}`,
     amount: totalRentAmount,
     dueDate: monthlyRentalDueDate,
-    month: dayjs().format("MMMM"),
-    year: dayjs().get("year"),
+    month: today.format("MMMM"),
+    year: today.get("year"),
     ownerName: propertyOwner?.googleDisplayName,
     companyName: propertyOwner?.company_name || "",
-    contactInfo: propertyOwner?.email || "",
+    contactInfo: propertyOwner?.googleEmailAddress || "",
   };
 
   switch (action) {

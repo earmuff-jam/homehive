@@ -20,7 +20,7 @@ export default function AddProperty({
         </Typography>
       </Divider>
       <Stack direction="column" spacing={1}>
-        <Stack direction="row" spacing={2}>
+        <Stack spacing={1}>
           <TextFieldWithLabel
             label="Property Name *"
             id="name"
@@ -30,9 +30,7 @@ export default function AddProperty({
               ...register("name", { required: "Property name is required" }),
             }}
           />
-        </Stack>
 
-        <Stack direction="row" spacing={2}>
           <TextFieldWithLabel
             label="Address *"
             id="address"
@@ -46,7 +44,7 @@ export default function AddProperty({
           />
         </Stack>
 
-        <Stack direction="row" spacing={2}>
+        <Stack direction={{ xs: "column", md: "row" }} spacing={1}>
           <TextFieldWithLabel
             label="City *"
             id="city"
@@ -88,7 +86,7 @@ export default function AddProperty({
           />
         </Stack>
 
-        <Stack direction="row" spacing={2}>
+        <Stack direction={{ xs: "column", md: "row" }} spacing={1}>
           <TextFieldWithLabel
             label="Number of Units / Bedroom *"
             id="units"
@@ -117,7 +115,7 @@ export default function AddProperty({
           />
         </Stack>
 
-        <Stack direction="row" spacing={2}>
+        <Stack direction={{ xs: "column", md: "row" }} spacing={1}>
           <TextFieldWithLabel
             label="Area of the home in sq ft. *"
             id="sqFt"
@@ -149,7 +147,7 @@ export default function AddProperty({
           id="note"
           placeholder="Additional notes "
           errorMsg={errors.note?.message}
-          multiline={true}
+          multiline
           maxRows={3}
           inputProps={{
             ...register("note", {
@@ -167,7 +165,7 @@ export default function AddProperty({
           </Typography>
         </Divider>
         {/* Monthy rent and Additional Rent */}
-        <Stack direction="row" spacing={2}>
+        <Stack direction={{ xs: "column", md: "row" }} spacing={1}>
           <TextFieldWithLabel
             label="Monthly Rent *"
             id="rent"
@@ -204,6 +202,40 @@ export default function AddProperty({
                 pattern: {
                   value: /^\d+(\.\d{1,2})?$/,
                   message: "Additional fee must be a valid amount (e.g. 75.00)",
+                },
+              }),
+            }}
+          />
+        </Stack>
+
+        {/* Projected Rent Increment */}
+        <Stack direction={{ xs: "column", md: "row" }} spacing={1}>
+          <TextFieldWithLabel
+            label={
+              <Stack direction="row" alignItems="center">
+                <Tooltip title="Estimated rent increment for next lease term">
+                  <InfoRounded
+                    color="secondary"
+                    fontSize="small"
+                    sx={{ fontSize: "1rem", margin: "0.2rem" }}
+                  />
+                </Tooltip>
+                <Typography variant="subtitle2">
+                  Projected Rent Increase
+                </Typography>
+              </Stack>
+            }
+            id="rent_increment"
+            placeholder="Projected Rent Increase in USD. Eg, 10.00"
+            errorMsg={errors.rent_increment?.message}
+            inputProps={{
+              ...register("rent_increment", {
+                required:
+                  "Projected Rent Increase is required and must be in number format.",
+                pattern: {
+                  value: /^\d+(\.\d{1,2})?$/,
+                  message:
+                    "Projected Rent Increase must be a valid amount (e.g. 2750.00)",
                 },
               }),
             }}
