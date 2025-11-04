@@ -5,7 +5,7 @@ import { HelpOutline } from "@mui/icons-material";
 import { fireEvent, render, screen } from "@testing-library/react";
 
 describe("FaqDetails component tests", () => {
-  describe("it should render and pass all snapshot tests", () => {
+  test("it should render and pass all snapshot tests", () => {
     const { asFragment } = render(<FaqDetails />);
     expect(asFragment()).toMatchSnapshot();
   });

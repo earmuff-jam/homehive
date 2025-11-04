@@ -22,33 +22,37 @@ import {
   Tab,
   Tabs,
   Typography,
+  useMediaQuery,
+  useTheme,
 } from "@mui/material";
 import AButton from "common/AButton";
 import CustomSnackbar from "common/CustomSnackbar/CustomSnackbar";
 import RowHeader from "common/RowHeader/RowHeader";
 import TextFieldWithLabel from "common/TextFieldWithLabel";
+import { OwnerRole } from "common/utils";
 import relativeTime from "dayjs/plugin/relativeTime";
 import {
   useGetUserDataByIdQuery,
   useUpdateUserByUidMutation,
 } from "features/Api/firebaseUserApi";
-import { fetchLoggedInUser } from "features/Rent/utils/utils";
 import { TabPanel } from "features/Rent/components/Settings/common";
 import StripeConnect from "features/Rent/components/StripeConnect/StripeConnect";
 import Templates from "features/Rent/components/Templates/Templates";
+import { fetchLoggedInUser } from "features/Rent/utils/utils";
 import { useAppTitle } from "hooks/useAppTitle";
-import { OwnerRole } from "common/utils";
 
 dayjs.extend(relativeTime);
 
 export default function Settings() {
   useAppTitle("View Settings");
 
+  const theme = useTheme();
   const user = fetchLoggedInUser();
   const [searchParams] = useSearchParams();
 
-  const currentTab = Number(searchParams.get("tabIdx")) || 0;
   const isPropertyOwner = user?.role === OwnerRole;
+  const currentTab = Number(searchParams.get("tabIdx")) || 0;
+  const smallFormFactor = useMediaQuery(theme.breakpoints.down("sm"));
 
   const [
     updateUser,
@@ -454,7 +458,11 @@ export default function Settings() {
           {tabConfig.map(({ label, icon }, idx) => (
             <Tab
               key={label}
-              label={<Typography variant="subtitle2">{label}</Typography>}
+              label={
+                !smallFormFactor && (
+                  <Typography variant="subtitle2">{label}</Typography>
+                )
+              }
               icon={icon}
               iconPosition="start"
               data-tour={`settings-${idx + 1}`}

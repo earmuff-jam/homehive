@@ -20,7 +20,12 @@ export default function FaqDetails({ data }) {
         caption="Answers to common questions you may have."
       />
 
-      <Box sx={{ mx: "auto", maxWidth: "50%" }}>
+      <Box
+        sx={{
+          mx: "auto",
+          maxWidth: { sm: "none", md: "50%" },
+        }}
+      >
         {data?.map((item, index) => {
           return (
             <Accordion
@@ -35,7 +40,9 @@ export default function FaqDetails({ data }) {
               >
                 <Stack direction="row" spacing={1}>
                   <IconButton size="small">{item.icon}</IconButton>
-                  <Typography fontWeight="bold">{item.q}</Typography>
+                  <Typography fontWeight="bold" fontSize="0.875rem">
+                    {item.q}
+                  </Typography>
                 </Stack>
               </AccordionSummary>
               <AccordionDetails>
