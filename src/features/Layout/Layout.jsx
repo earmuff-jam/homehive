@@ -24,7 +24,11 @@ import {
   DefaultTourStepsMapperObj,
   GeneratedTourSteps,
 } from "common/Tour/TourSteps";
-import { HomeRouteUri, SettingsRouteUri, TenantRole } from "common/utils";
+import {
+  HomeRouteUri,
+  SettingsRouteUri,
+  TenantRole,
+} from "common/utils";
 import AppToolbar from "features/Layout/components/AppToolbar/AppToolbar";
 import BreadCrumbs from "features/Layout/components/AppToolbar/BreadCrumbs";
 import Footer from "features/Layout/components/Footer/Footer";
@@ -133,7 +137,7 @@ export default function Layout({
           }}
         >
           <Box sx={{ minHeight: "90vh" }}>
-            {/* no breadcrumbs on landing page */}
+            {/* no breadcrumbs on splash page */}
             {currentUri !== HomeRouteUri && (
               <BreadCrumbs currentRoute={currentRoute} />
             )}

@@ -3,12 +3,12 @@
 exports[`AddWidget Component AddWidget Component snapshot tests Footer matches snapshot 1`] = `
 <DocumentFragment>
   <div
-    class="MuiStack-root css-1aczxsw-MuiStack-root"
+    class="MuiStack-root css-10myewr-MuiStack-root"
   >
     <p
       class="MuiTypography-root MuiTypography-body1 css-rizt0-MuiTypography-root"
     >
-       Add Widget
+      Add Widget
     </p>
     <hr
       class="MuiDivider-root MuiDivider-fullWidth css-1jpc804-MuiDivider-root"

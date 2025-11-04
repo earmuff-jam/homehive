@@ -14,8 +14,8 @@ import { WidgetTypeList } from "features/Invoice/constants";
 
 export default function AddWidget({ handleAddWidget }) {
   return (
-    <Stack sx={{ minWidth: "12rem", padding: "1rem" }}>
-      <Typography> Add Widget</Typography>
+    <Stack sx={{ minWidth: "12rem", padding: "1rem 1rem 0rem 1rem" }}>
+      <Typography>Add Widget</Typography>
       <Divider />
       <MenuList dense>
         {WidgetTypeList.map((widgetType) => (

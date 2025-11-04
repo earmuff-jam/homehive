@@ -3,7 +3,7 @@ import React from "react";
 import {
   ApartmentRounded,
   CottageRounded,
-  HelpOutlineRounded,
+  QuestionAnswerRounded,
   SettingsRounded,
 } from "@mui/icons-material";
 import {
@@ -31,9 +31,7 @@ const Property = React.lazy(
 const Settings = React.lazy(
   () => import("features/Rent/components/Settings/Settings"),
 );
-const Faq = React.lazy(
-  () => import("features/Rent/components/Faq/Faq"),
-);
+const Faq = React.lazy(() => import("features/Rent/components/Faq/Faq"));
 
 /**
  * RentalAppRoutes ...
@@ -119,16 +117,16 @@ export const RentalAppRoutes = [
   },
   {
     id: 5,
-    label: "Help and Support",
+    label: "Help Center",
     path: FaqRoutePath,
     routeUri: RentAppFaqRouteUri,
     element: <Faq />,
-    icon: <HelpOutlineRounded fontSize="small" />,
+    icon: <QuestionAnswerRounded fontSize="small" />,
     requiredFlags: ["invoicer"],
     config: {
       breadcrumb: {
-        value: "Invoice App Frequently Asked Questions",
-        icon: <HelpOutlineRounded fontSize="small" />,
+        value: "Invoice App Help Center",
+        icon: <QuestionAnswerRounded fontSize="small" />,
       },
       displayInNavBar: true,
       displayHelpSelector: false,
