@@ -4,9 +4,9 @@ import {
   DashboardCustomizeRounded,
   DashboardRounded,
   EditRounded,
-  HelpOutlineRounded,
   Person2Rounded,
   PictureAsPdfRounded,
+  QuestionAnswerRounded,
   ReceiptRounded,
 } from "@mui/icons-material";
 import {
@@ -140,16 +140,16 @@ export const InvoiceAppRoutes = [
   },
   {
     id: 6,
-    label: "Help and Support",
+    label: "Help Center",
     path: FaqRoutePath,
     routeUri: InvoiceAppFaqRouteUri,
     element: <Faq />,
-    icon: <HelpOutlineRounded fontSize="small" />,
+    icon: <QuestionAnswerRounded fontSize="small" />,
     requiredFlags: ["invoicer"],
     config: {
       breadcrumb: {
-        value: "Invoice App Frequently Asked Questions",
-        icon: <HelpOutlineRounded fontSize="small" />,
+        value: "Invoice App Help Center",
+        icon: <QuestionAnswerRounded fontSize="small" />,
       },
       displayInNavBar: true,
       displayHelpSelector: false,

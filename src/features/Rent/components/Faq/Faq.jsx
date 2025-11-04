@@ -51,7 +51,7 @@ const faqItems = [
   {
     icon: <HelpRounded fontSize="small" />,
     q: "Is there a guide that I can follow?",
-    ans: 'Yes. Every page has its own help and support page. Click on "Options" and press "Help and Support" on any page.',
+    ans: 'Yes. Every page has its own help and support page. Click "Question Mark" on the top right corner of your screen. Available pages display "Help and Support". Click on it to view the guide.',
   },
 ];
 

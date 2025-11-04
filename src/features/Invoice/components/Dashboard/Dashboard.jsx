@@ -8,12 +8,16 @@ import {
   RestartAltRounded,
 } from "@mui/icons-material";
 import {
+  Alert,
   Box,
   Button,
   IconButton,
   Popover,
   Stack,
   Tooltip,
+  Typography,
+  useMediaQuery,
+  useTheme,
 } from "@mui/material";
 import CustomSnackbar from "common/CustomSnackbar/CustomSnackbar";
 import RowHeader from "common/RowHeader/RowHeader";
@@ -25,10 +29,14 @@ import { useAppTitle } from "hooks/useAppTitle";
 
 export default function Dashboard() {
   useAppTitle("Dashboard");
+
+  const theme = useTheme();
   const [widgets, setWidgets] = useState([]);
   const [anchorEl, setAnchorEl] = useState(null);
   const [editMode, setEditMode] = useState(false); // re-arrange widgets
   const [showSnackbar, setShowSnackbar] = useState(false);
+
+  const medFormFactor = useMediaQuery(theme.breakpoints.down("md"));
 
   const handleClose = () => setAnchorEl(null);
   const handleClick = (ev) => setAnchorEl(ev.currentTarget);
@@ -80,6 +88,13 @@ export default function Dashboard() {
 
   return (
     <Stack>
+      {medFormFactor && (
+        <Alert severity="warning">
+          <Typography variant="caption">
+            Dashboard is best viewed on a larger screen.
+          </Typography>
+        </Alert>
+      )}
       <Stack
         direction="row"
         justifyContent="space-between"
@@ -104,14 +119,16 @@ export default function Dashboard() {
               </IconButton>
             </Box>
           </Tooltip>
-          <RowHeader
-            sxProps={{ textAlign: "left", fontWeight: "bold" }}
-            title={editMode ? "Editing Layout" : "Standard layout"}
-            caption={`Displaying ${widgets.length} ${pluralize(
-              widgets?.length,
-              "widget",
-            )}`}
-          />
+          {!medFormFactor && (
+            <RowHeader
+              sxProps={{ textAlign: "left", fontWeight: "bold" }}
+              title={editMode ? "Editing Layout" : "Standard layout"}
+              caption={`Displaying ${widgets.length} ${pluralize(
+                widgets?.length,
+                "widget",
+              )}`}
+            />
+          )}
         </Stack>
         <Stack direction="row" spacing={2}>
           <Tooltip title="Add Widget">

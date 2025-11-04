@@ -16,6 +16,7 @@ export default [
       "__mocks__",
       "**/*.test.js",
       "*.setup.js",
+      "coverage",
     ],
   },
   {

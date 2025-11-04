@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[` 1`] = `
+exports[`FaqDetails component tests it should render and pass all snapshot tests 1`] = `
 <DocumentFragment>
   <div
     class="MuiStack-root css-6rg9iv-MuiStack-root"
@@ -23,7 +23,7 @@ exports[` 1`] = `
       />
     </div>
     <div
-      class="MuiBox-root css-eaag1a"
+      class="MuiBox-root css-1msdb6p"
     />
   </div>
 </DocumentFragment>

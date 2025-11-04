@@ -11,6 +11,8 @@ import {
   Toolbar,
   Tooltip,
   Typography,
+  useMediaQuery,
+  useTheme,
 } from "@mui/material";
 import AButton from "common/AButton";
 import CustomSnackbar from "common/CustomSnackbar/CustomSnackbar";
@@ -26,6 +28,7 @@ import {
   useLogoutMutation,
 } from "features/Api/firebaseUserApi";
 import { useLocalStorageData } from "features/Invoice/hooks/useGenerateUserData";
+import MobileIconDropdown from "features/Layout/components/AppToolbar/MobileIconDropdown";
 import MenuOptions from "features/Layout/components/NavBar/MenuOptions";
 import { retrieveTourKey } from "features/Layout/utils";
 import { isFeatureEnabled } from "features/Rent/utils/utils";
@@ -40,8 +43,11 @@ export default function AppToolbar({
   handleDrawerClose,
   setDialog,
 }) {
+  const theme = useTheme();
   const location = useLocation();
   const navigate = useNavigate();
+
+  const smallFormFactor = useMediaQuery(theme.breakpoints.down("sm"));
   const { sendEmail, reset, loading, error, success } = useSendEmail();
 
   const [
@@ -101,7 +107,7 @@ export default function AppToolbar({
       showWatermark: false,
     });
 
-    handleDrawerOpen();
+    !smallFormFactor && handleDrawerOpen();
   };
 
   const handlePrint = () => {
@@ -170,7 +176,6 @@ export default function AppToolbar({
           <IconButton onClick={handleDrawerOpen}>
             <MenuOutlined />
           </IconButton>
-          <img src="/logo-no-text.png" height="100%" width="50rem" />
           <Typography variant="h5">Homehive</Typography>
         </Stack>
         <Stack direction="row" spacing={1} alignItems="center">
@@ -183,6 +188,11 @@ export default function AppToolbar({
                 onClick={() => logout()}
               />
             </Tooltip>
+          ) : smallFormFactor ? (
+            <MobileIconDropdown
+              handleOwnerLogin={() => handleCreateUser(OwnerRole)}
+              handleTenantLogin={() => handleCreateUser(TenantRole)}
+            />
           ) : (
             <>
               <AButton
