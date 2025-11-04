@@ -1,13 +1,16 @@
 import React, { lazy } from "react";
 
 import {
+  ContactSupportRounded,
   CottageRounded,
   HomeRounded,
   HomeWorkRounded,
+  LiveHelpRounded,
   ReceiptRounded,
   WhatshotRounded,
 } from "@mui/icons-material";
 import {
+  FaqRouteUri,
   HomeRouteUri,
   MainInvoiceAppRouteUri,
   MainRentAppRouteUri,
@@ -18,6 +21,9 @@ import SplashPage from "features/Layout/SplashPage";
 import { RentalAppRoutes } from "features/Rent/Routes";
 import SubAppRouter from "src/SubRouter";
 
+const FaqSection = lazy(
+  () => import("features/Layout/components/HelpAndSupport/FaqSection"),
+);
 const ReleaseNotes = lazy(
   () => import("features/Layout/components/HelpAndSupport/ReleaseNotes"),
 );
@@ -64,7 +70,7 @@ export const MainAppRoutes = [
       },
       isLoggedInFeature: true,
       displayInNavBar: true,
-      displayHelpSelector: true,
+      displayHelpSelector: false,
       displayPrintSelector: false,
     },
   },
@@ -86,12 +92,29 @@ export const MainAppRoutes = [
         icon: <ReceiptRounded fontSize="small" />,
       },
       displayInNavBar: true,
-      displayHelpSelector: true,
-      displayPrintSelector: true,
+      displayHelpSelector: false,
+      displayPrintSelector: false,
     },
   },
   {
     id: 4,
+    label: "FAQ",
+    path: FaqRouteUri,
+    element: <FaqSection />,
+    icon: <LiveHelpRounded fontSize="small" />,
+    requiredFlags: ["invoicer"],
+    config: {
+      breadcrumb: {
+        value: "Frequently Asked Questions",
+        icon: <ContactSupportRounded fontSize="small" />,
+      },
+      displayInNavBar: false,
+      displayHelpSelector: false,
+      displayPrintSelector: false,
+    },
+  },
+  {
+    id: 5,
     label: "Release Notes",
     path: NotesRouteUri,
     element: <ReleaseNotes />,

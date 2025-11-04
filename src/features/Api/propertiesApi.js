@@ -1,5 +1,4 @@
 import { createApi, fakeBaseQuery } from "@reduxjs/toolkit/query/react";
-import { mapServiceApi } from "features/Api/mapServiceApi";
 import {
   collection,
   doc,
@@ -65,27 +64,11 @@ export const propertiesApi = createApi({
     }),
 
     // creates a new property in the system
-    // uses mapServiceApi to retrieve property location
-    // and persist in the db to display in map
     createProperty: builder.mutation({
-      async queryFn(property, { dispatch }) {
+      async queryFn(property) {
         try {
-          const addressDetails = [
-            property?.address,
-            property?.state,
-            property?.zipcode,
-          ]
-            .filter(Boolean)
-            .join(", ");
-
-          const result = await dispatch(
-            mapServiceApi.endpoints.getUserLatlon.initiate(addressDetails),
-          ).unwrap();
-
-          const propertyWithCoordinates = { ...property, location: result };
-
           const userRef = doc(db, "properties", property.id);
-          await setDoc(userRef, propertyWithCoordinates, { merge: true });
+          await setDoc(userRef, property, { merge: true });
           return { data: property };
         } catch (error) {
           return {
@@ -100,33 +83,12 @@ export const propertiesApi = createApi({
     }),
 
     // updates a selected property by data
-    // uses mapServiceApi to retrieve property location
-    // and persist in the db to display in map
     updatePropertyById: builder.mutation({
-      async queryFn(data, { dispatch }) {
+      async queryFn(data) {
         try {
-          const addressDetails = [data?.address, data?.state, data?.zipcode]
-            .filter(Boolean)
-            .join(", ");
-
-          const result = await dispatch(
-            mapServiceApi.endpoints.getUserLatlon.initiate(addressDetails),
-          ).unwrap();
-
-          const updatedPropertyWithCoordinates = {
-            ...data,
-            location: result,
-          };
-
-          const propertyRef = doc(
-            db,
-            "properties",
-            updatedPropertyWithCoordinates?.id,
-          );
-          await setDoc(propertyRef, updatedPropertyWithCoordinates, {
-            merge: true,
-          });
-          return { updatedPropertyWithCoordinates };
+          const propertyRef = doc(db, "properties", data?.id);
+          await setDoc(propertyRef, data, { merge: true });
+          return { data };
         } catch (error) {
           return {
             error: {

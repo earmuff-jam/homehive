@@ -161,22 +161,20 @@ export default function NavBar({
               }
 
               return (
-                config?.displayInNavBar && (
-                  <ListItemButton
-                    key={id}
-                    selected={pathname === path}
-                    onClick={() => handleMenuItemClick(path)}
+                <ListItemButton
+                  key={id}
+                  selected={pathname === path}
+                  onClick={() => handleMenuItemClick(path)}
+                >
+                  <ListItemIcon
+                    sx={{
+                      color: pathname === path && theme.palette.primary.main,
+                    }}
                   >
-                    <ListItemIcon
-                      sx={{
-                        color: pathname === path && theme.palette.primary.main,
-                      }}
-                    >
-                      {icon}
-                    </ListItemIcon>
-                    <ListItemText primary={label} />
-                  </ListItemButton>
-                )
+                    {icon}
+                  </ListItemIcon>
+                  <ListItemText primary={label} />
+                </ListItemButton>
               );
             },
           )}

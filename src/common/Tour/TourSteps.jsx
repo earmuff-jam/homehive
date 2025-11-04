@@ -3,14 +3,12 @@ import React from "react";
 import { Box, Typography } from "@mui/material";
 import {
   EditInvoiceRouteUri,
-  InvoiceAppFaqRouteUri,
+  FaqRouteUri,
   InvoiceDashboardRouteUri,
-  MainInvoiceAppRouteUri,
-  MainRentAppRouteUri,
+  NotesRouteUri,
   PropertiesRouteUri,
   PropertyRouteUri,
   RecieverInforamtionRouteUri,
-  RentAppFaqRouteUri,
   RentalRouteUri,
   SenderInforamtionRouteUri,
   SettingsRouteUri,
@@ -302,22 +300,8 @@ const derieveTourSteps = (staticSteps, prefix) => {
  * used to populate the faq and what's new section for the invoicer
  */
 const DisplaySubHelperSection = () => {
-  const handleClick = (to = "") => {
-    if (to) {
-      window.location.href = to;
-      return;
-    } else {
-      const existingLocation = window.location.href;
-      if (existingLocation.includes(MainRentAppRouteUri)) {
-        window.location.href = RentAppFaqRouteUri;
-        return;
-      } else if (existingLocation.includes(MainInvoiceAppRouteUri)) {
-        window.location.href = InvoiceAppFaqRouteUri;
-        return;
-      } else {
-        return;
-      }
-    }
+  const handleClick = (to) => {
+    window.location.href = to;
   };
 
   return (
@@ -325,7 +309,7 @@ const DisplaySubHelperSection = () => {
       &nbsp;View&nbsp;
       <Box
         component="span"
-        onClick={() => handleClick("/notes")}
+        onClick={() => handleClick(NotesRouteUri)}
         sx={{
           color: "primary.main",
           cursor: "pointer",
@@ -340,7 +324,7 @@ const DisplaySubHelperSection = () => {
       Visit&nbsp;
       <Box
         component="span"
-        onClick={() => handleClick()}
+        onClick={() => handleClick(FaqRouteUri)}
         sx={{
           color: "primary.main",
           cursor: "pointer",

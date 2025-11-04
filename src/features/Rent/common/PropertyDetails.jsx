@@ -12,7 +12,6 @@ import {
   Typography,
 } from "@mui/material";
 import RowHeader from "common/RowHeader/RowHeader";
-import PropertyMap from "features/Rent/components/PropertyMap/PropertyMap";
 
 export default function PropertyDetails({
   dataTour,
@@ -21,7 +20,6 @@ export default function PropertyDetails({
 }) {
   return (
     <Card sx={{ mb: 3 }} data-tour={dataTour}>
-      <PropertyMap location={property?.location} />
       <CardContent data-tour="rental-5">
         <RowHeader
           title="Property Details"

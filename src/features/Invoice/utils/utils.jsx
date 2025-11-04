@@ -4,7 +4,7 @@ function populateMap(items = [], columnName, uniqueMap) {
   items.forEach((item) => {
     const currentItemValue = item[columnName];
     if (!uniqueMap.has(currentItemValue)) {
-      columnName === 'category' ? uniqueMap.set(currentItemValue.label) : uniqueMap.set(currentItemValue);
+      uniqueMap.set(currentItemValue);
     }
   });
 }
@@ -19,7 +19,7 @@ function populateMap(items = [], columnName, uniqueMap) {
  */
 export function noramlizeDetailsTableData(draftInvoiceList = []) {
   const formatted = draftInvoiceList.map((invoice) => {
-    const items = invoice.lineItems || [];
+    const items = invoice.items || [];
 
     const total = items.reduce((acc, el) => {
       if (el?.payment) {
@@ -37,7 +37,7 @@ export function noramlizeDetailsTableData(draftInvoiceList = []) {
 
     return {
       category: Array.from(uniqueCategories.keys()).join(" / "),
-      invoiceStatus: invoice?.invoiceStatus || "",
+      invoice_status: invoice?.invoice_status || "",
       start_date: invoice?.start_date,
       end_date: invoice?.end_date,
       total,
@@ -62,9 +62,9 @@ export function normalizeInvoiceItemTypeChartDataset(draftInvoiceList = []) {
 
   const filteredDraftInvoiceList = draftInvoiceList.filter(Boolean); // remove unwanted values
   if (filteredDraftInvoiceList.length > 0) {
-    filteredDraftInvoiceList.forEach(({ lineItems = [] }) => {
-      lineItems.forEach((item) => {
-        const itemDescription = item?.category?.label || "Unknown Item";
+    filteredDraftInvoiceList.forEach(({ items = [] }) => {
+      items.forEach((item) => {
+        const itemDescription = item.category || "Unknown Item";
         itemCountMap[itemDescription] =
           (itemCountMap[itemDescription] || 0) + 1;
       });
@@ -110,7 +110,7 @@ export function normalizeInvoiceTrendsChartsDataset(
     const month = dayjs(invoice.start_date).format("MMMM");
     const taxRate = Number(invoice.tax_rate || 0);
 
-    const collectedTotal = invoice?.lineItems?.reduce((acc, item) => {
+    const collectedTotal = invoice?.items?.reduce((acc, item) => {
       return acc + Number(item?.payment || 0);
     }, 0);
 
@@ -191,7 +191,7 @@ export function normalizeInvoiceTimelineChartDataset(draftInvoiceList = []) {
     const data = monthLabels.map((_, idx) => (idx === index ? duration : null));
 
     return {
-      label: `Payment: $${invoice.lineItems?.[0]?.payment} via ${invoice.lineItems?.[0]?.payment_method}`,
+      label: `Payment: $${invoice.items?.[0]?.payment} via ${invoice.items?.[0]?.payment_method}`,
       data,
       backgroundColor: id % 2 === 0 ? "#4CAF50" : "rgba(255, 99, 132, 0.7)",
       borderWidth: 1,

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 import { ExpandLess, ExpandMore } from "@mui/icons-material";
 import {
@@ -18,16 +18,8 @@ const NavigationGroup = ({
   theme,
 }) => {
   const [open, setOpen] = useState(false);
-  const handleToggle = () => setOpen((prev) => !prev);
 
-  useEffect(() => {
-    // adding this to allow fade transition
-    // the nav bar can open slightly
-    const shouldOpen = childrenRoutes?.some(
-      (routes) => routes.routeUri === pathname,
-    );
-    setOpen(shouldOpen);
-  }, [childrenRoutes]);
+  const handleToggle = () => setOpen((prev) => !prev);
 
   return (
     <>

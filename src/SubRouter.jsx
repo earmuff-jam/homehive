@@ -4,8 +4,8 @@ import { Navigate, Route, Routes } from "react-router-dom";
 
 import { buildAppRoutes } from "common/ValidateClientPerms";
 
-const SubAppRouter = ({ routes, fallbackPath = "/" }) => {
-  const builtRoutes = buildAppRoutes(routes);
+const SubAppRouter = ({ routes, role = "", fallbackPath = "/" }) => {
+  const builtRoutes = buildAppRoutes(routes, role);
 
   return (
     <Routes>

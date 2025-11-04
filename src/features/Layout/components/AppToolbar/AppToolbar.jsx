@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 
-import { matchPath, useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import { MenuOutlined } from "@mui/icons-material";
 import {
@@ -21,14 +21,11 @@ import {
   TenantRole,
   isUserLoggedIn,
 } from "common/utils";
-import {
-  useAuthenticateMutation,
-  useLogoutMutation,
-} from "features/Api/firebaseUserApi";
+import { useAuthenticateMutation } from "features/Api/firebaseUserApi";
 import { useLocalStorageData } from "features/Invoice/hooks/useGenerateUserData";
 import MenuOptions from "features/Layout/components/NavBar/MenuOptions";
 import { retrieveTourKey } from "features/Layout/utils";
-import { isFeatureEnabled } from "features/Rent/utils/utils";
+import { isFeatureEnabled, logoutUser } from "features/Rent/utils/utils";
 import useSendEmail, { generateInvoiceHTML } from "hooks/useSendEmail";
 
 export default function AppToolbar({
@@ -40,7 +37,6 @@ export default function AppToolbar({
   handleDrawerClose,
   setDialog,
 }) {
-  const location = useLocation();
   const navigate = useNavigate();
   const { sendEmail, reset, loading, error, success } = useSendEmail();
 
@@ -54,9 +50,6 @@ export default function AppToolbar({
     },
   ] = useAuthenticateMutation();
 
-  const [logout, { isSuccess: isLogoutSuccess, isLoading: isLogoutLoading }] =
-    useLogoutMutation();
-
   const {
     data,
     recieverInfo,
@@ -66,15 +59,9 @@ export default function AppToolbar({
     isDisabled,
   } = useLocalStorageData();
 
-  const currentSubRoute = currentRoute?.element.props?.routes?.find((route) =>
-    matchPath(route.routeUri, location.pathname),
-  );
-  const showHelp =
-    currentRoute.config.displayHelpSelector &&
-    currentSubRoute?.config?.displayHelpSelector;
-  const showPrint =
-    currentRoute.config.displayPrintSelector &&
-    currentSubRoute?.config?.displayPrintSelector;
+  // hide for landing page
+  const showHelp = currentRoute.config.displayHelpSelector;
+  const showPrint = currentRoute.config.displayPrintSelector;
 
   const isSendEmailFeatureEnabled = isFeatureEnabled("sendEmail");
 
@@ -135,17 +122,16 @@ export default function AppToolbar({
     authenticate(role);
   };
 
+  const logout = async () => {
+    await logoutUser();
+    navigate(`/?refresh=${Date.now()}`); // force refresh
+  };
+
   useEffect(() => {
     if (!isAuthLoading && isAuthSuccess) {
       window.location.replace(HomeRouteUri);
     }
   }, [isAuthLoading]);
-
-  useEffect(() => {
-    if (isLogoutSuccess) {
-      navigate(`/?refresh=${Date.now()}`);
-    }
-  }, [isLogoutLoading]);
 
   if (isAuthError) {
     return (
@@ -180,7 +166,7 @@ export default function AppToolbar({
                 label="Logout"
                 variant="outlined"
                 size="small"
-                onClick={() => logout()}
+                onClick={logout}
               />
             </Tooltip>
           ) : (

@@ -4,43 +4,21 @@ import {
   DashboardCustomizeRounded,
   DashboardRounded,
   EditRounded,
-  HelpOutlineRounded,
   Person2Rounded,
   PictureAsPdfRounded,
   ReceiptRounded,
 } from "@mui/icons-material";
 import {
-  EditInvoiceRoutePath,
   EditInvoiceRouteUri,
-  FaqRoutePath,
-  InvoiceAppFaqRouteUri,
-  InvoiceDashboardRoutePath,
-  InvoiceDashboardRouteUri,
-  RecieverInforamtionRoutePath,
   RecieverInforamtionRouteUri,
-  SenderInforamtionRoutePath,
   SenderInforamtionRouteUri,
-  ViewInvoiceRoutePath,
   ViewInvoiceRouteUri,
 } from "common/utils";
-
-const Dashboard = React.lazy(
-  () => import("features/Invoice/components/Dashboard/Dashboard"),
-);
-const EditPdf = React.lazy(
-  () => import("features/Invoice/components/EditPdf/EditPdf"),
-);
-const PdfViewer = React.lazy(
-  () => import("features/Invoice/components/PdfViewer/PdfViewer"),
-);
-const RecieverInfo = React.lazy(
-  () => import("features/Invoice/components/RecieverInfo/RecieverInfo"),
-);
-const SenderInfo = React.lazy(
-  () => import("features/Invoice/components/SenderInfo/SenderInfo"),
-);
-
-const Faq = React.lazy(() => import("features/Invoice/components/Faq/Faq"));
+import Dashboard from "features/Invoice/components/Dashboard/Dashboard";
+import EditPdf from "features/Invoice/components/EditPdf/EditPdf";
+import PdfViewer from "features/Invoice/components/PdfViewer/PdfViewer";
+import RecieverInfo from "features/Invoice/components/RecieverInfo/RecieverInfo";
+import SenderInfo from "features/Invoice/components/SenderInfo/SenderInfo";
 
 /**
  * InvoiceAppRoutes ...
@@ -51,8 +29,8 @@ export const InvoiceAppRoutes = [
   {
     id: 1,
     label: "Dashboard",
-    path: InvoiceDashboardRoutePath,
-    routeUri: InvoiceDashboardRouteUri,
+    path: "",
+    routeUri: "/invoice/dashboard",
     element: <Dashboard />,
     icon: <DashboardCustomizeRounded fontSize="small" />,
     requiredFlags: ["invoicer", "invoicerPro"],
@@ -69,8 +47,8 @@ export const InvoiceAppRoutes = [
   {
     id: 2,
     label: "View Invoice",
-    path: ViewInvoiceRoutePath,
-    routeUri: ViewInvoiceRouteUri,
+    path: ViewInvoiceRouteUri,
+    routeUri: "/invoice/view",
     element: <PdfViewer />,
     icon: <PictureAsPdfRounded fontSize="small" />,
     requiredFlags: ["invoicer"],
@@ -87,8 +65,8 @@ export const InvoiceAppRoutes = [
   {
     id: 3,
     label: "Edit Invoice",
-    path: EditInvoiceRoutePath,
-    routeUri: EditInvoiceRouteUri,
+    path: EditInvoiceRouteUri,
+    routeUri: "/invoice/edit",
     element: <EditPdf />,
     icon: <EditRounded fontSize="small" />,
     requiredFlags: ["invoicer"],
@@ -105,8 +83,8 @@ export const InvoiceAppRoutes = [
   {
     id: 4,
     label: "Sender",
-    path: SenderInforamtionRoutePath,
-    routeUri: SenderInforamtionRouteUri,
+    path: SenderInforamtionRouteUri,
+    routeUri: "/invoice/sender",
     element: <SenderInfo />,
     icon: <Person2Rounded fontSize="small" />,
     requiredFlags: ["userInformation"],
@@ -123,8 +101,8 @@ export const InvoiceAppRoutes = [
   {
     id: 5,
     label: "Reciever",
-    path: RecieverInforamtionRoutePath,
-    routeUri: RecieverInforamtionRouteUri,
+    path: RecieverInforamtionRouteUri,
+    routeUri: "/invoice/reciever",
     element: <RecieverInfo />,
     icon: <Person2Rounded fontSize="small" />,
     requiredFlags: ["userInformation"],
@@ -135,24 +113,6 @@ export const InvoiceAppRoutes = [
       },
       displayInNavBar: true,
       displayHelpSelector: true,
-      displayPrintSelector: false,
-    },
-  },
-  {
-    id: 6,
-    label: "Help and Support",
-    path: FaqRoutePath,
-    routeUri: InvoiceAppFaqRouteUri,
-    element: <Faq />,
-    icon: <HelpOutlineRounded fontSize="small" />,
-    requiredFlags: ["invoicer"],
-    config: {
-      breadcrumb: {
-        value: "Invoice App Frequently Asked Questions",
-        icon: <HelpOutlineRounded fontSize="small" />,
-      },
-      displayInNavBar: true,
-      displayHelpSelector: false,
       displayPrintSelector: false,
     },
   },

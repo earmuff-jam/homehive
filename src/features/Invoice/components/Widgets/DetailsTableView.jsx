@@ -50,15 +50,11 @@ const DetailsTableView = ({ label, caption }) => {
       {
         accessorKey: "start_date",
         header: "Start Month",
-        Cell: ({ cell }) =>
-          cell.getValue() ? dayjs(cell.getValue()).format("MM-DD-YYYY") : "-",
         size: 150,
       },
       {
         accessorKey: "end_date",
         header: "End Month",
-        Cell: ({ cell }) =>
-          cell.getValue() ? dayjs(cell.getValue()).format("MM-DD-YYYY") : "-",
         size: 150,
       },
       {
@@ -68,7 +64,7 @@ const DetailsTableView = ({ label, caption }) => {
         Cell: ({ cell }) => `$${cell.getValue()}`,
       },
       {
-        accessorKey: "invoiceStatus",
+        accessorKey: "invoice_status",
         header: "Invoice Status",
         size: 100,
         Cell: ({ cell }) => (cell.getValue() ? cell.getValue() : "-"),

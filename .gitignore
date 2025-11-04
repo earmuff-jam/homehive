@@ -23,9 +23,6 @@ lib-cov
 coverage
 *.lcov
 
-# Coverage file used by vite plugin analyzer
-stats.html
-
 # nyc test coverage
 .nyc_output
 

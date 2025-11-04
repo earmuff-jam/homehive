@@ -2,10 +2,10 @@ import { retrieveTourKey } from "./utils";
 
 describe("retrieveTourKey tests", () => {
   describe("validate retrieveTourKey function behavior", () => {
-    it("returns dynamic mapping when currentUri matches /rent/property/:id pattern", () => {
-      const currentUri = "/rent/property/dc7cca7d-dd4e-448c-ac4b-d2e853b749d8";
+    it("returns dynamic mapping when currentUri matches /property/:id pattern", () => {
+      const currentUri = "/property/dc7cca7d-dd4e-448c-ac4b-d2e853b749d8";
       const result = retrieveTourKey(currentUri, "property");
-      expect(result).toBe("/rent/property/:id");
+      expect(result).toBe("/property/:id");
     });
 
     it("returns original uri when path starts with expectedStrValue but no id", () => {
@@ -21,14 +21,9 @@ describe("retrieveTourKey tests", () => {
     });
 
     it("returns dynamic mapping only if expectedStrValue is in correct segment", () => {
-      const currentUri = "/invoice/view";
+      const currentUri = "/user/property/123";
       const result = retrieveTourKey(currentUri, "property");
-      expect(result).toBe("/invoice/view");
-
-      const updatedCurrentUri = "/rent/property/dc7cca7d-dd4e-448c-ac4b-d2e853b749d8";
-      const updatedResult = retrieveTourKey(updatedCurrentUri, "property");
-      expect(updatedResult).toBe("/rent/property/:id");
-
+      expect(result).toBe("/user/property/123"); // not dynamic because segment[1] !== 'property'
     });
 
     it("handles unexpected empty currentUri gracefully", () => {

@@ -1,7 +1,7 @@
 import React from "react";
 
-import { GroupAddRounded, PlusOneRounded } from "@mui/icons-material";
-import { Badge, Box, Chip, Stack, Tooltip, Typography } from "@mui/material";
+import { GroupOutlined } from "@mui/icons-material";
+import { Badge, Box, Stack, Tooltip, Typography } from "@mui/material";
 
 export default function TenantBadge({ tenantsLength }) {
   return (
@@ -9,7 +9,7 @@ export default function TenantBadge({ tenantsLength }) {
       <Box>
         {tenantsLength !== 0 ? (
           <Tooltip title="Total number of currently active tenants">
-            <Badge badgeContent={tenantsLength} color="error">
+            <Badge badgeContent={tenantsLength} color="textSecondary">
               <Typography
                 variant="h6"
                 sx={{
@@ -18,17 +18,7 @@ export default function TenantBadge({ tenantsLength }) {
                   gap: 1,
                 }}
               >
-                {tenantsLength === 1 ? (
-                  <Chip
-                    size="small"
-                    avatar={<PlusOneRounded fontSize="small" />}
-                  />
-                ) : (
-                  <Chip
-                    size="small"
-                    avatar={<GroupAddRounded fontSize="small" />}
-                  />
-                )}
+                <GroupOutlined color="info" />
               </Typography>
             </Badge>
           </Tooltip>

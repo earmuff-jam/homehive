@@ -1,8 +1,7 @@
 import React from "react";
 
 import { InfoRounded } from "@mui/icons-material";
-import { Divider, Stack, Tooltip, Typography } from "@mui/material";
-import AButton from "common/AButton";
+import { Button, Divider, Stack, Tooltip, Typography } from "@mui/material";
 import TextFieldWithLabel from "common/TextFieldWithLabel";
 
 export default function AddProperty({
@@ -210,12 +209,9 @@ export default function AddProperty({
           />
         </Stack>
 
-        <AButton
-          variant="contained"
-          disabled={isDisabled}
-          type="submit"
-          label={isEditing ? "Edit Property" : "Add Property"}
-        />
+        <Button variant="contained" disabled={isDisabled} type="submit">
+          {isEditing ? "Edit Property" : "Add Property"}
+        </Button>
       </Stack>
     </form>
   );
