@@ -185,7 +185,7 @@ export default function Settings() {
                   />
 
                   {/* First and Last Name */}
-                  <Stack direction="row" spacing={2}>
+                  <Stack direction={{ xs: "column", md: "row" }} spacing={1}>
                     <Controller
                       name="first_name"
                       control={control}
@@ -243,7 +243,7 @@ export default function Settings() {
                   </Stack>
 
                   {/* Email and Phone Number */}
-                  <Stack direction="row" spacing={2}>
+                  <Stack direction={{ xs: "column", md: "row" }} spacing={1}>
                     <TextFieldWithLabel
                       label="Email address *"
                       id="email"
@@ -309,7 +309,7 @@ export default function Settings() {
                   />
 
                   {/* City, State, Zip Code */}
-                  <Stack direction="row" spacing={2}>
+                  <Stack direction={{ xs: "column", md: "row" }} spacing={1}>
                     <Controller
                       name="city"
                       control={control}
@@ -472,7 +472,7 @@ export default function Settings() {
       </Card>
 
       {tabConfig.map((tab, idx) => (
-        <Box key={idx}>{tab.content}</Box>
+        <React.Fragment key={idx}>{tab.content}</React.Fragment>
       ))}
 
       <CustomSnackbar

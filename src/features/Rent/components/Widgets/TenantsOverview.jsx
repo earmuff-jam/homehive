@@ -1,17 +1,21 @@
 import React from "react";
 
+import { PersonAddRounded } from "@mui/icons-material";
 import {
+  Badge,
   Box,
   Card,
   CardContent,
   Skeleton,
   Stack,
   Tooltip,
+  useMediaQuery,
+  useTheme,
 } from "@mui/material";
 import AButton from "common/AButton";
+import AIconButton from "common/AIconButton";
 import EmptyComponent from "common/EmptyComponent";
 import RowHeader from "common/RowHeader/RowHeader";
-import TenantBadge from "features/Rent/components/Widgets/TenantBadge";
 import Tenants from "features/Rent/components/Widgets/Tenants";
 
 export default function TenantsOverview({
@@ -21,6 +25,8 @@ export default function TenantsOverview({
   toggleAssociateTenantsPopup,
   dataTour,
 }) {
+  const theme = useTheme();
+  const medFormFactor = useMediaQuery(theme.breakpoints.down("md"));
   return (
     <Card sx={{ mb: 3 }} data-tour={dataTour}>
       <CardContent>
@@ -33,22 +39,32 @@ export default function TenantsOverview({
             title="Tenants"
             caption={`Active tenants for ${property?.name}`}
             sxProps={{
-              alignItems: "flex-start",
+              textAlign: "left",
               color: "text.secondary",
             }}
           />
           <Stack direction="row" spacing={1} alignItems="center">
             <Tooltip title="Associate tenants">
-              <Box>
-                <AButton
-                  size="small"
-                  variant="outlined"
-                  onClick={() => toggleAssociateTenantsPopup()}
-                  label="Associate tenants"
-                />
-              </Box>
+              <Badge badgeContent={tenants.length} color="error">
+                <Box>
+                  {medFormFactor ? (
+                    <AIconButton
+                      size="small"
+                      variant="outlined"
+                      label={<PersonAddRounded fontSize="small" />}
+                      onClick={() => toggleAssociateTenantsPopup()}
+                    />
+                  ) : (
+                    <AButton
+                      size="small"
+                      variant="outlined"
+                      onClick={() => toggleAssociateTenantsPopup()}
+                      label="Associate tenants"
+                    />
+                  )}
+                </Box>
+              </Badge>
             </Tooltip>
-            <TenantBadge tenantsLength={tenants.length} />
           </Stack>
         </Stack>
         {isTenantsLoading ? (

@@ -1,55 +1,82 @@
 import { createTheme } from "@mui/material";
 
 const commonTypography = {
-  fontFamily: "Nunito",
+  fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, sans-serif",
+  htmlFontSize: 16,
   h1: {
     fontWeight: 700,
-    fontSize: "2.5rem",
+    fontSize: "2.5rem", // 40px
     lineHeight: 1.2,
+    letterSpacing: "-0.015em",
   },
   h2: {
     fontWeight: 600,
-    fontSize: "2rem",
+    fontSize: "2rem", // 32px
     lineHeight: 1.3,
+    letterSpacing: "-0.01em",
   },
   h3: {
     fontWeight: 600,
-    fontSize: "1.75rem",
-    lineHeight: 1.4,
+    fontSize: "1.75rem", // 28px
+    lineHeight: 1.35,
+    letterSpacing: "-0.005em",
   },
   h4: {
     fontWeight: 600,
-    fontSize: "1.5rem",
-    lineHeight: 1.5,
+    fontSize: "1.5rem", // 24px
+    lineHeight: 1.4,
   },
   h5: {
     fontWeight: 600,
-    fontSize: "1.25rem",
-    lineHeight: 1.6,
+    fontSize: "1.25rem", // 20px
+    lineHeight: 1.5,
   },
   h6: {
     fontWeight: 600,
+    fontSize: "1rem", // 16px
+    lineHeight: 1.6,
+    textTransform: "none",
+  },
+  subtitle1: {
+    fontWeight: 500,
     fontSize: "1rem",
-    lineHeight: 2.0,
+    lineHeight: 1.5,
+    color: "inherit",
+  },
+  subtitle2: {
+    fontWeight: 500,
+    fontSize: "0.875rem",
+    lineHeight: 1.5,
+    color: "inherit",
   },
   body1: {
-    fontSize: "1rem",
-    lineHeight: 1.6,
+    fontSize: "1rem", // 16px
+    lineHeight: 1.65,
+    fontWeight: 400,
   },
   body2: {
-    fontSize: "0.875rem",
+    fontSize: "0.875rem", // 14px
     lineHeight: 1.6,
+    fontWeight: 400,
   },
   button: {
     fontWeight: 500,
-  },
-  subtitle1: {
-    fontSize: "1rem",
-    fontWeight: 500,
-  },
-  subtitle2: {
     fontSize: "0.875rem",
-    fontWeight: 500,
+    lineHeight: 1.5,
+    letterSpacing: "0.02em",
+    textTransform: "none",
+  },
+  caption: {
+    fontSize: "0.75rem", // 12px
+    lineHeight: 1.4,
+    fontWeight: 400,
+    color: "inherit",
+  },
+  overline: {
+    fontSize: "0.75rem",
+    fontWeight: 600,
+    letterSpacing: "0.05em",
+    textTransform: "uppercase",
   },
 };
 

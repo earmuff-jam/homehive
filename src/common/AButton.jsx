@@ -1,4 +1,4 @@
-import React from "react";
+import React, { forwardRef } from "react";
 
 import { Button } from "@mui/material";
 import { useButtonAnalytics } from "hooks/useButtonAnalytics";
@@ -17,20 +17,26 @@ const analyticsEnabled = import.meta.env.VITE_ENABLE_ANALYTICS || "false";
  * @param {object} rest - the props passed in as a ...rest component
  *
  */
-export default function AButton({ label, onClick, loading = false, ...rest }) {
+
+const AButton = forwardRef(function AButton(
+  { label, onClick = () => {}, loading = false, ...rest },
+  ref,
+) {
   const buttonAnalytics = useButtonAnalytics();
 
   const handleClick = (ev) => {
     // log data only if analytics is enabled
     analyticsEnabled?.toLowerCase() === "true" && buttonAnalytics?.(label);
     if (typeof onClick === "function") {
-      onClick(ev);
+      onClick?.(ev);
     }
   };
 
   return (
-    <Button {...rest} onClick={handleClick} loading={loading}>
+    <Button ref={ref} {...rest} onClick={handleClick} loading={loading}>
       {label}
     </Button>
   );
-}
+});
+
+export default AButton;

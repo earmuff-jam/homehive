@@ -1,36 +1,52 @@
 import React, { useState } from "react";
 
-import { Grid } from "@mui/material";
+import { Card, Stack } from "@mui/material";
 import Template from "features/Rent/components/Templates/Template";
+import TemplateSelectors from "features/Rent/components/Templates/TemplateSelectors";
 import { DefaultTemplateData } from "features/Rent/components/Templates/constants";
 import { produce } from "immer";
 
 export default function Templates() {
-  const [templates, setTemplates] = useState(DefaultTemplateData);
+  const [selectedTemplate, setSelectedTemplate] = useState("invoice");
 
-  const handleTemplateChange = (template, field) => (event) => {
-    const value = event.target.value;
-    setTemplates((prev) =>
-      produce(prev, (draft) => {
-        draft[template][field] = value;
-      }),
-    );
+  const updateSelectedTemplate = (val) => setSelectedTemplate(val);
+
+  const handleSave = (data) => {
+    const existingTemplates =
+      JSON.parse(localStorage.getItem("templates")) || {};
+
+    const updatedTemplates = produce(existingTemplates, (draft) => {
+      draft[data.title] = data;
+    });
+    localStorage.setItem("templates", JSON.stringify(updatedTemplates));
   };
 
-  const handleSave = () =>
-    localStorage.setItem("templates", JSON.stringify(templates));
-
   return (
-    <Grid container spacing={3}>
-      {Object.entries(templates).map(([key, template]) => (
-        <Template
-          key={key}
-          id={key}
-          template={template}
-          handleSave={handleSave}
-          handleTemplateChange={handleTemplateChange}
+    <Stack alignItems="center" spacing={1}>
+      <Stack direction="row" spacing={2}>
+        <TemplateSelectors
+          selectedTemplate={selectedTemplate}
+          DefaultTemplateData={DefaultTemplateData}
+          updateSelectedTemplate={updateSelectedTemplate}
         />
-      ))}
-    </Grid>
+      </Stack>
+      <Stack width="100%">
+        <Card
+          elevation={0}
+          sx={{
+            flex: 1,
+            display: "flex",
+            flexDirection: "column",
+            gap: "1rem",
+            p: 2,
+          }}
+        >
+          <Template
+            handleSave={handleSave}
+            template={DefaultTemplateData[selectedTemplate]}
+          />
+        </Card>
+      </Stack>
+    </Stack>
   );
 }

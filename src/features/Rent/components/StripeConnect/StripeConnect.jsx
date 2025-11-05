@@ -176,10 +176,10 @@ export default function StripeConnect() {
     return <Skeleton height="10rem" />;
 
   return (
-    <Grid container spacing={3}>
+    <Grid container spacing={1}>
       {/* Connection Status Card */}
       <Grid item xs={12}>
-        <Card elevation={0} sx={{ p: 3, mb: 2 }}>
+        <Card elevation={0} sx={{ p: 1, mb: 2 }}>
           <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
             <RowHeader
               title="Account Connection"
