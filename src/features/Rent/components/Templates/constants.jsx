@@ -15,7 +15,7 @@ import {
 export const DefaultTemplateData = {
   invoice: {
     label: "Invoice Template",
-    title: 'invoice',
+    title: "invoice",
     icon: <ReceiptRounded fontSize="small" />,
     caption: "Customize professional rent invoices",
     subject: "Monthly Rent Invoice - {{propertyAddress}}",
@@ -60,7 +60,7 @@ export const DefaultTemplateData = {
   },
   reminder: {
     label: "Rent Late Payment Reminder Template",
-    title: 'reminder',
+    title: "reminder",
     icon: <AssignmentLateRounded fontSize="small" />,
     caption: "Customize friendly reminders for overdue rent payments",
     subject: "Rent Late Payment Reminder - {{propertyAddress}}",
@@ -155,7 +155,7 @@ export const DefaultTemplateData = {
   },
   noticeOfLeaseRenewal: {
     label: "Notice of Lease Renewal Template",
-    title: 'noticeOfLeaseRenewal',
+    title: "noticeOfLeaseRenewal",
     icon: <LoopRounded fontSize="small" />,
     caption: "Customize automatic lease renewal and expiration notices",
     subject: "Notice of Lease Expiration and Renewal - {{propertyAddress}}",
@@ -208,7 +208,7 @@ options.
   <p>
     <strong>• SEMI ANNUAL LEASE RENEWAL:</strong><br />
     If you choose to switch to a semi-annual lease, please be advised that the monthly rent will increase by 
-    {{rentIncrement}}. This option provides flexibility but comes with a higher monthly cost.
+    {{ rentIncrement }} US Dollars only. This option provides flexibility but comes with a higher monthly cost.
   </p>
 
   <p style="font-weight: bold;">
