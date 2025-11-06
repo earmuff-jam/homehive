@@ -213,7 +213,7 @@ export default function AddProperty({
           <TextFieldWithLabel
             label={
               <Stack direction="row" alignItems="center">
-                <Tooltip title="Estimated rent increment for next lease term">
+                <Tooltip title="Estimated rent increment for next lease term. Prefilling this allows you to generate automatic templates to send to your tenant">
                   <InfoRounded
                     color="secondary"
                     fontSize="small"
