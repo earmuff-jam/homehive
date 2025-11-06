@@ -25,7 +25,7 @@ export default function BreadCrumbs({ currentRoute }) {
         role="link"
         tabIndex={0}
       >
-        <Stack direction="row" spacing={1}>
+        <Stack direction="row" spacing={1} alignItems="center">
           <HomeRounded fontSize="small" />
           <Typography variant="caption">Home</Typography>
         </Stack>
@@ -40,6 +40,7 @@ export default function BreadCrumbs({ currentRoute }) {
             key={to}
             direction="row"
             spacing={1}
+            alignItems="center"
             sx={{ color: "text.primary" }}
           >
             {currentRoute?.config?.breadcrumb?.icon}

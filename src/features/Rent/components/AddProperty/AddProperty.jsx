@@ -95,6 +95,10 @@ export default function AddProperty({
             inputProps={{
               ...register("units", {
                 required: "Number of bedrooms is required.",
+                pattern: {
+                  value: /^\d+(\.\d)?$/, // allows optional one decimal digit
+                  message: "Enter a valid number like 1, 1.5, or 2",
+                },
               }),
             }}
           />
@@ -213,7 +217,7 @@ export default function AddProperty({
           <TextFieldWithLabel
             label={
               <Stack direction="row" alignItems="center">
-                <Tooltip title="Estimated rent increment for next lease term">
+                <Tooltip title="Estimated rent increment for next lease term. Prefilling this allows you to generate automatic templates to send to your tenant. You can edit this value later on.">
                   <InfoRounded
                     color="secondary"
                     fontSize="small"
@@ -221,7 +225,7 @@ export default function AddProperty({
                   />
                 </Tooltip>
                 <Typography variant="subtitle2">
-                  Projected Rent Increase
+                  Projected Rent Increase *
                 </Typography>
               </Stack>
             }
