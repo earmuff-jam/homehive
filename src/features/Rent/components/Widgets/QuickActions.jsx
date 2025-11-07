@@ -90,6 +90,7 @@ export default function QuickActions({ property }) {
         additional_rent: property?.additional_rent || "",
         note: property?.note || "",
         sqFt: property?.sqFt || "",
+        rent_increment: property?.rent_increment || "",
       });
     }
   }, [property, reset]);

@@ -130,7 +130,7 @@ const Property = () => {
         fullWidth
         aria-describedby="alert-dialog-slide-description"
       >
-        <DialogTitle>Associate Tenants </DialogTitle>
+        <DialogTitle>Associate Tenants</DialogTitle>
         <DialogContent>
           <AssociateTenantPopup
             closeDialog={toggleAssociateTenantsPopup}

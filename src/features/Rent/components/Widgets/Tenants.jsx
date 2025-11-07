@@ -55,6 +55,7 @@ export default function Tenants({ tenants = [], property }) {
     });
 
     await updateProperty({
+      ...property,
       id: property?.id,
       rentees: filteredRentees,
       updatedBy: user?.uid,
