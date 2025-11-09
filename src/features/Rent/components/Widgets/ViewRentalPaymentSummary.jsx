@@ -8,7 +8,7 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import {
   formatCurrency,
   sumCentsToDollars,
-} from "features/Rent/utils/utils";
+} from "features/Rent/utils";
 import {
   MaterialReactTable,
   useMaterialReactTable,

@@ -6,7 +6,7 @@ import { Stack } from "@mui/material";
 import EmptyComponent from "common/EmptyComponent";
 import RowHeader from "common/RowHeader/RowHeader";
 import relativeTime from "dayjs/plugin/relativeTime";
-import { noramlizeDetailsTableData } from "features/Invoice/utils/utils";
+import { noramlizeDetailsTableData } from "features/Invoice/utils";
 import {
   MaterialReactTable,
   useMaterialReactTable,

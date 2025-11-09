@@ -42,7 +42,7 @@ import {
   useCreateStripeAccount,
   useCreateStripeAccountLink,
 } from "features/Rent/hooks/useStripe";
-import { fetchLoggedInUser } from "features/Rent/utils/utils";
+import { fetchLoggedInUser } from "features/Rent/utils";
 
 export default function StripeConnect() {
   const user = fetchLoggedInUser();

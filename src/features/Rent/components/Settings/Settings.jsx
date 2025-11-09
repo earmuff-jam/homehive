@@ -38,7 +38,7 @@ import {
 import { TabPanel } from "features/Rent/components/Settings/common";
 import StripeConnect from "features/Rent/components/StripeConnect/StripeConnect";
 import Templates from "features/Rent/components/Templates/Templates";
-import { fetchLoggedInUser } from "features/Rent/utils/utils";
+import { fetchLoggedInUser } from "features/Rent/utils";
 import { useAppTitle } from "hooks/useAppTitle";
 
 dayjs.extend(relativeTime);

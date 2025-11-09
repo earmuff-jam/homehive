@@ -23,7 +23,7 @@ import {
 import CustomSnackbar from "common/CustomSnackbar/CustomSnackbar";
 import { useUpdatePropertyByIdMutation } from "features/Api/propertiesApi";
 import { useUpdateTenantByIdMutation } from "features/Api/tenantsApi";
-import { fetchLoggedInUser, formatCurrency } from "features/Rent/utils/utils";
+import { fetchLoggedInUser, formatCurrency } from "features/Rent/utils";
 
 export default function Tenants({ tenants = [], property }) {
   const user = fetchLoggedInUser();

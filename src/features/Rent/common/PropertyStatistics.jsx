@@ -5,7 +5,7 @@ import {
   derieveTotalRent,
   formatCurrency,
   getOccupancyRate,
-} from "features/Rent/utils/utils";
+} from "features/Rent/utils";
 
 export default function PropertyStatistics({
   isPropertyLoading,
