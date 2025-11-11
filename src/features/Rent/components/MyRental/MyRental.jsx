@@ -26,7 +26,7 @@ import PropertyStatistics from "features/Rent/common/PropertyStatistics";
 import DocumentsOverview from "features/Rent/components/Widgets/DocumentsOverview";
 import FinancialOverview from "features/Rent/components/Widgets/FinancialOverview";
 import RentalPaymentOverview from "features/Rent/components/Widgets/RentalPaymentOverview";
-import { fetchLoggedInUser } from "features/Rent/utils/utils";
+import { fetchLoggedInUser } from "features/Rent/utils";
 import { useAppTitle } from "hooks/useAppTitle";
 
 const MyRental = () => {

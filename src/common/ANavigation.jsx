@@ -5,8 +5,8 @@ import { useLocation } from "react-router-dom";
 
 import dayjs from "dayjs";
 
+import { useGetCurrentIPAddressQuery } from "features/Api/analyticsApi";
 import { addDoc, collection } from "firebase/firestore";
-import { useFetchUserIp } from "hooks/useFetchIp";
 import { analyticsFirestore } from "src/config";
 
 /**
@@ -21,12 +21,14 @@ const NavigationContext = createContext();
 const analyticsEnabled = import.meta.env.VITE_ENABLE_ANALYTICS || "false";
 
 export const NavigationProvider = ({ children }) => {
-  useFetchUserIp();
   const { pathname } = useLocation();
+  const userIPAddress = localStorage?.getItem("ip");
+
+  useGetCurrentIPAddressQuery(undefined, {
+    skip: !!userIPAddress,
+  });
 
   useEffect(() => {
-    const ipAddress = localStorage.getItem("ip");
-
     // log data only if analytics is enabled
     if (analyticsEnabled?.toLowerCase() === "true") {
       const logUserAnalyticsToFirestore = async () => {
@@ -34,7 +36,7 @@ export const NavigationProvider = ({ children }) => {
           if (pathname) {
             const analytics = collection(analyticsFirestore, "analytics");
             await addDoc(analytics, {
-              ipAddress: ipAddress || "",
+              ipAddress: userIPAddress,
               url: pathname,
               currentTime: dayjs().toISOString(),
             });

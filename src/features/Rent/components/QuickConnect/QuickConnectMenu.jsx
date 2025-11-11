@@ -17,7 +17,7 @@ import {
   PaymentReminderEnumValue,
   RenewLeaseNoticeEnumValue,
   SendDefaultInvoiceEnumValue,
-} from "features/Rent/utils/utils";
+} from "features/Rent/utils";
 
 export default function QuickConnectMenu({
   anchorEl,

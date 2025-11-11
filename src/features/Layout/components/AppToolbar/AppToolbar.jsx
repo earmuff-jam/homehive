@@ -31,7 +31,7 @@ import { useLocalStorageData } from "features/Invoice/hooks/useGenerateUserData"
 import MobileIconDropdown from "features/Layout/components/AppToolbar/MobileIconDropdown";
 import MenuOptions from "features/Layout/components/NavBar/MenuOptions";
 import { retrieveTourKey } from "features/Layout/utils";
-import { isFeatureEnabled } from "features/Rent/utils/utils";
+import { isFeatureEnabled } from "features/Rent/utils";
 import useSendEmail, { generateInvoiceHTML } from "hooks/useSendEmail";
 
 export default function AppToolbar({

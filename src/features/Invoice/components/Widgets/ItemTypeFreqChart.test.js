@@ -3,7 +3,7 @@ import React from "react";
 import ItemTypeFreqChart from "./ItemTypeFreqChart";
 import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/react";
-import * as utils from "features/Invoice/utils/utils";
+import * as utils from "features/Invoice/utils";
 
 // Mock chart.js Bar component
 jest.mock("react-chartjs-2", () => ({

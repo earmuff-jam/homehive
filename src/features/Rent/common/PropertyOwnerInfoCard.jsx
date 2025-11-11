@@ -35,7 +35,7 @@ import { useGetTenantByIdQuery } from "features/Api/tenantsApi";
 import { getStripeFailureReasons } from "features/Rent/components/Settings/common";
 import { useCheckStripeAccountStatus } from "features/Rent/hooks/useCheckStripeAccountStatus";
 import { useGenerateStripeCheckoutSession } from "features/Rent/hooks/useGenerateStripeCheckoutSession";
-import { fetchLoggedInUser, formatCurrency } from "features/Rent/utils/utils";
+import { fetchLoggedInUser, formatCurrency } from "features/Rent/utils";
 
 export default function PropertyOwnerInfoCard({
   isViewingRental = false,

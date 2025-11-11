@@ -31,7 +31,7 @@ import TenantEmailAutocomplete from "features/Rent/components/AssociateTenantPop
 import {
   fetchLoggedInUser,
   isAssociatedPropertySoR,
-} from "features/Rent/utils/utils";
+} from "features/Rent/utils";
 
 export default function AssociateTenantPopup({
   closeDialog,

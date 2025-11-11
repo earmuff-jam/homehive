@@ -18,7 +18,7 @@ jest.mock("common/EmptyComponent", () => ({
   default: () => <div data-testid="empty">Empty</div>,
 }));
 
-jest.mock("features/Invoice/utils/utils", () => ({
+jest.mock("features/Invoice/utils", () => ({
   noramlizeDetailsTableData: jest.fn((data) => data),
 }));
 
