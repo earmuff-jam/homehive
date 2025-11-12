@@ -13,15 +13,13 @@ import { analyticsFirestore } from "src/config";
  */
 export const useButtonAnalytics = () => {
   const { pathname } = useLocation();
-
   const ipAddress = localStorage.getItem("ip");
 
   const logClick = async (label) => {
     if (!label) return;
-
     try {
-      const booksCollection = collection(analyticsFirestore, "analytics");
-      await addDoc(booksCollection, {
+      const analyticsCollection = collection(analyticsFirestore, "analytics");
+      await addDoc(analyticsCollection, {
         ipAddress: ipAddress?.ipAddress || "",
         label,
         pathname,

@@ -86,6 +86,7 @@ export default function AssociateTenantPopup({
     try {
       await createTenant(draftData).unwrap();
       await updateProperty({
+        ...property,
         id: property?.id,
         rentees: [...(property?.rentees || []), draftData?.email],
         updatedBy: user?.uid,

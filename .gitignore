@@ -136,6 +136,9 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
+# dino
+deno.lock
+
 # Local Netlify folder
 .netlify
 
