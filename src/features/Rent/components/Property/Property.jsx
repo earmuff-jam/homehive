@@ -16,17 +16,17 @@ import AButton from "common/AButton";
 import { useGetPropertiesByPropertyIdQuery } from "features/Api/propertiesApi";
 import { useGetRentsByPropertyIdQuery } from "features/Api/rentApi";
 import { useGetTenantByPropertyIdQuery } from "features/Api/tenantsApi";
-import AssociateTenantPopup from "features/Rent/common/AssociateTenantPopup";
 import PropertyDetails from "features/Rent/common/PropertyDetails";
 import PropertyHeader from "features/Rent/common/PropertyHeader";
 import PropertyOwnerInfoCard from "features/Rent/common/PropertyOwnerInfoCard";
 import PropertyStatistics from "features/Rent/common/PropertyStatistics";
+import AssociateTenantPopup from "features/Rent/components/AssociateTenantPopup/AssociateTenantPopup";
 import DocumentsOverview from "features/Rent/components/Widgets/DocumentsOverview";
 import FinancialOverview from "features/Rent/components/Widgets/FinancialOverview";
 import QuickActions from "features/Rent/components/Widgets/QuickActions";
 import RentalPaymentOverview from "features/Rent/components/Widgets/RentalPaymentOverview";
 import TenantsOverview from "features/Rent/components/Widgets/TenantsOverview";
-import { fetchLoggedInUser } from "features/Rent/utils/utils";
+import { fetchLoggedInUser } from "features/Rent/utils";
 import { useAppTitle } from "hooks/useAppTitle";
 
 const Property = () => {
@@ -130,7 +130,7 @@ const Property = () => {
         fullWidth
         aria-describedby="alert-dialog-slide-description"
       >
-        <DialogTitle>Associate Tenants </DialogTitle>
+        <DialogTitle>Associate Tenants</DialogTitle>
         <DialogContent>
           <AssociateTenantPopup
             closeDialog={toggleAssociateTenantsPopup}

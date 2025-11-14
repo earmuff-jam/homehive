@@ -34,7 +34,7 @@ import BreadCrumbs from "features/Layout/components/AppToolbar/BreadCrumbs";
 import Footer from "features/Layout/components/Footer/Footer";
 import NavBar from "features/Layout/components/NavBar/NavBar";
 import { retrieveTourKey } from "features/Layout/utils";
-import { fetchLoggedInUser } from "features/Rent/utils/utils";
+import { fetchLoggedInUser } from "features/Rent/utils";
 
 const defaultDialog = {
   title: "",

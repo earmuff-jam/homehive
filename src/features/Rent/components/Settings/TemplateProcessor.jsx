@@ -9,7 +9,7 @@ import {
   fetchLoggedInUser,
   isFeatureEnabled,
   stripHTMLForEmailMessages,
-} from "features/Rent/utils/utils";
+} from "features/Rent/utils";
 
 export const handleQuickConnectAction = (
   action,

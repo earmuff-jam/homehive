@@ -3,7 +3,7 @@ import React from "react";
 import InvoiceTrends from "./InvoiceTrends";
 import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/react";
-import * as utils from "features/Invoice/utils/utils";
+import * as utils from "features/Invoice/utils";
 
 // Mock chart.js components
 jest.mock("react-chartjs-2", () => ({

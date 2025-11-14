@@ -34,7 +34,7 @@ import {
   getNextMonthlyDueDate,
   getRentDetails,
   updateDateTime,
-} from "features/Rent/utils/utils";
+} from "features/Rent/utils";
 import useSendEmail from "hooks/useSendEmail";
 
 const ViewPropertyAccordionDetails = ({

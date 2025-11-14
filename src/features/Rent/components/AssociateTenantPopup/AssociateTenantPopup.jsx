@@ -8,34 +8,30 @@ import dayjs from "dayjs";
 
 import { InfoRounded, UpdateRounded } from "@mui/icons-material";
 import {
+  Box,
   Button,
   Checkbox,
   Divider,
   FormControl,
   FormControlLabel,
-  ListItem,
   MenuItem,
   Select,
   Stack,
-  TextField,
   Tooltip,
   Typography,
 } from "@mui/material";
-import Autocomplete from "@mui/material/Autocomplete";
 import { LocalizationProvider, MobileDatePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import CustomSnackbar from "common/CustomSnackbar/CustomSnackbar";
 import TextFieldWithLabel from "common/TextFieldWithLabel";
 import { useUpdatePropertyByIdMutation } from "features/Api/propertiesApi";
-import {
-  useCreateTenantMutation,
-  useLazyGetTenantListQuery,
-} from "features/Api/tenantsApi";
+import { useCreateTenantMutation } from "features/Api/tenantsApi";
 import { LEASE_TERM_MENU_OPTIONS } from "features/Rent/common/constants";
+import TenantEmailAutocomplete from "features/Rent/components/AssociateTenantPopup/TenantEmailAutocomplete";
 import {
   fetchLoggedInUser,
   isAssociatedPropertySoR,
-} from "features/Rent/utils/utils";
+} from "features/Rent/utils";
 
 export default function AssociateTenantPopup({
   closeDialog,
@@ -47,13 +43,7 @@ export default function AssociateTenantPopup({
 
   const [createTenant] = useCreateTenantMutation();
   const [updateProperty] = useUpdatePropertyByIdMutation();
-  const [
-    triggerGetExistingTenants,
-    { data: existingTenantsList = [], isLoading: isExistingTenantsListLoading },
-  ] = useLazyGetTenantListQuery();
 
-  // autocomplete needs input for typing
-  const [inputValue, setInputValue] = useState("");
   const [showSnackbar, setShowSnackbar] = useState(false);
 
   const {
@@ -80,13 +70,6 @@ export default function AssociateTenantPopup({
     },
   });
 
-  const [open, setOpen] = useState(false);
-
-  const handleTriggerAutocomplete = () => {
-    setOpen(!open);
-    triggerGetExistingTenants();
-  };
-
   const onSubmit = async (data) => {
     const draftData = { ...data };
 
@@ -103,6 +86,7 @@ export default function AssociateTenantPopup({
     try {
       await createTenant(draftData).unwrap();
       await updateProperty({
+        ...property,
         id: property?.id,
         rentees: [...(property?.rentees || []), draftData?.email],
         updatedBy: user?.uid,
@@ -133,26 +117,37 @@ export default function AssociateTenantPopup({
       </Divider>
       <Stack spacing={2}>
         {/* Lease Start Date */}
-        <Controller
-          name="start_date"
-          control={control}
-          render={({ field }) => (
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <MobileDatePicker
-                label="Lease start date *"
-                value={dayjs(field.value)}
-                onChange={(date) => field.onChange(date?.toISOString())}
-                slotProps={{
-                  textField: {
-                    size: "small",
-                    variant: "standard",
-                    sx: { flexGrow: 1 },
-                  },
-                }}
-              />
-            </LocalizationProvider>
-          )}
-        />
+        <Box sx={{ flex: 1 }}>
+          <Controller
+            name="start_date"
+            control={control}
+            defaultValue={null}
+            rules={{ required: "Start date is required" }}
+            render={({ field }) => (
+              <Box width="100%">
+                <Typography
+                  variant="body2"
+                  color="textSecondary"
+                  fontWeight="medium"
+                >
+                  Lease start date *
+                </Typography>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <MobileDatePicker
+                    slotProps={{
+                      textField: {
+                        fullWidth: true,
+                        size: "small",
+                      },
+                    }}
+                    value={field.value ? dayjs(field.value) : null}
+                    onChange={(date) => field.onChange(date?.toISOString())}
+                  />
+                </LocalizationProvider>
+              </Box>
+            )}
+          />
+        </Box>
 
         {/* Lease Term */}
         <Controller
@@ -189,7 +184,7 @@ export default function AssociateTenantPopup({
         />
 
         {/* Tax Rate and Rent */}
-        <Stack direction="row" spacing={1}>
+        <Stack direction={{ xs: "column", md: "row" }} spacing={1}>
           <TextFieldWithLabel
             label={
               <Stack direction="row" alignItems="center">
@@ -239,7 +234,7 @@ export default function AssociateTenantPopup({
         </Stack>
 
         {/* Initial Late Fee and Daily Late Fee */}
-        <Stack direction="row" spacing={2}>
+        <Stack direction={{ xs: "column", md: "row" }} spacing={2}>
           <TextFieldWithLabel
             label="Initial Late Fee *"
             id="initial_late_fee"
@@ -266,7 +261,7 @@ export default function AssociateTenantPopup({
                     sx={{ fontSize: "0.875rem", margin: "0.2rem" }}
                   />
                 </Tooltip>
-                <Typography variant="subtitle2">Late fee / day </Typography>
+                <Typography variant="subtitle2">Late fee / day *</Typography>
               </Stack>
             }
             id="daily_late_fee *"
@@ -290,80 +285,11 @@ export default function AssociateTenantPopup({
           <Typography variant="caption"> Tenant Information </Typography>
         </Divider>
 
-        {/* Email Autocomplete */}
-        <Controller
-          name="email"
+        <TenantEmailAutocomplete
           control={control}
-          rules={{
-            required: "Email Address is required",
-            validate: (value) =>
-              value?.trim().length > 3 ||
-              "Email Address must be more than 3 characters",
-          }}
-          render={({ field }) => {
-            // only display inactive members, since active members are tenants somewhere else.
-            const existingOptions =
-              existingTenantsList
-                ?.filter((tenant) => !tenant.isActive)
-                .map((v) => v.email) || [];
-            const options =
-              inputValue &&
-              !existingOptions.includes(inputValue) &&
-              inputValue.length > 3
-                ? [...existingOptions, `Create new: ${inputValue}`]
-                : existingOptions;
-
-            return (
-              <Autocomplete
-                freeSolo
-                open={open}
-                options={options}
-                value={field.value}
-                inputValue={inputValue}
-                onOpen={handleTriggerAutocomplete}
-                loading={isExistingTenantsListLoading}
-                onInputChange={(_, newInput) => setInputValue(newInput)}
-                onChange={(_, newValue, reason) => {
-                  const selectedValue =
-                    typeof newValue === "string" &&
-                    newValue.startsWith("Create new:")
-                      ? newValue.replace("Create new: ", "")
-                      : newValue;
-
-                  const doesTenantExist = existingTenantsList?.some(
-                    (tenant) => tenant.email === selectedValue,
-                  );
-                  if (doesTenantExist) {
-                    setError("email", {
-                      type: "manual",
-                      message:
-                        "Cannot add selected tenant. Found association with another property.",
-                    });
-                  } else {
-                    clearErrors("email");
-                    field.onChange(selectedValue);
-                  }
-                  // hide menu option when clear is pressed
-                  reason === "clear" ? setOpen(false) : setOpen(!open);
-                }}
-                renderOption={(props, option) => (
-                  <ListItem {...props}>
-                    <Typography>{option || ""}</Typography>
-                  </ListItem>
-                )}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    variant="standard"
-                    label="Tenant Email Address *"
-                    placeholder="Select or enter tenant email address"
-                    error={!!errors.email}
-                    helperText={errors.email?.message}
-                  />
-                )}
-              />
-            );
-          }}
+          errors={errors}
+          setError={setError}
+          clearErrors={clearErrors}
         />
 
         {/* Checkboxes */}

@@ -16,21 +16,28 @@ export const tenantsApi = createApi({
   baseQuery: fakeBaseQuery(),
   tagTypes: ["tenants"],
   endpoints: (builder) => ({
-    // fetch a list of all the existing tenants with active == true flag
     getTenantList: builder.query({
-      async queryFn() {
+      // fetch isActive tenants by default
+      // pass boolean value to retrieve inactive tenants
+      async queryFn(isActive = true) {
         try {
+          const uniqueTenants = [];
+          const foundEmailAddress = new Set();
+
           const q = query(
             collection(db, "tenants"),
-            where("isActive", "==", true),
+            where("isActive", "==", isActive),
           );
           const querySnapshot = await getDocs(q);
-          const tenants = [];
           querySnapshot.forEach((doc) => {
-            tenants.push({ id: doc.id, ...doc.data() });
+            const data = doc.data();
+            if (!foundEmailAddress.has(data.email)) {
+              foundEmailAddress.add(data.email);
+              uniqueTenants.push({ id: doc.id, ...data });
+            }
           });
 
-          return { data: tenants };
+          return { data: uniqueTenants };
         } catch (error) {
           return {
             error: {

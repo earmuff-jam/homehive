@@ -24,7 +24,7 @@ import {
 } from "features/Rent/common/constants";
 import AddProperty from "features/Rent/components/AddProperty/AddProperty";
 import { AddRentRecords } from "features/Rent/components/AddRentRecords/AddRentRecords";
-import { fetchLoggedInUser } from "features/Rent/utils/utils";
+import { fetchLoggedInUser } from "features/Rent/utils";
 
 const defaultDialog = {
   title: "",
@@ -90,6 +90,7 @@ export default function QuickActions({ property }) {
         additional_rent: property?.additional_rent || "",
         note: property?.note || "",
         sqFt: property?.sqFt || "",
+        rent_increment: property?.rent_increment || "",
       });
     }
   }, [property, reset]);
