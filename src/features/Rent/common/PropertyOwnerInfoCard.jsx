@@ -131,7 +131,7 @@ export default function PropertyOwnerInfoCard({
   useEffect(() => {
     const checkStripeStatus = async (accountId) => {
       try {
-        const status = await checkStatus({ accountId });
+        const { status } = await checkStatus({ accountId });
         const reasons = getStripeFailureReasons(status);
         if (reasons?.length <= 0) {
           setStripeValid(true);
@@ -263,7 +263,7 @@ export default function PropertyOwnerInfoCard({
                     </Typography>
                   </Alert>
                 </Box>
-
+                {console.log(!stripeValid, paymentCompleteForCurrentMonth)}
                 <AButton
                   size="small"
                   variant="contained"
