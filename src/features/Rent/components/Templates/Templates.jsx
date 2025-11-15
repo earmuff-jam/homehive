@@ -1,15 +1,15 @@
 import React, { useState } from "react";
 
 import { Card, Stack } from "@mui/material";
+import TabPanel from "features/Rent/common/TabPanel";
 import Template from "features/Rent/components/Templates/Template";
-import TemplateSelectors from "features/Rent/components/Templates/TemplateSelectors";
-import { DefaultTemplateData } from "features/Rent/components/Templates/constants";
+import { DefaultTemplateData as options } from "features/Rent/components/Templates/constants";
 import { produce } from "immer";
 
 export default function Templates() {
   const [selectedTemplate, setSelectedTemplate] = useState("invoice");
 
-  const updateSelectedTemplate = (val) => setSelectedTemplate(val);
+  const updatedSelected = (val) => setSelectedTemplate(val);
 
   const handleSave = (data) => {
     const existingTemplates =
@@ -24,10 +24,10 @@ export default function Templates() {
   return (
     <Stack alignItems="center" spacing={1}>
       <Stack direction="row" spacing={2}>
-        <TemplateSelectors
-          selectedTemplate={selectedTemplate}
-          DefaultTemplateData={DefaultTemplateData}
-          updateSelectedTemplate={updateSelectedTemplate}
+        <TabPanel
+          options={options}
+          selected={selectedTemplate}
+          updateSelected={updatedSelected}
         />
       </Stack>
       <Stack width="100%">
@@ -43,7 +43,7 @@ export default function Templates() {
         >
           <Template
             handleSave={handleSave}
-            template={DefaultTemplateData[selectedTemplate]}
+            template={options[selectedTemplate]}
           />
         </Card>
       </Stack>

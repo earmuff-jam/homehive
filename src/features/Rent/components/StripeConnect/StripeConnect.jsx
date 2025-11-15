@@ -27,6 +27,7 @@ import {
   useGetUserDataByIdQuery,
   useUpdateUserByUidMutation,
 } from "features/Api/firebaseUserApi";
+import HelpAndSupport from "features/Rent/components/ExternalIntegrations/HelpAndSupport";
 import {
   PropertyOwnerStripeAccountType,
   StripeUserStatusEnums,
@@ -43,6 +44,41 @@ import {
   useCreateStripeAccountLink,
 } from "features/Rent/hooks/useStripe";
 import { fetchLoggedInUser } from "features/Rent/utils";
+
+const stripeConnectOptions = [
+  {
+    id: 1,
+    title: "Setup guide",
+    caption: "Instructions for connecting Stripe",
+    icon: (
+      <HelpOutlineRounded sx={{ fontSize: 32, color: "primary.main", mb: 1 }} />
+    ),
+    buttonText: "View guide",
+    to: "https://dashboard.stripe.com/register/connect",
+  },
+  {
+    id: 2,
+    title: "Contact Support",
+    caption: "Stripe help and support",
+    icon: (
+      <SupportAgentRounded
+        sx={{ fontSize: 32, color: "primary.main", mb: 1 }}
+      />
+    ),
+    buttonText: "Contact us",
+    to: "https://support.stripe.com/",
+  },
+  {
+    id: 3,
+    title: "Security & Compliance",
+    caption: "Learn about PCI compliance",
+    icon: (
+      <SecurityRounded sx={{ fontSize: 32, color: "primary.main", mb: 1 }} />
+    ),
+    buttonText: "View Compliance",
+    to: "https://stripe.com/guides/pci-compliance",
+  },
+];
 
 export default function StripeConnect() {
   const user = fetchLoggedInUser();
@@ -97,7 +133,7 @@ export default function StripeConnect() {
     }
   };
 
-  const handleDisconnectStripe = async () => {
+  const handleUnlink = async () => {
     await updateUser({
       uid: userData?.uid,
       newData: {
@@ -166,21 +202,20 @@ export default function StripeConnect() {
       }
     };
 
-    // only check if stripeAccountId is present
     if (userData?.stripeAccountId) {
       handleCheckStripeStatus(userData.stripeAccountId);
     }
   }, [userData?.stripeAccountId]);
 
   if (isUserDataFromDbLoading || isCheckStripeAccountStatusLoading)
-    return <Skeleton height="10rem" />;
+    return <Skeleton height="10rem" width="100%" />;
 
   return (
     <Grid container spacing={1}>
       {/* Connection Status Card */}
       <Grid item xs={12}>
-        <Card elevation={0} sx={{ p: 1, mb: 2 }}>
-          <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
+        <Card elevation={0} sx={{ p: 1 }}>
+          <Box sx={{ display: "flex", alignItems: "center" }}>
             <RowHeader
               title="Account Connection"
               caption="View details about your financial institution"
@@ -197,7 +232,7 @@ export default function StripeConnect() {
               <ConnectionStatus
                 stripeAlert={stripeAlert}
                 isUserConnectedToStripe={userData?.stripeAccountIsActive}
-                handleDisconnectStripe={handleDisconnectStripe}
+                handleUnlink={handleUnlink}
               />
             </Box>
           </Box>
@@ -219,7 +254,7 @@ export default function StripeConnect() {
 
       {/* Bank Account Information */}
       <Grid item xs={12} md={6}>
-        <Card elevation={0} sx={{ p: 3, height: "100%" }}>
+        <Card elevation={0} sx={{ p: 1, height: "100%" }}>
           <RowHeader
             title="Bank Account Information"
             caption="View details about your connected bank account."
@@ -305,105 +340,7 @@ export default function StripeConnect() {
 
       {/* Help & Support */}
       <Grid item xs={12}>
-        <Card elevation={0} sx={{ p: 3, bgcolor: "background.paper" }}>
-          <RowHeader
-            title="Need Help?"
-            caption="Select how can we help you best."
-            sxProps={{ textAlign: "left" }}
-          />
-          <Grid container spacing={2}>
-            <Grid item xs={12} md={4}>
-              <Box sx={{ textAlign: "center" }}>
-                <HelpOutlineRounded
-                  sx={{ fontSize: 32, color: "primary.main", mb: 1 }}
-                />
-                <Typography variant="subtitle2" fontWeight={600}>
-                  Setup Guide
-                </Typography>
-                <Typography
-                  variant="body2"
-                  color="text.secondary"
-                  sx={{ mb: 1 }}
-                >
-                  Instructions for connecting Stripe
-                </Typography>
-                <Button
-                  size="small"
-                  variant="outlined"
-                  onClick={() =>
-                    window.open(
-                      "https://dashboard.stripe.com/register/connect",
-                      "_blank",
-                      "noopener,noreferrer",
-                    )
-                  }
-                >
-                  View Guide
-                </Button>
-              </Box>
-            </Grid>
-            <Grid item xs={12} md={4}>
-              <Box sx={{ textAlign: "center" }}>
-                <SupportAgentRounded
-                  sx={{ fontSize: 32, color: "primary.main", mb: 1 }}
-                />
-                <Typography variant="subtitle2" fontWeight={600}>
-                  Contact Support
-                </Typography>
-                <Typography
-                  variant="body2"
-                  color="text.secondary"
-                  sx={{ mb: 1 }}
-                >
-                  Stripe Help and Support
-                </Typography>
-                <Button
-                  size="small"
-                  variant="outlined"
-                  onClick={() =>
-                    window.open(
-                      "https://support.stripe.com/",
-                      "_blank",
-                      "noopener,noreferrer",
-                    )
-                  }
-                >
-                  Contact Us
-                </Button>
-              </Box>
-            </Grid>
-            <Grid item xs={12} md={4}>
-              <Box sx={{ textAlign: "center" }}>
-                <SecurityRounded
-                  sx={{ fontSize: 32, color: "primary.main", mb: 1 }}
-                />
-                <Typography variant="subtitle2" fontWeight={600}>
-                  Security & Compliance
-                </Typography>
-                <Typography
-                  variant="body2"
-                  color="text.secondary"
-                  sx={{ mb: 1 }}
-                >
-                  Learn about PCI compliance
-                </Typography>
-                <Button
-                  size="small"
-                  variant="outlined"
-                  onClick={() =>
-                    window.open(
-                      "https://stripe.com/guides/pci-compliance",
-                      "_blank",
-                      "noopener,noreferrer",
-                    )
-                  }
-                >
-                  Learn More
-                </Button>
-              </Box>
-            </Grid>
-          </Grid>
-        </Card>
+        <HelpAndSupport options={stripeConnectOptions} />
       </Grid>
     </Grid>
   );
