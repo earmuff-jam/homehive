@@ -8,7 +8,7 @@ export default function ConnectionStatus({
   stripeAlert,
   isStripeConnected = false,
   isUserConnectedToStripe = false,
-  handleDisconnectStripe,
+  handleUnlink,
 }) {
   if (!isUserConnectedToStripe) {
     return (
@@ -33,11 +33,11 @@ export default function ConnectionStatus({
           icon={<ErrorOutlineRounded fontSize="small" color="error" />}
         />
 
-        <Tooltip title="Disconnect Stripe">
+        <Tooltip title="Connect Stripe">
           <IconButton
             size="small"
             color={!stripeAlert && isStripeConnected ? "success" : "error"}
-            onClick={handleDisconnectStripe}
+            onClick={handleUnlink}
             // disable link if verification started, but allow modifications
             disabled={stripeAlert?.type === StripeUserStatusEnums.FAILURE.type}
           >
@@ -61,7 +61,7 @@ export default function ConnectionStatus({
             <IconButton
               size="small"
               color={!stripeAlert && isStripeConnected ? "success" : "error"}
-              onClick={handleDisconnectStripe}
+              onClick={handleUnlink}
               // disable link if verification started, but allow modifications
               disabled={
                 stripeAlert?.type === StripeUserStatusEnums.FAILURE.type
@@ -78,7 +78,7 @@ export default function ConnectionStatus({
           <IconButton
             size="small"
             color={!stripeAlert && isStripeConnected ? "success" : "error"}
-            onClick={handleDisconnectStripe}
+            onClick={handleUnlink}
             // disable link if verification started, but allow modifications
             disabled={stripeAlert?.type === StripeUserStatusEnums.FAILURE.type}
           >
