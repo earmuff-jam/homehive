@@ -132,7 +132,7 @@ export default function PropertyOwnerInfoCard({
     const checkStripeStatus = async (accountId) => {
       try {
         const status = await checkStatus({ accountId });
-        const reasons = getStripeFailureReasons(status);
+        const reasons = getStripeFailureReasons(status?.status);
         if (reasons?.length <= 0) {
           setStripeValid(true);
         }
