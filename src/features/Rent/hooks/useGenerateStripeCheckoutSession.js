@@ -33,7 +33,7 @@ export const useGenerateStripeCheckoutSession = () => {
         body: JSON.stringify({
           fUrl: "0007_create_stripe_checkout_session",
           fMethod: "POST",
-          payload: JSON.stringify({
+          payload: {
             rentAmount,
             additionalCharges,
             initialLateFee,
@@ -44,7 +44,7 @@ export const useGenerateStripeCheckoutSession = () => {
             tenantId,
             rentMonth,
             tenantEmail,
-          }),
+          },
         }),
       });
 

@@ -3,7 +3,6 @@ import {
   collection,
   deleteDoc,
   doc,
-  getDoc,
   getDocs,
   query,
   setDoc,
@@ -38,27 +37,6 @@ export const tenantsApi = createApi({
           });
 
           return { data: uniqueTenants };
-        } catch (error) {
-          return {
-            error: {
-              message: error.message,
-              code: error.code,
-            },
-          };
-        }
-      },
-      providesTags: ["tenants"],
-    }),
-    // fetch tenants where tenantId matches the passed in tenantId from tenants db
-    getTenantById: builder.query({
-      async queryFn(tenantId) {
-        try {
-          const docRef = doc(db, "tenants", tenantId);
-          const docSnap = await getDoc(docRef);
-          if (!docSnap.exists()) {
-            return { error: { message: "Tenant not found" } };
-          }
-          return { data: docSnap.data() };
         } catch (error) {
           return {
             error: {
@@ -211,7 +189,6 @@ export const tenantsApi = createApi({
 
 export const {
   useLazyGetTenantListQuery,
-  useGetTenantByIdQuery,
   useGetTenantsByUserIdQuery,
   useGetTenantByEmailIdQuery,
   useGetTenantByPropertyIdQuery,
