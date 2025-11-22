@@ -2,25 +2,21 @@ import React from "react";
 
 import { Button, Tooltip, useMediaQuery, useTheme } from "@mui/material";
 
-export default function TemplateSelectors({
-  DefaultTemplateData,
-  selectedTemplate,
-  updateSelectedTemplate,
-}) {
+export default function TabPanel({ selected, options, updateSelected }) {
   const theme = useTheme();
-  const medFormFactor = useMediaQuery(theme.breakpoints.down("md"));
+  const lteMedFormFactor = useMediaQuery(theme.breakpoints.down("md"));
 
   return (
     <>
-      {Object.entries(DefaultTemplateData).map(([key, template]) => (
+      {Object.entries(options).map(([key, template]) => (
         <Tooltip key={key} title={template?.label}>
           <Button
-            variant={selectedTemplate === key ? "contained" : "outlined"}
-            color={selectedTemplate === key ? "primary" : "secondary"}
-            startIcon={template?.icon}
-            onClick={() => updateSelectedTemplate(key)}
+            variant={selected === key ? "contained" : "outlined"}
+            color={selected === key ? "primary" : "secondary"}
+            startIcon={!lteMedFormFactor ? template?.icon : null}
+            onClick={() => updateSelected(key)}
           >
-            {!medFormFactor && (
+            {!lteMedFormFactor ? (
               <span
                 style={{
                   overflow: "hidden",
@@ -32,6 +28,8 @@ export default function TemplateSelectors({
               >
                 {template?.label}
               </span>
+            ) : (
+              template?.icon
             )}
           </Button>
         </Tooltip>

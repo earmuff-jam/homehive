@@ -6,9 +6,9 @@ import { useSearchParams } from "react-router-dom";
 import dayjs from "dayjs";
 
 import {
+  ConnectWithoutContactOutlined,
   EmailRounded,
   InfoRounded,
-  PaymentRounded,
   PersonRounded,
 } from "@mui/icons-material";
 import {
@@ -35,8 +35,8 @@ import {
   useGetUserDataByIdQuery,
   useUpdateUserByUidMutation,
 } from "features/Api/firebaseUserApi";
+import ExternalIntegrations from "features/Rent/components/ExternalIntegrations/ExternalIntegrations";
 import { TabPanel } from "features/Rent/components/Settings/common";
-import StripeConnect from "features/Rent/components/StripeConnect/StripeConnect";
 import Templates from "features/Rent/components/Templates/Templates";
 import { fetchLoggedInUser } from "features/Rent/utils";
 import { useAppTitle } from "hooks/useAppTitle";
@@ -417,11 +417,11 @@ export default function Settings() {
             ),
           },
           {
-            label: "Manage Payments",
-            icon: <PaymentRounded fontSize="small" />,
+            label: "Integrations",
+            icon: <ConnectWithoutContactOutlined fontSize="small" />,
             content: (
               <TabPanel value={activeTab} index={2}>
-                <StripeConnect />
+                <ExternalIntegrations />
               </TabPanel>
             ),
           },
