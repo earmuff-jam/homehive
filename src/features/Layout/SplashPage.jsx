@@ -4,11 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 import { HomeRounded, ReceiptRounded } from "@mui/icons-material";
 import { Alert, Box, Container, Stack, Typography } from "@mui/material";
-import {
-  InvoiceDashboardRouteUri,
-  OwnerRole,
-  PropertiesRouteUri,
-} from "common/utils";
+import { InvoiceDashboardRouteUri, PropertiesRouteUri } from "common/utils";
 import { useAuthenticateMutation } from "features/Api/firebaseUserApi";
 import TitleCard from "features/Layout/components/TitleCard/TitleCard";
 import { useAppTitle } from "hooks/useAppTitle";
@@ -26,10 +22,6 @@ export default function SplashPage() {
       error: authError,
     },
   ] = useAuthenticateMutation();
-
-  const handleAuth = () => {
-    authenticate(OwnerRole);
-  };
 
   useEffect(() => {
     if (!isAuthLoading && isAuthSuccess) {
@@ -104,7 +96,7 @@ export default function SplashPage() {
                 sx={{ fontSize: 32, color: "primary.main", mr: 1.5 }}
               />
             }
-            onClick={handleAuth}
+            onClick={authenticate}
           />
           <TitleCard
             title="Invoicer App"
