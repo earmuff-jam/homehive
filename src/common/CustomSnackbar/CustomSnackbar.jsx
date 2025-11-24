@@ -28,7 +28,7 @@ function CustomSnackbar({
           variant="caption"
           textTransform="initial"
           paddingLeft="0.2rem"
-          sx={{ cursor: "pointer", textDecoration: 'underline' }}
+          sx={{ cursor: "pointer", textDecoration: "underline" }}
           onClick={(e) => {
             // prevent bubbling to parent, so that snackbar does not navigate
             // if close button is pressed
