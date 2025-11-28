@@ -32,18 +32,17 @@ export const firebaseUserApi = createApi({
     }),
     // create user in users db
     authenticate: builder.mutation({
-      async queryFn(role) {
+      async queryFn() {
         try {
           const userDetails = await authenticateViaGoogle();
           const userRef = doc(db, "users", userDetails?.uid);
-          await setDoc(userRef, { ...userDetails, role }, { merge: true });
+          await setDoc(userRef, { ...userDetails }, { merge: true });
           if (userDetails?.uid) {
             localStorage.setItem(
               "user",
               JSON.stringify({
                 uid: userDetails?.uid,
                 googleEmailAddress: userDetails?.googleEmailAddress,
-                role,
               }),
             );
           }

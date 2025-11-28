@@ -1,6 +1,5 @@
 import dayjs from "dayjs";
 
-import { TenantRole } from "common/utils";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { authenticatorApp } from "src/config";
 
@@ -16,7 +15,6 @@ export const authenticateViaGoogle = async () => {
   const user = result.user;
   const userDetails = {
     uid: user.uid,
-    role: user?.role || TenantRole,
     googleEmailAddress: user.email,
     googleDisplayName: user.displayName,
     googlePhotoURL: user.photoURL,
