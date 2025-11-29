@@ -5,8 +5,8 @@ import { useSearchParams } from "react-router-dom";
 import dayjs from "dayjs";
 
 import {
+  ConnectWithoutContactRounded,
   EmailRounded,
-  PaymentRounded,
   PersonRounded,
 } from "@mui/icons-material";
 import {
@@ -20,9 +20,9 @@ import {
 } from "@mui/material";
 import RowHeader from "common/RowHeader/RowHeader";
 import relativeTime from "dayjs/plugin/relativeTime";
+import ExternalIntegrations from "features/Rent/components/ExternalIntegrations/ExternalIntegrations";
 import ProfileDetails from "features/Rent/components/ProfileDetails/ProfileDetails";
 import { TabPanel } from "features/Rent/components/Settings/common";
-import StripeConnect from "features/Rent/components/StripeConnect/StripeConnect";
 import Templates from "features/Rent/components/Templates/Templates";
 import { useAppTitle } from "hooks/useAppTitle";
 
@@ -63,11 +63,11 @@ export default function Settings() {
       ),
     },
     {
-      label: "Manage Payments",
-      icon: <PaymentRounded fontSize="small" />,
+      label: "External Integrations",
+      icon: <ConnectWithoutContactRounded fontSize="small" />,
       content: (
         <TabPanel value={activeTab} index={2}>
-          <StripeConnect />
+          <ExternalIntegrations />
         </TabPanel>
       ),
     },

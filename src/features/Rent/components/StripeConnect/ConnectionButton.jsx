@@ -16,7 +16,6 @@ export default function ConnectionButton({
   if (!stripeAlert || !isUserConnectedToStripe) {
     return (
       <AButton
-        size="medium"
         sx={{ mt: 2 }}
         variant="contained"
         onClick={handleCreateStripe}
