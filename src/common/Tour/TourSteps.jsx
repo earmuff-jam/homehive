@@ -232,7 +232,7 @@ const SettingsHelpSteps = [
   },
   {
     element:
-      "Connect with our 3rd party entities for a smoother rental experience. Use 'Stripe' for account management and 'SignRequest' for document signing. Property owners must go through user verification for KYC Compliance in Stripe.",
+      "Connect with our 3rd party entities for a smoother rental experience. Use 'Stripe' for account management and custom Esign for document signing. Property owners must go through user verification for KYC Compliance in Stripe. Esign users are verified via their google account.",
   },
 ];
 
