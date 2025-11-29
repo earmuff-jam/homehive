@@ -50,15 +50,6 @@ export const RecieverInforamtionRouteUri = "/invoice/reciever";
 export const InvoiceAppFaqRouteUri = "/invoice/faq";
 
 /**
- * Authorized Roles
- *
- * Owner - the person who owns the property
- * Tenant - the person who is renting the property
- */
-export const OwnerRole = "Owner";
-export const TenantRole = "Tenant";
-
-/**
  * pluralize
  *
  * function used to add a plural form where applicable.

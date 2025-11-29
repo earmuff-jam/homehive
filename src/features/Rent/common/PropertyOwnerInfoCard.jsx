@@ -31,7 +31,7 @@ import {
   useCreateRentRecordMutation,
   useLazyGetRentByMonthQuery,
 } from "features/Api/rentApi";
-import { useGetTenantByIdQuery } from "features/Api/tenantsApi";
+import { useGetTenantByPropertyIdQuery } from "features/Api/tenantsApi";
 import { getStripeFailureReasons } from "features/Rent/components/Settings/common";
 import { useCheckStripeAccountStatus } from "features/Rent/hooks/useCheckStripeAccountStatus";
 import { useGenerateStripeCheckoutSession } from "features/Rent/hooks/useGenerateStripeCheckoutSession";
@@ -58,9 +58,11 @@ export default function PropertyOwnerInfoCard({
     },
   );
 
-  const { data: tenant = {} } = useGetTenantByIdQuery(user?.uid, {
-    skip: !user?.uid,
+  const { data = [] } = useGetTenantByPropertyIdQuery(property?.id, {
+    skip: !property?.id,
   });
+
+  const tenant = data.find((item) => item);
 
   const [triggerGetRentByMonth, { data: rentMonthData = [] }] =
     useLazyGetRentByMonthQuery();
@@ -76,30 +78,34 @@ export default function PropertyOwnerInfoCard({
     additionalCharges,
     initialLateFee,
     dailyLateFee,
+    tenantRentDueDate,
     stripeOwnerAccountId,
     stripeAccountIsActive,
     propertyId,
     propertyOwnerId,
     tenantId,
-    rentMonth,
     tenantEmail,
   }) => {
     if (!stripeAccountIsActive) {
       return;
     }
 
+    const upcommingDueDate = dayjs().date(dayjs(tenantRentDueDate).date());
+    const diffDays = upcommingDueDate.diff(dayjs(), "day");
+
     const draftData = {
       id: uuidv4(),
       rentAmount: Math.round(rentAmount * 100),
       additionalCharges: Math.round(additionalCharges * 100),
       initialLateFee: Math.round(Number(initialLateFee) || 0 * 100),
-      dailyLateFee: Math.round(Number(dailyLateFee) || 0 * 100),
+      dailyLateFee:
+        Math.round(Number(dailyLateFee) || 0 * 100) * Math.abs(diffDays),
       stripeOwnerAccountId, // the person who the payment must go towards
       tenantEmail,
       propertyId,
       propertyOwnerId,
       tenantId,
-      rentMonth,
+      rentMonth: dayjs().format("MMMM"),
     };
 
     const stripeCheckoutSessionData =
@@ -132,7 +138,7 @@ export default function PropertyOwnerInfoCard({
     const checkStripeStatus = async (accountId) => {
       try {
         const status = await checkStatus({ accountId });
-        const reasons = getStripeFailureReasons(status);
+        const reasons = getStripeFailureReasons(status?.status);
         if (reasons?.length <= 0) {
           setStripeValid(true);
         }
@@ -278,17 +284,17 @@ export default function PropertyOwnerInfoCard({
                       propertyId: property?.id,
                       propertyOwnerId: property?.createdBy, // the owner of the property
                       tenantId: user?.uid, // the current payee which is also a tenant
-                      rentMonth: dayjs().format("MMMM"),
+                      tenantRentDueDate: tenant?.start_date,
                       tenantEmail: user?.googleEmailAddress, // the current renter
                       rentAmount: formatCurrency(Number(property?.rent)),
                       additionalCharges: formatCurrency(
                         Number(property?.additional_rent),
                       ),
                       initialLateFee: formatCurrency(
-                        Number(tenant?.initialLateFee),
+                        Number(tenant?.initial_late_fee),
                       ),
                       dailyLateFee: formatCurrency(
-                        Number(tenant?.dailyLateFee),
+                        Number(tenant?.daily_late_fee),
                       ),
                     })
                   }

@@ -24,17 +24,12 @@ import {
   DefaultTourStepsMapperObj,
   GeneratedTourSteps,
 } from "common/Tour/TourSteps";
-import {
-  HomeRouteUri,
-  SettingsRouteUri,
-  TenantRole,
-} from "common/utils";
+import { HomeRouteUri } from "common/utils";
 import AppToolbar from "features/Layout/components/AppToolbar/AppToolbar";
 import BreadCrumbs from "features/Layout/components/AppToolbar/BreadCrumbs";
 import Footer from "features/Layout/components/Footer/Footer";
 import NavBar from "features/Layout/components/NavBar/NavBar";
 import { retrieveTourKey } from "features/Layout/utils";
-import { fetchLoggedInUser } from "features/Rent/utils";
 
 const defaultDialog = {
   title: "",
@@ -83,16 +78,6 @@ export default function Layout({
       currentTourEl.start,
       currentTourEl.end,
     );
-
-    if (currentUri === SettingsRouteUri) {
-      const currentUser = fetchLoggedInUser();
-      if (currentUser.role === TenantRole) {
-        formattedDraftTourSteps = GeneratedTourSteps.slice(
-          currentTourEl.start,
-          currentTourEl.start + 1, // tenants do not have other tabs under settings
-        );
-      }
-    }
 
     setIsOpen(true);
     setCurrentStep(0);

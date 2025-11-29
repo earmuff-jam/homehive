@@ -4,7 +4,6 @@ import { matchPath, useLocation, useNavigate } from "react-router-dom";
 
 import { MenuOutlined } from "@mui/icons-material";
 import {
-  Alert,
   AppBar,
   IconButton,
   Stack,
@@ -17,18 +16,9 @@ import {
 import AButton from "common/AButton";
 import CustomSnackbar from "common/CustomSnackbar/CustomSnackbar";
 import { DefaultTourStepsMapperObj } from "common/Tour/TourSteps";
-import {
-  HomeRouteUri,
-  OwnerRole,
-  TenantRole,
-  isUserLoggedIn,
-} from "common/utils";
-import {
-  useAuthenticateMutation,
-  useLogoutMutation,
-} from "features/Api/firebaseUserApi";
+import { isUserLoggedIn } from "common/utils";
+import { useLogoutMutation } from "features/Api/firebaseUserApi";
 import { useLocalStorageData } from "features/Invoice/hooks/useGenerateUserData";
-import MobileIconDropdown from "features/Layout/components/AppToolbar/MobileIconDropdown";
 import MenuOptions from "features/Layout/components/NavBar/MenuOptions";
 import { retrieveTourKey } from "features/Layout/utils";
 import { isFeatureEnabled } from "features/Rent/utils";
@@ -49,16 +39,6 @@ export default function AppToolbar({
 
   const smallFormFactor = useMediaQuery(theme.breakpoints.down("sm"));
   const { sendEmail, reset, loading, error, success } = useSendEmail();
-
-  const [
-    authenticate,
-    {
-      isSuccess: isAuthSuccess,
-      isLoading: isAuthLoading,
-      isError: isAuthError,
-      error: authError,
-    },
-  ] = useAuthenticateMutation();
 
   const [logout, { isSuccess: isLogoutSuccess, isLoading: isLogoutLoading }] =
     useLogoutMutation();
@@ -137,32 +117,11 @@ export default function AppToolbar({
     setCurrentThemeIdx(0);
   };
 
-  const handleCreateUser = (role = TenantRole) => {
-    authenticate(role);
-  };
-
-  useEffect(() => {
-    if (!isAuthLoading && isAuthSuccess) {
-      window.location.replace(HomeRouteUri);
-    }
-  }, [isAuthLoading]);
-
   useEffect(() => {
     if (isLogoutSuccess) {
       navigate(`/?refresh=${Date.now()}`);
     }
   }, [isLogoutLoading]);
-
-  if (isAuthError) {
-    return (
-      <Alert severity="error">
-        <Stack>
-          <Typography>Error during log in. Please try again later.</Typography>
-          <Typography variant="caption">{authError?.message}</Typography>
-        </Stack>
-      </Alert>
-    );
-  }
 
   return (
     <AppBar elevation={0} sx={{ padding: "0.25rem 0rem" }} className="no-print">
@@ -179,7 +138,7 @@ export default function AppToolbar({
           <Typography variant="h5">Homehive</Typography>
         </Stack>
         <Stack direction="row" spacing={1} alignItems="center">
-          {isUserLoggedIn() ? (
+          {isUserLoggedIn() && (
             <Tooltip title="logout">
               <AButton
                 label="Logout"
@@ -188,26 +147,6 @@ export default function AppToolbar({
                 onClick={() => logout()}
               />
             </Tooltip>
-          ) : smallFormFactor ? (
-            <MobileIconDropdown
-              handleOwnerLogin={() => handleCreateUser(OwnerRole)}
-              handleTenantLogin={() => handleCreateUser(TenantRole)}
-            />
-          ) : (
-            <>
-              <AButton
-                size="small"
-                variant="outlined"
-                label="Manage Properties"
-                onClick={() => handleCreateUser(OwnerRole)}
-              />
-              <AButton
-                size="small"
-                variant="contained"
-                label="Access Rental Account"
-                onClick={() => handleCreateUser(TenantRole)}
-              />
-            </>
           )}
           <MenuOptions
             showPrint={showPrint}
