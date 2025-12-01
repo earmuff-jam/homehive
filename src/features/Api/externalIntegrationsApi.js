@@ -10,6 +10,15 @@ export const externalIntegrationsApi = createApi({
     },
   }),
   endpoints: (builder) => ({
+    getWorkspaces: builder.mutation({
+      query: () => ({
+        method: "POST",
+        body: JSON.stringify({
+          fUrl: "0013_fetch_esign_status",
+          fMethod: "POST",
+        }),
+      }),
+    }),
     createEnvelope: builder.mutation({
       query: ({ recipientEmail, recipientName, documentBase64 }) => ({
         url: "createEnvelope",
@@ -27,4 +36,5 @@ export const externalIntegrationsApi = createApi({
   }),
 });
 
-export const { useCreateEnvelopeMutation } = externalIntegrationsApi;
+export const { useCreateEnvelopeMutation, useGetWorkspacesMutation } =
+  externalIntegrationsApi;
