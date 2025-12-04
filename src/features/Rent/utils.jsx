@@ -10,7 +10,7 @@ import {
   MoneyOffRounded,
   PaidRounded,
 } from "@mui/icons-material";
-import validateClientPermissions from "common/ValidateClientPerms";
+import validateClientPermissions from "common/ValidateClientPermissions";
 
 // ---------------------------
 // enum values

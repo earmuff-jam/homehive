@@ -23,7 +23,7 @@ import {
   AddRentRecordsTextString,
 } from "features/Rent/common/constants";
 import AddProperty from "features/Rent/components/AddProperty/AddProperty";
-import { AddRentRecords } from "features/Rent/components/AddRentRecords/AddRentRecords";
+import AddRentRecords from "features/Rent/components/AddRentRecords/AddRentRecords";
 import { fetchLoggedInUser } from "features/Rent/utils";
 
 const defaultDialog = {

@@ -18,7 +18,7 @@ import {
 import validateClientPermissions, {
   filterValidRoutesForNavigationBar,
   isValidPermissions,
-} from "common/ValidateClientPerms";
+} from "common/ValidateClientPermissions";
 import {
   MainInvoiceAppRouteUri,
   MainRentAppRouteUri,
