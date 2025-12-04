@@ -4,14 +4,15 @@ import { useLocation, useNavigate } from "react-router-dom";
 
 import {
   Alert,
-  Button,
   Grid,
   Paper,
   Skeleton,
   Stack,
   Typography,
 } from "@mui/material";
+import AButton from "common/AButton";
 import EmptyComponent from "common/EmptyComponent";
+import { HomeRouteUri } from "common/utils";
 import { useGetUserDataByIdQuery } from "features/Api/firebaseUserApi";
 import { useGetPropertiesByPropertyIdQuery } from "features/Api/propertiesApi";
 import { useGetRentsByPropertyIdQuery } from "features/Api/rentApi";
@@ -66,10 +67,29 @@ const MyRental = () => {
 
   useAppTitle(property?.name || "My Rental Unit");
 
-  const [alert, setAlert] = useState(false);
+  const [alert, setAlert] = useState({
+    label: "",
+    caption: "",
+    severity: "info",
+    value: false,
+  });
 
   // if home is SoR, then only each bedroom is counted as a unit
   const isAnyTenantSoR = tenants?.some((tenant) => tenant.isSoR);
+  const isRenterActive = renter?.isActive;
+
+  useEffect(() => {
+    if (!isRenterActive) {
+      setAlert({
+        label: "Accept",
+        caption:
+          "No active properties have been assigned to you as a tenant. Contact your admin for more details.",
+        severity: "error",
+        value: true,
+        onClick: () => navigate(HomeRouteUri),
+      });
+    }
+  }, [isRenterActive]);
 
   useEffect(() => {
     const params = new URLSearchParams(location?.search);
@@ -77,7 +97,14 @@ const MyRental = () => {
     const sessionId = params.get("session_id");
     if (Number(success) === 1 && sessionId && owner?.stripeAccountId) {
       navigate(location?.pathname, { replace: true });
-      setAlert(true);
+      setAlert({
+        title: "Refresh",
+        caption:
+          "To maintain data integrity and get latest payment details, please refresh your browser",
+        severity: "info",
+        value: true,
+        onClick: () => window.location.reload(),
+      });
     }
   }, [location, isOwnerDataLoading]);
 
@@ -90,24 +117,20 @@ const MyRental = () => {
 
   return (
     <Stack data-tour="rental-0">
-      {alert && (
+      {alert?.value && (
         <Alert
-          severity="info"
+          severity={alert.severity}
           action={
-            <Button
+            <AButton
               color="inherit"
               size="small"
               variant="outlined"
-              onClick={() => window.location.reload()}
-            >
-              Refresh
-            </Button>
+              onClick={alert.onClick}
+              label={alert.label}
+            />
           }
         >
-          <Typography>
-            To maintain data integrity and get latest payment details, please
-            refresh your browser
-          </Typography>
+          <Typography variant="caption">{alert.caption}</Typography>
         </Alert>
       )}
       <Paper elevation={0} sx={{ padding: 3, margin: "1rem 0rem" }}>
@@ -146,8 +169,9 @@ const MyRental = () => {
           />
           <DocumentsOverview
             dataTour="rental-6"
-            isPropertyLoading={isPropertyLoading}
             property={property}
+            disableUpload={!isRenterActive}
+            isPropertyLoading={isPropertyLoading}
           />
         </Grid>
 

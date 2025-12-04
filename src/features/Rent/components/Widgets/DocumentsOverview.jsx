@@ -29,6 +29,7 @@ export default function DocumentsOverview({
   isPropertyLoading,
   property,
   dataTour,
+  disableUpload = true,
 }) {
   const theme = useTheme();
   const lteMedFormFactor = useMediaQuery(theme.breakpoints.down("md"));
@@ -66,6 +67,7 @@ export default function DocumentsOverview({
                     variant="outlined"
                     label={<AddRounded fontSize="small" />}
                     onClick={() => setDialog(!dialog)}
+                    disabled={disableUpload}
                   />
                 ) : (
                   <AButton
@@ -73,6 +75,7 @@ export default function DocumentsOverview({
                     variant="outlined"
                     onClick={() => setDialog(!dialog)}
                     label="Upload Document"
+                    disabled={disableUpload}
                   />
                 )}
               </Box>
