@@ -48,21 +48,27 @@ export const tenantsApi = createApi({
       },
       providesTags: ["tenants"],
     }),
-    // fetch tenants where email matches the passed in email from tenants db
-    getTenantByEmailId: builder.query({
+    // fetch matching tenants by email who are also active
+    getActiveTenantsByEmailAddress: builder.query({
       async queryFn(email) {
         try {
           const tenantsRef = collection(db, "tenants");
-          const q = query(tenantsRef, where("email", "==", email));
+          const q = query(
+            tenantsRef,
+            where("email", "==", email),
+            where("isActive", "==", true),
+          );
 
-          const querySnapshot = await getDocs(q);
           const tenants = [];
+          const querySnapshot = await getDocs(q);
+
           querySnapshot.forEach((doc) => {
             tenants.push({ id: doc.id, ...doc.data() });
           });
 
-          const tenant = tenants.find((tenant) => tenant.email === email);
-          return { data: tenant };
+          // only 1 tenant can remain active at any given time
+          const currentTenant = tenants.find((tenant) => tenant.isActive);
+          return { data: currentTenant };
         } catch (error) {
           return {
             error: {
@@ -190,7 +196,7 @@ export const tenantsApi = createApi({
 export const {
   useLazyGetTenantListQuery,
   useGetTenantsByUserIdQuery,
-  useGetTenantByEmailIdQuery,
+  useGetActiveTenantsByEmailAddressQuery,
   useGetTenantByPropertyIdQuery,
   useCreateTenantMutation,
   useUpdateTenantByIdMutation,

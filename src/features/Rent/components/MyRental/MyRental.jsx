@@ -2,22 +2,14 @@ import React, { useEffect, useState } from "react";
 
 import { useLocation, useNavigate } from "react-router-dom";
 
-import {
-  Alert,
-  Grid,
-  Paper,
-  Skeleton,
-  Stack,
-  Typography,
-} from "@mui/material";
+import { Alert, Grid, Paper, Skeleton, Stack, Typography } from "@mui/material";
 import AButton from "common/AButton";
 import EmptyComponent from "common/EmptyComponent";
-import { HomeRouteUri } from "common/utils";
 import { useGetUserDataByIdQuery } from "features/Api/firebaseUserApi";
 import { useGetPropertiesByPropertyIdQuery } from "features/Api/propertiesApi";
 import { useGetRentsByPropertyIdQuery } from "features/Api/rentApi";
 import {
-  useGetTenantByEmailIdQuery,
+  useGetActiveTenantsByEmailAddressQuery,
   useGetTenantByPropertyIdQuery,
 } from "features/Api/tenantsApi";
 import PropertyDetails from "features/Rent/common/PropertyDetails";
@@ -35,7 +27,7 @@ const MyRental = () => {
   const navigate = useNavigate();
   const user = fetchLoggedInUser();
 
-  const { data: renter, isLoading } = useGetTenantByEmailIdQuery(
+  const { data: renter, isLoading } = useGetActiveTenantsByEmailAddressQuery(
     user?.googleEmailAddress,
     {
       skip: !user?.googleEmailAddress,
@@ -76,20 +68,6 @@ const MyRental = () => {
 
   // if home is SoR, then only each bedroom is counted as a unit
   const isAnyTenantSoR = tenants?.some((tenant) => tenant.isSoR);
-  const isRenterActive = renter?.isActive;
-
-  useEffect(() => {
-    if (!isRenterActive) {
-      setAlert({
-        label: "Accept",
-        caption:
-          "No active properties have been assigned to you as a tenant. Contact your admin for more details.",
-        severity: "error",
-        value: true,
-        onClick: () => navigate(HomeRouteUri),
-      });
-    }
-  }, [isRenterActive]);
 
   useEffect(() => {
     const params = new URLSearchParams(location?.search);
@@ -112,7 +90,7 @@ const MyRental = () => {
 
   if (!property)
     return (
-      <EmptyComponent caption="No properties have been assigned to you as a tenant. Contact your admin for more details." />
+      <EmptyComponent caption="No active properties have been assigned to you as a tenant. Contact your admin for more details." />
     );
 
   return (
@@ -170,7 +148,7 @@ const MyRental = () => {
           <DocumentsOverview
             dataTour="rental-6"
             property={property}
-            disableUpload={!isRenterActive}
+            disableUpload={!renter.isActive}
             isPropertyLoading={isPropertyLoading}
           />
         </Grid>
