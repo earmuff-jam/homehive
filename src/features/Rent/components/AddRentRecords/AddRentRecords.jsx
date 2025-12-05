@@ -17,7 +17,11 @@ import { useCreateRentRecordMutation } from "features/Api/rentApi";
 import { useGetTenantByPropertyIdQuery } from "features/Api/tenantsApi";
 import { fetchLoggedInUser, formatCurrency } from "features/Rent/utils";
 
-export const AddRentRecords = ({ property, setShowSnackbar, closeDialog }) => {
+export default function AddRentRecords({
+  property,
+  setShowSnackbar,
+  closeDialog,
+}) {
   const user = fetchLoggedInUser();
   const [
     createRentRecord,
@@ -324,4 +328,4 @@ export const AddRentRecords = ({ property, setShowSnackbar, closeDialog }) => {
       </Stack>
     </form>
   );
-};
+}

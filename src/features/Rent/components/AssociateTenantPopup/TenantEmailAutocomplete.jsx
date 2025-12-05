@@ -2,9 +2,18 @@ import React from "react";
 
 import { Controller } from "react-hook-form";
 
-import { Autocomplete, ListItem, TextField, Typography } from "@mui/material";
+import {
+  Autocomplete,
+  ListItem,
+  Skeleton,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { createFilterOptions } from "@mui/material/Autocomplete";
-import { useLazyGetTenantListQuery } from "features/Api/tenantsApi";
+import {
+  useGetTenantListQuery,
+  useLazyGetTenantListQuery,
+} from "features/Api/tenantsApi";
 
 const filter = createFilterOptions();
 
@@ -14,10 +23,14 @@ export default function TenantEmailAutocomplete({
   setError,
   clearErrors,
 }) {
+  const { data: activeTenants, isLoading } = useGetTenantListQuery(true);
+
   const [
     triggerGetExistingTenants,
-    { data: existingTenantsList = [], isLoading: isExistingTenantsListLoading },
+    { data: inactiveTenants = [], isLoading: isInactiveTenantsLoading },
   ] = useLazyGetTenantListQuery();
+
+  if (isLoading) return <Skeleton height="inherit" />;
 
   return (
     <Controller
@@ -27,13 +40,6 @@ export default function TenantEmailAutocomplete({
         required: "Email Address is required",
       }}
       render={({ field }) => {
-        // display inactive tenants for suggestion
-        // active tenants are currently being a tenant somewhere else.
-        const inactiveTenants =
-          existingTenantsList
-            ?.filter((t) => !t.isActive)
-            .map((t) => ({ title: t.email })) || [];
-
         return (
           <Autocomplete
             {...field}
@@ -41,14 +47,14 @@ export default function TenantEmailAutocomplete({
             selectOnFocus
             clearOnBlur
             handleHomeEndKeys
-            loading={isExistingTenantsListLoading}
-            options={inactiveTenants}
+            loading={isInactiveTenantsLoading}
+            options={inactiveTenants.map((t) => ({ title: t.email })) || []}
             getOptionLabel={(option) => {
               if (typeof option === "string") return option;
               if (option.inputValue) return option.inputValue;
               return option.title;
             }}
-            onOpen={() => triggerGetExistingTenants(false)} // fetch inactive tenants only
+            onOpen={() => triggerGetExistingTenants(false)}
             filterOptions={(options, params) => {
               const filtered = filter(options, params);
               const { inputValue } = params;
@@ -74,9 +80,8 @@ export default function TenantEmailAutocomplete({
                 selectedValue = newValue.title;
               }
 
-              // check if this tenant email already exists and is active elsewhere
-              const tenantExists = existingTenantsList?.some(
-                (t) => t.email === selectedValue && t.isActive,
+              const tenantExists = activeTenants?.some(
+                (t) => t.email === selectedValue,
               );
 
               if (tenantExists) {
