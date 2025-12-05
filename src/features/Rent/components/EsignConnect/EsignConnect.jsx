@@ -31,7 +31,7 @@ import RecentDocuments from "features/Rent/components/EsignConnect/RecentDocumen
 import HelpAndSupport from "features/Rent/components/ExternalIntegrations/HelpAndSupport";
 import { fetchLoggedInUser } from "features/Rent/utils";
 
-const esignConnectOptions = [
+const EsignConnectOptions = [
   {
     id: 1,
     title: "Usage guide",
@@ -69,10 +69,6 @@ const esignConnectOptions = [
 export default function EsignConnect() {
   const user = fetchLoggedInUser();
 
-  // TODO:
-  // fetch Esign status
-  // handle esign id with updateUser fn
-
   const { data: userData, isLoading: isUserDataFromDbLoading } =
     useGetUserDataByIdQuery(user?.uid, {
       skip: !user?.uid,
@@ -87,8 +83,7 @@ export default function EsignConnect() {
     updateUser({
       uid: userData?.uid,
       newData: {
-        // esignAccountId: data?.esignAccountId,
-        esignAccountIsActive: true, // used to link / unlink account
+        esignAccountIsActive: true,
         updatedOn: dayjs().toISOString(),
         updatedBy: user?.uid,
       },
@@ -217,7 +212,7 @@ export default function EsignConnect() {
       </Grid2>
 
       <Grid2 size={12}>
-        <HelpAndSupport options={esignConnectOptions} />
+        <HelpAndSupport options={EsignConnectOptions} />
       </Grid2>
     </Grid2>
   );
