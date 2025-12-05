@@ -105,6 +105,7 @@ const Property = () => {
             isPropertyLoading={isPropertyLoading}
             property={property}
             dataTour="property-6"
+            disableUpload={false}
           />
         </Grid>
 
