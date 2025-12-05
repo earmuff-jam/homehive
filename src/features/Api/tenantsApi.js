@@ -66,7 +66,7 @@ export const tenantsApi = createApi({
             tenants.push({ id: doc.id, ...doc.data() });
           });
 
-          // only 1 tenant can remain active at any given time
+          // only 1 tenant can remain active at any given
           const currentTenant = tenants.find((tenant) => tenant.isActive);
           return { data: currentTenant };
         } catch (error) {
@@ -194,6 +194,7 @@ export const tenantsApi = createApi({
 });
 
 export const {
+  useGetTenantListQuery,
   useLazyGetTenantListQuery,
   useGetTenantsByUserIdQuery,
   useGetActiveTenantsByEmailAddressQuery,
