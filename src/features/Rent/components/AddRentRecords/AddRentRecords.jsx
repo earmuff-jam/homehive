@@ -209,7 +209,6 @@ export default function AddRentRecords({
             id="rent_amount"
             placeholder="Rent Amount"
             errorMsg={errors.name?.message}
-            isDisabled
             inputProps={{
               ...register("rent_amount", {
                 required: "Rent Amount is required",
@@ -304,7 +303,7 @@ export default function AddRentRecords({
             id="note"
             multiline
             maxRows={5}
-            placeholder="Notes in less than 300 characters"
+            placeholder="Note in less than 300 characters"
             errorMsg={errors.name?.message}
             inputProps={{
               ...register("note", {
