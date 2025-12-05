@@ -40,7 +40,7 @@ const EsignConnectOptions = [
       <HelpOutlineRounded sx={{ fontSize: 32, color: "primary.main", mb: 1 }} />
     ),
     buttonText: "How it works",
-    to: "https://sign.com/support#how-it-works",
+    to: "https://firma.dev/insights",
   },
   {
     id: 2,
@@ -52,7 +52,7 @@ const EsignConnectOptions = [
       />
     ),
     buttonText: "Contact us",
-    to: "https://sign.com/support#friendly-support",
+    to: "https://firma.dev/contact",
   },
   {
     id: 3,
@@ -62,7 +62,7 @@ const EsignConnectOptions = [
       <SecurityRounded sx={{ fontSize: 32, color: "primary.main", mb: 1 }} />
     ),
     buttonText: "View Compliance",
-    to: "https://sign.com/legality#certifications-and-compliance",
+    to: "https://firma.dev/insights/how-to-keep-your-e-signatures-secure-without-adding-complexity",
   },
 ];
 
@@ -149,7 +149,7 @@ export default function EsignConnect() {
             <AButton
               disabled
               sx={{ mt: 2 }}
-              startIcon={<CloudCircleRounded />}
+              startIcon={<CloudCircleRounded fontSize="small" />}
               label="Link Esign"
               variant="contained"
               onClick={connectEsign}
@@ -170,7 +170,7 @@ export default function EsignConnect() {
                     Docusign ID:
                   </Typography>
                   <Typography variant="body2" color="error">
-                    {userData?.docusignAccountId}
+                    {userData?.esignAccountId}
                   </Typography>
                 </Stack>
 
@@ -183,7 +183,7 @@ export default function EsignConnect() {
                     Status
                   </Typography>
                   <Typography variant="body2" color="info">
-                    {userData?.docusignAccountType}
+                    {userData?.esignAccountType}
                   </Typography>
                 </Stack>
               </Stack>
@@ -193,10 +193,10 @@ export default function EsignConnect() {
       </Grid2>
 
       <Grid2 size={12}>
-        {/* Docusign Account Information */}
+        {/* Esign Account Information */}
         <Card elevation={0} sx={{ p: 1, height: "100%" }}>
           <RowHeader
-            title="Docusign Account Information"
+            title="Esign Account Information"
             caption="View details about your connected account."
             sxProps={{
               fontSize: "0.875rem",
