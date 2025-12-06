@@ -2,10 +2,7 @@ import React from "react";
 
 import { Card, CardContent, Skeleton, Stack, Typography } from "@mui/material";
 import RowHeader from "common/RowHeader/RowHeader";
-import {
-  derieveTotalRent,
-  formatCurrency,
-} from "features/Rent/utils";
+import { derieveTotalRent, formatCurrency } from "features/Rent/utils";
 
 export default function FinancialOverview({
   isTenantsLoading,
@@ -36,6 +33,9 @@ export default function FinancialOverview({
                   {formatCurrency(
                     derieveTotalRent(property, tenants, isAnyTenantSoR),
                   )}
+                  <Typography component="span" variant="caption">
+                    {` USD / m`}
+                  </Typography>
                 </Typography>
                 <Typography variant="subtitle2" color="text.secondary">
                   Monthly Revenue
@@ -50,6 +50,9 @@ export default function FinancialOverview({
                   {formatCurrency(
                     derieveTotalRent(property, tenants, isAnyTenantSoR) * 12,
                   )}
+                  <Typography component="span" variant="caption">
+                    {` USD / yr`}
+                  </Typography>
                 </Typography>
                 <Typography variant="subtitle2" color="text.secondary">
                   Projected Annual Revenue

@@ -158,7 +158,7 @@ export default function EsignConnect() {
           ) : (
             <>
               <Typography variant="body2" color="text.secondary" gutterBottom>
-                Your docusign account is connected. Verify docusign details.
+                Your Esign account is connected. Verify details.
               </Typography>
               <Stack direction="row" spacing={2}>
                 <Stack>
@@ -167,7 +167,7 @@ export default function EsignConnect() {
                     color="textPrimary"
                     fontWeight="bold"
                   >
-                    Docusign ID:
+                    Esign ID:
                   </Typography>
                   <Typography variant="body2" color="error">
                     {userData?.esignAccountId}
