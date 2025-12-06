@@ -10,6 +10,7 @@ export const externalIntegrationsApi = createApi({
     },
   }),
   endpoints: (builder) => ({
+    // used to provide status for Esign
     getWorkspaces: builder.mutation({
       query: () => ({
         method: "POST",
@@ -20,18 +21,14 @@ export const externalIntegrationsApi = createApi({
       }),
     }),
     createEnvelope: builder.mutation({
-      query: ({ recipientEmail, recipientName, documentBase64 }) => ({
-        url: "createEnvelope",
+      query: (base64FileData) => ({
         method: "POST",
-        body: {
-          recipientEmail,
-          recipientName,
-          documentBase64,
-        },
+        body: JSON.stringify({
+          fUrl: "0014_create_esign_envelope",
+          fMethod: "POST",
+          payload: base64FileData,
+        }),
       }),
-      transformResponse: (response) => {
-        return response;
-      },
     }),
   }),
 });

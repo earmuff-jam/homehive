@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { AddRounded, FiberManualRecordRounded } from "@mui/icons-material";
 import {
@@ -21,9 +21,13 @@ import AButton from "common/AButton";
 import AIconButton from "common/AIconButton";
 import CustomSnackbar from "common/CustomSnackbar/CustomSnackbar";
 import RowHeader from "common/RowHeader/RowHeader";
-import { useGetWorkspacesMutation } from "features/Api/externalIntegrationsApi";
+import {
+  useCreateEnvelopeMutation,
+  useGetWorkspacesMutation,
+} from "features/Api/externalIntegrationsApi";
 import UploadDocument from "features/Rent/components/UploadDocument/UploadDocument";
 import ViewDocuments from "features/Rent/components/Widgets/ViewDocuments";
+import { convertFileToBase64Encoding } from "features/Rent/utils";
 
 export default function DocumentsOverview({
   isPropertyLoading,
@@ -37,13 +41,34 @@ export default function DocumentsOverview({
   const [getWorkspaces, { isError, data: workspacesData = {} }] =
     useGetWorkspacesMutation();
 
+  const [
+    createEnvelope,
+    {
+      // data,
+      isLoading: isCreateEnvelopeLoading,
+      isSuccess: isCreateEnvelopeSuccess,
+    },
+  ] = useCreateEnvelopeMutation();
+
   const [dialog, setDialog] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
   const [showSnackbar, setShowSnackbar] = useState(false);
 
   const isEsignOffline = isError || !workspacesData || !selectedFile;
 
-  const uploadDoc = () => {};
+  const uploadDoc = async () => {
+    const base64FileData = await convertFileToBase64Encoding(
+      selectedFile?.file,
+    );
+    createEnvelope(base64FileData);
+  };
+
+  useEffect(() => {
+    if (isCreateEnvelopeSuccess) {
+      setShowSnackbar(true);
+      setDialog(false);
+    }
+  }, [isCreateEnvelopeLoading]);
 
   return (
     <Card sx={{ mb: 3 }} data-tour={dataTour}>
