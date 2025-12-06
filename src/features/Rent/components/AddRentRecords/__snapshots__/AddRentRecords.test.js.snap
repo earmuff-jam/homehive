@@ -342,7 +342,7 @@ exports[`AddRentRecords Component Tests AddRentRecords Snapshot Tests matches Ad
             class="MuiStack-root css-niqf4j-MuiStack-root"
           >
             <p
-              class="MuiTypography-root MuiTypography-body2 css-fzryi2-MuiTypography-root"
+              class="MuiTypography-root MuiTypography-body2 css-hol6i2-MuiTypography-root"
             >
               Rent Amount *
             </p>
@@ -351,12 +351,11 @@ exports[`AddRentRecords Component Tests AddRentRecords Snapshot Tests matches Ad
             class="MuiFormControl-root MuiFormControl-fullWidth MuiTextField-root css-cmpglg-MuiFormControl-root-MuiTextField-root"
           >
             <div
-              class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-colorPrimary Mui-disabled MuiInputBase-fullWidth MuiInputBase-formControl MuiInputBase-sizeSmall css-1blp12k-MuiInputBase-root-MuiOutlinedInput-root"
+              class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-colorPrimary MuiInputBase-fullWidth MuiInputBase-formControl MuiInputBase-sizeSmall css-1blp12k-MuiInputBase-root-MuiOutlinedInput-root"
             >
               <input
                 aria-invalid="false"
-                class="MuiInputBase-input MuiOutlinedInput-input Mui-disabled MuiInputBase-inputSizeSmall css-1pzfmz2-MuiInputBase-input-MuiOutlinedInput-input"
-                disabled=""
+                class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputSizeSmall css-1pzfmz2-MuiInputBase-input-MuiOutlinedInput-input"
                 id="rent_amount"
                 name="rent_amount"
                 placeholder="Rent Amount"
@@ -553,7 +552,7 @@ exports[`AddRentRecords Component Tests AddRentRecords Snapshot Tests matches Ad
                 class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputMultiline MuiInputBase-inputSizeSmall css-msbelq-MuiInputBase-input-MuiOutlinedInput-input"
                 id="note"
                 name="note"
-                placeholder="Notes in less than 300 characters"
+                placeholder="Note in less than 300 characters"
                 rows="5"
                 style="height: 0px; overflow: hidden;"
               />

@@ -164,7 +164,7 @@ export default function QuickActions({ property }) {
               {dialog.type === AddRentRecordsTextString && (
                 <RowHeader
                   title="Add rent records"
-                  caption="Once you add a rental record manually, it can’t be edited later. Please double-check before submitting."
+                  caption="Editing an existing row is prohibited. Confirm rent validity before submission."
                   sxProps={{
                     textAlign: "left",
                   }}

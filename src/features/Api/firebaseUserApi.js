@@ -1,7 +1,15 @@
 import { createApi, fakeBaseQuery } from "@reduxjs/toolkit/query/react";
 import { authenticateViaGoogle } from "features/Auth/AuthHelper";
 import { getAuth, signOut } from "firebase/auth";
-import { doc, getDoc, setDoc } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  setDoc,
+  where,
+} from "firebase/firestore";
 import { authenticatorConfig, authenticatorFirestore as db } from "src/config";
 
 export const firebaseUserApi = createApi({
@@ -29,6 +37,35 @@ export const firebaseUserApi = createApi({
         }
       },
       providesTags: ["User"],
+    }),
+    // fetch user data by email address
+    getUserByEmailAddress: builder.query({
+      async queryFn(emailAddress) {
+        try {
+          const q = query(
+            collection(db, "users"),
+            where("googleEmailAddress", "==", emailAddress),
+          );
+
+          const querySnapshot = await getDocs(q);
+
+          if (querySnapshot.empty) {
+            return { data: null };
+          }
+          const userDoc = querySnapshot.docs[0];
+          const userData = { id: userDoc.id, ...userDoc.data() };
+
+          return { data: userData };
+        } catch (error) {
+          return {
+            error: {
+              message: error.message,
+              code: error.code,
+            },
+          };
+        }
+      },
+      providesTags: ["tenants"],
     }),
     // create user in users db
     authenticate: builder.mutation({
@@ -102,6 +139,7 @@ export const firebaseUserApi = createApi({
 export const {
   useLazyGetUserDataByIdQuery,
   useGetUserDataByIdQuery,
+  useGetUserByEmailAddressQuery,
   useAuthenticateMutation,
   useUpdateUserByUidMutation,
   useLogoutMutation,

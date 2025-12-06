@@ -25,6 +25,10 @@ jest.mock("features/Api/firebaseUserApi", () => ({
     data: {},
     isLoading: false,
   })),
+  useGetUserByEmailAddressQuery: jest.fn(() => ({
+    data: {},
+    isLoading: false,
+  })),
 }));
 
 jest.mock("features/Api/tenantsApi", () => ({
@@ -83,12 +87,8 @@ describe("AddRentRecords Component Tests", () => {
       expect(
         screen.getByText("Property Owner Information"),
       ).toBeInTheDocument();
-      expect(
-        screen.getByText("Tenant Information"),
-      ).toBeInTheDocument();
-      expect(
-        screen.getByText("Rent Information"),
-      ).toBeInTheDocument();
+      expect(screen.getByText("Tenant Information")).toBeInTheDocument();
+      expect(screen.getByText("Rent Information")).toBeInTheDocument();
     });
   });
 });
