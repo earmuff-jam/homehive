@@ -15,26 +15,6 @@ export const rentApi = createApi({
   baseQuery: fakeBaseQuery(),
   tagTypes: ["rent"],
   endpoints: (builder) => ({
-    getRentById: builder.query({
-      async queryFn(rentId) {
-        try {
-          const docRef = doc(db, "rents", rentId);
-          const docSnap = await getDoc(docRef);
-          if (!docSnap.exists()) {
-            return { error: { message: "Rent data not found." } };
-          }
-          return { data: docSnap.data() };
-        } catch (error) {
-          return {
-            error: {
-              message: error.message,
-              code: error.code,
-            },
-          };
-        }
-      },
-      providesTags: ["rent"],
-    }),
     // fetches rents by property id and currentUserEmail
     // currentUserEmail must either be a tenant or a property owner to view data
     // if currentUserEmail is tenant, only returns that data.
@@ -243,7 +223,6 @@ export const rentApi = createApi({
 });
 
 export const {
-  useGetRentByIdQuery,
   useGetRentsByPropertyIdQuery,
   useLazyGetRentsByPropertyIdWithFiltersQuery,
   useLazyGetRentByMonthQuery,

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 
 import { Controller, useForm } from "react-hook-form";
 
@@ -12,7 +12,10 @@ import { LocalizationProvider, MobileDatePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import AButton from "common/AButton";
 import TextFieldWithLabel from "common/TextFieldWithLabel";
-import { useGetUserDataByIdQuery } from "features/Api/firebaseUserApi";
+import {
+  useGetUserByEmailAddressQuery,
+  useGetUserDataByIdQuery,
+} from "features/Api/firebaseUserApi";
 import { useCreateRentRecordMutation } from "features/Api/rentApi";
 import { useGetTenantByPropertyIdQuery } from "features/Api/tenantsApi";
 import { fetchLoggedInUser, formatCurrency } from "features/Rent/utils";
@@ -42,9 +45,17 @@ export default function AddRentRecords({
     skip: !property?.id,
   });
 
-  const primaryTenant = tenants
-    ?.filter((tenant) => tenant.isPrimary)
-    .find((item) => item);
+  const primaryTenant = useMemo(
+    () => tenants?.find((tenant) => tenant.isPrimary),
+    [tenants],
+  );
+
+  const {
+    data: primaryTenantDetails = {},
+    isLoading: isPrimaryTenantDetailsLoading,
+  } = useGetUserByEmailAddressQuery(primaryTenant?.email, {
+    skip: !primaryTenant?.email,
+  });
 
   const {
     register,
@@ -97,6 +108,13 @@ export default function AddRentRecords({
       setValue("tenant_email_address", primaryTenant?.email);
     }
   }, [primaryTenant?.id]);
+
+  useEffect(() => {
+    if (primaryTenantDetails) {
+      setValue("tenant_first_name", primaryTenantDetails?.first_name);
+      setValue("tenant_last_name", primaryTenantDetails?.last_name);
+    }
+  }, [isPrimaryTenantDetailsLoading]);
 
   useEffect(() => {
     if (propertyOwnerData) {
