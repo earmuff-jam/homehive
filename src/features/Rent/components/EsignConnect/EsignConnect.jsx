@@ -1,4 +1,6 @@
-import React from "react";
+import React, { useEffect } from "react";
+
+import { v4 as uuidv4 } from "uuid";
 
 import dayjs from "dayjs";
 
@@ -23,6 +25,7 @@ import {
 import AButton from "common/AButton";
 import AIconButton from "common/AIconButton";
 import RowHeader from "common/RowHeader/RowHeader";
+import { useCreateWorkspaceMutation } from "features/Api/externalIntegrationsApi";
 import {
   useGetUserDataByIdQuery,
   useUpdateUserByUidMutation,
@@ -77,18 +80,18 @@ export default function EsignConnect() {
   const [updateUser, { isLoading: isUpdateUserLoading }] =
     useUpdateUserByUidMutation();
 
+  const [
+    createWorkspace,
+    {
+      isLoading: isCreateWorkspaceLoading,
+      isSuccess: isCreateWorkspaceSuccess,
+      originalArgs,
+    },
+  ] = useCreateWorkspaceMutation();
+
   const isEsignConnected = userData?.esignAccountIsActive;
 
-  const connectEsign = () => {
-    updateUser({
-      uid: userData?.uid,
-      newData: {
-        esignAccountIsActive: true,
-        updatedOn: dayjs().toISOString(),
-        updatedBy: user?.uid,
-      },
-    });
-  };
+  const connectEsign = () => createWorkspace({ workspaceId: uuidv4() });
 
   const disconnectEsign = () => {
     updateUser({
@@ -100,6 +103,20 @@ export default function EsignConnect() {
       },
     });
   };
+
+  useEffect(() => {
+    if (isCreateWorkspaceSuccess) {
+      updateUser({
+        uid: userData?.uid,
+        newData: {
+          esignAccountWorkspaceId: originalArgs.workspaceId,
+          esignAccountIsActive: true,
+          updatedOn: dayjs().toISOString(),
+          updatedBy: user?.uid,
+        },
+      });
+    }
+  }, [isCreateWorkspaceLoading]);
 
   if (isUserDataFromDbLoading) return <Skeleton height="10rem" width="100%" />;
 
@@ -147,7 +164,6 @@ export default function EsignConnect() {
 
           {!isEsignConnected ? (
             <AButton
-              disabled
               sx={{ mt: 2 }}
               startIcon={<CloudCircleRounded fontSize="small" />}
               label="Link Esign"
