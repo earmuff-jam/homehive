@@ -19,6 +19,16 @@ export const externalIntegrationsApi = createApi({
         }),
       }),
     }),
+    createWorkspace: builder.mutation({
+      query: (workspaceId) => ({
+        method: "POST",
+        body: JSON.stringify({
+          fUrl: "0014_create_esign_workspace",
+          fMethod: "POST",
+          payload: workspaceId,
+        }),
+      }),
+    }),
     createEnvelope: builder.mutation({
       query: ({ recipientEmail, recipientName, documentBase64 }) => ({
         url: "createEnvelope",
@@ -36,5 +46,8 @@ export const externalIntegrationsApi = createApi({
   }),
 });
 
-export const { useCreateEnvelopeMutation, useGetWorkspacesMutation } =
-  externalIntegrationsApi;
+export const {
+  useCreateWorkspaceMutation,
+  useCreateEnvelopeMutation,
+  useGetWorkspacesMutation,
+} = externalIntegrationsApi;
