@@ -148,7 +148,6 @@ const MyRental = () => {
           <DocumentsOverview
             dataTour="rental-6"
             property={property}
-            disableUpload={!renter.isActive}
             isPropertyLoading={isPropertyLoading}
           />
         </Grid>

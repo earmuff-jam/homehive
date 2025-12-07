@@ -1,40 +1,51 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo } from "react";
 
 import dayjs from "dayjs";
 
-import { Stack } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import EmptyComponent from "common/EmptyComponent";
-import RowHeader from "common/RowHeader/RowHeader";
-import relativeTime from "dayjs/plugin/relativeTime";
 import {
   MaterialReactTable,
   useMaterialReactTable,
 } from "material-react-table";
 
-dayjs.extend(relativeTime);
-
-// TODO : https://github.com/earmuff-jam/invoicer/issues/77
-// Fetch data from S3 / wherever we store docusign stuffs.
-const ViewDocuments = ({ label, caption }) => {
-  const [tableData] = useState([]);
-
+export default function EsignTemplateDetails({ templates = [] }) {
   const columns = useMemo(
     () => [
       {
-        accessorKey: "id",
-        header: "ID",
-        size: 40,
-        Cell: ({ cell }) => (cell.getValue() ? cell.getValue() : "-"),
-      },
-      {
-        accessorKey: "fileName",
-        header: "Attachment Filename",
+        accessorKey: "name",
+        header: "Template Name",
         size: 200,
+        Cell: ({ cell, row }) => (
+          <Typography
+            variant="subtitle2"
+            sx={{ cursor: "pointer" }}
+            onClick={() =>
+              window.open(
+                row.original.document_url,
+                "_blank",
+                "noopener,noreferrer",
+              )
+            }
+          >
+            {cell.getValue() ? cell.getValue() : "-"}
+          </Typography>
+        ),
+      },
+      {
+        accessorKey: "description",
+        header: "Template Description",
+        size: 100,
         Cell: ({ cell }) => (cell.getValue() ? cell.getValue() : "-"),
       },
-
       {
-        accessorKey: "updatedOn",
+        accessorKey: "document_url_expires_at",
+        header: "Expires in",
+        size: 100,
+        Cell: ({ cell }) => dayjs(cell.getValue()).fromNow(),
+      },
+      {
+        accessorKey: "updated_date",
         header: "Last updated",
         size: 150,
         Cell: ({ cell }) => dayjs(cell.getValue()).fromNow(),
@@ -45,9 +56,10 @@ const ViewDocuments = ({ label, caption }) => {
 
   const table = useMaterialReactTable({
     columns,
-    data: tableData,
+    data: templates,
     enableColumnActions: false,
     enableTopToolbar: false,
+    enablePagination: templates?.length > 0,
     initialState: {
       density: "comfortable",
     },
@@ -72,19 +84,8 @@ const ViewDocuments = ({ label, caption }) => {
   });
 
   return (
-    <Stack spacing={2}>
-      <RowHeader
-        title={label}
-        caption={caption}
-        sxProps={{
-          textAlign: "left",
-          fontWeight: "bold",
-          color: "text.secondary",
-        }}
-      />
+    <Box>
       <MaterialReactTable table={table} />
-    </Stack>
+    </Box>
   );
-};
-
-export default ViewDocuments;
+}

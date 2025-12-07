@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 import { v4 as uuidv4 } from "uuid";
 
@@ -9,13 +9,14 @@ import {
   SecurityRounded,
   SupportAgentRounded,
 } from "@mui/icons-material";
-import { Card, Grid2, Skeleton } from "@mui/material";
-import RowHeader from "common/RowHeader/RowHeader";
+import { Grid2, Skeleton } from "@mui/material";
+import CustomSnackbar from "common/CustomSnackbar/CustomSnackbar";
 import { useCreateWorkspaceMutation } from "features/Api/externalIntegrationsApi";
 import {
   useGetUserDataByIdQuery,
   useUpdateUserByUidMutation,
 } from "features/Api/firebaseUserApi";
+import EsignTemplates from "features/Rent/components/EsignConnect/EsignTemplates";
 import RecentDocuments from "features/Rent/components/EsignConnect/RecentDocuments";
 import StatusCard from "features/Rent/components/EsignConnect/StatusCard";
 import HelpAndSupport from "features/Rent/components/ExternalIntegrations/HelpAndSupport";
@@ -64,43 +65,69 @@ export default function EsignConnect() {
       skip: !user?.uid,
     });
 
-  const [updateUser, { isLoading: isUpdateUserLoading }] =
-    useUpdateUserByUidMutation();
+  const [
+    updateUser,
+    { isLoading: isUpdateUserLoading, isSuccess: isUpdateUserSuccess },
+  ] = useUpdateUserByUidMutation();
 
   const [
     createWorkspace,
     {
+      originalArgs,
       isLoading: isCreateWorkspaceLoading,
       isSuccess: isCreateWorkspaceSuccess,
-      originalArgs,
+      data: createWorkspaceRespData,
     },
   ] = useCreateWorkspaceMutation();
 
+  const [showSnackbar, setShowSnackbar] = useState(false);
+
   const isEsignConnected = userData?.esignAccountIsActive;
 
-  const connectEsign = () => createWorkspace({ workspaceId: uuidv4() });
-
-  const disconnectEsign = () => {
+  const updateUsr = (data) => {
     updateUser({
       uid: userData?.uid,
       newData: {
-        esignAccountIsActive: false, // used to link / unlink account
-        updatedOn: dayjs().toISOString(),
-        updatedBy: user?.uid,
+        ...data,
       },
     });
   };
 
+  // fetch unique workspaceID only if none exists
+  const connectEsign = () => {
+    if (!userData?.esignAccountWorkspaceId) {
+      createWorkspace({ workspaceId: uuidv4() });
+    } else {
+      updateUsr({
+        esignAccountIsActive: true,
+        updatedOn: dayjs().toISOString(),
+        updatedBy: user?.uid,
+      });
+    }
+  };
+
+  const disconnectEsign = () =>
+    updateUsr({
+      esignAccountIsActive: false,
+      updatedOn: dayjs().toISOString(),
+      updatedBy: user?.uid,
+    });
+
+  useEffect(() => {
+    if (isUpdateUserSuccess) {
+      setShowSnackbar(true);
+    }
+  }, [isUpdateUserLoading]);
+
   useEffect(() => {
     if (isCreateWorkspaceSuccess) {
-      updateUser({
-        uid: userData?.uid,
-        newData: {
-          esignAccountWorkspaceId: originalArgs.workspaceId,
-          esignAccountIsActive: true,
-          updatedOn: dayjs().toISOString(),
-          updatedBy: user?.uid,
-        },
+      updateUsr({
+        esignAccountIsActive: true,
+        esignAccountWorkspaceId: originalArgs.workspaceId,
+        esignAccountWorkspaceName: createWorkspaceRespData?.name,
+        esignAccountWorkspaceCreatedAt: createWorkspaceRespData?.createdAt,
+        updatedBy: user?.uid,
+        updatedOn: dayjs().toISOString(),
       });
     }
   }, [isCreateWorkspaceLoading]);
@@ -120,18 +147,7 @@ export default function EsignConnect() {
       </Grid2>
 
       <Grid2 size={12}>
-        {/* Esign Account Information */}
-        <Card elevation={0} sx={{ p: 1, height: "100%" }}>
-          <RowHeader
-            title="Esign Account Information"
-            caption="View details about your connected account."
-            sxProps={{
-              fontSize: "0.875rem",
-              fontWeight: "bold",
-              textAlign: "left",
-            }}
-          />
-        </Card>
+        <EsignTemplates isEsignConnected={isEsignConnected} />
       </Grid2>
 
       <Grid2 size={12}>
@@ -141,6 +157,12 @@ export default function EsignConnect() {
       <Grid2 size={12}>
         <HelpAndSupport options={EsignConnectOptions} />
       </Grid2>
+
+      <CustomSnackbar
+        showSnackbar={showSnackbar}
+        setShowSnackbar={setShowSnackbar}
+        title="Changes saved."
+      />
     </Grid2>
   );
 }
