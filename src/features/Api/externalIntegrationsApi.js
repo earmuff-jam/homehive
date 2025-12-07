@@ -1,5 +1,3 @@
-import { data } from "react-router-dom";
-
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const externalIntegrationsApi = createApi({
