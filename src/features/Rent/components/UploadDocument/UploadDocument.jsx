@@ -9,7 +9,7 @@ import CustomSnackbar from "common/CustomSnackbar/CustomSnackbar";
 import FileDetails from "features/Rent/components/UploadDocument/FileDetails";
 import { fetchLoggedInUser } from "features/Rent/utils";
 
-export default function UploadDocument({ selectedFile, setSelectedFile, getWorkspaces }) {
+export default function UploadDocument({ selectedFile, setSelectedFile }) {
   const user = fetchLoggedInUser();
 
   const [showSnackbar, setShowSnackbar] = useState(false);
@@ -29,7 +29,6 @@ export default function UploadDocument({ selectedFile, setSelectedFile, getWorks
         updatedBy: user?.uid,
       });
       setShowSnackbar(true); // only for correct file
-      getWorkspaces();
     }
     // allows users to add the same file
     event.target.value = null;

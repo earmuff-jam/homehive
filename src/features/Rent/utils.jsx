@@ -375,3 +375,19 @@ export const isFeatureEnabled = (key) => {
   const enabledFlagMap = validateClientPermissions();
   return enabledFlagMap.get(key) || false;
 };
+
+/**
+ * convertFileToBase64Encoding ...
+ *
+ * converts a selected file into a base64 encoding
+ *
+ * @param {File} file - the file that is to be converted
+ * @returns {Promise} new Promise - promise of converted file into base64 encoding
+ */
+export const convertFileToBase64Encoding = ({ file }) =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = reject;
+  });
