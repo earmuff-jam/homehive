@@ -22,6 +22,7 @@ import AIconButton from "common/AIconButton";
 import CustomSnackbar from "common/CustomSnackbar/CustomSnackbar";
 import RowHeader from "common/RowHeader/RowHeader";
 import {
+  useCreateEsignFromTemplateMutation,
   useCreateTemplateMutation,
   useDeleteTemplateMutation,
   useGetEsignTemplatesQuery,
@@ -49,6 +50,14 @@ export default function EsignTemplates({ isEsignConnected }) {
   ] = useCreateTemplateMutation();
 
   const [
+    createEsignFromTemplate,
+    {
+      isLoading: isCreateEsignFromTemplateLoading,
+      isSuccess: isCreateEsignFromTemplateSuccess,
+    },
+  ] = useCreateEsignFromTemplateMutation();
+
+  const [
     deleteRow,
     { isLoading: isDeleteRowLoading, isSuccess: isDeleteRowSuccess },
   ] = useDeleteTemplateMutation();
@@ -69,6 +78,11 @@ export default function EsignTemplates({ isEsignConnected }) {
     });
   };
 
+  const createEsignFromExistingTemplate = (row) => {
+    console.log(row);
+    createEsignFromTemplate(row);
+  };
+
   const handleDeleteRow = (rowId) => deleteRow({ id: rowId });
 
   useEffect(() => {
@@ -83,6 +97,12 @@ export default function EsignTemplates({ isEsignConnected }) {
       setShowSnackbar(true);
     }
   }, [isCreateTemplateLoading]);
+
+  useEffect(() => {
+    if (isCreateEsignFromTemplateSuccess) {
+      setShowSnackbar(true);
+    }
+  }, [isCreateEsignFromTemplateLoading]);
 
   if (isGetEsignTemplatesLoading) return <Skeleton height="10rem" />;
 
@@ -131,6 +151,8 @@ export default function EsignTemplates({ isEsignConnected }) {
       <EsignTemplateDetails
         templates={templates}
         handleDeleteRow={handleDeleteRow}
+        isDeleteRowLoading={isDeleteRowLoading}
+        createEsignFromExistingTemplate={createEsignFromExistingTemplate}
       />
       <Dialog
         open={dialog}

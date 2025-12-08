@@ -70,6 +70,16 @@ export const externalIntegrationsApi = createApi({
       }),
       invalidatesTags: [TagTypes.EsignTemplates],
     }),
+    createEsignFromTemplate: builder.mutation({
+      query: (data) => ({
+        method: "POST",
+        body: JSON.stringify({
+          fUrl: "0018_create_esign_from_template",
+          fMethod: "POST",
+          payload: data,
+        }),
+      }),
+    }),
   }),
 });
 
@@ -79,4 +89,5 @@ export const {
   useGetWorkspacesMutation,
   useCreateTemplateMutation,
   useDeleteTemplateMutation,
+  useCreateEsignFromTemplateMutation,
 } = externalIntegrationsApi;

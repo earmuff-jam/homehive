@@ -2,8 +2,11 @@ import React, { useMemo } from "react";
 
 import dayjs from "dayjs";
 
-import { RemoveCircleOutlineRounded } from "@mui/icons-material";
-import { Box, IconButton, Typography } from "@mui/material";
+import {
+  RemoveCircleOutlineRounded,
+  UpgradeRounded,
+} from "@mui/icons-material";
+import { Box, IconButton, Tooltip, Typography } from "@mui/material";
 import EmptyComponent from "common/EmptyComponent";
 import {
   MaterialReactTable,
@@ -13,6 +16,8 @@ import {
 export default function EsignTemplateDetails({
   templates = [],
   handleDeleteRow,
+  isDeleteRowLoading,
+  createEsignFromExistingTemplate,
 }) {
   const columns = useMemo(
     () => [
@@ -116,12 +121,24 @@ export default function EsignTemplateDetails({
         key={row?.id}
         sx={{ display: "flex", flexWrap: "nowrap", gap: "8px" }}
       >
-        <IconButton
-          size="small"
-          onClick={() => handleDeleteRow(row?.original?.id)}
-        >
-          <RemoveCircleOutlineRounded fontSize="small" color="error" />
-        </IconButton>
+        <Tooltip title="Create E-sign">
+          <IconButton
+            size="small"
+            loading={isDeleteRowLoading}
+            onClick={() => createEsignFromExistingTemplate(row?.original)}
+          >
+            <UpgradeRounded fontSize="small" color="primary" />
+          </IconButton>
+        </Tooltip>
+        <Tooltip title="Remove Template">
+          <IconButton
+            size="small"
+            loading={isDeleteRowLoading}
+            onClick={() => handleDeleteRow(row?.original?.id)}
+          >
+            <RemoveCircleOutlineRounded fontSize="small" color="error" />
+          </IconButton>
+        </Tooltip>
       </Box>,
     ],
   });
