@@ -6,7 +6,6 @@ import {
   Badge,
   Box,
   Card,
-  CardContent,
   Chip,
   Dialog,
   DialogActions,
@@ -21,10 +20,10 @@ import {
 import AButton from "common/AButton";
 import AIconButton from "common/AIconButton";
 import CustomSnackbar from "common/CustomSnackbar/CustomSnackbar";
-import EmptyComponent from "common/EmptyComponent";
 import RowHeader from "common/RowHeader/RowHeader";
 import {
   useCreateTemplateMutation,
+  useDeleteTemplateMutation,
   useGetEsignTemplatesQuery,
 } from "features/Api/externalIntegrationsApi";
 import EsignTemplateDetails from "features/Rent/components/EsignConnect/EsignTemplateDetails";
@@ -49,6 +48,11 @@ export default function EsignTemplates({ isEsignConnected }) {
     { isLoading: isCreateTemplateLoading, isSuccess: isCreateTemplateSuccess },
   ] = useCreateTemplateMutation();
 
+  const [
+    deleteRow,
+    { isLoading: isDeleteRowLoading, isSuccess: isDeleteRowSuccess },
+  ] = useDeleteTemplateMutation();
+
   const [dialog, setDialog] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
   const [showSnackbar, setShowSnackbar] = useState(false);
@@ -65,6 +69,14 @@ export default function EsignTemplates({ isEsignConnected }) {
     });
   };
 
+  const handleDeleteRow = (rowId) => deleteRow({ id: rowId });
+
+  useEffect(() => {
+    if (isDeleteRowSuccess) {
+      setShowSnackbar(true);
+    }
+  }, [isDeleteRowLoading]);
+
   useEffect(() => {
     if (isCreateTemplateSuccess) {
       setDialog(false);
@@ -76,54 +88,50 @@ export default function EsignTemplates({ isEsignConnected }) {
 
   return (
     <Card elevation={0} sx={{ p: 1, height: "100%" }}>
-      <CardContent>
-        <Stack
-          direction="row"
-          justifyContent="space-between"
-          sx={{ margin: "0rem 0rem 1rem 0rem" }}
-        >
-          <RowHeader
-            title="Esign Templates"
-            caption="View a list of upto five of your created templates."
-            sxProps={{
-              fontSize: "0.875rem",
-              fontWeight: "bold",
-              textAlign: "left",
-            }}
-          />
-          <Stack direction="row" spacing={1} alignItems="center">
-            <Tooltip title="Add template">
-              <Badge badgeContent={templates.length} color="error">
-                <Box>
-                  {medFormFactor ? (
-                    <AIconButton
-                      size="small"
-                      variant="outlined"
-                      label={<AddRounded fontSize="small" />}
-                      onClick={() => setDialog(!dialog)}
-                    />
-                  ) : (
-                    <AButton
-                      size="small"
-                      variant="outlined"
-                      label="Add Template"
-                      onClick={() => setDialog(!dialog)}
-                    />
-                  )}
-                </Box>
-              </Badge>
-            </Tooltip>
-          </Stack>
+      <Stack
+        direction="row"
+        justifyContent="space-between"
+        sx={{ margin: "0rem 0rem 1rem 0rem" }}
+      >
+        <RowHeader
+          title="Esign Templates"
+          caption="View a list of upto five of your created templates."
+          sxProps={{
+            fontSize: "0.875rem",
+            fontWeight: "bold",
+            textAlign: "left",
+          }}
+        />
+        <Stack direction="row" spacing={1} alignItems="center">
+          <Tooltip title="Add template">
+            <Badge badgeContent={templates.length} color="error">
+              <Box>
+                {medFormFactor ? (
+                  <AIconButton
+                    size="small"
+                    variant="outlined"
+                    disabled={templates?.length >= 5}
+                    onClick={() => setDialog(!dialog)}
+                    label={<AddRounded fontSize="small" />}
+                  />
+                ) : (
+                  <AButton
+                    size="small"
+                    variant="outlined"
+                    label="Add Template"
+                    disabled={templates?.length >= 5}
+                    onClick={() => setDialog(!dialog)}
+                  />
+                )}
+              </Box>
+            </Badge>
+          </Tooltip>
         </Stack>
-
-        {templates?.length <= 0 && (
-          <EmptyComponent
-            caption="Create templates to begin."
-            sxProps={{ variant: "subtitle2" }}
-          />
-        )}
-        <EsignTemplateDetails templates={templates} />
-      </CardContent>
+      </Stack>
+      <EsignTemplateDetails
+        templates={templates}
+        handleDeleteRow={handleDeleteRow}
+      />
       <Dialog
         open={dialog}
         keepMounted

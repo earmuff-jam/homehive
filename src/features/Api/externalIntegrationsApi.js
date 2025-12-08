@@ -2,6 +2,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 const TagTypes = {
   EsignTemplates: "esign-templates",
+  EsignWorkspaces: "esign-workspaces",
 };
 
 export const externalIntegrationsApi = createApi({
@@ -23,6 +24,7 @@ export const externalIntegrationsApi = createApi({
           fMethod: "POST",
         }),
       }),
+      providesTags: [TagTypes.EsignWorkspaces],
     }),
     createWorkspace: builder.mutation({
       query: (workspaceId) => ({
@@ -33,6 +35,7 @@ export const externalIntegrationsApi = createApi({
           payload: workspaceId,
         }),
       }),
+      invalidatesTags: [TagTypes.EsignWorkspaces],
     }),
     getEsignTemplates: builder.query({
       query: (userId) => ({
@@ -56,6 +59,17 @@ export const externalIntegrationsApi = createApi({
       }),
       invalidatesTags: [TagTypes.EsignTemplates],
     }),
+    deleteTemplate: builder.mutation({
+      query: (data) => ({
+        method: "POST",
+        body: JSON.stringify({
+          fUrl: "0017_remove_esign_template",
+          fMethod: "POST",
+          payload: data,
+        }),
+      }),
+      invalidatesTags: [TagTypes.EsignTemplates],
+    }),
   }),
 });
 
@@ -64,4 +78,5 @@ export const {
   useCreateWorkspaceMutation,
   useGetWorkspacesMutation,
   useCreateTemplateMutation,
+  useDeleteTemplateMutation,
 } = externalIntegrationsApi;

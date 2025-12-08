@@ -2,14 +2,18 @@ import React, { useMemo } from "react";
 
 import dayjs from "dayjs";
 
-import { Box, Typography } from "@mui/material";
+import { RemoveCircleOutlineRounded } from "@mui/icons-material";
+import { Box, IconButton, Typography } from "@mui/material";
 import EmptyComponent from "common/EmptyComponent";
 import {
   MaterialReactTable,
   useMaterialReactTable,
 } from "material-react-table";
 
-export default function EsignTemplateDetails({ templates = [] }) {
+export default function EsignTemplateDetails({
+  templates = [],
+  handleDeleteRow,
+}) {
   const columns = useMemo(
     () => [
       {
@@ -19,13 +23,27 @@ export default function EsignTemplateDetails({ templates = [] }) {
         Cell: ({ cell, row }) => (
           <Typography
             variant="subtitle2"
-            sx={{ cursor: "pointer" }}
-            onClick={() =>
-              window.open(
-                row.original.document_url,
-                "_blank",
-                "noopener,noreferrer",
+            sx={{
+              cursor: dayjs().isAfter(
+                dayjs(row?.original?.document_url_expires_at),
               )
+                ? "inherit"
+                : "pointer",
+            }}
+            color={
+              dayjs().isAfter(dayjs(row?.original?.document_url_expires_at))
+                ? "textDisabled"
+                : "success"
+            }
+            onClick={() =>
+              // only perform action if document is not expired
+              !dayjs().isAfter(dayjs(row?.original?.document_url_expires_at))
+                ? window.open(
+                    row.original.document_url,
+                    "_blank",
+                    "noopener,noreferrer",
+                  )
+                : null
             }
           >
             {cell.getValue() ? cell.getValue() : "-"}
@@ -36,7 +54,18 @@ export default function EsignTemplateDetails({ templates = [] }) {
         accessorKey: "description",
         header: "Template Description",
         size: 100,
-        Cell: ({ cell }) => (cell.getValue() ? cell.getValue() : "-"),
+        Cell: ({ cell, row }) => (
+          <Typography
+            variant="subtitle2"
+            color={
+              dayjs().isAfter(dayjs(row?.original?.document_url_expires_at))
+                ? "textDisabled"
+                : "success"
+            }
+          >
+            {cell.getValue() ? cell.getValue() : "-"}
+          </Typography>
+        ),
       },
       {
         accessorKey: "document_url_expires_at",
@@ -81,6 +110,20 @@ export default function EsignTemplateDetails({ templates = [] }) {
         boxShadow: "none",
       },
     },
+    enableRowActions: true,
+    renderRowActions: ({ row }) => [
+      <Box
+        key={row?.id}
+        sx={{ display: "flex", flexWrap: "nowrap", gap: "8px" }}
+      >
+        <IconButton
+          size="small"
+          onClick={() => handleDeleteRow(row?.original?.id)}
+        >
+          <RemoveCircleOutlineRounded fontSize="small" color="error" />
+        </IconButton>
+      </Box>,
+    ],
   });
 
   return (
