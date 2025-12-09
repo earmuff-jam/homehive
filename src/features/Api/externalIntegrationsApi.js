@@ -74,7 +74,7 @@ export const externalIntegrationsApi = createApi({
       query: (data) => ({
         method: "POST",
         body: JSON.stringify({
-          fUrl: "0018_create_esign_from_template",
+          fUrl: "0018_template_to_esign_document",
           fMethod: "POST",
           payload: data,
         }),

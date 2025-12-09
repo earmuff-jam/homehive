@@ -13,11 +13,14 @@ import {
   useMaterialReactTable,
 } from "material-react-table";
 
+const isCurrentTimeAfter = (dateTime) => dayjs().isAfter(dayjs(dateTime));
+
 export default function EsignTemplateDetails({
   templates = [],
   handleDeleteRow,
   isDeleteRowLoading,
   createEsignFromExistingTemplate,
+  isCreateEsignFromTemplateLoading,
 }) {
   const columns = useMemo(
     () => [
@@ -29,20 +32,18 @@ export default function EsignTemplateDetails({
           <Typography
             variant="subtitle2"
             sx={{
-              cursor: dayjs().isAfter(
-                dayjs(row?.original?.document_url_expires_at),
-              )
+              cursor: isCurrentTimeAfter(row?.original?.document_url_expires_at)
                 ? "inherit"
                 : "pointer",
             }}
             color={
-              dayjs().isAfter(dayjs(row?.original?.document_url_expires_at))
+              isCurrentTimeAfter(row?.original?.document_url_expires_at)
                 ? "textDisabled"
                 : "success"
             }
             onClick={() =>
               // only perform action if document is not expired
-              !dayjs().isAfter(dayjs(row?.original?.document_url_expires_at))
+              !isCurrentTimeAfter(row?.original?.document_url_expires_at)
                 ? window.open(
                     row.original.document_url,
                     "_blank",
@@ -63,7 +64,7 @@ export default function EsignTemplateDetails({
           <Typography
             variant="subtitle2"
             color={
-              dayjs().isAfter(dayjs(row?.original?.document_url_expires_at))
+              isCurrentTimeAfter(row?.original?.document_url_expires_at)
                 ? "textDisabled"
                 : "success"
             }
@@ -124,10 +125,20 @@ export default function EsignTemplateDetails({
         <Tooltip title="Create E-sign">
           <IconButton
             size="small"
-            loading={isDeleteRowLoading}
+            disabled={isCurrentTimeAfter(
+              row?.original?.document_url_expires_at,
+            )}
+            loading={isCreateEsignFromTemplateLoading}
             onClick={() => createEsignFromExistingTemplate(row?.original)}
           >
-            <UpgradeRounded fontSize="small" color="primary" />
+            <UpgradeRounded
+              fontSize="small"
+              color={
+                isCurrentTimeAfter(row?.original?.document_url_expires_at)
+                  ? "disabled"
+                  : "primary"
+              }
+            />
           </IconButton>
         </Tooltip>
         <Tooltip title="Remove Template">

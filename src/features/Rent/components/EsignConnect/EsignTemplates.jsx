@@ -39,7 +39,7 @@ export default function EsignTemplates({ isEsignConnected }) {
   const user = fetchLoggedInUser();
   const medFormFactor = useMediaQuery(theme.breakpoints.down("md"));
 
-  const { data, isLoading: isGetEsignTemplatesLoading } =
+  const { data: esignTemplates, isLoading: isGetEsignTemplatesLoading } =
     useGetEsignTemplatesQuery(user?.uid, {
       skip: !isEsignConnected,
     });
@@ -52,10 +52,13 @@ export default function EsignTemplates({ isEsignConnected }) {
   const [
     createEsignFromTemplate,
     {
+      data: createdEsignDocumentFromTemplate,
       isLoading: isCreateEsignFromTemplateLoading,
       isSuccess: isCreateEsignFromTemplateSuccess,
     },
   ] = useCreateEsignFromTemplateMutation();
+
+  console.log(createdEsignDocumentFromTemplate);
 
   const [
     deleteRow,
@@ -66,22 +69,19 @@ export default function EsignTemplates({ isEsignConnected }) {
   const [selectedFile, setSelectedFile] = useState(null);
   const [showSnackbar, setShowSnackbar] = useState(false);
 
-  const templates = data?.templates ?? [];
+  const templates = esignTemplates?.templates ?? [];
 
   const uploadTemplate = async () => {
     const convertedToBase64 = await convertFileToBase64Encoding(selectedFile);
-    createTemplate({
-      fileName: selectedFile?.file.name,
-      fileType: selectedFile?.file.type,
+    createEsignFromTemplate({
       fileData: convertedToBase64,
+      fileName: selectedFile?.file?.name,
       userId: user?.uid,
     });
   };
 
-  const createEsignFromExistingTemplate = (row) => {
-    console.log(row);
-    createEsignFromTemplate(row);
-  };
+  const createEsignFromExistingTemplate = (row) =>
+    createEsignFromTemplate({ id: row.id, name: row?.name, userId: user?.uid });
 
   const handleDeleteRow = (rowId) => deleteRow({ id: rowId });
 
@@ -153,6 +153,7 @@ export default function EsignTemplates({ isEsignConnected }) {
         handleDeleteRow={handleDeleteRow}
         isDeleteRowLoading={isDeleteRowLoading}
         createEsignFromExistingTemplate={createEsignFromExistingTemplate}
+        isCreateEsignFromTemplateLoading={isCreateEsignFromTemplateLoading}
       />
       <Dialog
         open={dialog}
