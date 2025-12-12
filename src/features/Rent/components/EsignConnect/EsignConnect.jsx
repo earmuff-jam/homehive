@@ -16,7 +16,6 @@ import {
   useGetUserDataByIdQuery,
   useUpdateUserByUidMutation,
 } from "features/Api/firebaseUserApi";
-import EsignTemplates from "features/Rent/components/EsignConnect/EsignTemplates";
 import RecentDocuments from "features/Rent/components/EsignConnect/RecentDocuments";
 import StatusCard from "features/Rent/components/EsignConnect/StatusCard";
 import HelpAndSupport from "features/Rent/components/ExternalIntegrations/HelpAndSupport";
@@ -144,10 +143,6 @@ export default function EsignConnect() {
           isEsignConnected={isEsignConnected}
           esignAccountWorkspaceId={userData?.esignAccountWorkspaceId}
         />
-      </Grid2>
-
-      <Grid2 size={12}>
-        <EsignTemplates isEsignConnected={isEsignConnected} />
       </Grid2>
 
       <Grid2 size={12}>
