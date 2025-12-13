@@ -17,4 +17,5 @@ export default function Banner() {
         administrator to request full access.
       </Alert>
     );
+  return null;
 }

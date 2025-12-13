@@ -144,6 +144,7 @@ export default function AppToolbar({
                 label="Logout"
                 variant="outlined"
                 size="small"
+                disabled={false}
                 onClick={() => logout()}
               />
             </Tooltip>

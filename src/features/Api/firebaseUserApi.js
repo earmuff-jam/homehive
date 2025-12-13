@@ -1,5 +1,4 @@
 import { createApi, fakeBaseQuery } from "@reduxjs/toolkit/query/react";
-import { AllocatedRoles } from "common/utils";
 import { authenticateViaGoogle } from "features/Auth/AuthHelper";
 import { getAuth, signOut } from "firebase/auth";
 import {
@@ -75,12 +74,21 @@ export const firebaseUserApi = createApi({
           const userDetails = await authenticateViaGoogle();
           const userRef = doc(db, "users", userDetails?.uid);
           await setDoc(userRef, { ...userDetails }, { merge: true });
+
+          const refetchUserDataSnapshot = await getDoc(userRef);
+
+          if (!refetchUserDataSnapshot.exists()) {
+            throw new Error("Invalid operation.");
+          }
+
+          const refetchUserData = refetchUserDataSnapshot.data();
+
           if (userDetails?.uid) {
             localStorage.setItem(
               "user",
               JSON.stringify({
                 uid: userDetails?.uid,
-                role: AllocatedRoles.CD,
+                role: refetchUserData?.role,
                 googleEmailAddress: userDetails?.googleEmailAddress,
               }),
             );
