@@ -65,7 +65,7 @@ export default function EsignTemplateDetails({
       density: "comfortable",
     },
     renderEmptyRowsFallback: () => (
-      <EmptyComponent caption="Signed documents appear here." />
+      <EmptyComponent caption="Default templates are currently unavailable." />
     ),
     mrtTheme: (theme) => ({
       baseBackgroundColor: theme.palette.transparent.main,
