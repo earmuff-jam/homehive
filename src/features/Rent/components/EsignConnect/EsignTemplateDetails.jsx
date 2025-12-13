@@ -11,6 +11,7 @@ import {
 
 export default function EsignTemplateDetails({
   templates = [],
+  isViewingRental,
   createEsignFromExistingTemplate,
   isCreateEsignFromTemplateLoading,
 }) {
@@ -64,7 +65,7 @@ export default function EsignTemplateDetails({
       density: "comfortable",
     },
     renderEmptyRowsFallback: () => (
-      <EmptyComponent caption="Sorry, no matching records found." />
+      <EmptyComponent caption="Signed documents appear here." />
     ),
     mrtTheme: (theme) => ({
       baseBackgroundColor: theme.palette.transparent.main,
@@ -81,7 +82,7 @@ export default function EsignTemplateDetails({
         boxShadow: "none",
       },
     },
-    enableRowActions: true,
+    enableRowActions: !isViewingRental, // property owners can perform actions on templates
     renderRowActions: ({ row }) => [
       <Box
         key={row?.id}

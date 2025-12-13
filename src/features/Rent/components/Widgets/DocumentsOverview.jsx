@@ -15,6 +15,7 @@ export default function DocumentsOverview({
   dataTour,
   isEsignConnected,
   isPropertyLoading,
+  isViewingRental = false,
 }) {
   const user = fetchLoggedInUser();
   const { data: esignTemplates, isLoading: isGetEsignTemplatesLoading } =
@@ -56,6 +57,7 @@ export default function DocumentsOverview({
           ) : (
             <EsignTemplateDetails
               templates={templates}
+              isViewingRental={isViewingRental}
               isCreateEsignFromTemplateLoading={
                 isCreateEsignFromTemplateLoading
               }
