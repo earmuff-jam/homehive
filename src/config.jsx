@@ -92,7 +92,6 @@ if (isFirebaseConfigOptionsValid(authenticatorConfig)) {
       if (draftUser) {
         localStorage.setItem(
           "user",
-
           JSON.stringify({
             uid: user.uid,
             role: draftUser?.role,

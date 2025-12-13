@@ -1,4 +1,5 @@
 import { createApi, fakeBaseQuery } from "@reduxjs/toolkit/query/react";
+import { AllocatedRoles } from "common/utils";
 import { authenticateViaGoogle } from "features/Auth/AuthHelper";
 import { getAuth, signOut } from "firebase/auth";
 import {
@@ -79,6 +80,7 @@ export const firebaseUserApi = createApi({
               "user",
               JSON.stringify({
                 uid: userDetails?.uid,
+                role: AllocatedRoles.CD,
                 googleEmailAddress: userDetails?.googleEmailAddress,
               }),
             );

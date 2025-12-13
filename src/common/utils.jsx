@@ -124,7 +124,7 @@ export const isBannerVisible = (pathname = "") => {
   if (pathname.includes(MainRentAppRouteUri)) {
     // check user role
     const user = fetchLoggedInUser();
-    if (user?.role === AllocatedRoles.CD) {
+    if (!user?.role === AllocatedRoles.CD) {
       return false;
     } else {
       return true;
