@@ -146,6 +146,7 @@ const MyRental = () => {
             propertyName={property?.name || "Unknown"}
           />
           <DocumentsOverview
+            isVewingRental
             dataTour="rental-6"
             property={property}
             isPropertyLoading={isPropertyLoading}

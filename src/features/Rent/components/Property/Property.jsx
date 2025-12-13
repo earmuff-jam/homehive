@@ -13,6 +13,7 @@ import {
   Stack,
 } from "@mui/material";
 import AButton from "common/AButton";
+import { useGetUserDataByIdQuery } from "features/Api/firebaseUserApi";
 import { useGetPropertiesByPropertyIdQuery } from "features/Api/propertiesApi";
 import { useGetRentsByPropertyIdQuery } from "features/Api/rentApi";
 import { useGetTenantByPropertyIdQuery } from "features/Api/tenantsApi";
@@ -50,6 +51,13 @@ const Property = () => {
         skip: !params?.id,
       },
     );
+
+  const { data: userData, isLoading: isUserDataFromDbLoading } =
+    useGetUserDataByIdQuery(user?.uid, {
+      skip: !user?.uid,
+    });
+
+  const isEsignConnected = userData?.esignAccountIsActive;
 
   useAppTitle(property?.name || "Selected Property");
 
@@ -102,9 +110,10 @@ const Property = () => {
             propertyName={property?.name || "Unknown"}
           />
           <DocumentsOverview
-            isPropertyLoading={isPropertyLoading}
             property={property}
             dataTour="property-6"
+            isEsignConnected={isEsignConnected}
+            isPropertyLoading={isPropertyLoading || isUserDataFromDbLoading}
           />
         </Grid>
 

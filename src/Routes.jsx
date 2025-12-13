@@ -59,7 +59,7 @@ export const MainAppRoutes = [
     requiredFlags: ["invoicerPro"],
     config: {
       breadcrumb: {
-        value: "Rental App",
+        value: "Rent App",
         icon: <CottageRounded fontSize="small" />,
       },
       isLoggedInFeature: true,

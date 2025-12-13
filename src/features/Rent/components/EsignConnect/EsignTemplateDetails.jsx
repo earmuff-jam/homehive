@@ -1,9 +1,8 @@
 import React, { useMemo } from "react";
 
-import dayjs from "dayjs";
-
-import { RemoveCircleOutlineRounded } from "@mui/icons-material";
-import { Box, IconButton, Typography } from "@mui/material";
+import { UpgradeRounded } from "@mui/icons-material";
+import { Box, Chip, Tooltip, Typography } from "@mui/material";
+import AButton from "common/AButton";
 import EmptyComponent from "common/EmptyComponent";
 import {
   MaterialReactTable,
@@ -12,72 +11,44 @@ import {
 
 export default function EsignTemplateDetails({
   templates = [],
-  handleDeleteRow,
+  isViewingRental,
+  createEsignFromExistingTemplate,
+  isCreateEsignFromTemplateLoading,
 }) {
   const columns = useMemo(
     () => [
       {
         accessorKey: "name",
         header: "Template Name",
-        size: 200,
-        Cell: ({ cell, row }) => (
-          <Typography
-            variant="subtitle2"
-            sx={{
-              cursor: dayjs().isAfter(
-                dayjs(row?.original?.document_url_expires_at),
-              )
-                ? "inherit"
-                : "pointer",
-            }}
-            color={
-              dayjs().isAfter(dayjs(row?.original?.document_url_expires_at))
-                ? "textDisabled"
-                : "success"
-            }
-            onClick={() =>
-              // only perform action if document is not expired
-              !dayjs().isAfter(dayjs(row?.original?.document_url_expires_at))
-                ? window.open(
-                    row.original.document_url,
-                    "_blank",
-                    "noopener,noreferrer",
-                  )
-                : null
-            }
-          >
+        Cell: ({ cell }) => (
+          <Typography variant="subtitle2" color="success">
             {cell.getValue() ? cell.getValue() : "-"}
           </Typography>
         ),
       },
       {
-        accessorKey: "description",
-        header: "Template Description",
-        size: 100,
-        Cell: ({ cell, row }) => (
-          <Typography
-            variant="subtitle2"
-            color={
-              dayjs().isAfter(dayjs(row?.original?.document_url_expires_at))
-                ? "textDisabled"
-                : "success"
-            }
-          >
-            {cell.getValue() ? cell.getValue() : "-"}
-          </Typography>
-        ),
-      },
-      {
-        accessorKey: "document_url_expires_at",
-        header: "Expires in",
-        size: 100,
-        Cell: ({ cell }) => dayjs(cell.getValue()).fromNow(),
-      },
-      {
-        accessorKey: "updated_date",
-        header: "Last updated",
-        size: 150,
-        Cell: ({ cell }) => dayjs(cell.getValue()).fromNow(),
+        accessorKey: "-",
+        header: "Signing parties",
+        Cell: ({ row }) => {
+          const signers = row?.original?.signers ?? [];
+
+          const toChipLabels = (label, idx) => (
+            <Chip
+              key={`${label}-${idx}`}
+              size="small"
+              label={label}
+              color={idx % 2 ? "secondary" : "primary"}
+            />
+          );
+
+          return (
+            <Box display="flex" gap={1}>
+              {signers.map(({ template_rolename }, idx) =>
+                toChipLabels(template_rolename, idx),
+              )}
+            </Box>
+          );
+        },
       },
     ],
     [],
@@ -86,14 +57,15 @@ export default function EsignTemplateDetails({
   const table = useMaterialReactTable({
     columns,
     data: templates,
-    enableColumnActions: false,
     enableTopToolbar: false,
+    enableSorting: false,
+    enableColumnActions: false,
     enablePagination: templates?.length > 0,
     initialState: {
       density: "comfortable",
     },
     renderEmptyRowsFallback: () => (
-      <EmptyComponent caption="Create templates to begin." />
+      <EmptyComponent caption="Default templates are currently unavailable." />
     ),
     mrtTheme: (theme) => ({
       baseBackgroundColor: theme.palette.transparent.main,
@@ -110,18 +82,22 @@ export default function EsignTemplateDetails({
         boxShadow: "none",
       },
     },
-    enableRowActions: true,
+    enableRowActions: !isViewingRental, // property owners can perform actions on templates
     renderRowActions: ({ row }) => [
       <Box
         key={row?.id}
         sx={{ display: "flex", flexWrap: "nowrap", gap: "8px" }}
       >
-        <IconButton
-          size="small"
-          onClick={() => handleDeleteRow(row?.original?.id)}
-        >
-          <RemoveCircleOutlineRounded fontSize="small" color="error" />
-        </IconButton>
+        <Tooltip title="Create E-sign">
+          <AButton
+            size="small"
+            label="Prepare"
+            variant="outlined"
+            loading={isCreateEsignFromTemplateLoading}
+            onClick={() => createEsignFromExistingTemplate(row?.original)}
+            startIcon={<UpgradeRounded fontSize="small" color="primary" />}
+          />
+        </Tooltip>
       </Box>,
     ],
   });
