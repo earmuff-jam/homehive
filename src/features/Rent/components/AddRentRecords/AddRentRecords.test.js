@@ -15,6 +15,12 @@ jest.mock("common/AButton", () => ({
   ),
 }));
 
+jest.mock("react-secure-storage", () => ({
+  getItem: jest.fn(),
+  setItem: jest.fn(),
+  removeItem: jest.fn(),
+}));
+
 jest.mock("common/ValidateClientPermissions", () => ({
   __esModule: true,
   default: () => new Map([]),

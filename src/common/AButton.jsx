@@ -1,6 +1,9 @@
 import React, { forwardRef } from "react";
 
+import { useLocation } from "react-router-dom";
+
 import { Button } from "@mui/material";
+import { isBannerVisible } from "common/utils";
 import { useButtonAnalytics } from "hooks/useButtonAnalytics";
 
 const analyticsEnabled = import.meta.env.VITE_ENABLE_ANALYTICS || "false";
@@ -9,7 +12,10 @@ const analyticsEnabled = import.meta.env.VITE_ENABLE_ANALYTICS || "false";
  * AButton
  *
  * Muiv5 button component setup with analytics tracking. Used to perform
- * analytics of the user location based on the route
+ * analytics of the user location based on the route.
+ *
+ * starterPlanUser are users who are enrolled into the application but have not
+ * completed their form of payment to use the application.
  *
  * @param {string} label - the label of the button component
  * @param {boolean} loading - the loading state of the selected component, defaults to false
@@ -22,6 +28,9 @@ const AButton = forwardRef(function AButton(
   { label, onClick = () => {}, loading = false, ...rest },
   ref,
 ) {
+  const location = useLocation();
+  const starterPlanUser = isBannerVisible(location.pathname);
+
   const buttonAnalytics = useButtonAnalytics();
 
   const handleClick = (ev) => {
@@ -33,7 +42,13 @@ const AButton = forwardRef(function AButton(
   };
 
   return (
-    <Button ref={ref} {...rest} onClick={handleClick} loading={loading}>
+    <Button
+      ref={ref}
+      onClick={handleClick}
+      loading={loading}
+      disabled={starterPlanUser}
+      {...rest} // at the end so that we can overwrite default settings
+    >
       {label}
     </Button>
   );

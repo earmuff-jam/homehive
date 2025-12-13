@@ -1,0 +1,77 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PropertyOwnerInfoCard Jest Tests PropertyOwnerInfoCard Snapshot tests renders correctly and matches snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 MuiCard-root css-8ls9v2-MuiPaper-root-MuiCard-root"
+    style="--Paper-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12);"
+  >
+    <div
+      class="MuiCardContent-root css-1lt5qva-MuiCardContent-root"
+    >
+      <div
+        class="MuiStack-root css-3f6c0i-MuiStack-root"
+        variant="subtitle2"
+      >
+        <h6
+          class="MuiTypography-root MuiTypography-subtitle2 css-1wtbj35-MuiTypography-root"
+        >
+          Property Owner
+        </h6>
+        <h6
+          class="MuiTypography-root MuiTypography-subtitle2 css-1ypmsg6-MuiTypography-root"
+        >
+          <svg
+            aria-hidden="true"
+            class="MuiSvgIcon-root MuiSvgIcon-colorPrimary MuiSvgIcon-fontSizeMedium css-1wtp6o0-MuiSvgIcon-root"
+            data-testid="BusinessRoundedIcon"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M12 7V5c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V9c0-1.1-.9-2-2-2zM6 19H4v-2h2zm0-4H4v-2h2zm0-4H4V9h2zm0-4H4V5h2zm4 12H8v-2h2zm0-4H8v-2h2zm0-4H8V9h2zm0-4H8V5h2zm9 12h-7v-2h2v-2h-2v-2h2v-2h-2V9h7c.55 0 1 .45 1 1v8c0 .55-.45 1-1 1m-1-8h-2v2h2zm0 4h-2v2h2z"
+            />
+          </svg>
+        </h6>
+        <div
+          class="MuiBox-root css-56sg73"
+        />
+      </div>
+      <div
+        class="MuiBox-root css-ukdiqv"
+      >
+        <div
+          class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1hx09c7-MuiAvatar-root"
+        >
+          JD
+        </div>
+        <div
+          class="MuiBox-root css-0"
+        >
+          <div
+            class="MuiStack-root css-niqf4j-MuiStack-root"
+          >
+            <div
+              class="MuiStack-root css-nen11g-MuiStack-root"
+            >
+              <span
+                class="MuiTypography-root MuiTypography-caption css-12r24w8-MuiTypography-root"
+              >
+                John Doe
+              </span>
+              <span
+                class="MuiTypography-root MuiTypography-caption css-1le9of1-MuiTypography-root"
+              >
+                owner@test.com
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="MuiStack-root css-jfdv4h-MuiStack-root"
+      />
+    </div>
+  </div>
+</DocumentFragment>
+`;

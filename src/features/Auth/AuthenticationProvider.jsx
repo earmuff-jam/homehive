@@ -1,8 +1,12 @@
 import React from "react";
 
 import { Navigate } from "react-router-dom";
+import secureLocalStorage from "react-secure-storage";
 
+import { Skeleton } from "@mui/material";
 import { HomeRouteUri } from "common/utils";
+import { useGetUserDataByIdQuery } from "features/Api/firebaseUserApi";
+import { fetchLoggedInUser } from "features/Rent/utils";
 
 /**
  * AuthenticationProvider ...
@@ -12,12 +16,21 @@ import { HomeRouteUri } from "common/utils";
  * @param {children} Children - the children component to render
  */
 export default function AuthenticationProvider({ children }) {
-  const draftUserDetails = localStorage.getItem("user");
-  let userDetails;
+  const user = fetchLoggedInUser();
+  const { data: userDetails, isLoading: isUserDetailsLoading } =
+    useGetUserDataByIdQuery(user?.uid, {
+      skip: !user?.uid,
+    });
+
+  if (isUserDetailsLoading) return <Skeleton height="100%" />;
 
   try {
-    userDetails = JSON.parse(draftUserDetails);
+    const userID = userDetails?.uid;
+    if (userID != user?.uid) {
+      throw new Error("Incorrect login permission detected.");
+    }
   } catch {
+    secureLocalStorage.removeItem("user");
     return <Navigate to={HomeRouteUri} replace />;
   }
 
