@@ -6,6 +6,19 @@
 import React from "react";
 
 import { Typography } from "@mui/material";
+import { fetchLoggedInUser } from "features/Rent/utils";
+
+/**
+ * AllocatedRoles ...
+ *
+ * Allocated Roles are the roles that are managed by the webApp. Users must belong
+ * to either one of these categories.
+ */
+export const AllocatedRoles = {
+  CD: "cd",
+  ADMIN: "ad",
+  USR: "dd",
+};
 
 export const HomeRouteUri = "/";
 export const NotesRouteUri = "/notes";
@@ -95,6 +108,27 @@ export const isUserLoggedIn = () => {
   const currentUser = JSON.parse(localStorage.getItem("user"));
   if (currentUser?.uid) {
     return true;
+  }
+  return false;
+};
+
+/**
+ * isBannerVisible ...
+ *
+ * returns boolean value if banner is visible based on user roles and
+ * permissions.
+ *
+ * @param {String} pathname - the string representation of the pathname
+ */
+export const isBannerVisible = (pathname = "") => {
+  if (pathname.includes(MainRentAppRouteUri)) {
+    // check user role
+    const user = fetchLoggedInUser();
+    if (user?.role === AllocatedRoles.CD) {
+      return false;
+    } else {
+      return true;
+    }
   }
   return false;
 };
