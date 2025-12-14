@@ -1,6 +1,7 @@
 import React from "react";
 
 import { Navigate } from "react-router-dom";
+import secureLocalStorage from "react-secure-storage";
 
 import { Skeleton } from "@mui/material";
 import { HomeRouteUri } from "common/utils";
@@ -29,7 +30,7 @@ export default function AuthenticationProvider({ children }) {
       throw new Error("Incorrect login permission detected.");
     }
   } catch {
-    localStorage.removeItem("user");
+    secureLocalStorage.removeItem("user");
     return <Navigate to={HomeRouteUri} replace />;
   }
 

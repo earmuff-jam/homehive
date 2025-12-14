@@ -5,6 +5,8 @@
  */
 import React from "react";
 
+import secureLocalStorage from "react-secure-storage";
+
 import { Typography } from "@mui/material";
 import { fetchLoggedInUser } from "features/Rent/utils";
 
@@ -93,7 +95,7 @@ export function createHelperSentences(verbStr, extraClauseStr) {
  * @returns user || false
  */
 export const isUserLoggedIn = () => {
-  const currentUser = JSON.parse(localStorage.getItem("user"));
+  const currentUser = secureLocalStorage.getItem("user");
   if (currentUser?.uid) {
     return true;
   }
