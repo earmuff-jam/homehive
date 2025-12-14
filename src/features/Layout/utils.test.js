@@ -12,6 +12,12 @@ jest.mock("common/ValidateClientPermissions", () => ({
     ]),
 }));
 
+jest.mock("react-secure-storage", () => ({
+  getItem: jest.fn(),
+  setItem: jest.fn(),
+  removeItem: jest.fn(),
+}));
+
 describe("retrieveTourKey tests", () => {
   describe("validate retrieveTourKey function behavior", () => {
     it("returns dynamic mapping when currentUri matches /rent/property/:id pattern", () => {

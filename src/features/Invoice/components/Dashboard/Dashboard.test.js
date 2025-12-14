@@ -15,6 +15,12 @@ jest.mock("common/ValidateClientPermissions", () => ({
     ]),
 }));
 
+jest.mock("react-secure-storage", () => ({
+  getItem: jest.fn(),
+  setItem: jest.fn(),
+  removeItem: jest.fn(),
+}));
+
 describe("Dashboard", () => {
   it("renders correctly and matches snapshot", () => {
     const { asFragment } = render(<Dashboard />);
