@@ -20,6 +20,7 @@ import {
 import { useTour } from "@reactour/tour";
 import AButton from "common/AButton";
 import { NavigationProvider } from "common/ANavigation";
+import Banner from "common/Banner";
 import {
   DefaultTourStepsMapperObj,
   GeneratedTourSteps,
@@ -124,7 +125,10 @@ export default function Layout({
           <Box sx={{ minHeight: "90vh" }}>
             {/* no breadcrumbs on splash page */}
             {currentUri !== HomeRouteUri && (
-              <BreadCrumbs currentRoute={currentRoute} />
+              <>
+                <Banner />
+                <BreadCrumbs currentRoute={currentRoute} />
+              </>
             )}
             <Outlet context={[dialog.showWatermark]} />
           </Box>

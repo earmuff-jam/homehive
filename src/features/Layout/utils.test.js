@@ -1,5 +1,23 @@
 import { retrieveTourKey } from "./utils";
 
+jest.mock("common/ValidateClientPermissions", () => ({
+  __esModule: true,
+  default: () =>
+    new Map([
+      ["analytics", true],
+      ["invoicer", true],
+      ["invoicerPro", false],
+      ["userInformation", true],
+      ["sendEmail", true],
+    ]),
+}));
+
+jest.mock("react-secure-storage", () => ({
+  getItem: jest.fn(),
+  setItem: jest.fn(),
+  removeItem: jest.fn(),
+}));
+
 describe("retrieveTourKey tests", () => {
   describe("validate retrieveTourKey function behavior", () => {
     it("returns dynamic mapping when currentUri matches /rent/property/:id pattern", () => {
@@ -25,10 +43,10 @@ describe("retrieveTourKey tests", () => {
       const result = retrieveTourKey(currentUri, "property");
       expect(result).toBe("/invoice/view");
 
-      const updatedCurrentUri = "/rent/property/dc7cca7d-dd4e-448c-ac4b-d2e853b749d8";
+      const updatedCurrentUri =
+        "/rent/property/dc7cca7d-dd4e-448c-ac4b-d2e853b749d8";
       const updatedResult = retrieveTourKey(updatedCurrentUri, "property");
       expect(updatedResult).toBe("/rent/property/:id");
-
     });
 
     it("handles unexpected empty currentUri gracefully", () => {

@@ -124,7 +124,7 @@ export default function AppToolbar({
   }, [isLogoutLoading]);
 
   return (
-    <AppBar elevation={0} sx={{ padding: "0.25rem 0rem" }} className="no-print">
+    <AppBar elevation={0} sx={{ padding: "0.30rem 0rem" }} className="no-print">
       <Toolbar>
         <Stack
           direction="row"
@@ -144,6 +144,7 @@ export default function AppToolbar({
                 label="Logout"
                 variant="outlined"
                 size="small"
+                disabled={false}
                 onClick={() => logout()}
               />
             </Tooltip>

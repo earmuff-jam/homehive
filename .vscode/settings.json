@@ -1,8 +1,9 @@
 {
-  "editor.renderWhitespace": "none",
+  "jest.runMode": "on-demand",
   "editor.minimap.enabled": false,
-  "explorer.confirmDragAndDrop": false,
+  "editor.renderWhitespace": "none",
   "explorer.confirmDelete": false,
+  "explorer.confirmDragAndDrop": false,
   "javascript.updateImportsOnFileMove.enabled": "always",
   "typescript.updateImportsOnFileMove.enabled": "always",
   "[javascript]": {
@@ -32,22 +33,6 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "go.toolsManagement.autoUpdate": true,
-  "update.mode": "none",
-  "update.showReleaseNotes": false,
-  "gitlens.views.searchAndCompare.files.layout": "list",
-  "gitlens.views.scm.grouped.views": {
-    "commits": false,
-    "branches": true,
-    "remotes": true,
-    "stashes": true,
-    "tags": true,
-    "worktrees": true,
-    "contributors": true,
-    "fileHistory": true,
-    "repositories": true,
-    "searchAndCompare": true,
-    "launchpad": false
-  },
   "javascript.preferences.importModuleSpecifier": "non-relative",
   "explorer.confirmPasteNative": false,
   "window.confirmSaveUntitledWorkspace": false,

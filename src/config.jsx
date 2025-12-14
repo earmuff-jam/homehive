@@ -1,3 +1,5 @@
+import secureLocalStorage from "react-secure-storage";
+
 import { getApps, initializeApp } from "firebase/app";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
@@ -28,7 +30,8 @@ const analyticsFirebaseConfig = {
   authDomain: import.meta.env.VITE_ANALYTICS_FIREBASE_AUTH_DOMAIN,
   projectId: import.meta.env.VITE_ANALYTICS_FIREBASE_PROJECT_ID,
   storageBucket: import.meta.env.VITE_ANALYTICS_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: import.meta.env.VITE_ANALYTICS_FIREBASE_MESSAGING_SENDER_ID,
+  messagingSenderId: import.meta.env
+    .VITE_ANALYTICS_FIREBASE_MESSAGING_SENDER_ID,
   appId: import.meta.env.VITE_ANALYTICS_FIREBASE_APPID,
   measurementId: import.meta.env.VITE_ANALYTICS_FIREBASE_MEASUREMENTID,
 };
@@ -88,23 +91,19 @@ if (isFirebaseConfigOptionsValid(authenticatorConfig)) {
   onAuthStateChanged(auth, (user) => {
     if (user) {
       // during refresh, we persist the role and attach it back
-      const draftUser = JSON.parse(localStorage.getItem("user"));
+      const draftUser = secureLocalStorage.getItem("user");
       if (draftUser) {
-        localStorage.setItem(
-          "user",
-
-          JSON.stringify({
-            uid: user.uid,
-            role: draftUser?.role,
-            googleEmailAddress: draftUser?.googleEmailAddress,
-          }),
-        );
+        secureLocalStorage.setItem("user", {
+          uid: user.uid,
+          role: draftUser?.role,
+          googleEmailAddress: draftUser?.googleEmailAddress,
+        });
       } else {
         // if the role is not found yet, do nothing
-        localStorage.setItem("user", JSON.stringify({ uid: user?.uid }));
+        secureLocalStorage.setItem("user", { uid: user?.uid });
       }
     } else {
-      localStorage.removeItem("user");
+      secureLocalStorage.removeItem("user");
     }
   });
 } else {
