@@ -68,7 +68,7 @@ export const handleQuickConnectAction = (
       const invoiceHtml = processTemplate(
         templates.invoice.html,
         templateVariables,
-        user?.googleEmailAddress,
+        user?.email,
       );
       formatEmail(
         {
@@ -94,7 +94,7 @@ export const handleQuickConnectAction = (
       const invoiceHtml = processTemplate(
         templates.reminder.html,
         templateVariables,
-        user?.googleEmailAddress,
+        user?.email,
       );
 
       formatEmail(
@@ -121,7 +121,7 @@ export const handleQuickConnectAction = (
       const reminderHtml = processTemplate(
         templates.noticeOfLeaseRenewal.html,
         templateVariables,
-        user?.googleEmailAddress,
+        user?.email,
       );
 
       formatEmail(

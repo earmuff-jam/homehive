@@ -269,7 +269,7 @@ export default function PropertyOwnerInfoCard({
                     </Typography>
                   </Alert>
                 </Box>
-
+                
                 <AButton
                   size="small"
                   variant="contained"
@@ -285,7 +285,7 @@ export default function PropertyOwnerInfoCard({
                       propertyOwnerId: property?.createdBy, // the owner of the property
                       tenantId: user?.uid, // the current payee which is also a tenant
                       tenantRentDueDate: tenant?.start_date,
-                      tenantEmail: user?.googleEmailAddress, // the current renter
+                      tenantEmail: user?.email, // the current renter
                       rentAmount: formatCurrency(Number(property?.rent)),
                       additionalCharges: formatCurrency(
                         Number(property?.additional_rent),
