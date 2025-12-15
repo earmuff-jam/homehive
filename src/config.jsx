@@ -2,7 +2,7 @@ import secureLocalStorage from "react-secure-storage";
 
 import { getApps, initializeApp } from "firebase/app";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
+import { doc, getDoc, getFirestore, setDoc } from "firebase/firestore";
 
 // -------------------------------------------
 // Util functions
@@ -88,23 +88,59 @@ export const authenticatorConfig =
 // update user details only if auth config is valid based on auth state
 if (isFirebaseConfigOptionsValid(authenticatorConfig)) {
   const auth = getAuth(authenticatorConfig);
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      // during refresh, we persist the role and attach it back
-      const draftUser = secureLocalStorage.getItem("user");
-      if (draftUser) {
+  onAuthStateChanged(auth, async (user) => {
+    if (!user) {
+      secureLocalStorage.removeItem("user");
+      return;
+    }
+
+    const email = user.email?.toLowerCase();
+    const userRef = doc(authenticatorFirestore, "users", user.uid);
+    const userSnapshot = await getDoc(userRef);
+
+    if (userSnapshot.exists()) {
+      const userData = userSnapshot.data();
+      if (userData.role) {
         secureLocalStorage.setItem("user", {
           uid: user.uid,
-          role: draftUser?.role,
-          googleEmailAddress: draftUser?.googleEmailAddress,
+          role: userData.role,
+          email: user.email,
         });
-      } else {
-        // if the role is not found yet, do nothing
-        secureLocalStorage.setItem("user", { uid: user?.uid });
+        return;
       }
-    } else {
-      secureLocalStorage.removeItem("user");
     }
+
+    // check invites if the user has any invites
+    const inviteRef = doc(authenticatorFirestore, "invites", email);
+    const inviteSnapshot = await getDoc(inviteRef);
+
+    if (inviteSnapshot.exists()) {
+      const invite = inviteSnapshot.data();
+      // Create user from invite
+      await setDoc(userRef, {
+        uid: user.uid,
+        googleEmailAddress: user.email,
+        googleDisplayName: user.displayName ?? null,
+        googlePhotoURL: user.photoURL ?? null,
+        role: invite.role,
+      });
+
+      // remove user from invite once user is created
+      // await deleteDoc(inviteRef);
+      secureLocalStorage.setItem("user", {
+        uid: user.uid,
+        role: invite.role,
+        email: user.email,
+      });
+
+      return;
+    }
+
+    // fallback; user is regarded as trial user
+    secureLocalStorage.setItem("user", {
+      uid: user.uid,
+      email: user.email,
+    });
   });
 } else {
   /* eslint-disable no-console */

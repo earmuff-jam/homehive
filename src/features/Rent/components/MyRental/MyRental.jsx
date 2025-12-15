@@ -28,9 +28,9 @@ const MyRental = () => {
   const user = fetchLoggedInUser();
 
   const { data: renter, isLoading } = useGetActiveTenantsByEmailAddressQuery(
-    user?.googleEmailAddress,
+    user?.email,
     {
-      skip: !user?.googleEmailAddress,
+      skip: !user?.email,
     },
   );
 
@@ -51,7 +51,7 @@ const MyRental = () => {
 
   const { data: rentList = [], isLoading: isRentListForPropertyLoading } =
     useGetRentsByPropertyIdQuery(
-      { propertyId: property?.id, currentUserEmail: user?.googleEmailAddress },
+      { propertyId: property?.id, currentUserEmail: user?.email },
       {
         skip: !property?.id,
       },

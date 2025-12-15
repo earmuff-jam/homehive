@@ -24,8 +24,7 @@ import { LocalizationProvider, MobileDatePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import CustomSnackbar from "common/CustomSnackbar/CustomSnackbar";
 import TextFieldWithLabel from "common/TextFieldWithLabel";
-import { useUpdatePropertyByIdMutation } from "features/Api/propertiesApi";
-import { useCreateTenantMutation } from "features/Api/tenantsApi";
+import { useAssociateTenantMutation } from "features/Api/tenantsApi";
 import { LEASE_TERM_MENU_OPTIONS } from "features/Rent/common/constants";
 import TenantEmailAutocomplete from "features/Rent/components/AssociateTenantPopup/TenantEmailAutocomplete";
 import {
@@ -41,8 +40,10 @@ export default function AssociateTenantPopup({
   const user = fetchLoggedInUser();
   const currentUserId = user?.uid;
 
-  const [createTenant] = useCreateTenantMutation();
-  const [updateProperty] = useUpdatePropertyByIdMutation();
+  const [
+    associateTenant,
+    { isLoading: associateTenantLoading, isSuccess: associateTenantSuccess },
+  ] = useAssociateTenantMutation();
 
   const [showSnackbar, setShowSnackbar] = useState(false);
 
@@ -83,23 +84,7 @@ export default function AssociateTenantPopup({
     draftData.updatedBy = currentUserId;
     draftData.updatedOn = dayjs().toISOString();
 
-    try {
-      await createTenant(draftData).unwrap();
-      await updateProperty({
-        ...property,
-        id: property?.id,
-        rentees: [...(property?.rentees || []), draftData?.email],
-        updatedBy: user?.uid,
-        updatedOn: dayjs().toISOString(),
-      }).unwrap();
-
-      setShowSnackbar(true);
-      reset();
-      closeDialog();
-    } catch (error) {
-      /* eslint-disable no-console */
-      console.error(error);
-    }
+    associateTenant({ draftData, property });
   };
 
   const isSoR = watch("isSoR");
@@ -109,6 +94,14 @@ export default function AssociateTenantPopup({
       setValue("rent", property?.rent || "");
     }
   }, [property]);
+
+  useEffect(() => {
+    if (associateTenantSuccess) {
+      setShowSnackbar(true);
+      reset();
+      closeDialog();
+    }
+  }, [associateTenantLoading]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>

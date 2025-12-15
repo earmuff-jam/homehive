@@ -4,6 +4,17 @@ import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { authenticatorApp } from "src/config";
 
 /**
+ * Role ...
+ *
+ * web roles and permissions
+ */
+export const Role = {
+  User: "USER",
+  Admin: "ADMIN",
+  Tenant: "TENANT",
+};
+
+/**
  * authenticateViaGoogle...
  *
  * function used to login to google.

@@ -35,7 +35,6 @@ export const propertiesApi = createApi({
       },
       providesTags: ["properties"],
     }),
-
     // retrieves a list of properties created by the
     // passed in userId; filters deleted properties
     getPropertiesByUserId: builder.query({
@@ -63,7 +62,6 @@ export const propertiesApi = createApi({
       },
       providesTags: ["properties"],
     }),
-
     // creates a new property in the system
     // uses mapServiceApi to retrieve property location
     // and persist in the db to display in map
@@ -98,7 +96,6 @@ export const propertiesApi = createApi({
       },
       invalidatesTags: ["properties"],
     }),
-
     // updates a selected property by data
     // uses mapServiceApi to retrieve property location
     // and persist in the db to display in map
