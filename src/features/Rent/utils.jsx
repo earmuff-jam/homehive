@@ -225,8 +225,9 @@ export const getColorAndLabelForCurrentMonth = (
   rent,
   gracePeriod = 3,
 ) => {
-  const leaseStart = dayjs(startDate, "MM-DD-YYYY");
+  if (!rent || !startDate) return false;
 
+  const leaseStart = dayjs(startDate, "MM-DD-YYYY");
   if (dayjs().isBefore(leaseStart, "day")) return false;
   const graceDate = dayjs().startOf("month").add(gracePeriod, "day");
   const pastGracePeriod = dayjs().isAfter(graceDate, "day");

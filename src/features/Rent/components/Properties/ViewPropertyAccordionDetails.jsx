@@ -200,13 +200,15 @@ const ViewPropertyAccordionDetails = ({
             </Stack>
 
             <Box>
-              <Chip
-                size="small"
-                icon={statusIcon}
-                label={statusLabel}
-                color={statusColor}
-                sx={{ mt: 1 }}
-              />
+              {statusLabel && (
+                <Chip
+                  size="small"
+                  icon={statusIcon}
+                  label={statusLabel}
+                  color={statusColor}
+                  sx={{ mt: 1 }}
+                />
+              )}
             </Box>
           </Stack>
         </Stack>
