@@ -11,4 +11,7 @@ export default {
     "^features/(.*)$": "<rootDir>/src/features/$1",
   },
   setupFilesAfterEnv: ["<rootDir>/jest.setup.js"],
+  testEnvironmentOptions: {
+    timezone: "UTC",
+  },
 };

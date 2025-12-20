@@ -10,7 +10,7 @@ import { Dialog } from "@mui/material";
 
 createRoot(document.getElementById("root")).render(
   <Provider store={store}>
-    <Suspense fallback={<Dialog open={false} title="Loading..." />}>
+    <Suspense fallback={<Dialog open title="Loading..." />}>
       <App />
     </Suspense>
   </Provider>,

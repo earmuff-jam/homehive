@@ -1,6 +1,8 @@
+import secureLocalStorage from "react-secure-storage";
+
 import { getApps, initializeApp } from "firebase/app";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
+import { deleteDoc, doc, getDoc, getFirestore, setDoc } from "firebase/firestore";
 
 // -------------------------------------------
 // Util functions
@@ -28,7 +30,8 @@ const analyticsFirebaseConfig = {
   authDomain: import.meta.env.VITE_ANALYTICS_FIREBASE_AUTH_DOMAIN,
   projectId: import.meta.env.VITE_ANALYTICS_FIREBASE_PROJECT_ID,
   storageBucket: import.meta.env.VITE_ANALYTICS_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: import.meta.env.VITE_ANALYTICS_FIREBASE_MESSAGING_SENDER_ID,
+  messagingSenderId: import.meta.env
+    .VITE_ANALYTICS_FIREBASE_MESSAGING_SENDER_ID,
   appId: import.meta.env.VITE_ANALYTICS_FIREBASE_APPID,
   measurementId: import.meta.env.VITE_ANALYTICS_FIREBASE_MEASUREMENTID,
 };
@@ -85,27 +88,60 @@ export const authenticatorConfig =
 // update user details only if auth config is valid based on auth state
 if (isFirebaseConfigOptionsValid(authenticatorConfig)) {
   const auth = getAuth(authenticatorConfig);
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      // during refresh, we persist the role and attach it back
-      const draftUser = JSON.parse(localStorage.getItem("user"));
-      if (draftUser) {
-        localStorage.setItem(
-          "user",
-
-          JSON.stringify({
-            uid: user.uid,
-            role: draftUser?.role,
-            googleEmailAddress: draftUser?.googleEmailAddress,
-          }),
-        );
-      } else {
-        // if the role is not found yet, do nothing
-        localStorage.setItem("user", JSON.stringify({ uid: user?.uid }));
-      }
-    } else {
-      localStorage.removeItem("user");
+  onAuthStateChanged(auth, async (user) => {
+    if (!user) {
+      secureLocalStorage.removeItem("user");
+      return;
     }
+
+    const email = user.email?.toLowerCase();
+    const userRef = doc(authenticatorFirestore, "users", user.uid);
+    const userSnapshot = await getDoc(userRef);
+
+    if (userSnapshot.exists()) {
+      const userData = userSnapshot.data();
+      if (userData.role) {
+        secureLocalStorage.setItem("user", {
+          uid: user.uid,
+          role: userData.role,
+          email: user.email,
+        });
+        return;
+      }
+    }
+
+    // check invites if the user has any invites
+    const inviteRef = doc(authenticatorFirestore, "invites", email);
+    const inviteSnapshot = await getDoc(inviteRef);
+
+    if (inviteSnapshot.exists()) {
+      const invite = inviteSnapshot.data();
+      // Create user from invite
+      await setDoc(userRef, {
+        uid: user.uid,
+        googleEmailAddress: user.email,
+        googleDisplayName: user.displayName ?? null,
+        googlePhotoURL: user.photoURL ?? null,
+        role: invite.role,
+      });
+
+      // remove invite doc if user is created
+      await deleteDoc(inviteRef);
+      
+      secureLocalStorage.setItem("user", {
+        uid: user.uid,
+        role: invite.role,
+        email: user.email,
+      });
+
+      return;
+    }
+
+    // fallback; user is regarded as trial user
+    secureLocalStorage.setItem("user", {
+      uid: user.uid,
+      email: user.email,
+    });
   });
 } else {
   /* eslint-disable no-console */

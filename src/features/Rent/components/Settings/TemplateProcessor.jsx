@@ -37,7 +37,7 @@ export const handleQuickConnectAction = (
       Number(property?.rent || 0) + Number(property?.rent_increment || 0),
     responseDeadline: today.add(1, "M").format("MM-DD-YYYY"), // add 30 days for response deadline
     ownerPhone: propertyOwner?.phone,
-    ownerEmail: propertyOwner?.googleEmailAddress,
+    ownerEmail: propertyOwner?.email,
     currentDate: today.format("MMMM DD, YYYY"),
     tenantName: primaryTenant?.name || "Rentee",
     propertyAddress: `${property.address}, ${property.city}, ${property.state} ${property.zipcode}`,
@@ -47,7 +47,7 @@ export const handleQuickConnectAction = (
     year: today.get("year"),
     ownerName: propertyOwner?.googleDisplayName,
     companyName: propertyOwner?.company_name || "",
-    contactInfo: propertyOwner?.googleEmailAddress || "",
+    contactInfo: propertyOwner?.email || "",
   };
 
   switch (action) {
@@ -68,7 +68,7 @@ export const handleQuickConnectAction = (
       const invoiceHtml = processTemplate(
         templates.invoice.html,
         templateVariables,
-        user?.googleEmailAddress,
+        user?.email,
       );
       formatEmail(
         {
@@ -94,7 +94,7 @@ export const handleQuickConnectAction = (
       const invoiceHtml = processTemplate(
         templates.reminder.html,
         templateVariables,
-        user?.googleEmailAddress,
+        user?.email,
       );
 
       formatEmail(
@@ -121,7 +121,7 @@ export const handleQuickConnectAction = (
       const reminderHtml = processTemplate(
         templates.noticeOfLeaseRenewal.html,
         templateVariables,
-        user?.googleEmailAddress,
+        user?.email,
       );
 
       formatEmail(

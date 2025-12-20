@@ -1,3 +1,5 @@
+import secureLocalStorage from "react-secure-storage";
+
 import { createApi, fakeBaseQuery } from "@reduxjs/toolkit/query/react";
 import { authenticateViaGoogle } from "features/Auth/AuthHelper";
 import { getAuth, signOut } from "firebase/auth";
@@ -44,7 +46,7 @@ export const firebaseUserApi = createApi({
         try {
           const q = query(
             collection(db, "users"),
-            where("googleEmailAddress", "==", emailAddress),
+            where("email", "==", emailAddress),
           );
 
           const querySnapshot = await getDocs(q);
@@ -74,14 +76,17 @@ export const firebaseUserApi = createApi({
           const userDetails = await authenticateViaGoogle();
           const userRef = doc(db, "users", userDetails?.uid);
           await setDoc(userRef, { ...userDetails }, { merge: true });
+          // refetch to get accurate roles
+          const refetchUserDataSnapshot = await getDoc(userRef);
+          const refetchUserData = refetchUserDataSnapshot.data();
+
           if (userDetails?.uid) {
-            localStorage.setItem(
-              "user",
-              JSON.stringify({
-                uid: userDetails?.uid,
-                googleEmailAddress: userDetails?.googleEmailAddress,
-              }),
-            );
+            const userDetails = {
+              uid: userDetails?.uid,
+              role: refetchUserData?.role,
+              email: userDetails?.email,
+            };
+            secureLocalStorage.setItem("user", userDetails);
           }
           return { data: userDetails };
         } catch (error) {
@@ -119,7 +124,7 @@ export const firebaseUserApi = createApi({
         try {
           const auth = getAuth(authenticatorConfig);
           await signOut(auth);
-          localStorage.removeItem("user");
+          secureLocalStorage.removeItem("user");
           return { data: { success: true } };
         } catch (error) {
           /* eslint-disable no-console */

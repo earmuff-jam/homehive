@@ -1,6 +1,7 @@
 import React from "react";
-import { render, screen } from "@testing-library/react";
+
 import UserInfoViewer from "./UserInfoViewer";
+import { render, screen } from "@testing-library/react";
 
 // Mock the common components used inside
 jest.mock("common/AButton", () => ({
@@ -37,7 +38,7 @@ describe("UserInfoViewer component", () => {
         errors={mockErrors}
         isDisabled={false}
         onSubmit={mockSubmit}
-      />
+      />,
     );
     expect(asFragment()).toMatchSnapshot();
   });
@@ -51,11 +52,13 @@ describe("UserInfoViewer component", () => {
         errors={mockErrors}
         isDisabled={false}
         onSubmit={mockSubmit}
-      />
+      />,
     );
 
     expect(screen.getByText("Sender Information")).toBeInTheDocument();
-    expect(screen.getByText("Add details about the sender")).toBeInTheDocument();
+    expect(
+      screen.getByText("Add details about the sender"),
+    ).toBeInTheDocument();
     expect(screen.getByText("Save")).toBeInTheDocument();
   });
 });

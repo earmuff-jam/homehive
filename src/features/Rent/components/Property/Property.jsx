@@ -45,7 +45,7 @@ const Property = () => {
 
   const { data: rentList = [], isLoading: isRentListForPropertyLoading } =
     useGetRentsByPropertyIdQuery(
-      { propertyId: params?.id, currentUserEmail: user?.googleEmailAddress },
+      { propertyId: params?.id, currentUserEmail: user?.email },
       {
         skip: !params?.id,
       },

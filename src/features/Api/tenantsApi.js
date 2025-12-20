@@ -1,4 +1,5 @@
 import { createApi, fakeBaseQuery } from "@reduxjs/toolkit/query/react";
+import { Role } from "features/Auth/AuthHelper";
 import {
   collection,
   deleteDoc,
@@ -190,6 +191,52 @@ export const tenantsApi = createApi({
       },
       invalidatesTags: ["tenants"],
     }),
+    // associate tenant workflow
+    // populates tenants, updates property && updates tenant role
+    associateTenant: builder.mutation({
+      async queryFn({ draftData, property }) {
+        try {
+          const tenantRef = doc(db, "tenants", draftData.id);
+          await setDoc(tenantRef, draftData, { merge: true });
+
+          const propertyRef = doc(db, "properties", property.id);
+          await setDoc(
+            propertyRef,
+            {
+              ...property,
+              rentees: [...(property.rentees || []), draftData.email],
+              updatedBy: draftData.updatedBy,
+              updatedOn: draftData.updatedOn,
+            },
+            { merge: true },
+          );
+
+          // set invite once the association is requested
+          const inviteRef = doc(db, "invites", draftData.email.toLowerCase());
+          await setDoc(inviteRef, {
+            role: Role.Tenant,
+            propertyId: property.id,
+            googleEmailAddress: draftData.email.toLowerCase(),
+            createdBy: draftData.createdBy,
+            createdOn: draftData.createdOn,
+            updatedBy: draftData.updatedBy,
+            updatedOn: draftData.updatedOn,
+          });
+
+          return { data: null };
+        } catch (error) {
+          /* eslint-disable no-console */
+          console.error("Unable to process request. Error: ", error);
+          return {
+            error: {
+              message: error.message,
+              code: error.code,
+            },
+          };
+        }
+      },
+      invalidatesTags: ["tenants", "properties"],
+    }),
   }),
 });
 
@@ -202,4 +249,5 @@ export const {
   useCreateTenantMutation,
   useUpdateTenantByIdMutation,
   useDeleteTenantByIdMutation,
+  useAssociateTenantMutation,
 } = tenantsApi;

@@ -121,7 +121,7 @@ export default function AddRentRecords({
       reset({
         owner_first_name: propertyOwnerData?.first_name,
         owner_last_name: propertyOwnerData?.last_name,
-        googleEmailAddress: propertyOwnerData?.googleEmailAddress,
+        email: propertyOwnerData?.email,
         rent_amount: Number(property?.rent) + Number(property?.additional_rent),
       });
     }
@@ -163,12 +163,12 @@ export default function AddRentRecords({
         </Stack>
         <TextFieldWithLabel
           label="Email Address *"
-          id="googleEmailAddress"
+          id="email"
           placeholder="Email address of the property owner"
           errorMsg={errors.name?.message}
           isDisabled
           inputProps={{
-            ...register("googleEmailAddress", {
+            ...register("email", {
               required: "Email address is required",
             }),
           }}
