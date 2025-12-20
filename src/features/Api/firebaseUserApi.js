@@ -81,12 +81,11 @@ export const firebaseUserApi = createApi({
           const refetchUserData = refetchUserDataSnapshot.data();
 
           if (userDetails?.uid) {
-            const userDetails = {
+            secureLocalStorage.setItem("user", {
               uid: userDetails?.uid,
               role: refetchUserData?.role,
               email: userDetails?.email,
-            };
-            secureLocalStorage.setItem("user", userDetails);
+            });
           }
           return { data: userDetails };
         } catch (error) {
