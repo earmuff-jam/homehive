@@ -146,6 +146,9 @@ const MyRental = () => {
             propertyName={property?.name || "Unknown"}
           />
           <DocumentsOverview
+          // only property owners can edit the document templates
+          // functional because only rentees can view this page
+            isVewingRental
             dataTour="rental-6"
             property={property}
             isPropertyLoading={isPropertyLoading}

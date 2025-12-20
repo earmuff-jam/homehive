@@ -15,7 +15,7 @@ export const NotesRouteUri = "/notes";
 
 export const FaqRoutePath = "/faq";
 
-// Default Rental App Routes
+// Default Rent App Routes
 export const MainRentAppRouteUri = "/rent";
 
 export const PropertiesRoutePath = "properties";
