@@ -140,8 +140,8 @@ export default function Properties() {
 
   useEffect(() => {
     // update form fields if present
-    if (userData?.googleEmailAddress) {
-      setValue("owner_email", userData.googleEmailAddress);
+    if (userData?.email) {
+      setValue("owner_email", userData.email);
     }
   }, [userData, setValue]);
 

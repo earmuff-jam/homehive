@@ -46,7 +46,7 @@ export const firebaseUserApi = createApi({
         try {
           const q = query(
             collection(db, "users"),
-            where("googleEmailAddress", "==", emailAddress),
+            where("email", "==", emailAddress),
           );
 
           const querySnapshot = await getDocs(q);
@@ -77,20 +77,13 @@ export const firebaseUserApi = createApi({
           const userRef = doc(db, "users", userDetails?.uid);
           await setDoc(userRef, { ...userDetails }, { merge: true });
 
-          const refetchUserDataSnapshot = await getDoc(userRef);
-
-          if (!refetchUserDataSnapshot.exists()) {
-            throw new Error("Invalid operation.");
-          }
-
-          const refetchUserData = refetchUserDataSnapshot.data();
-
           if (userDetails?.uid) {
-            secureLocalStorage.setItem("user", {
+            const userDetails = {
               uid: userDetails?.uid,
               role: refetchUserData?.role,
-              googleEmailAddress: userDetails?.googleEmailAddress,
-            });
+              email: userDetails?.email,
+            };
+            secureLocalStorage.setItem("user", userDetails);
           }
           return { data: userDetails };
         } catch (error) {

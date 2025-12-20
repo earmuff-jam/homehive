@@ -216,7 +216,7 @@ export default function PropertyOwnerInfoCard({
                         maxWidth: 200,
                       }}
                     >
-                      {owner?.googleEmailAddress}
+                      {owner?.email}
                     </Typography>
                   </Stack>
                   {isViewingRental && (

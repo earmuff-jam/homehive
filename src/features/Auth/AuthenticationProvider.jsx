@@ -26,7 +26,8 @@ export default function AuthenticationProvider({ children }) {
 
   try {
     const userID = userDetails?.uid;
-    if (userID != user?.uid) {
+    // validate user id and role is not tampered
+    if (userID != user?.uid || user?.role != userDetails?.role) {
       throw new Error("Incorrect login permission detected.");
     }
   } catch {

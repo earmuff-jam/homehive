@@ -125,8 +125,9 @@ if (isFirebaseConfigOptionsValid(authenticatorConfig)) {
         role: invite.role,
       });
 
-      // remove user from invite once user is created
-      // await deleteDoc(inviteRef);
+      // remove invite doc if user is created
+      await deleteDoc(inviteRef);
+      
       secureLocalStorage.setItem("user", {
         uid: user.uid,
         role: invite.role,

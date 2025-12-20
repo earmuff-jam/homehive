@@ -41,9 +41,9 @@ const AIconButton = forwardRef(function AIconButton(
   return (
     <IconButton
       ref={ref}
-      {...rest}
       onClick={handleClick}
       disabled={starterPlanUser}
+      {...rest} // at the end so that we can overwrite default settings
     >
       {label}
     </IconButton>

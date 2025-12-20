@@ -107,7 +107,7 @@ export default function StripeConnect() {
     if (!userData?.stripeAccountId) {
       const data = await createAccount({
         uid: userData?.uid,
-        email: userData?.googleEmailAddress,
+        email: userData?.email,
       });
       if (data) {
         updateUser({

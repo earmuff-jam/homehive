@@ -65,7 +65,7 @@ export default function ProfileDetails() {
         uid: user?.uid,
         googleAccountLinkedAt: userData?.googleAccountLinkedAt,
         googleDisplayName: userData?.googleDisplayName,
-        googleEmailAddress: userData?.googleEmailAddress,
+        email: userData?.email,
         googleLastLoginAt: userData?.googleLastLoginAt,
         googlePhotoURL: userData?.googlePhotoURL,
         updatedOn: dayjs().toISOString(),
@@ -114,7 +114,7 @@ export default function ProfileDetails() {
             {userData.googleDisplayName}
           </Typography>
           <Typography variant="h6" fontWeight={600} color="textSecondary">
-            {userData.googleEmailAddress}
+            {userData.email}
           </Typography>
           <Typography variant="body2" color="text.secondary">
             {user?.role}
@@ -206,7 +206,7 @@ export default function ProfileDetails() {
                 id="email"
                 name="email"
                 placeholder="Email Address"
-                value={userData?.googleEmailAddress || ""}
+                value={userData?.email || ""}
                 isDisabled
                 errorMsg=""
                 labelIcon={<InfoRounded fontSize="small" color="secondary" />}
