@@ -76,6 +76,9 @@ export const firebaseUserApi = createApi({
           const userDetails = await authenticateViaGoogle();
           const userRef = doc(db, "users", userDetails?.uid);
           await setDoc(userRef, { ...userDetails }, { merge: true });
+          // refetch to get accurate roles
+          const refetchUserDataSnapshot = await getDoc(userRef);
+          const refetchUserData = refetchUserDataSnapshot.data();
 
           if (userDetails?.uid) {
             const userDetails = {

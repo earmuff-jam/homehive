@@ -2,7 +2,7 @@ import secureLocalStorage from "react-secure-storage";
 
 import { getApps, initializeApp } from "firebase/app";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { doc, getDoc, getFirestore, setDoc } from "firebase/firestore";
+import { deleteDoc, doc, getDoc, getFirestore, setDoc } from "firebase/firestore";
 
 // -------------------------------------------
 // Util functions
