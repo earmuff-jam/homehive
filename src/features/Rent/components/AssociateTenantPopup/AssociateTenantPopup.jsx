@@ -67,6 +67,7 @@ export default function AssociateTenantPopup({
       rent: "",
       isPrimary: false,
       isSoR: false,
+      grace_period: 3,
       assignedRoomName: "",
     },
   });
@@ -181,7 +182,7 @@ export default function AssociateTenantPopup({
           <TextFieldWithLabel
             label={
               <Stack direction="row" alignItems="center">
-                <Tooltip title="The tax rate applied in percentage.">
+                <Tooltip title="The tax rate applied in percentage. Set 1 for default value.">
                   <InfoRounded
                     color="secondary"
                     fontSize="small"
@@ -268,6 +269,37 @@ export default function AssociateTenantPopup({
                   value: /^\d+(\.\d{1,2})?$/,
                   message:
                     "Daily late fee must be valid amount per day. Eg, 10.00",
+                },
+              }),
+            }}
+          />
+        </Stack>
+
+        {/* Grace period */}
+        <Stack direction={{ xs: "column", md: "row" }} spacing={2}>
+          <TextFieldWithLabel
+            label={
+              <Stack direction="row" alignItems="center">
+                <Tooltip title="The number of days of grace period provided to the tenant. A default value of 3 is provided to the user by default. Property owners are encouraged to keep the default days as is for tenant feasibility.">
+                  <InfoRounded
+                    color="secondary"
+                    fontSize="small"
+                    sx={{ fontSize: "1rem", margin: "0.2rem" }}
+                  />
+                </Tooltip>
+                <Typography variant="subtitle2"> Grace period *</Typography>
+              </Stack>
+            }
+            id="grace_period"
+            placeholder="The days before the late fee is calculated"
+            errorMsg={errors.grace_period?.message}
+            inputProps={{
+              ...register("grace_period", {
+                required:
+                  "Grace period is required and must be in number format.",
+                pattern: {
+                  value: /\d+/,
+                  message: "Must be a valid amount (e.g. 10)",
                 },
               }),
             }}
