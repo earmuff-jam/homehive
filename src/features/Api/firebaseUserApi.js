@@ -46,7 +46,7 @@ export const firebaseUserApi = createApi({
         try {
           const q = query(
             collection(db, "users"),
-            where("email", "==", emailAddress),
+            where("googleEmailAddress", "==", emailAddress),
           );
 
           const querySnapshot = await getDocs(q);
@@ -144,6 +144,7 @@ export const {
   useLazyGetUserDataByIdQuery,
   useGetUserDataByIdQuery,
   useGetUserByEmailAddressQuery,
+  useLazyGetUserByEmailAddressQuery,
   useAuthenticateMutation,
   useUpdateUserByUidMutation,
   useLogoutMutation,

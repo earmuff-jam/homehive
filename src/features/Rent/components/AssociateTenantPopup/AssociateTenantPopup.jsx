@@ -63,12 +63,24 @@ export default function AssociateTenantPopup({
       email: "",
       start_date: dayjs().toISOString(),
       term: "",
-      tax_rate: "",
+      tax_rate: 1,
       rent: "",
+      initialLateFee: 75,
+      dailyLateFee: 10,
+      initialAnimalVoilationFee: 300,
+      dailyAnimalVoilationFee: 25,
+      returnedPaymentFee: 75,
+      grace_period: 3,
+      isAutoRenewPolicySet: false,
+      autoRenewDays: 60,
       isPrimary: false,
       isSoR: false,
-      grace_period: 3,
       assignedRoomName: "",
+      guestsPermittedStayDays: 15,
+      tripCharge: 60,
+      allowKeyboxSince: 4,
+      removeKeyboxFee: 50,
+      inventoryCompleteWithin: 10,
     },
   });
 
@@ -89,6 +101,7 @@ export default function AssociateTenantPopup({
   };
 
   const isSoR = watch("isSoR");
+  const isAutoRenewPolicySet = watch("isAutoRenewPolicySet");
 
   useEffect(() => {
     if (property) {
@@ -227,20 +240,25 @@ export default function AssociateTenantPopup({
           />
         </Stack>
 
+        <Divider>
+          <Typography variant="caption"> Charges and Fees </Typography>
+        </Divider>
+
         {/* Initial Late Fee and Daily Late Fee */}
         <Stack direction={{ xs: "column", md: "row" }} spacing={2}>
           <TextFieldWithLabel
             label="Initial Late Fee *"
-            id="initial_late_fee"
+            id="initialLateFee"
             placeholder="Initial Late fee. Eg, 75.00"
-            errorMsg={errors.initial_late_fee?.message}
+            errorMsg={errors.initialLateFee?.message}
             inputProps={{
-              ...register("initial_late_fee", {
+              ...register("initialLateFee", {
                 required:
                   "Initial Late Fee is required and must be in number format.",
                 pattern: {
                   value: /^\d+(\.\d{1,2})?$/,
-                  message: "Rent must be a valid amount (e.g. 75.00)",
+                  message:
+                    "Initial late fee must be a valid amount (e.g. 75.00)",
                 },
               }),
             }}
@@ -258,11 +276,11 @@ export default function AssociateTenantPopup({
                 <Typography variant="subtitle2">Late fee / day *</Typography>
               </Stack>
             }
-            id="daily_late_fee *"
+            id="dailyLateFee"
             placeholder="Daily late fee. Eg, 5.00"
-            errorMsg={errors.daily_late_fee?.message}
+            errorMsg={errors.dailyLateFee?.message}
             inputProps={{
-              ...register("daily_late_fee", {
+              ...register("dailyLateFee", {
                 required:
                   "Daily Late Fee is required and must be in number format.",
                 pattern: {
@@ -274,6 +292,87 @@ export default function AssociateTenantPopup({
             }}
           />
         </Stack>
+
+        {/* Initial animal voilation fee and daily animal voilation fee */}
+        <Stack direction={{ xs: "column", md: "row" }} spacing={2}>
+          <TextFieldWithLabel
+            label="Initial Animal Voilation Fee *"
+            id="initialAnimalVoilationFee"
+            placeholder="Initial Animal Voilation fee. Eg, 300.00"
+            errorMsg={errors.initialAnimalVoilationFee?.message}
+            inputProps={{
+              ...register("initialAnimalVoilationFee", {
+                required:
+                  "Initial Animal Voilation Fee is required and must be in number format.",
+                pattern: {
+                  value: /^\d+(\.\d{1,2})?$/,
+                  message:
+                    "Initial animal voilation fee must be a valid amount (e.g. 300.00)",
+                },
+              }),
+            }}
+          />
+          <TextFieldWithLabel
+            label={
+              <Stack direction="row" alignItems="center">
+                <Tooltip title="Animal voilation fee is the fee applied after the grace period is over. Eg, 10$ per day daily fee should be 10.00">
+                  <InfoRounded
+                    color="secondary"
+                    fontSize="small"
+                    sx={{ fontSize: "0.875rem", margin: "0.2rem" }}
+                  />
+                </Tooltip>
+                <Typography variant="subtitle2">
+                  Animal voilation fee / day *
+                </Typography>
+              </Stack>
+            }
+            id="dailyAnimalVoilationFee"
+            placeholder="Daily Animal voilation fee. Eg, 5.00"
+            errorMsg={errors.dailyAnimalVoilationFee?.message}
+            inputProps={{
+              ...register("dailyAnimalVoilationFee", {
+                required:
+                  "Daily Animal voilation fee is required and must be in number format.",
+                pattern: {
+                  value: /^\d+(\.\d{1,2})?$/,
+                  message:
+                    "Daily Animal voilation fee must be valid amount per day. Eg, 10.00",
+                },
+              }),
+            }}
+          />
+        </Stack>
+
+        <TextFieldWithLabel
+          label={
+            <Stack direction="row" alignItems="center">
+              <Tooltip title="Fee amount when payment is incomplete or not processed properly.">
+                <InfoRounded
+                  color="secondary"
+                  fontSize="small"
+                  sx={{ fontSize: "1rem", margin: "0.2rem" }}
+                />
+              </Tooltip>
+              <Typography variant="subtitle2">
+                Fee associated with each return *
+              </Typography>
+            </Stack>
+          }
+          id="returnedPaymentFee"
+          placeholder="Enter returned payment fee in exact amount. Eg, 7.25"
+          errorMsg={errors.returnedPaymentFee?.message}
+          inputProps={{
+            ...register("returnedPaymentFee", {
+              required: "Returned payment fee is required",
+              pattern: {
+                value: /^\d+(\.\d{1,2})?$/,
+                message:
+                  "Returned payment fee should be in dollar format. Eg, 7.25",
+              },
+            }),
+          }}
+        />
 
         {/* Grace period */}
         <Stack direction={{ xs: "column", md: "row" }} spacing={2}>
@@ -317,55 +416,271 @@ export default function AssociateTenantPopup({
           clearErrors={clearErrors}
         />
 
-        {/* Checkboxes */}
-        <Controller
-          name="isPrimary"
-          control={control}
-          render={({ field }) => (
-            <FormControlLabel
-              control={
-                <Checkbox
-                  {...field}
-                  checked={field.value}
-                  disabled={tenants?.some((t) => t.isPrimary)}
-                />
-              }
-              label="Primary point of contact (PoC)"
-            />
-          )}
-        />
-
-        <Controller
-          name="isSoR"
-          control={control}
-          render={({ field }) => (
-            <FormControlLabel
-              control={
-                <Checkbox
-                  {...field}
-                  checked={field.value}
-                  disabled={!isAssociatedPropertySoR(property, tenants)}
-                />
-              }
-              label="Single Occupancy Room (SoR)?"
-            />
-          )}
-        />
-
-        {isSoR && (
+        {/* Owner covered utilities */}
+        <Stack>
           <Controller
-            name="assignedRoomName"
+            name="isAutoRenewPolicySet"
             control={control}
+            defaultValue={false}
             render={({ field }) => (
-              <TextFieldWithLabel
-                label="Room Name"
-                placeholder="Assign the above user a room"
-                errorMsg={errors.assignedRoomName?.message}
-                {...field}
+              <FormControlLabel
+                control={<Checkbox {...field} checked={field.value} />}
+                label={
+                  <Stack direction="row" spacing={1} alignItems="center">
+                    <Typography variant="subtitle2">
+                      {`Setup auto renewal for ${property?.name}`}
+                    </Typography>
+                    <Tooltip title="Auto renewal support includes the ability to auto renew lease as the rental time comes closer to an end. For auto renewal process to work smoothly please ensure that all required values are entered correctly to the best of your knowledge.">
+                      <InfoRounded
+                        color="secondary"
+                        fontSize="small"
+                        sx={{ fontSize: "1rem", margin: "0.2rem" }}
+                      />
+                    </Tooltip>
+                  </Stack>
+                }
               />
             )}
           />
-        )}
+          {isAutoRenewPolicySet && (
+            <TextFieldWithLabel
+              label={
+                <Stack direction="row" alignItems="center">
+                  <Tooltip title="Enter the amount of days you would like the auto renewal notice to be sent within. Eg, 60 days.">
+                    <InfoRounded
+                      color="secondary"
+                      fontSize="small"
+                      sx={{ fontSize: "1rem", margin: "0.2rem" }}
+                    />
+                  </Tooltip>
+                  <Typography variant="subtitle2">
+                    Send auto renewal notice in *
+                  </Typography>
+                </Stack>
+              }
+              id="autoRenewDays"
+              placeholder="Enter the exact days to send the lease in. Eg, 60."
+              errorMsg={errors.autoRenewDays?.message}
+              inputProps={{
+                ...register("autoRenewDays", {
+                  required: "Auto renewal days is required",
+                  pattern: {
+                    value: /^\d+$/,
+                    message: "Auto renewal days must be a valid days (e.g. 60)",
+                  },
+                }),
+              }}
+            />
+          )}
+        </Stack>
+
+        <Stack>
+          <Controller
+            name="isPrimary"
+            control={control}
+            render={({ field }) => (
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    {...field}
+                    checked={field.value}
+                    disabled={tenants?.some((t) => t.isPrimary)}
+                  />
+                }
+                label="Primary point of contact (PoC)"
+              />
+            )}
+          />
+        </Stack>
+
+        <Stack>
+          <Controller
+            name="isSoR"
+            control={control}
+            render={({ field }) => (
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    {...field}
+                    checked={field.value}
+                    disabled={!isAssociatedPropertySoR(property, tenants)}
+                  />
+                }
+                label="Single Occupancy Room (SoR)?"
+              />
+            )}
+          />
+
+          {isSoR && (
+            <Controller
+              name="assignedRoomName"
+              control={control}
+              render={({ field }) => (
+                <TextFieldWithLabel
+                  label="Room Name"
+                  placeholder="Assign the above user a room"
+                  errorMsg={errors.assignedRoomName?.message}
+                  {...field}
+                />
+              )}
+            />
+          )}
+        </Stack>
+
+        <Divider>
+          <Typography variant="caption">Permits and Responsibilites</Typography>
+        </Divider>
+
+        {/* guestsPermittedStayDays and owner trip charge */}
+        <Stack direction={{ xs: "column", md: "row" }} spacing={2}>
+          <TextFieldWithLabel
+            label={
+              <Stack direction="row" alignItems="center">
+                <Tooltip title="Enter the amount of days the tenant can have guests in the property without informing the owner.">
+                  <InfoRounded
+                    color="secondary"
+                    fontSize="small"
+                    sx={{ fontSize: "1rem", margin: "0.2rem" }}
+                  />
+                </Tooltip>
+                <Typography variant="subtitle2">
+                  Guests permitted stay days
+                </Typography>
+              </Stack>
+            }
+            id="guestsPermittedStayDays"
+            placeholder="Enter the number of days tenant's guests are permitted to stay. Eg, 15."
+            errorMsg={errors.guestsPermittedStayDays?.message}
+            inputProps={{
+              ...register("guestsPermittedStayDays", {
+                required: "Guest permitted stay days is required",
+                pattern: {
+                  value: /^\d+$/,
+                  message:
+                    "Guest permitted stay days must be a valid days (e.g. 60)",
+                },
+              }),
+            }}
+          />
+
+          <TextFieldWithLabel
+            label={
+              <Stack direction="row" alignItems="center">
+                <Tooltip title="Enter the charge amount tenants would incur when they request assistance.">
+                  <InfoRounded
+                    color="secondary"
+                    fontSize="small"
+                    sx={{ fontSize: "1rem", margin: "0.2rem" }}
+                  />
+                </Tooltip>
+                <Typography variant="subtitle2">Owner trip charge</Typography>
+              </Stack>
+            }
+            id="tripCharge"
+            placeholder="Enter the charge amount tenants incur when they request assistance. Eg, 60."
+            errorMsg={errors.tripCharge?.message}
+            inputProps={{
+              ...register("tripCharge", {
+                required: "Owner trip charge is required",
+                pattern: {
+                  value: /^\d+$/,
+                  message: "Owner trip charge must be a valid days (e.g. 60)",
+                },
+              }),
+            }}
+          />
+        </Stack>
+
+        {/* keybox information */}
+        <Stack direction={{ xs: "column", md: "row" }} spacing={2}>
+          <TextFieldWithLabel
+            label={
+              <Stack direction="row" alignItems="center">
+                <Tooltip title="Enter the amount of days allowed for the owner to setup a keybox for the property for new prospective tenants.">
+                  <InfoRounded
+                    color="secondary"
+                    fontSize="small"
+                    sx={{ fontSize: "1rem", margin: "0.2rem" }}
+                  />
+                </Tooltip>
+                <Typography variant="subtitle2">Allow keybox since</Typography>
+              </Stack>
+            }
+            id="allowKeyboxSince"
+            placeholder="Enter the number of days allowed to setup a keybox. Eg, 4."
+            errorMsg={errors.allowKeyboxSince?.message}
+            inputProps={{
+              ...register("allowKeyboxSince", {
+                required: "Allow keybox since days is required",
+                pattern: {
+                  value: /^\d+$/,
+                  message:
+                    "Allow keybox since days must be a valid days (e.g. 4)",
+                },
+              }),
+            }}
+          />
+
+          <TextFieldWithLabel
+            label={
+              <Stack direction="row" alignItems="center">
+                <Tooltip title="The cost tenant can pay to remove the keybox. Eg, 45.00.">
+                  <InfoRounded
+                    color="secondary"
+                    fontSize="small"
+                    sx={{ fontSize: "1rem", margin: "0.2rem" }}
+                  />
+                </Tooltip>
+                <Typography variant="subtitle2">Remove keybox fee</Typography>
+              </Stack>
+            }
+            id="removeKeyboxFee"
+            placeholder="Enter the fee associated with removing the keybox. Eg, 45."
+            errorMsg={errors.removeKeyboxFee?.message}
+            inputProps={{
+              ...register("removeKeyboxFee", {
+                required: "Remove keybox fee is required",
+                pattern: {
+                  value: /^\d+$/,
+                  message: "Remove keybox fee must be a valid days (e.g. 60)",
+                },
+              }),
+            }}
+          />
+        </Stack>
+
+        {/* Tenant must complete inventory within */}
+        <Stack>
+          <TextFieldWithLabel
+            label={
+              <Stack direction="row" alignItems="center">
+                <Tooltip title="The timeframe allocated to complete the initial home inventory">
+                  <InfoRounded
+                    color="secondary"
+                    fontSize="small"
+                    sx={{ fontSize: "1rem", margin: "0.2rem" }}
+                  />
+                </Tooltip>
+                <Typography variant="subtitle2">
+                  Complete inventory within
+                </Typography>
+              </Stack>
+            }
+            id="inventoryCompleteWithin"
+            placeholder="Enter the timeframe allocated to complete an initial home inventory. Eg, 10."
+            errorMsg={errors.inventoryCompleteWithin?.message}
+            inputProps={{
+              ...register("inventoryCompleteWithin", {
+                required: "Inventory Complete within is required",
+                pattern: {
+                  value: /^\d+$/,
+                  message:
+                    "Inventory Complete within must be a valid days (e.g. 60)",
+                },
+              }),
+            }}
+          />
+        </Stack>
 
         <Button
           startIcon={<UpdateRounded fontSize="small" />}
