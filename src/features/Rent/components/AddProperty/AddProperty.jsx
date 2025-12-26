@@ -386,7 +386,8 @@ export default function AddProperty({
                 required: "Security deposit is required.",
                 pattern: {
                   value: /^\d+(\.\d{1,2})?$/,
-                  message: "Additional fee must be a valid amount (e.g. 75.00)",
+                  message:
+                    "Security deposit must be a valid amount (e.g. 75.00)",
                 },
               }),
             }}
@@ -544,7 +545,7 @@ export default function AddProperty({
               />
 
               <TextFieldWithLabel
-                label="Broker Address*"
+                label="Broker Address *"
                 id="brokerAddress"
                 placeholder="The address of the broker"
                 errorMsg={errors.brokerAddress?.message}
@@ -586,7 +587,7 @@ export default function AddProperty({
                   errorMsg={errors.managerName?.message}
                   inputProps={{
                     ...register("managerName", {
-                      required: "Manager name is required",
+                      required: "Manager full name is required",
                     }),
                   }}
                 />
