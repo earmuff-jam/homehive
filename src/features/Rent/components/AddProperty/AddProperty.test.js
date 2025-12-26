@@ -1,5 +1,7 @@
 import React from "react";
 
+import { useForm } from "react-hook-form";
+
 import AddProperty from "./AddProperty";
 import { render, screen } from "@testing-library/react";
 
@@ -17,28 +19,29 @@ jest.mock("common/AButton", () => ({
   ),
 }));
 
+const AddPropertyWrapper = () => {
+  const methods = useForm();
+
+  return (
+    <AddProperty
+      register={methods.register}
+      control={methods.control}
+      errors={methods.formState.errors}
+      onSubmit={jest.fn()}
+    />
+  );
+};
+
 describe("AddProperty Component Tests", () => {
   describe("AddProperty Snapshot Tests", () => {
     it("matches AddProperty snapshot", () => {
-      const { asFragment } = render(
-        <AddProperty
-          register={jest.fn(() => ({}))}
-          errors={{}}
-          onSubmit={jest.fn()}
-        />,
-      );
+      const { asFragment } = render(<AddPropertyWrapper />);
       expect(asFragment()).toMatchSnapshot();
     });
   });
   describe("AddProperty Component Tests", () => {
     it("renders without crashing", () => {
-      render(
-        <AddProperty
-          register={mockRegister}
-          errors={mockErrors}
-          onSubmit={mockSubmit}
-        />,
-      );
+      render(<AddPropertyWrapper />);
 
       expect(
         screen.getByPlaceholderText("Name of your property"),
