@@ -112,6 +112,7 @@ const Property = () => {
           <DocumentsOverview
             property={property}
             dataTour="property-6"
+            primaryTenant={tenants.find((tenant) => tenant.isPrimary) || {}}
             isEsignConnected={isEsignConnected}
             isPropertyLoading={isPropertyLoading || isUserDataFromDbLoading}
           />
@@ -137,6 +138,7 @@ const Property = () => {
         open={dialog}
         keepMounted
         fullWidth
+        maxWidth="lg"
         aria-describedby="alert-dialog-slide-description"
       >
         <DialogTitle>Associate Tenants</DialogTitle>

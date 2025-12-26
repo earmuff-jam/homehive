@@ -12,8 +12,8 @@ import {
 export default function EsignTemplateDetails({
   templates = [],
   isViewingRental,
-  createEsignFromExistingTemplate,
-  isCreateEsignFromTemplateLoading,
+  prepareDocumentForEsign,
+  isPrepareTemplateLoading,
 }) {
   const columns = useMemo(
     () => [
@@ -93,8 +93,8 @@ export default function EsignTemplateDetails({
             size="small"
             label="Prepare"
             variant="outlined"
-            loading={isCreateEsignFromTemplateLoading}
-            onClick={() => createEsignFromExistingTemplate(row?.original)}
+            loading={isPrepareTemplateLoading}
+            onClick={() => prepareDocumentForEsign(row?.original)}
             startIcon={<UpgradeRounded fontSize="small" color="primary" />}
           />
         </Tooltip>

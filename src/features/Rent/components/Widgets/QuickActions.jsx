@@ -42,10 +42,47 @@ export default function QuickActions({ property }) {
 
   const {
     register,
+    control,
+    watch,
     handleSubmit,
     formState: { errors, isValid },
     reset,
-  } = useForm({ mode: "onChange" });
+  } = useForm({
+    mode: "onChange",
+    defaultValues: {
+      name: "",
+      address: "",
+      county: "",
+      city: "",
+      state: "",
+      zipcode: "",
+      units: 0,
+      bathrooms: 0,
+      sqFt: 100,
+      note: "",
+      emergencyContactNumber: "",
+      isTenantCleaningYard: true,
+      isSmoking: false,
+      isOwnerCoveredUtilities: false,
+      ownerCoveredUtilities: "",
+      rent: 0,
+      additional_rent: 0,
+      rent_increment: 100,
+      securityDeposit: 0,
+      allowedVehicleCounts: 0,
+      paymentID: "",
+      specialProvisions: "",
+      isHoa: false,
+      hoaDetails: "",
+      isBrokerManaged: false,
+      brokerName: "",
+      brokerAddress: "",
+      isManagerManaged: false,
+      managerName: "",
+      managerPhone: "",
+      managerAddress: "",
+    },
+  });
 
   const [dialog, setDialog] = useState(defaultDialog);
   const [showSnackbar, setShowSnackbar] = useState(false);
@@ -68,6 +105,11 @@ export default function QuickActions({ property }) {
     updateProperty(result);
   };
 
+  const isPropertyWithinHOA = watch("isHoa");
+  const isBrokerManaged = watch("isBrokerManaged");
+  const isManagerManaged = watch("isManagerManaged");
+  const isOwnerCoveredUtilities = watch("isOwnerCoveredUtilities");
+
   useEffect(() => {
     if (isUpdatePropertySuccess) {
       closeDialog();
@@ -78,19 +120,38 @@ export default function QuickActions({ property }) {
   useEffect(() => {
     if (property?.id) {
       reset({
-        name: property.name || "",
-        address: property.address || "",
-        city: property.city || "",
-        state: property.state || "",
-        zipcode: property.zipcode || "",
-        owner_email: property.owner_email || "",
-        units: property.units || "",
-        bathrooms: property.bathrooms || "",
-        rent: property.rent || "",
+        name: property?.name || "",
+        address: property?.address || "",
+        city: property?.city || "",
+        state: property?.state || "",
+        county: property?.county || "",
+        zipcode: property?.zipcode || "",
+        owner_email: property?.owner_email || "",
+        units: property?.units || "",
+        bathrooms: property?.bathrooms || "",
+        rent: property?.rent || "",
         additional_rent: property?.additional_rent || "",
         note: property?.note || "",
         sqFt: property?.sqFt || "",
         rent_increment: property?.rent_increment || "",
+        emergencyContactNumber: property?.emergencyContactNumber,
+        isTenantCleaningYard: property?.isTenantCleaningYard,
+        isSmoking: property?.isSmoking,
+        isOwnerCoveredUtilities: property?.isOwnerCoveredUtilities,
+        ownerCoveredUtilities: property?.ownerCoveredUtilities,
+        securityDeposit: property?.securityDeposit,
+        allowedVehicleCounts: property?.allowedVehicleCounts,
+        paymentID: property?.paymentID,
+        specialProvisions: property?.specialProvisions,
+        isHoa: property?.isHoa,
+        hoaDetails: property?.hoaDetails,
+        isBrokerManaged: property?.isBrokerManaged,
+        brokerName: property?.brokerName,
+        brokerAddress: property?.brokerAddress,
+        isManagerManaged: property?.isManagerManaged,
+        managerName: property?.managerName,
+        managerPhone: property?.managerPhone,
+        managerAddress: property?.managerAddress,
       });
     }
   }, [property, reset]);
@@ -148,14 +209,14 @@ export default function QuickActions({ property }) {
             open={dialog.display}
             keepMounted
             fullWidth
-            maxWidth="md"
+            maxWidth="lg"
             aria-describedby="alert-dialog-slide-description"
           >
             <DialogTitle>
               {dialog.type === AddPropertyTextString && (
                 <RowHeader
                   title="Edit property"
-                  caption="Edit property values for current or previous tenant"
+                  caption="Edit property values"
                   sxProps={{
                     textAlign: "left",
                   }}
@@ -176,7 +237,12 @@ export default function QuickActions({ property }) {
                 <AddProperty
                   isEditing
                   register={register}
+                  control={control}
                   errors={errors}
+                  isManagerManaged={isManagerManaged}
+                  isBrokerManaged={isBrokerManaged}
+                  isOwnerCoveredUtilities={isOwnerCoveredUtilities}
+                  isPropertyWithinHOA={isPropertyWithinHOA}
                   onSubmit={handleSubmit(onSubmit)}
                   isDisabled={!isValid || isUpdatePropertyLoading}
                 />

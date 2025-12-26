@@ -83,21 +83,59 @@ export default function Properties() {
 
   const {
     register,
+    control,
+    watch,
     handleSubmit,
     formState: { errors, isValid },
     reset,
     setValue,
-  } = useForm({ mode: "onChange" });
+  } = useForm({
+    mode: "onChange",
+    defaultValues: {
+      name: "",
+      address: "",
+      county: "",
+      city: "",
+      state: "",
+      zipcode: "",
+      units: 0,
+      bathrooms: 0,
+      sqFt: 100,
+      note: "",
+      emergencyContactNumber: "",
+      isTenantCleaningYard: true,
+      isSmoking: false,
+      isOwnerCoveredUtilities: false,
+      ownerCoveredUtilities: "",
+      rent: 0,
+      additional_rent: 0,
+      rent_increment: 100,
+      securityDeposit: 0,
+      allowedVehicleCounts: 0,
+      paymentID: "",
+      specialProvisions: "",
+      isHoa: false,
+      hoaDetails: "",
+      isBrokerManaged: false,
+      brokerName: "",
+      brokerAddress: "",
+      isManagerManaged: false,
+      managerName: "",
+      managerPhone: "",
+      managerAddress: "",
+    },
+  });
 
   const [expanded, setExpanded] = useState(null);
   const [dialog, setDialog] = useState(defaultDialog);
   const [showSnackbar, setShowSnackbar] = useState(false);
 
+  const handleExpand = (id) => setExpanded((prev) => (prev === id ? null : id));
+
   const closeDialog = () => {
     setDialog(defaultDialog);
     reset();
   };
-  const handleExpand = (id) => setExpanded((prev) => (prev === id ? null : id));
 
   const handleUpdate = (propertyId) => {
     if (!propertyId) return;
@@ -131,6 +169,11 @@ export default function Properties() {
     createProperty(result);
     closeDialog();
   };
+
+  const isPropertyWithinHOA = watch("isHoa");
+  const isBrokerManaged = watch("isBrokerManaged");
+  const isManagerManaged = watch("isManagerManaged");
+  const isOwnerCoveredUtilities = watch("isOwnerCoveredUtilities");
 
   useEffect(() => {
     if (isCreatePropertySuccess || isUpdatePropertySuccess) {
@@ -275,6 +318,7 @@ export default function Properties() {
         open={dialog.display}
         keepMounted
         fullWidth
+        maxWidth="lg"
         aria-describedby="alert-dialog-slide-description"
       >
         <DialogTitle>{dialog.title}</DialogTitle>
@@ -282,7 +326,12 @@ export default function Properties() {
           {dialog.type === AddPropertyTextString && (
             <AddProperty
               register={register}
+              control={control}
               errors={errors}
+              isManagerManaged={isManagerManaged}
+              isBrokerManaged={isBrokerManaged}
+              isOwnerCoveredUtilities={isOwnerCoveredUtilities}
+              isPropertyWithinHOA={isPropertyWithinHOA}
               onSubmit={handleSubmit(onSubmit)}
               isDisabled={!isValid}
             />
