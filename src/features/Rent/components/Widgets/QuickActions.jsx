@@ -72,7 +72,7 @@ export default function QuickActions({ property }) {
       allowedVehicleCounts: 0,
       paymentID: "",
       specialProvisions: "",
-      isHoa: false,
+      isHOA: false,
       hoaDetails: "",
       isBrokerManaged: false,
       brokerName: "",

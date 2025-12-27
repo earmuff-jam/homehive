@@ -114,7 +114,7 @@ export default function Properties() {
       allowedVehicleCounts: 0,
       paymentID: "",
       specialProvisions: "",
-      isHoa: false,
+      isHOA: false,
       hoaDetails: "",
       isBrokerManaged: false,
       brokerName: "",
