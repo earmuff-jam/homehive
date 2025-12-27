@@ -394,3 +394,14 @@ export const convertFileToBase64Encoding = ({ file }) =>
     reader.onload = () => resolve(reader.result);
     reader.onerror = reject;
   });
+
+/**
+ * sanitizeApiFields ...
+ *
+ * removed undefined fields from the provided object
+ */
+export const sanitizeApiFields = (obj) =>
+  Object.fromEntries(
+    /* eslint-disable no-unused-vars */
+    Object.entries(obj).filter(([_, value]) => value !== undefined),
+  );
