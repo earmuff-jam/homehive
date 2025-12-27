@@ -12,8 +12,7 @@ import {
   useLazyGetUserDataByIdQuery,
 } from "features/Api/firebaseUserApi";
 import EsignTemplateDetails from "features/Rent/components/EsignConnect/EsignTemplateDetails";
-import { fetchLoggedInUser } from "features/Rent/utils";
-import { produce } from "immer";
+import { fetchLoggedInUser, sanitizeEsignFields } from "features/Rent/utils";
 
 export default function DocumentsOverview({
   property,
@@ -47,94 +46,23 @@ export default function DocumentsOverview({
 
   const templates = esignTemplates?.templates ?? [];
 
-  const validateFullName = (firstName, lastName, otherName) => {
-    if (!firstName || !lastName) {
-      return otherName || "";
-    } else if (firstName && lastName) {
-      return `${firstName}, ${lastName}`;
-    } else {
-      return "N/A";
-    }
-  };
-
   const prepareDocumentForEsign = (rowData) => {
     if (!rowData) return null;
 
-    const draftData = produce(rowData, (draft) => {
-      draft.id = rowData.uuid;
-      draft.owner = validateFullName(
-        propertyOwnerData.first_name,
-        propertyOwnerData.last_name,
-        propertyOwnerData.googleDisplayName,
-      );
-      draft.ownerEmail = property?.owner_email;
-      draft.tenant = validateFullName(
-        tenantData.first_name,
-        tenantData.last_name,
-        tenantData.fullName,
-      );
-      draft.tenantEmail = tenantData.googleEmailAddress;
-      draft.address = property?.address;
-      draft.city = property?.city;
-      draft.state = property?.state;
-      draft.zipCode = property?.zipCode;
-      draft.county = property?.county;
-      draft.startDate = primaryTenant?.startDate;
-      draft.endDate = primaryTenant?.endDate;
-      draft.isAutoRenew = primaryTenant?.isAutoRenewPolicySet;
-      draft.autoRenewDays = primaryTenant?.autoRenewDays;
-      draft.isMonthLastDate = primaryTenant?.isMonthLastDate;
-      draft.rent = property?.rent;
-      draft.isFirstDayRent = true;
-      draft.isPayToLandlord = true;
-      draft.isPayToListingBroker = true;
-      draft.isPayToPropertyManager = true;
-      draft.rentDueDate = primaryTenant?.rentDueDate;
-      draft.isCashiersCheck = true;
-      draft.isElectronicPayment = true;
-      draft.isMoneyOrder = true;
-      draft.isPersonalCheck = true;
-      draft.isOtherMeans = true;
-      draft.proratedRent =
-        Number(property?.rent || 0) + Number(property?.additionalRent || 0);
-      draft.proratedRentDueDate = tenantData?.rentDueDate;
-      draft.paymentID = property?.paymentID;
-      draft.isExtraChargeNotAdded = false;
-      draft.isMonthlyPaymentsRequired = true;
-      draft.isInitialLateFee = true;
-      draft.initialLateFee = primaryTenant?.initialLateFee;
-      draft.dailyLateFee = primaryTenant?.dailyLateFee;
-      draft.returnedPaymentFee = primaryTenant?.returnedPaymentFee;
-      draft.initialAnimalViolationFee =
-        primaryTenant?.initialAnimalVoilationFee;
-      draft.dailyAnimalViolationFee = primaryTenant?.dailyAnimalVoilationFee;
-      draft.securityDeposit = property?.securityDeposit;
-      draft.ownerCoveredUtilities = property?.ownerCoveredUtilities; // comma seperated string
-      draft.isHOA = property?.isHOA;
-      draft.isNotHOA = !property?.isHOA;
-      draft.hoaDetails = property?.hoaDetails; // details string seperated
-      draft.guestsPermittedStayDays = primaryTenant?.guestsPermittedStayDays;
-      draft.allowedVehicleCounts = property?.allowedVehicleCounts;
-      draft.tripCharge = primaryTenant?.tripCharge; // cost to pay to owner if the owner has to do smth for tenant
-      draft.allowKeyboxSince = primaryTenant?.allowKeyboxSince;
-      draft.removeKeyboxFee = primaryTenant?.removeKeyboxFee;
-      draft.inventoryCompleteWithin = primaryTenant?.inventoryCompleteWithin;
-      draft.isTenantCleaningYard = property?.isTenantCleaningYard;
-      draft.isSmokingNotAllowed = !property?.isSmoking;
-      draft.emergencyContactNumber = property?.emergencyContactNumber;
-      draft.specialProvisions = property?.specialProvisions; // extra rules for tenant, like addendum
-      draft.rentalFloodDisclosure = property?.rentalFloodDisclosure;
-      draft.brokerName = property?.brokerName;
-      draft.isBrokerManaged = property?.isBrokerManaged;
-      draft.isNotBrokerManaged = !property?.isBrokerManaged;
-      draft.isOwnerManaged = property?.isOwnerManaged;
-      draft.isManagerManaged = !property?.isManagerManaged;
-      draft.managerName = property?.managerName;
-      draft.managerAddress = property?.managerAddress;
-      draft.managerPhone = property?.managerPhone;
-    });
-
-    createEsignFromTemplate(draftData);
+    const frameWork = {
+      userId: user?.uid,
+      doc_name: rowData?.name,
+      uuid: rowData?.uuid,
+      additional_senders: "earmuffjam@homehivesolutions.com",
+      fields: sanitizeEsignFields(
+        rowData,
+        property,
+        propertyOwnerData,
+        tenantData,
+        primaryTenant,
+      ),
+    };
+    createEsignFromTemplate(frameWork);
   };
 
   useEffect(() => {

@@ -81,6 +81,7 @@ export default function AssociateTenantPopup({
       allowKeyboxSince: 4,
       removeKeyboxFee: 50,
       inventoryCompleteWithin: 10,
+      rentDueDate: 4, // how many days the rent can be delayed from due date
     },
   });
 
@@ -603,7 +604,9 @@ export default function AssociateTenantPopup({
                     sx={{ fontSize: "1rem", margin: "0.2rem" }}
                   />
                 </Tooltip>
-                <Typography variant="subtitle2">Allow keybox since</Typography>
+                <Typography variant="subtitle2">
+                  Allow keybox since *
+                </Typography>
               </Stack>
             }
             id="allowKeyboxSince"
@@ -631,11 +634,11 @@ export default function AssociateTenantPopup({
                     sx={{ fontSize: "1rem", margin: "0.2rem" }}
                   />
                 </Tooltip>
-                <Typography variant="subtitle2">Remove keybox fee</Typography>
+                <Typography variant="subtitle2">Remove keybox fee *</Typography>
               </Stack>
             }
             id="removeKeyboxFee"
-            placeholder="Enter the fee associated with removing the keybox. Eg, 45."
+            placeholder="Enter fee associated with removing the keybox. Eg, 45."
             errorMsg={errors.removeKeyboxFee?.message}
             inputProps={{
               ...register("removeKeyboxFee", {
@@ -643,6 +646,33 @@ export default function AssociateTenantPopup({
                 pattern: {
                   value: /^\d+$/,
                   message: "Remove keybox fee must be a valid days (e.g. 60)",
+                },
+              }),
+            }}
+          />
+
+          <TextFieldWithLabel
+            label={
+              <Stack direction="row" alignItems="center">
+                <Tooltip title="The number of late days payment can be accepted on from the due date. Eg, 4.">
+                  <InfoRounded
+                    color="secondary"
+                    fontSize="small"
+                    sx={{ fontSize: "1rem", margin: "0.2rem" }}
+                  />
+                </Tooltip>
+                <Typography variant="subtitle2">Rent due date *</Typography>
+              </Stack>
+            }
+            id="rentDueDate"
+            placeholder="Enter the days past the start date the rent is due. Eg, 4."
+            errorMsg={errors.rentDueDate?.message}
+            inputProps={{
+              ...register("rentDueDate", {
+                required: "Rent due date is required",
+                pattern: {
+                  value: /^\d+$/,
+                  message: "Rent due date must be a valid days (e.g. 5)",
                 },
               }),
             }}
@@ -662,7 +692,7 @@ export default function AssociateTenantPopup({
                   />
                 </Tooltip>
                 <Typography variant="subtitle2">
-                  Complete inventory within
+                  Complete inventory within days mentioned below
                 </Typography>
               </Stack>
             }
