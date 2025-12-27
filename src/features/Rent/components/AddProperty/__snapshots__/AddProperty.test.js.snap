@@ -1134,7 +1134,7 @@ exports[`AddProperty Component Tests AddProperty Snapshot Tests matches AddPrope
             <input
               class="PrivateSwitchBase-input css-12xagqm-MuiSwitchBase-root"
               data-indeterminate="false"
-              name="isHoa"
+              name="isHOA"
               type="checkbox"
               value="false"
             />

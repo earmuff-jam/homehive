@@ -514,7 +514,7 @@ const derieveEndDate = (startDate, lengthOfStay) => {
 
 /**
  * validateFullName ...
- * 
+ *
  * function used to validate the full name of the user
  */
 const validateFullName = (firstName, lastName, otherName) => {
