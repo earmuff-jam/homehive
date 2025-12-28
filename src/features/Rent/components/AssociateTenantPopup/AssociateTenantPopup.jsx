@@ -662,7 +662,7 @@ export default function AssociateTenantPopup({
                   />
                 </Tooltip>
                 <Typography variant="subtitle2">
-                  Complete inventory within
+                  Complete inventory within days mentioned below
                 </Typography>
               </Stack>
             }

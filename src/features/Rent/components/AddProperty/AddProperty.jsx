@@ -482,7 +482,7 @@ export default function AddProperty({
         {/* HOA and HOA details */}
         <Stack>
           <Controller
-            name="isHoa"
+            name="isHOA"
             control={control}
             defaultValue={false}
             render={({ field }) => (
