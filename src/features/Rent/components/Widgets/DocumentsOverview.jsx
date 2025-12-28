@@ -14,7 +14,6 @@ import {
 import EsignTemplateDetails from "features/Rent/components/EsignConnect/EsignTemplateDetails";
 import { fetchLoggedInUser, sanitizeEsignFields } from "features/Rent/utils";
 
-
 export default function DocumentsOverview({
   property,
   dataTour,
@@ -49,8 +48,21 @@ export default function DocumentsOverview({
 
   const prepareDocumentForEsign = (rowData) => {
     if (!rowData) return null;
-    const sanitizedEsignFields = sanitizeEsignFields(rowData, property, propertyOwnerData, tenantData, primaryTenant);
-    createEsignFromTemplate(sanitizedEsignFields);
+
+    const frameWork = {
+      userId: user?.uid,
+      doc_name: rowData?.name,
+      uuid: rowData?.uuid,
+      additional_senders: "earmuffjam@homehivesolutions.com",
+      fields: sanitizeEsignFields(
+        rowData,
+        property,
+        propertyOwnerData,
+        tenantData,
+        primaryTenant,
+      ),
+    };
+    createEsignFromTemplate(frameWork);
   };
 
   useEffect(() => {
