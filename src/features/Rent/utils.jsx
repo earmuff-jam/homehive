@@ -13,6 +13,8 @@ import {
   PaidRounded,
 } from "@mui/icons-material";
 import validateClientPermissions from "common/ValidateClientPermissions";
+import { LEASE_TERM_MENU_OPTIONS } from "features/Rent/common/constants";
+import { produce } from "immer";
 
 // ---------------------------
 // enum values
@@ -394,3 +396,134 @@ export const convertFileToBase64Encoding = ({ file }) =>
     reader.onload = () => resolve(reader.result);
     reader.onerror = reject;
   });
+
+/**
+ * sanitizeApiFields ...
+ *
+ * removes undefined or null fields from the provided object
+ */
+export const sanitizeApiFields = (obj = {}) =>
+  /* eslint-disable no-unused-vars */
+  Object.fromEntries(Object.entries(obj).filter(([_, value]) => value != null));
+
+/**
+ * sanitizeEsignFields ...
+ *
+ * builds the payload for Esign. removes undefined or null
+ * @returns Object - the sanitized data
+ */
+export const sanitizeEsignFields = (
+  rowData,
+  property,
+  propertyOwnerData,
+  tenantData,
+  primaryTenant,
+) => {
+  const draftData = produce(rowData, (draft) => {
+    draft.id = rowData.uuid;
+    draft.owner = validateFullName(
+      propertyOwnerData?.first_name,
+      propertyOwnerData?.last_name,
+      propertyOwnerData?.googleDisplayName,
+    );
+    draft.ownerEmail = property?.owner_email;
+    draft.tenant = validateFullName(
+      tenantData?.first_name,
+      tenantData?.last_name,
+      tenantData?.googleDisplayName || primaryTenant.email,
+    );
+    draft.tenantEmail = primaryTenant.email;
+    draft.address = property?.address;
+    draft.city = property?.city;
+    draft.state = property?.state;
+    draft.zipCode = property?.zipCode;
+    draft.county = property?.county;
+    draft.startDate = dayjs(primaryTenant?.start_date).format("MM-DD-YYYY");
+    draft.endDate = dayjs(
+      derieveEndDate(primaryTenant?.start_date, primaryTenant?.term),
+    ).format("MM-DD-YYYY");
+    draft.isAutoRenew = primaryTenant?.isAutoRenewPolicySet;
+    draft.autoRenewDays = primaryTenant?.autoRenewDays;
+    draft.isMonthLastDate = true; // on month-month basis due date is last date flag
+    draft.rent = property?.rent;
+    draft.isFirstDayRent = true;
+    draft.isPayToLandlord = true;
+    draft.isPayToListingBroker = true;
+    draft.isPayToPropertyManager = true;
+    draft.rentDueDate = primaryTenant?.rentDueDate;
+    draft.isCashiersCheck = true;
+    draft.isElectronicPayment = true;
+    draft.isMoneyOrder = true;
+    draft.isPersonalCheck = true;
+    draft.isOtherMeans = true;
+    draft.proratedRent =
+      Number(property?.rent || 0) + Number(property?.additionalRent || 0);
+    draft.proratedRentDueDate = primaryTenant?.rentDueDate;
+    draft.paymentID = property?.paymentID;
+    draft.isExtraChargeNotAdded = false;
+    draft.isMonthlyPaymentsRequired = true;
+    draft.isInitialLateFee = true;
+    draft.initialLateFee = primaryTenant?.initialLateFee;
+    draft.dailyLateFee = primaryTenant?.dailyLateFee;
+    draft.returnedPaymentFee = primaryTenant?.returnedPaymentFee;
+    draft.initialAnimalViolationFee = primaryTenant?.initialAnimalVoilationFee;
+    draft.dailyAnimalViolationFee = primaryTenant?.dailyAnimalVoilationFee;
+    draft.securityDeposit = property?.securityDeposit;
+    draft.ownerCoveredUtilities = property?.ownerCoveredUtilities; // comma seperated string
+    draft.isHoa = property?.isHoa;
+    draft.isNotHoa = !property?.isHoa;
+    draft.hoaDetails = property?.hoaDetails; // details string seperated
+    draft.guestsPermittedStayDays = primaryTenant?.guestsPermittedStayDays;
+    draft.allowedVehicleCounts = property?.allowedVehicleCounts;
+    draft.tripCharge = primaryTenant?.tripCharge; // cost to pay to owner if the owner has to do smth for tenant
+    draft.allowKeyboxSince = primaryTenant?.allowKeyboxSince;
+    draft.removeKeyboxFee = primaryTenant?.removeKeyboxFee;
+    draft.inventoryCompleteWithin = primaryTenant?.inventoryCompleteWithin;
+    draft.isTenantCleaningYard = property?.isTenantCleaningYard;
+    draft.isSmokingNotAllowed = !property?.isSmoking;
+    draft.emergencyContactNumber = property?.emergencyContactNumber;
+    draft.specialProvisions = property?.specialProvisions; // extra rules for tenant, like addendum
+    draft.rentalFloodDisclosure = true; // all rental properties are required to submit rental flood disclosures
+    draft.brokerName = property?.brokerName;
+    draft.isBrokerManaged = property?.isBrokerManaged;
+    draft.isNotBrokerManaged = !property?.isBrokerManaged;
+    // owner managed if others do not manage the property
+    draft.isOwnerManaged =
+      !property?.isBrokerManaged && !property?.isManagerManaged;
+    draft.isManagerManaged = property?.isManagerManaged;
+    draft.managerName = property?.managerName;
+    draft.managerAddress = property?.managerAddress;
+    draft.managerPhone = property?.managerPhone;
+  });
+
+  return sanitizeApiFields(draftData);
+};
+
+/**
+ * derieveEndDate ...
+ *
+ * uses LEASE_TERM_MENU_OPTIONS to derieve the endDate of the provided startDate.
+ * primarily used for lease end date calculations in ISO format
+ */
+const derieveEndDate = (startDate, lengthOfStay) => {
+  const lengthOfStayValue = LEASE_TERM_MENU_OPTIONS.find(
+    (option) => option.value === lengthOfStay,
+  );
+  const endDate = dayjs(startDate).add(lengthOfStayValue?.amount, "month");
+  return endDate.toISOString();
+};
+
+/**
+ * validateFullName ...
+ *
+ * function used to validate the full name of the user
+ */
+const validateFullName = (firstName, lastName, otherName) => {
+  if (!firstName || !lastName) {
+    return otherName || "";
+  } else if (firstName && lastName) {
+    return `${firstName}, ${lastName}`;
+  } else {
+    return "N/A";
+  }
+};

@@ -40,7 +40,7 @@ import { useLazyGetRentsByPropertyIdWithFiltersQuery } from "features/Api/rentAp
 import { AddPropertyTextString } from "features/Rent/common/constants";
 import AddProperty from "features/Rent/components/AddProperty/AddProperty";
 import ViewPropertyAccordionDetails from "features/Rent/components/Properties/ViewPropertyAccordionDetails";
-import { fetchLoggedInUser } from "features/Rent/utils";
+import { fetchLoggedInUser, sanitizeApiFields } from "features/Rent/utils";
 import { useAppTitle } from "hooks/useAppTitle";
 
 const defaultDialog = {
@@ -166,7 +166,9 @@ export default function Properties() {
       updatedOn: dayjs().toISOString(),
     };
 
-    createProperty(result);
+    const sanitizedPayload = sanitizeApiFields(result);
+
+    createProperty(sanitizedPayload);
     closeDialog();
   };
 

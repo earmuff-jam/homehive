@@ -190,7 +190,7 @@ const ViewPropertyAccordionDetails = ({
               <Stack>
                 <Typography variant="subtitle2" fontSize="2rem" color="primary">
                   {dayjs(
-                    updateDateTime(dayjs(primaryTenant?.start_date || "")),
+                    updateDateTime(dayjs(primaryTenant?.start_date)),
                   ).format("MMM DD")}
                 </Typography>
                 <Typography variant="subtitle2" color="textSecondary">
