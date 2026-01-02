@@ -1,5 +1,186 @@
 [
   {
+    "version": "1.0.5",
+    "date": "2026-01-01",
+    "notes": [
+      {
+        "type": "feature",
+        "value": "Added help and support to the app by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/130",
+        "caption": "Added help and support to the app by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/130"
+      },
+      {
+        "type": "feature",
+        "value": "Added ability to display map in property page view by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/138",
+        "caption": "Added ability to display map in property page view by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/138"
+      },
+      {
+        "type": "maintenance",
+        "value": "Added cleanup for widgets in invoice dashboard by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/145",
+        "caption": "Added cleanup for widgets in invoice dashboard by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/145"
+      },
+      {
+        "type": "maintenance",
+        "value": "Added the ability to navigate to respective apps when clicked by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/147",
+        "caption": "Added the ability to navigate to respective apps when clicked by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/147"
+      },
+      {
+        "type": "feature",
+        "value": "Added FaqDetails component by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/150",
+        "caption": "Added FaqDetails component by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/150"
+      },
+      {
+        "type": "maintenance",
+        "value": "Updated Tenant Section in Property Page by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/149",
+        "caption": "Updated Tenant Section in Property Page by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/149"
+      },
+      {
+        "type": "maintenance",
+        "value": "Updated app to support PWA workflow by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/156",
+        "caption": "Updated app to support PWA workflow by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/156"
+      },
+      {
+        "type": "maintenance",
+        "value": "Updated title card to fit for sm screen by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/158",
+        "caption": "Updated title card to fit for sm screen by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/158"
+      },
+      {
+        "type": "maintenance",
+        "value": "Undo release notes by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/157",
+        "caption": "Undo release notes by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/157"
+      },
+      {
+        "type": "maintenance",
+        "value": "Updated small form factor changes by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/159",
+        "caption": "Updated small form factor changes by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/159"
+      },
+      {
+        "type": "maintenance",
+        "value": "Updated templates and added cleanup for small form factors by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/161",
+        "caption": "Updated templates and added cleanup for small form factors by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/161"
+      },
+      {
+        "type": "maintenance",
+        "value": "Updated production environment with v1.0.4-rc1 changes by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/163",
+        "caption": "Updated production environment with v1.0.4-rc1 changes by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/163"
+      },
+      {
+        "type": "bugfix",
+        "value": "Minor form improvements and added cleanup by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/167",
+        "caption": "Minor form improvements and added cleanup by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/167"
+      },
+      {
+        "type": "bugfix",
+        "value": "Updated template error by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/168",
+        "caption": "Updated template error by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/168"
+      },
+      {
+        "type": "bugfix",
+        "value": "Added fix for removing Tenants by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/172",
+        "caption": "Added fix for removing Tenants by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/172"
+      },
+      {
+        "type": "bugfix",
+        "value": "Updated cleanup for utils component by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/174",
+        "caption": "Updated cleanup for utils component by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/174"
+      },
+      {
+        "type": "bugfix",
+        "value": "Updated analytics for app by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/177",
+        "caption": "Updated analytics for app by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/177"
+      },
+      {
+        "type": "maintenance",
+        "value": "Updated verbiage for faq by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/181",
+        "caption": "Updated verbiage for faq by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/181"
+      },
+      {
+        "type": "maintenance",
+        "value": "Updated the ability to fix the ability to pay rent by @earmuff-jam in https://github.com/earmuff-jam/homehive/pull/183",
+        "caption": "Updated the ability to fix the ability to pay rent by @earmuff-jam in https://github.com/earmuff-jam/homehive/pull/183"
+      },
+      {
+        "type": "maintenance",
+        "value": "Updated Roles logic in webapp by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/188",
+        "caption": "Updated Roles logic in webapp by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/188"
+      },
+      {
+        "type": "feature",
+        "value": "Added Esign capabilities in web by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/186",
+        "caption": "Added Esign capabilities in web by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/186"
+      },
+      {
+        "type": "feature",
+        "value": "Added ability to trigger file upload from webApp by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/196",
+        "caption": "Added ability to trigger file upload from webApp by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/196"
+      },
+      {
+        "type": "feature",
+        "value": "Updated Upload Document for property owners by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/199",
+        "caption": "Updated Upload Document for property owners by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/199"
+      },
+      {
+        "type": "maintenance",
+        "value": "Updated verbiage by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/200",
+        "caption": "Updated verbiage by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/200"
+      },
+      {
+        "type": "maintenance",
+        "value": "Performed rent records cleanup by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/202",
+        "caption": "Performed rent records cleanup by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/202"
+      },
+      {
+        "type": "feature",
+        "value": "Added ability to create workspace for Esign by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/205",
+        "caption": "Added ability to create workspace for Esign by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/205"
+      },
+      {
+        "type": "feature",
+        "value": "Added support for Esign Templates in webApp by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/207",
+        "caption": "Added support for Esign Templates in webApp by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/207"
+      },
+      {
+        "type": "feature",
+        "value": "Added banner for Demo User Account by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/212",
+        "caption": "Added banner for Demo User Account by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/212"
+      },
+      {
+        "type": "feature",
+        "value": "Added ability to add E-sign platform to sign templates by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/208",
+        "caption": "Added ability to add E-sign platform to sign templates by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/208"
+      },
+      {
+        "type": "feature",
+        "value": "Added fix for authentication by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/215",
+        "caption": "Added fix for authentication by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/215"
+      },
+      {
+        "type": "maintenance",
+        "value": "Updated Chip component by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/217",
+        "caption": "Updated Chip component by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/217"
+      },
+      {
+        "type": "feature",
+        "value": "Added support for grace period in AssociatTenantsPopup by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/220",
+        "caption": "Added support for grace period in AssociatTenantsPopup by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/220"
+      },
+      {
+        "type": "feature",
+        "value": "Added support for fields for Esign by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/221",
+        "caption": "Added support for fields for Esign by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/221"
+      },
+      {
+        "type": "feature",
+        "value": "Added the ability to create esign documents from existing templates by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/222",
+        "caption": "Added the ability to create esign documents from existing templates by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/222"
+      },
+      {
+        "type": "feature",
+        "value": "Added support for lease extension with GoodSign Api by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/223",
+        "caption": "Added support for lease extension with GoodSign Api by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/223"
+      }
+    ]
+  },
+  {
     "version": "1.0.3",
     "date": "2025-10-21",
     "notes": [

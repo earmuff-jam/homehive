@@ -29,7 +29,7 @@ export const useCreateStripeAccount = () => {
         body: JSON.stringify({
           fUrl: "0002_create_stripe_account",
           fMethod: "POST",
-          payload: JSON.stringify({ email }),
+          payload: { email },
         }),
       });
 

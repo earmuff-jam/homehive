@@ -25,10 +25,10 @@ describe("retrieveTourKey tests", () => {
       const result = retrieveTourKey(currentUri, "property");
       expect(result).toBe("/invoice/view");
 
-      const updatedCurrentUri = "/rent/property/dc7cca7d-dd4e-448c-ac4b-d2e853b749d8";
+      const updatedCurrentUri =
+        "/rent/property/dc7cca7d-dd4e-448c-ac4b-d2e853b749d8";
       const updatedResult = retrieveTourKey(updatedCurrentUri, "property");
       expect(updatedResult).toBe("/rent/property/:id");
-
     });
 
     it("handles unexpected empty currentUri gracefully", () => {

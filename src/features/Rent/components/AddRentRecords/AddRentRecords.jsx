@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 
 import { Controller, useForm } from "react-hook-form";
 
@@ -12,12 +12,19 @@ import { LocalizationProvider, MobileDatePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import AButton from "common/AButton";
 import TextFieldWithLabel from "common/TextFieldWithLabel";
-import { useGetUserDataByIdQuery } from "features/Api/firebaseUserApi";
+import {
+  useGetUserByEmailAddressQuery,
+  useGetUserDataByIdQuery,
+} from "features/Api/firebaseUserApi";
 import { useCreateRentRecordMutation } from "features/Api/rentApi";
 import { useGetTenantByPropertyIdQuery } from "features/Api/tenantsApi";
 import { fetchLoggedInUser, formatCurrency } from "features/Rent/utils";
 
-export const AddRentRecords = ({ property, setShowSnackbar, closeDialog }) => {
+export default function AddRentRecords({
+  property,
+  setShowSnackbar,
+  closeDialog,
+}) {
   const user = fetchLoggedInUser();
   const [
     createRentRecord,
@@ -38,9 +45,17 @@ export const AddRentRecords = ({ property, setShowSnackbar, closeDialog }) => {
     skip: !property?.id,
   });
 
-  const primaryTenant = tenants
-    ?.filter((tenant) => tenant.isPrimary)
-    .find((item) => item);
+  const primaryTenant = useMemo(
+    () => tenants?.find((tenant) => tenant.isPrimary),
+    [tenants],
+  );
+
+  const {
+    data: primaryTenantDetails = {},
+    isLoading: isPrimaryTenantDetailsLoading,
+  } = useGetUserByEmailAddressQuery(primaryTenant?.email, {
+    skip: !primaryTenant?.email,
+  });
 
   const {
     register,
@@ -95,11 +110,18 @@ export const AddRentRecords = ({ property, setShowSnackbar, closeDialog }) => {
   }, [primaryTenant?.id]);
 
   useEffect(() => {
+    if (primaryTenantDetails) {
+      setValue("tenant_first_name", primaryTenantDetails?.first_name);
+      setValue("tenant_last_name", primaryTenantDetails?.last_name);
+    }
+  }, [isPrimaryTenantDetailsLoading]);
+
+  useEffect(() => {
     if (propertyOwnerData) {
       reset({
         owner_first_name: propertyOwnerData?.first_name,
         owner_last_name: propertyOwnerData?.last_name,
-        googleEmailAddress: propertyOwnerData?.googleEmailAddress,
+        email: propertyOwnerData?.email,
         rent_amount: Number(property?.rent) + Number(property?.additional_rent),
       });
     }
@@ -141,12 +163,12 @@ export const AddRentRecords = ({ property, setShowSnackbar, closeDialog }) => {
         </Stack>
         <TextFieldWithLabel
           label="Email Address *"
-          id="googleEmailAddress"
+          id="email"
           placeholder="Email address of the property owner"
           errorMsg={errors.name?.message}
           isDisabled
           inputProps={{
-            ...register("googleEmailAddress", {
+            ...register("email", {
               required: "Email address is required",
             }),
           }}
@@ -205,7 +227,6 @@ export const AddRentRecords = ({ property, setShowSnackbar, closeDialog }) => {
             id="rent_amount"
             placeholder="Rent Amount"
             errorMsg={errors.name?.message}
-            isDisabled
             inputProps={{
               ...register("rent_amount", {
                 required: "Rent Amount is required",
@@ -300,7 +321,7 @@ export const AddRentRecords = ({ property, setShowSnackbar, closeDialog }) => {
             id="note"
             multiline
             maxRows={5}
-            placeholder="Notes in less than 300 characters"
+            placeholder="Note in less than 300 characters"
             errorMsg={errors.name?.message}
             inputProps={{
               ...register("note", {
@@ -324,4 +345,4 @@ export const AddRentRecords = ({ property, setShowSnackbar, closeDialog }) => {
       </Stack>
     </form>
   );
-};
+}

@@ -1,14 +1,5 @@
 import dayjs from "dayjs";
 
-function populateMap(items = [], columnName, uniqueMap) {
-  items.forEach((item) => {
-    const currentItemValue = item[columnName];
-    if (!uniqueMap.has(currentItemValue)) {
-      columnName === 'category' ? uniqueMap.set(currentItemValue.label) : uniqueMap.set(currentItemValue);
-    }
-  });
-}
-
 /**
  * noramlizeDetailsTableData
  *
@@ -18,35 +9,32 @@ function populateMap(items = [], columnName, uniqueMap) {
  * @returns Array of invoice details built for table view
  */
 export function noramlizeDetailsTableData(draftInvoiceList = []) {
-  const formatted = draftInvoiceList.map((invoice) => {
+  return draftInvoiceList.map((invoice) => {
     const items = invoice.lineItems || [];
 
-    const total = items.reduce((acc, el) => {
-      if (el?.payment) {
-        acc += Number(el?.payment);
-      }
+    const total = items.reduce(
+      (sum, item) => sum + Number(item.payment || 0),
+      0,
+    );
 
-      return acc;
-    }, 0);
+    const category = [
+      ...new Set(items.map((i) => i.category?.label).filter(Boolean)),
+    ].join(" / ");
 
-    const uniqueCategories = new Map();
-    const uniquePaymentMethods = new Map();
-
-    populateMap(items, "category", uniqueCategories);
-    populateMap(items, "payment_method", uniquePaymentMethods);
+    const payment_method = [
+      ...new Set(items.map((i) => i.payment_method).filter(Boolean)),
+    ].join(" / ");
 
     return {
-      category: Array.from(uniqueCategories.keys()).join(" / "),
-      invoiceStatus: invoice?.invoiceStatus || "",
-      start_date: invoice?.start_date,
-      end_date: invoice?.end_date,
+      category,
+      invoiceStatus: invoice.invoiceStatus || "",
+      start_date: invoice.start_date,
+      end_date: invoice.end_date,
       total,
-      payment_method: Array.from(uniquePaymentMethods.keys()).join(" / "),
-      updatedOn: invoice?.updatedOn,
+      payment_method,
+      updatedOn: invoice.updatedOn,
     };
   });
-
-  return formatted;
 }
 
 /**

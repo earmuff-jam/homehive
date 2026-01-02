@@ -1,72 +1,129 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
-import { AddRounded } from "@mui/icons-material";
-import {
-  Box,
-  Card,
-  CardContent,
-  Skeleton,
-  Stack,
-  Tooltip,
-  useMediaQuery,
-  useTheme,
-} from "@mui/material";
-import AButton from "common/AButton";
-import AIconButton from "common/AIconButton";
+import { Card, CardContent, Skeleton, Stack } from "@mui/material";
+import CustomSnackbar from "common/CustomSnackbar/CustomSnackbar";
 import RowHeader from "common/RowHeader/RowHeader";
-import ViewDocuments from "features/Rent/components/Widgets/ViewDocuments";
+import {
+  useCreateEsignFromTemplateMutation,
+  useGetEsignTemplatesQuery,
+} from "features/Api/externalIntegrationsApi";
+import {
+  useLazyGetUserByEmailAddressQuery,
+  useLazyGetUserDataByIdQuery,
+} from "features/Api/firebaseUserApi";
+import EsignTemplateDetails from "features/Rent/components/EsignConnect/EsignTemplateDetails";
+import {
+  fetchLoggedInUser,
+  sanitizeEsignFieldsForLeaseExtension,
+  sanitizeEsignFieldsForNewLease,
+} from "features/Rent/utils";
 
 export default function DocumentsOverview({
-  isPropertyLoading,
   property,
   dataTour,
+  primaryTenant = {},
+  isEsignConnected,
+  isPropertyLoading,
+  isViewingRental = false,
 }) {
-  const theme = useTheme();
-  const lteMedFormFactor = useMediaQuery(theme.breakpoints.down("md"));
+  const user = fetchLoggedInUser();
+  const { data: esignTemplates, isLoading: isGetEsignTemplatesLoading } =
+    useGetEsignTemplatesQuery(user?.uid, {
+      skip: !isEsignConnected,
+    });
 
-  const uploadDoc = () => {};
+  const [triggerGetOwnerData, { data: propertyOwnerData }] =
+    useLazyGetUserDataByIdQuery();
+
+  const [
+    createEsignFromTemplate,
+    {
+      isLoading: isPrepareTemplateLoading,
+      isSuccess: isPrepareTemplateSuccess,
+    },
+  ] = useCreateEsignFromTemplateMutation();
+
+  const [triggerGetTenantData, { data: tenantData }] =
+    useLazyGetUserByEmailAddressQuery();
+
+  const [showSnackbar, setShowSnackbar] = useState(false);
+
+  const templates = esignTemplates?.templates ?? [];
+
+  const prepareDocumentForEsign = (rowData) => {
+    if (!rowData) return null;
+
+    const sanitizedFieldsForNewLease = sanitizeEsignFieldsForNewLease(
+      rowData,
+      property,
+      propertyOwnerData,
+      tenantData,
+      primaryTenant,
+    );
+
+    const sanitizedFieldsForLeaseExtension =
+      sanitizeEsignFieldsForLeaseExtension(
+        rowData,
+        property,
+        propertyOwnerData,
+        primaryTenant,
+      );
+
+    const frameWork = {
+      userId: user?.uid,
+      doc_name: rowData?.name,
+      uuid: rowData?.uuid,
+      additional_senders: "earmuffjam@homehivesolutions.com",
+      fields: {
+        ...sanitizedFieldsForNewLease,
+        ...sanitizedFieldsForLeaseExtension,
+      },
+    };
+    createEsignFromTemplate(frameWork);
+  };
+
+  useEffect(() => {
+    if (property?.id && Array.isArray(property?.rentees)) {
+      const propertyOwnerID = property?.createdBy;
+      const tenantEmail = property?.rentees.find((rentee) => rentee);
+      triggerGetOwnerData(propertyOwnerID);
+      triggerGetTenantData(tenantEmail);
+    }
+  }, [property?.id]);
+
+  useEffect(() => {
+    if (isPrepareTemplateSuccess) {
+      setShowSnackbar(true);
+    }
+  }, [isPrepareTemplateLoading]);
+
+  if (isGetEsignTemplatesLoading) return <Skeleton height="10rem" />;
 
   return (
     <Card sx={{ mb: 3 }} data-tour={dataTour}>
       <CardContent>
-        <Stack
-          direction="row"
-          justifyContent="space-between"
-          sx={{ margin: "0rem 0rem 1rem 0rem" }}
-        >
-          <RowHeader
-            title="Documents Overview"
-            caption={`View documents assoicated with ${property?.name}`}
-            sxProps={{ textAlign: "left", color: "text.secondary" }}
-          />
-          <Stack direction="row" spacing={1} alignItems="center">
-            <Tooltip title="Upload Document">
-              <Box>
-                {lteMedFormFactor ? (
-                  <AIconButton
-                    size="small"
-                    variant="outlined"
-                    disabled
-                    label={<AddRounded fontSize="small" />}
-                    onClick={uploadDoc}
-                  />
-                ) : (
-                  <AButton
-                    disabled
-                    size="small"
-                    variant="outlined"
-                    onClick={uploadDoc}
-                    label="Upload Document"
-                  />
-                )}
-              </Box>
-            </Tooltip>
-          </Stack>
-        </Stack>
+        <RowHeader
+          title="Documents Overview"
+          caption={`View documents assoicated with ${property?.name}`}
+          sxProps={{ textAlign: "left", color: "text.secondary" }}
+        />
         <Stack spacing={2}>
-          {isPropertyLoading ? <Skeleton height="5rem" /> : <ViewDocuments />}
+          {isPropertyLoading ? (
+            <Skeleton height="5rem" />
+          ) : (
+            <EsignTemplateDetails
+              templates={templates}
+              isViewingRental={isViewingRental}
+              prepareDocumentForEsign={prepareDocumentForEsign}
+            />
+          )}
         </Stack>
       </CardContent>
+      <CustomSnackbar
+        showSnackbar={showSnackbar}
+        setShowSnackbar={setShowSnackbar}
+        title="Changes saved."
+      />
     </Card>
   );
 }

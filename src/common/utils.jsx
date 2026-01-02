@@ -5,14 +5,17 @@
  */
 import React from "react";
 
+import secureLocalStorage from "react-secure-storage";
+
 import { Typography } from "@mui/material";
+import { fetchLoggedInUser } from "features/Rent/utils";
 
 export const HomeRouteUri = "/";
 export const NotesRouteUri = "/notes";
 
 export const FaqRoutePath = "/faq";
 
-// Default Rental App Routes
+// Default Rent App Routes
 export const MainRentAppRouteUri = "/rent";
 
 export const PropertiesRoutePath = "properties";
@@ -92,9 +95,25 @@ export function createHelperSentences(verbStr, extraClauseStr) {
  * @returns user || false
  */
 export const isUserLoggedIn = () => {
-  const currentUser = JSON.parse(localStorage.getItem("user"));
+  const currentUser = secureLocalStorage.getItem("user");
   if (currentUser?.uid) {
     return true;
+  }
+  return false;
+};
+
+/**
+ * isBannerVisible ...
+ *
+ * returns boolean value if banner is visible based on user roles and
+ * permissions. If role does not exist, then the banner is visible.
+ *
+ * @param {String} pathname - the string representation of the pathname
+ */
+export const isBannerVisible = (pathname = "") => {
+  if (pathname.includes(MainRentAppRouteUri)) {
+    const user = fetchLoggedInUser();
+    if (!user?.role) return true;
   }
   return false;
 };

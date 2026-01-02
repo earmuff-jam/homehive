@@ -51,7 +51,9 @@ const ViewDocuments = ({ label, caption }) => {
     initialState: {
       density: "comfortable",
     },
-    renderEmptyRowsFallback: () => <EmptyComponent />,
+    renderEmptyRowsFallback: () => (
+      <EmptyComponent caption="Create templates to begin." />
+    ),
     mrtTheme: (theme) => ({
       baseBackgroundColor: theme.palette.transparent.main,
     }),

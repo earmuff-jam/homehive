@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`FileDetails Component FileDetails Snapshot tests matches FileDetails snapshot tests 1`] = `
+<DocumentFragment>
+  <div
+    class="MuiStack-root css-1colmvy-MuiStack-root"
+  >
+    <h6
+      class="MuiTypography-root MuiTypography-subtitle2 css-17mo335-MuiTypography-root"
+    >
+      Select a pdf file to validate and upload
+    </h6>
+  </div>
+</DocumentFragment>
+`;

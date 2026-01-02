@@ -7,7 +7,7 @@ import { CssBaseline } from "@mui/material";
 import { TourProvider } from "@reactour/tour";
 import ScrollTopProvider from "common/ScrollTop/ScrollTopProvider";
 import { GeneratedTourSteps } from "common/Tour/TourSteps";
-import { buildAppRoutes } from "common/ValidateClientPerms";
+import { buildAppRoutes } from "common/ValidateClientPermissions";
 import Layout from "features/Layout/Layout";
 import { fetchLoggedInUser } from "features/Rent/utils";
 import { MainAppRoutes } from "src/Routes";

@@ -13,6 +13,7 @@ import {
   Stack,
 } from "@mui/material";
 import AButton from "common/AButton";
+import { useGetUserDataByIdQuery } from "features/Api/firebaseUserApi";
 import { useGetPropertiesByPropertyIdQuery } from "features/Api/propertiesApi";
 import { useGetRentsByPropertyIdQuery } from "features/Api/rentApi";
 import { useGetTenantByPropertyIdQuery } from "features/Api/tenantsApi";
@@ -45,11 +46,18 @@ const Property = () => {
 
   const { data: rentList = [], isLoading: isRentListForPropertyLoading } =
     useGetRentsByPropertyIdQuery(
-      { propertyId: params?.id, currentUserEmail: user?.googleEmailAddress },
+      { propertyId: params?.id, currentUserEmail: user?.email },
       {
         skip: !params?.id,
       },
     );
+
+  const { data: userData, isLoading: isUserDataFromDbLoading } =
+    useGetUserDataByIdQuery(user?.uid, {
+      skip: !user?.uid,
+    });
+
+  const isEsignConnected = userData?.esignAccountIsActive;
 
   useAppTitle(property?.name || "Selected Property");
 
@@ -102,9 +110,11 @@ const Property = () => {
             propertyName={property?.name || "Unknown"}
           />
           <DocumentsOverview
-            isPropertyLoading={isPropertyLoading}
             property={property}
             dataTour="property-6"
+            primaryTenant={tenants.find((tenant) => tenant.isPrimary) || {}}
+            isEsignConnected={isEsignConnected}
+            isPropertyLoading={isPropertyLoading || isUserDataFromDbLoading}
           />
         </Grid>
 
@@ -128,6 +138,7 @@ const Property = () => {
         open={dialog}
         keepMounted
         fullWidth
+        maxWidth="lg"
         aria-describedby="alert-dialog-slide-description"
       >
         <DialogTitle>Associate Tenants</DialogTitle>

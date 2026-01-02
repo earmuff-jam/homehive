@@ -40,7 +40,7 @@ import { useLazyGetRentsByPropertyIdWithFiltersQuery } from "features/Api/rentAp
 import { AddPropertyTextString } from "features/Rent/common/constants";
 import AddProperty from "features/Rent/components/AddProperty/AddProperty";
 import ViewPropertyAccordionDetails from "features/Rent/components/Properties/ViewPropertyAccordionDetails";
-import { fetchLoggedInUser } from "features/Rent/utils";
+import { fetchLoggedInUser, sanitizeApiFields } from "features/Rent/utils";
 import { useAppTitle } from "hooks/useAppTitle";
 
 const defaultDialog = {
@@ -83,21 +83,59 @@ export default function Properties() {
 
   const {
     register,
+    control,
+    watch,
     handleSubmit,
     formState: { errors, isValid },
     reset,
     setValue,
-  } = useForm({ mode: "onChange" });
+  } = useForm({
+    mode: "onChange",
+    defaultValues: {
+      name: "",
+      address: "",
+      county: "",
+      city: "",
+      state: "",
+      zipcode: "",
+      units: 0,
+      bathrooms: 0,
+      sqFt: 100,
+      note: "",
+      emergencyContactNumber: "",
+      isTenantCleaningYard: true,
+      isSmoking: false,
+      isOwnerCoveredUtilities: false,
+      ownerCoveredUtilities: "",
+      rent: 0,
+      additional_rent: 0,
+      rent_increment: 100,
+      securityDeposit: 0,
+      allowedVehicleCounts: 0,
+      paymentID: "",
+      specialProvisions: "",
+      isHoa: false,
+      hoaDetails: "",
+      isBrokerManaged: false,
+      brokerName: "",
+      brokerAddress: "",
+      isManagerManaged: false,
+      managerName: "",
+      managerPhone: "",
+      managerAddress: "",
+    },
+  });
 
   const [expanded, setExpanded] = useState(null);
   const [dialog, setDialog] = useState(defaultDialog);
   const [showSnackbar, setShowSnackbar] = useState(false);
 
+  const handleExpand = (id) => setExpanded((prev) => (prev === id ? null : id));
+
   const closeDialog = () => {
     setDialog(defaultDialog);
     reset();
   };
-  const handleExpand = (id) => setExpanded((prev) => (prev === id ? null : id));
 
   const handleUpdate = (propertyId) => {
     if (!propertyId) return;
@@ -128,9 +166,16 @@ export default function Properties() {
       updatedOn: dayjs().toISOString(),
     };
 
-    createProperty(result);
+    const sanitizedPayload = sanitizeApiFields(result);
+
+    createProperty(sanitizedPayload);
     closeDialog();
   };
+
+  const isPropertyWithinHOA = watch("isHoa");
+  const isBrokerManaged = watch("isBrokerManaged");
+  const isManagerManaged = watch("isManagerManaged");
+  const isOwnerCoveredUtilities = watch("isOwnerCoveredUtilities");
 
   useEffect(() => {
     if (isCreatePropertySuccess || isUpdatePropertySuccess) {
@@ -140,8 +185,8 @@ export default function Properties() {
 
   useEffect(() => {
     // update form fields if present
-    if (userData?.googleEmailAddress) {
-      setValue("owner_email", userData.googleEmailAddress);
+    if (userData?.email) {
+      setValue("owner_email", userData.email);
     }
   }, [userData, setValue]);
 
@@ -275,6 +320,7 @@ export default function Properties() {
         open={dialog.display}
         keepMounted
         fullWidth
+        maxWidth="lg"
         aria-describedby="alert-dialog-slide-description"
       >
         <DialogTitle>{dialog.title}</DialogTitle>
@@ -282,7 +328,12 @@ export default function Properties() {
           {dialog.type === AddPropertyTextString && (
             <AddProperty
               register={register}
+              control={control}
               errors={errors}
+              isManagerManaged={isManagerManaged}
+              isBrokerManaged={isBrokerManaged}
+              isOwnerCoveredUtilities={isOwnerCoveredUtilities}
+              isPropertyWithinHOA={isPropertyWithinHOA}
               onSubmit={handleSubmit(onSubmit)}
               isDisabled={!isValid}
             />

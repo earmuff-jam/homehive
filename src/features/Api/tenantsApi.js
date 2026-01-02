@@ -1,4 +1,5 @@
 import { createApi, fakeBaseQuery } from "@reduxjs/toolkit/query/react";
+import { Role } from "features/Auth/AuthHelper";
 import {
   collection,
   deleteDoc,
@@ -48,21 +49,27 @@ export const tenantsApi = createApi({
       },
       providesTags: ["tenants"],
     }),
-    // fetch tenants where email matches the passed in email from tenants db
-    getTenantByEmailId: builder.query({
+    // fetch matching tenants by email who are also active
+    getActiveTenantsByEmailAddress: builder.query({
       async queryFn(email) {
         try {
           const tenantsRef = collection(db, "tenants");
-          const q = query(tenantsRef, where("email", "==", email));
+          const q = query(
+            tenantsRef,
+            where("email", "==", email),
+            where("isActive", "==", true),
+          );
 
-          const querySnapshot = await getDocs(q);
           const tenants = [];
+          const querySnapshot = await getDocs(q);
+
           querySnapshot.forEach((doc) => {
             tenants.push({ id: doc.id, ...doc.data() });
           });
 
-          const tenant = tenants.find((tenant) => tenant.email === email);
-          return { data: tenant };
+          // only 1 tenant can remain active at any given
+          const currentTenant = tenants.find((tenant) => tenant.isActive);
+          return { data: currentTenant };
         } catch (error) {
           return {
             error: {
@@ -184,15 +191,63 @@ export const tenantsApi = createApi({
       },
       invalidatesTags: ["tenants"],
     }),
+    // associate tenant workflow
+    // populates tenants, updates property && updates tenant role
+    associateTenant: builder.mutation({
+      async queryFn({ draftData, property }) {
+        try {
+          const tenantRef = doc(db, "tenants", draftData.id);
+          await setDoc(tenantRef, draftData, { merge: true });
+
+          const propertyRef = doc(db, "properties", property.id);
+          await setDoc(
+            propertyRef,
+            {
+              ...property,
+              rentees: [...(property.rentees || []), draftData.email],
+              updatedBy: draftData.updatedBy,
+              updatedOn: draftData.updatedOn,
+            },
+            { merge: true },
+          );
+
+          // set invite once the association is requested
+          const inviteRef = doc(db, "invites", draftData.email.toLowerCase());
+          await setDoc(inviteRef, {
+            role: Role.Tenant,
+            propertyId: property.id,
+            googleEmailAddress: draftData.email.toLowerCase(),
+            createdBy: draftData.createdBy,
+            createdOn: draftData.createdOn,
+            updatedBy: draftData.updatedBy,
+            updatedOn: draftData.updatedOn,
+          });
+
+          return { data: null };
+        } catch (error) {
+          /* eslint-disable no-console */
+          console.error("Unable to process request. Error: ", error);
+          return {
+            error: {
+              message: error.message,
+              code: error.code,
+            },
+          };
+        }
+      },
+      invalidatesTags: ["tenants", "properties"],
+    }),
   }),
 });
 
 export const {
+  useGetTenantListQuery,
   useLazyGetTenantListQuery,
   useGetTenantsByUserIdQuery,
-  useGetTenantByEmailIdQuery,
+  useGetActiveTenantsByEmailAddressQuery,
   useGetTenantByPropertyIdQuery,
   useCreateTenantMutation,
   useUpdateTenantByIdMutation,
   useDeleteTenantByIdMutation,
+  useAssociateTenantMutation,
 } = tenantsApi;

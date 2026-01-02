@@ -83,7 +83,7 @@ export default function SplashPage() {
 
         <Stack direction={{ sm: "column", md: "row" }} gap={2}>
           <TitleCard
-            title="Rental App"
+            title="Rent App"
             subtitle="Manage tenants, leases, and payments"
             chipLabels={[
               "Tenant Management",
