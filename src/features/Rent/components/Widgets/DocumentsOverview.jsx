@@ -12,7 +12,11 @@ import {
   useLazyGetUserDataByIdQuery,
 } from "features/Api/firebaseUserApi";
 import EsignTemplateDetails from "features/Rent/components/EsignConnect/EsignTemplateDetails";
-import { fetchLoggedInUser, sanitizeEsignFields } from "features/Rent/utils";
+import {
+  fetchLoggedInUser,
+  sanitizeEsignFieldsForLeaseExtension,
+  sanitizeEsignFieldsForNewLease,
+} from "features/Rent/utils";
 
 export default function DocumentsOverview({
   property,
@@ -49,18 +53,31 @@ export default function DocumentsOverview({
   const prepareDocumentForEsign = (rowData) => {
     if (!rowData) return null;
 
+    const sanitizedFieldsForNewLease = sanitizeEsignFieldsForNewLease(
+      rowData,
+      property,
+      propertyOwnerData,
+      tenantData,
+      primaryTenant,
+    );
+
+    const sanitizedFieldsForLeaseExtension =
+      sanitizeEsignFieldsForLeaseExtension(
+        rowData,
+        property,
+        propertyOwnerData,
+        primaryTenant,
+      );
+
     const frameWork = {
       userId: user?.uid,
       doc_name: rowData?.name,
       uuid: rowData?.uuid,
       additional_senders: "earmuffjam@homehivesolutions.com",
-      fields: sanitizeEsignFields(
-        rowData,
-        property,
-        propertyOwnerData,
-        tenantData,
-        primaryTenant,
-      ),
+      fields: {
+        ...sanitizedFieldsForNewLease,
+        ...sanitizedFieldsForLeaseExtension,
+      },
     };
     createEsignFromTemplate(frameWork);
   };
@@ -97,7 +114,6 @@ export default function DocumentsOverview({
             <EsignTemplateDetails
               templates={templates}
               isViewingRental={isViewingRental}
-              isPrepareTemplateLoading={isPrepareTemplateLoading}
               prepareDocumentForEsign={prepareDocumentForEsign}
             />
           )}
