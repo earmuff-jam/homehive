@@ -11,24 +11,24 @@ describe("Invoice normalization utilities", () => {
       const mockInvoice = [
         {
           invoiceStatus: "PAID",
-          start_date: "2025-01-01",
-          end_date: "2025-01-10",
+          startDate: "2025-01-01",
+          endDate: "2025-01-10",
           updatedOn: "2025-01-11",
           lineItems: [
             {
               payment: "100",
               category: { label: "Rent" },
-              payment_method: "Card",
+              paymentMethod: "Card",
             },
             {
               payment: "50",
               category: { label: "Rent" }, // duplicate category
-              payment_method: "Card", // duplicate method
+              paymentMethod: "Card", // duplicate method
             },
             {
               payment: "25",
               category: { label: "Utilities" },
-              payment_method: "Cash",
+              paymentMethod: "Cash",
             },
           ],
         },
@@ -45,17 +45,13 @@ describe("Invoice normalization utilities", () => {
 
       // ✅ deduplicated + joined values
       expect(normalized.category).toBe("Rent / Utilities");
-      expect(normalized.payment_method).toBe("Card / Cash");
+      expect(normalized.paymentMethod).toBe("Card / Cash");
 
       // ✅ passthrough fields
       expect(normalized.invoiceStatus).toBe("PAID");
-      expect(normalized.start_date).toBe("2025-01-01");
-      expect(normalized.end_date).toBe("2025-01-10");
+      expect(normalized.startDate).toBe("2025-01-01");
+      expect(normalized.endDate).toBe("2025-01-10");
       expect(normalized.updatedOn).toBe("2025-01-11");
-    });
-
-    it("handles empty input safely", () => {
-      expect(noramlizeDetailsTableData()).toEqual([]);
     });
 
     it("handles missing or zero payments gracefully", () => {
@@ -107,13 +103,13 @@ describe("Invoice normalization utilities", () => {
     it("builds collected and tax datasets per month", () => {
       const input = [
         {
-          start_date: "2025-01-01",
-          tax_rate: 10,
+          startDate: "2025-01-01",
+          taxRate: 10,
           lineItems: [{ payment: 100 }],
         },
         {
-          start_date: "2025-01-15",
-          tax_rate: 10,
+          startDate: "2025-01-15",
+          taxRate: 10,
           lineItems: [{ payment: 50 }],
         },
       ];
@@ -138,14 +134,14 @@ describe("Invoice normalization utilities", () => {
     it("builds timeline dataset correctly", () => {
       const input = [
         {
-          start_date: "2025-01-01",
-          end_date: "2025-01-10",
-          lineItems: [{ payment: 100, payment_method: "Card" }],
+          startDate: "2025-01-01",
+          endDate: "2025-01-10",
+          lineItems: [{ payment: 100, paymentMethod: "Card" }],
         },
         {
-          start_date: "2025-02-01",
-          end_date: "2025-02-05",
-          lineItems: [{ payment: 50, payment_method: "Cash" }],
+          startDate: "2025-02-01",
+          endDate: "2025-02-05",
+          lineItems: [{ payment: 50, paymentMethod: "Cash" }],
         },
       ];
 

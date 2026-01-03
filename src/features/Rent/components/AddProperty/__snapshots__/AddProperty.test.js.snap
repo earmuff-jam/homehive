@@ -25,478 +25,121 @@ exports[`AddProperty Component Tests AddProperty Snapshot Tests matches AddPrope
         class="MuiStack-root css-jfdv4h-MuiStack-root"
       >
         <div
-          class="MuiStack-root css-9j5txs-MuiStack-root"
+          data-testid="name"
         >
-          <div
-            class="MuiStack-root css-niqf4j-MuiStack-root"
-          >
-            <p
-              class="MuiTypography-root MuiTypography-body2 css-hol6i2-MuiTypography-root"
-            >
-              Property Name *
-            </p>
-          </div>
-          <div
-            class="MuiFormControl-root MuiFormControl-fullWidth MuiTextField-root css-cmpglg-MuiFormControl-root-MuiTextField-root"
-          >
-            <div
-              class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-colorPrimary MuiInputBase-fullWidth MuiInputBase-formControl MuiInputBase-sizeSmall css-1blp12k-MuiInputBase-root-MuiOutlinedInput-root"
-            >
-              <input
-                aria-invalid="false"
-                class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputSizeSmall css-1pzfmz2-MuiInputBase-input-MuiOutlinedInput-input"
-                id="name"
-                name="name"
-                placeholder="Name of your property"
-                type="text"
-                value=""
-              />
-              <fieldset
-                aria-hidden="true"
-                class="MuiOutlinedInput-notchedOutline css-18p5xg2-MuiNotchedOutlined-root-MuiOutlinedInput-notchedOutline"
-              >
-                <legend
-                  class="css-1nf2c5d-MuiNotchedOutlined-root"
-                >
-                  <span
-                    aria-hidden="true"
-                    class="notranslate"
-                  >
-                    ​
-                  </span>
-                </legend>
-              </fieldset>
-            </div>
-          </div>
+          <label>
+            Property Name *
+          </label>
+          <input
+            placeholder="Name of your property"
+          />
         </div>
         <div
           class="MuiStack-root css-1wi0p3l-MuiStack-root"
         >
           <div
-            class="MuiStack-root css-9j5txs-MuiStack-root"
+            data-testid="address"
           >
-            <div
-              class="MuiStack-root css-niqf4j-MuiStack-root"
-            >
-              <p
-                class="MuiTypography-root MuiTypography-body2 css-hol6i2-MuiTypography-root"
-              >
-                Address *
-              </p>
-            </div>
-            <div
-              class="MuiFormControl-root MuiFormControl-fullWidth MuiTextField-root css-cmpglg-MuiFormControl-root-MuiTextField-root"
-            >
-              <div
-                class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-colorPrimary MuiInputBase-fullWidth MuiInputBase-formControl MuiInputBase-sizeSmall css-1blp12k-MuiInputBase-root-MuiOutlinedInput-root"
-              >
-                <input
-                  aria-invalid="false"
-                  class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputSizeSmall css-1pzfmz2-MuiInputBase-input-MuiOutlinedInput-input"
-                  id="address"
-                  name="address"
-                  placeholder="123 Main St"
-                  type="text"
-                  value=""
-                />
-                <fieldset
-                  aria-hidden="true"
-                  class="MuiOutlinedInput-notchedOutline css-18p5xg2-MuiNotchedOutlined-root-MuiOutlinedInput-notchedOutline"
-                >
-                  <legend
-                    class="css-1nf2c5d-MuiNotchedOutlined-root"
-                  >
-                    <span
-                      aria-hidden="true"
-                      class="notranslate"
-                    >
-                      ​
-                    </span>
-                  </legend>
-                </fieldset>
-              </div>
-            </div>
-          </div>
-          <div
-            class="MuiStack-root css-9j5txs-MuiStack-root"
-          >
-            <div
-              class="MuiStack-root css-niqf4j-MuiStack-root"
-            >
-              <p
-                class="MuiTypography-root MuiTypography-body2 css-hol6i2-MuiTypography-root"
-              >
-                County
-              </p>
-            </div>
-            <div
-              class="MuiFormControl-root MuiFormControl-fullWidth MuiTextField-root css-cmpglg-MuiFormControl-root-MuiTextField-root"
-            >
-              <div
-                class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-colorPrimary MuiInputBase-fullWidth MuiInputBase-formControl MuiInputBase-sizeSmall css-1blp12k-MuiInputBase-root-MuiOutlinedInput-root"
-              >
-                <input
-                  aria-invalid="false"
-                  class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputSizeSmall css-1pzfmz2-MuiInputBase-input-MuiOutlinedInput-input"
-                  id="county"
-                  name="county"
-                  placeholder="County"
-                  type="text"
-                  value=""
-                />
-                <fieldset
-                  aria-hidden="true"
-                  class="MuiOutlinedInput-notchedOutline css-18p5xg2-MuiNotchedOutlined-root-MuiOutlinedInput-notchedOutline"
-                >
-                  <legend
-                    class="css-1nf2c5d-MuiNotchedOutlined-root"
-                  >
-                    <span
-                      aria-hidden="true"
-                      class="notranslate"
-                    >
-                      ​
-                    </span>
-                  </legend>
-                </fieldset>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div
-        class="MuiStack-root css-1wi0p3l-MuiStack-root"
-      >
-        <div
-          class="MuiStack-root css-9j5txs-MuiStack-root"
-        >
-          <div
-            class="MuiStack-root css-niqf4j-MuiStack-root"
-          >
-            <p
-              class="MuiTypography-root MuiTypography-body2 css-hol6i2-MuiTypography-root"
-            >
-              City *
-            </p>
-          </div>
-          <div
-            class="MuiFormControl-root MuiFormControl-fullWidth MuiTextField-root css-cmpglg-MuiFormControl-root-MuiTextField-root"
-          >
-            <div
-              class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-colorPrimary MuiInputBase-fullWidth MuiInputBase-formControl MuiInputBase-sizeSmall css-1blp12k-MuiInputBase-root-MuiOutlinedInput-root"
-            >
-              <input
-                aria-invalid="false"
-                class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputSizeSmall css-1pzfmz2-MuiInputBase-input-MuiOutlinedInput-input"
-                id="city"
-                name="city"
-                placeholder="Richmond"
-                type="text"
-                value=""
-              />
-              <fieldset
-                aria-hidden="true"
-                class="MuiOutlinedInput-notchedOutline css-18p5xg2-MuiNotchedOutlined-root-MuiOutlinedInput-notchedOutline"
-              >
-                <legend
-                  class="css-1nf2c5d-MuiNotchedOutlined-root"
-                >
-                  <span
-                    aria-hidden="true"
-                    class="notranslate"
-                  >
-                    ​
-                  </span>
-                </legend>
-              </fieldset>
-            </div>
-          </div>
-        </div>
-        <div
-          class="MuiStack-root css-9j5txs-MuiStack-root"
-        >
-          <div
-            class="MuiStack-root css-niqf4j-MuiStack-root"
-          >
-            <p
-              class="MuiTypography-root MuiTypography-body2 css-hol6i2-MuiTypography-root"
-            >
-              State *
-            </p>
-          </div>
-          <div
-            class="MuiFormControl-root MuiFormControl-fullWidth MuiTextField-root css-cmpglg-MuiFormControl-root-MuiTextField-root"
-          >
-            <div
-              class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-colorPrimary MuiInputBase-fullWidth MuiInputBase-formControl MuiInputBase-sizeSmall css-1blp12k-MuiInputBase-root-MuiOutlinedInput-root"
-            >
-              <input
-                aria-invalid="false"
-                class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputSizeSmall css-1pzfmz2-MuiInputBase-input-MuiOutlinedInput-input"
-                id="state"
-                name="state"
-                placeholder="NC"
-                type="text"
-                value=""
-              />
-              <fieldset
-                aria-hidden="true"
-                class="MuiOutlinedInput-notchedOutline css-18p5xg2-MuiNotchedOutlined-root-MuiOutlinedInput-notchedOutline"
-              >
-                <legend
-                  class="css-1nf2c5d-MuiNotchedOutlined-root"
-                >
-                  <span
-                    aria-hidden="true"
-                    class="notranslate"
-                  >
-                    ​
-                  </span>
-                </legend>
-              </fieldset>
-            </div>
-          </div>
-        </div>
-        <div
-          class="MuiStack-root css-9j5txs-MuiStack-root"
-        >
-          <div
-            class="MuiStack-root css-niqf4j-MuiStack-root"
-          >
-            <p
-              class="MuiTypography-root MuiTypography-body2 css-hol6i2-MuiTypography-root"
-            >
-              ZIP Code *
-            </p>
-          </div>
-          <div
-            class="MuiFormControl-root MuiFormControl-fullWidth MuiTextField-root css-cmpglg-MuiFormControl-root-MuiTextField-root"
-          >
-            <div
-              class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-colorPrimary MuiInputBase-fullWidth MuiInputBase-formControl MuiInputBase-sizeSmall css-1blp12k-MuiInputBase-root-MuiOutlinedInput-root"
-            >
-              <input
-                aria-invalid="false"
-                class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputSizeSmall css-1pzfmz2-MuiInputBase-input-MuiOutlinedInput-input"
-                id="zipcode"
-                name="zipcode"
-                placeholder="78701"
-                type="text"
-                value=""
-              />
-              <fieldset
-                aria-hidden="true"
-                class="MuiOutlinedInput-notchedOutline css-18p5xg2-MuiNotchedOutlined-root-MuiOutlinedInput-notchedOutline"
-              >
-                <legend
-                  class="css-1nf2c5d-MuiNotchedOutlined-root"
-                >
-                  <span
-                    aria-hidden="true"
-                    class="notranslate"
-                  >
-                    ​
-                  </span>
-                </legend>
-              </fieldset>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div
-        class="MuiStack-root css-1wi0p3l-MuiStack-root"
-      >
-        <div
-          class="MuiStack-root css-9j5txs-MuiStack-root"
-        >
-          <div
-            class="MuiStack-root css-niqf4j-MuiStack-root"
-          >
-            <p
-              class="MuiTypography-root MuiTypography-body2 css-hol6i2-MuiTypography-root"
-            >
-              Number of Units / Bedroom *
-            </p>
-          </div>
-          <div
-            class="MuiFormControl-root MuiFormControl-fullWidth MuiTextField-root css-cmpglg-MuiFormControl-root-MuiTextField-root"
-          >
-            <div
-              class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-colorPrimary MuiInputBase-fullWidth MuiInputBase-formControl MuiInputBase-sizeSmall css-1blp12k-MuiInputBase-root-MuiOutlinedInput-root"
-            >
-              <input
-                aria-invalid="false"
-                class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputSizeSmall css-1pzfmz2-MuiInputBase-input-MuiOutlinedInput-input"
-                id="units"
-                name="units"
-                placeholder="e.g. 4"
-                type="text"
-                value=""
-              />
-              <fieldset
-                aria-hidden="true"
-                class="MuiOutlinedInput-notchedOutline css-18p5xg2-MuiNotchedOutlined-root-MuiOutlinedInput-notchedOutline"
-              >
-                <legend
-                  class="css-1nf2c5d-MuiNotchedOutlined-root"
-                >
-                  <span
-                    aria-hidden="true"
-                    class="notranslate"
-                  >
-                    ​
-                  </span>
-                </legend>
-              </fieldset>
-            </div>
-          </div>
-        </div>
-        <div
-          class="MuiStack-root css-9j5txs-MuiStack-root"
-        >
-          <div
-            class="MuiStack-root css-niqf4j-MuiStack-root"
-          >
-            <p
-              class="MuiTypography-root MuiTypography-body2 css-hol6i2-MuiTypography-root"
-            >
-              Number of Bathrooms *
-            </p>
-          </div>
-          <div
-            class="MuiFormControl-root MuiFormControl-fullWidth MuiTextField-root css-cmpglg-MuiFormControl-root-MuiTextField-root"
-          >
-            <div
-              class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-colorPrimary MuiInputBase-fullWidth MuiInputBase-formControl MuiInputBase-sizeSmall css-1blp12k-MuiInputBase-root-MuiOutlinedInput-root"
-            >
-              <input
-                aria-invalid="false"
-                class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputSizeSmall css-1pzfmz2-MuiInputBase-input-MuiOutlinedInput-input"
-                id="bathrooms"
-                name="bathrooms"
-                placeholder="e.g. 2"
-                type="text"
-                value=""
-              />
-              <fieldset
-                aria-hidden="true"
-                class="MuiOutlinedInput-notchedOutline css-18p5xg2-MuiNotchedOutlined-root-MuiOutlinedInput-notchedOutline"
-              >
-                <legend
-                  class="css-1nf2c5d-MuiNotchedOutlined-root"
-                >
-                  <span
-                    aria-hidden="true"
-                    class="notranslate"
-                  >
-                    ​
-                  </span>
-                </legend>
-              </fieldset>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div
-        class="MuiStack-root css-1wi0p3l-MuiStack-root"
-      >
-        <div
-          class="MuiStack-root css-9j5txs-MuiStack-root"
-        >
-          <div
-            class="MuiStack-root css-niqf4j-MuiStack-root"
-          >
-            <p
-              class="MuiTypography-root MuiTypography-body2 css-hol6i2-MuiTypography-root"
-            >
-              Area of the home in sq ft. *
-            </p>
-          </div>
-          <div
-            class="MuiFormControl-root MuiFormControl-fullWidth MuiTextField-root css-cmpglg-MuiFormControl-root-MuiTextField-root"
-          >
-            <div
-              class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-colorPrimary MuiInputBase-fullWidth MuiInputBase-formControl MuiInputBase-sizeSmall css-1blp12k-MuiInputBase-root-MuiOutlinedInput-root"
-            >
-              <input
-                aria-invalid="false"
-                class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputSizeSmall css-1pzfmz2-MuiInputBase-input-MuiOutlinedInput-input"
-                id="sqFt"
-                name="sqFt"
-                placeholder="7854"
-                type="text"
-                value=""
-              />
-              <fieldset
-                aria-hidden="true"
-                class="MuiOutlinedInput-notchedOutline css-18p5xg2-MuiNotchedOutlined-root-MuiOutlinedInput-notchedOutline"
-              >
-                <legend
-                  class="css-1nf2c5d-MuiNotchedOutlined-root"
-                >
-                  <span
-                    aria-hidden="true"
-                    class="notranslate"
-                  >
-                    ​
-                  </span>
-                </legend>
-              </fieldset>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div
-        class="MuiStack-root css-9j5txs-MuiStack-root"
-      >
-        <div
-          class="MuiStack-root css-niqf4j-MuiStack-root"
-        >
-          <p
-            class="MuiTypography-root MuiTypography-body2 css-hol6i2-MuiTypography-root"
-          >
-            Additional Notes
-          </p>
-        </div>
-        <div
-          class="MuiFormControl-root MuiFormControl-fullWidth MuiTextField-root css-cmpglg-MuiFormControl-root-MuiTextField-root"
-        >
-          <div
-            class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-colorPrimary MuiInputBase-fullWidth MuiInputBase-formControl MuiInputBase-sizeSmall MuiInputBase-multiline css-szkf5z-MuiInputBase-root-MuiOutlinedInput-root"
-          >
-            <textarea
-              aria-invalid="false"
-              class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputMultiline MuiInputBase-inputSizeSmall css-msbelq-MuiInputBase-input-MuiOutlinedInput-input"
-              id="note"
-              name="note"
-              placeholder="Additional notes "
-              rows="3"
-              style="height: 0px; overflow: hidden;"
+            <label>
+              Address *
+            </label>
+            <input
+              placeholder="123 Main St"
             />
-            <textarea
-              aria-hidden="true"
-              class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputMultiline MuiInputBase-inputSizeSmall css-msbelq-MuiInputBase-input-MuiOutlinedInput-input"
-              readonly=""
-              style="visibility: hidden; position: absolute; overflow: hidden; height: 0px; top: 0px; left: 0px; transform: translateZ(0); padding-top: 0px; padding-bottom: 0px; width: 100%;"
-              tabindex="-1"
+          </div>
+          <div
+            data-testid="county"
+          >
+            <label>
+              County
+            </label>
+            <input
+              placeholder="County"
             />
-            <fieldset
-              aria-hidden="true"
-              class="MuiOutlinedInput-notchedOutline css-18p5xg2-MuiNotchedOutlined-root-MuiOutlinedInput-notchedOutline"
-            >
-              <legend
-                class="css-1nf2c5d-MuiNotchedOutlined-root"
-              >
-                <span
-                  aria-hidden="true"
-                  class="notranslate"
-                >
-                  ​
-                </span>
-              </legend>
-            </fieldset>
           </div>
         </div>
+      </div>
+      <div
+        class="MuiStack-root css-1wi0p3l-MuiStack-root"
+      >
+        <div
+          data-testid="city"
+        >
+          <label>
+            City *
+          </label>
+          <input
+            placeholder="Richmond"
+          />
+        </div>
+        <div
+          data-testid="state"
+        >
+          <label>
+            State *
+          </label>
+          <input
+            placeholder="NC"
+          />
+        </div>
+        <div
+          data-testid="zipcode"
+        >
+          <label>
+            ZIP Code *
+          </label>
+          <input
+            placeholder="78701"
+          />
+        </div>
+      </div>
+      <div
+        class="MuiStack-root css-1wi0p3l-MuiStack-root"
+      >
+        <div
+          data-testid="units"
+        >
+          <label>
+            Number of Units / Bedroom *
+          </label>
+          <input
+            placeholder="e.g. 4"
+          />
+        </div>
+        <div
+          data-testid="bathrooms"
+        >
+          <label>
+            Number of Bathrooms *
+          </label>
+          <input
+            placeholder="e.g. 2"
+          />
+        </div>
+      </div>
+      <div
+        class="MuiStack-root css-1wi0p3l-MuiStack-root"
+      >
+        <div
+          data-testid="sqFt"
+        >
+          <label>
+            Area of the home in sq ft. *
+          </label>
+          <input
+            placeholder="7854"
+          />
+        </div>
+      </div>
+      <div
+        data-testid="note"
+      >
+        <label>
+          Additional Notes
+        </label>
+        <input
+          placeholder="Additional notes "
+        />
       </div>
       <div
         aria-orientation="horizontal"
@@ -517,49 +160,14 @@ exports[`AddProperty Component Tests AddProperty Snapshot Tests matches AddPrope
         class="MuiStack-root css-1wi0p3l-MuiStack-root"
       >
         <div
-          class="MuiStack-root css-9j5txs-MuiStack-root"
+          data-testid="emergencyContactNumber"
         >
-          <div
-            class="MuiStack-root css-niqf4j-MuiStack-root"
-          >
-            <p
-              class="MuiTypography-root MuiTypography-body2 css-hol6i2-MuiTypography-root"
-            >
-              Emergency Contact *
-            </p>
-          </div>
-          <div
-            class="MuiFormControl-root MuiFormControl-fullWidth MuiTextField-root css-cmpglg-MuiFormControl-root-MuiTextField-root"
-          >
-            <div
-              class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-colorPrimary MuiInputBase-fullWidth MuiInputBase-formControl MuiInputBase-sizeSmall css-1blp12k-MuiInputBase-root-MuiOutlinedInput-root"
-            >
-              <input
-                aria-invalid="false"
-                class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputSizeSmall css-1pzfmz2-MuiInputBase-input-MuiOutlinedInput-input"
-                id="emergencyContactNumber"
-                name="emergencyContactNumber"
-                placeholder="Emergency Contact Number without spaces or dashes"
-                type="text"
-                value=""
-              />
-              <fieldset
-                aria-hidden="true"
-                class="MuiOutlinedInput-notchedOutline css-18p5xg2-MuiNotchedOutlined-root-MuiOutlinedInput-notchedOutline"
-              >
-                <legend
-                  class="css-1nf2c5d-MuiNotchedOutlined-root"
-                >
-                  <span
-                    aria-hidden="true"
-                    class="notranslate"
-                  >
-                    ​
-                  </span>
-                </legend>
-              </fieldset>
-            </div>
-          </div>
+          <label>
+            Emergency Contact *
+          </label>
+          <input
+            placeholder="Emergency Contact Number without spaces or dashes"
+          />
         </div>
       </div>
       <div
@@ -668,59 +276,19 @@ exports[`AddProperty Component Tests AddProperty Snapshot Tests matches AddPrope
         class="MuiStack-root css-1wi0p3l-MuiStack-root"
       >
         <div
-          class="MuiStack-root css-9j5txs-MuiStack-root"
+          data-testid="rent"
         >
-          <div
-            class="MuiStack-root css-niqf4j-MuiStack-root"
-          >
-            <p
-              class="MuiTypography-root MuiTypography-body2 css-hol6i2-MuiTypography-root"
-            >
-              Monthly Rent *
-            </p>
-          </div>
-          <div
-            class="MuiFormControl-root MuiFormControl-fullWidth MuiTextField-root css-cmpglg-MuiFormControl-root-MuiTextField-root"
-          >
-            <div
-              class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-colorPrimary MuiInputBase-fullWidth MuiInputBase-formControl MuiInputBase-sizeSmall css-1blp12k-MuiInputBase-root-MuiOutlinedInput-root"
-            >
-              <input
-                aria-invalid="false"
-                class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputSizeSmall css-1pzfmz2-MuiInputBase-input-MuiOutlinedInput-input"
-                id="rent"
-                name="rent"
-                placeholder="Monthly rent in USD. Eg, 2750.00"
-                type="text"
-                value=""
-              />
-              <fieldset
-                aria-hidden="true"
-                class="MuiOutlinedInput-notchedOutline css-18p5xg2-MuiNotchedOutlined-root-MuiOutlinedInput-notchedOutline"
-              >
-                <legend
-                  class="css-1nf2c5d-MuiNotchedOutlined-root"
-                >
-                  <span
-                    aria-hidden="true"
-                    class="notranslate"
-                  >
-                    ​
-                  </span>
-                </legend>
-              </fieldset>
-            </div>
-          </div>
+          <label>
+            Monthly Rent *
+          </label>
+          <input
+            placeholder="Monthly rent in USD. Eg, 2750.00"
+          />
         </div>
         <div
-          class="MuiStack-root css-9j5txs-MuiStack-root"
+          data-testid="additional_rent"
         >
-          <div
-            class="MuiStack-root css-niqf4j-MuiStack-root"
-          >
-            <p
-              class="MuiTypography-root MuiTypography-body2 css-hol6i2-MuiTypography-root"
-            />
+          <label>
             <div
               class="MuiStack-root css-1d9cypr-MuiStack-root"
             >
@@ -743,54 +311,19 @@ exports[`AddProperty Component Tests AddProperty Snapshot Tests matches AddPrope
                 Add ons
               </h6>
             </div>
-            <p />
-          </div>
-          <div
-            class="MuiFormControl-root MuiFormControl-fullWidth MuiTextField-root css-cmpglg-MuiFormControl-root-MuiTextField-root"
-          >
-            <div
-              class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-colorPrimary MuiInputBase-fullWidth MuiInputBase-formControl MuiInputBase-sizeSmall css-1blp12k-MuiInputBase-root-MuiOutlinedInput-root"
-            >
-              <input
-                aria-invalid="false"
-                class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputSizeSmall css-1pzfmz2-MuiInputBase-input-MuiOutlinedInput-input"
-                id="additional_rent"
-                name="additional_rent"
-                placeholder="Additional fee. Eg, 400.00"
-                type="text"
-                value=""
-              />
-              <fieldset
-                aria-hidden="true"
-                class="MuiOutlinedInput-notchedOutline css-18p5xg2-MuiNotchedOutlined-root-MuiOutlinedInput-notchedOutline"
-              >
-                <legend
-                  class="css-1nf2c5d-MuiNotchedOutlined-root"
-                >
-                  <span
-                    aria-hidden="true"
-                    class="notranslate"
-                  >
-                    ​
-                  </span>
-                </legend>
-              </fieldset>
-            </div>
-          </div>
+          </label>
+          <input
+            placeholder="Additional fee. Eg, 400.00"
+          />
         </div>
       </div>
       <div
         class="MuiStack-root css-1wi0p3l-MuiStack-root"
       >
         <div
-          class="MuiStack-root css-9j5txs-MuiStack-root"
+          data-testid="rent_increment"
         >
-          <div
-            class="MuiStack-root css-niqf4j-MuiStack-root"
-          >
-            <p
-              class="MuiTypography-root MuiTypography-body2 css-hol6i2-MuiTypography-root"
-            />
+          <label>
             <div
               class="MuiStack-root css-1d9cypr-MuiStack-root"
             >
@@ -813,50 +346,15 @@ exports[`AddProperty Component Tests AddProperty Snapshot Tests matches AddPrope
                 Projected Rent Increase *
               </h6>
             </div>
-            <p />
-          </div>
-          <div
-            class="MuiFormControl-root MuiFormControl-fullWidth MuiTextField-root css-cmpglg-MuiFormControl-root-MuiTextField-root"
-          >
-            <div
-              class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-colorPrimary MuiInputBase-fullWidth MuiInputBase-formControl MuiInputBase-sizeSmall css-1blp12k-MuiInputBase-root-MuiOutlinedInput-root"
-            >
-              <input
-                aria-invalid="false"
-                class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputSizeSmall css-1pzfmz2-MuiInputBase-input-MuiOutlinedInput-input"
-                id="rent_increment"
-                name="rent_increment"
-                placeholder="Projected Rent Increase in USD. Eg, 200.00"
-                type="text"
-                value=""
-              />
-              <fieldset
-                aria-hidden="true"
-                class="MuiOutlinedInput-notchedOutline css-18p5xg2-MuiNotchedOutlined-root-MuiOutlinedInput-notchedOutline"
-              >
-                <legend
-                  class="css-1nf2c5d-MuiNotchedOutlined-root"
-                >
-                  <span
-                    aria-hidden="true"
-                    class="notranslate"
-                  >
-                    ​
-                  </span>
-                </legend>
-              </fieldset>
-            </div>
-          </div>
+          </label>
+          <input
+            placeholder="Projected Rent Increase in USD. Eg, 200.00"
+          />
         </div>
         <div
-          class="MuiStack-root css-9j5txs-MuiStack-root"
+          data-testid="securityDeposit"
         >
-          <div
-            class="MuiStack-root css-niqf4j-MuiStack-root"
-          >
-            <p
-              class="MuiTypography-root MuiTypography-body2 css-hol6i2-MuiTypography-root"
-            />
+          <label>
             <div
               class="MuiStack-root css-1d9cypr-MuiStack-root"
             >
@@ -879,54 +377,19 @@ exports[`AddProperty Component Tests AddProperty Snapshot Tests matches AddPrope
                 Security deposit *
               </h6>
             </div>
-            <p />
-          </div>
-          <div
-            class="MuiFormControl-root MuiFormControl-fullWidth MuiTextField-root css-cmpglg-MuiFormControl-root-MuiTextField-root"
-          >
-            <div
-              class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-colorPrimary MuiInputBase-fullWidth MuiInputBase-formControl MuiInputBase-sizeSmall css-1blp12k-MuiInputBase-root-MuiOutlinedInput-root"
-            >
-              <input
-                aria-invalid="false"
-                class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputSizeSmall css-1pzfmz2-MuiInputBase-input-MuiOutlinedInput-input"
-                id="securityDeposit"
-                name="securityDeposit"
-                placeholder="Security deposit for the property. Eg, 2100.00"
-                type="text"
-                value=""
-              />
-              <fieldset
-                aria-hidden="true"
-                class="MuiOutlinedInput-notchedOutline css-18p5xg2-MuiNotchedOutlined-root-MuiOutlinedInput-notchedOutline"
-              >
-                <legend
-                  class="css-1nf2c5d-MuiNotchedOutlined-root"
-                >
-                  <span
-                    aria-hidden="true"
-                    class="notranslate"
-                  >
-                    ​
-                  </span>
-                </legend>
-              </fieldset>
-            </div>
-          </div>
+          </label>
+          <input
+            placeholder="Security deposit for the property. Eg, 2100.00"
+          />
         </div>
       </div>
       <div
         class="MuiStack-root css-1wi0p3l-MuiStack-root"
       >
         <div
-          class="MuiStack-root css-9j5txs-MuiStack-root"
+          data-testid="allowedVehicleCounts"
         >
-          <div
-            class="MuiStack-root css-niqf4j-MuiStack-root"
-          >
-            <p
-              class="MuiTypography-root MuiTypography-body2 css-hol6i2-MuiTypography-root"
-            />
+          <label>
             <div
               class="MuiStack-root css-1d9cypr-MuiStack-root"
             >
@@ -949,50 +412,15 @@ exports[`AddProperty Component Tests AddProperty Snapshot Tests matches AddPrope
                 Allocated parking spots
               </h6>
             </div>
-            <p />
-          </div>
-          <div
-            class="MuiFormControl-root MuiFormControl-fullWidth MuiTextField-root css-cmpglg-MuiFormControl-root-MuiTextField-root"
-          >
-            <div
-              class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-colorPrimary MuiInputBase-fullWidth MuiInputBase-formControl MuiInputBase-sizeSmall css-1blp12k-MuiInputBase-root-MuiOutlinedInput-root"
-            >
-              <input
-                aria-invalid="false"
-                class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputSizeSmall css-1pzfmz2-MuiInputBase-input-MuiOutlinedInput-input"
-                id="allowedVehicleCounts"
-                name="allowedVehicleCounts"
-                placeholder="Allowed vehicles on property"
-                type="text"
-                value=""
-              />
-              <fieldset
-                aria-hidden="true"
-                class="MuiOutlinedInput-notchedOutline css-18p5xg2-MuiNotchedOutlined-root-MuiOutlinedInput-notchedOutline"
-              >
-                <legend
-                  class="css-1nf2c5d-MuiNotchedOutlined-root"
-                >
-                  <span
-                    aria-hidden="true"
-                    class="notranslate"
-                  >
-                    ​
-                  </span>
-                </legend>
-              </fieldset>
-            </div>
-          </div>
+          </label>
+          <input
+            placeholder="Allowed vehicles on property"
+          />
         </div>
         <div
-          class="MuiStack-root css-9j5txs-MuiStack-root"
+          data-testid="paymentID"
         >
-          <div
-            class="MuiStack-root css-niqf4j-MuiStack-root"
-          >
-            <p
-              class="MuiTypography-root MuiTypography-body2 css-hol6i2-MuiTypography-root"
-            />
+          <label>
             <div
               class="MuiStack-root css-1d9cypr-MuiStack-root"
             >
@@ -1015,96 +443,24 @@ exports[`AddProperty Component Tests AddProperty Snapshot Tests matches AddPrope
                 Payee ID *
               </h6>
             </div>
-            <p />
-          </div>
-          <div
-            class="MuiFormControl-root MuiFormControl-fullWidth MuiTextField-root css-cmpglg-MuiFormControl-root-MuiTextField-root"
-          >
-            <div
-              class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-colorPrimary MuiInputBase-fullWidth MuiInputBase-formControl MuiInputBase-sizeSmall css-1blp12k-MuiInputBase-root-MuiOutlinedInput-root"
-            >
-              <input
-                aria-invalid="false"
-                class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputSizeSmall css-1pzfmz2-MuiInputBase-input-MuiOutlinedInput-input"
-                id="paymentID"
-                name="paymentID"
-                placeholder="Payment Identity Field. Eg, Zelle ID: XXX-XX-XXXX"
-                type="text"
-                value=""
-              />
-              <fieldset
-                aria-hidden="true"
-                class="MuiOutlinedInput-notchedOutline css-18p5xg2-MuiNotchedOutlined-root-MuiOutlinedInput-notchedOutline"
-              >
-                <legend
-                  class="css-1nf2c5d-MuiNotchedOutlined-root"
-                >
-                  <span
-                    aria-hidden="true"
-                    class="notranslate"
-                  >
-                    ​
-                  </span>
-                </legend>
-              </fieldset>
-            </div>
-          </div>
+          </label>
+          <input
+            placeholder="Payment Identity Field. Eg, Zelle ID: XXX-XX-XXXX"
+          />
         </div>
       </div>
       <div
         class="MuiStack-root css-nen11g-MuiStack-root"
       >
         <div
-          class="MuiStack-root css-9j5txs-MuiStack-root"
+          data-testid="specialProvisions"
         >
-          <div
-            class="MuiStack-root css-niqf4j-MuiStack-root"
-          >
-            <p
-              class="MuiTypography-root MuiTypography-body2 css-hol6i2-MuiTypography-root"
-            >
-              Special Provisions
-            </p>
-          </div>
-          <div
-            class="MuiFormControl-root MuiFormControl-fullWidth MuiTextField-root css-cmpglg-MuiFormControl-root-MuiTextField-root"
-          >
-            <div
-              class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-colorPrimary MuiInputBase-fullWidth MuiInputBase-formControl MuiInputBase-sizeSmall MuiInputBase-multiline css-szkf5z-MuiInputBase-root-MuiOutlinedInput-root"
-            >
-              <textarea
-                aria-invalid="false"
-                class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputMultiline MuiInputBase-inputSizeSmall css-msbelq-MuiInputBase-input-MuiOutlinedInput-input"
-                id="specialProvisions"
-                name="specialProvisions"
-                placeholder="Add special provisions for the tenant within 500 characters"
-                rows="3"
-                style="height: 0px; overflow: hidden;"
-              />
-              <textarea
-                aria-hidden="true"
-                class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputMultiline MuiInputBase-inputSizeSmall css-msbelq-MuiInputBase-input-MuiOutlinedInput-input"
-                readonly=""
-                style="visibility: hidden; position: absolute; overflow: hidden; height: 0px; top: 0px; left: 0px; transform: translateZ(0); padding-top: 0px; padding-bottom: 0px; width: 100%;"
-                tabindex="-1"
-              />
-              <fieldset
-                aria-hidden="true"
-                class="MuiOutlinedInput-notchedOutline css-18p5xg2-MuiNotchedOutlined-root-MuiOutlinedInput-notchedOutline"
-              >
-                <legend
-                  class="css-1nf2c5d-MuiNotchedOutlined-root"
-                >
-                  <span
-                    aria-hidden="true"
-                    class="notranslate"
-                  >
-                    ​
-                  </span>
-                </legend>
-              </fieldset>
-            </div>
-          </div>
+          <label>
+            Special Provisions
+          </label>
+          <input
+            placeholder="Add special provisions for the tenant within 500 characters"
+          />
         </div>
       </div>
       <div

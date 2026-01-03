@@ -19,7 +19,7 @@ exports[`DetailsTableView component renders correctly and matches snapshot 1`] =
     <div
       data-testid="mock-table"
     >
-      Mock Table (0 rows)
+      Mock Table (1 rows)
     </div>
   </div>
 </DocumentFragment>

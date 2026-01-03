@@ -12,13 +12,13 @@ describe("FaqDetails component tests", () => {
   describe("it should render and pass all component tests", () => {
     const mockData = [
       {
-        q: "What is Invoicer?",
-        ans: "Invoicer is a billing app for landlords.",
+        question: "What is Invoicer?",
+        answer: "Invoicer is a billing app for landlords.",
         icon: <HelpOutline data-testid="faq-icon-1" />,
       },
       {
-        q: "How do I add a tenant?",
-        ans: "Go to the tenants page and click add tenant.",
+        question: "How do I add a tenant?",
+        answer: "Go to the tenants page and click add tenant.",
         icon: <HelpOutline data-testid="faq-icon-2" />,
       },
     ];

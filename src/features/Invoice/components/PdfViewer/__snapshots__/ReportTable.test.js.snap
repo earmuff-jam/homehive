@@ -20,9 +20,7 @@ exports[`Report Table Component tests Report Table Snapshot tests PdfViewer snap
             class="MuiTableCell-root MuiTableCell-head MuiTableCell-alignCenter MuiTableCell-sizeMedium css-774dy1-MuiTableCell-root"
             colspan="5"
             scope="col"
-          >
-            Invoice Details
-          </th>
+          />
           <th
             class="MuiTableCell-root MuiTableCell-head MuiTableCell-alignRight MuiTableCell-sizeMedium css-1sipjqd-MuiTableCell-root"
             scope="col"

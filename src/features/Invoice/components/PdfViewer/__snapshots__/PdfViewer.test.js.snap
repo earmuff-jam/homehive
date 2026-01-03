@@ -6,27 +6,12 @@ exports[`PdfViewer snapshot 1`] = `
     class="MuiContainer-root MuiContainer-maxWidthMd css-u4uvlt-MuiContainer-root"
     data-tour="view-pdf-0"
   >
-    <div
-      class="MuiStack-root css-1ug9gnt-MuiStack-root"
-    >
-      <p
-        class="MuiTypography-root MuiTypography-body1 css-rizt0-MuiTypography-root"
-      >
+    <div>
+      <div>
         Sorry, no invoice found to display
-      </p>
-      <div
-        class="MuiStack-root css-nen11g-MuiStack-root"
-      >
-        <span
-          class="MuiTypography-root MuiTypography-caption css-mpaqru-MuiTypography-root"
-        >
-          Create new invoice from 
-          <span
-            class="MuiTypography-root MuiTypography-caption css-mf4qso-MuiTypography-root"
-          >
-             here.
-          </span>
-        </span>
+      </div>
+      <div>
+        Create new invoice from
       </div>
     </div>
   </div>

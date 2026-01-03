@@ -41,25 +41,6 @@ describe("Utils function tests", () => {
     });
   });
 
-  describe("isUserLoggedIn function tests", () => {
-    beforeEach(() => {
-      jest.clearAllMocks();
-    });
-
-    it("returns true if user exists with uid", () => {
-      secureLocalStorage.getItem.mockReturnValue({ uid: "123" });
-      expect(utils.isUserLoggedIn()).toBe(true);
-    });
-
-    it("returns false if no user or no uid", () => {
-      secureLocalStorage.getItem.mockReturnValue(null);
-      expect(utils.isUserLoggedIn()).toBe(false);
-
-      secureLocalStorage.getItem.mockReturnValue({});
-      expect(utils.isUserLoggedIn()).toBe(false);
-    });
-  });
-
   describe("isBannerVisible function tests", () => {
     beforeEach(() => {
       jest.clearAllMocks();

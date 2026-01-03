@@ -9,11 +9,19 @@ exports[`ItemTypeFreqChart renders correctly and matches snapshot 1`] = `
     <div
       data-testid="row-header"
     >
-      Item Types - Frequency overview
+      <h1>
+        Item Types
+      </h1>
+      <p>
+        Frequency overview
+      </p>
     </div>
-    <div
-      data-testid="empty-component"
-    />
+    <div>
+      <div>
+        Sorry, no matching records found.
+      </div>
+      <div />
+    </div>
   </div>
 </DocumentFragment>
 `;
