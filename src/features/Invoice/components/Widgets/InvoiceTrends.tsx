@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { Bar, Line } from "react-chartjs-2";
 
@@ -8,6 +8,7 @@ import {
   BarElement,
   CategoryScale,
   Chart as ChartJS,
+  ChartOptions,
   Legend,
   LineElement,
   LinearScale,
@@ -17,6 +18,10 @@ import {
 } from "chart.js";
 import EmptyComponent from "common/EmptyComponent";
 import RowHeader from "common/RowHeader/RowHeader";
+import {
+  ChartType,
+  TrendsChartDataset,
+} from "features/Invoice/types/Invoice.types";
 import { normalizeInvoiceTrendsChartsDataset } from "features/Invoice/utils";
 
 ChartJS.register(
@@ -30,9 +35,15 @@ ChartJS.register(
   Title,
 );
 
-const InvoiceTrendsChart = ({ label, caption }) => {
-  const [chartData, setChartData] = useState(null);
-  const [chartType, setChartType] = useState("bar"); // or "line"
+// InvoiceTrendsChartProps ...
+type InvoiceTrendsChartProps = {
+  label: string;
+  caption: string;
+};
+
+const InvoiceTrendsChart = ({ label, caption }: InvoiceTrendsChartProps) => {
+  const [chartType, setChartType] = useState<ChartType>("bar");
+  const [chartData, setChartData] = useState<TrendsChartDataset>(null);
 
   const handleChartType = (ev, draftChartType) => {
     if (draftChartType !== null) {
@@ -51,7 +62,7 @@ const InvoiceTrendsChart = ({ label, caption }) => {
     }
   }, [chartType]);
 
-  const options = {
+  const options: ChartOptions<"bar"> = {
     responsive: true,
     plugins: {
       title: {

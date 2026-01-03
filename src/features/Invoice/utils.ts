@@ -9,20 +9,9 @@ import {
   TrendsChartDataset,
 } from "features/Invoice/types/Invoice.types";
 
-/**
- * The function `normalizeDetailsTableData` takes an array of invoices, calculates total payment
- * amounts, and returns normalized data for a details table.
- * @param {Invoice[]} draftInvoiceList - The `noramlizeDetailsTableData` function takes an array of
- * `Invoice` objects called `draftInvoiceList` as input and returns an array of `InvoiceRow` objects.
- * @returns The function `normalizeDetailsTableData` takes an array of `Invoice` objects called
- * `draftInvoiceList` as input and returns an array of `InvoiceRow` objects. Each `InvoiceRow` object
- * contains normalized data from the corresponding `Invoice` object in the input array, including
- * category, invoice status, start date, end date, total payment, payment method, and updated on date.
- */
-export function noramlizeDetailsTableData(
-  draftInvoiceList: Invoice[],
-): InvoiceRow[] {
-  return draftInvoiceList.map((invoice) => {
+// noramlizeDetailsTableData ...
+export function noramlizeDetailsTableData(list: Invoice[]): InvoiceRow[] {
+  return list.map((invoice) => {
     const items = invoice.lineItems || [];
 
     const total = items.reduce(
@@ -50,19 +39,7 @@ export function noramlizeDetailsTableData(
   });
 }
 
-/**
- * The function `normalizeInvoiceItemTypeChartDataset` takes a list of invoices, extracts item types
- * from line items, and generates a chart dataset showing the frequency of each item type.
- * @param {Invoice[]} list - The `normalizeInvoiceItemTypeChartDataset` function takes a list of
- * invoices as input and generates a chart dataset for visualizing the frequency of different item
- * types within those invoices. The function iterates over the list of invoices, extracts the item
- * types from each invoice's line items, and counts the frequency of
- * @returns The function `normalizeInvoiceItemTypeChartDataset` returns an object with two properties:
- * `labels` and `datasets`. The `labels` property contains an array of unique item descriptions
- * extracted from the input list of invoices. The `datasets` property contains an array with a single
- * object representing the dataset for the item type frequency chart. This object includes the label
- * for the dataset, an array of frequencies corresponding to
- */
+// normalizeInvoiceItemTypeChartDataset ...
 export function normalizeInvoiceItemTypeChartDataset(
   list: Invoice[],
 ): InvoiceItemTypeChartData {
@@ -99,20 +76,7 @@ export function normalizeInvoiceItemTypeChartDataset(
   };
 }
 
-/**
- * The function `normalizeInvoiceTrendsChartsDataset` processes a list of invoices to generate data for
- * trends charts displaying collected invoice amounts and tax collected per month.
- * @param {Invoice[]} list - The `list` parameter is an array of `Invoice` objects containing
- * information about invoices, such as start date, line items, and tax rate.
- * @param {string} chartType - The `chartType` parameter in the `normalizeInvoiceTrendsChartsDataset`
- * function is used to determine the type of chart to be generated. It can have two possible values:
- * "line" or any other value. If `chartType` is "line", the generated chart will be a line
- * @returns The `normalizeInvoiceTrendsChartsDataset` function returns an array containing a single
- * object with `labels` and `datasets` properties. The `labels` property contains an array of month
- * names, while the `datasets` property contains an array of two objects representing the collected
- * invoice data and tax collected data. Each dataset object includes properties like `label`, `data`,
- * `backgroundColor`, `borderColor`,
- */
+// normalizeInvoiceTrendsChartsDataset ...
 export function normalizeInvoiceTrendsChartsDataset(
   list: Invoice[],
   chartType: string,
@@ -179,17 +143,7 @@ export function normalizeInvoiceTrendsChartsDataset(
   ];
 }
 
-/**
- * The function `normalizeInvoiceTimelineChartDataset` takes a list of invoices, extracts the month
- * from each invoice's start date, and creates a dataset for a trends chart with payment information.
- * @param {Invoice[]} list - The `normalizeInvoiceTimelineChartDataset` function takes a list of
- * invoices as input and normalizes the data to create a TrendsChartDataset for displaying in a chart.
- * The function processes the list of invoices to extract relevant information and structure it in a
- * format suitable for displaying on a timeline chart.
- * @returns The function `normalizeInvoiceTimelineChartDataset` returns a `TrendsChartDataset` object,
- * which contains an array of month labels and an array of datasets. Each dataset represents an invoice
- * with information such as payment amount, payment method, and duration of payment.
- */
+// normalizeInvoiceTimelineChartDataset ...
 export function normalizeInvoiceTimelineChartDataset(
   list: Invoice[],
 ): TrendsChartDataset {
@@ -231,18 +185,8 @@ export function normalizeInvoiceTimelineChartDataset(
   };
 }
 
-/**
- * The `parseJsonUtility` function parses a JSON string into a specified type and returns the parsed
- * value or null if parsing fails.
- * @param {string | null} value - The `value` parameter in the `parseJsonUtility` function is a string
- * that represents a JSON object or `null`. The function attempts to parse the string as JSON and
- * return the parsed object of type `T`. If parsing fails or if the `value` is `null`, the function
- * returns
- * @returns The `parseJsonUtility` function returns a value of type `T` or `null`. If the input `value`
- * is falsy (null, undefined, etc.), it returns `null`. If the input `value` can be successfully parsed
- * as JSON of type `T`, it returns the parsed value as type `T`. If there is an error during parsing,
- * it returns `null`.
- */
+// parseJsonUtility ...
+// parses the json to a specific type T.
 export function parseJsonUtility<T>(value: string | null): T | null {
   if (!value) return null;
   try {

@@ -6,11 +6,7 @@ import { Stack } from "@mui/material";
 import EmptyComponent from "common/EmptyComponent";
 import RowHeader from "common/RowHeader/RowHeader";
 import relativeTime from "dayjs/plugin/relativeTime";
-import {
-  DetailsTableViewProps,
-  Invoice,
-  InvoiceRow,
-} from "features/Invoice/types/Invoice.types";
+import { Invoice, InvoiceRow } from "features/Invoice/types/Invoice.types";
 import {
   noramlizeDetailsTableData,
   parseJsonUtility,
@@ -21,6 +17,12 @@ import {
 } from "material-react-table";
 
 dayjs.extend(relativeTime);
+
+// DetailsTableViewProps ...
+type DetailsTableViewProps = {
+  label: string;
+  caption: string;
+};
 
 const DetailsTableView = ({ label, caption }: DetailsTableViewProps) => {
   const [tableData, setTableData] = useState<InvoiceRow[]>([]);

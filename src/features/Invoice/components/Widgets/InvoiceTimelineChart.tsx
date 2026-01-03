@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Bar } from "react-chartjs-2";
 
@@ -7,18 +7,29 @@ import {
   BarElement,
   CategoryScale,
   Chart as ChartJS,
+  ChartOptions,
   LinearScale,
   Title,
   Tooltip,
 } from "chart.js";
 import EmptyComponent from "common/EmptyComponent";
 import RowHeader from "common/RowHeader/RowHeader";
+import { TrendsChartDataset } from "features/Invoice/types/Invoice.types";
 import { normalizeInvoiceTimelineChartDataset } from "features/Invoice/utils";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Title);
 
-const InvoiceTimelineChart = ({ label, caption }) => {
-  const [data, setData] = useState({});
+// InvoiceTimelineChartProps ...
+type InvoiceTimelineChartProps = {
+  label: string;
+  caption: string;
+};
+
+const InvoiceTimelineChart = ({
+  label,
+  caption,
+}: InvoiceTimelineChartProps) => {
+  const [data, setData] = useState<TrendsChartDataset>();
 
   useEffect(() => {
     const draftData = JSON.parse(localStorage.getItem("pdfDetails"));
@@ -28,7 +39,7 @@ const InvoiceTimelineChart = ({ label, caption }) => {
     }
   }, []);
 
-  const options = {
+  const options: ChartOptions<"bar"> = {
     indexAxis: "y",
     responsive: true,
     plugins: {
