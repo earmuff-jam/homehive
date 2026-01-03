@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import dayjs from "dayjs";
 
@@ -6,7 +6,15 @@ import { Stack } from "@mui/material";
 import EmptyComponent from "common/EmptyComponent";
 import RowHeader from "common/RowHeader/RowHeader";
 import relativeTime from "dayjs/plugin/relativeTime";
-import { noramlizeDetailsTableData } from "features/Invoice/utils";
+import {
+  DetailsTableViewProps,
+  Invoice,
+  InvoiceRow,
+} from "features/Invoice/types/Invoice.types";
+import {
+  noramlizeDetailsTableData,
+  parseJsonUtility,
+} from "features/Invoice/utils";
 import {
   MaterialReactTable,
   useMaterialReactTable,
@@ -14,29 +22,25 @@ import {
 
 dayjs.extend(relativeTime);
 
-const DetailsTableView = ({ label, caption }) => {
-  const [tableData, setTableData] = useState([]);
+const DetailsTableView = ({ label, caption }: DetailsTableViewProps) => {
+  const [tableData, setTableData] = useState<InvoiceRow[]>([]);
 
   useEffect(() => {
-    const draftData = JSON.parse(localStorage.getItem("pdfDetails"));
-    const draftInvoiceStatus = JSON.parse(
+    const draftData = parseJsonUtility<Invoice>(
+      localStorage.getItem("pdfDetails"),
+    );
+    const draftInvoiceStatus = parseJsonUtility<{ invoiceStatus: string }>(
       localStorage.getItem("invoiceStatus"),
     );
 
-    let formattedData;
-    formattedData = { ...draftData };
+    const formattedData: Invoice = {
+      ...draftData,
+      ...(draftInvoiceStatus && {
+        invoiceStatus: draftInvoiceStatus?.invoiceStatus,
+      }),
+    };
 
-    if (draftInvoiceStatus) {
-      formattedData = {
-        ...formattedData,
-        invoice_status: draftInvoiceStatus?.label,
-      };
-    }
-
-    if (draftData) {
-      const data = noramlizeDetailsTableData([formattedData]);
-      setTableData(data);
-    }
+    setTableData(noramlizeDetailsTableData([formattedData]));
   }, []);
 
   const columns = useMemo(
@@ -99,9 +103,9 @@ const DetailsTableView = ({ label, caption }) => {
       density: "comfortable",
     },
     renderEmptyRowsFallback: () => <EmptyComponent />,
-    mrtTheme: (theme) => ({
-      baseBackgroundColor: theme.palette.transparent.main,
-    }),
+    mrtTheme: {
+      baseBackgroundColor: "transparent",
+    },
     muiTableContainerProps: {
       sx: {
         maxHeight: "16rem",

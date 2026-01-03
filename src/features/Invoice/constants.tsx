@@ -1,5 +1,3 @@
-import React from "react";
-
 import {
   CancelRounded,
   DeblurRounded,
@@ -7,23 +5,28 @@ import {
   LocalAtmRounded,
   PaidRounded,
 } from "@mui/icons-material";
+import {
+  Category,
+  InvoiceStatusOption,
+  WidgetType,
+} from "features/Invoice/types/Invoice.types";
 
-/**
- * WidgetTypeList ...
- *
- * widget type list is the different types of widgets
- * that we can display in the dashboard
- */
-export const WidgetTypeList = [
+/* The `WidgetTypeList` constant is defining an array of objects, where each object represents a
+specific type of widget that can be used in the application. Each widget object has properties such
+as `id`, `label`, `caption`, `columns`, `data`, and `config`. Here's a breakdown of what each
+property represents: */
+export const WidgetTypeList: WidgetType[] = [
   {
     id: 1,
     label: "Invoice Timeline Chart",
     caption: "Displays period of timeline events",
+    columns: [],
+    data: [],
     config: {
-      inset: false, // makes text have extra spacing infront
+      inset: false,
       height: "25rem",
       width: "45rem",
-      widgetID: "9caef12d-a611-4573-8fd2-b5bd3036ce13", // widgetID for config is for provision only
+      widgetId: "9caef12d-a611-4573-8fd2-b5bd3036ce13",
     },
   },
   {
@@ -36,7 +39,7 @@ export const WidgetTypeList = [
       inset: false,
       height: "25rem",
       width: "45rem",
-      widgetID: "c04637c7-080d-4641-a4f4-4fd523280d74",
+      widgetId: "c04637c7-080d-4641-a4f4-4fd523280d74",
     },
   },
   {
@@ -49,7 +52,7 @@ export const WidgetTypeList = [
       inset: false,
       height: "25rem",
       width: "45rem",
-      widgetID: "052fda00-2d37-4d0f-81b7-3fcb451e5ee1",
+      widgetId: "052fda00-2d37-4d0f-81b7-3fcb451e5ee1",
     },
   },
   {
@@ -62,18 +65,20 @@ export const WidgetTypeList = [
       inset: false,
       height: "25rem",
       width: "75rem",
-      widgetID: "a4c036a4-feef-4f2b-bb90-b5eea115fcce",
+      widgetId: "a4c036a4-feef-4f2b-bb90-b5eea115fcce",
     },
   },
 ];
 
-/**
- * DefaultInvoiceStatusOptions ...
- *
- * default invoice status options used to mark
- * the status of the invoice
- */
-export const DefaultInvoiceStatusOptions = [
+/* The `DefaultInvoiceStatusOptions` constant is defining an array of objects, where each object
+represents an invoice status option. Each object has the following properties:
+- `id`: A unique identifier for the status option.
+- `label`: The display label for the status option (e.g., "Paid", "Draft", "Overdue", "Cancelled",
+"None").
+- `icon`: An icon component associated with the status option.
+- `selected`: A boolean indicating whether the status option is selected or not.
+- `display`: A boolean indicating whether the status option should be displayed or not. */
+export const DefaultInvoiceStatusOptions: InvoiceStatusOption[] = [
   {
     id: 1,
     label: "Paid",
@@ -111,12 +116,11 @@ export const DefaultInvoiceStatusOptions = [
   },
 ];
 
-/**
- * Invoice Category Options
- *
- * used to build out the autocomplete component in edit / view invoice
- */
-export const InvoiceCategoryOptions = [
+/* The `InvoiceCategoryOptions` constant is defining an array of objects that represent different
+categories for invoices. Each object in the array has two properties:
+- `label`: Represents the display label for the category (e.g., "Products", "Services", "Fees").
+- `value`: Represents the value associated with the category (e.g., "products", "services", "fees"). */
+export const InvoiceCategoryOptions: Category[] = [
   { label: "Products", value: "products" },
   { label: "Services", value: "services" },
   { label: "Fees", value: "fees" },

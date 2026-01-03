@@ -23,6 +23,7 @@ import {
   ViewInvoiceRoutePath,
   ViewInvoiceRouteUri,
 } from "common/utils";
+import { InvoiceAppRoute } from "features/Invoice/types/Invoice.types";
 
 const Dashboard = React.lazy(
   () => import("features/Invoice/components/Dashboard/Dashboard"),
@@ -47,7 +48,7 @@ const Faq = React.lazy(() => import("features/Invoice/components/Faq/Faq"));
  *
  * routes that are built for invoice app
  */
-export const InvoiceAppRoutes = [
+export const InvoiceAppRoutes: InvoiceAppRoute[] = [
   {
     id: 1,
     label: "Dashboard",

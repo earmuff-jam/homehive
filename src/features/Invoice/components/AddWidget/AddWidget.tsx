@@ -11,8 +11,9 @@ import {
   Typography,
 } from "@mui/material";
 import { WidgetTypeList } from "features/Invoice/constants";
+import { AddWidgetProps } from "features/Invoice/types/Invoice.types";
 
-export default function AddWidget({ handleAddWidget }) {
+export default function AddWidget({ handleAddWidget }: AddWidgetProps) {
   return (
     <Stack sx={{ minWidth: "12rem", padding: "1rem 1rem 0rem 1rem" }}>
       <Typography>Add Widget</Typography>
