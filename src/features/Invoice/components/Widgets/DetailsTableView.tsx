@@ -42,7 +42,7 @@ const DetailsTableView = ({ label, caption }: DetailsTableViewProps) => {
 
     setTableData(noramlizeDetailsTableData([formattedData]));
   }, []);
-
+  console.log(tableData);
   const columns = useMemo(
     () => [
       {
@@ -52,14 +52,14 @@ const DetailsTableView = ({ label, caption }: DetailsTableViewProps) => {
         Cell: ({ cell }) => (cell.getValue() ? cell.getValue() : "-"),
       },
       {
-        accessorKey: "start_date",
+        accessorKey: "startDate",
         header: "Start Month",
         Cell: ({ cell }) =>
           cell.getValue() ? dayjs(cell.getValue()).format("MM-DD-YYYY") : "-",
         size: 150,
       },
       {
-        accessorKey: "end_date",
+        accessorKey: "endDate",
         header: "End Month",
         Cell: ({ cell }) =>
           cell.getValue() ? dayjs(cell.getValue()).format("MM-DD-YYYY") : "-",
@@ -78,7 +78,7 @@ const DetailsTableView = ({ label, caption }: DetailsTableViewProps) => {
         Cell: ({ cell }) => (cell.getValue() ? cell.getValue() : "-"),
       },
       {
-        accessorKey: "payment_method",
+        accessorKey: "paymentMethod",
         header: "Payment method",
         size: 150,
         Cell: ({ cell }) => (cell.getValue() ? cell.getValue() : "-"),
@@ -104,7 +104,7 @@ const DetailsTableView = ({ label, caption }: DetailsTableViewProps) => {
     },
     renderEmptyRowsFallback: () => <EmptyComponent />,
     mrtTheme: {
-      baseBackgroundColor: "transparent",
+      baseBackgroundColor: "rgba(0, 0, 0, 0)", // todo: fix theme for ts to move to transparent bg color
     },
     muiTableContainerProps: {
       sx: {

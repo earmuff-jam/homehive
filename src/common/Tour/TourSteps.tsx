@@ -1,4 +1,4 @@
-import React from "react";
+import { ReactNode } from "react";
 
 import { Box, Typography } from "@mui/material";
 import {
@@ -18,12 +18,69 @@ import {
   createHelperSentences,
 } from "common/utils";
 
+type InvoiceRouteUri =
+  | typeof ViewInvoiceRouteUri
+  | typeof EditInvoiceRouteUri
+  | typeof SenderInforamtionRouteUri
+  | typeof RecieverInforamtionRouteUri
+  | typeof InvoiceDashboardRouteUri
+  | typeof SettingsRouteUri
+  | typeof RentalRouteUri
+  | typeof PropertyRouteUri
+  | typeof PropertiesRouteUri;
+
+/**
+ * The type `TourElementStep` represents a step in a tour with a specified element.
+ * @property {string} element - The `element` property in the `TourElementStep` type represents the
+ * element that is part of a tour step. It could be a string value describing the element, such as a
+ * selector or identifier for an element on a webpage.
+ */
+type TourElementStep = {
+  element: string;
+};
+
+/**
+ * The type `TourStepRange` defines a range of tour steps with corresponding elements and start/end
+ * indices.
+ * @property {ReactNode} element - The `element` property in the `TourStepRange` type represents a
+ * ReactNode, which is a generic type for a React element, such as a component, fragment, or string. It
+ * is used to define the element that will be displayed as part of a tour step.
+ * @property {number} start - The `start` property in the `TourStepRange` type represents the starting
+ * index of a range. It indicates the beginning point of a sequence or interval.
+ * @property {number} end - The `end` property in the `TourStepRange` type represents the ending point
+ * of a range. It specifies the index or position where the range ends.
+ */
+type TourStepRange = {
+  element: ReactNode;
+  start: number;
+  end: number;
+};
+
+/**
+ * The type `GeneratedTourSteps` defines the structure of objects representing steps in a guided tour,
+ * including an id, selector, and content.
+ * @property {number} id - The `id` property in the `GeneratedTourSteps` type represents a unique
+ * identifier for each step in a generated tour. It is of type `number`.
+ * @property {string} selector - The `selector` property in the `GeneratedTourSteps` type is a string
+ * that represents a CSS selector. This selector is used to target a specific element in the DOM
+ * (Document Object Model) that the tour step should be associated with.
+ * @property {ReactNode} content - The `content` property in the `GeneratedTourSteps` type represents
+ * the content that will be displayed at each step of a generated tour. It is of type `ReactNode`,
+ * which means it can accept any valid React node, such as text, components, or elements. This allows
+ * for flexibility in
+ */
+type GeneratedTourSteps = {
+  id: number;
+  selector: string;
+  content: ReactNode;
+};
+
 /**
  * ViewPdfHelpSteps
  *
  * User helpful steps in the view pdf page.
  */
-const ViewPdfHelpSteps = [
+const ViewPdfHelpSteps: TourElementStep[] = [
   {
     element:
       "View created pdf from here. If you do not have any pdf to print, navigate to 'Edit Invoice' to create new invoices.",
@@ -39,7 +96,7 @@ const ViewPdfHelpSteps = [
  *
  * User helpful steps in the edit invoice / pdf page. This is where the users can create new invoices or update existing invoices.
  */
-const EditPdfHelpSteps = [
+const EditPdfHelpSteps: TourElementStep[] = [
   {
     element:
       "Create or update a selected invoice. Invoices created are temporarily stored in the device so users can retrieve it easily.",
@@ -87,7 +144,7 @@ const EditPdfHelpSteps = [
  * User helpful steps in the sender info page. This is where you can upload information about the sender of the invoice. Leaving this empty
  * should render no salutation in the view page.
  */
-const SenderInfoHelpSteps = [
+const SenderInfoHelpSteps: TourElementStep[] = [
   {
     element:
       "Sender biographic information. Store details for selected sender. Sender is the person who is requesting to send the invoice.",
@@ -100,7 +157,7 @@ const SenderInfoHelpSteps = [
  * User helpful steps in the reciever info page. This is where you can upload information about the reciever of the invoice. Leaving this
  * empty should render no salutation in the view page.
  */
-const RecieverInfoHelpSteps = [
+const RecieverInfoHelpSteps: TourElementStep[] = [
   {
     element:
       "Reciever biographic information. Store details for selected reciever. Reciever is the person who will be recieving this invoice.",
@@ -113,7 +170,7 @@ const RecieverInfoHelpSteps = [
  * User helpful steps in the dashboard page. This is where users can view a breakdown of how their invoice performed with a help of couple
  * of widgets.
  */
-const DashboardHelpSteps = [
+const DashboardHelpSteps: TourElementStep[] = [
   {
     element:
       "Welcome to your local dashboard view. Your most recent invoice data characteristics are displayed here. This is your standard layout. Press the 'Edit' button to edit or remove a selected widget.",
@@ -152,7 +209,7 @@ const DashboardHelpSteps = [
  *
  * User helpful steps for the properties list page.
  */
-const MyPropertiesListHelpSteps = [
+const MyPropertiesListHelpSteps: TourElementStep[] = [
   {
     element:
       "View a list of properties that are managed / owned by you. If you don't have a property 'Add Property' to begin.",
@@ -181,7 +238,7 @@ const MyPropertiesListHelpSteps = [
  *
  * User helpful steps for viewing a single property page.
  */
-const MyPropertyHelpSteps = [
+const MyPropertyHelpSteps: TourElementStep[] = [
   {
     element: "View more details about your property.",
   },
@@ -219,7 +276,7 @@ const MyPropertyHelpSteps = [
  *
  * User helpful steps for viewing user settings
  */
-const SettingsHelpSteps = [
+const SettingsHelpSteps: TourElementStep[] = [
   {
     element: "View your account related information here.",
   },
@@ -241,7 +298,7 @@ const SettingsHelpSteps = [
  *
  * User helpful steps for viewing rental page
  */
-const RentalHelpSteps = [
+const RentalHelpSteps: TourElementStep[] = [
   {
     element: "View more details about the current property you rent.",
   },
@@ -272,15 +329,10 @@ const RentalHelpSteps = [
   },
 ];
 
-/**
- * derieveTourSteps
- *
- * used to build the necessary object from the steps to render the tour correctly.
- * @param {Array} staticSteps - an array of steps
- * @param {String} prefix - the prefix string to attach to the selector. Used to associate with certain page.
- * @returns Array of steps with combined values of id, selector and content to build the tour properly.
- */
-const derieveTourSteps = (staticSteps, prefix) => {
+const derieveTourSteps = (
+  staticSteps: TourElementStep[],
+  prefix: string,
+): GeneratedTourSteps[] => {
   return staticSteps.map(({ element }, index) => ({
     id: index,
     selector: `[data-tour="${prefix}-${index}"]`,
@@ -296,13 +348,8 @@ const derieveTourSteps = (staticSteps, prefix) => {
   }));
 };
 
-/**
- * DisplaySubHelperSection
- *
- * used to populate the faq and what's new section for the invoicer
- */
 const DisplaySubHelperSection = () => {
-  const handleClick = (to = "") => {
+  const handleClick = (to: string = "") => {
     if (to) {
       window.location.href = to;
       return;
@@ -356,14 +403,7 @@ const DisplaySubHelperSection = () => {
   );
 };
 
-/**
- * DefaultTourStepsMapperObj
- *
- * Mapper object to build out the tour. This tool creates start and end pages for tour based on
- * routes of the application. Based on where the user is within the app, the tour steps are created / updated
- * and are displayed for the user.
- */
-export const DefaultTourStepsMapperObj = {
+export const DefaultTourStepsMap: Record<InvoiceRouteUri, TourStepRange> = {
   [ViewInvoiceRouteUri]: {
     element: (
       <>

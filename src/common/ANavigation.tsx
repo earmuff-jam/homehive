@@ -1,5 +1,4 @@
-import { createContext, useContext, useEffect } from "react";
-import React from "react";
+import { ReactNode, createContext, useContext, useEffect } from "react";
 
 import { useLocation } from "react-router-dom";
 
@@ -9,18 +8,22 @@ import { useGetCurrentIPAddressQuery } from "features/Api/analyticsApi";
 import { addDoc, collection } from "firebase/firestore";
 import { analyticsFirestore } from "src/config";
 
-/**
- * NavigationProvider ...
- *
- * Provider context used to perform analytics on navigation routes. This context
- * wraps the application around router history, which in turn updates the firestore
- * db based on the change in the routes of the application layer.
- */
+// NavigationContextType ...
+interface NavigationContextType {
+  pathname: string;
+}
 
-const NavigationContext = createContext();
-const analyticsEnabled = import.meta.env.VITE_ENABLE_ANALYTICS || "false";
+// NavigationProviderProps ...
+interface NavigationProviderProps {
+  children: ReactNode;
+}
 
-export const NavigationProvider = ({ children }) => {
+const analyticsEnabled = import.meta.env.VITE_ENABLE_ANALYTICS === "true";
+const NavigationContext = createContext<NavigationContextType | undefined>(
+  undefined,
+);
+
+export const NavigationProvider = ({ children }: NavigationProviderProps) => {
   const { pathname } = useLocation();
   const userIPAddress = localStorage?.getItem("ip");
 
@@ -30,7 +33,7 @@ export const NavigationProvider = ({ children }) => {
 
   useEffect(() => {
     // log data only if analytics is enabled
-    if (analyticsEnabled?.toLowerCase() === "true") {
+    if (analyticsEnabled) {
       const logUserAnalyticsToFirestore = async () => {
         try {
           if (pathname) {
@@ -49,7 +52,7 @@ export const NavigationProvider = ({ children }) => {
 
       logUserAnalyticsToFirestore();
     }
-  }, [pathname]);
+  }, [pathname, userIPAddress]);
 
   return (
     <NavigationContext.Provider value={{ pathname }}>
@@ -58,4 +61,5 @@ export const NavigationProvider = ({ children }) => {
   );
 };
 
-export const useLocationContext = () => useContext(NavigationContext);
+export const useLocationContext = (): NavigationContextType =>
+  useContext(NavigationContext);

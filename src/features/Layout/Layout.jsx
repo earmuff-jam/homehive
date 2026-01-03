@@ -21,10 +21,7 @@ import { useTour } from "@reactour/tour";
 import AButton from "common/AButton";
 import { NavigationProvider } from "common/ANavigation";
 import Banner from "common/Banner";
-import {
-  DefaultTourStepsMapperObj,
-  GeneratedTourSteps,
-} from "common/Tour/TourSteps";
+import { DefaultTourStepsMap, GeneratedTourSteps } from "common/Tour/TourSteps";
 import { HomeRouteUri } from "common/utils";
 import AppToolbar from "features/Layout/components/AppToolbar/AppToolbar";
 import BreadCrumbs from "features/Layout/components/AppToolbar/BreadCrumbs";
@@ -71,7 +68,7 @@ export default function Layout({
 
   const setTour = () => {
     const key = retrieveTourKey(currentUri, "property");
-    const currentTourEl = DefaultTourStepsMapperObj[key];
+    const currentTourEl = DefaultTourStepsMap[key];
 
     let formattedDraftTourSteps;
 

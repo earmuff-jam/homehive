@@ -15,13 +15,12 @@ import {
 } from "@mui/material";
 import AButton from "common/AButton";
 import CustomSnackbar from "common/CustomSnackbar/CustomSnackbar";
-import { DefaultTourStepsMapperObj } from "common/Tour/TourSteps";
-import { isUserLoggedIn } from "common/utils";
+import { DefaultTourStepsMap } from "common/Tour/TourSteps";
 import { useLogoutMutation } from "features/Api/firebaseUserApi";
 import { useLocalStorageData } from "features/Invoice/hooks/useGenerateUserData";
 import MenuOptions from "features/Layout/components/NavBar/MenuOptions";
 import { retrieveTourKey } from "features/Layout/utils";
-import { isFeatureEnabled } from "features/Rent/utils";
+import { fetchLoggedInUser, isFeatureEnabled } from "features/Rent/utils";
 import useSendEmail, { generateInvoiceHTML } from "hooks/useSendEmail";
 
 export default function AppToolbar({
@@ -36,6 +35,7 @@ export default function AppToolbar({
   const theme = useTheme();
   const location = useLocation();
   const navigate = useNavigate();
+  const user = fetchLoggedInUser();
 
   const smallFormFactor = useMediaQuery(theme.breakpoints.down("sm"));
   const { sendEmail, reset, loading, error, success } = useSendEmail();
@@ -77,7 +77,7 @@ export default function AppToolbar({
 
   const handleHelp = () => {
     const key = retrieveTourKey(currentUri, "property");
-    const draftDialogTitle = DefaultTourStepsMapperObj[key]?.element;
+    const draftDialogTitle = DefaultTourStepsMap[key]?.element;
 
     setDialog({
       title: draftDialogTitle,
@@ -138,7 +138,7 @@ export default function AppToolbar({
           <Typography variant="h5">Homehive</Typography>
         </Stack>
         <Stack direction="row" spacing={1} alignItems="center">
-          {isUserLoggedIn() && (
+          {user?.uid && (
             <Tooltip title="logout">
               <AButton
                 label="Logout"

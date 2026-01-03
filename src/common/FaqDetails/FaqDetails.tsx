@@ -1,5 +1,3 @@
-import React from "react";
-
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import {
   Accordion,
@@ -11,8 +9,13 @@ import {
   Typography,
 } from "@mui/material";
 import RowHeader from "common/RowHeader/RowHeader";
+import { InvoicerFrequentlyAskedQuestion } from "features/Invoice/components/Faq/Faq";
 
-export default function FaqDetails({ data }) {
+type FrequentlyAskedQuestionsProps = {
+  data: InvoicerFrequentlyAskedQuestion[];
+};
+
+export default function FaqDetails({ data }: FrequentlyAskedQuestionsProps) {
   return (
     <Stack spacing={2} alignItems="center">
       <RowHeader
@@ -41,13 +44,13 @@ export default function FaqDetails({ data }) {
                 <Stack direction="row" spacing={1}>
                   <IconButton size="small">{item.icon}</IconButton>
                   <Typography fontWeight="bold" fontSize="0.875rem">
-                    {item.q}
+                    {item.question}
                   </Typography>
                 </Stack>
               </AccordionSummary>
               <AccordionDetails>
                 <Typography variant="body2" sx={{ color: "text.secondary" }}>
-                  {item.ans}
+                  {item.answer}
                 </Typography>
               </AccordionDetails>
             </Accordion>
