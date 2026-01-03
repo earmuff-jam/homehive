@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import React from "react";
 
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
@@ -8,12 +7,13 @@ import dayjs from "dayjs";
 
 import { Stack } from "@mui/material";
 import CustomSnackbar from "common/CustomSnackbar/CustomSnackbar";
-import RowHeader from "common/RowHeader/RowHeader";
 import {
   useGetReceiverInfoQuery,
   useUpsertReceiverInfoMutation,
 } from "features/Api/invoiceApi";
+import RowHeader from "features/Invoice/components/RowHeader/RowHeader";
 import UserInfoViewer from "features/Invoice/components/UserInfo/UserInfoViewer";
+import { UserInfo } from "features/Invoice/types/Invoice.types";
 import { useAppTitle } from "hooks/useAppTitle";
 
 export default function RecieverInfo() {
@@ -25,7 +25,7 @@ export default function RecieverInfo() {
     data: recieverInfo,
     isLoading: isRecieverInfoLoading,
     isSuccess: isRecieverInfoSuccess,
-  } = useGetReceiverInfoQuery();
+  } = useGetReceiverInfoQuery(undefined);
 
   const [
     upsertRecieverInfo,
@@ -40,21 +40,21 @@ export default function RecieverInfo() {
     handleSubmit,
     formState: { errors, isValid },
     reset,
-  } = useForm({
+  } = useForm<UserInfo>({
     mode: "onChange",
     defaultValues: {
-      first_name: "",
-      last_name: "",
-      email_address: "",
-      phone_number: "",
-      street_address: "",
+      firstName: "",
+      lastName: "",
+      email: "",
+      phone: "",
+      streetAddress: "",
       city: "",
       state: "",
       zipcode: "",
     },
   });
 
-  const submit = (formData) => {
+  const submit = (formData: UserInfo) => {
     formData["updatedOn"] = dayjs();
     upsertRecieverInfo(formData);
   };
@@ -68,11 +68,11 @@ export default function RecieverInfo() {
   useEffect(() => {
     if (isRecieverInfoSuccess) {
       reset({
-        first_name: recieverInfo.first_name,
-        last_name: recieverInfo.last_name,
-        email_address: recieverInfo.email_address,
-        phone_number: recieverInfo.phone_number,
-        street_address: recieverInfo.street_address,
+        firstName: recieverInfo.firstName,
+        lastName: recieverInfo.lastName,
+        email: recieverInfo.email,
+        phone: recieverInfo.phone,
+        streetAddress: recieverInfo.streetAddress,
         city: recieverInfo.city,
         state: recieverInfo.state,
         zipcode: recieverInfo.zipcode,
@@ -99,6 +99,7 @@ export default function RecieverInfo() {
       <CustomSnackbar
         showSnackbar={showSnackbar}
         setShowSnackbar={setShowSnackbar}
+        severity="success"
         title="Changes saved."
         caption="View Invoice"
         onClick={() => navigate("/view")}

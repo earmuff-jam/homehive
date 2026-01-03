@@ -41,7 +41,9 @@ const SenderInfo = React.lazy(
   () => import("features/Invoice/components/SenderInfo/SenderInfo"),
 );
 
-const Faq = React.lazy(() => import("features/Invoice/components/Faq/Faq"));
+const FrequentlyAskedQuestions = React.lazy(
+  () => import("features/Invoice/components/Faq/FrequentlyAskedQuestions"),
+);
 
 /**
  * InvoiceAppRoutes ...
@@ -144,7 +146,7 @@ export const InvoiceAppRoutes: InvoiceAppRoute[] = [
     label: "Help Center",
     path: FaqRoutePath,
     routeUri: InvoiceAppFaqRouteUri,
-    element: <Faq />,
+    element: <FrequentlyAskedQuestions />,
     icon: <QuestionAnswerRounded fontSize="small" />,
     requiredFlags: ["invoicer"],
     config: {

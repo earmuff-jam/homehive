@@ -1,18 +1,30 @@
-import React from "react";
+import { FieldErrors, UseFormRegister } from "react-hook-form";
 
 import { Container, Stack, Typography } from "@mui/material";
 import AButton from "common/AButton";
 import TextFieldWithLabel from "common/TextFieldWithLabel";
+import { UserInfo } from "features/Invoice/types/Invoice.types";
+
+// UserInfoViewerProps ...
+export type UserInfoViewerProps = {
+  title: string;
+  caption: string;
+  register: UseFormRegister<UserInfo>;
+  errors: FieldErrors<UserInfo>;
+  loading: boolean;
+  isDisabled: boolean;
+  onSubmit: () => void;
+};
 
 export default function UserInfoViewer({
   title,
   caption,
   register,
   errors,
-  isDisabled,
+  isDisabled = true,
   onSubmit,
   loading,
-}) {
+}: UserInfoViewerProps) {
   return (
     <Container
       maxWidth="sm"
@@ -35,11 +47,11 @@ export default function UserInfoViewer({
         <Stack direction="row" spacing={2}>
           <TextFieldWithLabel
             label="First Name *"
-            id="first_name"
+            id="firstName"
             placeholder="First Name"
-            errorMsg={errors.first_name?.message}
+            errorMsg={errors.firstName?.message}
             inputProps={{
-              ...register("first_name", {
+              ...register("firstName", {
                 required: "First Name is required",
                 minLength: {
                   value: 3,
@@ -54,11 +66,11 @@ export default function UserInfoViewer({
           />
           <TextFieldWithLabel
             label="Last Name *"
-            id="last_name"
+            id="lastName"
             placeholder="Last Name"
-            errorMsg={errors.last_name?.message}
+            errorMsg={errors.lastName?.message}
             inputProps={{
-              ...register("last_name", {
+              ...register("lastName", {
                 required: "Last Name is required",
                 minLength: {
                   value: 3,
@@ -77,11 +89,11 @@ export default function UserInfoViewer({
         <Stack direction="row" spacing={2}>
           <TextFieldWithLabel
             label="Email address *"
-            id="email_address"
+            id="email"
             placeholder="Email Address"
-            errorMsg={errors.email_address?.message}
+            errorMsg={errors.email?.message}
             inputProps={{
-              ...register("email_address", {
+              ...register("email", {
                 required: "Email Address is required",
                 pattern: {
                   value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
@@ -92,11 +104,11 @@ export default function UserInfoViewer({
           />
           <TextFieldWithLabel
             label="Phone Number *"
-            id="phone_number"
+            id="phone"
             placeholder="Phone Number"
-            errorMsg={errors.phone_number?.message}
+            errorMsg={errors.phone?.message}
             inputProps={{
-              ...register("phone_number", {
+              ...register("phone", {
                 required: "Phone number is required",
                 pattern: {
                   value: /^\+?[\d\s\-().]{10,15}$/,
@@ -110,11 +122,11 @@ export default function UserInfoViewer({
         {/* Street Address */}
         <TextFieldWithLabel
           label="Street Address *"
-          id="street_address"
+          id="streetAddress"
           placeholder="Street Address"
-          errorMsg={errors.street_address?.message}
+          errorMsg={errors.streetAddress?.message}
           inputProps={{
-            ...register("street_address", {
+            ...register("streetAddress", {
               required: "Street address is required",
             }),
           }}

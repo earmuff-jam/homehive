@@ -9,19 +9,7 @@ import {
 } from "@mui/icons-material";
 import FaqDetails from "common/FaqDetails/FaqDetails";
 
-/**
- * The type `InvoicerFrequentlyAskedQuestion` defines the structure of frequently asked questions for
- * an invoicing application in TypeScript React.
- * @property {ReactNode} icon - The `icon` property in the `InvoicerFrequentlyAskedQuestion` type is of
- * type `ReactNode`, which is a common type used in React applications to represent a renderable piece
- * of the UI. It can be a React component, an element, or even a string.
- * @property {string} question - The `question` property in the `InvoicerFrequentlyAskedQuestion` type
- * represents the question that a user might commonly ask about the Invoicer application. It is a
- * string that describes the question being asked.
- * @property {string} answer - The `answer` property in the `InvoicerFrequentlyAskedQuestion` type
- * represents the response or solution to the frequently asked question. It provides the information or
- * explanation that addresses the question posed in the `question` property.
- */
+// InvoicerFrequentlyAskedQuestion ...
 export type InvoicerFrequentlyAskedQuestion = {
   icon: ReactNode;
   question: string;
@@ -64,6 +52,6 @@ const invoicerFreqentlyAskedQuestions: InvoicerFrequentlyAskedQuestion[] = [
   },
 ];
 
-export default function Faq() {
+export default function FrequentlyAskedQuestions() {
   return <FaqDetails data={invoicerFreqentlyAskedQuestions} />;
 }

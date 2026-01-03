@@ -9,7 +9,7 @@ import {
   Typography,
 } from "@mui/material";
 import RowHeader from "common/RowHeader/RowHeader";
-import { InvoicerFrequentlyAskedQuestion } from "features/Invoice/components/Faq/Faq";
+import { InvoicerFrequentlyAskedQuestion } from "features/Invoice/components/Faq/FrequentlyAskedQuestions";
 
 type FrequentlyAskedQuestionsProps = {
   data: InvoicerFrequentlyAskedQuestion[];

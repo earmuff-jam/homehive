@@ -42,7 +42,7 @@ export type InvoiceAppBreadcrumb = {
  * available to the user, allowing them to print the invoice
  */
 export type InvoiceAppRouteConfig = {
-  breadcrumb: InvoiceAppBreadCrumb;
+  breadcrumb: InvoiceAppBreadcrumb;
   displayInNavBar: boolean;
   displayHelpSelector: boolean;
   displayPrintSelector: boolean;
@@ -357,29 +357,8 @@ export type DetailsTableViewProps = {
   caption: string;
 };
 
-/**
- * The InvoiceRowHeader type in TypeScript defines the structure of a header row in an invoice,
- * including title, caption, optional date display, created date, styling props, and children.
- * @property {string} title - The `title` property in the `InvoiceRowHeader` type represents the title
- * of the invoice row. It is a string type.
- * @property {string} caption - The `caption` property in the `InvoiceRowHeader` type represents a
- * short description or label for the header. It is typically used to provide additional context or
- * information about the title of the header.
- * @property {boolean} showDate - The `showDate` property in the `InvoiceRowHeader` type is a boolean
- * that indicates whether the date should be displayed in the invoice row. If `showDate` is set to
- * `true`, the date will be shown; if it's set to `false` or not provided, the
- * @property {Dayjs} createdDate - The `createdDate` property in the `InvoiceRowHeader` type represents
- * the date when the invoice row was created. It is of type `Dayjs`, which is a popular library for
- * handling dates and times in JavaScript. This property is optional, meaning it does not have to be
- * provided when creating
- * @property sxProps - The `sxProps` property in the `InvoiceRowHeader` type is an optional property
- * that allows you to pass styling props using Theme UI's `SxProps` type. This can be used to apply
- * custom styles to the component using the Theme UI theme object.
- * @property {ReactNode} children - The `children` property in the `InvoiceRowHeader` type is a
- * ReactNode type, which means it can accept any valid React node as its value. This allows you to
- * include nested components, text, or any other React elements within the `InvoiceRowHeader`
- * component.
- */
+// InvoiceRowHeader ...
+// defines prop for RowHeader in Invoice App
 export type InvoiceRowHeader = {
   title: string;
   caption: string;
@@ -387,4 +366,18 @@ export type InvoiceRowHeader = {
   createdDate?: Dayjs;
   sxProps?: SxProps<Theme>;
   children?: ReactNode;
+};
+
+// UserInfo ...
+// defines props for user for salutation
+export type UserInfo = {
+  firstName: string | null;
+  lastName: string | null;
+  email: string | null;
+  phone: string | null;
+  streetAddress: string | null;
+  city: string | null;
+  state: string | null;
+  zipcode: string | null;
+  updatedOn: Dayjs;
 };

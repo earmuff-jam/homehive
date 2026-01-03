@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
@@ -13,6 +13,7 @@ import {
   useUpsertSenderInfoMutation,
 } from "features/Api/invoiceApi";
 import UserInfoViewer from "features/Invoice/components/UserInfo/UserInfoViewer";
+import { UserInfo } from "features/Invoice/types/Invoice.types";
 import { useAppTitle } from "hooks/useAppTitle";
 
 export default function SenderInfo() {
@@ -21,7 +22,7 @@ export default function SenderInfo() {
   const [showSnackbar, setShowSnackbar] = useState(false);
 
   const { data: senderInfo, isLoading: isSenderInfoLoading } =
-    useGetSenderInfoQuery();
+    useGetSenderInfoQuery(undefined);
 
   const [
     upsertSenderInfo,
@@ -36,14 +37,14 @@ export default function SenderInfo() {
     handleSubmit,
     formState: { errors, isValid },
     reset,
-  } = useForm({
+  } = useForm<UserInfo>({
     mode: "onChange",
     defaultValues: {
-      first_name: "",
-      last_name: "",
-      email_address: "",
-      phone_number: "",
-      street_address: "",
+      firstName: "",
+      lastName: "",
+      email: "",
+      phone: "",
+      streetAddress: "",
       city: "",
       state: "",
       zipcode: "",
@@ -64,11 +65,11 @@ export default function SenderInfo() {
   useEffect(() => {
     if (senderInfo) {
       reset({
-        first_name: senderInfo.first_name,
-        last_name: senderInfo.last_name,
-        email_address: senderInfo.email_address,
-        phone_number: senderInfo.phone_number,
-        street_address: senderInfo.street_address,
+        firstName: senderInfo.firstName,
+        lastName: senderInfo.lastName,
+        email: senderInfo.email,
+        phone: senderInfo.phone,
+        streetAddress: senderInfo.streetAddress,
         city: senderInfo.city,
         state: senderInfo.state,
         zipcode: senderInfo.zipcode,
@@ -95,6 +96,7 @@ export default function SenderInfo() {
       <CustomSnackbar
         showSnackbar={showSnackbar}
         setShowSnackbar={setShowSnackbar}
+        severity="success"
         title="Changes saved."
         caption="View Invoice"
         onClick={() => navigate("/view")}
