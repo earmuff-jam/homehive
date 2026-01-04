@@ -8,14 +8,11 @@ import {
 import {
   Category,
   InvoiceStatusOption,
-  WidgetType,
+  Widget,
 } from "features/Invoice/types/Invoice.types";
 
-/* The `WidgetTypeList` constant is defining an array of objects, where each object represents a
-specific type of widget that can be used in the application. Each widget object has properties such
-as `id`, `label`, `caption`, `columns`, `data`, and `config`. Here's a breakdown of what each
-property represents: */
-export const WidgetTypeList: WidgetType[] = [
+// Widgets ...
+export const Widgets: Widget[] = [
   {
     id: 1,
     label: "Invoice Timeline Chart",
@@ -70,14 +67,7 @@ export const WidgetTypeList: WidgetType[] = [
   },
 ];
 
-/* The `DefaultInvoiceStatusOptions` constant is defining an array of objects, where each object
-represents an invoice status option. Each object has the following properties:
-- `id`: A unique identifier for the status option.
-- `label`: The display label for the status option (e.g., "Paid", "Draft", "Overdue", "Cancelled",
-"None").
-- `icon`: An icon component associated with the status option.
-- `selected`: A boolean indicating whether the status option is selected or not.
-- `display`: A boolean indicating whether the status option should be displayed or not. */
+// DefaultInvoiceStatusOptions ...
 export const DefaultInvoiceStatusOptions: InvoiceStatusOption[] = [
   {
     id: 1,
@@ -116,10 +106,7 @@ export const DefaultInvoiceStatusOptions: InvoiceStatusOption[] = [
   },
 ];
 
-/* The `InvoiceCategoryOptions` constant is defining an array of objects that represent different
-categories for invoices. Each object in the array has two properties:
-- `label`: Represents the display label for the category (e.g., "Products", "Services", "Fees").
-- `value`: Represents the value associated with the category (e.g., "products", "services", "fees"). */
+// InvoiceCategoryOptions ...
 export const InvoiceCategoryOptions: Category[] = [
   { label: "Products", value: "products" },
   { label: "Services", value: "services" },

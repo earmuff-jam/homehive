@@ -28,7 +28,7 @@ export type CustomSnackbarProps = {
   setShowSnackbar: (value: boolean) => void;
   severity: AlertColor;
   title: string;
-  caption: string;
+  caption?: string;
   onClick?: () => void;
 };
 

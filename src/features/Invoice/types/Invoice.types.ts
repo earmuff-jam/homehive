@@ -43,19 +43,15 @@ export type WidgetConfig = {
   widgetId: string; // for provision only
 };
 
-// WidgetType ...
-export type WidgetType = {
-  id: number;
+// TWidget ...
+export type TWidget = {
+  id: number; // used for selecting widget
+  widgetID: string; // used for drag and drop
   label: string;
   caption: string;
   columns: string[];
   data: string[];
   config: WidgetConfig;
-};
-
-// AddWidgetProps ...
-export type AddWidgetProps = {
-  handleAddWidget: (widgetId: number) => void;
 };
 
 // InvoiceStatusOption ...

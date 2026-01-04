@@ -19,39 +19,41 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
+import AButton from "common/AButton";
 import CustomSnackbar from "common/CustomSnackbar/CustomSnackbar";
 import RowHeader from "common/RowHeader/RowHeader";
 import { pluralize } from "common/utils";
 import AddWidget from "features/Invoice/components/AddWidget/AddWidget";
 import DndGridLayout from "features/Invoice/components/DndGridLayout/DndGridLayout";
-import { WidgetTypeList } from "features/Invoice/constants";
+import { Widgets } from "features/Invoice/constants";
+import { Widget } from "features/Invoice/types/Invoice.types";
+import { parseJsonUtility } from "features/Invoice/utils";
 import { useAppTitle } from "hooks/useAppTitle";
 
 export default function Dashboard() {
   useAppTitle("Dashboard");
 
   const theme = useTheme();
-  const [widgets, setWidgets] = useState([]);
   const [anchorEl, setAnchorEl] = useState(null);
-  const [editMode, setEditMode] = useState(false); // re-arrange widgets
-  const [showSnackbar, setShowSnackbar] = useState(false);
+  const [widgets, setWidgets] = useState<Widget[]>([]);
+  const [editMode, setEditMode] = useState<boolean>(false); // re-arrange widgets
+  const [showSnackbar, setShowSnackbar] = useState<boolean>(false);
 
   const medFormFactor = useMediaQuery(theme.breakpoints.down("md"));
 
   const handleClose = () => setAnchorEl(null);
-  const handleClick = (ev) => setAnchorEl(ev.currentTarget);
+  const handleClick = (ev: React.MouseEvent<HTMLButtonElement>) =>
+    setAnchorEl(ev.currentTarget);
 
-  const handleAddWidget = (id) => {
-    const selectedWidget = WidgetTypeList.find(
-      (widgetType) => widgetType.id === id,
-    );
+  const handleAddWidget = (id: number) => {
+    const selectedWidget = Widgets.find((widgetType) => widgetType.id === id);
 
     setWidgets((prevWidgets) => {
       const updatedWidgets = [
         ...prevWidgets,
         // create a custom uuid to associate the widget for ui.
-        // widgetID !== config.widgetID
-        { ...selectedWidget, widgetID: uuidv4() },
+        // widgetId !== config.widgetId
+        { ...selectedWidget, widgetId: uuidv4() },
       ];
       localStorage.setItem("widgets", JSON.stringify(updatedWidgets));
 
@@ -62,10 +64,10 @@ export default function Dashboard() {
     handleClose();
   };
 
-  const handleRemoveWidget = (widgetID) => {
+  const handleRemoveWidget = (widgetId: number) => {
     setWidgets((prevWidgets) => {
       const remainingWidgets = prevWidgets.filter(
-        (widget) => widget.widgetID !== widgetID,
+        (widget) => widget.id !== widgetId,
       );
 
       localStorage.setItem("widgets", JSON.stringify(remainingWidgets));
@@ -80,9 +82,9 @@ export default function Dashboard() {
   };
 
   useEffect(() => {
-    const draftWidgets = localStorage.getItem("widgets");
+    const draftWidgets = parseJsonUtility<Widget[]>("widgets");
     if (draftWidgets) {
-      setWidgets(JSON.parse(draftWidgets));
+      setWidgets(draftWidgets);
     }
   }, []);
 
@@ -136,14 +138,13 @@ export default function Dashboard() {
               <AddRounded fontSize="small" color="primary" />
             </IconButton>
           </Tooltip>
-          <Button
+          <AButton
             data-tour={"dashboard-2"}
             variant="outlined"
-            endIcon={<RestartAltRounded />}
+            endIcon={<RestartAltRounded fontSize="small" />}
             onClick={reset}
-          >
-            Reset
-          </Button>
+            label="Reset"
+          />
         </Stack>
       </Stack>
 
@@ -173,6 +174,7 @@ export default function Dashboard() {
       <CustomSnackbar
         showSnackbar={showSnackbar}
         setShowSnackbar={setShowSnackbar}
+        severity="success"
         title="Successfully added new widget."
       />
     </Stack>

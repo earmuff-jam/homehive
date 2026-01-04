@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { Bar, Line } from "react-chartjs-2";
 
@@ -20,9 +20,13 @@ import EmptyComponent from "common/EmptyComponent";
 import RowHeader from "common/RowHeader/RowHeader";
 import {
   ChartType,
+  Invoice,
   TrendsChartDataset,
 } from "features/Invoice/types/Invoice.types";
-import { normalizeInvoiceTrendsChartsDataset } from "features/Invoice/utils";
+import {
+  normalizeInvoiceTrendsChartsDataset,
+  parseJsonUtility,
+} from "features/Invoice/utils";
 
 ChartJS.register(
   CategoryScale,
@@ -45,14 +49,19 @@ const InvoiceTrendsChart = ({ label, caption }: InvoiceTrendsChartProps) => {
   const [chartType, setChartType] = useState<ChartType>("bar");
   const [chartData, setChartData] = useState<TrendsChartDataset>(null);
 
-  const handleChartType = (ev, draftChartType) => {
-    if (draftChartType !== null) {
-      setChartType(draftChartType);
+  const handleChartType = (
+    ev: React.MouseEvent<HTMLButtonElement>,
+    type: ChartType,
+  ) => {
+    if (type !== null) {
+      setChartType(type);
     }
   };
 
   useEffect(() => {
-    const draftData = JSON.parse(localStorage.getItem("pdfDetails"));
+    const draftData = parseJsonUtility<Invoice>(
+      localStorage.getItem("pdfDetails"),
+    );
     if (draftData) {
       const chartData = normalizeInvoiceTrendsChartsDataset(
         [draftData],
@@ -62,7 +71,7 @@ const InvoiceTrendsChart = ({ label, caption }: InvoiceTrendsChartProps) => {
     }
   }, [chartType]);
 
-  const options: ChartOptions<"bar"> = {
+  const options: ChartOptions<"bar" | "line"> = {
     responsive: true,
     plugins: {
       title: {
@@ -96,7 +105,6 @@ const InvoiceTrendsChart = ({ label, caption }: InvoiceTrendsChartProps) => {
             color: "text.secondary",
           }}
         />
-
         <Box>
           <ToggleButtonGroup
             value={chartType}
@@ -105,15 +113,14 @@ const InvoiceTrendsChart = ({ label, caption }: InvoiceTrendsChartProps) => {
             aria-label="bar or line chart"
           >
             <ToggleButton value="bar" aria-label="bar chart" size="small">
-              <BarChartRounded />
+              <BarChartRounded fontSize="small" />
             </ToggleButton>
             <ToggleButton value="line" aria-label="line chart" size="small">
-              <StackedLineChartRounded />
+              <StackedLineChartRounded fontSize="small" />
             </ToggleButton>
           </ToggleButtonGroup>
         </Box>
       </Stack>
-
       <Box>
         {chartData === null ? (
           <EmptyComponent />

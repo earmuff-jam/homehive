@@ -1,64 +1,86 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
-import { DndContext, DragOverlay, pointerWithin } from "@dnd-kit/core";
+import {
+  DndContext,
+  type DragEndEvent,
+  DragOverlay,
+  type DragStartEvent,
+  PointerSensor,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core";
 import {
   SortableContext,
   arrayMove,
   rectSortingStrategy,
 } from "@dnd-kit/sortable";
-import { Box, Stack, Typography } from "@mui/material";
+import { Box, Stack } from "@mui/material";
+import EmptyComponent from "common/EmptyComponent";
 import Widget from "features/Invoice/components/DndGridLayout/Widget";
 import WidgetProps from "features/Invoice/components/DndGridLayout/WidgetProps";
+import { TWidget } from "features/Invoice/types/Invoice.types";
+
+// DndGridLayoutProps ...
+export type DndGridLayoutProps = {
+  editMode: boolean;
+  widgets: TWidget[];
+  setWidgets: (widgets: TWidget[]) => void;
+  handleRemoveWidget: (id: number) => void;
+};
 
 export default function DndGridLayout({
   editMode,
   widgets,
   setWidgets,
   handleRemoveWidget,
-}) {
-  const [activeWidget, setActiveWidget] = useState(null); // active widget for drag overlay
+}: DndGridLayoutProps) {
+  const [activeWidget, setActiveWidget] = useState<TWidget | null>(null);
 
-  const handleDragStart = (ev) => {
-    const { active } = ev;
-    const activeId = active.id.toString();
-    const widget = widgets.find((w) => w.widgetID === activeId);
-    setActiveWidget(widget);
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: { distance: 5 },
+    }),
+  );
+
+  const handleDragStart = (event: DragStartEvent) => {
+    const { active } = event;
+    const widget = widgets.find(
+      (w) => w.widgetID.toString() === active.id.toString(),
+    );
+    setActiveWidget(widget ?? null);
   };
 
-  const handleDragEnd = (ev) => {
-    const { active, over } = ev; // active is current, over is replacing
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
 
     setActiveWidget(null);
 
     if (!over) return;
     if (active.id === over.id) return;
 
-    const originalIdx = widgets.findIndex(
-      (widget) => widget.widgetID === active.id.toString(),
+    const oldIndex = widgets.findIndex(
+      (w) => w.widgetID.toString() === active.id.toString(),
     );
-    const newIdx = widgets.findIndex(
-      (widget) => widget.widgetID === over.id.toString(),
+    const newIndex = widgets.findIndex(
+      (w) => w.widgetID.toString() === over.id.toString(),
     );
 
-    const updatedWidgets = arrayMove(widgets, originalIdx, newIdx);
+    if (oldIndex === -1 || newIndex === -1) return;
+
+    const updatedWidgets = arrayMove(widgets, oldIndex, newIndex);
 
     setWidgets(updatedWidgets);
     localStorage.setItem("widgets", JSON.stringify(updatedWidgets));
   };
 
-  if (widgets.length <= 0)
+  if (widgets.length === 0)
     return (
-      <Stack textAlign="center">
-        <Typography variant="h5">Sorry, no matching records found</Typography>
-        <Typography variant="caption">
-          Add widgets for custom dashboard layout.
-        </Typography>
-      </Stack>
+      <EmptyComponent caption="Add widgets for custom dashboard layout." />
     );
 
   return (
     <DndContext
-      collisionDetection={pointerWithin}
+      sensors={sensors}
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
     >
@@ -77,13 +99,14 @@ export default function DndGridLayout({
         >
           {widgets.map((widget) => {
             const isDragging = activeWidget?.widgetID === widget.widgetID;
+
             return (
               <Box key={widget.widgetID}>
                 {isDragging ? (
                   <Box
                     sx={{
-                      width: activeWidget?.config?.width,
-                      height: activeWidget?.config?.height,
+                      width: widget.config?.width,
+                      height: widget.config?.height,
                       backgroundColor: "slategrey",
                     }}
                   />
@@ -101,9 +124,16 @@ export default function DndGridLayout({
           })}
         </Stack>
       </SortableContext>
+
       <DragOverlay>
         {activeWidget ? (
-          <Widget widget={activeWidget} handleRemoveWidget={() => {}} />
+          <Widget
+            widget={activeWidget}
+            editMode={editMode}
+            handleRemoveWidget={() => {}}
+          >
+            {WidgetProps(activeWidget)}
+          </Widget>
         ) : null}
       </DragOverlay>
     </DndContext>

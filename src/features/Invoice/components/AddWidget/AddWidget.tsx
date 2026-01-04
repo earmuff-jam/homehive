@@ -1,5 +1,3 @@
-import React from "react";
-
 import { AddRounded } from "@mui/icons-material";
 import {
   Divider,
@@ -11,7 +9,11 @@ import {
   Typography,
 } from "@mui/material";
 import { WidgetTypeList } from "features/Invoice/constants";
-import { AddWidgetProps } from "features/Invoice/types/Invoice.types";
+
+// AddWidgetProps ...
+type AddWidgetProps = {
+  handleAddWidget: (widgetId: number) => void;
+};
 
 export default function AddWidget({ handleAddWidget }: AddWidgetProps) {
   return (

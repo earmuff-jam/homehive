@@ -1,23 +1,39 @@
-import React from "react";
+import { ReactNode } from "react";
 
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { CancelRounded, DragIndicatorRounded } from "@mui/icons-material";
 import { Badge, Box, IconButton, Paper, Stack, Tooltip } from "@mui/material";
+import AIconButton from "common/AIconButton";
+import { TWidget } from "features/Invoice/types/Invoice.types";
+
+// WidgetProps ...
+type WidgetProps = {
+  editMode: boolean;
+  widget: TWidget;
+  handleRemoveWidget: (widgetID: string) => void;
+  children: ReactNode;
+};
+
+// CustomTransitionStyle ...
+type CustomTransitionStyle = {
+  transition: string;
+  transform: string;
+};
 
 export default function Widget({
   editMode,
-  widget = {},
+  widget,
   handleRemoveWidget,
   children,
-}) {
-  const { widgetID, inset, ...config } = widget.config; // eslint-disable-line no-unused-vars
+}: WidgetProps) {
+  const { widgetId, inset, ...config } = widget.config; // eslint-disable-line no-unused-vars
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({
       id: widget.widgetID,
     });
 
-  const style = {
+  const style: CustomTransitionStyle = {
     transition,
     transform: CSS.Transform.toString(transform),
   };
@@ -27,16 +43,15 @@ export default function Widget({
       <Badge
         badgeContent={
           editMode && (
-            <IconButton
+            <AIconButton
               size="small"
               color="error"
               disableRipple
               disableFocusRipple
               disableTouchRipple
               onClick={() => handleRemoveWidget(widget?.widgetID || "")}
-            >
-              <CancelRounded fontSize="small" />
-            </IconButton>
+              label={<CancelRounded fontSize="small" />}
+            />
           )
         }
       >
@@ -52,7 +67,7 @@ export default function Widget({
           <Stack direction="row" spacing={1}>
             {editMode && (
               <Tooltip title="Drag and drop to restructure widget layout">
-                <IconButton
+                <AIconButton
                   size="small"
                   {...attributes}
                   {...listeners}
@@ -65,9 +80,8 @@ export default function Widget({
                     alignSelf: "flex-start", // put icon to the top of the widget container
                     paddingTop: "1rem",
                   }}
-                >
-                  <DragIndicatorRounded fontSize="inherit" />
-                </IconButton>
+                  label={<DragIndicatorRounded fontSize="inherit" />}
+                />
               </Tooltip>
             )}
             {children}

@@ -44,7 +44,7 @@ const DetailsTableView = ({ label, caption }: DetailsTableViewProps) => {
 
     setTableData(noramlizeDetailsTableData([formattedData]));
   }, []);
-  console.log(tableData);
+
   const columns = useMemo(
     () => [
       {

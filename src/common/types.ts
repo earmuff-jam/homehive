@@ -16,11 +16,3 @@ export type AButtonProps = {
   loading?: boolean;
   onClick: () => void;
 } & ButtonProps;
-
-// AIconButtonProps ...
-// defines props for AIconButton
-export type AIconButtonProps = {
-  label: React.ReactNode;
-  loading?: boolean;
-  onClick: (ev: React.MouseEvent<HTMLButtonElement>) => void;
-} & IconButtonProps;
