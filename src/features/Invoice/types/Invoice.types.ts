@@ -62,21 +62,6 @@ export type TWidget = {
   config: WidgetConfig;
 };
 
-// TInvoiceStatus ...
-export type TInvoiceStatus = {
-  display: string;
-  label: string;
-};
-
-// InvoiceStatusOption ...
-export type InvoiceStatusOption = {
-  id: number;
-  label: string;
-  icon: ReactNode;
-  selected: boolean;
-  display: boolean;
-};
-
 // Category ...
 export type Category = {
   label: string;
@@ -103,7 +88,7 @@ export type Invoice = {
   endDate: Dayjs;
   header: string;
   taxRate: number;
-  invoiceStatus: TInvoiceStatus;
+  invoiceStatus: TInvoiceStatusOption;
   lineItems: LineItem[];
   updatedOn: Dayjs;
 };
@@ -111,12 +96,21 @@ export type Invoice = {
 // InvoiceRow ...
 export type InvoiceRow = {
   category: string;
-  invoiceStatus: TInvoiceStatus;
+  invoiceStatus: TInvoiceStatusOption;
   startDate?: Dayjs;
   endDate?: Dayjs;
   total: number;
   paymentMethod: string;
   updatedOn: Dayjs;
+};
+
+// TInvoiceStatusOption ...
+export type TInvoiceStatusOption = {
+  id: number;
+  label: string;
+  icon: ReactNode;
+  selected: boolean;
+  display: boolean;
 };
 
 // ItemTypeChartRow ...
@@ -154,9 +148,9 @@ export type TimeLineChartDataset = {
   datasets: ItemTypeChartRow[];
 };
 
-// InvoiceRowHeader ...
+// TInvoiceRowHeader ...
 // defines prop for RowHeader in Invoice App
-export type InvoiceRowHeader = {
+export type TInvoiceRowHeader = {
   title: string;
   caption: string;
   showDate?: boolean;

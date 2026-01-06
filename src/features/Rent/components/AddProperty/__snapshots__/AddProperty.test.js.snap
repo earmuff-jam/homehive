@@ -32,6 +32,7 @@ exports[`AddProperty Component Tests AddProperty Snapshot Tests matches AddPrope
           </label>
           <input
             placeholder="Name of your property"
+            value="value"
           />
         </div>
         <div
@@ -45,6 +46,7 @@ exports[`AddProperty Component Tests AddProperty Snapshot Tests matches AddPrope
             </label>
             <input
               placeholder="123 Main St"
+              value="value"
             />
           </div>
           <div
@@ -55,6 +57,7 @@ exports[`AddProperty Component Tests AddProperty Snapshot Tests matches AddPrope
             </label>
             <input
               placeholder="County"
+              value="value"
             />
           </div>
         </div>
@@ -70,6 +73,7 @@ exports[`AddProperty Component Tests AddProperty Snapshot Tests matches AddPrope
           </label>
           <input
             placeholder="Richmond"
+            value="value"
           />
         </div>
         <div
@@ -80,6 +84,7 @@ exports[`AddProperty Component Tests AddProperty Snapshot Tests matches AddPrope
           </label>
           <input
             placeholder="NC"
+            value="value"
           />
         </div>
         <div
@@ -90,6 +95,7 @@ exports[`AddProperty Component Tests AddProperty Snapshot Tests matches AddPrope
           </label>
           <input
             placeholder="78701"
+            value="value"
           />
         </div>
       </div>
@@ -104,6 +110,7 @@ exports[`AddProperty Component Tests AddProperty Snapshot Tests matches AddPrope
           </label>
           <input
             placeholder="e.g. 4"
+            value="value"
           />
         </div>
         <div
@@ -114,6 +121,7 @@ exports[`AddProperty Component Tests AddProperty Snapshot Tests matches AddPrope
           </label>
           <input
             placeholder="e.g. 2"
+            value="value"
           />
         </div>
       </div>
@@ -128,6 +136,7 @@ exports[`AddProperty Component Tests AddProperty Snapshot Tests matches AddPrope
           </label>
           <input
             placeholder="7854"
+            value="value"
           />
         </div>
       </div>
@@ -137,9 +146,12 @@ exports[`AddProperty Component Tests AddProperty Snapshot Tests matches AddPrope
         <label>
           Additional Notes
         </label>
-        <input
+        <textarea
           placeholder="Additional notes "
-        />
+          rows="3"
+        >
+          value
+        </textarea>
       </div>
       <div
         aria-orientation="horizontal"
@@ -167,6 +179,7 @@ exports[`AddProperty Component Tests AddProperty Snapshot Tests matches AddPrope
           </label>
           <input
             placeholder="Emergency Contact Number without spaces or dashes"
+            value="value"
           />
         </div>
       </div>
@@ -283,6 +296,7 @@ exports[`AddProperty Component Tests AddProperty Snapshot Tests matches AddPrope
           </label>
           <input
             placeholder="Monthly rent in USD. Eg, 2750.00"
+            value="value"
           />
         </div>
         <div
@@ -314,6 +328,7 @@ exports[`AddProperty Component Tests AddProperty Snapshot Tests matches AddPrope
           </label>
           <input
             placeholder="Additional fee. Eg, 400.00"
+            value="value"
           />
         </div>
       </div>
@@ -349,6 +364,7 @@ exports[`AddProperty Component Tests AddProperty Snapshot Tests matches AddPrope
           </label>
           <input
             placeholder="Projected Rent Increase in USD. Eg, 200.00"
+            value="value"
           />
         </div>
         <div
@@ -380,6 +396,7 @@ exports[`AddProperty Component Tests AddProperty Snapshot Tests matches AddPrope
           </label>
           <input
             placeholder="Security deposit for the property. Eg, 2100.00"
+            value="value"
           />
         </div>
       </div>
@@ -415,6 +432,7 @@ exports[`AddProperty Component Tests AddProperty Snapshot Tests matches AddPrope
           </label>
           <input
             placeholder="Allowed vehicles on property"
+            value="value"
           />
         </div>
         <div
@@ -446,6 +464,7 @@ exports[`AddProperty Component Tests AddProperty Snapshot Tests matches AddPrope
           </label>
           <input
             placeholder="Payment Identity Field. Eg, Zelle ID: XXX-XX-XXXX"
+            value="value"
           />
         </div>
       </div>
@@ -458,9 +477,12 @@ exports[`AddProperty Component Tests AddProperty Snapshot Tests matches AddPrope
           <label>
             Special Provisions
           </label>
-          <input
+          <textarea
             placeholder="Add special provisions for the tenant within 500 characters"
-          />
+            rows="3"
+          >
+            value
+          </textarea>
         </div>
       </div>
       <div

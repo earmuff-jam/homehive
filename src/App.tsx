@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
@@ -9,12 +9,10 @@ import ScrollTopProvider from "common/ScrollTop/ScrollTopProvider";
 import { GeneratedTourSteps } from "common/Tour/TourSteps";
 import { buildAppRoutes } from "common/ValidateClientPermissions";
 import Layout from "features/Layout/Layout";
-import { fetchLoggedInUser } from "features/Rent/utils";
 import { MainAppRoutes } from "src/Routes";
 import { darkTheme, lightTheme } from "src/Theme";
 
 function App() {
-  const user = fetchLoggedInUser();
   const [currentThemeIdx, setCurrentThemeIdx] = useState(
     localStorage.getItem("theme") || 0,
   );
@@ -38,7 +36,7 @@ function App() {
                   />
                 }
               >
-                {buildAppRoutes(MainAppRoutes, user?.role)}
+                {buildAppRoutes(MainAppRoutes)}
               </Route>
             </Routes>
           </BrowserRouter>

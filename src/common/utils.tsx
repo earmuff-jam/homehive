@@ -68,10 +68,23 @@ export const fetchLoggedInUserT = (): LoggedInUser => {
   return secureLocalStorage.getItem("user") as LoggedInUser;
 };
 
-export const isBannerVisible = (pathname = ""): boolean => {
+export const isBannerVisible = (pathname: string = ""): boolean => {
   if (pathname.includes(MainRentAppRouteUri)) {
     const user = fetchLoggedInUserT();
     if (!user?.role) return true;
   }
   return false;
+};
+
+// retriveTourKey ...
+export const retrieveTourKey = (
+  currentUri: string,
+  expectedStrValue: string,
+): string => {
+  const isDynamicPropertyPage =
+    currentUri.includes(`/${expectedStrValue}/`) &&
+    currentUri.split("/")[2] === expectedStrValue;
+
+  // individual properties can share the same help && support
+  return isDynamicPropertyPage ? PropertyRouteUri : currentUri;
 };

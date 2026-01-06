@@ -37,7 +37,7 @@ import EditPdfLineItemAccordion from "features/Invoice/components/EditPdf/EditPd
 import { DefaultInvoiceStatusOptions } from "features/Invoice/constants";
 import {
   Invoice,
-  InvoiceStatusOption,
+  TInvoiceStatusOption,
 } from "features/Invoice/types/Invoice.types";
 import { useAppTitle } from "hooks/useAppTitle";
 import { produce } from "immer";
@@ -82,7 +82,7 @@ export default function EditPdf() {
   });
 
   const [showSnackbar, setShowSnackbar] = useState<boolean>(false);
-  const [options, setOptions] = useState<InvoiceStatusOption[]>(
+  const [options, setOptions] = useState<TInvoiceStatusOption[]>(
     DefaultInvoiceStatusOptions,
   );
 
@@ -117,7 +117,7 @@ export default function EditPdf() {
       updatedOn: dayjs().toISOString(),
       endDate: dayjs(data.endDate).toISOString(),
       startDate: dayjs(data.startDate).toISOString(),
-      invoiceStatus: options.find((option) => option.selected).label,
+      invoiceStatus: options.find((option) => option.selected),
     });
   };
 
@@ -140,7 +140,7 @@ export default function EditPdf() {
         lineItems: pdfDetails.lineItems || [],
       });
 
-      const existingInvoiceStatus = pdfDetails?.invoiceStatus;
+      const existingInvoiceStatus = pdfDetails?.invoiceStatus.label;
       handleSelection(existingInvoiceStatus);
     }
   }, [isPdfDetailsLoading]);

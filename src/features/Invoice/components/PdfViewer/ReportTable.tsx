@@ -10,7 +10,10 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
-import { LineItem, TInvoiceStatus } from "features/Invoice/types/Invoice.types";
+import {
+  LineItem,
+  TInvoiceStatusOption,
+} from "features/Invoice/types/Invoice.types";
 import { numberFormatter } from "features/Invoice/utils";
 
 // TReportTableProps ...
@@ -18,7 +21,7 @@ export type TReportTableProps = {
   rows: LineItem[];
   taxRate: number;
   showWatermark: boolean;
-  invoiceStatus: TInvoiceStatus;
+  invoiceStatus: TInvoiceStatusOption;
   invoiceTitle: string;
 };
 

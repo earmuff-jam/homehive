@@ -32,6 +32,7 @@ exports[`AddRentRecords Component Tests AddRentRecords Snapshot Tests matches Ad
           </label>
           <input
             placeholder="First Name of your property owner"
+            value="value"
           />
         </div>
         <div
@@ -42,6 +43,7 @@ exports[`AddRentRecords Component Tests AddRentRecords Snapshot Tests matches Ad
           </label>
           <input
             placeholder="Last Name of your property owner"
+            value="value"
           />
         </div>
       </div>
@@ -53,6 +55,7 @@ exports[`AddRentRecords Component Tests AddRentRecords Snapshot Tests matches Ad
         </label>
         <input
           placeholder="Email address of the property owner"
+          value="value"
         />
       </div>
       <div
@@ -81,6 +84,7 @@ exports[`AddRentRecords Component Tests AddRentRecords Snapshot Tests matches Ad
           </label>
           <input
             placeholder="First Name of your primary tenant"
+            value="value"
           />
         </div>
         <div
@@ -91,6 +95,7 @@ exports[`AddRentRecords Component Tests AddRentRecords Snapshot Tests matches Ad
           </label>
           <input
             placeholder="Last Name of your primary tenant"
+            value="value"
           />
         </div>
       </div>
@@ -102,6 +107,7 @@ exports[`AddRentRecords Component Tests AddRentRecords Snapshot Tests matches Ad
         </label>
         <input
           placeholder="Email address of the primary tenant"
+          value="value"
         />
       </div>
       <div
@@ -130,6 +136,7 @@ exports[`AddRentRecords Component Tests AddRentRecords Snapshot Tests matches Ad
           </label>
           <input
             placeholder="Rent Amount"
+            value="value"
           />
         </div>
         <div
@@ -140,6 +147,7 @@ exports[`AddRentRecords Component Tests AddRentRecords Snapshot Tests matches Ad
           </label>
           <input
             placeholder="Payment Method"
+            value="value"
           />
         </div>
       </div>
@@ -252,9 +260,12 @@ exports[`AddRentRecords Component Tests AddRentRecords Snapshot Tests matches Ad
           <label>
             Note
           </label>
-          <input
+          <textarea
             placeholder="Note in less than 300 characters"
-          />
+            rows="5"
+          >
+            value
+          </textarea>
         </div>
       </div>
       <button

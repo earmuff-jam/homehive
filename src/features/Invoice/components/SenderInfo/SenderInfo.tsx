@@ -7,11 +7,11 @@ import dayjs from "dayjs";
 
 import { Stack } from "@mui/material";
 import CustomSnackbar from "common/CustomSnackbar/CustomSnackbar";
-import RowHeader from "common/RowHeader/RowHeader";
 import {
   useGetSenderInfoQuery,
   useUpsertSenderInfoMutation,
 } from "features/Api/invoiceApi";
+import RowHeader from "features/Invoice/components/RowHeader/InvoiceRowHeader";
 import UserInfoViewer from "features/Invoice/components/UserInfo/UserInfoViewer";
 import { UserInfo } from "features/Invoice/types/Invoice.types";
 import { useAppTitle } from "hooks/useAppTitle";
@@ -51,7 +51,7 @@ export default function SenderInfo() {
     },
   });
 
-  const submit = (formData) => {
+  const submit = (formData: UserInfo) => {
     formData["updatedOn"] = dayjs();
     upsertSenderInfo(formData);
   };

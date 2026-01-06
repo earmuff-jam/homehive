@@ -21,10 +21,10 @@ import {
 } from "@mui/material";
 import AButton from "common/AButton";
 import CustomSnackbar from "common/CustomSnackbar/CustomSnackbar";
-import RowHeader from "common/RowHeader/RowHeader";
 import { pluralize } from "common/utils";
 import AddWidget from "features/Invoice/components/AddWidget/AddWidget";
 import DndGridLayout from "features/Invoice/components/DndGridLayout/DndGridLayout";
+import RowHeader from "features/Invoice/components/RowHeader/InvoiceRowHeader";
 import { Widgets } from "features/Invoice/constants";
 import { TWidget } from "features/Invoice/types/Invoice.types";
 import { parseJsonUtility } from "features/Invoice/utils";
@@ -82,7 +82,9 @@ export default function Dashboard() {
   };
 
   useEffect(() => {
-    const draftWidgets = parseJsonUtility<TWidget[]>("widgets");
+    const draftWidgets = parseJsonUtility<TWidget[]>(
+      localStorage.getItem("widgets"),
+    );
     if (draftWidgets) {
       setWidgets(draftWidgets);
     }

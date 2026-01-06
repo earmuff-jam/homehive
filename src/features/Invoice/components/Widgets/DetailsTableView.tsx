@@ -4,15 +4,15 @@ import dayjs from "dayjs";
 
 import { Stack } from "@mui/material";
 import EmptyComponent from "common/EmptyComponent";
-import RowHeader from "common/RowHeader/RowHeader";
 import relativeTime from "dayjs/plugin/relativeTime";
+import RowHeader from "features/Invoice/components/RowHeader/InvoiceRowHeader";
 import {
   Invoice,
   InvoiceRow,
-  TInvoiceStatus,
+  TInvoiceStatusOption,
 } from "features/Invoice/types/Invoice.types";
 import {
-  noramlizeDetailsTableData,
+  normalizeDetailsTableData,
   parseJsonUtility,
 } from "features/Invoice/utils";
 import {
@@ -36,7 +36,7 @@ const DetailsTableView = ({ label, caption }: DetailsTableViewProps) => {
       localStorage.getItem("pdfDetails"),
     );
     const invoiceStatus = parseJsonUtility<{
-      invoiceStatus: TInvoiceStatus;
+      invoiceStatus: TInvoiceStatusOption;
     }>(localStorage.getItem("invoiceStatus"));
 
     const formattedData: Invoice = {
@@ -46,7 +46,7 @@ const DetailsTableView = ({ label, caption }: DetailsTableViewProps) => {
       }),
     };
 
-    setTableData(noramlizeDetailsTableData([formattedData]));
+    setTableData(normalizeDetailsTableData([formattedData]));
   }, []);
 
   const columns = useMemo(
@@ -81,7 +81,7 @@ const DetailsTableView = ({ label, caption }: DetailsTableViewProps) => {
         accessorKey: "invoiceStatus",
         header: "Invoice Status",
         size: 100,
-        Cell: ({ cell }) => (cell.getValue() ? cell.getValue() : "-"),
+        Cell: ({ cell }) => (cell.getValue() ? cell.getValue()?.label : "-"),
       },
       {
         accessorKey: "paymentMethod",

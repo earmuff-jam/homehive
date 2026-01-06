@@ -2,7 +2,13 @@ import secureLocalStorage from "react-secure-storage";
 
 import { getApps, initializeApp } from "firebase/app";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { deleteDoc, doc, getDoc, getFirestore, setDoc } from "firebase/firestore";
+import {
+  deleteDoc,
+  doc,
+  getDoc,
+  getFirestore,
+  setDoc,
+} from "firebase/firestore";
 
 // -------------------------------------------
 // Util functions
@@ -119,7 +125,7 @@ if (isFirebaseConfigOptionsValid(authenticatorConfig)) {
       // Create user from invite
       await setDoc(userRef, {
         uid: user.uid,
-        googleEmailAddress: user.email,
+        email: user.email,
         googleDisplayName: user.displayName ?? null,
         googlePhotoURL: user.photoURL ?? null,
         role: invite.role,
@@ -127,7 +133,7 @@ if (isFirebaseConfigOptionsValid(authenticatorConfig)) {
 
       // remove invite doc if user is created
       await deleteDoc(inviteRef);
-      
+
       secureLocalStorage.setItem("user", {
         uid: user.uid,
         role: invite.role,

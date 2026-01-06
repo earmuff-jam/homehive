@@ -7,7 +7,7 @@ import {
 } from "@mui/icons-material";
 import {
   Category,
-  InvoiceStatusOption,
+  TInvoiceStatusOption,
   TWidget,
 } from "features/Invoice/types/Invoice.types";
 
@@ -72,7 +72,7 @@ export const Widgets: TWidget[] = [
 ];
 
 // DefaultInvoiceStatusOptions ...
-export const DefaultInvoiceStatusOptions: InvoiceStatusOption[] = [
+export const DefaultInvoiceStatusOptions: TInvoiceStatusOption[] = [
   {
     id: 1,
     label: "Paid",

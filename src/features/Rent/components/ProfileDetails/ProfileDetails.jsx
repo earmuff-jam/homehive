@@ -31,7 +31,6 @@ export default function ProfileDetails() {
   const { data: userData, isLoading } = useGetUserDataByIdQuery(user?.uid, {
     skip: !user?.uid,
   });
-
   const [
     updateUser,
     { isSuccess: isUpdateUserSuccess, isLoading: isUpdateUserLoading },

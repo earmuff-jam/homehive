@@ -15,6 +15,13 @@ describe("ItemTypeFreqChart", () => {
     const { asFragment } = render(
       <ItemTypeFreqChart label="Item Types" caption="Frequency overview" />,
     );
+
+    expect(screen.getByText("Item Types")).toBeInTheDocument();
+    expect(screen.getByText("Frequency overview")).toBeInTheDocument();
+    expect(screen.getByTestId("empty-component")).toBeInTheDocument();
+    expect(screen.getByTestId("empty-component")).toHaveTextContent(
+      "Sorry, no matching records found.",
+    );
     expect(asFragment()).toMatchSnapshot();
   });
 
@@ -22,9 +29,11 @@ describe("ItemTypeFreqChart", () => {
     render(
       <ItemTypeFreqChart label="Item Types" caption="Frequency overview" />,
     );
-    expect(screen.getByTestId("row-header")).toHaveTextContent("Item Types");
-    expect(screen.getByTestId("row-header")).toHaveTextContent(
-      "Frequency overview",
+    expect(screen.getByText("Item Types")).toBeInTheDocument();
+    expect(screen.getByText("Frequency overview")).toBeInTheDocument();
+    expect(screen.getByTestId("empty-component")).toBeInTheDocument();
+    expect(screen.getByTestId("empty-component")).toHaveTextContent(
+      "Sorry, no matching records found.",
     );
   });
 

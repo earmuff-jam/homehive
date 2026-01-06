@@ -7,14 +7,21 @@ exports[`DetailsTableView component renders correctly and matches snapshot 1`] =
     data-tour="dashboard-7"
   >
     <div
-      data-testid="row-header"
+      class="MuiStack-root css-15k8blk-MuiStack-root"
     >
-      <h1>
+      <h5
+        class="MuiTypography-root MuiTypography-h5 css-6fn2ox-MuiTypography-root"
+      >
         Invoice Details
-      </h1>
-      <p>
+      </h5>
+      <h6
+        class="MuiTypography-root MuiTypography-subtitle2 css-1ypmsg6-MuiTypography-root"
+      >
         Summary view
-      </p>
+      </h6>
+      <div
+        class="MuiBox-root css-56sg73"
+      />
     </div>
     <div
       data-testid="mock-table"

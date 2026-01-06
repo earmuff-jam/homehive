@@ -1,6 +1,7 @@
 import { ReactNode } from "react";
 
 import { Box, Typography } from "@mui/material";
+import { StepType } from "@reactour/tour";
 import {
   EditInvoiceRouteUri,
   InvoiceAppFaqRouteUri,
@@ -29,50 +30,14 @@ type InvoiceRouteUri =
   | typeof PropertyRouteUri
   | typeof PropertiesRouteUri;
 
-/**
- * The type `TourElementStep` represents a step in a tour with a specified element.
- * @property {string} element - The `element` property in the `TourElementStep` type represents the
- * element that is part of a tour step. It could be a string value describing the element, such as a
- * selector or identifier for an element on a webpage.
- */
 type TourElementStep = {
   element: string;
 };
 
-/**
- * The type `TourStepRange` defines a range of tour steps with corresponding elements and start/end
- * indices.
- * @property {ReactNode} element - The `element` property in the `TourStepRange` type represents a
- * ReactNode, which is a generic type for a React element, such as a component, fragment, or string. It
- * is used to define the element that will be displayed as part of a tour step.
- * @property {number} start - The `start` property in the `TourStepRange` type represents the starting
- * index of a range. It indicates the beginning point of a sequence or interval.
- * @property {number} end - The `end` property in the `TourStepRange` type represents the ending point
- * of a range. It specifies the index or position where the range ends.
- */
 type TourStepRange = {
   element: ReactNode;
   start: number;
   end: number;
-};
-
-/**
- * The type `GeneratedTourSteps` defines the structure of objects representing steps in a guided tour,
- * including an id, selector, and content.
- * @property {number} id - The `id` property in the `GeneratedTourSteps` type represents a unique
- * identifier for each step in a generated tour. It is of type `number`.
- * @property {string} selector - The `selector` property in the `GeneratedTourSteps` type is a string
- * that represents a CSS selector. This selector is used to target a specific element in the DOM
- * (Document Object Model) that the tour step should be associated with.
- * @property {ReactNode} content - The `content` property in the `GeneratedTourSteps` type represents
- * the content that will be displayed at each step of a generated tour. It is of type `ReactNode`,
- * which means it can accept any valid React node, such as text, components, or elements. This allows
- * for flexibility in
- */
-type GeneratedTourSteps = {
-  id: number;
-  selector: string;
-  content: ReactNode;
 };
 
 /**
@@ -332,7 +297,7 @@ const RentalHelpSteps: TourElementStep[] = [
 const derieveTourSteps = (
   staticSteps: TourElementStep[],
   prefix: string,
-): GeneratedTourSteps[] => {
+): StepType[] => {
   return staticSteps.map(({ element }, index) => ({
     id: index,
     selector: `[data-tour="${prefix}-${index}"]`,

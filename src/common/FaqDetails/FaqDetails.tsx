@@ -3,7 +3,6 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
-  Box,
   IconButton,
   Stack,
   Typography,
@@ -23,17 +22,12 @@ export default function FaqDetails({ data }: FrequentlyAskedQuestionsProps) {
         caption="Answers to common questions you may have."
       />
 
-      <Box
-        sx={{
-          mx: "auto",
-          maxWidth: { sm: "none", md: "50%" },
-        }}
-      >
+      <Stack padding={1}>
         {data?.map((item, index) => {
           return (
             <Accordion
               key={index}
-              defaultExpanded={index === 0}
+              defaultExpanded
               disableGutters
               elevation={0}
               sx={{ marginBottom: "1rem" }}
@@ -56,7 +50,7 @@ export default function FaqDetails({ data }: FrequentlyAskedQuestionsProps) {
             </Accordion>
           );
         })}
-      </Box>
+      </Stack>
     </Stack>
   );
 }

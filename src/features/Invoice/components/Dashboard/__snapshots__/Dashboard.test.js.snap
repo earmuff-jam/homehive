@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Dashboard renders correctly and matches snapshot 1`] = `
+exports[`Dashboard renders empty dashboard correctly and matches snapshot 1`] = `
 <DocumentFragment>
   <div
     class="MuiStack-root css-nen11g-MuiStack-root"
@@ -37,14 +37,21 @@ exports[`Dashboard renders correctly and matches snapshot 1`] = `
           </button>
         </span>
         <div
-          data-testid="row-header"
+          class="MuiStack-root css-1mrb496-MuiStack-root"
         >
-          <h1>
+          <h5
+            class="MuiTypography-root MuiTypography-h5 css-wj3xde-MuiTypography-root"
+          >
             Standard layout
-          </h1>
-          <p>
+          </h5>
+          <h6
+            class="MuiTypography-root MuiTypography-subtitle2 css-1ypmsg6-MuiTypography-root"
+          >
             Displaying 0 undefined
-          </p>
+          </h6>
+          <div
+            class="MuiBox-root css-56sg73"
+          />
         </div>
       </div>
       <div
@@ -79,7 +86,9 @@ exports[`Dashboard renders correctly and matches snapshot 1`] = `
       class="MuiBox-root css-0"
       data-tour="dashboard-3"
     >
-      <div>
+      <div
+        data-testid="empty-component"
+      >
         <div>
           Sorry, no matching records found.
         </div>

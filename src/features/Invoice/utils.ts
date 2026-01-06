@@ -14,8 +14,8 @@ export function numberFormatter(digit: number): string {
   return Number(digit).toFixed(2);
 }
 
-// noramlizeDetailsTableData ...
-export function noramlizeDetailsTableData(list: Invoice[]): InvoiceRow[] {
+// normalizeDetailsTableData ...
+export function normalizeDetailsTableData(list: Invoice[]): InvoiceRow[] {
   return list.map((invoice) => {
     const items = invoice.lineItems || [];
 
@@ -196,7 +196,8 @@ export function parseJsonUtility<T>(value: string | null): T | null {
   if (!value) return null;
   try {
     return JSON.parse(value) as T;
-  } catch {
+  } catch (error) {
+    console.error("Failed to parse. ", error);
     return null;
   }
 }

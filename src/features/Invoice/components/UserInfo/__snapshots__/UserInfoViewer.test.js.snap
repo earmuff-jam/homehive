@@ -33,6 +33,7 @@ exports[`UserInfoViewer component renders correctly and matches snapshot 1`] = `
           </label>
           <input
             placeholder="First Name"
+            value="value"
           />
         </div>
         <div
@@ -43,6 +44,7 @@ exports[`UserInfoViewer component renders correctly and matches snapshot 1`] = `
           </label>
           <input
             placeholder="Last Name"
+            value="value"
           />
         </div>
       </div>
@@ -57,6 +59,7 @@ exports[`UserInfoViewer component renders correctly and matches snapshot 1`] = `
           </label>
           <input
             placeholder="Email Address"
+            value="value"
           />
         </div>
         <div
@@ -67,6 +70,7 @@ exports[`UserInfoViewer component renders correctly and matches snapshot 1`] = `
           </label>
           <input
             placeholder="Phone Number"
+            value="value"
           />
         </div>
       </div>
@@ -78,6 +82,7 @@ exports[`UserInfoViewer component renders correctly and matches snapshot 1`] = `
         </label>
         <input
           placeholder="Street Address"
+          value="value"
         />
       </div>
       <div
@@ -91,6 +96,7 @@ exports[`UserInfoViewer component renders correctly and matches snapshot 1`] = `
           </label>
           <input
             placeholder="City"
+            value="value"
           />
         </div>
         <div
@@ -101,6 +107,7 @@ exports[`UserInfoViewer component renders correctly and matches snapshot 1`] = `
           </label>
           <input
             placeholder="State"
+            value="value"
           />
         </div>
         <div
@@ -111,6 +118,7 @@ exports[`UserInfoViewer component renders correctly and matches snapshot 1`] = `
           </label>
           <input
             placeholder="Zip Code"
+            value="value"
           />
         </div>
       </div>

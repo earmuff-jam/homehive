@@ -11,7 +11,7 @@ import {
   useGetReceiverInfoQuery,
   useUpsertReceiverInfoMutation,
 } from "features/Api/invoiceApi";
-import RowHeader from "features/Invoice/components/RowHeader/RowHeader";
+import RowHeader from "features/Invoice/components/RowHeader/InvoiceRowHeader";
 import UserInfoViewer from "features/Invoice/components/UserInfo/UserInfoViewer";
 import { UserInfo } from "features/Invoice/types/Invoice.types";
 import { useAppTitle } from "hooks/useAppTitle";

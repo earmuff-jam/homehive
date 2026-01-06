@@ -16,10 +16,10 @@ import {
 import AButton from "common/AButton";
 import CustomSnackbar from "common/CustomSnackbar/CustomSnackbar";
 import { DefaultTourStepsMap } from "common/Tour/TourSteps";
+import { retrieveTourKey } from "common/utils";
 import { useLogoutMutation } from "features/Api/firebaseUserApi";
 import { useLocalStorageData } from "features/Invoice/hooks/useGenerateUserData";
 import MenuOptions from "features/Layout/components/NavBar/MenuOptions";
-import { retrieveTourKey } from "features/Layout/utils";
 import { fetchLoggedInUser, isFeatureEnabled } from "features/Rent/utils";
 import useSendEmail, { generateInvoiceHTML } from "hooks/useSendEmail";
 

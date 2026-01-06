@@ -13,7 +13,7 @@ import {
   Tooltip,
 } from "chart.js";
 import EmptyComponent from "common/EmptyComponent";
-import RowHeader from "common/RowHeader/RowHeader";
+import RowHeader from "features/Invoice/components/RowHeader/InvoiceRowHeader";
 import { TrendsChartDataset } from "features/Invoice/types/Invoice.types";
 import { normalizeInvoiceTimelineChartDataset } from "features/Invoice/utils";
 
@@ -30,14 +30,6 @@ const InvoiceTimelineChart = ({
   caption,
 }: InvoiceTimelineChartProps) => {
   const [data, setData] = useState<TrendsChartDataset>(null);
-
-  useEffect(() => {
-    const draftData = JSON.parse(localStorage.getItem("pdfDetails"));
-    if (draftData) {
-      const chartData = normalizeInvoiceTimelineChartDataset([draftData]);
-      setData(chartData);
-    }
-  }, []);
 
   const options: ChartOptions<"bar"> = {
     indexAxis: "y",
@@ -66,6 +58,14 @@ const InvoiceTimelineChart = ({
       },
     },
   };
+
+  useEffect(() => {
+    const draftData = JSON.parse(localStorage.getItem("pdfDetails"));
+    if (draftData) {
+      const chartData = normalizeInvoiceTimelineChartDataset([draftData]);
+      setData(chartData);
+    }
+  }, []);
 
   return (
     <Stack data-tour={"dashboard-4"}>

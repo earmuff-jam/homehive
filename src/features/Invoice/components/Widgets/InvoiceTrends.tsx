@@ -17,7 +17,7 @@ import {
   Tooltip,
 } from "chart.js";
 import EmptyComponent from "common/EmptyComponent";
-import RowHeader from "common/RowHeader/RowHeader";
+import RowHeader from "features/Invoice/components/RowHeader/InvoiceRowHeader";
 import {
   ChartType,
   Invoice,

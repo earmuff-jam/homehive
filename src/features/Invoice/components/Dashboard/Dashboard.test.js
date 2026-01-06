@@ -4,7 +4,7 @@ import Dashboard from "./Dashboard";
 import { render, screen } from "@testing-library/react";
 
 describe("Dashboard", () => {
-  it("renders correctly and matches snapshot", () => {
+  it("renders empty dashboard correctly and matches snapshot", () => {
     const { asFragment } = render(<Dashboard />);
     expect(asFragment()).toMatchSnapshot();
   });

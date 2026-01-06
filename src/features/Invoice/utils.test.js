@@ -1,12 +1,12 @@
 import {
-  noramlizeDetailsTableData,
+  normalizeDetailsTableData,
   normalizeInvoiceItemTypeChartDataset,
   normalizeInvoiceTimelineChartDataset,
   normalizeInvoiceTrendsChartsDataset,
 } from "./utils";
 
 describe("Invoice normalization utilities", () => {
-  describe("noramlizeDetailsTableData", () => {
+  describe("normalizeDetailsTableData", () => {
     it("sums payments and deduplicates categories and payment methods", () => {
       const mockInvoice = [
         {
@@ -34,7 +34,7 @@ describe("Invoice normalization utilities", () => {
         },
       ];
 
-      const result = noramlizeDetailsTableData(mockInvoice);
+      const result = normalizeDetailsTableData(mockInvoice);
 
       expect(result).toHaveLength(1);
 
@@ -64,7 +64,7 @@ describe("Invoice normalization utilities", () => {
         },
       ];
 
-      const result = noramlizeDetailsTableData(mockInvoice);
+      const result = normalizeDetailsTableData(mockInvoice);
 
       expect(result[0].total).toBe(0);
       expect(result[0].category).toBe("Rent");

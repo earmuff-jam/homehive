@@ -1,6 +1,7 @@
 import React from "react";
-import { render, screen } from "@testing-library/react";
+
 import DndGridLayout from "./DndGridLayout";
+import { render, screen } from "@testing-library/react";
 
 describe("DndGridLayout", () => {
   const mockSetWidgets = jest.fn();
@@ -13,10 +14,13 @@ describe("DndGridLayout", () => {
         widgets={[]}
         setWidgets={mockSetWidgets}
         handleRemoveWidget={mockHandleRemoveWidget}
-      />
+      />,
     );
 
-    expect(screen.getByText(/Sorry, no matching records found/i)).toBeInTheDocument();
+    expect(screen.getByTestId("empty-component")).toBeInTheDocument();
+    expect(screen.getByTestId("empty-component")).toHaveTextContent(
+      "Sorry, no matching records found.",
+    );
     expect(asFragment()).toMatchSnapshot();
   });
 
@@ -36,7 +40,7 @@ describe("DndGridLayout", () => {
         widgets={widgets}
         setWidgets={mockSetWidgets}
         handleRemoveWidget={mockHandleRemoveWidget}
-      />
+      />,
     );
 
     // snapshot to capture structure

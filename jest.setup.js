@@ -17,6 +17,7 @@ dayjs.extend(relativeTime);
 // mock chart.js Bar component ...
 jest.mock("react-chartjs-2", () => ({
   Bar: jest.fn(() => <div data-testid="bar-chart" />),
+  Line: jest.fn(() => <div data-testid="line-chart" />),
 }));
 
 // mock react secure storage ...
@@ -66,10 +67,36 @@ jest.mock("common/AButton", () => ({
 // mock TextFieldWithLabel ...
 jest.mock("common/TextFieldWithLabel", () => ({
   __esModule: true,
-  default: ({ label, id, placeholder, errorMsg }) => (
+  default: ({
+    label = "label",
+    id = 1,
+    value = "value",
+    handleChange = jest.fn(),
+    placeholder = "placeholder",
+    errorMsg,
+    multiline = false,
+    maxRows = 0,
+    onBlur = jest.fn(),
+  }) => (
     <div data-testid={id}>
       <label>{label}</label>
-      <input placeholder={placeholder} />
+      {maxRows === 0 ? (
+        <input
+          placeholder={placeholder}
+          value={value}
+          onChange={handleChange}
+          onBlur={onBlur}
+          multiple={multiline}
+        />
+      ) : (
+        <textarea
+          placeholder={placeholder}
+          value={value}
+          onChange={handleChange}
+          onBlur={onBlur}
+          rows={maxRows}
+        />
+      )}
       {errorMsg && <span>{errorMsg}</span>}
     </div>
   ),
@@ -92,11 +119,13 @@ jest.mock("common/EmptyComponent", () => ({
   default: ({
     title = "Sorry, no matching records found.",
     caption,
+    children,
     ...props
   }) => (
-    <div {...props}>
+    <div {...props} data-testid="empty-component">
       <div>{title}</div>
       <div>{caption}</div>
+      {children}
     </div>
   ),
 }));
@@ -105,8 +134,10 @@ jest.mock("common/EmptyComponent", () => ({
 jest.mock("common/utils", () => ({
   __esModule: true,
   pluralize: jest.fn(),
+  numberFormatter: jest.fn(),
+  isBannerVisible: jest.fn(),
   parseJsonUtility: jest.fn(),
-  noramlizeDetailsTableData: jest.fn((data) => data),
+  normalizeDetailsTableData: jest.fn((data) => data),
 }));
 
 // mock material react table ...
@@ -115,6 +146,14 @@ jest.mock("material-react-table", () => ({
     <div data-testid="mock-table">Mock Table ({table.data.length} rows)</div>
   ),
   useMaterialReactTable: jest.fn((config) => config),
+}));
+
+// mock react-router-dom
+jest.mock("react-router-dom", () => ({
+  ...jest.requireActual("react-router-dom"),
+  useLocation: jest.fn(),
+  useNavigate: () => jest.fn(),
+  useOutletContext: () => [false], // mock value for showWatermark
 }));
 
 global.TextEncoder = TextEncoder;

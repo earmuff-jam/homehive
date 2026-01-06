@@ -5,23 +5,7 @@ import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/react";
 import * as utils from "features/Invoice/utils";
 
-// Mock chart.js components
-jest.mock("react-chartjs-2", () => ({
-  Bar: jest.fn(() => <div data-testid="bar-chart" />),
-  Line: jest.fn(() => <div data-testid="line-chart" />),
-}));
-
-// Mock other components
-jest.mock("common/EmptyComponent", () => () => (
-  <div data-testid="empty-component" />
-));
-jest.mock("common/RowHeader/RowHeader", () => (props) => (
-  <div data-testid="row-header">
-    {props.title} - {props.caption}
-  </div>
-));
-
-describe("InvoiceTrends", () => {
+describe("InvoiceTrends Widget", () => {
   beforeEach(() => {
     jest.clearAllMocks();
     localStorage.clear();
@@ -31,15 +15,25 @@ describe("InvoiceTrends", () => {
     const { asFragment } = render(
       <InvoiceTrends label="Trends" caption="Overview" />,
     );
+
+    expect(screen.getByText("Trends")).toBeInTheDocument();
+    expect(screen.getByText("Overview")).toBeInTheDocument();
+    expect(screen.getByTestId("empty-component")).toBeInTheDocument();
+    expect(screen.getByTestId("empty-component")).toHaveTextContent(
+      "Sorry, no matching records found.",
+    );
     expect(asFragment()).toMatchSnapshot();
   });
 
   it("renders EmptyComponent when no pdfDetails are in localStorage", () => {
     render(<InvoiceTrends label="Trends" caption="Overview" />);
-    expect(screen.getByTestId("row-header")).toHaveTextContent(
-      "Trends - Overview",
-    );
+
+    expect(screen.getByText("Trends")).toBeInTheDocument();
+    expect(screen.getByText("Overview")).toBeInTheDocument();
     expect(screen.getByTestId("empty-component")).toBeInTheDocument();
+    expect(screen.getByTestId("empty-component")).toHaveTextContent(
+      "Sorry, no matching records found.",
+    );
   });
 
   it("renders Bar chart when chartType is 'bar' and pdfDetails exist", () => {

@@ -1,16 +1,16 @@
 import dayjs from "dayjs";
 
 import { Box, Stack, Typography } from "@mui/material";
-import { InvoiceRowHeader } from "features/Invoice/types/Invoice.types";
+import { TInvoiceRowHeader } from "features/Invoice/types/Invoice.types";
 
-export default function RowHeader({
+export default function InvoiceRowHeader({
   title,
   caption,
   showDate = false,
   createdDate = dayjs(),
   sxProps,
   children,
-}: InvoiceRowHeader) {
+}: TInvoiceRowHeader) {
   return (
     <>
       <Stack textAlign="center" sx={sxProps} alignContent="center">

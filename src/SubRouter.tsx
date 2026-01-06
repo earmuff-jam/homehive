@@ -1,10 +1,14 @@
-import React from "react";
-
 import { Navigate, Route, Routes } from "react-router-dom";
 
 import { buildAppRoutes } from "common/ValidateClientPermissions";
 
-const SubAppRouter = ({ routes, fallbackPath = "/" }) => {
+// TSubAppRouterProps ...
+type TSubAppRouterProps = {
+  routes: string[];
+  fallbackPath: string;
+};
+
+const SubAppRouter = ({ routes, fallbackPath = "/" }: TSubAppRouterProps) => {
   const builtRoutes = buildAppRoutes(routes);
 
   return (

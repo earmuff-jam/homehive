@@ -2,9 +2,16 @@
 
 exports[`TextFieldWithLabel Jest Tests TextFieldWithLabel snapshot tests should render the correct snapshot 1`] = `
 <DocumentFragment>
-  <div>
-    <label />
-    <input />
+  <div
+    data-testid="1"
+  >
+    <label>
+      label
+    </label>
+    <input
+      placeholder="placeholder"
+      value="value"
+    />
   </div>
 </DocumentFragment>
 `;
