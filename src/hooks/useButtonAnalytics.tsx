@@ -5,26 +5,35 @@ import dayjs from "dayjs";
 import { addDoc, collection } from "firebase/firestore";
 import { analyticsFirestore } from "src/config";
 
-/**
- * useButtonAnalytics ...
- *
- * tracks user interactivity with existing buttons and stores it in firestore
- *
- */
+// TAnalyticsPayload ...
+// defines a payload for analytics
+type TAnalyticsPayload = {
+  ipAddress: string;
+  label: string;
+  pathname: string;
+  currentTime: string;
+};
+
+// useButtonAnalytics ...
 export const useButtonAnalytics = () => {
   const { pathname } = useLocation();
-  const ipAddress = localStorage.getItem("ip");
 
-  const logClick = async (label) => {
+  const storedIp = localStorage.getItem("ip");
+
+  const logClick = async (label?: string): Promise<void> => {
     if (!label) return;
+
     try {
       const analyticsCollection = collection(analyticsFirestore, "analytics");
-      await addDoc(analyticsCollection, {
-        ipAddress: ipAddress?.ipAddress || "",
+
+      const payload: TAnalyticsPayload = {
+        ipAddress: storedIp ?? "",
         label,
         pathname,
         currentTime: dayjs().toISOString(),
-      });
+      };
+
+      await addDoc(analyticsCollection, payload);
     } catch (error) {
       /* eslint-disable no-console */
       console.error("Error logging analytics:", error);

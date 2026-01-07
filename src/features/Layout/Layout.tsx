@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 
 import { Outlet, matchPath, useLocation } from "react-router-dom";
 
@@ -22,13 +22,15 @@ import AButton from "common/AButton";
 import { NavigationProvider } from "common/ANavigation";
 import Banner from "common/Banner";
 import { DefaultTourStepsMap, GeneratedTourSteps } from "common/Tour/TourSteps";
+import { TAppRoute, TThemeIdx } from "common/types";
 import { HomeRouteUri, retrieveTourKey } from "common/utils";
+import { TInvoiceDialog } from "features/Invoice/types/Invoice.types";
 import AppToolbar from "features/Layout/components/AppToolbar/AppToolbar";
 import BreadCrumbs from "features/Layout/components/AppToolbar/BreadCrumbs";
 import Footer from "features/Layout/components/Footer/Footer";
 import NavBar from "features/Layout/components/NavBar/NavBar";
 
-const defaultDialog = {
+const defaultDialog: TInvoiceDialog = {
   title: "",
   label: "",
   type: "",
@@ -36,11 +38,18 @@ const defaultDialog = {
   display: false,
 };
 
+// TLayoutProps ...
+type TLayoutProps = {
+  routes: TAppRoute[];
+  currentThemeIdx: TThemeIdx;
+  setCurrentThemeIdx: Dispatch<SetStateAction<string>>;
+};
+
 export default function Layout({
   routes,
   currentThemeIdx,
   setCurrentThemeIdx,
-}) {
+}: TLayoutProps) {
   const theme = useTheme();
   const location = useLocation();
 
@@ -54,9 +63,9 @@ export default function Layout({
   const smScreenSizeAndHigher = useMediaQuery(theme.breakpoints.up("sm"));
   const lgScreenSizeAndHigher = useMediaQuery(theme.breakpoints.up("lg"));
 
-  const [dialog, setDialog] = useState(defaultDialog);
+  const [dialog, setDialog] = useState<TInvoiceDialog>(defaultDialog);
 
-  const [openDrawer, setOpenDrawer] = useState(
+  const [openDrawer, setOpenDrawer] = useState<boolean>(
     smScreenSizeAndHigher ? true : false,
   );
 
@@ -78,7 +87,7 @@ export default function Layout({
 
     setIsOpen(true);
     setCurrentStep(0);
-    setCurrentThemeIdx(0);
+    setCurrentThemeIdx("0");
     setSteps(formattedDraftTourSteps);
   };
 

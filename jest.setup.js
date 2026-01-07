@@ -32,17 +32,17 @@ jest.mock("react-secure-storage", () => ({
 }));
 
 // mock validateClientPermissions ...
-jest.mock("common/ValidateClientPermissions", () => ({
-  __esModule: true,
-  default: () =>
-    new Map([
-      ["analytics", true],
-      ["invoicer", true],
-      ["invoicerPro", false],
-      ["userInformation", true],
-      ["sendEmail", true],
-    ]),
-}));
+// jest.mock("common/rootLevelEnabledFeatures", () => ({
+//   __esModule: true,
+//   default: () =>
+//     new Map([
+//       ["analytics", true],
+//       ["invoicer", true],
+//       ["invoicerPro", false],
+//       ["userInformation", true],
+//       ["sendEmail", true],
+//     ]),
+// }));
 
 // mock AIconButton ...
 jest.mock("common/AIconButton", () => ({
@@ -137,6 +137,16 @@ jest.mock("common/utils", () => ({
   numberFormatter: jest.fn(),
   isBannerVisible: jest.fn(),
   parseJsonUtility: jest.fn(),
+  rootLevelEnabledFeatures: new Map([
+    ["analytics", true],
+    ["invoicer", true],
+    ["invoicerPro", false],
+    ["userInformation", true],
+    ["sendEmail", true],
+  ]),
+  isValidPermissions: jest.fn(),
+  retrieveTourKey: jest.fn(),
+  filterValidRoutesForNavigationBar: jest.fn(),
   normalizeDetailsTableData: jest.fn((data) => data),
 }));
 

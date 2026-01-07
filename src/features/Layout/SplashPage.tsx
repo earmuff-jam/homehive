@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 
 import { useNavigate } from "react-router-dom";
 
@@ -27,7 +27,7 @@ export default function SplashPage() {
     if (!isAuthLoading && isAuthSuccess) {
       window.location.replace(PropertiesRouteUri);
     }
-  }, [isAuthLoading]);
+  }, [isAuthLoading, isAuthSuccess]);
 
   if (isAuthError) {
     return (

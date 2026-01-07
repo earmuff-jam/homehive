@@ -12,7 +12,7 @@ import {
   MoneyOffRounded,
   PaidRounded,
 } from "@mui/icons-material";
-import validateClientPermissions from "common/ValidateClientPermissions";
+import rootLevelEnabledFeatures from "common/utils";
 import { LEASE_TERM_MENU_OPTIONS } from "features/Rent/common/constants";
 import { produce } from "immer";
 
@@ -365,7 +365,7 @@ export const buildPaymentLineItems = (property = {}, tenant = []) => {
  * `enabledFlagMap`, or `false` if the key is not found in the map.
  */
 export const isFeatureEnabled = (key) => {
-  const enabledFlagMap = validateClientPermissions();
+  const enabledFlagMap = rootLevelEnabledFeatures();
   return enabledFlagMap.get(key) || false;
 };
 

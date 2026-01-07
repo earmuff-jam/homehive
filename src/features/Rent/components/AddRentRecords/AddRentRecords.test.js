@@ -21,11 +21,6 @@ jest.mock("react-secure-storage", () => ({
   removeItem: jest.fn(),
 }));
 
-jest.mock("common/ValidateClientPermissions", () => ({
-  __esModule: true,
-  default: () => new Map([]),
-}));
-
 jest.mock("features/Api/firebaseUserApi", () => ({
   useGetUserDataByIdQuery: jest.fn(() => ({
     data: {},

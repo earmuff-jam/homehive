@@ -1,4 +1,10 @@
-import React, { useEffect } from "react";
+import React, {
+  Dispatch,
+  MouseEvent,
+  SetStateAction,
+  useEffect,
+  useState,
+} from "react";
 
 import { matchPath, useLocation, useNavigate } from "react-router-dom";
 
@@ -16,12 +22,26 @@ import {
 import AButton from "common/AButton";
 import CustomSnackbar from "common/CustomSnackbar/CustomSnackbar";
 import { DefaultTourStepsMap } from "common/Tour/TourSteps";
+import { TAppRoute, TThemeIdx } from "common/types";
 import { retrieveTourKey } from "common/utils";
+import { useCreateEmailMutation } from "features/Api/externalIntegrationsApi";
 import { useLogoutMutation } from "features/Api/firebaseUserApi";
-import { useLocalStorageData } from "features/Invoice/hooks/useGenerateUserData";
+import { useFormatEmailWithInvoiceDetails } from "features/Invoice/hooks/useFormatEmailWithInvoiceDetails";
+import { TInvoiceDialog } from "features/Invoice/types/Invoice.types";
 import MenuOptions from "features/Layout/components/NavBar/MenuOptions";
 import { fetchLoggedInUser, isFeatureEnabled } from "features/Rent/utils";
-import useSendEmail, { generateInvoiceHTML } from "hooks/useSendEmail";
+import { generateInvoiceHTML } from "hooks/useSendEmail";
+
+// TAppToolbarProps ...
+type TAppToolbarProps = {
+  currentUri: string;
+  currentRoute: TAppRoute;
+  currentThemeIdx: TThemeIdx;
+  setCurrentThemeIdx: Dispatch<SetStateAction<string>>;
+  handleDrawerOpen: () => void;
+  handleDrawerClose: () => void;
+  setDialog: (data: TInvoiceDialog) => void;
+};
 
 export default function AppToolbar({
   currentUri,
@@ -31,26 +51,26 @@ export default function AppToolbar({
   handleDrawerOpen,
   handleDrawerClose,
   setDialog,
-}) {
+}: TAppToolbarProps) {
   const theme = useTheme();
   const location = useLocation();
   const navigate = useNavigate();
   const user = fetchLoggedInUser();
 
   const smallFormFactor = useMediaQuery(theme.breakpoints.down("sm"));
-  const { sendEmail, reset, loading, error, success } = useSendEmail();
+
+  const [
+    createEmail,
+    { isSuccess: isCreateEmailSuccess, isLoading: isCreateEmailLoading },
+  ] = useCreateEmailMutation();
 
   const [logout, { isSuccess: isLogoutSuccess, isLoading: isLogoutLoading }] =
     useLogoutMutation();
 
-  const {
-    data,
-    recieverInfo,
-    draftInvoiceHeader,
-    draftInvoiceStatusLabel,
-    draftRecieverUserEmailAddress,
-    isDisabled,
-  } = useLocalStorageData();
+  const { data, recieverInfo, draftInvoiceHeader, isDisabled } =
+    useFormatEmailWithInvoiceDetails();
+
+  const [showSnackbar, setShowSnackbar] = useState<boolean>(false);
 
   const currentSubRoute = currentRoute?.element.props?.routes?.find((route) =>
     matchPath(route.routeUri, location.pathname),
@@ -65,13 +85,13 @@ export default function AppToolbar({
   const isSendEmailFeatureEnabled = isFeatureEnabled("sendEmail");
 
   const handleSendEmail = () => {
-    sendEmail({
-      to: draftRecieverUserEmailAddress,
+    createEmail({
+      to: recieverInfo.email,
       subject: draftInvoiceHeader
         ? `Invoice Details - ${draftInvoiceHeader}`
         : "Invoice Details",
       text: "Please view your attached invoice.",
-      html: generateInvoiceHTML(recieverInfo, data, draftInvoiceStatusLabel),
+      html: generateInvoiceHTML(recieverInfo, data),
     });
   };
 
@@ -105,16 +125,15 @@ export default function AppToolbar({
     handleDrawerClose();
   };
 
-  const changeTheme = (_, currentThemeIdx) => {
-    if (Number(currentThemeIdx) === 0) {
-      localStorage.setItem("theme", 1);
-
-      setCurrentThemeIdx(1);
+  const changeTheme = (_: React.MouseEvent, currentThemeIdx: string) => {
+    if (currentThemeIdx === "0") {
+      localStorage.setItem("theme", "1");
+      setCurrentThemeIdx("1");
       return;
     }
 
-    localStorage.setItem("theme", 0);
-    setCurrentThemeIdx(0);
+    localStorage.setItem("theme", "0");
+    setCurrentThemeIdx("0");
   };
 
   useEffect(() => {
@@ -122,6 +141,12 @@ export default function AppToolbar({
       navigate(`/?refresh=${Date.now()}`);
     }
   }, [isLogoutLoading]);
+
+  useEffect(() => {
+    if (isCreateEmailSuccess) {
+      setShowSnackbar(true);
+    }
+  });
 
   return (
     <AppBar elevation={0} sx={{ padding: "0.30rem 0rem" }} className="no-print">
@@ -132,8 +157,8 @@ export default function AppToolbar({
           alignItems="center"
           sx={{ flexGrow: 1 }}
         >
-          <IconButton onClick={handleDrawerOpen}>
-            <MenuOutlined />
+          <IconButton onClick={handleDrawerOpen} size="small">
+            <MenuOutlined fontSize="small" />
           </IconButton>
           <Typography variant="h5">Homehive</Typography>
         </Stack>
@@ -154,24 +179,20 @@ export default function AppToolbar({
             handleHelp={handleHelp}
             handlePrint={handlePrint}
             handleSendEmail={handleSendEmail}
-            handleTheme={() => changeTheme("", currentThemeIdx)}
+            handleTheme={(ev) => changeTheme(ev, currentThemeIdx)}
             isEmailEnabled={isSendEmailFeatureEnabled} // email feature check
             isDisabled={isDisabled} // valid data check
-            isLightTheme={Number(currentThemeIdx) === 1}
+            isLightTheme={currentThemeIdx === "1"}
             showHelpAndSupport={showHelp}
-            isSendEmailLoading={loading}
+            isSendEmailLoading={isCreateEmailLoading}
           />
         </Stack>
       </Toolbar>
       <CustomSnackbar
-        showSnackbar={success || error !== null}
-        setShowSnackbar={reset}
-        severity={success ? "success" : "error"}
-        title={
-          success
-            ? "Email sent successfully. Check spam if necessary."
-            : "Error sending email."
-        }
+        showSnackbar={showSnackbar}
+        setShowSnackbar={setShowSnackbar}
+        severity="success"
+        title="Email sent successfully. Check spam if necessary."
       />
     </AppBar>
   );

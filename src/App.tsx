@@ -7,20 +7,20 @@ import { CssBaseline } from "@mui/material";
 import { TourProvider } from "@reactour/tour";
 import ScrollTopProvider from "common/ScrollTop/ScrollTopProvider";
 import { GeneratedTourSteps } from "common/Tour/TourSteps";
-import { buildAppRoutes } from "common/ValidateClientPermissions";
+import { TThemeIdx } from "common/types";
+import { parseJsonUtility } from "common/utils";
 import Layout from "features/Layout/Layout";
+import { buildAppRoutes } from "hooks/useBuildAppRoutes";
 import { MainAppRoutes } from "src/Routes";
 import { darkTheme, lightTheme } from "src/Theme";
 
 function App() {
-  const [currentThemeIdx, setCurrentThemeIdx] = useState(
-    localStorage.getItem("theme") || 0,
+  const [currentThemeIdx, setCurrentThemeIdx] = useState<TThemeIdx>(
+    (localStorage.getItem("theme") || "0") as TThemeIdx,
   );
 
   return (
-    <ThemeProvider
-      theme={Number(currentThemeIdx) === 0 ? lightTheme : darkTheme}
-    >
+    <ThemeProvider theme={currentThemeIdx === "0" ? lightTheme : darkTheme}>
       <CssBaseline />
       <TourProvider steps={GeneratedTourSteps}>
         <ScrollTopProvider>

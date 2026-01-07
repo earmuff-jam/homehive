@@ -17,6 +17,20 @@ import {
 } from "@mui/material";
 import AIconButton from "common/AIconButton";
 
+// TMenuOptionsProps ...
+type TMenuOptionsProps = {
+  handleHelp: () => void;
+  handlePrint: () => void;
+  handleTheme: (ev: React.MouseEvent<HTMLElement>) => void;
+  handleSendEmail: () => void;
+  showPrint?: boolean;
+  isLightTheme?: boolean;
+  isSendEmailLoading?: boolean;
+  showHelpAndSupport?: boolean;
+  isEmailEnabled?: boolean;
+  isDisabled?: boolean;
+};
+
 export default function MenuOptions({
   handleHelp = () => {},
   handlePrint = () => {},
@@ -28,12 +42,13 @@ export default function MenuOptions({
   showHelpAndSupport = false,
   isEmailEnabled = false,
   isDisabled = true,
-}) {
+}: TMenuOptionsProps) {
   const [anchorEl, setAnchorEl] = useState(null);
 
   const open = Boolean(anchorEl);
   const handleClose = () => setAnchorEl(null);
-  const handleClick = (event) => setAnchorEl(event.currentTarget);
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) =>
+    setAnchorEl(event.currentTarget);
 
   return (
     <>
@@ -44,7 +59,6 @@ export default function MenuOptions({
         aria-controls={open ? "customized-btn" : undefined}
         aria-haspopup="true"
         aria-expanded={open ? "true" : undefined}
-        variant="outlined"
         onClick={handleClick}
         label={<HelpOutlineRounded />}
       />
@@ -132,8 +146,8 @@ export default function MenuOptions({
         {showPrint && <Divider sx={{ my: 0.5 }} />}
 
         <MenuItem
-          onClick={() => {
-            handleTheme();
+          onClick={(ev) => {
+            handleTheme(ev);
             handleClose();
           }}
           disableRipple

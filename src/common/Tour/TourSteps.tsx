@@ -16,7 +16,6 @@ import {
   SenderInforamtionRouteUri,
   SettingsRouteUri,
   ViewInvoiceRouteUri,
-  createHelperSentences,
 } from "common/utils";
 
 type InvoiceRouteUri =
@@ -313,7 +312,22 @@ const derieveTourSteps = (
   }));
 };
 
-const DisplaySubHelperSection = () => {
+// createHelperSentences ...
+const createHelperSentences = (
+  verbStr: string,
+  extraClauseStr: string,
+): ReactNode => {
+  return (
+    <Typography variant="caption">
+      This help / guide is designed to aide you in learning how to&nbsp;
+      {verbStr}&nbsp;{extraClauseStr}&nbsp;. Feel free to restart the guide if
+      necessary.
+    </Typography>
+  );
+};
+
+// renderSubHelpSection ...
+const renderSubHelpSection = () => {
   const handleClick = (to: string = "") => {
     if (to) {
       window.location.href = to;
@@ -373,7 +387,7 @@ export const DefaultTourStepsMap: Record<InvoiceRouteUri, TourStepRange> = {
     element: (
       <>
         {createHelperSentences("view / print", "invoices")}
-        {DisplaySubHelperSection()}
+        {renderSubHelpSection()}
       </>
     ),
     start: 0,
@@ -383,7 +397,7 @@ export const DefaultTourStepsMap: Record<InvoiceRouteUri, TourStepRange> = {
     element: (
       <>
         {createHelperSentences("edit / update", "invoices")}
-        {DisplaySubHelperSection()}
+        {renderSubHelpSection()}
       </>
     ),
     start: ViewPdfHelpSteps.length,
@@ -393,7 +407,7 @@ export const DefaultTourStepsMap: Record<InvoiceRouteUri, TourStepRange> = {
     element: (
       <>
         {createHelperSentences("edit / update", "sender information")}
-        {DisplaySubHelperSection()}
+        {renderSubHelpSection()}
       </>
     ),
     start: ViewPdfHelpSteps.length + EditPdfHelpSteps.length,
@@ -406,7 +420,7 @@ export const DefaultTourStepsMap: Record<InvoiceRouteUri, TourStepRange> = {
     element: (
       <>
         {createHelperSentences("edit / update ", "reciever information")}
-        {DisplaySubHelperSection()}
+        {renderSubHelpSection()}
       </>
     ),
     start:
@@ -423,7 +437,7 @@ export const DefaultTourStepsMap: Record<InvoiceRouteUri, TourStepRange> = {
     element: (
       <>
         {createHelperSentences("interpret", "the dashboard")}
-        {DisplaySubHelperSection()}
+        {renderSubHelpSection()}
       </>
     ),
     start:
@@ -445,7 +459,7 @@ export const DefaultTourStepsMap: Record<InvoiceRouteUri, TourStepRange> = {
           "edit / update",
           "your information and email templates",
         )}
-        {DisplaySubHelperSection()}
+        {renderSubHelpSection()}
       </>
     ),
     start:
@@ -466,7 +480,7 @@ export const DefaultTourStepsMap: Record<InvoiceRouteUri, TourStepRange> = {
     element: (
       <>
         {createHelperSentences("view", "your rental property details")}
-        {DisplaySubHelperSection()}
+        {renderSubHelpSection()}
       </>
     ),
     start:
@@ -489,7 +503,7 @@ export const DefaultTourStepsMap: Record<InvoiceRouteUri, TourStepRange> = {
     element: (
       <>
         {createHelperSentences("view", "your property details")}
-        {DisplaySubHelperSection()}
+        {renderSubHelpSection()}
       </>
     ),
     start:
@@ -514,7 +528,7 @@ export const DefaultTourStepsMap: Record<InvoiceRouteUri, TourStepRange> = {
     element: (
       <>
         {createHelperSentences("view", "your property details")}
-        {DisplaySubHelperSection()}
+        {renderSubHelpSection()}
       </>
     ),
     start:
@@ -539,12 +553,7 @@ export const DefaultTourStepsMap: Record<InvoiceRouteUri, TourStepRange> = {
   },
 };
 
-/**
- * GeneratedTourSteps
- *
- * Generates tour steps based on router pathname and its criteria. Prefix the page with the associated
- * prefix string below and co-ordinate with data-tour options and props in each component.
- */
+// GeneratedTourSteps ...
 export const GeneratedTourSteps = [
   ...derieveTourSteps(ViewPdfHelpSteps, "view-pdf"),
   ...derieveTourSteps(EditPdfHelpSteps, "edit-pdf"),

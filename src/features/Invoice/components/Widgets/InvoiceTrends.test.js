@@ -1,11 +1,12 @@
 import React from "react";
 
-import InvoiceTrends from "./InvoiceTrends";
+import InvoiceTrendsChart from "./InvoiceTrends";
 import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/react";
+import { parseJsonUtility } from "common/utils";
 import * as utils from "features/Invoice/utils";
 
-describe("InvoiceTrends Widget", () => {
+describe("InvoiceTrendsChart Widget", () => {
   beforeEach(() => {
     jest.clearAllMocks();
     localStorage.clear();
@@ -13,7 +14,7 @@ describe("InvoiceTrends Widget", () => {
 
   it("renders correctly and matches snapshot", () => {
     const { asFragment } = render(
-      <InvoiceTrends label="Trends" caption="Overview" />,
+      <InvoiceTrendsChart label="Trends" caption="Overview" />,
     );
 
     expect(screen.getByText("Trends")).toBeInTheDocument();
@@ -26,7 +27,7 @@ describe("InvoiceTrends Widget", () => {
   });
 
   it("renders EmptyComponent when no pdfDetails are in localStorage", () => {
-    render(<InvoiceTrends label="Trends" caption="Overview" />);
+    render(<InvoiceTrendsChart label="Trends" caption="Overview" />);
 
     expect(screen.getByText("Trends")).toBeInTheDocument();
     expect(screen.getByText("Overview")).toBeInTheDocument();
@@ -42,6 +43,7 @@ describe("InvoiceTrends Widget", () => {
       datasets: [{ label: "Total", data: [100] }],
     };
 
+    parseJsonUtility.mockReturnValue({ id: 1, name: "Invoice 1" });
     jest
       .spyOn(utils, "normalizeInvoiceTrendsChartsDataset")
       .mockReturnValue([mockChartData]);
@@ -51,7 +53,7 @@ describe("InvoiceTrends Widget", () => {
       JSON.stringify({ id: 1, name: "Invoice 1" }),
     );
 
-    render(<InvoiceTrends label="Trends" caption="Overview" />);
+    render(<InvoiceTrendsChart label="Trends" caption="Overview" />);
 
     expect(utils.normalizeInvoiceTrendsChartsDataset).toHaveBeenCalledWith(
       [{ id: 1, name: "Invoice 1" }],
@@ -66,7 +68,7 @@ describe("InvoiceTrends Widget", () => {
       labels: ["Invoice 1"],
       datasets: [{ label: "Total", data: [100] }],
     };
-
+    parseJsonUtility.mockReturnValue({ id: 1, name: "Invoice 1" });
     jest
       .spyOn(utils, "normalizeInvoiceTrendsChartsDataset")
       .mockReturnValue([mockChartData]);
@@ -77,7 +79,7 @@ describe("InvoiceTrends Widget", () => {
     );
 
     // Render with line chartType
-    render(<InvoiceTrends label="Trends" caption="Overview" />);
+    render(<InvoiceTrendsChart label="Trends" caption="Overview" />);
     // Force chartType state to 'line' (bypass toggle interaction)
     const chartInstance = screen.getByTestId("bar-chart"); // still mocked as Bar
     expect(chartInstance).toBeInTheDocument();

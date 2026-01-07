@@ -1,22 +1,19 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 
-import { buildAppRoutes } from "common/ValidateClientPermissions";
+import { TAppRoute } from "common/types";
+import { buildAppRoutes } from "hooks/useBuildAppRoutes";
 
 // TSubAppRouterProps ...
 type TSubAppRouterProps = {
-  routes: string[];
+  routes: TAppRoute[];
   fallbackPath: string;
 };
 
-const SubAppRouter = ({ routes, fallbackPath = "/" }: TSubAppRouterProps) => {
-  const builtRoutes = buildAppRoutes(routes);
-
-  return (
-    <Routes>
-      {builtRoutes}
-      <Route path="*" element={<Navigate to={fallbackPath} replace />} />
-    </Routes>
-  );
-};
+const SubAppRouter = ({ routes, fallbackPath = "/" }: TSubAppRouterProps) => (
+  <Routes>
+    {buildAppRoutes(routes)}
+    <Route path="*" element={<Navigate to={fallbackPath} replace />} />
+  </Routes>
+);
 
 export default SubAppRouter;

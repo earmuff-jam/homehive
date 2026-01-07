@@ -3,6 +3,7 @@ import React from "react";
 import ItemTypeFreqChart from "./ItemTypeFreqChart";
 import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/react";
+import { parseJsonUtility } from "common/utils";
 import * as utils from "features/Invoice/utils";
 
 describe("ItemTypeFreqChart", () => {
@@ -43,6 +44,7 @@ describe("ItemTypeFreqChart", () => {
       datasets: [{ label: "Frequency", data: [5] }],
     };
 
+    parseJsonUtility.mockReturnValue({ id: 1, name: "Invoice 1" });
     jest
       .spyOn(utils, "normalizeInvoiceItemTypeChartDataset")
       .mockReturnValue(mockChartData);

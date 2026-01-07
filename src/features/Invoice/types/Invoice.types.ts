@@ -17,32 +17,6 @@ export type TOutletContext = {
   showWatermark: boolean;
 };
 
-// InvoiceAppBreadcrumb ...
-export type InvoiceAppBreadcrumb = {
-  value: string;
-  icon: ReactNode;
-};
-
-// InvoiceAppRouteConfig ...
-export type InvoiceAppRouteConfig = {
-  breadcrumb: InvoiceAppBreadcrumb;
-  displayInNavBar: boolean;
-  displayHelpSelector: boolean;
-  displayPrintSelector: boolean;
-};
-
-// InvoiceAppRoute ...
-export type InvoiceAppRoute = {
-  id: number;
-  label: string;
-  path: string;
-  routeUri: string;
-  element: ReactNode;
-  icon: ReactNode;
-  requiredFlags: string[];
-  config: InvoiceAppRouteConfig;
-};
-
 // WidgetConfig ...
 export type WidgetConfig = {
   inset: boolean; // makes text have extra spacing infront
@@ -130,6 +104,15 @@ export type InvoiceItemTypeChartData = {
   datasets: ItemTypeChartRow[];
 };
 
+// TInvoiceDialog ...
+export type TInvoiceDialog = {
+  title: string;
+  label: string;
+  type: string;
+  showWatermark: boolean;
+  display: boolean;
+};
+
 // MonthTotal ...
 export type MonthTotal = {
   collected: number;
@@ -149,7 +132,6 @@ export type TimeLineChartDataset = {
 };
 
 // TInvoiceRowHeader ...
-// defines prop for RowHeader in Invoice App
 export type TInvoiceRowHeader = {
   title: string;
   caption: string;

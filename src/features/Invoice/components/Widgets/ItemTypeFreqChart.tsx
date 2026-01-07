@@ -14,15 +14,13 @@ import {
   Tooltip,
 } from "chart.js";
 import EmptyComponent from "common/EmptyComponent";
+import { parseJsonUtility } from "common/utils";
 import RowHeader from "features/Invoice/components/RowHeader/InvoiceRowHeader";
 import {
   Invoice,
   InvoiceItemTypeChartData,
 } from "features/Invoice/types/Invoice.types";
-import {
-  normalizeInvoiceItemTypeChartDataset,
-  parseJsonUtility,
-} from "features/Invoice/utils";
+import { normalizeInvoiceItemTypeChartDataset } from "features/Invoice/utils";
 
 ChartJS.register(
   CategoryScale,

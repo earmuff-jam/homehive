@@ -16,6 +16,16 @@ export const externalIntegrationsApi = createApi({
     },
   }),
   endpoints: (builder) => ({
+    createEmail: builder.mutation({
+      query: ({ to, subject, text, html }) => ({
+        method: "POST",
+        body: JSON.stringify({
+          fUrl: "0013_fetch_esign_status",
+          fMethod: "POST",
+          payload: { to, subject, text, html },
+        }),
+      }),
+    }),
     getWorkspaces: builder.mutation({
       query: () => ({
         method: "POST",
@@ -84,6 +94,7 @@ export const externalIntegrationsApi = createApi({
 });
 
 export const {
+  useCreateEmailMutation,
   useGetEsignTemplatesQuery,
   useCreateWorkspaceMutation,
   useGetWorkspacesMutation,

@@ -189,15 +189,3 @@ export function normalizeInvoiceTimelineChartDataset(
     datasets,
   };
 }
-
-// parseJsonUtility ...
-// parses the json to a specific type T.
-export function parseJsonUtility<T>(value: string | null): T | null {
-  if (!value) return null;
-  try {
-    return JSON.parse(value) as T;
-  } catch (error) {
-    console.error("Failed to parse. ", error);
-    return null;
-  }
-}

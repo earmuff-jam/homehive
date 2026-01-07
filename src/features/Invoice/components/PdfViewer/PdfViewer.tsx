@@ -4,7 +4,7 @@ import dayjs from "dayjs";
 
 import { Container, Stack, Typography } from "@mui/material";
 import EmptyComponent from "common/EmptyComponent";
-import { EditInvoiceRouteUri } from "common/utils";
+import { EditInvoiceRouteUri, parseJsonUtility } from "common/utils";
 import ReportTable from "features/Invoice/components/PdfViewer/ReportTable";
 import RowHeader from "features/Invoice/components/RowHeader/InvoiceRowHeader";
 import Salutation from "features/Invoice/components/UserInfo/Salutation";
@@ -13,7 +13,6 @@ import {
   TOutletContext,
   UserInfo,
 } from "features/Invoice/types/Invoice.types";
-import { parseJsonUtility } from "features/Invoice/utils";
 import { useAppTitle } from "hooks/useAppTitle";
 
 export default function PdfViewer() {

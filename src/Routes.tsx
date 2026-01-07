@@ -1,4 +1,4 @@
-import React, { lazy } from "react";
+import { lazy } from "react";
 
 import {
   CottageRounded,
@@ -7,11 +7,13 @@ import {
   ReceiptRounded,
   WhatshotRounded,
 } from "@mui/icons-material";
+import { TAppRoute } from "common/types";
 import {
   HomeRouteUri,
   MainInvoiceAppRouteUri,
   MainRentAppRouteUri,
   NotesRouteUri,
+  RentalRouteUri,
 } from "common/utils";
 import { InvoiceAppRoutes } from "features/Invoice/Routes";
 import SplashPage from "features/Layout/SplashPage";
@@ -22,16 +24,13 @@ const ReleaseNotes = lazy(
   () => import("features/Layout/components/HelpAndSupport/ReleaseNotes"),
 );
 
-/**
- * MainAppRoutes ...
- *
- * root routes for the app
- */
-export const MainAppRoutes = [
+// MainAppRoutes ...
+export const MainAppRoutes: TAppRoute[] = [
   {
     id: 1,
     label: "Home",
     path: HomeRouteUri,
+    routeUri: HomeRouteUri,
     element: <SplashPage />,
     icon: <HomeRounded fontSize="small" />,
     requiredFlags: [],
@@ -43,12 +42,14 @@ export const MainAppRoutes = [
       displayInNavBar: true,
       displayHelpSelector: false,
       displayPrintSelector: false,
+      isLoggedInFeature: false,
     },
   },
   {
     id: 2,
     label: "Rent App",
     path: "/rent/*",
+    routeUri: RentalRouteUri,
     element: (
       <SubAppRouter
         routes={RentalAppRoutes}
@@ -72,6 +73,7 @@ export const MainAppRoutes = [
     id: 3,
     label: "Invoice App",
     path: "/invoice/*",
+    routeUri: MainInvoiceAppRouteUri,
     element: (
       <SubAppRouter
         routes={InvoiceAppRoutes}
@@ -88,12 +90,14 @@ export const MainAppRoutes = [
       displayInNavBar: true,
       displayHelpSelector: true,
       displayPrintSelector: true,
+      isLoggedInFeature: false,
     },
   },
   {
     id: 4,
     label: "Release Notes",
     path: NotesRouteUri,
+    routeUri: NotesRouteUri,
     element: <ReleaseNotes />,
     icon: <WhatshotRounded fontSize="small" />,
     requiredFlags: ["invoicer"],
@@ -105,6 +109,7 @@ export const MainAppRoutes = [
       displayInNavBar: false,
       displayHelpSelector: false,
       displayPrintSelector: false,
+      isLoggedInFeature: false,
     },
   },
 ];

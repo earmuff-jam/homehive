@@ -15,11 +15,13 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import validateClientPermissions, {
+import enabledFeatures, {
+  MainInvoiceAppRouteUri,
+  MainRentAppRouteUri,
   filterValidRoutesForNavigationBar,
   isValidPermissions,
-} from "common/ValidateClientPermissions";
-import { MainInvoiceAppRouteUri, MainRentAppRouteUri } from "common/utils";
+} from "common/utils";
+import rootLevelEnabledFeatures from "common/utils";
 import { InvoiceAppRoutes } from "features/Invoice/Routes";
 import NavigationGroup from "features/Layout/components/NavBar/NavigationGroup";
 import { RentalAppRoutes } from "features/Rent/Routes";
@@ -34,9 +36,9 @@ export default function NavBar({
 }) {
   const theme = useTheme();
   const navigate = useNavigate();
-
   const user = fetchLoggedInUser();
   const { pathname } = useLocation();
+  const enabledFeatures = rootLevelEnabledFeatures();
 
   // the timeout allows to close the drawer first before navigation occurs.
   // Without this, the drawer behaves weird.
@@ -48,11 +50,10 @@ export default function NavBar({
   };
 
   const getValidRoutes = (routes = [], roleType = "") => {
-    const validRouteFlags = validateClientPermissions();
     const filteredNavigationRoutes = filterValidRoutesForNavigationBar(routes);
 
     return filteredNavigationRoutes.filter(({ requiredFlags, config }) => {
-      const isRouteValid = isValidPermissions(validRouteFlags, requiredFlags);
+      const isRouteValid = isValidPermissions(enabledFeatures, requiredFlags);
       if (!isRouteValid) return false;
 
       const validRoles = config?.enabledForRoles || [];
@@ -120,7 +121,7 @@ export default function NavBar({
           {MainAppRoutes.map(
             ({ id, label, icon, path, requiredFlags, config }) => {
               const isRouteValid = isValidPermissions(
-                validateClientPermissions(),
+                enabledFeatures,
                 requiredFlags,
               );
               if (!isRouteValid) return null;
