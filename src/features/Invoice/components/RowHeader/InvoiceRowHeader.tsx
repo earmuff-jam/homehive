@@ -12,7 +12,7 @@ export default function InvoiceRowHeader({
   children,
 }: TInvoiceRowHeader) {
   return (
-    <>
+    <Stack>
       <Stack textAlign="center" sx={sxProps} alignContent="center">
         <Typography variant="h5" fontWeight="medium" sx={sxProps}>
           {title}
@@ -24,6 +24,7 @@ export default function InvoiceRowHeader({
       </Stack>
       {showDate && (
         <Typography
+          data-testid="createdDate"
           variant="subtitle2"
           fontStyle={"italic"}
           textAlign={"right"}
@@ -31,6 +32,6 @@ export default function InvoiceRowHeader({
           Created on {createdDate.format("MM-DD-YYYY")}
         </Typography>
       )}
-    </>
+    </Stack>
   );
 }

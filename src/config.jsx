@@ -10,18 +10,7 @@ import {
   setDoc,
 } from "firebase/firestore";
 
-// -------------------------------------------
-// Util functions
-
-/**
- * isFirebaseConfigOptionsValid ...
- *
- * function is used to check if the passed in configuration for the authenticator app
- * is valid or not. Can be used to validate others.
- *
- * @param {Object} ConfigOptions - FirebaseConfig app
- * @returns boolean - true or false
- */
+// isFirebaseConfigOptionsValid ...
 const isFirebaseConfigOptionsValid = ({ options }) =>
   options &&
   !Object.values(options).some((option) => option?.length === 0) &&
@@ -47,11 +36,6 @@ const analyticsConfig =
   getApps().find((app) => app.name === "[DEFAULT]") ||
   initializeApp(analyticsFirebaseConfig);
 
-/**
- * analyticsFirestore ...
- *
- * the db used to store analytics events for the application
- */
 export const analyticsFirestore = getFirestore(analyticsConfig);
 
 // -------------------------------------------
@@ -66,27 +50,6 @@ const authenticatorFirebaseConfig = {
   measurementId: import.meta.env.VITE_AUTH_FIREBASE_MEASUREMENTID,
 };
 
-/**
- * GeneralUserConfigValues ...
- *
- * these are general configuration values that can be used in the application.
- */
-export const GeneralUserConfigValues = {
-  StripeConnectionInstructionsLink: import.meta.env
-    .VITE_AUTH_STRIPE_CONNECTION_INSTRUCTIONS,
-  StripeConnectionIssuesInstructionLink: import.meta.env
-    .VITE_AUTH_STRIPE_CONNECTION_ISSUES_INSTRUCTIONS,
-  StripSecurityAndComplianceInstructionLink: import.meta.env
-    .VITE_AUTH_STRIPE_SECURITY_AND_COMPLIANCE,
-};
-
-/**
- * authenticatorConfig ...
- *
- * authenticatorConfig is the configuration manager used to authenticate
- * users into the backend system.
- *
- */
 export const authenticatorConfig =
   getApps().find((app) => app.name === "AUTHENTICATOR") ||
   initializeApp(authenticatorFirebaseConfig, "AUTHENTICATOR");
@@ -156,20 +119,10 @@ if (isFirebaseConfigOptionsValid(authenticatorConfig)) {
   );
 }
 
-/**
- * authenticatorApp ...
- *
- * the authenticator for the db
- */
 export const authenticatorApp = isFirebaseConfigOptionsValid(
   authenticatorConfig,
 )
   ? getAuth(authenticatorConfig)
   : null;
 
-/**
- * authenticatedFirestore ...
- *
- * the db for all authenticated users
- */
 export const authenticatorFirestore = getFirestore(authenticatorConfig);

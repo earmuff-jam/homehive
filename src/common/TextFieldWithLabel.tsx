@@ -6,7 +6,7 @@ import type { TextFieldProps } from "@mui/material";
 
 // TextFieldWithLabelProps ...
 export type TextFieldWithLabelProps = {
-  label: string;
+  label: string | ReactElement;
   name: string;
   placeholder: string;
   errorMsg?: string;

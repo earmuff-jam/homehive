@@ -22,15 +22,18 @@ import {
 import AButton from "common/AButton";
 import CustomSnackbar from "common/CustomSnackbar/CustomSnackbar";
 import { DefaultTourStepsMap } from "common/Tour/TourSteps";
-import { TAppRoute, TThemeIdx } from "common/types";
-import { retrieveTourKey } from "common/utils";
+import {
+  fetchLoggedInUser,
+  isSelectedFeatureEnabled,
+  retrieveTourKey,
+} from "common/utils";
 import { useCreateEmailMutation } from "features/Api/externalIntegrationsApi";
 import { useLogoutMutation } from "features/Api/firebaseUserApi";
 import { useFormatEmailWithInvoiceDetails } from "features/Invoice/hooks/useFormatEmailWithInvoiceDetails";
 import { TInvoiceDialog } from "features/Invoice/types/Invoice.types";
 import MenuOptions from "features/Layout/components/NavBar/MenuOptions";
-import { fetchLoggedInUser, isFeatureEnabled } from "features/Rent/utils";
-import { generateInvoiceHTML } from "hooks/useSendEmail";
+import { useGenerateInvoiceWithData } from "hooks/useGenerateInvoiceWithData";
+import { TAppRoute, TThemeIdx, TUser } from "src/types";
 
 // TAppToolbarProps ...
 type TAppToolbarProps = {
@@ -55,7 +58,7 @@ export default function AppToolbar({
   const theme = useTheme();
   const location = useLocation();
   const navigate = useNavigate();
-  const user = fetchLoggedInUser();
+  const user: TUser = fetchLoggedInUser();
 
   const smallFormFactor = useMediaQuery(theme.breakpoints.down("sm"));
 
@@ -82,7 +85,7 @@ export default function AppToolbar({
     currentRoute.config.displayPrintSelector &&
     currentSubRoute?.config?.displayPrintSelector;
 
-  const isSendEmailFeatureEnabled = isFeatureEnabled("sendEmail");
+  const isSendEmailFeatureEnabled = isSelectedFeatureEnabled("sendEmail");
 
   const handleSendEmail = () => {
     createEmail({
@@ -91,7 +94,7 @@ export default function AppToolbar({
         ? `Invoice Details - ${draftInvoiceHeader}`
         : "Invoice Details",
       text: "Please view your attached invoice.",
-      html: generateInvoiceHTML(recieverInfo, data),
+      html: useGenerateInvoiceWithData(recieverInfo, data),
     });
   };
 

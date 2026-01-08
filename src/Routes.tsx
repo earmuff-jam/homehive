@@ -7,7 +7,6 @@ import {
   ReceiptRounded,
   WhatshotRounded,
 } from "@mui/icons-material";
-import { TAppRoute } from "common/types";
 import {
   HomeRouteUri,
   MainInvoiceAppRouteUri,
@@ -19,9 +18,10 @@ import { InvoiceAppRoutes } from "features/Invoice/Routes";
 import SplashPage from "features/Layout/SplashPage";
 import { RentalAppRoutes } from "features/Rent/Routes";
 import SubAppRouter from "src/SubRouter";
+import { TAppRoute } from "src/types";
 
 const ReleaseNotes = lazy(
-  () => import("features/Layout/components/HelpAndSupport/ReleaseNotes"),
+  () => import("features/Layout/components/ReleaseNotes"),
 );
 
 // MainAppRoutes ...

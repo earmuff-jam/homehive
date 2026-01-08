@@ -1,54 +1,46 @@
-// Globally common types
-import { ReactNode } from "react";
+import { ReactElement, ReactNode } from "react";
 
-import { ButtonProps } from "@mui/material";
-
-// TUser ...
-// defines the user who is currently logged in
-export type TUser = {
-  id: string;
-  role?: string | null | undefined;
-  email: string;
-};
+import { AlertColor, ButtonProps } from "@mui/material";
 
 // AButtonProps ...
 // defines props for AButton
 export type AButtonProps = {
   label: string;
   loading?: boolean;
-  onClick: () => void;
+  onClick?: React.MouseEventHandler<HTMLButtonElement>;
 } & ButtonProps;
 
-// TAppRouteBreadcrumb ...
-// defines props for app breadcrumbs
-export type TAppRouteBreadcrumb = {
-  value: string;
-  icon: ReactNode;
+// TDialog ...
+// defines props for Dialog
+export type TDialog = {
+  title: string;
+  type: string;
+  display: boolean;
 };
 
-// TThemeIdx ...
-// defines prop for theme idx
-export type TThemeIdx = "0" | "1";
-
-// TAppRouteConfig ...
-// defines props for app route config
-export type TAppRouteConfig = {
-  breadcrumb: TAppRouteBreadcrumb;
-  displayInNavBar: boolean;
-  displayHelpSelector: boolean;
-  displayPrintSelector: boolean;
-  isLoggedInFeature: boolean;
-};
-
-// TAppRoute ...
-// defines props for App route
-export type TAppRoute = {
-  id: number;
+// TAlert ...
+// defines props for Alert
+export type TAlert = {
   label: string;
-  path: string;
-  routeUri: string;
-  element: ReactNode;
+  caption: string;
+  severity: AlertColor;
+  value: boolean;
+  onClick?: () => void;
+};
+
+// THelpAndSupport ...
+export type THelpAndSupport = {
+  id: number;
+  title: string;
+  caption: string;
+  icon: ReactElement;
+  buttonText: string;
+  to: string;
+};
+
+// TFrequentlyAskedQuestion ...
+export type TFrequentlyAskedQuestion = {
   icon: ReactNode;
-  requiredFlags: string[];
-  config: TAppRouteConfig;
+  question: string;
+  answer: string;
 };

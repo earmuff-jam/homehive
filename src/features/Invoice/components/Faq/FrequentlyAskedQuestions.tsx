@@ -1,5 +1,3 @@
-import React, { ReactNode } from "react";
-
 import {
   HelpRounded,
   PrintOutlined,
@@ -8,15 +6,9 @@ import {
   SendRounded,
 } from "@mui/icons-material";
 import FaqDetails from "common/FaqDetails/FaqDetails";
+import { TFrequentlyAskedQuestion } from "common/types";
 
-// InvoicerFrequentlyAskedQuestion ...
-export type InvoicerFrequentlyAskedQuestion = {
-  icon: ReactNode;
-  question: string;
-  answer: string;
-};
-
-const invoicerFreqentlyAskedQuestions: InvoicerFrequentlyAskedQuestion[] = [
+const invoicerFreqentlyAskedQuestions: TFrequentlyAskedQuestion[] = [
   {
     icon: <ReceiptLongRounded fontSize="small" />,
     question: "How do I create a new invoice?",

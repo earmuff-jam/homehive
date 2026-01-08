@@ -1,6 +1,6 @@
 import secureLocalStorage from "react-secure-storage";
 
-import { TAppRoute, TUser } from "common/types";
+import { TAppRoute, TUser } from "src/types";
 
 export const HomeRouteUri = "/";
 export const FaqRoutePath = "/faq";
@@ -51,12 +51,7 @@ export function pluralize(arrLength: number, wordStr: string): string {
 // fetchLoggedInUser ...
 export const fetchLoggedInUser = (): TUser | null => {
   const storedValue = secureLocalStorage.getItem("user");
-
-  if (typeof storedValue !== "string") {
-    return null;
-  }
-
-  return parseJsonUtility<TUser>(storedValue);
+  return storedValue as TUser;
 };
 
 // isBannerVisible ...
@@ -98,6 +93,12 @@ export function isValidPermissions(
 
   return isRequired;
 }
+
+// isSelectedFeatureEnabled ...
+export const isSelectedFeatureEnabled = (key: string): boolean => {
+  const enabledFlagMap = rootLevelEnabledFeatures();
+  return enabledFlagMap.get(key) || false;
+};
 
 // filterValidRoutesForNavigationBar ...
 export const filterValidRoutesForNavigationBar = (draftRoutes: TAppRoute[]) => {

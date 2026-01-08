@@ -47,7 +47,7 @@ export default function UserInfoViewer({
         <Stack direction="row" spacing={2}>
           <TextFieldWithLabel
             label="First Name *"
-            id="firstName"
+            name="firstName"
             placeholder="First Name"
             errorMsg={errors.firstName?.message}
             inputProps={{
@@ -66,7 +66,7 @@ export default function UserInfoViewer({
           />
           <TextFieldWithLabel
             label="Last Name *"
-            id="lastName"
+            name="lastName"
             placeholder="Last Name"
             errorMsg={errors.lastName?.message}
             inputProps={{
@@ -89,7 +89,7 @@ export default function UserInfoViewer({
         <Stack direction="row" spacing={2}>
           <TextFieldWithLabel
             label="Email address *"
-            id="email"
+            name="email"
             placeholder="Email Address"
             errorMsg={errors.email?.message}
             inputProps={{
@@ -104,7 +104,7 @@ export default function UserInfoViewer({
           />
           <TextFieldWithLabel
             label="Phone Number *"
-            id="phone"
+            name="phone"
             placeholder="Phone Number"
             errorMsg={errors.phone?.message}
             inputProps={{
@@ -122,7 +122,7 @@ export default function UserInfoViewer({
         {/* Street Address */}
         <TextFieldWithLabel
           label="Street Address *"
-          id="streetAddress"
+          name="streetAddress"
           placeholder="Street Address"
           errorMsg={errors.streetAddress?.message}
           inputProps={{
@@ -136,7 +136,7 @@ export default function UserInfoViewer({
         <Stack direction="row" spacing={2}>
           <TextFieldWithLabel
             label="City *"
-            id="city"
+            name="city"
             placeholder="City"
             errorMsg={errors.city?.message}
             inputProps={{
@@ -148,7 +148,7 @@ export default function UserInfoViewer({
 
           <TextFieldWithLabel
             label="State *"
-            id="state"
+            name="state"
             placeholder="State"
             errorMsg={errors.state?.message}
             inputProps={{
@@ -164,7 +164,7 @@ export default function UserInfoViewer({
 
           <TextFieldWithLabel
             label="Zip Code *"
-            id="zipcode"
+            name="zipcode"
             placeholder="Zip Code"
             errorMsg={errors.zipcode?.message}
             inputProps={{

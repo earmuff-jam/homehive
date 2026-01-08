@@ -6,14 +6,21 @@ exports[`FaqDetails component tests it should render and pass all snapshot tests
     class="MuiStack-root css-6rg9iv-MuiStack-root"
   >
     <div
-      data-testid="row-header"
+      class="MuiStack-root css-5545du-MuiStack-root"
     >
-      <h1>
+      <h5
+        class="MuiTypography-root MuiTypography-h5 css-1aso48g-MuiTypography-root"
+      >
         Frequently asked questions
-      </h1>
-      <p>
+      </h5>
+      <h6
+        class="MuiTypography-root MuiTypography-subtitle2 css-1ypmsg6-MuiTypography-root"
+      >
         Answers to common questions you may have.
-      </p>
+      </h6>
+      <div
+        class="MuiBox-root css-56sg73"
+      />
     </div>
     <div
       class="MuiStack-root css-1ludl2-MuiStack-root"

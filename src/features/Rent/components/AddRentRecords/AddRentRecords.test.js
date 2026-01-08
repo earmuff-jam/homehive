@@ -6,21 +6,6 @@ import AddRentRecords from "./AddRentRecords";
 import { configureStore } from "@reduxjs/toolkit";
 import { render, screen } from "@testing-library/react";
 
-jest.mock("common/AButton", () => ({
-  __esModule: true,
-  default: ({ label, onClick, disabled }) => (
-    <button onClick={onClick} disabled={disabled}>
-      {label}
-    </button>
-  ),
-}));
-
-jest.mock("react-secure-storage", () => ({
-  getItem: jest.fn(),
-  setItem: jest.fn(),
-  removeItem: jest.fn(),
-}));
-
 jest.mock("features/Api/firebaseUserApi", () => ({
   useGetUserDataByIdQuery: jest.fn(() => ({
     data: {},

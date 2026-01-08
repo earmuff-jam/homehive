@@ -7,21 +7,25 @@ exports[`SenderInfo component renders correctly and matches snapshot 1`] = `
     data-tour="sender-0"
   >
     <div
-      class="MuiStack-root css-5545du-MuiStack-root"
+      class="MuiStack-root css-nen11g-MuiStack-root"
     >
-      <h5
-        class="MuiTypography-root MuiTypography-h5 css-1aso48g-MuiTypography-root"
-      >
-        Add details about the sender
-      </h5>
-      <h6
-        class="MuiTypography-root MuiTypography-subtitle2 css-1ypmsg6-MuiTypography-root"
-      >
-        Required fields are marked with an * 
-      </h6>
       <div
-        class="MuiBox-root css-56sg73"
-      />
+        class="MuiStack-root css-5545du-MuiStack-root"
+      >
+        <h5
+          class="MuiTypography-root MuiTypography-h5 css-1aso48g-MuiTypography-root"
+        >
+          Add details about the sender
+        </h5>
+        <h6
+          class="MuiTypography-root MuiTypography-subtitle2 css-1ypmsg6-MuiTypography-root"
+        >
+          Required fields are marked with an * 
+        </h6>
+        <div
+          class="MuiBox-root css-56sg73"
+        />
+      </div>
     </div>
     <form>
       <button

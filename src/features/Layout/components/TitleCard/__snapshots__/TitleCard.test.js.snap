@@ -10,15 +10,12 @@ exports[`TitleCard renders correctly and matches snapshot 1`] = `
       class="MuiCardContent-root css-1casv0q-MuiCardContent-root"
     >
       <div
-        class="MuiBox-root css-1s00k8g"
+        class="MuiBox-root css-1uzqyjp"
       >
         <h4
           class="MuiTypography-root MuiTypography-h4 css-f84ov1-MuiTypography-root"
         />
       </div>
-      <p
-        class="MuiTypography-root MuiTypography-body1 MuiTypography-gutterBottom css-91oxh-MuiTypography-root"
-      />
       <div
         class="MuiBox-root css-ocwszi"
       />

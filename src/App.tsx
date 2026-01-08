@@ -7,12 +7,11 @@ import { CssBaseline } from "@mui/material";
 import { TourProvider } from "@reactour/tour";
 import ScrollTopProvider from "common/ScrollTop/ScrollTopProvider";
 import { GeneratedTourSteps } from "common/Tour/TourSteps";
-import { TThemeIdx } from "common/types";
-import { parseJsonUtility } from "common/utils";
 import Layout from "features/Layout/Layout";
-import { buildAppRoutes } from "hooks/useBuildAppRoutes";
+import { useBuildAppRoutes } from "hooks/useBuildAppRoutes";
 import { MainAppRoutes } from "src/Routes";
 import { darkTheme, lightTheme } from "src/Theme";
+import { TThemeIdx } from "src/types";
 
 function App() {
   const [currentThemeIdx, setCurrentThemeIdx] = useState<TThemeIdx>(
@@ -36,7 +35,7 @@ function App() {
                   />
                 }
               >
-                {buildAppRoutes(MainAppRoutes)}
+                {useBuildAppRoutes(MainAppRoutes)}
               </Route>
             </Routes>
           </BrowserRouter>

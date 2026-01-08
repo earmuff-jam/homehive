@@ -10,14 +10,21 @@ exports[`StatusCard tests StatusCard snapshot tests matches AddRentRecords snaps
       class="MuiBox-root css-70qvj9"
     >
       <div
-        data-testid="row-header"
+        class="MuiStack-root css-11jzyif-MuiStack-root"
       >
-        <h1>
+        <h5
+          class="MuiTypography-root MuiTypography-h5 css-1b1xdzs-MuiTypography-root"
+        >
           Account Connection
-        </h1>
-        <p>
+        </h5>
+        <h6
+          class="MuiTypography-root MuiTypography-subtitle2 css-1ypmsg6-MuiTypography-root"
+        >
           View details about your esign account.
-        </p>
+        </h6>
+        <div
+          class="MuiBox-root css-56sg73"
+        />
       </div>
       <div
         class="MuiBox-root css-dgkyuy"

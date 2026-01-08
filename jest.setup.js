@@ -102,17 +102,6 @@ jest.mock("common/TextFieldWithLabel", () => ({
   ),
 }));
 
-// mock RowHeader ...
-jest.mock("common/RowHeader/RowHeader", () => ({
-  __esModule: true,
-  default: ({ title, caption }) => (
-    <div data-testid="row-header">
-      <h1>{title}</h1>
-      <p>{caption}</p>
-    </div>
-  ),
-}));
-
 // mock EmptyComponent ...
 jest.mock("common/EmptyComponent", () => ({
   __esModule: true,
@@ -128,6 +117,11 @@ jest.mock("common/EmptyComponent", () => ({
       {children}
     </div>
   ),
+}));
+
+jest.mock("@mui/x-date-pickers", () => ({
+  ...jest.requireActual("@mui/x-date-pickers"),
+  MobileDatePicker: () => <div data-testid="mock-date-picker" />,
 }));
 
 // mock functions in utils ...
@@ -146,6 +140,7 @@ jest.mock("common/utils", () => ({
   ]),
   isValidPermissions: jest.fn(),
   retrieveTourKey: jest.fn(),
+  fetchLoggedInUser: jest.fn(),
   filterValidRoutesForNavigationBar: jest.fn(),
   normalizeDetailsTableData: jest.fn((data) => data),
 }));

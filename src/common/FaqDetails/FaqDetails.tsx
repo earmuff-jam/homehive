@@ -7,11 +7,12 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import RowHeader from "common/RowHeader/RowHeader";
-import { InvoicerFrequentlyAskedQuestion } from "features/Invoice/components/Faq/FrequentlyAskedQuestions";
+import { TFrequentlyAskedQuestion } from "common/types";
+import RowHeader from "features/Rent/common/RowHeader";
 
+// type FrequentlyAskedQuestionsProps ...
 type FrequentlyAskedQuestionsProps = {
-  data: InvoicerFrequentlyAskedQuestion[];
+  data: TFrequentlyAskedQuestion[];
 };
 
 export default function FaqDetails({ data }: FrequentlyAskedQuestionsProps) {

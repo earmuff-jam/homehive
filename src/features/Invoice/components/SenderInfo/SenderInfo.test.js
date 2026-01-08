@@ -7,27 +7,6 @@ import SenderInfo from "./SenderInfo";
 import { configureStore } from "@reduxjs/toolkit";
 import { render } from "@testing-library/react";
 
-// Mock dependencies
-jest.mock("hooks/useAppTitle", () => ({
-  useAppTitle: jest.fn(),
-}));
-
-jest.mock("common/CustomSnackbar/CustomSnackbar", () => ({
-  __esModule: true,
-  default: ({ showSnackbar }) =>
-    showSnackbar ? <div data-testid="snackbar">Changes saved.</div> : null,
-}));
-
-jest.mock("common/RowHeader/RowHeader", () => ({
-  __esModule: true,
-  default: ({ title, caption }) => (
-    <div>
-      <h1>{title}</h1>
-      <p>{caption}</p>
-    </div>
-  ),
-}));
-
 jest.mock("features/Invoice/components/UserInfo/UserInfoViewer", () => ({
   __esModule: true,
   default: ({ onSubmit }) => (

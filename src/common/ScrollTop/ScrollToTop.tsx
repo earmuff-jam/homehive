@@ -2,17 +2,12 @@ import { ReactNode } from "react";
 
 import { Box, Fade, useScrollTrigger } from "@mui/material";
 
-/**
- * The ScrollTopProps type defines a prop object with a children property of type ReactNode.
- * @property {ReactNode} children - The `children` property in the `ScrollTopProps` type is of type
- * `ReactNode`. This means that the `children` prop can accept any valid React node as its value, such
- * as JSX elements, strings, or numbers.
- */
-export type ScrollTopProps = {
+// type TScrollTopProps ...
+type TScrollTopProps = {
   children: ReactNode;
 };
 
-export default function ScrollTop({ children }: ScrollTopProps) {
+export default function ScrollTop({ children }: TScrollTopProps) {
   const trigger = useScrollTrigger({
     disableHysteresis: true,
     threshold: 100,

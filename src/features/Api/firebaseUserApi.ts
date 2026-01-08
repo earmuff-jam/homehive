@@ -17,13 +17,7 @@ import {
   where,
 } from "firebase/firestore";
 import { authenticatorConfig, authenticatorFirestore as db } from "src/config";
-
-// TCustomError ...
-// defines prop for custom error handling
-export type TCustomError = {
-  message: string;
-  code: number;
-};
+import { TCustomError, TUser, TUserDetails } from "src/types";
 
 // TTag ...
 type TTag = "User";
@@ -44,8 +38,10 @@ export const firebaseUserApi = createApi({
 
   endpoints: (builder) => ({
     // fetch user data where user id matches the passed in user id from users db
-    getUserDataById: builder.query<TUser, string>({
-      queryFn: async (uid): Promise<QueryReturnValue<TUser, TCustomError>> => {
+    getUserDataById: builder.query<TUserDetails, string>({
+      queryFn: async (
+        uid,
+      ): Promise<QueryReturnValue<TUserDetails, TCustomError>> => {
         try {
           const docRef = doc(db, "users", uid);
           const docSnap = await getDoc(docRef);
@@ -55,7 +51,7 @@ export const firebaseUserApi = createApi({
           }
 
           return {
-            data: { uid, ...docSnap.data() } as TUser,
+            data: { uid, ...docSnap.data() } as TUserDetails,
           };
         } catch (err) {
           return {
@@ -146,19 +142,19 @@ export const firebaseUserApi = createApi({
 
     // update user in users db
     updateUserByUid: builder.mutation<
-      TUser,
-      { uid: string; newData: Partial<TUser> }
+      TUserDetails,
+      { uid: string; newData: Partial<TUserDetails> }
     >({
       queryFn: async ({
         uid,
         newData,
-      }): Promise<QueryReturnValue<TUser, TCustomError>> => {
+      }): Promise<QueryReturnValue<TUserDetails, TCustomError>> => {
         try {
           const userRef = doc(db, "users", uid);
           await setDoc(userRef, newData, { merge: true });
 
           return {
-            data: { uid, ...newData } as TUser,
+            data: { uid, ...newData } as TUserDetails,
           };
         } catch (err) {
           return {

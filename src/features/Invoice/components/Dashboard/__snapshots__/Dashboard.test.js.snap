@@ -37,21 +37,25 @@ exports[`Dashboard renders empty dashboard correctly and matches snapshot 1`] = 
           </button>
         </span>
         <div
-          class="MuiStack-root css-1mrb496-MuiStack-root"
+          class="MuiStack-root css-nen11g-MuiStack-root"
         >
-          <h5
-            class="MuiTypography-root MuiTypography-h5 css-wj3xde-MuiTypography-root"
-          >
-            Standard layout
-          </h5>
-          <h6
-            class="MuiTypography-root MuiTypography-subtitle2 css-1ypmsg6-MuiTypography-root"
-          >
-            Displaying 0 undefined
-          </h6>
           <div
-            class="MuiBox-root css-56sg73"
-          />
+            class="MuiStack-root css-1mrb496-MuiStack-root"
+          >
+            <h5
+              class="MuiTypography-root MuiTypography-h5 css-wj3xde-MuiTypography-root"
+            >
+              Standard layout
+            </h5>
+            <h6
+              class="MuiTypography-root MuiTypography-subtitle2 css-1ypmsg6-MuiTypography-root"
+            >
+              Displaying 0 undefined
+            </h6>
+            <div
+              class="MuiBox-root css-56sg73"
+            />
+          </div>
         </div>
       </div>
       <div
