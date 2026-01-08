@@ -25,13 +25,13 @@ import {
 } from "@mui/material";
 import AButton from "common/AButton";
 import CustomSnackbar from "common/CustomSnackbar/CustomSnackbar";
-import RowHeader from "common/RowHeader/RowHeader";
 import { useGetUserDataByIdQuery } from "features/Api/firebaseUserApi";
 import {
   useCreateRentRecordMutation,
   useLazyGetRentByMonthQuery,
 } from "features/Api/rentApi";
 import { useGetTenantByPropertyIdQuery } from "features/Api/tenantsApi";
+import RowHeader from "features/Rent/common/RowHeader/RowHeader";
 import { getStripeFailureReasons } from "features/Rent/components/Settings/common";
 import { useCheckStripeAccountStatus } from "features/Rent/hooks/useCheckStripeAccountStatus";
 import { useGenerateStripeCheckoutSession } from "features/Rent/hooks/useGenerateStripeCheckoutSession";
@@ -269,7 +269,7 @@ export default function PropertyOwnerInfoCard({
                     </Typography>
                   </Alert>
                 </Box>
-                
+
                 <AButton
                   size="small"
                   variant="contained"

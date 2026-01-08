@@ -1,8 +1,8 @@
 import { Route } from "react-router-dom";
 
-import { TAppRoute } from "common/types";
 import rootLevelEnabledFeatures, { isValidPermissions } from "common/utils";
 import AuthenticationProvider from "features/Auth/AuthenticationProvider";
+import { TAppRoute } from "src/types";
 
 // buildAppRoutes ...
 export function buildAppRoutes(draftRoutes: TAppRoute[]) {

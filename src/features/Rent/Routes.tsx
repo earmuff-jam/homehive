@@ -6,6 +6,7 @@ import {
   QuestionAnswerRounded,
   SettingsRounded,
 } from "@mui/icons-material";
+import { TAppRoute } from "common/types";
 import {
   FaqRoutePath,
   PropertiesRoutePath,
@@ -33,12 +34,8 @@ const Settings = React.lazy(
 );
 const Faq = React.lazy(() => import("features/Rent/components/Faq/Faq"));
 
-/**
- * RentalAppRoutes ...
- *
- * routes that are built for rent app
- */
-export const RentalAppRoutes = [
+// rental app routes ...
+export const RentalAppRoutes: TAppRoute[] = [
   {
     id: 1,
     label: "My Properties",
@@ -128,6 +125,7 @@ export const RentalAppRoutes = [
         value: "Invoice App Help Center",
         icon: <QuestionAnswerRounded fontSize="small" />,
       },
+      isLoggedInFeature: true,
       displayInNavBar: true,
       displayHelpSelector: false,
       displayPrintSelector: false,

@@ -17,12 +17,12 @@ import {
 } from "@mui/material";
 import AButton from "common/AButton";
 import CustomSnackbar from "common/CustomSnackbar/CustomSnackbar";
-import RowHeader from "common/RowHeader/RowHeader";
 import TextFieldWithLabel from "common/TextFieldWithLabel";
 import {
   useGetUserDataByIdQuery,
   useUpdateUserByUidMutation,
 } from "features/Api/firebaseUserApi";
+import RowHeader from "features/Rent/common/RowHeader/RowHeader";
 import { fetchLoggedInUser } from "features/Rent/utils";
 
 export default function ProfileDetails() {

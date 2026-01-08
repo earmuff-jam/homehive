@@ -2,7 +2,7 @@ const dayjs = require("dayjs");
 const {
   stripHTMLForEmailMessages,
   isValid,
-  updateDateTime,
+  displayNextPaymentDueDate,
   formatCurrency,
   sumCentsToDollars,
   derieveTotalRent,
@@ -73,11 +73,11 @@ describe("Test utility functions", () => {
     });
   });
 
-  describe("test updateDateTime function", () => {
+  describe("test displayNextPaymentDueDate function", () => {
     it("returns next monthly ISO date", () => {
       const start = dayjs().subtract(2, "month");
 
-      const result = updateDateTime(start);
+      const result = displayNextPaymentDueDate(start);
 
       expect(dayjs(result).isValid()).toBe(true);
     });

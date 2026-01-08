@@ -7,8 +7,8 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import RowHeader from "common/RowHeader/RowHeader";
 import { InvoicerFrequentlyAskedQuestion } from "features/Invoice/components/Faq/FrequentlyAskedQuestions";
+import RowHeader from "features/Rent/common/RowHeader/RowHeader";
 
 type FrequentlyAskedQuestionsProps = {
   data: InvoicerFrequentlyAskedQuestion[];

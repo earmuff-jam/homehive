@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
@@ -16,23 +16,29 @@ import {
 } from "@mui/material";
 import AButton from "common/AButton";
 import CustomSnackbar from "common/CustomSnackbar/CustomSnackbar";
-import RowHeader from "common/RowHeader/RowHeader";
 import { useUpdatePropertyByIdMutation } from "features/Api/propertiesApi";
+import RowHeader from "features/Rent/common/RowHeader/RowHeader";
 import {
   AddPropertyTextString,
   AddRentRecordsTextString,
 } from "features/Rent/common/constants";
 import AddProperty from "features/Rent/components/AddProperty/AddProperty";
 import AddRentRecords from "features/Rent/components/AddRentRecords/AddRentRecords";
+import { TProperty, TRentDialog } from "features/Rent/types/Rent.types";
 import { fetchLoggedInUser, sanitizeApiFields } from "features/Rent/utils";
 
-const defaultDialog = {
+const defaultDialog: TRentDialog = {
   title: "",
   type: "",
   display: false,
 };
 
-export default function QuickActions({ property }) {
+// TQuickActionsProps ...
+type TQuickActionsProps = {
+  property: TProperty;
+};
+
+export default function QuickActions({ property }: TQuickActionsProps) {
   const navigate = useNavigate();
   const user = fetchLoggedInUser();
   const [
@@ -47,7 +53,7 @@ export default function QuickActions({ property }) {
     handleSubmit,
     formState: { errors, isValid },
     reset,
-  } = useForm({
+  } = useForm<TProperty>({
     mode: "onChange",
     defaultValues: {
       name: "",
@@ -66,8 +72,8 @@ export default function QuickActions({ property }) {
       isOwnerCoveredUtilities: false,
       ownerCoveredUtilities: "",
       rent: 0,
-      additional_rent: 0,
-      rent_increment: 100,
+      additionalRent: 0,
+      rentIncrement: 100,
       securityDeposit: 0,
       allowedVehicleCounts: 0,
       paymentID: "",
@@ -84,15 +90,15 @@ export default function QuickActions({ property }) {
     },
   });
 
-  const [dialog, setDialog] = useState(defaultDialog);
-  const [showSnackbar, setShowSnackbar] = useState(false);
+  const [dialog, setDialog] = useState<TRentDialog>(defaultDialog);
+  const [showSnackbar, setShowSnackbar] = useState<boolean>(false);
 
   const closeDialog = () => {
     setDialog(defaultDialog);
     reset();
   };
 
-  const onSubmit = (data) => {
+  const onSubmit = (data: TProperty) => {
     const result = {
       ...data,
       id: property?.id,
@@ -121,20 +127,20 @@ export default function QuickActions({ property }) {
   useEffect(() => {
     if (property?.id) {
       reset({
-        name: property?.name || "",
-        address: property?.address || "",
-        city: property?.city || "",
-        state: property?.state || "",
-        county: property?.county || "",
-        zipcode: property?.zipcode || "",
-        owner_email: property?.owner_email || "",
-        units: property?.units || "",
-        bathrooms: property?.bathrooms || "",
-        rent: property?.rent || "",
-        additional_rent: property?.additional_rent || "",
-        note: property?.note || "",
-        sqFt: property?.sqFt || "",
-        rent_increment: property?.rent_increment || "",
+        name: property?.name,
+        address: property?.address,
+        city: property?.city,
+        state: property?.state,
+        county: property?.county,
+        zipcode: property?.zipcode,
+        ownerEmail: property?.ownerEmail,
+        units: property?.units || 0,
+        bathrooms: property?.bathrooms || 0,
+        rent: property?.rent || 0,
+        additionalRent: property?.additionalRent || 0,
+        note: property?.note,
+        sqFt: property?.sqFt || 0,
+        rentIncrement: property?.rentIncrement,
         emergencyContactNumber: property?.emergencyContactNumber,
         isTenantCleaningYard: property?.isTenantCleaningYard,
         isSmoking: property?.isSmoking,
@@ -268,6 +274,7 @@ export default function QuickActions({ property }) {
           </Dialog>
 
           <CustomSnackbar
+            severity="success"
             showSnackbar={showSnackbar}
             setShowSnackbar={setShowSnackbar}
             title="Changes saved."

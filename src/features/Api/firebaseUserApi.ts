@@ -5,6 +5,7 @@ import {
   createApi,
   fakeBaseQuery,
 } from "@reduxjs/toolkit/query/react";
+import { TUser } from "common/types";
 import { authenticateViaGoogle } from "features/Auth/AuthHelper";
 import { getAuth, signOut } from "firebase/auth";
 import {

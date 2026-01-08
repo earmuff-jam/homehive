@@ -1,7 +1,7 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 
-import { TAppRoute } from "common/types";
 import { buildAppRoutes } from "hooks/useBuildAppRoutes";
+import { TAppRoute } from "src/types";
 
 // TSubAppRouterProps ...
 type TSubAppRouterProps = {

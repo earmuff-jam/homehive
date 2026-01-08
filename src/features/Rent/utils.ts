@@ -1,11 +1,5 @@
-import React from "react";
 
-import secureLocalStorage from "react-secure-storage";
-
-/**
- * Utility file for properties
- */
-import dayjs from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 
 import {
   AssignmentLateRounded,
@@ -15,175 +9,72 @@ import {
 import rootLevelEnabledFeatures from "common/utils";
 import { LEASE_TERM_MENU_OPTIONS } from "features/Rent/common/constants";
 import { produce } from "immer";
+import { TPaymentStatusEnumValues, TProperty, TTemplateProcessorEnumValues } from "features/Rent/types/Rent.types";
+import { TUser } from "src/types";
 
-// ---------------------------
 // enum values
+export const PaidRentStatusEnumValue: TPaymentStatusEnumValues = "paid";
+export const ManualRentStatusEnumValue: TPaymentStatusEnumValues = "manual";
+export const CreateInvoiceEnumValue: TTemplateProcessorEnumValues = "CreateInvoice";
+export const SendDefaultInvoiceEnumValue: TTemplateProcessorEnumValues = "SendDefaultInvoice";
+export const PaymentReminderEnumValue: TTemplateProcessorEnumValues = "PaymentReminder";
+export const RenewLeaseNoticeEnumValue: TTemplateProcessorEnumValues = "RenewLeaseNotice";
 
-// stripe rent status
-export const PaidRentStatusEnumValue = "paid";
-export const ManualRentStatusEnumValue = "manual";
-
-// template processor actions
-export const CreateInvoiceEnumValue = "Create_Invoice";
-export const SendDefaultInvoiceEnumValue = "Send_Default_Invoice";
-export const PaymentReminderEnumValue = "Payment_Reminder";
-export const RenewLeaseNoticeEnumValue = "Renew_Lease_Notice_Enum_Value";
-
-/**
- * stripHTMLForEmailMessages ...
- *
- * fn used to strip html messages for plain text formatting.
- * this is done so to act as a fallback for clients who do not
- * have email setup
- *
- * @param {Document} htmlDocument
- * @returns Document - cleaned up version of the document without any tags or formatting
- */
+// stripHTMLForEmailMessages ...
 export const stripHTMLForEmailMessages = (htmlDocument) => {
   const div = document.createElement("div");
   div.innerHTML = htmlDocument;
   return div.textContent || div.innerText || "";
 };
 
-/**
- * Email Validators
- */
-const emailValidators = [
-  {
-    validate: (value) => value.trim().length <= 0,
-    message: "Email address is required",
-  },
-  {
-    validate: (value) => value.trim().length >= 150,
-    message: "Email address should be less than 150 characters",
-  },
-  {
-    validate: (value) => !/^[\w-.]+@([\w-]+\.)+[\w-]{2,}$/.test(value),
-    message: "Email address is not valid",
-  },
-];
-
-/**
- * isValid ...
- *
- * function used to determine if an email is valid or not
- *
- * @param {string} email
- * @returns boolean - true / false
- */
-export const isValid = (email) => {
-  for (const validator of emailValidators) {
-    if (validator.validate(email)) {
-      return false;
-    }
-  }
-  return true;
-};
-
-/**
- * fetchLoggedInUser ...
- *
- * used to retrieve the logged in userId.
- *
- * @returns string - the logged in userId
- */
-export const fetchLoggedInUser = () => {
-  return secureLocalStorage.getItem("user");
-};
-
-/**
- * updateDateTime function
- *
- * util function used to updateDateTime. used to update the
- * next projected rent due date
- *
- * @param {string} startDate - the start date of the event
- * @returns updatedDateTime with a month added.
- */
-export const updateDateTime = (startDate) => {
+// displayNextPaymentDueDate ...
+export const displayNextPaymentDueDate = (startDate: Dayjs): Dayjs => {
   const today = dayjs();
   const monthsSinceStart = today.diff(startDate, "month");
   const nextDueDate = startDate.add(monthsSinceStart + 1, "month");
-  return dayjs(nextDueDate).toISOString();
+  return nextDueDate;
 };
 
-/**
- * formatCurrency ...
- *
- * used to format the current passed in amount.
- *
- * @param {Number} amount - the amount that needs to be formatted, default 0
- *
- * @returns {Number} formatted result
- */
-export const formatCurrency = (amt = 0) => {
+// formatCurrency ...
+// defines function to format provided number into currency type
+export const formatCurrency = (amt: number = 0): string => {
   return amt.toFixed(2);
 };
 
-/**
- * sumCentsToDollars ...
- *
- * used to sum the total for all the provided args
- *
- * @param  {...String} values - String representation of numbers in cents
- * @returns sum of the total numbers in dollars
- */
-export const sumCentsToDollars = (...values) => {
+// sumCentsToDollars ...
+// defines function to count all total cents and convert to dollar amount
+export const sumCentsToDollars = (...values: number[]) : number => {
   return values.reduce((total, val) => {
-    const num = Number(val || 0);
-    return total + (isNaN(num) ? 0 : num / 100);
+    return total + (isNaN(val) ? 0 : val / 100);
   }, 0);
 };
 
-/**
- * derieveTotalRent
- *
- * function used to retrieve the total rent of any given property. For homes
- * with a SoR, rent are calculated per room. The property unit as a whole can have
- * additional charges.
- *
- * @param {Object} property - the property object
- * @param {Array} tenants - the array of tenants that are residing in the property
- * @param {Boolean} isAnyTenantSoR - true / false - determine if the property is single occupancy or not
- *
- * @returns {Number} - amount of rent in US Dollars
- */
-export const derieveTotalRent = (property, tenants, isAnyTenantSoR) => {
-  const totalRent =
-    Number(property?.rent || 0) + Number(property?.additional_rent || 0); // can have additional charges
+// derieveTotalRent ...
+// defines a function used to fetch total rent based on property, tenants and tenants w/o SoR occupancy. Also adds additional charges. Does NOT take late fee into account
+export const derieveTotalRent = (property: TProperty, tenants, isAnyTenantSoR: boolean) => {
 
+  const totalRent = property.rent + property.additionalRent;
   if (isAnyTenantSoR) {
     return tenants.reduce(
-      (total, tenant) =>
+      (total: number, tenant) =>
         total +
-        parseInt(tenant.rent || 0) +
-        parseInt(property?.additional_rent),
+        tenant.rent +
+        property.additionalRent,
       0,
     );
   } else {
-    return totalRent || 0;
+    return totalRent;
   }
 };
 
-/**
- * getOccupancyRate ...
- *
- * function used to determine the occupancy rate of the selected
- * property.
- *
- * @param {Object} property - the property object
- * @param {Array} tenants - the array of tenants that are residing in the property
- * @param {Boolean} isAnyTenantSoR - true / false - determine if the property is single occupancy or not
- *
- * @returns {Number} - the percent of the occupancy of the selected property
- */
-export const getOccupancyRate = (property, tenants, isAnyTenantSoR) => {
+// getOccupancyRate ...
+export const getOccupancyRate = (property:TProperty, tenants, isAnyTenantSoR: boolean): number => {
   if (isAnyTenantSoR) {
-    const totalUnits = parseInt(property?.units || 0);
+    const totalUnits = property.units;
     const occupiedUnits = tenants.length;
     return totalUnits > 0 ? Math.round((occupiedUnits / totalUnits) * 100) : 0;
   } else {
-    // if !SoR, all tenants count as 1 household member. hence 100% occupancy rate
+    // if !SoR, all tenants count as 1 household member.
     return tenants?.length > 0 ? 100 : 0;
   }
 };
@@ -197,6 +88,8 @@ export const getOccupancyRate = (property, tenants, isAnyTenantSoR) => {
  * @param {string | Date} startDate - The tenant's lease start date.
  * @returns {string} - The next due date in YYYY-MM-DD format.
  */
+
+// what is the difference between this and displayNextPaymentDueDate /// ?????
 export function getNextMonthlyDueDate(startDate) {
   if (!startDate) return "";
 

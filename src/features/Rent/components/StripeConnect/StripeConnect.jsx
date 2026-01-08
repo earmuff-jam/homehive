@@ -22,11 +22,11 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import RowHeader from "common/RowHeader/RowHeader";
 import {
   useGetUserDataByIdQuery,
   useUpdateUserByUidMutation,
 } from "features/Api/firebaseUserApi";
+import RowHeader from "features/Rent/common/RowHeader/RowHeader";
 import HelpAndSupport from "features/Rent/components/ExternalIntegrations/HelpAndSupport";
 import {
   PropertyOwnerStripeAccountType,

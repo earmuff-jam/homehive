@@ -1,39 +1,57 @@
-import { createTheme } from "@mui/material";
+import type { Components, ThemeOptions } from "@mui/material";
+import { createTheme } from "@mui/material/styles";
 
-const commonTypography = {
+/* =====================================================
+   Palette augmentation (for `transparent`)
+   ===================================================== */
+declare module "@mui/material/styles" {
+  interface Palette {
+    transparent: Palette["primary"];
+  }
+
+  interface PaletteOptions {
+    transparent?: PaletteOptions["primary"];
+  }
+}
+
+/* =====================================================
+   Shared Typography
+   ===================================================== */
+const commonTypography: ThemeOptions["typography"] = {
   fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, sans-serif",
   htmlFontSize: 16,
+
   h1: {
     fontWeight: 700,
-    fontSize: "2.5rem", // 40px
+    fontSize: "2.5rem",
     lineHeight: 1.2,
     letterSpacing: "-0.015em",
   },
   h2: {
     fontWeight: 600,
-    fontSize: "2rem", // 32px
+    fontSize: "2rem",
     lineHeight: 1.3,
     letterSpacing: "-0.01em",
   },
   h3: {
     fontWeight: 600,
-    fontSize: "1.75rem", // 28px
+    fontSize: "1.75rem",
     lineHeight: 1.35,
     letterSpacing: "-0.005em",
   },
   h4: {
     fontWeight: 600,
-    fontSize: "1.5rem", // 24px
+    fontSize: "1.5rem",
     lineHeight: 1.4,
   },
   h5: {
     fontWeight: 600,
-    fontSize: "1.25rem", // 20px
+    fontSize: "1.25rem",
     lineHeight: 1.5,
   },
   h6: {
     fontWeight: 600,
-    fontSize: "1rem", // 16px
+    fontSize: "1rem",
     lineHeight: 1.6,
     textTransform: "none",
   },
@@ -41,21 +59,19 @@ const commonTypography = {
     fontWeight: 500,
     fontSize: "1rem",
     lineHeight: 1.5,
-    color: "inherit",
   },
   subtitle2: {
     fontWeight: 500,
     fontSize: "0.875rem",
     lineHeight: 1.5,
-    color: "inherit",
   },
   body1: {
-    fontSize: "1rem", // 16px
+    fontSize: "1rem",
     lineHeight: 1.65,
     fontWeight: 400,
   },
   body2: {
-    fontSize: "0.875rem", // 14px
+    fontSize: "0.875rem",
     lineHeight: 1.6,
     fontWeight: 400,
   },
@@ -67,10 +83,9 @@ const commonTypography = {
     textTransform: "none",
   },
   caption: {
-    fontSize: "0.75rem", // 12px
+    fontSize: "0.75rem",
     lineHeight: 1.4,
     fontWeight: 400,
-    color: "inherit",
   },
   overline: {
     fontSize: "0.75rem",
@@ -80,7 +95,10 @@ const commonTypography = {
   },
 };
 
-const commonComponents = {
+/* =====================================================
+   Shared Component Overrides
+   ===================================================== */
+const commonComponents: Components = {
   MuiButton: {
     styleOverrides: {
       root: {
@@ -119,6 +137,9 @@ const commonComponents = {
   },
 };
 
+/* =====================================================
+   Light Theme
+   ===================================================== */
 export const lightTheme = createTheme({
   palette: {
     mode: "light",
@@ -143,18 +164,10 @@ export const lightTheme = createTheme({
       secondary: "#4A5568",
     },
     divider: "rgba(0, 0, 0, 0.08)",
-    success: {
-      main: "#38A169",
-    },
-    info: {
-      main: "#3182CE",
-    },
-    warning: {
-      main: "#DD6B20",
-    },
-    error: {
-      main: "#E53E3E",
-    },
+    success: { main: "#38A169" },
+    info: { main: "#3182CE" },
+    warning: { main: "#DD6B20" },
+    error: { main: "#E53E3E" },
     transparent: {
       main: "rgba(0, 0, 0, 0)",
     },
@@ -190,6 +203,9 @@ export const lightTheme = createTheme({
   },
 });
 
+/* =====================================================
+   Dark Theme
+   ===================================================== */
 export const darkTheme = createTheme({
   palette: {
     mode: "dark",
@@ -214,18 +230,10 @@ export const darkTheme = createTheme({
       secondary: "#B0BEC5",
     },
     divider: "rgba(255, 255, 255, 0.08)",
-    success: {
-      main: "#4CAF50",
-    },
-    info: {
-      main: "#64B5F6",
-    },
-    warning: {
-      main: "#FFB74D",
-    },
-    error: {
-      main: "#E57373",
-    },
+    success: { main: "#4CAF50" },
+    info: { main: "#64B5F6" },
+    warning: { main: "#FFB74D" },
+    error: { main: "#E57373" },
     transparent: {
       main: "rgba(0, 0, 0, 0)",
     },

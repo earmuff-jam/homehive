@@ -29,7 +29,6 @@ import {
 import AButton from "common/AButton";
 import CustomSnackbar from "common/CustomSnackbar/CustomSnackbar";
 import EmptyComponent from "common/EmptyComponent";
-import RowHeader from "common/RowHeader/RowHeader";
 import { useGetUserDataByIdQuery } from "features/Api/firebaseUserApi";
 import {
   useCreatePropertyMutation,
@@ -37,6 +36,7 @@ import {
   useUpdatePropertyByIdMutation,
 } from "features/Api/propertiesApi";
 import { useLazyGetRentsByPropertyIdWithFiltersQuery } from "features/Api/rentApi";
+import RowHeader from "features/Rent/common/RowHeader/RowHeader";
 import { AddPropertyTextString } from "features/Rent/common/constants";
 import AddProperty from "features/Rent/components/AddProperty/AddProperty";
 import ViewPropertyAccordionDetails from "features/Rent/components/Properties/ViewPropertyAccordionDetails";

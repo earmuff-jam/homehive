@@ -1,6 +1,9 @@
-import React from "react";
-
-import { Controller } from "react-hook-form";
+import {
+  Control,
+  Controller,
+  FieldErrors,
+  UseFormRegister,
+} from "react-hook-form";
 
 import { InfoRounded } from "@mui/icons-material";
 import {
@@ -13,6 +16,21 @@ import {
 } from "@mui/material";
 import AButton from "common/AButton";
 import TextFieldWithLabel from "common/TextFieldWithLabel";
+import { TProperty } from "features/Rent/types/Rent.types";
+
+// TAddPropertyProps ...
+export type TAddPropertyProps = {
+  register: UseFormRegister<TProperty>;
+  errors: FieldErrors<TProperty>;
+  control: Control<TProperty>;
+  onSubmit: () => void;
+  isDisabled: boolean;
+  isEditing: boolean;
+  isBrokerManaged: boolean;
+  isManagerManaged: boolean;
+  isOwnerCoveredUtilities: boolean;
+  isPropertyWithinHOA: boolean;
+};
 
 export default function AddProperty({
   register,
@@ -25,7 +43,7 @@ export default function AddProperty({
   isManagerManaged = false,
   isOwnerCoveredUtilities = false,
   isPropertyWithinHOA = false,
-}) {
+}: TAddPropertyProps) {
   return (
     <form onSubmit={onSubmit}>
       <Divider>
@@ -37,7 +55,7 @@ export default function AddProperty({
         <Stack spacing={1}>
           <TextFieldWithLabel
             label="Property Name *"
-            id="name"
+            name="name"
             placeholder="Name of your property"
             errorMsg={errors.name?.message}
             inputProps={{
@@ -48,7 +66,7 @@ export default function AddProperty({
           <Stack direction={{ xs: "column", md: "row" }} spacing={1}>
             <TextFieldWithLabel
               label="Address *"
-              id="address"
+              name="address"
               placeholder="123 Main St"
               errorMsg={errors.address?.message}
               inputProps={{
@@ -59,7 +77,7 @@ export default function AddProperty({
             />
             <TextFieldWithLabel
               label="County"
-              id="county"
+              name="county"
               placeholder="County"
               errorMsg={errors.county?.message}
               inputProps={{
@@ -72,7 +90,7 @@ export default function AddProperty({
         <Stack direction={{ xs: "column", md: "row" }} spacing={1}>
           <TextFieldWithLabel
             label="City *"
-            id="city"
+            name="city"
             placeholder="Richmond"
             errorMsg={errors.city?.message}
             inputProps={{
@@ -81,7 +99,7 @@ export default function AddProperty({
           />
           <TextFieldWithLabel
             label="State *"
-            id="state"
+            name="state"
             placeholder="NC"
             errorMsg={errors.state?.message}
             inputProps={{
@@ -96,7 +114,7 @@ export default function AddProperty({
           />
           <TextFieldWithLabel
             label="ZIP Code *"
-            id="zipcode"
+            name="zipcode"
             placeholder="78701"
             errorMsg={errors.zipcode?.message}
             inputProps={{
@@ -114,7 +132,7 @@ export default function AddProperty({
         <Stack direction={{ xs: "column", md: "row" }} spacing={1}>
           <TextFieldWithLabel
             label="Number of Units / Bedroom *"
-            id="units"
+            name="units"
             placeholder="e.g. 4"
             errorMsg={errors.units?.message}
             inputProps={{
@@ -129,7 +147,7 @@ export default function AddProperty({
           />
           <TextFieldWithLabel
             label="Number of Bathrooms *"
-            id="bathrooms"
+            name="bathrooms"
             placeholder="e.g. 2"
             errorMsg={errors.bathrooms?.message}
             inputProps={{
@@ -147,7 +165,7 @@ export default function AddProperty({
         <Stack direction={{ xs: "column", md: "row" }} spacing={1}>
           <TextFieldWithLabel
             label="Area of the home in sq ft. *"
-            id="sqFt"
+            name="sqFt"
             placeholder="7854"
             errorMsg={errors.sqFt?.message}
             inputProps={{
@@ -173,7 +191,7 @@ export default function AddProperty({
         {/* Notes section */}
         <TextFieldWithLabel
           label="Additional Notes"
-          id="note"
+          name="note"
           placeholder="Additional notes "
           errorMsg={errors.note?.message}
           multiline
@@ -198,7 +216,7 @@ export default function AddProperty({
         <Stack direction={{ xs: "column", md: "row" }} spacing={1}>
           <TextFieldWithLabel
             label="Emergency Contact *"
-            id="emergencyContactNumber"
+            name="emergencyContactNumber"
             placeholder="Emergency Contact Number without spaces or dashes"
             errorMsg={errors.emergencyContactNumber?.message}
             inputProps={{
@@ -276,7 +294,7 @@ export default function AddProperty({
           {isOwnerCoveredUtilities && (
             <TextFieldWithLabel
               label="Utilities covered by owner *"
-              id="ownerCoveredUtilities"
+              name="ownerCoveredUtilities"
               placeholder="List owner covered utilities. Eg, Electricity, Water."
               errorMsg={errors.ownerCoveredUtilities?.message}
               inputProps={{
@@ -292,7 +310,7 @@ export default function AddProperty({
         <Stack direction={{ xs: "column", md: "row" }} spacing={1}>
           <TextFieldWithLabel
             label="Monthly Rent *"
-            id="rent"
+            name="rent"
             placeholder="Monthly rent in USD. Eg, 2750.00"
             errorMsg={errors.rent?.message}
             inputProps={{
@@ -318,11 +336,11 @@ export default function AddProperty({
                 <Typography variant="subtitle2">Add ons</Typography>
               </Stack>
             }
-            id="additional_rent"
+            name="additionalRent"
             placeholder="Additional fee. Eg, 400.00"
-            errorMsg={errors.additional_rent?.message}
+            errorMsg={errors.additionalRent?.message}
             inputProps={{
-              ...register("additional_rent", {
+              ...register("additionalRent", {
                 pattern: {
                   value: /^\d+(\.\d{1,2})?$/,
                   message: "Additional fee must be a valid amount (e.g. 75.00)",
@@ -349,11 +367,11 @@ export default function AddProperty({
                 </Typography>
               </Stack>
             }
-            id="rent_increment"
+            name="rentIncrement"
             placeholder="Projected Rent Increase in USD. Eg, 200.00"
-            errorMsg={errors.rent_increment?.message}
+            errorMsg={errors.rentIncrement?.message}
             inputProps={{
-              ...register("rent_increment", {
+              ...register("rentIncrement", {
                 required:
                   "Projected Rent Increase is required and must be in number format.",
                 pattern: {
@@ -378,7 +396,7 @@ export default function AddProperty({
                 <Typography variant="subtitle2">Security deposit *</Typography>
               </Stack>
             }
-            id="securityDeposit"
+            name="securityDeposit"
             placeholder="Security deposit for the property. Eg, 2100.00"
             errorMsg={errors.securityDeposit?.message}
             inputProps={{
@@ -411,7 +429,7 @@ export default function AddProperty({
                 </Typography>
               </Stack>
             }
-            id="allowedVehicleCounts"
+            name="allowedVehicleCounts"
             placeholder="Allowed vehicles on property"
             errorMsg={errors.allowedVehicleCounts?.message}
             inputProps={{
@@ -437,7 +455,7 @@ export default function AddProperty({
                 <Typography variant="subtitle2">Payee ID *</Typography>
               </Stack>
             }
-            id="paymentID"
+            name="paymentID"
             placeholder="Payment Identity Field. Eg, Zelle ID: XXX-XX-XXXX"
             errorMsg={errors.paymentID?.message}
             inputProps={{
@@ -456,7 +474,7 @@ export default function AddProperty({
         <Stack>
           <TextFieldWithLabel
             label="Special Provisions"
-            id="specialProvisions"
+            name="specialProvisions"
             placeholder="Add special provisions for the tenant within 500 characters"
             errorMsg={errors.specialProvisions?.message}
             multiline
@@ -500,7 +518,7 @@ export default function AddProperty({
           {isPropertyWithinHOA && (
             <TextFieldWithLabel
               label="HOA Details *"
-              id="hoaDetails"
+              name="hoaDetails"
               placeholder="Details about the home owners association (HOA)"
               errorMsg={errors.hoaDetails?.message}
               inputProps={{
@@ -534,7 +552,7 @@ export default function AddProperty({
             <Stack direction={{ xs: "column", md: "row" }} spacing={1}>
               <TextFieldWithLabel
                 label="Broker Agent Full Name *"
-                id="brokerName"
+                name="brokerName"
                 placeholder="The name of the broker agent"
                 errorMsg={errors.brokerName?.message}
                 inputProps={{
@@ -546,7 +564,7 @@ export default function AddProperty({
 
               <TextFieldWithLabel
                 label="Broker Address *"
-                id="brokerAddress"
+                name="brokerAddress"
                 placeholder="The address of the broker"
                 errorMsg={errors.brokerAddress?.message}
                 inputProps={{
@@ -582,7 +600,7 @@ export default function AddProperty({
               <Stack direction={{ xs: "column", md: "row" }} spacing={1}>
                 <TextFieldWithLabel
                   label="Manager Full Name *"
-                  id="managerName"
+                  name="managerName"
                   placeholder="The name of the manager"
                   errorMsg={errors.managerName?.message}
                   inputProps={{
@@ -593,7 +611,7 @@ export default function AddProperty({
                 />
                 <TextFieldWithLabel
                   label="Manager Phone *"
-                  id="managerPhone"
+                  name="managerPhone"
                   placeholder="Manager Phone number"
                   errorMsg={errors.managerPhone?.message}
                   inputProps={{
@@ -619,7 +637,7 @@ export default function AddProperty({
               </Stack>
               <TextFieldWithLabel
                 label="Manager Address*"
-                id="managerAddress"
+                name="managerAddress"
                 placeholder="The address of the manager"
                 errorMsg={errors.managerAddress?.message}
                 inputProps={{

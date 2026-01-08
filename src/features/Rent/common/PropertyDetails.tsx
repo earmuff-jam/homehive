@@ -1,5 +1,3 @@
-import React from "react";
-
 import dayjs from "dayjs";
 
 import { Business } from "@mui/icons-material";
@@ -11,14 +9,22 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
-import RowHeader from "common/RowHeader/RowHeader";
+import RowHeader from "features/Rent/common/RowHeader/RowHeader";
 import PropertyMap from "features/Rent/components/PropertyMap/PropertyMap";
+import { TProperty } from "features/Rent/types/Rent.types";
+
+// TPropertyDetailsProps ...
+export type TPropertyDetailsProps = {
+  dataTour: string;
+  property: TProperty;
+  isPropertyLoading: boolean;
+};
 
 export default function PropertyDetails({
   dataTour,
   property,
   isPropertyLoading,
-}) {
+}: TPropertyDetailsProps) {
   return (
     <Card sx={{ mb: 3 }} data-tour={dataTour}>
       <PropertyMap location={property?.location} />

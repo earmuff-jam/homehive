@@ -31,10 +31,10 @@ import { handleQuickConnectAction } from "features/Rent/components/Settings/Temp
 import { DefaultTemplateData } from "features/Rent/components/Templates/constants";
 import {
   derieveTotalRent,
+  displayNextPaymentDueDate,
   getColorAndLabelForCurrentMonth,
   getNextMonthlyDueDate,
   getRentDetails,
-  updateDateTime,
 } from "features/Rent/utils";
 
 const ViewPropertyAccordionDetails = ({
@@ -200,7 +200,7 @@ const ViewPropertyAccordionDetails = ({
               <Stack>
                 <Typography variant="subtitle2" fontSize="2rem" color="primary">
                   {dayjs(
-                    updateDateTime(dayjs(primaryTenant?.start_date)),
+                    displayNextPaymentDueDate(dayjs(primaryTenant?.start_date)),
                   ).format("MMM DD")}
                 </Typography>
                 <Typography variant="subtitle2" color="textSecondary">
