@@ -3,6 +3,7 @@ import { ReactNode } from "react";
 import { Dayjs } from "dayjs";
 
 import { SxProps, Theme } from "@mui/material";
+import { TGeoLocationCoordinates } from "src/types";
 
 // TCreateInvoiceEnumValue ...
 type TCreateInvoiceEnumValue = "CreateInvoice";
@@ -16,6 +17,8 @@ type TRenewLeaseNoticeEnumValue = "RenewLeaseNotice";
 type TStripePaymentStatusEnum = "paid";
 // TManualPaymentStatusEnum ...
 type TManualPaymentStatusEnum = "manual";
+// TCompletePaymentStatusEnum ...
+type TCompletePaymentStatusEnum = "complete";
 
 // TTemplateProcessorEnumValues ...
 export type TTemplateProcessorEnumValues =
@@ -27,7 +30,8 @@ export type TTemplateProcessorEnumValues =
 // TPaymentStatusEnumValues ...
 export type TPaymentStatusEnumValues =
   | TStripePaymentStatusEnum
-  | TManualPaymentStatusEnum;
+  | TManualPaymentStatusEnum
+  | TCompletePaymentStatusEnum;
 
 // TRentRowHeader ...
 export type TRentRowHeader = {
@@ -46,12 +50,6 @@ export type TRentDialog = {
   display: boolean;
 };
 
-// TPropertyLocation ...
-export type TPropertyLocation = {
-  lat: string;
-  lon: string;
-};
-
 // TProperty ...
 export type TProperty = {
   id: string;
@@ -66,7 +64,8 @@ export type TProperty = {
   sqFt: number;
   note?: string;
   ownerEmail?: string;
-  location: TPropertyLocation;
+  rentees?: string[]; // list of tenant emails
+  location?: TGeoLocationCoordinates;
   emergencyContactNumber: string;
   isTenantCleaningYard: boolean;
   isSmoking: boolean;

@@ -1,5 +1,10 @@
-import { createApi, fakeBaseQuery } from "@reduxjs/toolkit/query/react";
+import {
+  QueryReturnValue,
+  createApi,
+  fakeBaseQuery,
+} from "@reduxjs/toolkit/query/react";
 import { mapServiceApi } from "features/Api/mapServiceApi";
+import { TProperty } from "features/Rent/Rent.types";
 import {
   collection,
   doc,
@@ -10,20 +15,42 @@ import {
   where,
 } from "firebase/firestore";
 import { authenticatorFirestore as db } from "src/config";
+import { TCustomError } from "src/types";
+
+// TPropertiesTag ...
+type TPropertiesTag = "properties";
+
+// TTagTypes ...
+type TTagTypes = {
+  Properties: TPropertiesTag;
+};
+
+const propertiesApiTagTypes: TTagTypes = {
+  Properties: "properties",
+};
 
 export const propertiesApi = createApi({
   reducerPath: "propertiesApi",
-  baseQuery: fakeBaseQuery(),
-  tagTypes: ["properties"],
+  baseQuery: fakeBaseQuery<TCustomError>(),
+  tagTypes: [propertiesApiTagTypes.Properties],
   endpoints: (builder) => ({
-    getPropertiesByPropertyId: builder.query({
-      async queryFn(propertyId) {
+    // getPropertiesByPropertyId ...
+    getPropertiesByPropertyId: builder.query<TProperty, string>({
+      async queryFn(
+        propertyId,
+      ): Promise<QueryReturnValue<TProperty, TCustomError>> {
         try {
           const docRef = doc(db, "properties", propertyId);
           const docSnap = await getDoc(docRef);
           if (!docSnap.exists())
-            return { error: { message: "properties not found" } };
-          return { data: docSnap.data() };
+            return {
+              error: {
+                code: 404,
+                message: "Property not found",
+              },
+            };
+
+          return { data: { id: docSnap.id, ...docSnap.data() } as TProperty };
         } catch (error) {
           return {
             error: {
@@ -33,12 +60,15 @@ export const propertiesApi = createApi({
           };
         }
       },
-      providesTags: ["properties"],
+      providesTags: [propertiesApiTagTypes.Properties],
     }),
-    // retrieves a list of properties created by the
-    // passed in userId; filters deleted properties
-    getPropertiesByUserId: builder.query({
-      async queryFn(userId) {
+
+    // getPropertiesByUserId ...
+    // retrives a list of properties created by user
+    getPropertiesByUserId: builder.query<TProperty[], string>({
+      async queryFn(
+        userId,
+      ): Promise<QueryReturnValue<TProperty[], TCustomError>> {
         try {
           const q = query(
             collection(db, "properties"),
@@ -46,9 +76,10 @@ export const propertiesApi = createApi({
             where("isDeleted", "==", false),
           );
           const querySnapshot = await getDocs(q);
-          const properties = [];
+          const properties: TProperty[] = [];
+
           querySnapshot.forEach((doc) => {
-            properties.push({ id: doc.id, ...doc.data() });
+            properties.push({ id: doc.id, ...doc.data() } as TProperty);
           });
           return { data: properties };
         } catch (error) {
@@ -60,13 +91,16 @@ export const propertiesApi = createApi({
           };
         }
       },
-      providesTags: ["properties"],
+      providesTags: [propertiesApiTagTypes.Properties],
     }),
-    // creates a new property in the system
-    // uses mapServiceApi to retrieve property location
-    // and persist in the db to display in map
-    createProperty: builder.mutation({
-      async queryFn(property, { dispatch }) {
+
+    // createProperty ...
+    // also uses mapServiceApi for geolocation
+    createProperty: builder.mutation<TProperty, TProperty>({
+      async queryFn(
+        property,
+        { dispatch },
+      ): Promise<QueryReturnValue<TProperty, TCustomError>> {
         try {
           const addressDetails = [
             property?.address,
@@ -80,7 +114,10 @@ export const propertiesApi = createApi({
             mapServiceApi.endpoints.getUserLatlon.initiate(addressDetails),
           ).unwrap();
 
-          const propertyWithCoordinates = { ...property, location: result };
+          const propertyWithCoordinates: TProperty = {
+            ...property,
+            location: result,
+          };
 
           const userRef = doc(db, "properties", property.id);
           await setDoc(userRef, propertyWithCoordinates, { merge: true });
@@ -96,11 +133,14 @@ export const propertiesApi = createApi({
       },
       invalidatesTags: ["properties"],
     }),
-    // updates a selected property by data
-    // uses mapServiceApi to retrieve property location
-    // and persist in the db to display in map
-    updatePropertyById: builder.mutation({
-      async queryFn(data, { dispatch }) {
+
+    // updatePropertyById ...
+    // also uses mapServiceApi for geolocation
+    updatePropertyById: builder.mutation<TProperty, TProperty>({
+      async queryFn(
+        data,
+        { dispatch },
+      ): Promise<QueryReturnValue<TProperty, TCustomError>> {
         try {
           const addressDetails = [data?.address, data?.state, data?.zipcode]
             .filter(Boolean)
@@ -110,7 +150,7 @@ export const propertiesApi = createApi({
             mapServiceApi.endpoints.getUserLatlon.initiate(addressDetails),
           ).unwrap();
 
-          const updatedPropertyWithCoordinates = {
+          const updatedPropertyWithCoordinates: TProperty = {
             ...data,
             location: result,
           };
@@ -123,7 +163,7 @@ export const propertiesApi = createApi({
           await setDoc(propertyRef, updatedPropertyWithCoordinates, {
             merge: true,
           });
-          return { updatedPropertyWithCoordinates };
+          return { data: updatedPropertyWithCoordinates };
         } catch (error) {
           return {
             error: {

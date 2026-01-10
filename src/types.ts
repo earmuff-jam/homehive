@@ -8,9 +8,9 @@ export type TUser = {
   email: string;
 };
 
-// TUserGeolocation ...
+// TGeoLocationCoordinates ...
 // defines the geolocation data for a user
-export type TUserGeolocation = {
+export type TGeoLocationCoordinates = {
   lat: number;
   lon: number;
 };

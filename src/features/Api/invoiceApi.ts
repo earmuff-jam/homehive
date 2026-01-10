@@ -1,18 +1,37 @@
 import { createApi, fakeBaseQuery } from "@reduxjs/toolkit/query/react";
+import { Invoice, UserInfo } from "features/Invoice/types/Invoice.types";
+import { TCustomError } from "src/types";
 
-const LocalStorageKeys = {
-  sender: "senderInfo",
-  receiver: "recieverInfo",
-  pdfDetails: "pdfDetails",
+// TTagSender ...
+type TTagSender = "sender";
+// TTagReceiver ...
+type TTagReceiver = "receiver";
+// TTagPdfDetails ...
+type TTagPdfDetails = "pdfDetails";
+
+// TTagTypes ...
+export type TTagTypes = {
+  Sender: TTagSender;
+  Receiver: TTagReceiver;
+  PdfDetails: TTagPdfDetails;
+};
+
+export const localStorageKeysTagTypes: TTagTypes = {
+  Sender: "sender",
+  Receiver: "receiver",
+  PdfDetails: "pdfDetails",
 };
 
 export const invoiceApi = createApi({
   reducerPath: "invoiceApi",
-  baseQuery: fakeBaseQuery(),
-  tagTypes: [LocalStorageKeys.receiver, LocalStorageKeys.sender],
+  baseQuery: fakeBaseQuery<TCustomError>(),
+  tagTypes: [
+    localStorageKeysTagTypes.Receiver,
+    localStorageKeysTagTypes.Sender,
+  ],
 
   endpoints: (builder) => ({
-    getPdfDetails: builder.query({
+    getPdfDetails: builder.query<Invoice, void>({
       queryFn: () => {
         try {
           return {
@@ -26,35 +45,38 @@ export const invoiceApi = createApi({
         }
       },
     }),
-    getSenderInfo: builder.query({
+    getSenderInfo: builder.query<UserInfo, void>({
       queryFn: () => {
         try {
           const data =
-            JSON.parse(localStorage.getItem(LocalStorageKeys.sender)) || {};
+            JSON.parse(localStorage.getItem(localStorageKeysTagTypes.Sender)) ||
+            {};
           return { data };
         } catch (err) {
           return { error: err };
         }
       },
-      providesTags: [LocalStorageKeys.sender],
+      providesTags: [localStorageKeysTagTypes.Sender],
     }),
-    getReceiverInfo: builder.query({
+    getReceiverInfo: builder.query<UserInfo, void>({
       queryFn: () => {
         try {
           const data =
-            JSON.parse(localStorage.getItem(LocalStorageKeys.receiver)) || {};
+            JSON.parse(
+              localStorage.getItem(localStorageKeysTagTypes.Receiver),
+            ) || {};
           return { data };
         } catch (err) {
           return { error: err };
         }
       },
-      providesTags: [LocalStorageKeys.receiver],
+      providesTags: [localStorageKeysTagTypes.Receiver],
     }),
-    upsertPdfDetails: builder.mutation({
+    upsertPdfDetails: builder.mutation<Invoice, Invoice>({
       queryFn: (newData) => {
         try {
           localStorage.setItem(
-            LocalStorageKeys.pdfDetails,
+            localStorageKeysTagTypes.PdfDetails,
             JSON.stringify(newData),
           );
           return { data: newData };
@@ -63,11 +85,11 @@ export const invoiceApi = createApi({
         }
       },
     }),
-    upsertSenderInfo: builder.mutation({
+    upsertSenderInfo: builder.mutation<UserInfo, UserInfo>({
       queryFn: (newData) => {
         try {
           localStorage.setItem(
-            LocalStorageKeys.sender,
+            localStorageKeysTagTypes.Sender,
             JSON.stringify(newData),
           );
           return { data: newData };
@@ -75,13 +97,13 @@ export const invoiceApi = createApi({
           return { error: err };
         }
       },
-      invalidatesTags: [LocalStorageKeys.sender],
+      invalidatesTags: [localStorageKeysTagTypes.Sender],
     }),
-    upsertReceiverInfo: builder.mutation({
+    upsertReceiverInfo: builder.mutation<UserInfo, UserInfo>({
       queryFn: (newData) => {
         try {
           localStorage.setItem(
-            LocalStorageKeys.receiver,
+            localStorageKeysTagTypes.Receiver,
             JSON.stringify(newData),
           );
           return { data: newData };
@@ -89,7 +111,7 @@ export const invoiceApi = createApi({
           return { error: err };
         }
       },
-      invalidatesTags: [LocalStorageKeys.receiver],
+      invalidatesTags: [localStorageKeysTagTypes.Receiver],
     }),
   }),
 });

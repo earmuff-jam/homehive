@@ -1,4 +1,9 @@
-import { createApi, fakeBaseQuery } from "@reduxjs/toolkit/query/react";
+import {
+  QueryReturnValue,
+  createApi,
+  fakeBaseQuery,
+} from "@reduxjs/toolkit/query/react";
+import { TProperty, TRentRecordPayload } from "features/Rent/Rent.types";
 import {
   collection,
   doc,
@@ -9,47 +14,80 @@ import {
   where,
 } from "firebase/firestore";
 import { authenticatorFirestore as db } from "src/config";
+import { TCustomError } from "src/types";
+
+// TRentTag ...
+type TRentTag = "rent";
+
+// TTagTypes ...
+type TTagTypes = {
+  Rent: TRentTag;
+};
+
+const rentApiTagTypes: TTagTypes = {
+  Rent: "rent",
+};
+
+// TGetRentsByPropertyIdProps ...
+type TGetRentsByPropertyIdProps = {
+  propertyId: string;
+  currentUserEmail: string;
+};
+
+// TGetRentByPropertyIdWithFiltersProps ...
+type TGetRentByPropertyIdWithFiltersProps = {
+  propertyId: string;
+  tenantEmails: string[];
+  rentMonth: string;
+};
+
+// TGetRentByMonthProps ...
+type TGetRentByMonthProps = {
+  propertyId: string;
+  rentMonth: string;
+};
 
 export const rentApi = createApi({
   reducerPath: "rentApi",
-  baseQuery: fakeBaseQuery(),
-  tagTypes: ["rent"],
+  baseQuery: fakeBaseQuery<TCustomError>(),
+  tagTypes: [rentApiTagTypes.Rent],
   endpoints: (builder) => ({
-    // fetches rents by property id and currentUserEmail
-    // currentUserEmail must either be a tenant or a property owner to view data
-    // if currentUserEmail is tenant, only returns that data.
-    // if currentUserEmail is propertyOwner, returns all data for all rental period for that property.
-    getRentsByPropertyId: builder.query({
-      async queryFn({ propertyId, currentUserEmail }) {
+    // getRentsByPropertyId ...
+    getRentsByPropertyId: builder.query<
+      TRentRecordPayload[],
+      TGetRentsByPropertyIdProps
+    >({
+      async queryFn({
+        propertyId,
+        currentUserEmail,
+      }: TGetRentsByPropertyIdProps): Promise<
+        QueryReturnValue<TRentRecordPayload[], TCustomError>
+      > {
         try {
           const propertyDoc = await getDoc(doc(db, "properties", propertyId));
 
           if (!propertyDoc.exists()) {
             return {
               error: {
+                code: 400,
                 message: "Property not found",
-                code: "not-found",
               },
             };
           }
 
-          const propertyData = propertyDoc.data();
-
-          const isOwner = propertyData.owner_email === currentUserEmail;
-          const isRentee = (propertyData.rentees || []).some(
+          const propertyData = propertyDoc.data() as TProperty;
+          const isOwner = propertyData.ownerEmail === currentUserEmail;
+          const isRentee = propertyData.rentees.some(
             (email) => email === currentUserEmail,
           );
 
           if (!isOwner && !isRentee) {
             /* eslint-disable no-console */
-            console.error(
-              "unable to retrieve rental details. invalid params detected",
-            );
+            console.error("unable to retrieve rental details. Invalid user.");
             return {
               error: {
-                message:
-                  "Access denied: Not a property owner or current tenant.",
-                code: "500",
+                message: "Internal server error.",
+                code: 500,
               },
             };
           }
@@ -72,12 +110,16 @@ export const rentApi = createApi({
 
           const querySnapshot = await getDocs(draftQuery);
 
-          const rents = [];
+          const rents: TRentRecordPayload[] = [];
           querySnapshot.forEach((doc) => {
-            rents.push({ id: doc.id, ...doc.data() });
+            // ensure id is pulled from the response
+            rents.push({
+              id: doc.id,
+              ...(doc.data() as Omit<TRentRecordPayload, "id">),
+            });
           });
 
-          return { data: rents };
+          return { data: rents as TRentRecordPayload[] };
         } catch (error) {
           return {
             error: {
@@ -87,12 +129,23 @@ export const rentApi = createApi({
           };
         }
       },
-      providesTags: ["rent"],
+      providesTags: [rentApiTagTypes.Rent],
     }),
+
+    // getRentsByPropertyIdWithFilters ...
     // Get rent records by property ID, tenant list, and current rent month.
     // all filters are required by default
-    getRentsByPropertyIdWithFilters: builder.query({
-      async queryFn({ propertyId, tenantEmails = [], rentMonth }) {
+    getRentsByPropertyIdWithFilters: builder.query<
+      TRentRecordPayload[],
+      TGetRentByPropertyIdWithFiltersProps
+    >({
+      async queryFn({
+        propertyId,
+        tenantEmails,
+        rentMonth,
+      }: TGetRentByPropertyIdWithFiltersProps): Promise<
+        QueryReturnValue<TRentRecordPayload[], TCustomError>
+      > {
         try {
           const q = query(
             collection(db, "rents"),
@@ -100,27 +153,27 @@ export const rentApi = createApi({
           );
 
           const querySnapshot = await getDocs(q);
-          const rents = [];
 
-          const tenantEmailSet = new Set(
-            tenantEmails.map((email) => email.toLowerCase()),
-          );
+          const rents: TRentRecordPayload[] = [];
           const targetMonth = rentMonth.toLowerCase();
 
-          querySnapshot.forEach((doc) => {
-            const rent = { id: doc.id, ...doc.data() };
+          const tenantEmailSet = new Set<string>(
+            tenantEmails.map((email) => email.toLowerCase()),
+          );
 
-            const emailMatch = tenantEmailSet.has(
+          querySnapshot.forEach((doc) => {
+            const rent = { id: doc.id, ...doc.data() } as TRentRecordPayload;
+
+            const monthMatch = rent.rentMonth?.toLowerCase?.() === targetMonth;
+            const isEmailMatch = tenantEmailSet.has(
               rent.tenantEmail?.toLowerCase() ?? "",
             );
-            const monthMatch = rent.rentMonth?.toLowerCase?.() === targetMonth;
-
-            if (emailMatch && monthMatch) {
+            if (isEmailMatch && monthMatch) {
               rents.push(rent);
             }
           });
 
-          return { data: rents };
+          return { data: rents as TRentRecordPayload[] };
         } catch (error) {
           return {
             error: {
@@ -130,11 +183,17 @@ export const rentApi = createApi({
           };
         }
       },
-      providesTags: ["rent"],
+      providesTags: [rentApiTagTypes.Rent],
     }),
-    // get rental information by property id for a specific month
-    getRentByMonth: builder.query({
-      async queryFn({ propertyId, rentMonth }) {
+
+    // getRentByMonth ...
+    getRentByMonth: builder.query<TRentRecordPayload[], TGetRentByMonthProps>({
+      async queryFn({
+        propertyId,
+        rentMonth,
+      }: TGetRentByMonthProps): Promise<
+        QueryReturnValue<TRentRecordPayload[], TCustomError>
+      > {
         try {
           const q = query(
             collection(db, "rents"),
@@ -143,12 +202,14 @@ export const rentApi = createApi({
           );
 
           const querySnapshot = await getDocs(q);
-          const rents = [];
+          const rents: TRentRecordPayload[] = [];
+
           querySnapshot.forEach((doc) => {
-            rents.push({ id: doc.id, ...doc.data() });
+            const rent = { id: doc.id, ...doc.data() } as TRentRecordPayload;
+            rents.push(rent);
           });
 
-          return { data: rents };
+          return { data: rents as TRentRecordPayload[] };
         } catch (error) {
           return {
             error: {
@@ -158,18 +219,21 @@ export const rentApi = createApi({
           };
         }
       },
-      providesTags: ["rent"],
+      providesTags: [rentApiTagTypes.Rent],
     }),
-    // creates rental record for a property
-    // occurs when user initiates stripe checkout session
-    createRentRecord: builder.mutation({
-      async queryFn(rentData) {
+
+    // createRentRecord ...
+    createRentRecord: builder.mutation<TRentRecordPayload, TRentRecordPayload>({
+      async queryFn(
+        rentData,
+      ): Promise<QueryReturnValue<TRentRecordPayload, TCustomError>> {
         try {
           const { id, tenantId, propertyId, rentMonth, ...rest } = rentData;
 
           if (!id || !tenantId || !propertyId || !rentMonth) {
             return {
               error: {
+                code: 400,
                 message: "Missing required fields.",
               },
             };
@@ -193,6 +257,7 @@ export const rentApi = createApi({
             if (isComplete) {
               return {
                 error: {
+                  code: 404,
                   message:
                     "Duplicate entry found. Rent data already exists for current user for selected property for current month.",
                 },
@@ -201,13 +266,17 @@ export const rentApi = createApi({
           }
 
           const docRef = doc(db, "rents", id);
-          await setDoc(
-            docRef,
-            { tenantId, propertyId, rentMonth, ...rest },
-            { merge: true },
-          );
 
-          return { data: { tenantId, propertyId, rentMonth, ...rest } };
+          const rentRecord: TRentRecordPayload = {
+            id,
+            tenantId,
+            propertyId,
+            rentMonth,
+            ...rest,
+          };
+
+          await setDoc(docRef, rentRecord, { merge: true });
+          return { data: rentRecord };
         } catch (error) {
           return {
             error: {

@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { TUserGeolocation } from "src/types";
+import { TGeoLocationCoordinates } from "src/types";
 
 // TMapServiceTag ...
 type TMapServiceTag = "userLatLon";
@@ -25,13 +25,15 @@ export const mapServiceApi = createApi({
   }),
   tagTypes: [mapServiceApiTagTypes.userLatLon],
   endpoints: (builder) => ({
-    getUserLatlon: builder.query<TUserGeolocation, string>({
+    getUserLatlon: builder.query<TGeoLocationCoordinates, string>({
       query: (address) => {
         const encodedAddress = encodeURIComponent(address);
         return `search?q=${encodedAddress}&format=json&limit=1`;
       },
       providesTags: [mapServiceApiTagTypes.userLatLon],
-      transformResponse: (response: TNominatumResult[]): TUserGeolocation => {
+      transformResponse: (
+        response: TNominatumResult[],
+      ): TGeoLocationCoordinates => {
         if (!response?.length) return null;
         const { lat, lon } = response[0];
         return {
