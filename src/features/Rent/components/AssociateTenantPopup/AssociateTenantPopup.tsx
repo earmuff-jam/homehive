@@ -26,9 +26,9 @@ import CustomSnackbar from "common/CustomSnackbar/CustomSnackbar";
 import TextFieldWithLabel from "common/TextFieldWithLabel";
 import { fetchLoggedInUser } from "common/utils";
 import { useAssociateTenantMutation } from "features/Api/tenantsApi";
+import { TProperty, TTenant } from "features/Rent/Rent.types";
 import { LEASE_TERM_MENU_OPTIONS } from "features/Rent/common/constants";
 import TenantEmailAutocomplete from "features/Rent/components/AssociateTenantPopup/TenantEmailAutocomplete";
-import { TProperty, TTenant } from "features/Rent/types/Rent.types";
 import { isAssociatedPropertySoR } from "features/Rent/utils";
 import { TUser } from "src/types";
 

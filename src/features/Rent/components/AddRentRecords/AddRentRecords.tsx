@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from "react";
+import { useEffect, useMemo } from "react";
 
 import { Controller, useForm } from "react-hook-form";
 
@@ -12,20 +12,35 @@ import { LocalizationProvider, MobileDatePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import AButton from "common/AButton";
 import TextFieldWithLabel from "common/TextFieldWithLabel";
+import { fetchLoggedInUser } from "common/utils";
 import {
-  useGetUserByEmailAddressQuery,
+  // useGetUserByEmailAddressQuery,
   useGetUserDataByIdQuery,
 } from "features/Api/firebaseUserApi";
 import { useCreateRentRecordMutation } from "features/Api/rentApi";
 import { useGetTenantByPropertyIdQuery } from "features/Api/tenantsApi";
-import { fetchLoggedInUser, formatCurrency } from "features/Rent/utils";
+import {
+  TProperty,
+  TRentRecordForm,
+  TRentRecordPayload,
+  TTenant,
+} from "features/Rent/Rent.types";
+import { TUser, TUserDetails } from "src/types";
+
+// TAddRentRecordsProps ...
+export type TAddRentRecordsProps = {
+  property: TProperty;
+  setShowSnackbar: (value: boolean) => void;
+  closeDialog: () => void;
+};
 
 export default function AddRentRecords({
   property,
   setShowSnackbar,
   closeDialog,
-}) {
-  const user = fetchLoggedInUser();
+}: TAddRentRecordsProps) {
+  const user: TUser = fetchLoggedInUser();
+
   const [
     createRentRecord,
     {
@@ -34,28 +49,26 @@ export default function AddRentRecords({
     },
   ] = useCreateRentRecordMutation();
 
-  const {
-    data: propertyOwnerData = {},
-    isLoading: isPropertyOwnerDataLoading,
-  } = useGetUserDataByIdQuery(user?.uid, {
-    skip: !user?.uid,
-  });
+  const { data: propertyOwnerData, isLoading: isPropertyOwnerDataLoading } =
+    useGetUserDataByIdQuery(user?.uid, {
+      skip: !user?.uid,
+    }) as { data: TUserDetails; isLoading: boolean };
 
   const { data: tenants = [] } = useGetTenantByPropertyIdQuery(property?.id, {
     skip: !property?.id,
-  });
+  }) as { data: TTenant[] };
 
   const primaryTenant = useMemo(
-    () => tenants?.find((tenant) => tenant.isPrimary),
+    () => tenants.find((tenant) => tenant.isPrimary),
     [tenants],
   );
 
-  const {
-    data: primaryTenantDetails = {},
-    isLoading: isPrimaryTenantDetailsLoading,
-  } = useGetUserByEmailAddressQuery(primaryTenant?.email, {
-    skip: !primaryTenant?.email,
-  });
+  // const {
+  //   data: primaryTenantDetails,
+  //   isLoading: isPrimaryTenantDetailsLoading,
+  // } = useGetUserByEmailAddressQuery(primaryTenant?.email, {
+  //   skip: !primaryTenant?.email,
+  // }) as { data: TTenant; isLoading: boolean };
 
   const {
     register,
@@ -64,36 +77,45 @@ export default function AddRentRecords({
     setValue,
     formState: { errors, isValid },
     reset,
-  } = useForm({ mode: "onChange" });
+  } = useForm<TRentRecordForm>({
+    mode: "onChange",
+    defaultValues: {
+      ownerFirstName: "",
+      ownerLastName: "",
+      ownerEmail: "",
+      tenantFirstName: "",
+      tenantLastName: "",
+      tenantEmail: "",
+      rent: 0,
+      paymentMethod: "",
+      rentMonth: "",
+      rentPaidDate: dayjs(),
+      note: "",
+    },
+  });
 
-  const onSubmit = (data) => {
-    const draftRentAmount = formatCurrency(Number(property?.rent));
-    const draftAdditionalCharges = formatCurrency(
-      Number(property?.additional_rent),
-    );
-    const draftData = {
-      id: uuidv4(),
-      rentAmount: Math.round(draftRentAmount * 100),
-      additionalCharges: Math.round(draftAdditionalCharges * 100),
-      tenantEmail: primaryTenant?.email,
-      propertyId: property?.id,
-      propertyOwnerId: property?.createdBy,
-      tenantId: primaryTenant?.id,
-      rentMonth: dayjs(data?.rentMonth).format("MMMM"),
-      note: data?.note,
-      ...(propertyOwnerData?.stripeOwnerAccountId && {
-        stripeOwnerAccountId: propertyOwnerData.stripeOwnerAccountId,
-      }),
-    };
+  const buildAddRentRecordPayload = (
+    formData: TRentRecordForm,
+  ): TRentRecordPayload => ({
+    id: uuidv4(),
+    rent: Math.round(property.rent * 100),
+    additionalCharges: Math.round(property.additionalRent * 100),
+    tenantEmail: primaryTenant.email,
+    propertyId: property.id,
+    propertyOwnerId: property.createdBy,
+    tenantId: primaryTenant.id,
+    rentMonth: dayjs(formData?.rentMonth).format("MMMM"),
+    note: formData?.note,
+    status: "manual",
+    createdBy: user?.uid,
+    createdOn: dayjs().toISOString(),
+    updatedBy: user?.uid,
+    updatedOn: dayjs().toISOString(),
+  });
 
-    createRentRecord({
-      ...draftData,
-      status: "manual",
-      createdBy: user?.uid,
-      createdOn: dayjs().toISOString(),
-      updatedBy: user?.uid,
-      updatedOn: dayjs().toISOString(),
-    });
+  const onSubmit = (data: TRentRecordForm) => {
+    const payload = buildAddRentRecordPayload(data);
+    createRentRecord(payload);
   };
 
   useEffect(() => {
@@ -105,24 +127,25 @@ export default function AddRentRecords({
 
   useEffect(() => {
     if (primaryTenant) {
-      setValue("tenant_email_address", primaryTenant?.email);
+      setValue("tenantEmail", primaryTenant?.email);
     }
   }, [primaryTenant?.id]);
 
-  useEffect(() => {
-    if (primaryTenantDetails) {
-      setValue("tenant_first_name", primaryTenantDetails?.first_name);
-      setValue("tenant_last_name", primaryTenantDetails?.last_name);
-    }
-  }, [isPrimaryTenantDetailsLoading]);
+  // this field is only true when a user has his information filled out and it seems to be left join on the profile table. we dont do that in the db. .. need to revisit this.
+  // useEffect(() => {
+  //   if (primaryTenantDetails) {
+  //     setValue("tenantFirstName", primaryTenantDetails?.firstName);
+  //     setValue("tenantLastName", primaryTenantDetails?.lastName);
+  //   }
+  // }, [isPrimaryTenantDetailsLoading]);
 
   useEffect(() => {
     if (propertyOwnerData) {
       reset({
-        owner_first_name: propertyOwnerData?.first_name,
-        owner_last_name: propertyOwnerData?.last_name,
-        email: propertyOwnerData?.email,
-        rent_amount: Number(property?.rent) + Number(property?.additional_rent),
+        ownerFirstName: propertyOwnerData?.firstName,
+        ownerLastName: propertyOwnerData?.lastName,
+        ownerEmail: propertyOwnerData?.email,
+        rent: property.rent + property.additionalRent,
       });
     }
   }, [isPropertyOwnerDataLoading]);
@@ -138,24 +161,24 @@ export default function AddRentRecords({
         <Stack direction={{ xs: "column", md: "row" }} spacing={1}>
           <TextFieldWithLabel
             label="Owner First Name *"
-            id="owner_first_name"
+            name="ownerFirstName"
             placeholder="First Name of your property owner"
-            errorMsg={errors.name?.message}
+            errorMsg={errors.ownerFirstName?.message}
             isDisabled
             inputProps={{
-              ...register("owner_first_name", {
+              ...register("ownerFirstName", {
                 required: "Owner First Name is required",
               }),
             }}
           />
           <TextFieldWithLabel
             label="Owner Last Name *"
-            id="owner_last_name"
+            name="ownerLastName"
             placeholder="Last Name of your property owner"
-            errorMsg={errors.name?.message}
+            errorMsg={errors.ownerLastName?.message}
             isDisabled
             inputProps={{
-              ...register("owner_last_name", {
+              ...register("ownerLastName", {
                 required: "Owner Last Name is required",
               }),
             }}
@@ -163,12 +186,12 @@ export default function AddRentRecords({
         </Stack>
         <TextFieldWithLabel
           label="Email Address *"
-          id="email"
+          name="ownerEmail"
           placeholder="Email address of the property owner"
-          errorMsg={errors.name?.message}
+          errorMsg={errors.ownerEmail?.message}
           isDisabled
           inputProps={{
-            ...register("email", {
+            ...register("ownerEmail", {
               required: "Email address is required",
             }),
           }}
@@ -182,22 +205,22 @@ export default function AddRentRecords({
         <Stack direction={{ xs: "column", md: "row" }} spacing={1}>
           <TextFieldWithLabel
             label="Tenant First Name *"
-            id="tenant_first_name"
+            name="tenantFirstName"
             placeholder="First Name of your primary tenant"
-            errorMsg={errors.name?.message}
+            errorMsg={errors.tenantFirstName?.message}
             inputProps={{
-              ...register("tenant_first_name", {
+              ...register("tenantFirstName", {
                 required: "Tenant First Name is required",
               }),
             }}
           />
           <TextFieldWithLabel
             label="Tenant Last Name *"
-            id="tenant_last_name"
+            name="tenantLastName"
             placeholder="Last Name of your primary tenant"
-            errorMsg={errors.name?.message}
+            errorMsg={errors.tenantLastName?.message}
             inputProps={{
-              ...register("tenant_last_name", {
+              ...register("tenantLastName", {
                 required: "Tenant Last Name is required",
               }),
             }}
@@ -205,11 +228,11 @@ export default function AddRentRecords({
         </Stack>
         <TextFieldWithLabel
           label="Email Address *"
-          id="tenant_email_address"
+          name="tenantEmail"
           placeholder="Email address of the primary tenant"
-          errorMsg={errors.name?.message}
+          errorMsg={errors.tenantEmail?.message}
           inputProps={{
-            ...register("tenant_email_address", {
+            ...register("tenantEmail", {
               required: "Email address is required",
             }),
           }}
@@ -224,22 +247,22 @@ export default function AddRentRecords({
         <Stack direction={{ xs: "column", md: "row" }} spacing={1}>
           <TextFieldWithLabel
             label="Rent Amount *"
-            id="rent_amount"
+            name="rent"
             placeholder="Rent Amount"
-            errorMsg={errors.name?.message}
+            errorMsg={errors.rent?.message}
             inputProps={{
-              ...register("rent_amount", {
+              ...register("rent", {
                 required: "Rent Amount is required",
               }),
             }}
           />
           <TextFieldWithLabel
             label="Payment Method *"
-            id="payment_method"
+            name="paymentMethod"
             placeholder="Payment Method"
-            errorMsg={errors.name?.message}
+            errorMsg={errors.paymentMethod?.message}
             inputProps={{
-              ...register("payment_method", {
+              ...register("paymentMethod", {
                 required: "Payment Method is required",
               }),
             }}
@@ -283,7 +306,7 @@ export default function AddRentRecords({
 
           <Box sx={{ flex: 1 }}>
             <Controller
-              name="rent_paid_date"
+              name="rentPaidDate"
               control={control}
               defaultValue={null}
               rules={{ required: "Rent paid date is required" }}
@@ -318,11 +341,11 @@ export default function AddRentRecords({
         <Stack>
           <TextFieldWithLabel
             label="Note"
-            id="note"
+            name="note"
             multiline
             maxRows={5}
             placeholder="Note in less than 300 characters"
-            errorMsg={errors.name?.message}
+            errorMsg={errors.note?.message}
             inputProps={{
               ...register("note", {
                 max: {

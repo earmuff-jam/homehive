@@ -142,6 +142,43 @@ export type TCurrentMonthRent = {
   updatedOn: Dayjs;
 };
 
+// TRentRecordForm ...
+export type TRentRecordForm = {
+  ownerFirstName: string;
+  ownerLastName: string;
+  ownerEmail: string;
+  tenantFirstName: string;
+  tenantLastName: string;
+  tenantEmail: string;
+  rent: number;
+  paymentMethod: string;
+  rentMonth: Dayjs;
+  rentPaidDate: Dayjs;
+  note?: string;
+  createdBy: string;
+  createdOn: Dayjs;
+  updatedBy: string;
+  updatedOn: Dayjs;
+};
+
+// TRentRecordPayload...
+export type TRentRecordPayload = {
+  id: string;
+  rent: number;
+  additionalCharges: number;
+  tenantEmail: string;
+  propertyId: string;
+  propertyOwnerId: string;
+  tenantId: string;
+  rentMonth: string;
+  note?: string;
+  status: string;
+  createdBy: string;
+  createdOn: string;
+  updatedBy: string;
+  updatedOn: string;
+};
+
 // TStripeRentPaymentSubmissionProps ...
 export type TStripeRentPaymentSubmissionProps = {
   id: string;

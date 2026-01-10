@@ -17,14 +17,7 @@ import {
   where,
 } from "firebase/firestore";
 import { authenticatorConfig, authenticatorFirestore as db } from "src/config";
-import { TUser } from "src/types";
-
-// TCustomError ...
-// defines prop for custom error handling
-export type TCustomError = {
-  message: string;
-  code: number;
-};
+import { TCustomError, TUser } from "src/types";
 
 // TTag ...
 type TTag = "User";

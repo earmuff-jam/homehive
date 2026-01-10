@@ -8,7 +8,7 @@ import {
   TCurrentMonthRent,
   TStripeRentPaymentSubmissionProps,
   TTenant,
-} from "../types/Rent.types";
+} from "../Rent.types";
 import { fetchUsernameFromParams } from "../utils";
 import {
   BusinessRounded,
@@ -42,9 +42,9 @@ import {
   useLazyGetRentByMonthQuery,
 } from "features/Api/rentApi";
 import { useGetTenantByPropertyIdQuery } from "features/Api/tenantsApi";
+import { TProperty } from "features/Rent/Rent.types";
 import RowHeader from "features/Rent/common/RowHeader/RowHeader";
 import { getStripeFailureReasons } from "features/Rent/components/Settings/common";
-import { TProperty } from "features/Rent/types/Rent.types";
 import { TUser, TUserDetails } from "src/types";
 
 // TPropertyOwnerInfoCardProps ...

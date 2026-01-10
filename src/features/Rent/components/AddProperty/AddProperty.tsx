@@ -16,7 +16,7 @@ import {
 } from "@mui/material";
 import AButton from "common/AButton";
 import TextFieldWithLabel from "common/TextFieldWithLabel";
-import { TProperty } from "features/Rent/types/Rent.types";
+import { TProperty } from "features/Rent/Rent.types";
 
 // TAddPropertyProps ...
 export type TAddPropertyProps = {

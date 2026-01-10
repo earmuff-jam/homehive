@@ -8,6 +8,13 @@ export type TUser = {
   email: string;
 };
 
+// TUserGeolocation ...
+// defines the geolocation data for a user
+export type TUserGeolocation = {
+  lat: number;
+  lon: number;
+};
+
 // TUserDetails ...
 // defines the userDetails for logged in user
 export type TUserDetails = {
@@ -56,4 +63,33 @@ export type TAppRoute = {
   icon: ReactNode;
   requiredFlags: string[];
   config: TAppRouteConfig;
+};
+
+// TCustomError ...
+// defines prop for custom error handling
+export type TCustomError = {
+  message: string;
+  code: number;
+};
+
+// TCreateEmailPayload ...
+export type TCreateEmailPayload = {
+  to: string;
+  subject: string;
+  text?: string;
+  html?: string;
+};
+
+// TIpApiResponse ...
+export type TIpApiResponse = {
+  ip: string;
+  city: string;
+  country_name: string;
+};
+
+// TRequiredIpValues ...
+export type TRequiredIpValues = {
+  ipAddress: string;
+  city: string;
+  country: string;
 };

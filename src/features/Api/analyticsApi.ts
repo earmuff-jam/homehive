@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { TIpApiResponse, TRequiredIpValues } from "src/types";
 
 export const analyticsApi = createApi({
   reducerPath: "analyticsApi",
@@ -10,18 +11,18 @@ export const analyticsApi = createApi({
     },
   }),
   endpoints: (builder) => ({
-    getCurrentIPAddress: builder.query({
-      query: () => {
-        return `/json`;
-      },
-      transformResponse: (response) => {
-        // removing un-used values
-        const requiredValues = {
+    // getCurrentIPAddress ...
+    // builder function to get current ip address
+    getCurrentIPAddress: builder.query<TRequiredIpValues, void>({
+      query: () => "/json",
+      transformResponse: (response: TIpApiResponse): TRequiredIpValues => {
+        const filteredValues = {
           ipAddress: response.ip,
           city: response.city,
           country: response.country_name,
         };
-        localStorage.setItem("ip", JSON.stringify(requiredValues));
+        localStorage.setItem("ip", JSON.stringify(filteredValues));
+        return filteredValues;
       },
     }),
   }),

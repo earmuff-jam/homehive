@@ -8,7 +8,7 @@ import {
 } from "@mui/icons-material";
 import { LEASE_TERM_MENU_OPTIONS } from "features/Rent/common/constants";
 import { produce } from "immer";
-import { TPaymentStatusEnumValues, TProperty, TTemplateProcessorEnumValues, TTenant } from "features/Rent/types/Rent.types";
+import { TPaymentStatusEnumValues, TProperty, TTemplateProcessorEnumValues, TTenant } from "features/Rent/Rent.types";
 
 // enum values
 export const PaidRentStatusEnumValue: TPaymentStatusEnumValues = "paid";

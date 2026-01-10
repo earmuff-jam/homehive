@@ -6,7 +6,6 @@ import {
   QuestionAnswerRounded,
   SettingsRounded,
 } from "@mui/icons-material";
-import { TAppRoute } from "common/types";
 import {
   FaqRoutePath,
   PropertiesRoutePath,
@@ -19,6 +18,7 @@ import {
   SettingsRoutePath,
   SettingsRouteUri,
 } from "common/utils";
+import { TAppRoute } from "src/types";
 
 const MyRental = React.lazy(
   () => import("features/Rent/components/MyRental/MyRental"),
@@ -49,7 +49,7 @@ export const RentalAppRoutes: TAppRoute[] = [
         value: "My properties",
         icon: <CottageRounded fontSize="small" />,
       },
-      isLoggedInFeature: true, // only display if logged in
+      isLoggedInFeature: true,
       displayInNavBar: true,
       displayHelpSelector: true,
       displayPrintSelector: false,
@@ -68,7 +68,7 @@ export const RentalAppRoutes: TAppRoute[] = [
         value: "My rental unit",
         icon: <CottageRounded fontSize="small" />,
       },
-      isLoggedInFeature: true, // only display if logged in
+      isLoggedInFeature: true,
       displayInNavBar: true,
       displayHelpSelector: true,
       displayPrintSelector: false,
@@ -87,7 +87,7 @@ export const RentalAppRoutes: TAppRoute[] = [
         value: "My settings",
         icon: <SettingsRounded fontSize="small" />,
       },
-      isLoggedInFeature: true, // only display if logged in
+      isLoggedInFeature: true,
       displayInNavBar: true,
       displayHelpSelector: true,
       displayPrintSelector: false,
@@ -106,7 +106,7 @@ export const RentalAppRoutes: TAppRoute[] = [
         value: "My property",
         icon: <CottageRounded fontSize="small" />,
       },
-      isLoggedInFeature: true, // only display if logged in
+      isLoggedInFeature: true,
       displayInNavBar: false,
       displayHelpSelector: true,
       displayPrintSelector: false,

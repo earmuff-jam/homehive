@@ -1,5 +1,5 @@
 import { Card, CardContent, Grid, Skeleton, Typography } from "@mui/material";
-import { TProperty, TTenant } from "features/Rent/types/Rent.types";
+import { TProperty, TTenant } from "features/Rent/Rent.types";
 import {
   derieveTotalRent,
   formatCurrency,

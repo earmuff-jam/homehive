@@ -17,6 +17,7 @@ import {
 import AButton from "common/AButton";
 import CustomSnackbar from "common/CustomSnackbar/CustomSnackbar";
 import { useUpdatePropertyByIdMutation } from "features/Api/propertiesApi";
+import { TProperty, TRentDialog } from "features/Rent/Rent.types";
 import RowHeader from "features/Rent/common/RowHeader/RowHeader";
 import {
   AddPropertyTextString,
@@ -24,7 +25,6 @@ import {
 } from "features/Rent/common/constants";
 import AddProperty from "features/Rent/components/AddProperty/AddProperty";
 import AddRentRecords from "features/Rent/components/AddRentRecords/AddRentRecords";
-import { TProperty, TRentDialog } from "features/Rent/types/Rent.types";
 import { fetchLoggedInUser, sanitizeApiFields } from "features/Rent/utils";
 
 const defaultDialog: TRentDialog = {

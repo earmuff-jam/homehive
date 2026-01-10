@@ -1,6 +1,10 @@
-import React from "react";
-
-import { Controller } from "react-hook-form";
+import {
+  Control,
+  Controller,
+  FieldErrors,
+  UseFormClearErrors,
+  UseFormSetError,
+} from "react-hook-form";
 
 import {
   Autocomplete,
@@ -14,16 +18,47 @@ import {
   useGetTenantListQuery,
   useLazyGetTenantListQuery,
 } from "features/Api/tenantsApi";
+import { TTenant } from "features/Rent/Rent.types";
 
-const filter = createFilterOptions();
+// TTenantEmailFormValue ...
+type TTenantEmailFormValue = {
+  email: string;
+};
+
+// TTenantOption ...
+type TTenantOption = {
+  title: string;
+};
+
+// TAddTenantOption ...
+type TAddTenantOption = {
+  inputValue: string;
+  title: string;
+};
+
+// TAutocompleteOption ...
+type TAutocompleteOption = TTenantOption | TAddTenantOption;
+
+// TTenantEmailAutocompleteProps ...
+export type TTenantEmailAutocompleteProps = {
+  control: Control<TTenantEmailFormValue>;
+  errors: FieldErrors<TTenantEmailFormValue>;
+  setError: UseFormSetError<TTenantEmailFormValue>;
+  clearErrors: UseFormClearErrors<TTenantEmailFormValue>;
+};
+
+const filter = createFilterOptions<TAutocompleteOption>();
 
 export default function TenantEmailAutocomplete({
   control,
   errors,
   setError,
   clearErrors,
-}) {
-  const { data: activeTenants, isLoading } = useGetTenantListQuery(true);
+}: TTenantEmailAutocompleteProps) {
+  const { data: activeTenants, isLoading } = useGetTenantListQuery(true) as {
+    data: TTenant[];
+    isLoading: boolean;
+  };
 
   const [
     triggerGetExistingTenants,

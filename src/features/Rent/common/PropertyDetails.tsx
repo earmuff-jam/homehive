@@ -9,9 +9,9 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
+import { TProperty } from "features/Rent/Rent.types";
 import RowHeader from "features/Rent/common/RowHeader/RowHeader";
 import PropertyMap from "features/Rent/components/PropertyMap/PropertyMap";
-import { TProperty } from "features/Rent/types/Rent.types";
 
 // TPropertyDetailsProps ...
 export type TPropertyDetailsProps = {

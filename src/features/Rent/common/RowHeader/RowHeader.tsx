@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
 
 import { Box, Stack, Typography } from "@mui/material";
-import { TRentRowHeader } from "features/Rent/types/Rent.types";
+import { TRentRowHeader } from "features/Rent/Rent.types";
 
 export default function RowHeader({
   title,
