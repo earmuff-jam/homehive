@@ -1,19 +1,26 @@
-import React from "react";
-
 import { Card, CardContent, Grid, Skeleton, Typography } from "@mui/material";
+import { TProperty, TTenant } from "features/Rent/types/Rent.types";
 import {
   derieveTotalRent,
   formatCurrency,
   getOccupancyRate,
 } from "features/Rent/utils";
 
+// TPropertyStatisticsProps ...
+export type TPropertyStatisticsProps = {
+  isPropertyLoading: boolean;
+  property: TProperty;
+  isAnyTenantSoR: boolean;
+  tenants: TTenant[];
+  dataTour: string;
+};
 export default function PropertyStatistics({
   isPropertyLoading,
   property,
   isAnyTenantSoR,
   tenants,
   dataTour,
-}) {
+}: TPropertyStatisticsProps) {
   return (
     <Grid container spacing={3} sx={{ mt: 2 }} data-tour={dataTour}>
       <Grid item xs={12} sm={6} md={3}>

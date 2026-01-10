@@ -5,7 +5,6 @@ import {
   createApi,
   fakeBaseQuery,
 } from "@reduxjs/toolkit/query/react";
-import { TUser } from "common/types";
 import { authenticateViaGoogle } from "features/Auth/AuthHelper";
 import { getAuth, signOut } from "firebase/auth";
 import {
@@ -18,6 +17,7 @@ import {
   where,
 } from "firebase/firestore";
 import { authenticatorConfig, authenticatorFirestore as db } from "src/config";
+import { TUser } from "src/types";
 
 // TCustomError ...
 // defines prop for custom error handling

@@ -3,15 +3,6 @@ import React from "react";
 import PropertyOwnerInfoCard from "./PropertyOwnerInfoCard";
 import { render, screen } from "@testing-library/react";
 
-jest.mock("common/AButton", () => ({
-  __esModule: true,
-  default: ({ label, onClick, disabled }) => (
-    <button onClick={onClick} disabled={disabled}>
-      {label}
-    </button>
-  ),
-}));
-
 jest.mock("features/Rent/utils", () => ({
   fetchLoggedInUser: () => ({
     uid: "user-1",
@@ -42,26 +33,6 @@ jest.mock("features/Api/tenantsApi", () => ({
 jest.mock("features/Api/rentApi", () => ({
   useCreateRentRecordMutation: () => [jest.fn(), {}],
   useLazyGetRentByMonthQuery: () => [jest.fn(), { data: [] }],
-}));
-
-// Stripe hooks
-jest.mock("features/Rent/hooks/useCheckStripeAccountStatus", () => ({
-  useCheckStripeAccountStatus: () => ({
-    checkStatus: jest.fn(),
-    loading: false,
-  }),
-}));
-
-jest.mock("features/Rent/hooks/useGenerateStripeCheckoutSession", () => ({
-  useGenerateStripeCheckoutSession: () => ({
-    generateStripeCheckoutSession: jest.fn(),
-  }),
-}));
-
-// Misc components
-jest.mock("common/CustomSnackbar/CustomSnackbar", () => () => null);
-jest.mock("features/Rent/components/Settings/common", () => ({
-  getStripeFailureReasons: () => [],
 }));
 
 const mockProperty = {

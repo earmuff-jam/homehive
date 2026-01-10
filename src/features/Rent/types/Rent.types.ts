@@ -93,3 +93,73 @@ export type TProperty = {
   updatedOn: Dayjs;
   updatedBy: string;
 };
+
+// TTenant ...
+export type TTenant = {
+  id: string;
+  propertyId: string;
+  email: string;
+  startDate: Dayjs;
+  term: string;
+  taxRate: number;
+  rent: number;
+  initialLateFee: number;
+  dailyLateFee: number;
+  initialAnimalVoilationFee: number;
+  dailyAnimalVoilationFee: number;
+  returnedPaymentFee: number;
+  gracePeriod: number;
+  isAutoRenewPolicySet: boolean;
+  autoRenewDays: number;
+  isPrimary: boolean;
+  isSoR: boolean;
+  assignedRoomName?: string; // if SoR assignedRoomName is removed
+  guestsPermittedStayDays: number;
+  tripCharge: number;
+  allowKeyboxSince: number;
+  removeKeyboxFee: number;
+  inventoryCompleteWithin: number;
+  rentDueDate: number;
+  isActive: boolean;
+  createdBy: string;
+  createdOn: Dayjs;
+  updatedBy: string;
+  updatedOn: Dayjs;
+};
+
+// TCurrentMonthRent ...
+export type TCurrentMonthRent = {
+  tenantId: string;
+  tenantEmail: string;
+  status: TPaymentStatusEnumValues;
+  rentAmount: number;
+  propertyId: string;
+  note: string;
+  additionalCharges: number;
+  createdBy: string;
+  createdOn: Dayjs;
+  updatedBy: string;
+  updatedOn: Dayjs;
+};
+
+// TStripeRentPaymentSubmissionProps ...
+export type TStripeRentPaymentSubmissionProps = {
+  id: string;
+  stripeOwnerAccountId: string;
+  stripeAccountIsActive: boolean;
+  propertyId: string;
+  propertyOwnerId: string;
+  tenantId: string; // tenant === payee
+  status: string; // the type of "intent" first step of stripe payment
+  tenantRentDueDate: Dayjs;
+  tenantEmail: string;
+  rentAmount: number;
+  rentMonth: string;
+  additionalCharges: number;
+  initialLateFee: number;
+  dailyLateFee: number;
+  createdBy: string;
+  createdOn: Dayjs;
+  updatedBy: string;
+  updatedOn: Dayjs;
+};

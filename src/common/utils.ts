@@ -99,6 +99,12 @@ export function isValidPermissions(
   return isRequired;
 }
 
+// isSelectedFeatureEnabled ...
+export const isSelectedFeatureEnabled = (key: string): boolean => {
+  const enabledFlagMap = rootLevelEnabledFeatures();
+  return enabledFlagMap.get(key) || false;
+};
+
 // filterValidRoutesForNavigationBar ...
 export const filterValidRoutesForNavigationBar = (draftRoutes: TAppRoute[]) => {
   if (!draftRoutes) return [];

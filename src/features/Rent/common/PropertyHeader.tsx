@@ -2,12 +2,20 @@ import React from "react";
 
 import { Home, LocationOnRounded } from "@mui/icons-material";
 import { Box, Chip, Stack, Typography } from "@mui/material";
+import { TProperty } from "features/Rent/types/Rent.types";
+
+// TPropertyHeaderProps ...
+export type TPropertyHeaderProps = {
+  property: TProperty;
+  isRentee?: boolean;
+  isPrimaryRenter?: boolean;
+};
 
 export default function PropertyHeader({
   property,
   isRentee = false,
   isPrimaryRenter = false,
-}) {
+}: TPropertyHeaderProps) {
   return (
     <Stack spacing={1}>
       <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>

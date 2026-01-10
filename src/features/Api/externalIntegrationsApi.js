@@ -90,6 +90,48 @@ export const externalIntegrationsApi = createApi({
         }),
       }),
     }),
+    checkStripeAccountStatus: builder.mutation({
+      query: (accountId) => ({
+        method: "POST",
+        body: JSON.stringify({
+          fUrl: "0004_fetch_stripe_account_status",
+          fMethod: "POST",
+          payload: { accountId },
+        }),
+      }),
+    }),
+    generateStripeCheckoutSession: builder.mutation({
+      query: ({
+        rentAmount,
+        additionalCharges,
+        initialLateFee,
+        dailyLateFee,
+        stripeOwnerAccountId,
+        propertyId,
+        propertyOwnerId,
+        tenantId,
+        rentMonth,
+        tenantEmail,
+      }) => ({
+        method: "POST",
+        body: JSON.stringify({
+          fUrl: "0007_create_stripe_checkout_session",
+          fMethod: "POST",
+          payload: {
+            rentAmount,
+            additionalCharges,
+            initialLateFee,
+            dailyLateFee,
+            stripeOwnerAccountId,
+            propertyId,
+            propertyOwnerId,
+            tenantId,
+            rentMonth,
+            tenantEmail,
+          },
+        }),
+      }),
+    }),
   }),
 });
 
@@ -101,4 +143,6 @@ export const {
   useCreateTemplateMutation,
   useDeleteTemplateMutation,
   useCreateEsignFromTemplateMutation,
+  useCheckStripeAccountStatusMutation,
+  useGenerateStripeCheckoutSessionMutation,
 } = externalIntegrationsApi;

@@ -1,9 +1,15 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import { v4 as uuidv4 } from "uuid";
 
 import dayjs from "dayjs";
 
+import {
+  TCurrentMonthRent,
+  TStripeRentPaymentSubmissionProps,
+  TTenant,
+} from "../types/Rent.types";
+import { fetchUsernameFromParams } from "../utils";
 import {
   BusinessRounded,
   EmailRounded,
@@ -25,6 +31,11 @@ import {
 } from "@mui/material";
 import AButton from "common/AButton";
 import CustomSnackbar from "common/CustomSnackbar/CustomSnackbar";
+import { fetchLoggedInUser } from "common/utils";
+import {
+  useCheckStripeAccountStatusMutation,
+  useGenerateStripeCheckoutSessionMutation,
+} from "features/Api/externalIntegrationsApi";
 import { useGetUserDataByIdQuery } from "features/Api/firebaseUserApi";
 import {
   useCreateRentRecordMutation,
@@ -33,123 +44,134 @@ import {
 import { useGetTenantByPropertyIdQuery } from "features/Api/tenantsApi";
 import RowHeader from "features/Rent/common/RowHeader/RowHeader";
 import { getStripeFailureReasons } from "features/Rent/components/Settings/common";
-import { useCheckStripeAccountStatus } from "features/Rent/hooks/useCheckStripeAccountStatus";
-import { useGenerateStripeCheckoutSession } from "features/Rent/hooks/useGenerateStripeCheckoutSession";
-import { fetchLoggedInUser, formatCurrency } from "features/Rent/utils";
+import { TProperty } from "features/Rent/types/Rent.types";
+import { TUser, TUserDetails } from "src/types";
+
+// TPropertyOwnerInfoCardProps ...
+type TPropertyOwnerInfoCardProps = {
+  isViewingRental: boolean;
+  isPropertyLoading: boolean;
+  isPropertySuccess: boolean;
+  property: TProperty;
+  dataTour: string;
+};
 
 export default function PropertyOwnerInfoCard({
   isViewingRental = false,
   isPropertyLoading = false,
+  isPropertySuccess = false,
   property,
   dataTour,
-}) {
-  const user = fetchLoggedInUser();
-  const { generateStripeCheckoutSession } = useGenerateStripeCheckoutSession();
-  const { checkStatus, loading: isCheckStripeAccountStatusLoading } =
-    useCheckStripeAccountStatus();
+}: TPropertyOwnerInfoCardProps) {
+  const user: TUser = fetchLoggedInUser();
 
-  const [createRentRecord, { isError: isCreatingRentRecordError, error }] =
-    useCreateRentRecordMutation();
-
-  const { data: owner = {}, isLoading } = useGetUserDataByIdQuery(
+  const { data: owner, isLoading } = useGetUserDataByIdQuery(
     property?.createdBy,
     {
       skip: !property?.createdBy,
     },
-  );
+  ) as { data: TUserDetails; isLoading: boolean };
 
-  const { data = [] } = useGetTenantByPropertyIdQuery(property?.id, {
+  const { data: tenants = [] } = useGetTenantByPropertyIdQuery(property?.id, {
     skip: !property?.id,
-  });
+  }) as { data?: TTenant[] };
 
-  const tenant = data.find((item) => item);
+  const [
+    checkStripeAccountStatus,
+    {
+      isLoading: isCheckStripeAccountStatusLoading,
+      isError: isCheckStripeAccountStatusError,
+      error: stripeAccountStatusError,
+    },
+  ] = useCheckStripeAccountStatusMutation();
 
-  const [triggerGetRentByMonth, { data: rentMonthData = [] }] =
+  const [
+    generateStripeCheckoutSession,
+    { isLoading: isGenerateStripeCheckoutSessionLoading },
+  ] = useGenerateStripeCheckoutSessionMutation();
+
+  const [createRentRecord, rentRecordResult] = useCreateRentRecordMutation();
+
+  const [triggerGetRentByMonth, rentByMonthResult] =
     useLazyGetRentByMonthQuery();
 
-  const [stripeValid, setStripeValid] = useState(false);
+  const [stripeValid, setStripeValid] = useState<boolean>(false);
 
-  const paymentCompleteForCurrentMonth = rentMonthData?.some(
-    (item) => item.status === "paid" || item.status === "manual",
+  const tenant = tenants.find((tenant) => tenant);
+  const rentRecordRes = rentRecordResult.data ?? {};
+  const currentMonthRentInArr: TCurrentMonthRent[] =
+    rentByMonthResult.data ?? [];
+
+  const paymentCompleted = currentMonthRentInArr?.some(
+    (currentMonthRent) =>
+      currentMonthRent.status === "paid" ||
+      currentMonthRent.status === "manual",
   );
 
-  const handleRentPayment = async ({
-    rentAmount,
-    additionalCharges,
-    initialLateFee,
-    dailyLateFee,
-    tenantRentDueDate,
-    stripeOwnerAccountId,
-    stripeAccountIsActive,
-    propertyId,
-    propertyOwnerId,
-    tenantId,
-    tenantEmail,
-  }) => {
-    if (!stripeAccountIsActive) {
-      return;
-    }
-
-    const upcommingDueDate = dayjs().date(dayjs(tenantRentDueDate).date());
+  const handleRentPaymentSubmission = async () => {
+    const upcommingDueDate = dayjs().date(tenant.startDate.date());
     const diffDays = upcommingDueDate.diff(dayjs(), "day");
-
-    const draftData = {
+    const rentPaymentSubmission: TStripeRentPaymentSubmissionProps = {
       id: uuidv4(),
-      rentAmount: Math.round(rentAmount * 100),
-      additionalCharges: Math.round(additionalCharges * 100),
-      initialLateFee: Math.round(Number(initialLateFee) || 0 * 100),
-      dailyLateFee:
-        Math.round(Number(dailyLateFee) || 0 * 100) * Math.abs(diffDays),
-      stripeOwnerAccountId, // the person who the payment must go towards
-      tenantEmail,
-      propertyId,
-      propertyOwnerId,
-      tenantId,
+      stripeOwnerAccountId: owner?.stripeAccountId,
+      stripeAccountIsActive: Boolean(owner?.stripeAccountId),
+      propertyId: property?.id,
+      propertyOwnerId: property?.createdBy,
+      tenantId: user.uid,
+      tenantRentDueDate: tenant.startDate,
+      tenantEmail: user.email,
+      rentAmount: Math.round(property.rent * 100),
+      status: "intent",
+      additionalCharges: Math.round(property.additionalRent * 100),
+      initialLateFee: Math.round(tenant.initialLateFee * 100),
+      dailyLateFee: Math.round(tenant.dailyLateFee * 100) * Math.abs(diffDays),
       rentMonth: dayjs().format("MMMM"),
+      createdBy: user.uid,
+      createdOn: dayjs(),
+      updatedBy: user.uid,
+      updatedOn: dayjs(),
     };
 
-    const stripeCheckoutSessionData =
-      await generateStripeCheckoutSession(draftData);
-
-    await createRentRecord({
-      ...draftData,
-      status: "intent", // the first step of stripe checkout
-      createdBy: tenantId, // tenant is the only one who can pay
-      createdOn: dayjs().toISOString(),
-      updatedBy: tenantId,
-      updatedOn: dayjs().toISOString(),
-    }).unwrap();
+    const stripeCheckoutSessionData = await generateStripeCheckoutSession(
+      rentPaymentSubmission,
+    );
+    createRentRecord(rentPaymentSubmission);
 
     window.location.href = stripeCheckoutSessionData?.url;
     return null;
   };
 
   useEffect(() => {
-    if (property?.id) {
-      const currentMonth = dayjs().format("MMMM");
-      triggerGetRentByMonth({
-        propertyId: property?.id,
-        rentMonth: currentMonth,
-      });
+    if (!rentRecordResult.isLoading && rentRecordResult.isSuccess) {
+      // set custom snackbar
     }
-  }, [property?.id]);
+  }, [rentRecordResult.isLoading]);
 
   useEffect(() => {
-    const checkStripeStatus = async (accountId) => {
-      try {
-        const status = await checkStatus({ accountId });
-        const reasons = getStripeFailureReasons(status?.status);
-        if (reasons?.length <= 0) {
-          setStripeValid(true);
-        }
-      } catch (err) {
-        setStripeValid(false);
-        /* eslint-disable no-console */
-        console.error(err);
-      }
-    };
-    owner?.stripeAccountId && checkStripeStatus(owner?.stripeAccountId);
+    if (isPropertySuccess && owner?.stripeAccountId) {
+      checkStripeAccountStatus({ accountId: owner?.stripeAccountId });
+      triggerGetRentByMonth({
+        propertyId: property.id,
+        rentMonth: dayjs().format("MMMM"),
+      });
+    }
   }, [owner?.stripeAccountId, isPropertyLoading]);
+
+  useEffect(() => {
+    if (!isCheckStripeAccountStatusLoading && stripeAccountStatusError) {
+      if ("status" in stripeAccountStatusError) {
+        const stripeAccountFailureReasons = getStripeFailureReasons(
+          stripeAccountStatusError.status,
+        );
+
+        if (stripeAccountFailureReasons?.length <= 0) {
+          setStripeValid(true);
+          return;
+        }
+      }
+    }
+    setStripeValid(false);
+  }, [isCheckStripeAccountStatusError]);
 
   if (isLoading) return <Skeleton height="10rem" />;
 
@@ -185,8 +207,8 @@ export default function PropertyOwnerInfoCard({
                 src={owner?.googlePhotoURL}
                 sx={{ width: 56, height: 56 }}
               >
-                {owner?.first_name?.charAt(0)}
-                {owner?.last_name?.charAt(0)}
+                {owner?.firstName?.charAt(0)}
+                {owner?.lastName?.charAt(0)}
               </Avatar>
               <Box>
                 <Stack direction="row" spacing={1}>
@@ -202,8 +224,11 @@ export default function PropertyOwnerInfoCard({
                         maxWidth: 150,
                       }}
                     >
-                      {owner?.googleDisplayName ||
-                        `${owner?.first_name || ""} ${owner?.last_name || ""}`}
+                      {fetchUsernameFromParams(
+                        owner.googleDisplayName,
+                        owner?.firstName,
+                        owner?.lastName,
+                      )}
                     </Typography>
                     <Typography
                       flexGrow={1}
@@ -245,7 +270,7 @@ export default function PropertyOwnerInfoCard({
                 <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                   <LocationOnRounded fontSize="small" color="action" />
                   <Typography variant="body2">
-                    {owner?.city}, {owner?.state} {owner?.zipcode}
+                    {owner.city}, {owner.state} {owner.zipCode}
                   </Typography>
                 </Box>
               )}
@@ -276,28 +301,8 @@ export default function PropertyOwnerInfoCard({
                   label="Pay rent"
                   sx={{ margin: "0.4rem 0rem" }}
                   loading={isCheckStripeAccountStatusLoading}
-                  disabled={!stripeValid || paymentCompleteForCurrentMonth}
-                  onClick={() =>
-                    handleRentPayment({
-                      stripeOwnerAccountId: owner?.stripeAccountId,
-                      stripeAccountIsActive: owner?.stripeAccountIsActive,
-                      propertyId: property?.id,
-                      propertyOwnerId: property?.createdBy, // the owner of the property
-                      tenantId: user?.uid, // the current payee which is also a tenant
-                      tenantRentDueDate: tenant?.start_date,
-                      tenantEmail: user?.email, // the current renter
-                      rentAmount: formatCurrency(Number(property?.rent)),
-                      additionalCharges: formatCurrency(
-                        Number(property?.additional_rent),
-                      ),
-                      initialLateFee: formatCurrency(
-                        Number(tenant?.initial_late_fee),
-                      ),
-                      dailyLateFee: formatCurrency(
-                        Number(tenant?.daily_late_fee),
-                      ),
-                    })
-                  }
+                  disabled={!stripeValid || paymentCompleted}
+                  onClick={handleRentPaymentSubmission}
                 />
               </Stack>
             ) : null}
@@ -306,9 +311,9 @@ export default function PropertyOwnerInfoCard({
       </CardContent>
       <CustomSnackbar
         severity="warning"
-        showSnackbar={isCreatingRentRecordError}
+        showSnackbar={rentRecordResult.isError}
         setShowSnackbar={() => {}}
-        title={`${error?.message}`}
+        title={`${rentRecordResult.error?.message}`}
       />
     </Card>
   );

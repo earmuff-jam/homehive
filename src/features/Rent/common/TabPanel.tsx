@@ -1,8 +1,17 @@
-import React from "react";
-
 import { Button, Tooltip, useMediaQuery, useTheme } from "@mui/material";
 
-export default function TabPanel({ selected, options, updateSelected }) {
+// TTabPanelProps ...
+export type TTabPanelProps = {
+  selected: boolean;
+  options: string[];
+  updateSelected: () => void;
+};
+
+export default function TabPanel({
+  selected,
+  options,
+  updateSelected,
+}: TTabPanelProps) {
   const theme = useTheme();
   const lteMedFormFactor = useMediaQuery(theme.breakpoints.down("md"));
 

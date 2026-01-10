@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Controller, useForm } from "react-hook-form";
 
@@ -24,20 +24,27 @@ import { LocalizationProvider, MobileDatePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import CustomSnackbar from "common/CustomSnackbar/CustomSnackbar";
 import TextFieldWithLabel from "common/TextFieldWithLabel";
+import { fetchLoggedInUser } from "common/utils";
 import { useAssociateTenantMutation } from "features/Api/tenantsApi";
 import { LEASE_TERM_MENU_OPTIONS } from "features/Rent/common/constants";
 import TenantEmailAutocomplete from "features/Rent/components/AssociateTenantPopup/TenantEmailAutocomplete";
-import {
-  fetchLoggedInUser,
-  isAssociatedPropertySoR,
-} from "features/Rent/utils";
+import { TProperty, TTenant } from "features/Rent/types/Rent.types";
+import { isAssociatedPropertySoR } from "features/Rent/utils";
+import { TUser } from "src/types";
+
+// TAssociateTenantPopupProps ...
+type TAssociateTenantPopupProps = {
+  closeDialog: () => void;
+  property: TProperty;
+  tenants: TTenant[];
+};
 
 export default function AssociateTenantPopup({
   closeDialog,
   property,
   tenants,
-}) {
-  const user = fetchLoggedInUser();
+}: TAssociateTenantPopupProps) {
+  const user: TUser = fetchLoggedInUser();
   const currentUserId = user?.uid;
 
   const [
@@ -45,7 +52,7 @@ export default function AssociateTenantPopup({
     { isLoading: associateTenantLoading, isSuccess: associateTenantSuccess },
   ] = useAssociateTenantMutation();
 
-  const [showSnackbar, setShowSnackbar] = useState(false);
+  const [showSnackbar, setShowSnackbar] = useState<boolean>(false);
 
   const {
     control,
@@ -57,20 +64,20 @@ export default function AssociateTenantPopup({
     register,
     reset,
     formState: { errors, isValid },
-  } = useForm({
+  } = useForm<TTenant>({
     mode: "onChange",
     defaultValues: {
       email: "",
-      start_date: dayjs().toISOString(),
+      startDate: dayjs().toISOString(),
       term: "",
-      tax_rate: 1,
-      rent: "",
+      taxRate: 1,
+      rent: 0,
       initialLateFee: 75,
       dailyLateFee: 10,
       initialAnimalVoilationFee: 300,
       dailyAnimalVoilationFee: 25,
       returnedPaymentFee: 75,
-      grace_period: 3,
+      gracePeriod: 3,
       isAutoRenewPolicySet: false,
       autoRenewDays: 60,
       isPrimary: false,
@@ -85,7 +92,7 @@ export default function AssociateTenantPopup({
     },
   });
 
-  const onSubmit = async (data) => {
+  const onSubmit = async (data: TTenant) => {
     const draftData = { ...data };
 
     if (!draftData.isSoR) delete draftData.assignedRoomName;
@@ -94,9 +101,9 @@ export default function AssociateTenantPopup({
     draftData.isActive = true;
     draftData.propertyId = property.id;
     draftData.createdBy = currentUserId;
-    draftData.createdOn = dayjs().toISOString();
+    draftData.createdOn = dayjs();
     draftData.updatedBy = currentUserId;
-    draftData.updatedOn = dayjs().toISOString();
+    draftData.updatedOn = dayjs();
 
     associateTenant({ draftData, property });
   };
@@ -106,7 +113,7 @@ export default function AssociateTenantPopup({
 
   useEffect(() => {
     if (property) {
-      setValue("rent", property?.rent || "");
+      setValue("rent", property.rent);
     }
   }, [property]);
 
@@ -127,7 +134,7 @@ export default function AssociateTenantPopup({
         {/* Lease Start Date */}
         <Box sx={{ flex: 1 }}>
           <Controller
-            name="start_date"
+            name="startDate"
             control={control}
             defaultValue={null}
             rules={{ required: "Start date is required" }}
@@ -206,10 +213,10 @@ export default function AssociateTenantPopup({
                 <Typography variant="subtitle2">Standard Tax rate *</Typography>
               </Stack>
             }
-            id="tax_rate"
+            name="taxRate"
             placeholder="Standard tax rate. Eg, 1"
-            errorMsg={errors.tax_rate?.message}
-            inputProps={register("tax_rate", {
+            errorMsg={errors.taxRate?.message}
+            inputProps={register("taxRate", {
               required: "Tax rate is required.",
               pattern: {
                 value: /^\d+(\.\d{1,2})?$/,
@@ -228,12 +235,10 @@ export default function AssociateTenantPopup({
                     sx={{ fontSize: "1rem", margin: "0.2rem" }}
                   />
                 </Tooltip>
-                <Typography variant="subtitle2" disabled>
-                  Monthly Rent Amount
-                </Typography>
+                <Typography variant="subtitle2">Monthly Rent Amount</Typography>
               </Stack>
             }
-            id="rent"
+            name="rent"
             isDisabled
             placeholder="Monthly rent amount. Eg, 2150.00"
             errorMsg={errors.rent?.message}
@@ -249,7 +254,7 @@ export default function AssociateTenantPopup({
         <Stack direction={{ xs: "column", md: "row" }} spacing={2}>
           <TextFieldWithLabel
             label="Initial Late Fee *"
-            id="initialLateFee"
+            name="initialLateFee"
             placeholder="Initial Late fee. Eg, 75.00"
             errorMsg={errors.initialLateFee?.message}
             inputProps={{
@@ -277,7 +282,7 @@ export default function AssociateTenantPopup({
                 <Typography variant="subtitle2">Late fee / day *</Typography>
               </Stack>
             }
-            id="dailyLateFee"
+            name="dailyLateFee"
             placeholder="Daily late fee. Eg, 5.00"
             errorMsg={errors.dailyLateFee?.message}
             inputProps={{
@@ -298,7 +303,7 @@ export default function AssociateTenantPopup({
         <Stack direction={{ xs: "column", md: "row" }} spacing={2}>
           <TextFieldWithLabel
             label="Initial Animal Voilation Fee *"
-            id="initialAnimalVoilationFee"
+            name="initialAnimalVoilationFee"
             placeholder="Initial Animal Voilation fee. Eg, 300.00"
             errorMsg={errors.initialAnimalVoilationFee?.message}
             inputProps={{
@@ -328,7 +333,7 @@ export default function AssociateTenantPopup({
                 </Typography>
               </Stack>
             }
-            id="dailyAnimalVoilationFee"
+            name="dailyAnimalVoilationFee"
             placeholder="Daily Animal voilation fee. Eg, 5.00"
             errorMsg={errors.dailyAnimalVoilationFee?.message}
             inputProps={{
@@ -360,7 +365,7 @@ export default function AssociateTenantPopup({
               </Typography>
             </Stack>
           }
-          id="returnedPaymentFee"
+          name="returnedPaymentFee"
           placeholder="Enter returned payment fee in exact amount. Eg, 7.25"
           errorMsg={errors.returnedPaymentFee?.message}
           inputProps={{
@@ -390,11 +395,11 @@ export default function AssociateTenantPopup({
                 <Typography variant="subtitle2"> Grace period *</Typography>
               </Stack>
             }
-            id="grace_period"
+            name="gracePeriod"
             placeholder="The days before the late fee is calculated"
-            errorMsg={errors.grace_period?.message}
+            errorMsg={errors.gracePeriod?.message}
             inputProps={{
-              ...register("grace_period", {
+              ...register("gracePeriod", {
                 required:
                   "Grace period is required and must be in number format.",
                 pattern: {
@@ -459,7 +464,7 @@ export default function AssociateTenantPopup({
                   </Typography>
                 </Stack>
               }
-              id="autoRenewDays"
+              name="autoRenewDays"
               placeholder="Enter the exact days to send the lease in. Eg, 60."
               errorMsg={errors.autoRenewDays?.message}
               inputProps={{
@@ -549,7 +554,7 @@ export default function AssociateTenantPopup({
                 </Typography>
               </Stack>
             }
-            id="guestsPermittedStayDays"
+            name="guestsPermittedStayDays"
             placeholder="Enter the number of days tenant's guests are permitted to stay. Eg, 15."
             errorMsg={errors.guestsPermittedStayDays?.message}
             inputProps={{
@@ -577,7 +582,7 @@ export default function AssociateTenantPopup({
                 <Typography variant="subtitle2">Owner trip charge</Typography>
               </Stack>
             }
-            id="tripCharge"
+            name="tripCharge"
             placeholder="Enter the charge amount tenants incur when they request assistance. Eg, 60."
             errorMsg={errors.tripCharge?.message}
             inputProps={{
@@ -609,7 +614,7 @@ export default function AssociateTenantPopup({
                 </Typography>
               </Stack>
             }
-            id="allowKeyboxSince"
+            name="allowKeyboxSince"
             placeholder="Enter the number of days allowed to setup a keybox. Eg, 4."
             errorMsg={errors.allowKeyboxSince?.message}
             inputProps={{
@@ -637,7 +642,7 @@ export default function AssociateTenantPopup({
                 <Typography variant="subtitle2">Remove keybox fee *</Typography>
               </Stack>
             }
-            id="removeKeyboxFee"
+            name="removeKeyboxFee"
             placeholder="Enter fee associated with removing the keybox. Eg, 45."
             errorMsg={errors.removeKeyboxFee?.message}
             inputProps={{
@@ -664,7 +669,7 @@ export default function AssociateTenantPopup({
                 <Typography variant="subtitle2">Rent due date *</Typography>
               </Stack>
             }
-            id="rentDueDate"
+            name="rentDueDate"
             placeholder="Enter the days past the start date the rent is due. Eg, 4."
             errorMsg={errors.rentDueDate?.message}
             inputProps={{
@@ -696,7 +701,7 @@ export default function AssociateTenantPopup({
                 </Typography>
               </Stack>
             }
-            id="inventoryCompleteWithin"
+            name="inventoryCompleteWithin"
             placeholder="Enter the timeframe allocated to complete an initial home inventory. Eg, 10."
             errorMsg={errors.inventoryCompleteWithin?.message}
             inputProps={{
@@ -722,6 +727,7 @@ export default function AssociateTenantPopup({
         </Button>
 
         <CustomSnackbar
+          severity="success"
           showSnackbar={showSnackbar}
           setShowSnackbar={setShowSnackbar}
           title="Changes saved."

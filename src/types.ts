@@ -1,11 +1,27 @@
 import { ReactNode } from "react";
 
 // TUser ...
-// defines the user who is currently logged in
+// defines the user for logged in user
 export type TUser = {
   uid: string;
   role?: string | null | undefined;
   email: string;
+};
+
+// TUserDetails ...
+// defines the userDetails for logged in user
+export type TUserDetails = {
+  firstName: string;
+  lastName: string;
+  phone: string;
+  email: string;
+  streetAddress: string;
+  city: string;
+  state: string;
+  zipCode: string;
+  stripeAccountId?: string;
+  googlePhotoURL?: string;
+  googleDisplayName?: string;
 };
 
 // TThemeIdx ...

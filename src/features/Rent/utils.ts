@@ -6,11 +6,9 @@ import {
   MoneyOffRounded,
   PaidRounded,
 } from "@mui/icons-material";
-import rootLevelEnabledFeatures from "common/utils";
 import { LEASE_TERM_MENU_OPTIONS } from "features/Rent/common/constants";
 import { produce } from "immer";
-import { TPaymentStatusEnumValues, TProperty, TTemplateProcessorEnumValues } from "features/Rent/types/Rent.types";
-import { TUser } from "src/types";
+import { TPaymentStatusEnumValues, TProperty, TTemplateProcessorEnumValues, TTenant } from "features/Rent/types/Rent.types";
 
 // enum values
 export const PaidRentStatusEnumValue: TPaymentStatusEnumValues = "paid";
@@ -21,7 +19,7 @@ export const PaymentReminderEnumValue: TTemplateProcessorEnumValues = "PaymentRe
 export const RenewLeaseNoticeEnumValue: TTemplateProcessorEnumValues = "RenewLeaseNotice";
 
 // stripHTMLForEmailMessages ...
-export const stripHTMLForEmailMessages = (htmlDocument) => {
+export const stripHTMLForEmailMessages = (htmlDocument: string) => {
   const div = document.createElement("div");
   div.innerHTML = htmlDocument;
   return div.textContent || div.innerText || "";
@@ -50,8 +48,9 @@ export const sumCentsToDollars = (...values: number[]) : number => {
 };
 
 // derieveTotalRent ...
-// defines a function used to fetch total rent based on property, tenants and tenants w/o SoR occupancy. Also adds additional charges. Does NOT take late fee into account
-export const derieveTotalRent = (property: TProperty, tenants, isAnyTenantSoR: boolean) => {
+// defines a function used to fetch total rent based on property, tenants and tenants w/o SoR occupancy. 
+// Also adds additional charges. Does NOT take late fee into account
+export const derieveTotalRent = (property: TProperty, tenants: TTenant[], isAnyTenantSoR: boolean) => {
 
   const totalRent = property.rent + property.additionalRent;
   if (isAnyTenantSoR) {
@@ -68,7 +67,7 @@ export const derieveTotalRent = (property: TProperty, tenants, isAnyTenantSoR: b
 };
 
 // getOccupancyRate ...
-export const getOccupancyRate = (property:TProperty, tenants, isAnyTenantSoR: boolean): number => {
+export const getOccupancyRate = (property:TProperty, tenants: TTenant[], isAnyTenantSoR: boolean): number => {
   if (isAnyTenantSoR) {
     const totalUnits = property.units;
     const occupiedUnits = tenants.length;
@@ -214,65 +213,15 @@ export const isAssociatedPropertySoR = (property, tenants) => {
   );
 };
 
-/**
- * The function `buildPaymentLineItems` creates an array of payment line items with labels and values
- * based on property and tenant information.
- * @returns The function `buildPaymentLineItems` returns an array of objects, where each object
- * represents a line item for payment. Each object has a `name` property containing a label and a
- * value. The label describes the type of payment (e.g., Rent Amount, Additional Charges, Initial Late
- * fee, Daily Late fee), and the value is the corresponding numerical amount retrieved from the
- * `property` and `tenant`.
- */
-export const buildPaymentLineItems = (property = {}, tenant = []) => {
-  return [
-    {
-      name: {
-        label: "Rent Amount",
-        value: Number(property?.rent) || 0,
-      },
-    },
-    {
-      name: {
-        label: "Additional Charges",
-        value: Number(property?.additional_rent) || 0,
-      },
-    },
-    {
-      name: {
-        label: "Initial Late fee",
-        value: Number(tenant?.initialLateFee) || 0,
-      },
-    },
-    {
-      name: {
-        label: "Daily Late fee",
-        value: Number(tenant?.dailyLateFee) || 0,
-      },
-    },
-  ];
-};
 
-/**
- * The function isFeatureEnabled checks if a specific feature is enabled based on client permissions.
- * @returns The function `isFeatureEnabled` returns the value associated with the provided `key` in the
- * `enabledFlagMap`, or `false` if the key is not found in the map.
- */
-export const isFeatureEnabled = (key) => {
-  const enabledFlagMap = rootLevelEnabledFeatures();
-  return enabledFlagMap.get(key) || false;
-};
+// isFeatureEnabled ...
+// replace WITH isSelectedFeatureEnabled function
 
-/**
- * The function `convertFileToBase64Encoding` takes a file as input and returns a Promise that resolves
- * to the base64 encoding of the file.
- */
-export const convertFileToBase64Encoding = ({ file }) =>
-  new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => resolve(reader.result);
-    reader.onerror = reject;
-  });
+// export const isFeatureEnabled = (key: string):boolean => {
+//   const enabledFlagMap = rootLevelEnabledFeatures();
+//   return enabledFlagMap.get(key) || false;
+// };
+
 
 /**
  * The `sanitizeApiFields` function removes any key-value pairs from an object where the value is null
@@ -300,13 +249,13 @@ export const sanitizeEsignFieldsForNewLease = (
 ) => {
   const draftData = produce(rowData, (draft) => {
     draft.id = rowData.uuid;
-    draft.owner = validateFullName(
+    draft.owner = fetchUsernameFromParams(
       propertyOwnerData?.first_name,
       propertyOwnerData?.last_name,
       propertyOwnerData?.googleDisplayName,
     );
     draft.ownerEmail = property?.owner_email;
-    draft.tenant = validateFullName(
+    draft.tenant = fetchUsernameFromParams(
       tenantData?.first_name,
       tenantData?.last_name,
       tenantData?.googleDisplayName || primaryTenant.email,
@@ -319,7 +268,7 @@ export const sanitizeEsignFieldsForNewLease = (
     draft.county = property?.county;
     draft.startDate = dayjs(primaryTenant?.start_date).format("MM-DD-YYYY");
     draft.endDate = dayjs(
-      derieveEndDate(primaryTenant?.start_date, primaryTenant?.term),
+      populateEndDate(primaryTenant?.start_date, primaryTenant?.term),
     ).format("MM-DD-YYYY");
     draft.isAutoRenew = primaryTenant?.isAutoRenewPolicySet;
     draft.autoRenewDays = primaryTenant?.autoRenewDays;
@@ -400,55 +349,47 @@ export const sanitizeEsignFieldsForLeaseExtension = (
     draft.address = property?.address;
     draft.city = property?.city;
     draft.state = property?.state;
-    draft.owner = validateFullName(
+    draft.owner = fetchUsernameFromParams(
       propertyOwnerData?.first_name,
       propertyOwnerData?.last_name,
       propertyOwnerData?.googleDisplayName,
     );
     draft.dateOfExtension = dayjs().format("MM-DD-YYYY");
-    draft.newExpirationDate = dayjs().add("12", "month").format("MM-DD-YYYY");
+    draft.newExpirationDate = dayjs().add(12, "month").format("MM-DD-YYYY");
     draft.isRentChanged = property?.rent_increment > 0;
     draft.isRentNotChanged = property?.rent_increment === 0;
     draft.rentChangeAmt = property?.rent_increment;
-    draft.expirationDate = dayjs().add("12", "month").format("MM-DD-YYYY");
+    draft.expirationDate = dayjs().add(12, "month").format("MM-DD-YYYY");
     draft.isTenantNotVacating = true; // lease extension
     draft.isRentChanged = property?.rent_increment !== 0; // no rent increment
     draft.rentChangeAmount = property?.rent_increment;
     draft.isRentNotChanged = property?.rent_increment === 0;
     draft.isTenantVacating = true; // simulate tenant vacating for renew
     draft.endDate = dayjs(
-      derieveEndDate(primaryTenant?.start_date, primaryTenant?.term),
+      populateEndDate(primaryTenant?.start_date, primaryTenant?.term),
     ).format("MM-DD-YYYY");
   });
 
   return sanitizeApiFields(draftData);
 };
 
-/**
- * The function `derieveEndDate` calculates the end date based on a given start date and length of
- * stay.
- * @returns The function `derieveEndDate` returns the end date calculated based on the provided start
- * date and length of stay. The end date is converted to an ISO string format before being returned.
- */
-const derieveEndDate = (startDate, lengthOfStay) => {
+// populateEndDate ...
+// defines a function that returns end date based on params.
+const populateEndDate = (startDate: string, lengthOfStay: number) : string => {
   const lengthOfStayValue = LEASE_TERM_MENU_OPTIONS.find(
-    (option) => option.value === lengthOfStay,
+    (option) => option.value === lengthOfStay.toString(),
   );
   const endDate = dayjs(startDate).add(lengthOfStayValue?.amount, "month");
   return endDate.toISOString();
 };
 
-/**
- * The function `validateFullName` takes three parameters (firstName, lastName, otherName) and returns
- * a formatted full name or other name if first and last names are missing.
- * @returns The function `validateFullName` returns the full name in the format "firstName, lastName"
- * if both `firstName` and `lastName` are provided. If either `firstName` or `lastName` is missing, it
- * returns the `otherName` if provided, or an empty string if `otherName` is not provided. If none of
- * the names are provided, it returns "N/A".
- */
-const validateFullName = (firstName, lastName, otherName) => {
+
+// fetchUsernameFromParams ...
+// defines a function which returns combination of first and last name
+// only uses otherName if firstName, lastName is missing.
+export const fetchUsernameFromParams = (firstName?: string, lastName?: string, otherName?: string) :  string => {
   if (!firstName || !lastName) {
-    return otherName || "";
+    return otherName || "N/A";
   } else if (firstName && lastName) {
     return `${firstName}, ${lastName}`;
   } else {
