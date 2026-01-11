@@ -43,7 +43,7 @@ import {
 } from "features/Api/rentApi";
 import { useGetTenantByPropertyIdQuery } from "features/Api/tenantsApi";
 import { TProperty } from "features/Rent/Rent.types";
-import RowHeader from "features/Rent/common/RowHeader/RowHeader";
+import RowHeader from "features/Rent/common/RowHeader";
 import { getStripeFailureReasons } from "features/Rent/components/Settings/common";
 import { TUser, TUserDetails } from "src/types";
 

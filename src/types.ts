@@ -1,13 +1,5 @@
 import { ReactNode } from "react";
 
-// TUser ...
-// defines the user for logged in user
-export type TUser = {
-  uid: string;
-  role?: string | null | undefined;
-  email: string;
-};
-
 // TGeoLocationCoordinates ...
 // defines the geolocation data for a user
 export type TGeoLocationCoordinates = {
@@ -15,20 +7,36 @@ export type TGeoLocationCoordinates = {
   lon: number;
 };
 
+// TBaseAuthIdentity ...
+// defines the base auth identity
+export type TBaseAuthIdentity = {
+  uid: string;
+  email: string;
+  googleDisplayName?: string;
+  googlePhotoURL?: string;
+  provider?: string;
+  googleAccountLinkedAt?: string;
+  googleLastLoginAt?: string;
+};
+
+// TUser ...
+// defines a logged in user
+export type TUser = TBaseAuthIdentity & {
+  role?: "USER" | "ADMIN" | "TENANT" | null;
+};
+
 // TUserDetails ...
-// defines the userDetails for logged in user
-export type TUserDetails = {
+// defines extra user details props
+export type TUserDetails = TUser & {
   firstName: string;
   lastName: string;
   phone: string;
-  email: string;
   streetAddress: string;
   city: string;
   state: string;
   zipCode: string;
   stripeAccountId?: string;
-  googlePhotoURL?: string;
-  googleDisplayName?: string;
+  stripeAccountIsActive: boolean;
 };
 
 // TThemeIdx ...
@@ -92,4 +100,18 @@ export type TRequiredIpValues = {
   ipAddress: string;
   city: string;
   country: string;
+};
+
+// TReleaseNotes ...
+export type TReleaseNotes = {
+  type: string;
+  value: string;
+  caption: string;
+};
+
+// TReleaseDetails ...
+export type TReleaseDetails = {
+  version: string;
+  date: string;
+  notes: TReleaseNotes[];
 };

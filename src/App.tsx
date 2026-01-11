@@ -8,7 +8,7 @@ import { TourProvider } from "@reactour/tour";
 import ScrollTopProvider from "common/ScrollTop/ScrollTopProvider";
 import { GeneratedTourSteps } from "common/Tour/TourSteps";
 import Layout from "features/Layout/Layout";
-import { buildAppRoutes } from "hooks/useBuildAppRoutes";
+import { useBuildAppRoutes } from "hooks/useBuildAppRoutes";
 import { MainAppRoutes } from "src/Routes";
 import { darkTheme, lightTheme } from "src/Theme";
 import { TThemeIdx } from "src/types";
@@ -35,7 +35,7 @@ function App() {
                   />
                 }
               >
-                {buildAppRoutes(MainAppRoutes)}
+                {useBuildAppRoutes(MainAppRoutes)}
               </Route>
             </Routes>
           </BrowserRouter>

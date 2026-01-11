@@ -1,7 +1,18 @@
-import dayjs from "dayjs";
+import { ReactNode } from "react";
 
-import { Box, Stack, Typography } from "@mui/material";
-import { TRentRowHeader } from "features/Rent/Rent.types";
+import dayjs, { Dayjs } from "dayjs";
+
+import { Box, Stack, SxProps, Theme, Typography } from "@mui/material";
+
+// TRentRowHeader ...
+export type TRentRowHeader = {
+  title: string;
+  caption?: string | ReactNode;
+  showDate?: boolean;
+  createdDate?: Dayjs;
+  sxProps?: SxProps<Theme>;
+  children?: ReactNode;
+};
 
 export default function RowHeader({
   title,

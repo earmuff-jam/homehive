@@ -1,8 +1,5 @@
-import { ReactNode } from "react";
-
 import { Dayjs } from "dayjs";
 
-import { SxProps, Theme } from "@mui/material";
 import { TGeoLocationCoordinates } from "src/types";
 
 // TCreateInvoiceEnumValue ...
@@ -32,16 +29,6 @@ export type TPaymentStatusEnumValues =
   | TStripePaymentStatusEnum
   | TManualPaymentStatusEnum
   | TCompletePaymentStatusEnum;
-
-// TRentRowHeader ...
-export type TRentRowHeader = {
-  title: string;
-  caption?: string | ReactNode;
-  showDate?: boolean;
-  createdDate?: Dayjs;
-  sxProps?: SxProps<Theme>;
-  children?: ReactNode;
-};
 
 // TRentDialog ...
 export type TRentDialog = {
@@ -91,6 +78,33 @@ export type TProperty = {
   createdBy: string;
   updatedOn: Dayjs;
   updatedBy: string;
+};
+
+// TTenantForm ...
+export type TTenantForm = {
+  email: string;
+  startDate: Dayjs;
+  term: string;
+  taxRate: number;
+  rent: number;
+  initialLateFee: number;
+  dailyLateFee: number;
+  initialAnimalVoilationFee: number;
+  dailyAnimalVoilationFee: number;
+  returnedPaymentFee: number;
+  gracePeriod: number;
+  isAutoRenewPolicySet: boolean;
+  autoRenewDays: number;
+  isPrimary: boolean;
+  isSoR: boolean;
+  assignedRoomName?: string; // if SoR assignedRoomName is removed
+  guestsPermittedStayDays: number;
+  tripCharge: number;
+  allowKeyboxSince: number;
+  removeKeyboxFee: number;
+  inventoryCompleteWithin: number;
+  rentDueDate: number; // how many days the rent can be delayed from due date
+  isActive: boolean;
 };
 
 // TTenant ...

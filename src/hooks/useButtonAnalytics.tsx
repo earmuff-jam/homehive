@@ -6,7 +6,6 @@ import { addDoc, collection } from "firebase/firestore";
 import { analyticsFirestore } from "src/config";
 
 // TAnalyticsPayload ...
-// defines a payload for analytics
 type TAnalyticsPayload = {
   ipAddress: string;
   label: string;

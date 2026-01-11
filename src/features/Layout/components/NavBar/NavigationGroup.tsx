@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 
 import { ExpandLess, ExpandMore } from "@mui/icons-material";
 import {
@@ -7,7 +7,18 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
+  useTheme,
 } from "@mui/material";
+import { TAppRoute } from "src/types";
+
+// TNavigationGroupProps ...
+type TNavigationGroupProps = {
+  label: string;
+  icon?: ReactNode;
+  pathname: string;
+  childrenRoutes?: TAppRoute[];
+  navigate: (path: string) => void;
+};
 
 const NavigationGroup = ({
   label,
@@ -15,19 +26,19 @@ const NavigationGroup = ({
   pathname,
   childrenRoutes = [],
   navigate,
-  theme,
-}) => {
-  const [open, setOpen] = useState(false);
+}: TNavigationGroupProps) => {
+  const theme = useTheme();
+  const [open, setOpen] = useState<boolean>(false);
+
   const handleToggle = () => setOpen((prev) => !prev);
 
   useEffect(() => {
-    // adding this to allow fade transition
-    // the nav bar can open slightly
-    const shouldOpen = childrenRoutes?.some(
-      (routes) => routes.routeUri === pathname,
+    // Allows fade transition when sidebar opens
+    const shouldOpen = childrenRoutes.some(
+      (route) => route.routeUri === pathname,
     );
     setOpen(shouldOpen);
-  }, [childrenRoutes]);
+  }, [childrenRoutes, pathname]);
 
   return (
     <>
@@ -36,6 +47,7 @@ const NavigationGroup = ({
         <ListItemText primary={label} />
         {open ? <ExpandLess /> : <ExpandMore />}
       </ListItemButton>
+
       <Collapse in={open} timeout="auto" unmountOnExit>
         <List component="div" disablePadding sx={{ pl: 4 }}>
           {childrenRoutes.map(({ id, routeUri, label, icon }) => (

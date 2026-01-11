@@ -1,12 +1,16 @@
-import React from "react";
-
 import { useLocation, useNavigate } from "react-router-dom";
 
 import { HomeRounded } from "@mui/icons-material";
 import { Box, Breadcrumbs, Stack, Typography } from "@mui/material";
 import { HomeRouteUri } from "common/utils";
+import { TAppRoute } from "src/types";
 
-export default function BreadCrumbs({ currentRoute }) {
+// TBreadcrumbsProps ...
+export type TBreadcrumbsProps = {
+  currentRoute: TAppRoute;
+};
+
+export default function BreadCrumbs({ currentRoute }: TBreadcrumbsProps) {
   const location = useLocation();
   const navigate = useNavigate();
 

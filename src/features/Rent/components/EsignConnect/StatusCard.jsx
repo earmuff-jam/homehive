@@ -8,7 +8,7 @@ import {
 import { Alert, Box, Card, Stack, Tooltip, Typography } from "@mui/material";
 import AButton from "common/AButton";
 import AIconButton from "common/AIconButton";
-import RowHeader from "features/Rent/common/RowHeader/RowHeader";
+import RowHeader from "features/Rent/common/RowHeader";
 
 export default function StatusCard({
   isEsignConnected,

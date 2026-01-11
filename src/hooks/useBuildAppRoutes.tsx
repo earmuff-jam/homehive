@@ -4,8 +4,8 @@ import rootLevelEnabledFeatures, { isValidPermissions } from "common/utils";
 import AuthenticationProvider from "features/Auth/AuthenticationProvider";
 import { TAppRoute } from "src/types";
 
-// buildAppRoutes ...
-export function buildAppRoutes(draftRoutes: TAppRoute[]) {
+// useBuildAppRoutes ...
+export function useBuildAppRoutes(draftRoutes: TAppRoute[]) {
   const enabledFeatures = rootLevelEnabledFeatures();
 
   return draftRoutes

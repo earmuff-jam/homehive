@@ -18,12 +18,7 @@ import {
   useGetTenantListQuery,
   useLazyGetTenantListQuery,
 } from "features/Api/tenantsApi";
-import { TTenant } from "features/Rent/Rent.types";
-
-// TTenantEmailFormValue ...
-type TTenantEmailFormValue = {
-  email: string;
-};
+import { TTenant, TTenantForm } from "features/Rent/Rent.types";
 
 // TTenantOption ...
 type TTenantOption = {
@@ -41,10 +36,10 @@ type TAutocompleteOption = TTenantOption | TAddTenantOption;
 
 // TTenantEmailAutocompleteProps ...
 export type TTenantEmailAutocompleteProps = {
-  control: Control<TTenantEmailFormValue>;
-  errors: FieldErrors<TTenantEmailFormValue>;
-  setError: UseFormSetError<TTenantEmailFormValue>;
-  clearErrors: UseFormClearErrors<TTenantEmailFormValue>;
+  control: Control<TTenantForm>;
+  errors: FieldErrors<TTenantForm>;
+  setError: UseFormSetError<TTenantForm>;
+  clearErrors: UseFormClearErrors<TTenantForm>;
 };
 
 const filter = createFilterOptions<TAutocompleteOption>();

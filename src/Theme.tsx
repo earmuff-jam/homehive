@@ -1,9 +1,6 @@
 import type { Components, ThemeOptions } from "@mui/material";
 import { createTheme } from "@mui/material/styles";
 
-/* =====================================================
-   Palette augmentation (for `transparent`)
-   ===================================================== */
 declare module "@mui/material/styles" {
   interface Palette {
     transparent: Palette["primary"];
@@ -14,9 +11,6 @@ declare module "@mui/material/styles" {
   }
 }
 
-/* =====================================================
-   Shared Typography
-   ===================================================== */
 const commonTypography: ThemeOptions["typography"] = {
   fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, sans-serif",
   htmlFontSize: 16,
@@ -95,9 +89,6 @@ const commonTypography: ThemeOptions["typography"] = {
   },
 };
 
-/* =====================================================
-   Shared Component Overrides
-   ===================================================== */
 const commonComponents: Components = {
   MuiButton: {
     styleOverrides: {
@@ -137,9 +128,6 @@ const commonComponents: Components = {
   },
 };
 
-/* =====================================================
-   Light Theme
-   ===================================================== */
 export const lightTheme = createTheme({
   palette: {
     mode: "light",
@@ -203,9 +191,6 @@ export const lightTheme = createTheme({
   },
 });
 
-/* =====================================================
-   Dark Theme
-   ===================================================== */
 export const darkTheme = createTheme({
   palette: {
     mode: "dark",

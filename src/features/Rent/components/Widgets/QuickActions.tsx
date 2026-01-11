@@ -18,7 +18,7 @@ import AButton from "common/AButton";
 import CustomSnackbar from "common/CustomSnackbar/CustomSnackbar";
 import { useUpdatePropertyByIdMutation } from "features/Api/propertiesApi";
 import { TProperty, TRentDialog } from "features/Rent/Rent.types";
-import RowHeader from "features/Rent/common/RowHeader/RowHeader";
+import RowHeader from "features/Rent/common/RowHeader";
 import {
   AddPropertyTextString,
   AddRentRecordsTextString,

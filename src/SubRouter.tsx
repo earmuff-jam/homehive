@@ -1,6 +1,6 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 
-import { buildAppRoutes } from "hooks/useBuildAppRoutes";
+import { useBuildAppRoutes } from "hooks/useBuildAppRoutes";
 import { TAppRoute } from "src/types";
 
 // TSubAppRouterProps ...
@@ -11,7 +11,7 @@ type TSubAppRouterProps = {
 
 const SubAppRouter = ({ routes, fallbackPath = "/" }: TSubAppRouterProps) => (
   <Routes>
-    {buildAppRoutes(routes)}
+    {useBuildAppRoutes(routes)}
     <Route path="*" element={<Navigate to={fallbackPath} replace />} />
   </Routes>
 );

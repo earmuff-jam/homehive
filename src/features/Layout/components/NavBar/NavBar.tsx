@@ -1,8 +1,5 @@
-import React from "react";
-
 import { useLocation, useNavigate } from "react-router-dom";
 
-import { useTheme } from "@emotion/react";
 import { ChevronLeftRounded, ChevronRightRounded } from "@mui/icons-material";
 import {
   Divider,
@@ -15,55 +12,48 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import enabledFeatures, {
+import { useTheme } from "@mui/material/styles";
+import rootLevelEnabledFeatures, {
   MainInvoiceAppRouteUri,
   MainRentAppRouteUri,
+  fetchLoggedInUser,
   filterValidRoutesForNavigationBar,
   isValidPermissions,
 } from "common/utils";
-import rootLevelEnabledFeatures from "common/utils";
 import { InvoiceAppRoutes } from "features/Invoice/Routes";
 import NavigationGroup from "features/Layout/components/NavBar/NavigationGroup";
+import { getValidRoutes } from "features/Layout/utils";
 import { RentalAppRoutes } from "features/Rent/Routes";
-import { fetchLoggedInUser } from "features/Rent/utils";
 import { MainAppRoutes } from "src/Routes";
+import { TAppRoute, TUser } from "src/types";
+
+// TNavBarProps ...
+type TNavBarProps = {
+  openDrawer: boolean;
+  handleDrawerClose: () => void;
+  smScreenSizeAndHigher: boolean;
+  lgScreenSizeAndHigher: boolean;
+};
 
 export default function NavBar({
   openDrawer,
   handleDrawerClose,
   smScreenSizeAndHigher,
   lgScreenSizeAndHigher,
-}) {
+}: TNavBarProps) {
   const theme = useTheme();
   const navigate = useNavigate();
-  const user = fetchLoggedInUser();
   const { pathname } = useLocation();
+
+  const user: TUser = fetchLoggedInUser();
   const enabledFeatures = rootLevelEnabledFeatures();
 
-  // the timeout allows to close the drawer first before navigation occurs.
-  // Without this, the drawer behaves weird.
-  const handleMenuItemClick = (to) => {
-    !lgScreenSizeAndHigher && handleDrawerClose();
+  // close drawer before nav to preserve state
+  const handleMenuItemClick = (to: string) => {
+    if (!lgScreenSizeAndHigher) handleDrawerClose();
     setTimeout(() => {
       navigate(to);
     }, 200);
-  };
-
-  const getValidRoutes = (routes = [], roleType = "") => {
-    const filteredNavigationRoutes = filterValidRoutesForNavigationBar(routes);
-
-    return filteredNavigationRoutes.filter(({ requiredFlags, config }) => {
-      const isRouteValid = isValidPermissions(enabledFeatures, requiredFlags);
-      if (!isRouteValid) return false;
-
-      const validRoles = config?.enabledForRoles || [];
-      if (validRoles.length > 0 && !validRoles.includes(roleType)) return false;
-
-      const requiresLogin = Boolean(config?.isLoggedInFeature);
-      if (requiresLogin && !user?.uid) return false;
-
-      return true;
-    });
   };
 
   return (
@@ -79,10 +69,7 @@ export default function NavBar({
                 sx: {
                   width: 300,
                   flexShrink: 0,
-                  [`& .MuiDrawer-paper`]: {
-                    width: 300,
-                    boxSizing: "border-box",
-                  },
+                  boxSizing: "border-box",
                 },
               }
             : {
@@ -92,6 +79,7 @@ export default function NavBar({
               },
         }}
       >
+        {/* Header */}
         <Stack
           sx={{
             flexDirection: "row",
@@ -101,7 +89,7 @@ export default function NavBar({
           }}
         >
           <Stack direction="row" spacing={2} alignItems="center">
-            <img src="/logo-no-text.png" height="100%" width="50rem" />
+            <img src="/logo-no-text.png" width="50" alt="Homehive logo" />
             <Typography variant="h5">Homehive</Typography>
           </Stack>
           <IconButton onClick={handleDrawerClose}>
@@ -112,12 +100,11 @@ export default function NavBar({
             )}
           </IconButton>
         </Stack>
+
         <Divider />
-        <List
-          sx={{ width: "100%" }}
-          component="nav"
-          aria-labelledby="nested-list-subheader"
-        >
+
+        {/* Navigation */}
+        <List component="nav" sx={{ width: "100%" }}>
           {MainAppRoutes.map(
             ({ id, label, icon, path, requiredFlags, config }) => {
               const isRouteValid = isValidPermissions(
@@ -126,19 +113,23 @@ export default function NavBar({
               );
               if (!isRouteValid) return null;
 
-              const validRoles = config?.enabledForRoles || [];
-              if (validRoles.length > 0 && !validRoles.includes(user?.role))
-                return null;
-
               const requiresLogin = Boolean(config?.isLoggedInFeature);
               if (requiresLogin && !user?.uid) return null;
 
-              let childRoutes = [];
+              let childRoutes: TAppRoute[] = [];
 
               if (path.startsWith(MainInvoiceAppRouteUri)) {
-                childRoutes = getValidRoutes(InvoiceAppRoutes, user?.role);
+                childRoutes = getValidRoutes(
+                  InvoiceAppRoutes,
+                  enabledFeatures,
+                  user,
+                );
               } else if (path.startsWith(MainRentAppRouteUri)) {
-                childRoutes = getValidRoutes(RentalAppRoutes, user?.role);
+                childRoutes = getValidRoutes(
+                  RentalAppRoutes,
+                  enabledFeatures,
+                  user,
+                );
               }
 
               if (childRoutes.length > 0) {
@@ -148,7 +139,6 @@ export default function NavBar({
                     label={label}
                     icon={icon}
                     pathname={pathname}
-                    theme={theme}
                     navigate={handleMenuItemClick}
                     childrenRoutes={filterValidRoutesForNavigationBar(
                       childRoutes,
@@ -166,7 +156,10 @@ export default function NavBar({
                   >
                     <ListItemIcon
                       sx={{
-                        color: pathname === path && theme.palette.primary.main,
+                        color:
+                          pathname === path
+                            ? theme.palette.primary.main
+                            : undefined,
                       }}
                     >
                       {icon}

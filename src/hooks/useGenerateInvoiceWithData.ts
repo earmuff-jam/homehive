@@ -1,7 +1,10 @@
 import { Invoice, UserInfo } from "features/Invoice/types/Invoice.types";
 
-// generateInvoiceHTML ...
-export function generateInvoiceHTML(recieverInfo: UserInfo, data: Invoice) {
+// useGenerateInvoiceWithData ...
+export function useGenerateInvoiceWithData(
+  recieverInfo: UserInfo,
+  data: Invoice,
+) {
   return `
     <p> Dear ${
       recieverInfo.firstName

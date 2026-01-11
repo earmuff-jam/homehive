@@ -1,4 +1,4 @@
-import React from "react";
+import { ReactNode } from "react";
 
 import {
   Box,
@@ -10,12 +10,22 @@ import {
   useTheme,
 } from "@mui/material";
 
+// DefaultChipColors ...
 const DefaultChipColors = [
   "primary.light",
   "info.light",
   "warning.light",
   "secondary.light",
-];
+] as const;
+
+// TTitleCardProps ...
+type TitleCardProps = {
+  title: string;
+  subtitle?: string;
+  icon?: ReactNode;
+  chipLabels?: string[];
+  onClick?: () => void;
+};
 
 export default function TitleCard({
   title,
@@ -23,7 +33,7 @@ export default function TitleCard({
   icon,
   chipLabels,
   onClick = () => {},
-}) {
+}: TitleCardProps) {
   const theme = useTheme();
   const smScreenSizeAndHigher = useMediaQuery(theme.breakpoints.up("md"));
 
@@ -47,14 +57,19 @@ export default function TitleCard({
             justifyContent: "center",
             alignItems: "center",
             mb: 2,
+            gap: 1,
           }}
         >
           {icon}
           <Typography variant="h4">{title}</Typography>
         </Box>
-        <Typography variant="body1" color="textSecondary" gutterBottom>
-          {subtitle}
-        </Typography>
+
+        {subtitle && (
+          <Typography variant="body1" color="text.secondary" gutterBottom>
+            {subtitle}
+          </Typography>
+        )}
+
         <Box
           sx={{
             display: "flex",

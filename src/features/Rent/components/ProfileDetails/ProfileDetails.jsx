@@ -22,7 +22,7 @@ import {
   useGetUserDataByIdQuery,
   useUpdateUserByUidMutation,
 } from "features/Api/firebaseUserApi";
-import RowHeader from "features/Rent/common/RowHeader/RowHeader";
+import RowHeader from "features/Rent/common/RowHeader";
 import { fetchLoggedInUser } from "features/Rent/utils";
 
 export default function ProfileDetails() {

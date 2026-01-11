@@ -8,8 +8,9 @@ import {
   Typography,
 } from "@mui/material";
 import { InvoicerFrequentlyAskedQuestion } from "features/Invoice/components/Faq/FrequentlyAskedQuestions";
-import RowHeader from "features/Rent/common/RowHeader/RowHeader";
+import RowHeader from "features/Rent/common/RowHeader";
 
+// type FrequentlyAskedQuestionsProps ...
 type FrequentlyAskedQuestionsProps = {
   data: InvoicerFrequentlyAskedQuestion[];
 };

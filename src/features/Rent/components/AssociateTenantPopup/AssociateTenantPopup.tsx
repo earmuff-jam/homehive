@@ -26,7 +26,7 @@ import CustomSnackbar from "common/CustomSnackbar/CustomSnackbar";
 import TextFieldWithLabel from "common/TextFieldWithLabel";
 import { fetchLoggedInUser } from "common/utils";
 import { useAssociateTenantMutation } from "features/Api/tenantsApi";
-import { TProperty, TTenant } from "features/Rent/Rent.types";
+import { TProperty, TTenant, TTenantForm } from "features/Rent/Rent.types";
 import { LEASE_TERM_MENU_OPTIONS } from "features/Rent/common/constants";
 import TenantEmailAutocomplete from "features/Rent/components/AssociateTenantPopup/TenantEmailAutocomplete";
 import { isAssociatedPropertySoR } from "features/Rent/utils";
@@ -47,10 +47,11 @@ export default function AssociateTenantPopup({
   const user: TUser = fetchLoggedInUser();
   const currentUserId = user?.uid;
 
-  const [
-    associateTenant,
-    { isLoading: associateTenantLoading, isSuccess: associateTenantSuccess },
-  ] = useAssociateTenantMutation();
+  const [triggerAssociateTenant, associateTenantResult] =
+    useAssociateTenantMutation();
+
+  // const associateTenantLoading = associateTenantResult.isLoading;
+  // const associateTenantSuccess = associateTenantResult.isSuccess;
 
   const [showSnackbar, setShowSnackbar] = useState<boolean>(false);
 
@@ -64,7 +65,7 @@ export default function AssociateTenantPopup({
     register,
     reset,
     formState: { errors, isValid },
-  } = useForm<TTenant>({
+  } = useForm<TTenantForm>({
     mode: "onChange",
     defaultValues: {
       email: "",
@@ -88,24 +89,30 @@ export default function AssociateTenantPopup({
       allowKeyboxSince: 4,
       removeKeyboxFee: 50,
       inventoryCompleteWithin: 10,
-      rentDueDate: 4, // how many days the rent can be delayed from due date
+      rentDueDate: 4,
     },
   });
 
-  const onSubmit = async (data: TTenant) => {
-    const draftData = { ...data };
+  const buildAssociateTenantPayload = (data: TTenantForm): TTenant => {
+    const baseTenant: TTenant = {
+      ...data,
+      id: uuidv4(),
+      isActive: true,
+      propertyId: property.id,
+      createdBy: currentUserId,
+      createdOn: dayjs(),
+      updatedBy: currentUserId,
+      updatedOn: dayjs(),
+    };
+    if (!isSoR) {
+      delete (baseTenant as Partial<TTenant>).assignedRoomName;
+    }
+    return baseTenant;
+  };
 
-    if (!draftData.isSoR) delete draftData.assignedRoomName;
-
-    draftData.id = uuidv4();
-    draftData.isActive = true;
-    draftData.propertyId = property.id;
-    draftData.createdBy = currentUserId;
-    draftData.createdOn = dayjs();
-    draftData.updatedBy = currentUserId;
-    draftData.updatedOn = dayjs();
-
-    associateTenant({ draftData, property });
+  const onSubmit = async (data: TTenantForm) => {
+    const payload = buildAssociateTenantPayload(data);
+    triggerAssociateTenant({ payload, property });
   };
 
   const isSoR = watch("isSoR");
@@ -118,12 +125,12 @@ export default function AssociateTenantPopup({
   }, [property]);
 
   useEffect(() => {
-    if (associateTenantSuccess) {
+    if (associateTenantResult.isSuccess) {
       setShowSnackbar(true);
       reset();
       closeDialog();
     }
-  }, [associateTenantLoading]);
+  }, [associateTenantResult.isLoading]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>

@@ -26,7 +26,7 @@ import {
   useGetUserDataByIdQuery,
   useUpdateUserByUidMutation,
 } from "features/Api/firebaseUserApi";
-import RowHeader from "features/Rent/common/RowHeader/RowHeader";
+import RowHeader from "features/Rent/common/RowHeader";
 import HelpAndSupport from "features/Rent/components/ExternalIntegrations/HelpAndSupport";
 import {
   PropertyOwnerStripeAccountType,

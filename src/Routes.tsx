@@ -21,7 +21,7 @@ import SubAppRouter from "src/SubRouter";
 import { TAppRoute } from "src/types";
 
 const ReleaseNotes = lazy(
-  () => import("features/Layout/components/HelpAndSupport/ReleaseNotes"),
+  () => import("features/Layout/components/ReleaseNotes"),
 );
 
 // MainAppRoutes ...

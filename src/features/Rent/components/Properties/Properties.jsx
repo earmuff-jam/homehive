@@ -36,7 +36,7 @@ import {
   useUpdatePropertyByIdMutation,
 } from "features/Api/propertiesApi";
 import { useLazyGetRentsByPropertyIdWithFiltersQuery } from "features/Api/rentApi";
-import RowHeader from "features/Rent/common/RowHeader/RowHeader";
+import RowHeader from "features/Rent/common/RowHeader";
 import { AddPropertyTextString } from "features/Rent/common/constants";
 import AddProperty from "features/Rent/components/AddProperty/AddProperty";
 import ViewPropertyAccordionDetails from "features/Rent/components/Properties/ViewPropertyAccordionDetails";

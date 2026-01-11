@@ -22,13 +22,13 @@ import AButton from "common/AButton";
 import { NavigationProvider } from "common/ANavigation";
 import Banner from "common/Banner";
 import { DefaultTourStepsMap, GeneratedTourSteps } from "common/Tour/TourSteps";
-import { TAppRoute, TThemeIdx } from "common/types";
 import { HomeRouteUri, retrieveTourKey } from "common/utils";
 import { TInvoiceDialog } from "features/Invoice/types/Invoice.types";
 import AppToolbar from "features/Layout/components/AppToolbar/AppToolbar";
 import BreadCrumbs from "features/Layout/components/AppToolbar/BreadCrumbs";
-import Footer from "features/Layout/components/Footer/Footer";
+import Footer from "features/Layout/components/Footer";
 import NavBar from "features/Layout/components/NavBar/NavBar";
+import { TAppRoute, TThemeIdx } from "src/types";
 
 const defaultDialog: TInvoiceDialog = {
   title: "",

@@ -2,25 +2,20 @@ import dayjs from "dayjs";
 
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { authenticatorApp } from "src/config";
+import { TBaseAuthIdentity } from "src/types";
 
-/**
- * Role ...
- *
- * web roles and permissions
- */
+// TRole ...
+export type TRole = (typeof Role)[keyof typeof Role];
+
 export const Role = {
   User: "USER",
   Admin: "ADMIN",
   Tenant: "TENANT",
-};
+} as const;
 
-/**
- * authenticateViaGoogle...
- *
- * function used to login to google.
- * @returns {Object} userDetails
- */
-export const authenticateViaGoogle = async () => {
+// authenticateViaGoogle ...
+// defines a function where user is authenticated
+export const authenticateViaGoogle = async (): Promise<TBaseAuthIdentity> => {
   const provider = new GoogleAuthProvider();
   const result = await signInWithPopup(authenticatorApp, provider);
   const user = result.user;
