@@ -17,12 +17,12 @@ import {
 } from "@mui/material";
 import AButton from "common/AButton";
 import CustomSnackbar from "common/CustomSnackbar/CustomSnackbar";
-import RowHeader from "common/RowHeader/RowHeader";
 import TextFieldWithLabel from "common/TextFieldWithLabel";
 import {
   useGetUserDataByIdQuery,
   useUpdateUserByUidMutation,
 } from "features/Api/firebaseUserApi";
+import RowHeader from "features/Rent/common/RowHeader";
 import { fetchLoggedInUser } from "features/Rent/utils";
 
 export default function ProfileDetails() {
@@ -31,7 +31,6 @@ export default function ProfileDetails() {
   const { data: userData, isLoading } = useGetUserDataByIdQuery(user?.uid, {
     skip: !user?.uid,
   });
-
   const [
     updateUser,
     { isSuccess: isUpdateUserSuccess, isLoading: isUpdateUserLoading },

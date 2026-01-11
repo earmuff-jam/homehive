@@ -9,10 +9,30 @@ import { render, screen } from "@testing-library/react";
 describe("Report Table Component tests", () => {
   describe("Report Table Snapshot tests", () => {
     test("PdfViewer snapshot", () => {
+      const mockRows = [
+        {
+          category: "Rent",
+          description: "Monthly rent",
+          caption: "April",
+          quantity: 1,
+          price: 1000,
+          payment: 500,
+        },
+      ];
+
+      const mockInvoiceStatus = {
+        label: "Paid",
+        display: true,
+      };
+
       const { asFragment } = render(
-        <MemoryRouter>
-          <ReportTable />
-        </MemoryRouter>,
+        <ReportTable
+          rows={mockRows}
+          taxRate={10}
+          showWatermark={false}
+          invoiceStatus={mockInvoiceStatus}
+          invoiceTitle="Test Invoice"
+        />,
       );
       expect(asFragment()).toMatchSnapshot();
     });

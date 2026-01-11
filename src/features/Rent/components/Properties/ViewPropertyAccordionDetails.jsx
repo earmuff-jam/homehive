@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { useNavigate } from "react-router-dom";
 
@@ -23,6 +23,7 @@ import {
 import AButton from "common/AButton";
 import CustomSnackbar from "common/CustomSnackbar/CustomSnackbar";
 import EmptyComponent from "common/EmptyComponent";
+import { useCreateEmailMutation } from "features/Api/externalIntegrationsApi";
 import { useLazyGetUserDataByIdQuery } from "features/Api/firebaseUserApi";
 import { useGetTenantByPropertyIdQuery } from "features/Api/tenantsApi";
 import QuickConnectMenu from "features/Rent/components/QuickConnect/QuickConnectMenu";
@@ -30,12 +31,11 @@ import { handleQuickConnectAction } from "features/Rent/components/Settings/Temp
 import { DefaultTemplateData } from "features/Rent/components/Templates/constants";
 import {
   derieveTotalRent,
+  displayNextPaymentDueDate,
   getColorAndLabelForCurrentMonth,
   getNextMonthlyDueDate,
   getRentDetails,
-  updateDateTime,
 } from "features/Rent/utils";
-import useSendEmail from "hooks/useSendEmail";
 
 const ViewPropertyAccordionDetails = ({
   property,
@@ -57,9 +57,13 @@ const ViewPropertyAccordionDetails = ({
     { data: propertyOwnerData, isLoading: isUserDataLoading },
   ] = useLazyGetUserDataByIdQuery();
 
-  const { sendEmail, reset, error, success } = useSendEmail();
+  const [
+    createEmail,
+    { isSuccess: isCreateEmailSuccess, isLoading: isCreateEmailLoading },
+  ] = useCreateEmailMutation();
 
   const [anchorEl, setAnchorEl] = useState(null);
+  const [showSnackbar, setShowSnackbar] = useState(false);
 
   const isOpen = Boolean(anchorEl);
   const currentMonthRent = getRentDetails(rentDetails);
@@ -109,6 +113,12 @@ const ViewPropertyAccordionDetails = ({
       sendEmail,
     );
   };
+
+  useEffect(() => {
+    if (isCreateEmailSuccess) {
+      setShowSnackbar(true);
+    }
+  }, [isCreateEmailLoading]);
 
   if (isLoading || isRentDetailsLoading || isUserDataLoading)
     return <Skeleton height="10rem" />;
@@ -190,7 +200,7 @@ const ViewPropertyAccordionDetails = ({
               <Stack>
                 <Typography variant="subtitle2" fontSize="2rem" color="primary">
                   {dayjs(
-                    updateDateTime(dayjs(primaryTenant?.start_date)),
+                    displayNextPaymentDueDate(dayjs(primaryTenant?.start_date)),
                   ).format("MMM DD")}
                 </Typography>
                 <Typography variant="subtitle2" color="textSecondary">
@@ -299,14 +309,10 @@ const ViewPropertyAccordionDetails = ({
         </Box>
       </Paper>
       <CustomSnackbar
-        showSnackbar={success || error !== null}
-        setShowSnackbar={reset}
-        severity={success ? "success" : "error"}
-        title={
-          success
-            ? "Email sent successfully. Check spam if necessary."
-            : "Error sending email."
-        }
+        showSnackbar={showSnackbar}
+        setShowSnackbar={setShowSnackbar}
+        severity="success"
+        title="Email sent successfully. Check spam if necessary."
       />
     </Stack>
   );

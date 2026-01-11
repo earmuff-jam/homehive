@@ -1,27 +1,12 @@
 import React from "react";
 
-import InvoiceTrends from "./InvoiceTrends";
+import InvoiceTrendsChart from "./InvoiceTrends";
 import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/react";
+import { parseJsonUtility } from "common/utils";
 import * as utils from "features/Invoice/utils";
 
-// Mock chart.js components
-jest.mock("react-chartjs-2", () => ({
-  Bar: jest.fn(() => <div data-testid="bar-chart" />),
-  Line: jest.fn(() => <div data-testid="line-chart" />),
-}));
-
-// Mock other components
-jest.mock("common/EmptyComponent", () => () => (
-  <div data-testid="empty-component" />
-));
-jest.mock("common/RowHeader/RowHeader", () => (props) => (
-  <div data-testid="row-header">
-    {props.title} - {props.caption}
-  </div>
-));
-
-describe("InvoiceTrends", () => {
+describe("InvoiceTrendsChart Widget", () => {
   beforeEach(() => {
     jest.clearAllMocks();
     localStorage.clear();
@@ -29,17 +14,27 @@ describe("InvoiceTrends", () => {
 
   it("renders correctly and matches snapshot", () => {
     const { asFragment } = render(
-      <InvoiceTrends label="Trends" caption="Overview" />,
+      <InvoiceTrendsChart label="Trends" caption="Overview" />,
+    );
+
+    expect(screen.getByText("Trends")).toBeInTheDocument();
+    expect(screen.getByText("Overview")).toBeInTheDocument();
+    expect(screen.getByTestId("empty-component")).toBeInTheDocument();
+    expect(screen.getByTestId("empty-component")).toHaveTextContent(
+      "Sorry, no matching records found.",
     );
     expect(asFragment()).toMatchSnapshot();
   });
 
   it("renders EmptyComponent when no pdfDetails are in localStorage", () => {
-    render(<InvoiceTrends label="Trends" caption="Overview" />);
-    expect(screen.getByTestId("row-header")).toHaveTextContent(
-      "Trends - Overview",
-    );
+    render(<InvoiceTrendsChart label="Trends" caption="Overview" />);
+
+    expect(screen.getByText("Trends")).toBeInTheDocument();
+    expect(screen.getByText("Overview")).toBeInTheDocument();
     expect(screen.getByTestId("empty-component")).toBeInTheDocument();
+    expect(screen.getByTestId("empty-component")).toHaveTextContent(
+      "Sorry, no matching records found.",
+    );
   });
 
   it("renders Bar chart when chartType is 'bar' and pdfDetails exist", () => {
@@ -48,6 +43,7 @@ describe("InvoiceTrends", () => {
       datasets: [{ label: "Total", data: [100] }],
     };
 
+    parseJsonUtility.mockReturnValue({ id: 1, name: "Invoice 1" });
     jest
       .spyOn(utils, "normalizeInvoiceTrendsChartsDataset")
       .mockReturnValue([mockChartData]);
@@ -57,7 +53,7 @@ describe("InvoiceTrends", () => {
       JSON.stringify({ id: 1, name: "Invoice 1" }),
     );
 
-    render(<InvoiceTrends label="Trends" caption="Overview" />);
+    render(<InvoiceTrendsChart label="Trends" caption="Overview" />);
 
     expect(utils.normalizeInvoiceTrendsChartsDataset).toHaveBeenCalledWith(
       [{ id: 1, name: "Invoice 1" }],
@@ -72,7 +68,7 @@ describe("InvoiceTrends", () => {
       labels: ["Invoice 1"],
       datasets: [{ label: "Total", data: [100] }],
     };
-
+    parseJsonUtility.mockReturnValue({ id: 1, name: "Invoice 1" });
     jest
       .spyOn(utils, "normalizeInvoiceTrendsChartsDataset")
       .mockReturnValue([mockChartData]);
@@ -83,7 +79,7 @@ describe("InvoiceTrends", () => {
     );
 
     // Render with line chartType
-    render(<InvoiceTrends label="Trends" caption="Overview" />);
+    render(<InvoiceTrendsChart label="Trends" caption="Overview" />);
     // Force chartType state to 'line' (bypass toggle interaction)
     const chartInstance = screen.getByTestId("bar-chart"); // still mocked as Bar
     expect(chartInstance).toBeInTheDocument();

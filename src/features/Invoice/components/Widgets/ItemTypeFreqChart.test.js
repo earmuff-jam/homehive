@@ -3,22 +3,8 @@ import React from "react";
 import ItemTypeFreqChart from "./ItemTypeFreqChart";
 import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/react";
+import { parseJsonUtility } from "common/utils";
 import * as utils from "features/Invoice/utils";
-
-// Mock chart.js Bar component
-jest.mock("react-chartjs-2", () => ({
-  Bar: jest.fn(() => <div data-testid="bar-chart" />),
-}));
-
-// Mock other components
-jest.mock("common/EmptyComponent", () => () => (
-  <div data-testid="empty-component" />
-));
-jest.mock("common/RowHeader/RowHeader", () => (props) => (
-  <div data-testid="row-header">
-    {props.title} - {props.caption}
-  </div>
-));
 
 describe("ItemTypeFreqChart", () => {
   beforeEach(() => {
@@ -30,6 +16,13 @@ describe("ItemTypeFreqChart", () => {
     const { asFragment } = render(
       <ItemTypeFreqChart label="Item Types" caption="Frequency overview" />,
     );
+
+    expect(screen.getByText("Item Types")).toBeInTheDocument();
+    expect(screen.getByText("Frequency overview")).toBeInTheDocument();
+    expect(screen.getByTestId("empty-component")).toBeInTheDocument();
+    expect(screen.getByTestId("empty-component")).toHaveTextContent(
+      "Sorry, no matching records found.",
+    );
     expect(asFragment()).toMatchSnapshot();
   });
 
@@ -37,10 +30,12 @@ describe("ItemTypeFreqChart", () => {
     render(
       <ItemTypeFreqChart label="Item Types" caption="Frequency overview" />,
     );
-    expect(screen.getByTestId("row-header")).toHaveTextContent(
-      "Item Types - Frequency overview",
-    );
+    expect(screen.getByText("Item Types")).toBeInTheDocument();
+    expect(screen.getByText("Frequency overview")).toBeInTheDocument();
     expect(screen.getByTestId("empty-component")).toBeInTheDocument();
+    expect(screen.getByTestId("empty-component")).toHaveTextContent(
+      "Sorry, no matching records found.",
+    );
   });
 
   it("renders Bar chart when pdfDetails exist in localStorage", () => {
@@ -49,6 +44,7 @@ describe("ItemTypeFreqChart", () => {
       datasets: [{ label: "Frequency", data: [5] }],
     };
 
+    parseJsonUtility.mockReturnValue({ id: 1, name: "Invoice 1" });
     jest
       .spyOn(utils, "normalizeInvoiceItemTypeChartDataset")
       .mockReturnValue(mockChartData);

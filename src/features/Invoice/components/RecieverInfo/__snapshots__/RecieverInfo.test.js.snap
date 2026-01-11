@@ -6,13 +6,22 @@ exports[`RecieverInfo component renders correctly and matches snapshot 1`] = `
     class="MuiStack-root css-aha7cr-MuiStack-root"
     data-tour="reciever-0"
   >
-    <div>
-      <h1>
+    <div
+      class="MuiStack-root css-5545du-MuiStack-root"
+    >
+      <h5
+        class="MuiTypography-root MuiTypography-h5 css-1aso48g-MuiTypography-root"
+      >
         Add details about the reciever
-      </h1>
-      <p>
+      </h5>
+      <h6
+        class="MuiTypography-root MuiTypography-subtitle2 css-1ypmsg6-MuiTypography-root"
+      >
         Required fields are marked with an * 
-      </p>
+      </h6>
+      <div
+        class="MuiBox-root css-56sg73"
+      />
     </div>
     <form>
       <button

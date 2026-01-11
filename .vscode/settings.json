@@ -34,6 +34,7 @@
   },
   "go.toolsManagement.autoUpdate": true,
   "javascript.preferences.importModuleSpecifier": "non-relative",
+  "typescript.preferences.importModuleSpecifier": "non-relative",
   "explorer.confirmPasteNative": false,
   "window.confirmSaveUntitledWorkspace": false,
   "workbench.editorAssociations": {
@@ -61,5 +62,7 @@
     "titleBar.inactiveBackground": "#61dafb99",
     "titleBar.inactiveForeground": "#15202b99"
   },
-  "peacock.remoteColor": "#61dafb",
+
+  "typescript.preferences.importModuleSpecifierEnding": "minimal",
+  "javascript.preferences.importModuleSpecifierEnding": "minimal"
 }

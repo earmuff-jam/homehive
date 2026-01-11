@@ -3,22 +3,12 @@
 exports[`EmptyComponent Jest Tests EmptyComponent Snapshot tests should render the correct snapshot 1`] = `
 <DocumentFragment>
   <div
-    class="MuiStack-root css-1ug9gnt-MuiStack-root"
+    data-testid="empty-component"
   >
-    <p
-      class="MuiTypography-root MuiTypography-body1 css-rizt0-MuiTypography-root"
-    >
+    <div>
       Sorry, no matching records found.
-    </p>
-    <div
-      class="MuiStack-root css-nen11g-MuiStack-root"
-    >
-      <span
-        class="MuiTypography-root MuiTypography-caption css-mpaqru-MuiTypography-root"
-      >
-         
-      </span>
     </div>
+    <div />
   </div>
 </DocumentFragment>
 `;

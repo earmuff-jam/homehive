@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 
 import { Card, CardContent, Skeleton, Stack } from "@mui/material";
 import CustomSnackbar from "common/CustomSnackbar/CustomSnackbar";
-import RowHeader from "common/RowHeader/RowHeader";
 import {
   useCreateEsignFromTemplateMutation,
   useGetEsignTemplatesQuery,
@@ -11,6 +10,7 @@ import {
   useLazyGetUserByEmailAddressQuery,
   useLazyGetUserDataByIdQuery,
 } from "features/Api/firebaseUserApi";
+import RowHeader from "features/Rent/common/RowHeader";
 import EsignTemplateDetails from "features/Rent/components/EsignConnect/EsignTemplateDetails";
 import {
   fetchLoggedInUser,

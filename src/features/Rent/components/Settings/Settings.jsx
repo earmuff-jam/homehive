@@ -18,8 +18,8 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import RowHeader from "common/RowHeader/RowHeader";
 import relativeTime from "dayjs/plugin/relativeTime";
+import RowHeader from "features/Rent/common/RowHeader";
 import ExternalIntegrations from "features/Rent/components/ExternalIntegrations/ExternalIntegrations";
 import ProfileDetails from "features/Rent/components/ProfileDetails/ProfileDetails";
 import { TabPanel } from "features/Rent/components/Settings/common";

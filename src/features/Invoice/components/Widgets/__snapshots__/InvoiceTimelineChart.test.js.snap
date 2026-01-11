@@ -7,13 +7,30 @@ exports[`InvoiceTimelineChart renders correctly and matches snapshot 1`] = `
     data-tour="dashboard-4"
   >
     <div
-      data-testid="row-header"
+      class="MuiStack-root css-15k8blk-MuiStack-root"
     >
-      Timeline - Overview
+      <h5
+        class="MuiTypography-root MuiTypography-h5 css-6fn2ox-MuiTypography-root"
+      >
+        Timeline
+      </h5>
+      <h6
+        class="MuiTypography-root MuiTypography-subtitle2 css-1ypmsg6-MuiTypography-root"
+      >
+        Overview
+      </h6>
+      <div
+        class="MuiBox-root css-56sg73"
+      />
     </div>
     <div
       data-testid="empty-component"
-    />
+    >
+      <div>
+        Sorry, no matching records found.
+      </div>
+      <div />
+    </div>
   </div>
 </DocumentFragment>
 `;

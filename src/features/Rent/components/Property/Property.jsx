@@ -34,10 +34,13 @@ const Property = () => {
   const params = useParams();
   const user = fetchLoggedInUser();
 
-  const { data: property, isLoading: isPropertyLoading } =
-    useGetPropertiesByPropertyIdQuery(params?.id, {
-      skip: !params?.id,
-    });
+  const {
+    data: property,
+    isLoading: isPropertyLoading,
+    isSuccess: isPropertySuccess,
+  } = useGetPropertiesByPropertyIdQuery(params?.id, {
+    skip: !params?.id,
+  });
 
   const { data: tenants = [], isLoading: isTenantsLoading } =
     useGetTenantByPropertyIdQuery(params?.id, {
@@ -124,6 +127,7 @@ const Property = () => {
             dataTour="property-3"
             property={property}
             isPropertyLoading={isPropertyLoading}
+            isPropertySuccess={isPropertySuccess}
           />
           <PropertyDetails
             property={property}

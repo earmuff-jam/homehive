@@ -4,7 +4,8 @@ import AddWidget from "./AddWidget";
 import { fireEvent, render, screen } from "@testing-library/react";
 
 jest.mock("features/Invoice/constants", () => ({
-  WidgetTypeList: [
+  __esModule: true,
+  Widgets: [
     { id: "chart", label: "Chart", config: {} },
     { id: "summary", label: "Summary", config: {} },
   ],
@@ -13,7 +14,7 @@ jest.mock("features/Invoice/constants", () => ({
 describe("AddWidget Component", () => {
   describe("AddWidget Component snapshot tests", () => {
     test("Footer matches snapshot", () => {
-      const { asFragment } = render(<AddWidget />);
+      const { asFragment } = render(<AddWidget handleAddWidget={jest.fn()} />);
       expect(asFragment()).toMatchSnapshot();
     });
   });

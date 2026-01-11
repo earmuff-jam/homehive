@@ -21,7 +21,7 @@ exports[`Report Table Component tests Report Table Snapshot tests PdfViewer snap
             colspan="5"
             scope="col"
           >
-            Invoice Details
+            Test Invoice
           </th>
           <th
             class="MuiTableCell-root MuiTableCell-head MuiTableCell-alignRight MuiTableCell-sizeMedium css-1sipjqd-MuiTableCell-root"
@@ -79,6 +79,57 @@ exports[`Report Table Component tests Report Table Snapshot tests PdfViewer snap
         >
           <td
             class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeMedium css-1dc80h3-MuiTableCell-root"
+          >
+            <h6
+              class="MuiTypography-root MuiTypography-subtitle2 css-1ypmsg6-MuiTypography-root"
+            />
+          </td>
+          <td
+            class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeMedium css-1dc80h3-MuiTableCell-root"
+          >
+            <div
+              class="MuiStack-root css-hjo5wg-MuiStack-root"
+            >
+              <h6
+                class="MuiTypography-root MuiTypography-subtitle2 css-1ypmsg6-MuiTypography-root"
+              >
+                Monthly rent
+              </h6>
+              <span
+                class="MuiTypography-root MuiTypography-caption css-mpaqru-MuiTypography-root"
+              >
+                <sub>
+                  April
+                </sub>
+              </span>
+            </div>
+          </td>
+          <td
+            class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignRight MuiTableCell-sizeMedium css-3ssuu9-MuiTableCell-root"
+          >
+            1
+          </td>
+          <td
+            class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignRight MuiTableCell-sizeMedium css-3ssuu9-MuiTableCell-root"
+          >
+            1000.00
+          </td>
+          <td
+            class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignRight MuiTableCell-sizeMedium css-3ssuu9-MuiTableCell-root"
+          >
+            500.00
+          </td>
+          <td
+            class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignRight MuiTableCell-sizeMedium css-3ssuu9-MuiTableCell-root"
+          >
+            500.00
+          </td>
+        </tr>
+        <tr
+          class="MuiTableRow-root css-1xtozoh-MuiTableRow-root"
+        >
+          <td
+            class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeMedium css-1dc80h3-MuiTableCell-root"
             rowspan="3"
           />
           <td
@@ -90,7 +141,7 @@ exports[`Report Table Component tests Report Table Snapshot tests PdfViewer snap
           <td
             class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignRight MuiTableCell-sizeMedium css-1ri9by7-MuiTableCell-root"
           >
-            0.00
+            500.00
           </td>
         </tr>
         <tr
@@ -105,12 +156,12 @@ exports[`Report Table Component tests Report Table Snapshot tests PdfViewer snap
             class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignRight MuiTableCell-sizeMedium css-1ri9by7-MuiTableCell-root"
             colspan="3"
           >
-            0%
+            10%
           </td>
           <td
             class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignRight MuiTableCell-sizeMedium css-1ri9by7-MuiTableCell-root"
           >
-            0.00
+            50.00
           </td>
         </tr>
         <tr
@@ -130,13 +181,19 @@ exports[`Report Table Component tests Report Table Snapshot tests PdfViewer snap
               </p>
               <span
                 class="MuiBox-root css-0"
-              />
+              >
+                <span
+                  class="MuiTypography-root MuiTypography-caption no-print css-2291ml-MuiTypography-root"
+                >
+                  Paid
+                </span>
+              </span>
             </div>
           </td>
           <td
             class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignRight MuiTableCell-sizeMedium css-1ri9by7-MuiTableCell-root"
           >
-            0.00
+            550.00
           </td>
         </tr>
       </tbody>

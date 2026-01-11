@@ -5,21 +5,6 @@ import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/react";
 import * as utils from "features/Invoice/utils";
 
-// Mock chart.js wrapper
-jest.mock("react-chartjs-2", () => ({
-  Bar: jest.fn(() => <div data-testid="bar-chart" />),
-}));
-
-// Mock other components
-jest.mock("common/EmptyComponent", () => () => (
-  <div data-testid="empty-component" />
-));
-jest.mock("common/RowHeader/RowHeader", () => (props) => (
-  <div data-testid="row-header">
-    {props.title} - {props.caption}
-  </div>
-));
-
 describe("InvoiceTimelineChart", () => {
   beforeEach(() => {
     jest.clearAllMocks();
@@ -36,9 +21,8 @@ describe("InvoiceTimelineChart", () => {
   it("renders EmptyComponent when no pdfDetails are in localStorage", () => {
     render(<InvoiceTimelineChart label="Timeline" caption="Overview" />);
 
-    expect(screen.getByTestId("row-header")).toHaveTextContent(
-      "Timeline - Overview",
-    );
+    expect(screen.getByText("Timeline")).toBeInTheDocument();
+    expect(screen.getByText("Overview")).toBeInTheDocument();
     expect(screen.getByTestId("empty-component")).toBeInTheDocument();
   });
 
