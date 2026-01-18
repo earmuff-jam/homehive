@@ -25,6 +25,7 @@ import CustomSnackbar from "common/CustomSnackbar/CustomSnackbar";
 import { THelpAndSupport } from "common/types";
 import { fetchLoggedInUser } from "common/utils";
 import {
+  useCheckStripeAccountStatusMutation,
   useCreateStripeAccountLinkMutation,
   useCreateStripeAccountMutation,
   useCreateStripeLoginLinkMutation,
@@ -97,7 +98,7 @@ export default function StripeConnect() {
     useCreateStripeAccountLinkMutation();
 
   const [checkStripeAccountStatus, checkStripeAccountStatusResult] =
-    useCreateStripeAccountLinkMutation();
+    useCheckStripeAccountStatusMutation();
 
   const [createSecureStripeLoginLink, createSecureStripeLoginLinkResult] =
     useCreateStripeLoginLinkMutation();
@@ -121,7 +122,7 @@ export default function StripeConnect() {
         uid: userData?.uid,
         newData: {
           stripeAccountIsActive: true, // used to link / unlink account
-          updatedOn: dayjs(),
+          updatedOn: dayjs().toISOString(),
           updatedBy: user?.uid,
         },
       });
@@ -133,7 +134,7 @@ export default function StripeConnect() {
       uid: userData?.uid,
       newData: {
         stripeAccountIsActive: false,
-        updatedOn: dayjs(),
+        updatedOn: dayjs().toISOString(),
         updatedBy: user?.uid, // from local storage
       },
     });
@@ -168,7 +169,7 @@ export default function StripeConnect() {
         newData: {
           stripeAccountId: createStripeAccountResult.data.accountId,
           stripeAccountIsActive: true, // used to link / unlink account
-          updatedOn: dayjs(),
+          updatedOn: dayjs().toISOString(),
           updatedBy: user?.uid,
         },
       });
@@ -187,7 +188,7 @@ export default function StripeConnect() {
 
   useEffect(() => {
     userData?.stripeAccountIsActive &&
-      checkStripeAccountStatus({ accountId: userData?.stripeAccountId });
+      checkStripeAccountStatus(userData?.stripeAccountId);
   }, [userData?.stripeAccountId]);
 
   useEffect(() => {

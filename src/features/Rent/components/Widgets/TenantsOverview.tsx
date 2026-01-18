@@ -21,7 +21,8 @@ import Tenants from "features/Rent/components/Widgets/Tenants";
 type TTenantsOverviewProps = {
   property: TProperty;
   tenants?: TTenant[];
-  isTenantsLoading: boolean;
+  isPropertyLoading?: boolean;
+  isTenantsLoading?: boolean;
   toggleAssociateTenantsPopup: () => void;
   dataTour?: string;
 };
@@ -29,7 +30,8 @@ type TTenantsOverviewProps = {
 const TenantsOverview = ({
   property,
   tenants = [],
-  isTenantsLoading,
+  isPropertyLoading = true,
+  isTenantsLoading = true,
   toggleAssociateTenantsPopup,
   dataTour,
 }: TTenantsOverviewProps) => {
@@ -77,7 +79,7 @@ const TenantsOverview = ({
           </Stack>
         </Stack>
 
-        {isTenantsLoading ? (
+        {isTenantsLoading || isPropertyLoading ? (
           <Skeleton height="5rem" />
         ) : tenants.length === 0 ? (
           <EmptyComponent caption="Associate tenants to begin." />
