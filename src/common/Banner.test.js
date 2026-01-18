@@ -6,16 +6,6 @@ import Banner from "./Banner";
 import { render, screen } from "@testing-library/react";
 import { isBannerVisible } from "common/utils";
 
-// mock react-router
-jest.mock("react-router-dom", () => ({
-  useLocation: jest.fn(),
-}));
-
-// mock util
-jest.mock("common/utils", () => ({
-  isBannerVisible: jest.fn(),
-}));
-
 describe("Banner Jest Tests", () => {
   describe("Banner Component Tests", () => {
     beforeEach(() => {

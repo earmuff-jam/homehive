@@ -3,7 +3,7 @@ export default {
   transform: {
     "^.+\\.[jt]sx?$": "babel-jest",
   },
-  extensionsToTreatAsEsm: [".jsx"],
+  extensionsToTreatAsEsm: [".jsx", ".ts", ".tsx"],
   moduleNameMapper: {
     "^src/(.*)$": "<rootDir>/src/$1",
     "^common/(.*)$": "<rootDir>/src/common/$1",

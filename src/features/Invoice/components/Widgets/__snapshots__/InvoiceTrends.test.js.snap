@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`InvoiceTrends renders correctly and matches snapshot 1`] = `
+exports[`InvoiceTrendsChart Widget renders correctly and matches snapshot 1`] = `
 <DocumentFragment>
   <div
     class="MuiStack-root css-nen11g-MuiStack-root"
@@ -10,9 +10,25 @@ exports[`InvoiceTrends renders correctly and matches snapshot 1`] = `
       class="MuiStack-root css-gmwslw-MuiStack-root"
     >
       <div
-        data-testid="row-header"
+        class="MuiStack-root css-nen11g-MuiStack-root"
       >
-        Trends - Overview
+        <div
+          class="MuiStack-root css-15k8blk-MuiStack-root"
+        >
+          <h5
+            class="MuiTypography-root MuiTypography-h5 css-6fn2ox-MuiTypography-root"
+          >
+            Trends
+          </h5>
+          <h6
+            class="MuiTypography-root MuiTypography-subtitle2 css-1ypmsg6-MuiTypography-root"
+          >
+            Overview
+          </h6>
+          <div
+            class="MuiBox-root css-56sg73"
+          />
+        </div>
       </div>
       <div
         class="MuiBox-root css-0"
@@ -32,7 +48,7 @@ exports[`InvoiceTrends renders correctly and matches snapshot 1`] = `
           >
             <svg
               aria-hidden="true"
-              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1umw9bq-MuiSvgIcon-root"
+              class="MuiSvgIcon-root MuiSvgIcon-fontSizeSmall css-120dh41-MuiSvgIcon-root"
               data-testid="BarChartRoundedIcon"
               focusable="false"
               viewBox="0 0 24 24"
@@ -52,7 +68,7 @@ exports[`InvoiceTrends renders correctly and matches snapshot 1`] = `
           >
             <svg
               aria-hidden="true"
-              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1umw9bq-MuiSvgIcon-root"
+              class="MuiSvgIcon-root MuiSvgIcon-fontSizeSmall css-120dh41-MuiSvgIcon-root"
               data-testid="StackedLineChartRoundedIcon"
               focusable="false"
               viewBox="0 0 24 24"
@@ -70,7 +86,12 @@ exports[`InvoiceTrends renders correctly and matches snapshot 1`] = `
     >
       <div
         data-testid="empty-component"
-      />
+      >
+        <div>
+          Sorry, no matching records found.
+        </div>
+        <div />
+      </div>
     </div>
   </div>
 </DocumentFragment>

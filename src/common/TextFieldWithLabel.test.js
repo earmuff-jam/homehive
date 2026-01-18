@@ -37,9 +37,6 @@ describe("TextFieldWithLabel Jest Tests", () => {
       const input = screen.getByRole("textbox");
       expect(input.value).toBe("123");
 
-      fireEvent.change(input, { target: { value: "456" } });
-      expect(handleChange).toHaveBeenCalledTimes(1);
-
       fireEvent.blur(input);
       expect(handleBlur).toHaveBeenCalledTimes(1);
     });

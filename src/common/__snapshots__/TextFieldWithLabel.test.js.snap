@@ -3,45 +3,15 @@
 exports[`TextFieldWithLabel Jest Tests TextFieldWithLabel snapshot tests should render the correct snapshot 1`] = `
 <DocumentFragment>
   <div
-    class="MuiStack-root css-9j5txs-MuiStack-root"
+    data-testid="1"
   >
-    <div
-      class="MuiStack-root css-niqf4j-MuiStack-root"
-    >
-      <p
-        class="MuiTypography-root MuiTypography-body2 css-hol6i2-MuiTypography-root"
-      />
-    </div>
-    <div
-      class="MuiFormControl-root MuiFormControl-fullWidth MuiTextField-root css-cmpglg-MuiFormControl-root-MuiTextField-root"
-    >
-      <div
-        class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-colorPrimary MuiInputBase-fullWidth MuiInputBase-formControl MuiInputBase-sizeSmall css-1blp12k-MuiInputBase-root-MuiOutlinedInput-root"
-      >
-        <input
-          aria-invalid="false"
-          class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputSizeSmall css-1pzfmz2-MuiInputBase-input-MuiOutlinedInput-input"
-          id=":r0:"
-          type="text"
-          value=""
-        />
-        <fieldset
-          aria-hidden="true"
-          class="MuiOutlinedInput-notchedOutline css-18p5xg2-MuiNotchedOutlined-root-MuiOutlinedInput-notchedOutline"
-        >
-          <legend
-            class="css-1nf2c5d-MuiNotchedOutlined-root"
-          >
-            <span
-              aria-hidden="true"
-              class="notranslate"
-            >
-              ​
-            </span>
-          </legend>
-        </fieldset>
-      </div>
-    </div>
+    <label>
+      label
+    </label>
+    <input
+      placeholder="placeholder"
+      value="value"
+    />
   </div>
 </DocumentFragment>
 `;

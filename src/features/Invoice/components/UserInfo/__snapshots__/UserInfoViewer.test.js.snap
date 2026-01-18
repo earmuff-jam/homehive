@@ -26,23 +26,25 @@ exports[`UserInfoViewer component renders correctly and matches snapshot 1`] = `
         class="MuiStack-root css-pl8gqh-MuiStack-root"
       >
         <div
-          data-testid="first_name"
+          data-testid="1"
         >
           <label>
             First Name *
           </label>
           <input
             placeholder="First Name"
+            value="value"
           />
         </div>
         <div
-          data-testid="last_name"
+          data-testid="1"
         >
           <label>
             Last Name *
           </label>
           <input
             placeholder="Last Name"
+            value="value"
           />
         </div>
       </div>
@@ -50,67 +52,73 @@ exports[`UserInfoViewer component renders correctly and matches snapshot 1`] = `
         class="MuiStack-root css-pl8gqh-MuiStack-root"
       >
         <div
-          data-testid="email_address"
+          data-testid="1"
         >
           <label>
             Email address *
           </label>
           <input
             placeholder="Email Address"
+            value="value"
           />
         </div>
         <div
-          data-testid="phone_number"
+          data-testid="1"
         >
           <label>
             Phone Number *
           </label>
           <input
             placeholder="Phone Number"
+            value="value"
           />
         </div>
       </div>
       <div
-        data-testid="street_address"
+        data-testid="1"
       >
         <label>
           Street Address *
         </label>
         <input
           placeholder="Street Address"
+          value="value"
         />
       </div>
       <div
         class="MuiStack-root css-pl8gqh-MuiStack-root"
       >
         <div
-          data-testid="city"
+          data-testid="1"
         >
           <label>
             City *
           </label>
           <input
             placeholder="City"
+            value="value"
           />
         </div>
         <div
-          data-testid="state"
+          data-testid="1"
         >
           <label>
             State *
           </label>
           <input
             placeholder="State"
+            value="value"
           />
         </div>
         <div
-          data-testid="zipcode"
+          data-testid="1"
         >
           <label>
             Zip Code *
           </label>
           <input
             placeholder="Zip Code"
+            value="value"
           />
         </div>
       </div>

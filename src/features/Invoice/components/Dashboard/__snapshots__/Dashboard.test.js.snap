@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Dashboard renders correctly and matches snapshot 1`] = `
+exports[`Dashboard renders empty dashboard correctly and matches snapshot 1`] = `
 <DocumentFragment>
   <div
     class="MuiStack-root css-nen11g-MuiStack-root"
@@ -37,21 +37,25 @@ exports[`Dashboard renders correctly and matches snapshot 1`] = `
           </button>
         </span>
         <div
-          class="MuiStack-root css-b0cywb-MuiStack-root"
+          class="MuiStack-root css-nen11g-MuiStack-root"
         >
-          <h5
-            class="MuiTypography-root MuiTypography-h5 css-wj3xde-MuiTypography-root"
-          >
-            Standard layout
-          </h5>
-          <h6
-            class="MuiTypography-root MuiTypography-subtitle2 css-1ypmsg6-MuiTypography-root"
-          >
-            Displaying 0 widget
-          </h6>
           <div
-            class="MuiBox-root css-56sg73"
-          />
+            class="MuiStack-root css-1mrb496-MuiStack-root"
+          >
+            <h5
+              class="MuiTypography-root MuiTypography-h5 css-wj3xde-MuiTypography-root"
+            >
+              Standard layout
+            </h5>
+            <h6
+              class="MuiTypography-root MuiTypography-subtitle2 css-1ypmsg6-MuiTypography-root"
+            >
+              Displaying 0 undefined
+            </h6>
+            <div
+              class="MuiBox-root css-56sg73"
+            />
+          </div>
         </div>
       </div>
       <div
@@ -77,28 +81,8 @@ exports[`Dashboard renders correctly and matches snapshot 1`] = `
             />
           </svg>
         </button>
-        <button
-          class="MuiButtonBase-root MuiButton-root MuiButton-outlined MuiButton-outlinedPrimary MuiButton-sizeMedium MuiButton-outlinedSizeMedium MuiButton-colorPrimary MuiButton-root MuiButton-outlined MuiButton-outlinedPrimary MuiButton-sizeMedium MuiButton-outlinedSizeMedium MuiButton-colorPrimary css-1blvszr-MuiButtonBase-root-MuiButton-root"
-          data-tour="dashboard-2"
-          tabindex="0"
-          type="button"
-        >
+        <button>
           Reset
-          <span
-            class="MuiButton-icon MuiButton-endIcon MuiButton-iconSizeMedium css-1gulhci-MuiButton-endIcon"
-          >
-            <svg
-              aria-hidden="true"
-              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1umw9bq-MuiSvgIcon-root"
-              data-testid="RestartAltRoundedIcon"
-              focusable="false"
-              viewBox="0 0 24 24"
-            >
-              <path
-                d="M12 5V3.21c0-.45-.54-.67-.85-.35l-2.8 2.79c-.2.2-.2.51 0 .71l2.79 2.79c.32.31.86.09.86-.36V7c3.31 0 6 2.69 6 6 0 2.72-1.83 5.02-4.31 5.75-.42.12-.69.52-.69.95 0 .65.62 1.16 1.25.97C17.57 19.7 20 16.64 20 13c0-4.42-3.58-8-8-8m-6 8c0-1.34.44-2.58 1.19-3.59.3-.4.26-.95-.09-1.31-.42-.42-1.14-.38-1.5.1-1 1.34-1.6 3-1.6 4.8 0 3.64 2.43 6.7 5.75 7.67.63.19 1.25-.32 1.25-.97 0-.43-.27-.83-.69-.95C7.83 18.02 6 15.72 6 13"
-              />
-            </svg>
-          </span>
         </button>
       </div>
     </div>
@@ -107,18 +91,14 @@ exports[`Dashboard renders correctly and matches snapshot 1`] = `
       data-tour="dashboard-3"
     >
       <div
-        class="MuiStack-root css-5andtu-MuiStack-root"
+        data-testid="empty-component"
       >
-        <h5
-          class="MuiTypography-root MuiTypography-h5 css-16xl4zq-MuiTypography-root"
-        >
-          Sorry, no matching records found
-        </h5>
-        <span
-          class="MuiTypography-root MuiTypography-caption css-mpaqru-MuiTypography-root"
-        >
+        <div>
+          Sorry, no matching records found.
+        </div>
+        <div>
           Add widgets for custom dashboard layout.
-        </span>
+        </div>
       </div>
     </div>
   </div>

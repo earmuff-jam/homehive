@@ -10,14 +10,13 @@ exports[`PropertyOwnerInfoCard Jest Tests PropertyOwnerInfoCard Snapshot tests r
       class="MuiCardContent-root css-1lt5qva-MuiCardContent-root"
     >
       <div
-        class="MuiStack-root css-3f6c0i-MuiStack-root"
-        variant="subtitle2"
+        class="MuiStack-root css-1ma323q-MuiStack-root"
       >
-        <h6
-          class="MuiTypography-root MuiTypography-subtitle2 css-1wtbj35-MuiTypography-root"
+        <h5
+          class="MuiTypography-root MuiTypography-h5 css-181s0nx-MuiTypography-root"
         >
           Property Owner
-        </h6>
+        </h5>
         <h6
           class="MuiTypography-root MuiTypography-subtitle2 css-1ypmsg6-MuiTypography-root"
         >
@@ -42,9 +41,7 @@ exports[`PropertyOwnerInfoCard Jest Tests PropertyOwnerInfoCard Snapshot tests r
       >
         <div
           class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1hx09c7-MuiAvatar-root"
-        >
-          JD
-        </div>
+        />
         <div
           class="MuiBox-root css-0"
         >
@@ -57,11 +54,13 @@ exports[`PropertyOwnerInfoCard Jest Tests PropertyOwnerInfoCard Snapshot tests r
               <span
                 class="MuiTypography-root MuiTypography-caption css-12r24w8-MuiTypography-root"
               >
-                John Doe
+                N/A
               </span>
               <span
                 class="MuiTypography-root MuiTypography-caption css-1le9of1-MuiTypography-root"
-              />
+              >
+                owner@test.com
+              </span>
             </div>
           </div>
         </div>
