@@ -18,11 +18,7 @@ import { useGetUserDataByIdQuery } from "features/Api/firebaseUserApi";
 import { useGetPropertiesByPropertyIdQuery } from "features/Api/propertiesApi";
 import { useGetRentsByPropertyIdQuery } from "features/Api/rentApi";
 import { useGetTenantByPropertyIdQuery } from "features/Api/tenantsApi";
-import {
-  TProperty,
-  TRentRecordPayload,
-  TTenant,
-} from "features/Rent/Rent.types";
+import { TRentRecordPayload, TTenant } from "features/Rent/Rent.types";
 import PropertyDetails from "features/Rent/common/PropertyDetails";
 import PropertyHeader from "features/Rent/common/PropertyHeader";
 import PropertyOwnerInfoCard from "features/Rent/common/PropertyOwnerInfoCard";
@@ -106,6 +102,7 @@ const Property = () => {
           />
           <TenantsOverview
             property={property}
+            isPropertyLoading={isPropertyLoading}
             tenants={tenants.filter((tenant) => tenant.isActive)}
             isTenantsLoading={isTenantsLoading}
             dataTour="property-8"

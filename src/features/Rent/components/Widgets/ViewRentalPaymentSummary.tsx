@@ -40,8 +40,8 @@ const ViewRentalPaymentSummary: React.FC<TViewRentalPaymentSummaryProps> = ({
         Cell: ({ cell }) => formatCurrency(cell.getValue<number>()),
       },
       {
-        accessorKey: "method",
-        header: "Payment Method",
+        accessorKey: "note",
+        header: "Note",
         size: 100,
         Cell: ({ cell }) => cell.getValue<string>() ?? "-",
       },

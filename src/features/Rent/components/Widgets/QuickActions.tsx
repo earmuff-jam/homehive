@@ -113,7 +113,7 @@ export default function QuickActions({ property }: TQuickActionsProps) {
         ...data,
         id: property.id,
         updatedBy: user.uid,
-        updatedOn: dayjs(),
+        updatedOn: dayjs().toISOString(),
       },
       action: UpdatePropertyApiRequestEnumValue,
     };
