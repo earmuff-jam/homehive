@@ -19,12 +19,12 @@ import {
 } from "features/Api/firebaseUserApi";
 import { useCreateRentRecordMutation } from "features/Api/rentApi";
 import { useGetTenantByPropertyIdQuery } from "features/Api/tenantsApi";
-import { TProperty } from "features/Rent/Rent.schema";
 import {
+  TProperty,
+  TRentRecord,
   TRentRecordForm,
-  TRentRecordPayload,
   TTenant,
-} from "features/Rent/Rent.types";
+} from "features/Rent/Rent.schema";
 import { TUser, TUserDetails } from "src/types";
 
 // TAddRentRecordsProps ...
@@ -89,7 +89,7 @@ export default function AddRentRecords({
 
   const buildAddRentRecordPayload = (
     formData: TRentRecordForm,
-  ): TRentRecordPayload => ({
+  ): TRentRecord => ({
     id: uuidv4(),
     rent: Math.round(property.rent * 100),
     additionalCharges: Math.round(property.additionalRent * 100),

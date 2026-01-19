@@ -18,7 +18,7 @@ import {
   useGetTenantListQuery,
   useLazyGetTenantListQuery,
 } from "features/Api/tenantsApi";
-import { TTenant, TTenantForm } from "features/Rent/Rent.types";
+import { TTenantForm } from "features/Rent/Rent.schema";
 
 // TTenantOption ...
 type TTenantOption = {

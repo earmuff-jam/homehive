@@ -1,8 +1,8 @@
 import { ReactElement, ReactNode } from "react";
 
 import { ChipProps } from "@mui/material";
-import { TProperty } from "features/Rent/Rent.schema";
-import { TAuditColumns, TUserDetails } from "src/types";
+import { TProperty, TTenant } from "features/Rent/Rent.schema";
+import { TUserDetails } from "src/types";
 
 // TCreateInvoiceEnumValue ...
 type TCreateInvoiceEnumValue = "CreateInvoice";
@@ -106,97 +106,11 @@ export type TPropertyUpdateApiRequest = {
   action: string;
 };
 
-// TTenantForm ...
-export type TTenantForm = {
-  email: string;
-  startDate: string;
-  term: string;
-  taxRate: number;
-  rent: number;
-  initialLateFee: number;
-  dailyLateFee: number;
-  initialAnimalVoilationFee: number;
-  dailyAnimalVoilationFee: number;
-  returnedPaymentFee: number;
-  gracePeriod: number;
-  isAutoRenewPolicySet: boolean;
-  autoRenewDays: number;
-  isPrimary: boolean;
-  isSoR: boolean;
-  assignedRoomName?: string; // if SoR assignedRoomName is removed
-  guestsPermittedStayDays: number;
-  tripCharge: number;
-  allowKeyboxSince: number;
-  removeKeyboxFee: number;
-  inventoryCompleteWithin: number;
-  rentDueDate: number; // how many days the rent can be delayed from due date
-  isActive: boolean;
-};
-
-// TTenant ...
-export type TTenant = TAuditColumns & {
-  id: string;
-  propertyId: string;
-  email: string;
-  startDate: string;
-  term: string;
-  taxRate: number;
-  rent: number;
-  initialLateFee: number;
-  dailyLateFee: number;
-  initialAnimalVoilationFee: number;
-  dailyAnimalVoilationFee: number;
-  returnedPaymentFee: number;
-  gracePeriod: number;
-  isAutoRenewPolicySet: boolean;
-  autoRenewDays: number;
-  isPrimary: boolean;
-  isSoR: boolean;
-  assignedRoomName?: string; // if SoR assignedRoomName is removed
-  guestsPermittedStayDays: number;
-  tripCharge: number;
-  allowKeyboxSince: number;
-  removeKeyboxFee: number;
-  inventoryCompleteWithin: number;
-  rentDueDate: number;
-  isActive: boolean;
-};
-
 // TDocumentRow ...
 export type TDocumentRow = {
   id: string;
   fileName: string;
   updatedOn: string;
-};
-
-// TRentRecordForm ...
-export type TRentRecordForm = TAuditColumns & {
-  ownerFirstName: string;
-  ownerLastName: string;
-  ownerEmail: string;
-  tenantFirstName: string;
-  tenantLastName: string;
-  tenantEmail: string;
-  rent: number;
-  paymentMethod: string;
-  rentMonth: string;
-  rentPaidDate: string;
-  note?: string;
-};
-
-// TRentRecordPayload...
-// defines a type used for all rent records and api payloads
-export type TRentRecordPayload = TAuditColumns & {
-  id: string;
-  rent: number;
-  additionalCharges: number;
-  tenantEmail: string;
-  propertyId: string;
-  propertyOwnerId: string;
-  tenantId: string;
-  rentMonth: string;
-  note?: string;
-  status: TPaymentStatusEnumValues;
 };
 
 //  TTemplate ...
