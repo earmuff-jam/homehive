@@ -1,8 +1,24 @@
 import { z } from "zod";
 
-// PropertySchema ...
-// defines the schema for TProperty
-export const PropertySchema = z.object({
+// TAuditColumnsSchema ...
+// defines the schema for audit columns
+export const TAuditColumnsSchema = z.object({
+  createdBy: z.string(),
+  createdOn: z.string(),
+  updatedBy: z.string().optional(),
+  updatedOn: z.string().optional(),
+});
+
+// TGeoLocationCoordinatesSchema ...
+// defines the schema for the geolocation co-ordinates
+export const TGeoLocationCoordinatesSchema = z.object({
+  lat: z.string(),
+  lon: z.string(),
+});
+
+// TPropertyFormSchema ...
+// defines the schema for TPropertyFormSchema
+export const TPropertyFormSchema = z.object({
   id: z.string(),
   name: z.string(),
   address: z.string(),
@@ -14,7 +30,7 @@ export const PropertySchema = z.object({
   bathrooms: z.coerce.number(),
   sqFt: z.coerce.number(),
   note: z.string().optional(),
-  ownerEmail: z.string().email(),
+  ownerEmail: z.string(),
   emergencyContactNumber: z.string(),
   isTenantCleaningYard: z.boolean(),
   isSmoking: z.boolean(),
@@ -44,11 +60,13 @@ export const PropertySchema = z.object({
     .optional(),
   isDeleted: z.boolean().optional(),
   rentees: z.array(z.string()).optional(),
-  createdBy: z.string(),
-  createdOn: z.string(),
-  updatedBy: z.string(),
-  updatedOn: z.string(),
 });
 
+// TPropertySchema ...
+// defines the schema for TProperty
+export const TPropertySchema = TPropertyFormSchema.and(
+  TGeoLocationCoordinatesSchema,
+).and(TAuditColumnsSchema);
+
 // Type inferred from schema
-export type TProperty = z.infer<typeof PropertySchema>;
+export type TProperty = z.infer<typeof TPropertySchema>;
