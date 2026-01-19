@@ -7,8 +7,8 @@ import {
   PaidRounded,
   PaymentRounded,
 } from "@mui/icons-material";
+import { TProperty } from "features/Rent/Rent.schema";
 import {
-  TProperty,
   TRentRecordPayload,
   TTenant,
   TUseGetPropertyDetailsResponse,

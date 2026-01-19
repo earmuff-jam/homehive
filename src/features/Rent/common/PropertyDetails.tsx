@@ -9,7 +9,7 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
-import { TProperty } from "features/Rent/Rent.types";
+import { TProperty } from "features/Rent/Rent.schema";
 import RowHeader from "features/Rent/common/RowHeader";
 import PropertyMap from "features/Rent/components/PropertyMap/PropertyMap";
 

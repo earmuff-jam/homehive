@@ -5,17 +5,13 @@ import {
 } from "@reduxjs/toolkit/query/react";
 import { parseJsonUtility } from "common/utils";
 import { mapServiceApi } from "features/Api/mapServiceApi";
-import { PropertySchema } from "features/Rent/Rent.schema";
+import { TProperty, TPropertySchema } from "features/Rent/Rent.schema";
 import {
-  TProperty,
   TPropertyUpdateApiRequest,
   TTemplateObject,
 } from "features/Rent/Rent.types";
 import { DefaultTemplateData } from "features/Rent/components/Templates/constants";
-import {
-  DeletePropertyApiRequestEnumValue,
-  UpdatePropertyApiRequestEnumValue,
-} from "features/Rent/utils";
+import { UpdatePropertyApiRequestEnumValue } from "features/Rent/utils";
 import {
   collection,
   doc,
@@ -87,7 +83,7 @@ export const propertiesApi = createApi({
               },
             };
 
-          const parsedProperty = PropertySchema.parse({
+          const parsedProperty = TPropertySchema.parse({
             id: docSnap.id,
             ...docSnap.data(),
           });
@@ -121,7 +117,11 @@ export const propertiesApi = createApi({
           const properties: TProperty[] = [];
 
           querySnapshot.forEach((doc) => {
-            properties.push({ id: doc.id, ...doc.data() } as TProperty);
+            const parsedProperty = TPropertySchema.parse({
+              id: doc.id,
+              ...doc.data(),
+            });
+            properties.push(parsedProperty);
           });
           return { data: properties };
         } catch (error) {
@@ -181,15 +181,8 @@ export const propertiesApi = createApi({
     updatePropertyById: builder.mutation<TProperty, TPropertyUpdateApiRequest>({
       async queryFn({ property, action }, { dispatch }) {
         try {
-          if (action === DeletePropertyApiRequestEnumValue) {
-            // handle remove property
-            const propertyRef = doc(db, "properties", property?.id);
-            await setDoc(propertyRef, property, {
-              merge: true,
-            });
-
-            return { data: null };
-          } else if (action === UpdatePropertyApiRequestEnumValue) {
+          let updatedProperty = property;
+          if (action === UpdatePropertyApiRequestEnumValue) {
             const addressDetails = [
               property.address,
               property.state,
@@ -202,25 +195,17 @@ export const propertiesApi = createApi({
               mapServiceApi.endpoints.getUserLatlon.initiate(addressDetails),
             ).unwrap();
 
-            const updatedPropertyWithCoordinates = {
+            updatedProperty = {
               ...property,
               location: result,
             };
-
-            const propertyRef = doc(
-              db,
-              "properties",
-              updatedPropertyWithCoordinates?.id,
-            );
-            await setDoc(propertyRef, updatedPropertyWithCoordinates, {
-              merge: true,
-            });
-            return { data: property } as { data: TProperty };
-          } else {
-            // do nothing
-            console.error("no action found to perform on selected property.");
-            return { data: null };
           }
+
+          const propertyRef = doc(db, "properties", updatedProperty.id);
+          await setDoc(propertyRef, updatedProperty, { merge: true });
+
+          const parsedProperty = TPropertySchema.parse(updatedProperty);
+          return { data: parsedProperty };
         } catch (error) {
           return {
             error: {

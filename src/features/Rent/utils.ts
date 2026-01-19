@@ -1,8 +1,8 @@
 import dayjs, { Dayjs } from "dayjs";
 
+import { TProperty } from "features/Rent/Rent.schema";
 import {
   TPaymentStatusEnumValues,
-  TProperty,
   TTemplateProcessorEnumValues,
   TTenant,
   TUpdatePropertyApiRequestEnumValues,

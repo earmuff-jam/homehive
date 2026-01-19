@@ -24,11 +24,8 @@ import CustomSnackbar from "common/CustomSnackbar/CustomSnackbar";
 import { fetchLoggedInUser } from "common/utils";
 import { useUpdatePropertyByIdMutation } from "features/Api/propertiesApi";
 import { useUpdateTenantByIdMutation } from "features/Api/tenantsApi";
-import {
-  TProperty,
-  TPropertyUpdateApiRequest,
-  TTenant,
-} from "features/Rent/Rent.types";
+import { TProperty } from "features/Rent/Rent.schema";
+import { TPropertyUpdateApiRequest, TTenant } from "features/Rent/Rent.types";
 import {
   UpdatePropertyApiRequestEnumValue,
   formatCurrency,

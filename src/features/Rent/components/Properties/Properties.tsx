@@ -42,11 +42,8 @@ import {
   useUpdateTenantByEmailMutation,
   useUpdateTenantByIdMutation,
 } from "features/Api/tenantsApi";
-import {
-  TProperty,
-  TPropertyForm,
-  TPropertyUpdateApiRequest,
-} from "features/Rent/Rent.types";
+import { TProperty, TPropertyFormSchema } from "features/Rent/Rent.schema";
+import { TPropertyUpdateApiRequest } from "features/Rent/Rent.types";
 import RowHeader from "features/Rent/common/RowHeader";
 import { AddPropertyTextString } from "features/Rent/common/constants";
 import AddProperty from "features/Rent/components/AddProperty/AddProperty";
@@ -100,7 +97,7 @@ export default function Properties() {
     formState: { errors, isValid },
     reset,
     setValue,
-  } = useForm<TPropertyForm>({
+  } = useForm<TPropertyFormSchema>({
     mode: "onChange",
     defaultValues: {
       name: "",
@@ -163,7 +160,7 @@ export default function Properties() {
     updateProperty(request);
   };
 
-  const onSubmit = (data: TPropertyForm) => {
+  const onSubmit = (data: TPropertyFormSchema) => {
     const result: TProperty = {
       ...data,
       id: uuidv4(),
@@ -174,7 +171,7 @@ export default function Properties() {
       updatedOn: dayjs().toISOString(),
     };
 
-    const sanitizedPayload = sanitizeApiFields(result) as TProperty;
+    const sanitizedPayload = sanitizeApiFields(result);
     createProperty(sanitizedPayload);
     closeDialog();
   };

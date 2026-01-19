@@ -2,8 +2,8 @@ import dayjs from "dayjs";
 
 import { fetchLoggedInUser, isSelectedFeatureEnabled } from "common/utils";
 import { useCreateEmailMutation } from "features/Api/externalIntegrationsApi";
+import { TProperty } from "features/Rent/Rent.schema";
 import {
-  TProperty,
   TTemplateObject,
   TTemplateProcessorEnumValues,
   TTenant,

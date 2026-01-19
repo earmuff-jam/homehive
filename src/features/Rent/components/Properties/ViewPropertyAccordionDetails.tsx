@@ -33,8 +33,8 @@ import { useCreateEmailMutation } from "features/Api/externalIntegrationsApi";
 import { useLazyGetUserDataByIdQuery } from "features/Api/firebaseUserApi";
 import { useGetTemplatesForPropertyIdQuery } from "features/Api/propertiesApi";
 import { useGetTenantByPropertyIdQuery } from "features/Api/tenantsApi";
+import { TProperty } from "features/Rent/Rent.schema";
 import {
-  TProperty,
   TRentRecordPayload,
   TTemplateObject,
   TTenant,
