@@ -5,7 +5,7 @@ import { CSS } from "@dnd-kit/utilities";
 import { CancelRounded, DragIndicatorRounded } from "@mui/icons-material";
 import { Badge, Box, IconButton, Paper, Stack, Tooltip } from "@mui/material";
 import AIconButton from "common/AIconButton";
-import { TWidget } from "features/Invoice/types/Invoice.types";
+import { TWidget } from "features/Invoice/Invoice.types";
 
 // WidgetProps ...
 type WidgetProps = {

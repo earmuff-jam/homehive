@@ -1,5 +1,5 @@
 import { Stack, Typography } from "@mui/material";
-import { UserInfo } from "features/Invoice/types/Invoice.types";
+import { UserInfo } from "features/Invoice/Invoice.types";
 
 // SalutationProps ...
 export type SalutationProps = {

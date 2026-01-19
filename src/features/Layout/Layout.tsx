@@ -23,7 +23,7 @@ import { NavigationProvider } from "common/ANavigation";
 import Banner from "common/Banner";
 import { DefaultTourStepsMap, GeneratedTourSteps } from "common/Tour/TourSteps";
 import { HomeRouteUri, retrieveTourKey } from "common/utils";
-import { TInvoiceDialog } from "features/Invoice/types/Invoice.types";
+import { TInvoiceDialog } from "features/Invoice/Invoice.types";
 import AppToolbar from "features/Layout/components/AppToolbar/AppToolbar";
 import BreadCrumbs from "features/Layout/components/AppToolbar/BreadCrumbs";
 import Footer from "features/Layout/components/Footer";

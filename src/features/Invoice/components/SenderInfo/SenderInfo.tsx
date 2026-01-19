@@ -11,9 +11,9 @@ import {
   useGetSenderInfoQuery,
   useUpsertSenderInfoMutation,
 } from "features/Api/invoiceApi";
+import { UserInfo } from "features/Invoice/Invoice.types";
 import RowHeader from "features/Invoice/components/RowHeader/InvoiceRowHeader";
 import UserInfoViewer from "features/Invoice/components/UserInfo/UserInfoViewer";
-import { UserInfo } from "features/Invoice/types/Invoice.types";
 import { useAppTitle } from "hooks/useAppTitle";
 
 export default function SenderInfo() {

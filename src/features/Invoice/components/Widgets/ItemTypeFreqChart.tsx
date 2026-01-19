@@ -15,11 +15,11 @@ import {
 } from "chart.js";
 import EmptyComponent from "common/EmptyComponent";
 import { parseJsonUtility } from "common/utils";
-import RowHeader from "features/Invoice/components/RowHeader/InvoiceRowHeader";
 import {
   Invoice,
   InvoiceItemTypeChartData,
-} from "features/Invoice/types/Invoice.types";
+} from "features/Invoice/Invoice.types";
+import RowHeader from "features/Invoice/components/RowHeader/InvoiceRowHeader";
 import { normalizeInvoiceItemTypeChartDataset } from "features/Invoice/utils";
 
 ChartJS.register(

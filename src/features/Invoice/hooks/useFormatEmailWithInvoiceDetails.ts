@@ -1,5 +1,5 @@
 import { parseJsonUtility } from "common/utils";
-import { Invoice, UserInfo } from "features/Invoice/types/Invoice.types";
+import { Invoice, UserInfo } from "features/Invoice/Invoice.types";
 
 // useFormatEmailWithInvoiceDetails ...
 export const useFormatEmailWithInvoiceDetails = () => {

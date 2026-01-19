@@ -13,8 +13,8 @@ import {
   Tooltip,
 } from "chart.js";
 import EmptyComponent from "common/EmptyComponent";
+import { TrendsChartDataset } from "features/Invoice/Invoice.types";
 import RowHeader from "features/Invoice/components/RowHeader/InvoiceRowHeader";
-import { TrendsChartDataset } from "features/Invoice/types/Invoice.types";
 import { normalizeInvoiceTimelineChartDataset } from "features/Invoice/utils";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Title);

@@ -3,7 +3,7 @@ import { FieldErrors, UseFormRegister } from "react-hook-form";
 import { Container, Stack, Typography } from "@mui/material";
 import AButton from "common/AButton";
 import TextFieldWithLabel from "common/TextFieldWithLabel";
-import { UserInfo } from "features/Invoice/types/Invoice.types";
+import { UserInfo } from "features/Invoice/Invoice.types";
 
 // UserInfoViewerProps ...
 export type UserInfoViewerProps = {

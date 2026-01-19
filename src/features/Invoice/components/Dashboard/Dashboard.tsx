@@ -21,11 +21,11 @@ import {
 import AButton from "common/AButton";
 import CustomSnackbar from "common/CustomSnackbar/CustomSnackbar";
 import { parseJsonUtility, pluralize } from "common/utils";
+import { TWidget } from "features/Invoice/Invoice.types";
 import AddWidget from "features/Invoice/components/AddWidget/AddWidget";
 import DndGridLayout from "features/Invoice/components/DndGridLayout/DndGridLayout";
 import RowHeader from "features/Invoice/components/RowHeader/InvoiceRowHeader";
 import { Widgets } from "features/Invoice/constants";
-import { TWidget } from "features/Invoice/types/Invoice.types";
 import { useAppTitle } from "hooks/useAppTitle";
 
 export default function Dashboard() {

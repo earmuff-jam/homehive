@@ -29,8 +29,8 @@ import {
 } from "common/utils";
 import { useCreateEmailMutation } from "features/Api/externalIntegrationsApi";
 import { useLogoutMutation } from "features/Api/firebaseUserApi";
+import { TInvoiceDialog } from "features/Invoice/Invoice.types";
 import { useFormatEmailWithInvoiceDetails } from "features/Invoice/hooks/useFormatEmailWithInvoiceDetails";
-import { TInvoiceDialog } from "features/Invoice/types/Invoice.types";
 import MenuOptions from "features/Layout/components/NavBar/MenuOptions";
 import { useGenerateInvoiceWithData } from "hooks/useGenerateInvoiceWithData";
 import { TAppRoute, TThemeIdx, TUser } from "src/types";

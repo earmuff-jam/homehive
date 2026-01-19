@@ -1,9 +1,9 @@
 import { Box } from "@mui/material";
+import { TWidget } from "features/Invoice/Invoice.types";
 import DetailsTableView from "features/Invoice/components/Widgets/DetailsTableView";
 import InvoiceTimelineChart from "features/Invoice/components/Widgets/InvoiceTimelineChart";
 import InvoiceTrendsChart from "features/Invoice/components/Widgets/InvoiceTrends";
 import ItemTypeFreqChart from "features/Invoice/components/Widgets/ItemTypeFreqChart";
-import { TWidget } from "features/Invoice/types/Invoice.types";
 
 export default function WidgetProps(widget: TWidget) {
   switch (widget.id) {

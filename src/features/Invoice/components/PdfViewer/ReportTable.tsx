@@ -10,10 +10,7 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
-import {
-  LineItem,
-  TInvoiceStatusOption,
-} from "features/Invoice/types/Invoice.types";
+import { LineItem, TInvoiceStatusOption } from "features/Invoice/Invoice.types";
 import { numberFormatter } from "features/Invoice/utils";
 
 // TReportTableProps ...

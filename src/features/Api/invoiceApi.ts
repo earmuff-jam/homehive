@@ -1,5 +1,5 @@
 import { createApi, fakeBaseQuery } from "@reduxjs/toolkit/query/react";
-import { Invoice, UserInfo } from "features/Invoice/types/Invoice.types";
+import { Invoice, UserInfo } from "features/Invoice/Invoice.types";
 import { TCustomError } from "src/types";
 
 // TTagSender ...

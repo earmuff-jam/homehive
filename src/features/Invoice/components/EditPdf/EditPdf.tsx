@@ -33,12 +33,9 @@ import {
   useGetPdfDetailsQuery,
   useUpsertPdfDetailsMutation,
 } from "features/Api/invoiceApi";
+import { Invoice, TInvoiceStatusOption } from "features/Invoice/Invoice.types";
 import EditPdfLineItemAccordion from "features/Invoice/components/EditPdf/EditPdfLineItemAccordion";
 import { DefaultInvoiceStatusOptions } from "features/Invoice/constants";
-import {
-  Invoice,
-  TInvoiceStatusOption,
-} from "features/Invoice/types/Invoice.types";
 import { useAppTitle } from "hooks/useAppTitle";
 import { produce } from "immer";
 

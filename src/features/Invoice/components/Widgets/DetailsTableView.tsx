@@ -6,12 +6,12 @@ import { Stack } from "@mui/material";
 import EmptyComponent from "common/EmptyComponent";
 import { parseJsonUtility } from "common/utils";
 import relativeTime from "dayjs/plugin/relativeTime";
-import RowHeader from "features/Invoice/components/RowHeader/InvoiceRowHeader";
 import {
   Invoice,
   InvoiceRow,
   TInvoiceStatusOption,
-} from "features/Invoice/types/Invoice.types";
+} from "features/Invoice/Invoice.types";
+import RowHeader from "features/Invoice/components/RowHeader/InvoiceRowHeader";
 import { normalizeDetailsTableData } from "features/Invoice/utils";
 import {
   MaterialReactTable,

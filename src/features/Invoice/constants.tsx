@@ -9,7 +9,7 @@ import {
   Category,
   TInvoiceStatusOption,
   TWidget,
-} from "features/Invoice/types/Invoice.types";
+} from "features/Invoice/Invoice.types";
 
 // Widgets ...
 export const Widgets: TWidget[] = [

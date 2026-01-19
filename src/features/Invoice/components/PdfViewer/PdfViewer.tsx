@@ -5,14 +5,14 @@ import dayjs from "dayjs";
 import { Container, Stack, Typography } from "@mui/material";
 import EmptyComponent from "common/EmptyComponent";
 import { EditInvoiceRouteUri, parseJsonUtility } from "common/utils";
-import ReportTable from "features/Invoice/components/PdfViewer/ReportTable";
-import RowHeader from "features/Invoice/components/RowHeader/InvoiceRowHeader";
-import Salutation from "features/Invoice/components/UserInfo/Salutation";
 import {
   Invoice,
   TOutletContext,
   UserInfo,
-} from "features/Invoice/types/Invoice.types";
+} from "features/Invoice/Invoice.types";
+import ReportTable from "features/Invoice/components/PdfViewer/ReportTable";
+import RowHeader from "features/Invoice/components/RowHeader/InvoiceRowHeader";
+import Salutation from "features/Invoice/components/UserInfo/Salutation";
 import { useAppTitle } from "hooks/useAppTitle";
 
 export default function PdfViewer() {

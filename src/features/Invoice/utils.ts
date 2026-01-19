@@ -7,7 +7,7 @@ import {
   ItemTypeChartRow,
   MonthTotal,
   TrendsChartDataset,
-} from "features/Invoice/types/Invoice.types";
+} from "features/Invoice/Invoice.types";
 
 // numberFormatter ...
 export function numberFormatter(digit: number): string {

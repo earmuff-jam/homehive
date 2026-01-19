@@ -11,8 +11,8 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
+import { Invoice } from "features/Invoice/Invoice.types";
 import EditPdfLineItem from "features/Invoice/components/EditPdf/EditPdfLineItem";
-import { Invoice } from "features/Invoice/types/Invoice.types";
 
 // EditPdfLineItemAccordion ...
 type EditPdfLineItemAccordion = {

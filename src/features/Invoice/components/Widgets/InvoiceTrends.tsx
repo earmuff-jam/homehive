@@ -18,12 +18,12 @@ import {
 } from "chart.js";
 import EmptyComponent from "common/EmptyComponent";
 import { parseJsonUtility } from "common/utils";
-import RowHeader from "features/Invoice/components/RowHeader/InvoiceRowHeader";
 import {
   ChartType,
   Invoice,
   TrendsChartDataset,
-} from "features/Invoice/types/Invoice.types";
+} from "features/Invoice/Invoice.types";
+import RowHeader from "features/Invoice/components/RowHeader/InvoiceRowHeader";
 import { normalizeInvoiceTrendsChartsDataset } from "features/Invoice/utils";
 
 ChartJS.register(

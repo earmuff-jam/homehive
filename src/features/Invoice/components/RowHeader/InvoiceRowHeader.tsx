@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
 
 import { Box, Stack, Typography } from "@mui/material";
-import { TInvoiceRowHeader } from "features/Invoice/types/Invoice.types";
+import { TInvoiceRowHeader } from "features/Invoice/Invoice.types";
 
 export default function InvoiceRowHeader({
   title,
