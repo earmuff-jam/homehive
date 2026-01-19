@@ -28,7 +28,7 @@ const ZoomLevel = {
 export type TPropertyMapProps = {
   location: TGeoLocationCoordinates;
   onLocationChange?: (value: TGeoLocationCoordinates) => void;
-  subtitle: string;
+  subtitle?: string;
   height?: string;
   disabled?: boolean;
   editMode?: boolean;

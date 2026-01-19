@@ -13,7 +13,8 @@ import {
 import AButton from "common/AButton";
 import AIconButton from "common/AIconButton";
 import EmptyComponent from "common/EmptyComponent";
-import { TProperty, TTenant } from "features/Rent/Rent.types";
+import { TProperty } from "features/Rent/Rent.schema";
+import { TTenant } from "features/Rent/Rent.types";
 import RowHeader from "features/Rent/common/RowHeader";
 import Tenants from "features/Rent/components/Widgets/Tenants";
 

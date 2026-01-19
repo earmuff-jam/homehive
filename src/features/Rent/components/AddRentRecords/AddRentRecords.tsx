@@ -19,8 +19,8 @@ import {
 } from "features/Api/firebaseUserApi";
 import { useCreateRentRecordMutation } from "features/Api/rentApi";
 import { useGetTenantByPropertyIdQuery } from "features/Api/tenantsApi";
+import { TProperty } from "features/Rent/Rent.schema";
 import {
-  TProperty,
   TRentRecordForm,
   TRentRecordPayload,
   TTenant,

@@ -1,8 +1,6 @@
-import React from "react";
-
 import { Home, LocationOnRounded } from "@mui/icons-material";
 import { Box, Chip, Stack, Typography } from "@mui/material";
-import { TProperty } from "features/Rent/Rent.types";
+import { TProperty } from "features/Rent/Rent.schema";
 
 // TPropertyHeaderProps ...
 export type TPropertyHeaderProps = {

@@ -3,7 +3,8 @@ import {
   createApi,
   fakeBaseQuery,
 } from "@reduxjs/toolkit/query/react";
-import { TProperty, TRentRecordPayload } from "features/Rent/Rent.types";
+import { TPropertySchema } from "features/Rent/Rent.schema";
+import { TRentRecordPayload } from "features/Rent/Rent.types";
 import {
   collection,
   doc,
@@ -75,7 +76,7 @@ export const rentApi = createApi({
             };
           }
 
-          const propertyData = propertyDoc.data() as TProperty;
+          const propertyData = TPropertySchema.parse(propertyDoc.data());
           const isOwner = propertyData.ownerEmail === currentUserEmail;
           const isRentee = propertyData.rentees.some(
             (email) => email === currentUserEmail,

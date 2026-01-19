@@ -18,9 +18,8 @@ import AButton from "common/AButton";
 import CustomSnackbar from "common/CustomSnackbar/CustomSnackbar";
 import { fetchLoggedInUser } from "common/utils";
 import { useUpdatePropertyByIdMutation } from "features/Api/propertiesApi";
+import { TProperty, TPropertyFormSchema } from "features/Rent/Rent.schema";
 import {
-  TProperty,
-  TPropertyForm,
   TPropertyUpdateApiRequest,
   TRentDialog,
 } from "features/Rent/Rent.types";
@@ -60,7 +59,7 @@ export default function QuickActions({ property }: TQuickActionsProps) {
     handleSubmit,
     formState: { errors, isValid },
     reset,
-  } = useForm<TPropertyForm>({
+  } = useForm<TPropertyFormSchema>({
     mode: "onChange",
     defaultValues: {
       name: "",
@@ -105,7 +104,7 @@ export default function QuickActions({ property }: TQuickActionsProps) {
     reset();
   };
 
-  const onSubmit = (data: TPropertyForm) => {
+  const onSubmit = (data: TPropertyFormSchema) => {
     // TODO: figure out if we need this
     // const sanitizedPayload: TProperty = sanitizeApiFields(result);
     const request: TPropertyUpdateApiRequest = {

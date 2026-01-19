@@ -38,10 +38,10 @@ import {
 } from "features/Api/rentApi";
 import { useGetTenantByPropertyIdQuery } from "features/Api/tenantsApi";
 import { TStripeRentPaymentSubmissionRequest } from "features/Api/types";
+import { TProperty } from "features/Rent/Rent.schema";
 import {
   TCompletePaymentStatusEnum,
   TManualPaymentStatusEnum,
-  TProperty,
   TRentRecordPayload,
   TStripePaymentIntentStatusEnum,
   TStripePaymentStatusEnum,

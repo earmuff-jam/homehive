@@ -1,11 +1,8 @@
 import { ReactElement, ReactNode } from "react";
 
 import { ChipProps } from "@mui/material";
-import {
-  TAuditColumns,
-  TGeoLocationCoordinates,
-  TUserDetails,
-} from "src/types";
+import { TProperty } from "features/Rent/Rent.schema";
+import { TAuditColumns, TUserDetails } from "src/types";
 
 // TCreateInvoiceEnumValue ...
 type TCreateInvoiceEnumValue = "CreateInvoice";
@@ -92,51 +89,6 @@ export type TRentDialog = {
   type: string;
   display: boolean;
 };
-
-// TPropertyForm
-export type TPropertyForm = {
-  name: string;
-  address: string;
-  county: string;
-  city: string;
-  state: string;
-  zipcode: string;
-  units: number;
-  bathrooms: number;
-  sqFt: number;
-  note?: string;
-  ownerEmail: string;
-  emergencyContactNumber: string;
-  isTenantCleaningYard: boolean;
-  isSmoking: boolean;
-  isOwnerCoveredUtilities: boolean;
-  ownerCoveredUtilities: string;
-  rent: number;
-  additionalRent: number;
-  rentIncrement: number;
-  securityDeposit: number;
-  allowedVehicleCounts: number;
-  paymentID: string;
-  specialProvisions?: string;
-  isHoa: boolean;
-  hoaDetails?: string;
-  isBrokerManaged: boolean;
-  brokerName?: string;
-  brokerAddress?: string;
-  isManagerManaged: boolean;
-  managerName?: string;
-  managerPhone?: string;
-  managerAddress?: string;
-};
-
-// TProperty ...
-export type TProperty = TAuditColumns &
-  TPropertyForm & {
-    id: string;
-    isDeleted?: boolean; // represents a removed property
-    rentees?: string[]; // list of tenant emails
-    location?: TGeoLocationCoordinates;
-  };
 
 // TPropertyDeletePartial ...
 // defines a type for handling delete

@@ -69,4 +69,9 @@ export const TPropertySchema = TPropertyFormSchema.and(
 ).and(TAuditColumnsSchema);
 
 // Type inferred from schema
+export type TAuditColumns = z.infer<typeof TAuditColumnsSchema>;
+export type TGeoLocationCoordinatesSchema = z.infer<
+  typeof TGeoLocationCoordinatesSchema
+>;
+export type TPropertyFormSchema = z.infer<typeof TPropertyFormSchema>;
 export type TProperty = z.infer<typeof TPropertySchema>;
