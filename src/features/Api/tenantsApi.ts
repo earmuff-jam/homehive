@@ -4,7 +4,7 @@ import {
   fakeBaseQuery,
 } from "@reduxjs/toolkit/query/react";
 import { Role } from "features/Auth/AuthHelper";
-import { TProperty, TTenant } from "features/Rent/Rent.types";
+import { TProperty, TTenant } from "features/Rent/Rent.schema";
 import {
   collection,
   doc,

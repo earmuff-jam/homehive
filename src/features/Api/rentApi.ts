@@ -3,8 +3,7 @@ import {
   createApi,
   fakeBaseQuery,
 } from "@reduxjs/toolkit/query/react";
-import { TPropertySchema } from "features/Rent/Rent.schema";
-import { TRentRecordPayload } from "features/Rent/Rent.types";
+import { TPropertySchema, TRentRecord } from "features/Rent/Rent.schema";
 import {
   collection,
   doc,
@@ -55,14 +54,14 @@ export const rentApi = createApi({
   endpoints: (builder) => ({
     // getRentsByPropertyId ...
     getRentsByPropertyId: builder.query<
-      TRentRecordPayload[],
+      TRentRecord[],
       TGetRentsByPropertyIdProps
     >({
       async queryFn({
         propertyId,
         currentUserEmail,
       }: TGetRentsByPropertyIdProps): Promise<
-        QueryReturnValue<TRentRecordPayload[], TCustomError>
+        QueryReturnValue<TRentRecord[], TCustomError>
       > {
         try {
           const propertyDoc = await getDoc(doc(db, "properties", propertyId));
@@ -111,16 +110,16 @@ export const rentApi = createApi({
 
           const querySnapshot = await getDocs(draftQuery);
 
-          const rents: TRentRecordPayload[] = [];
+          const rents: TRentRecord[] = [];
           querySnapshot.forEach((doc) => {
             // ensure id is pulled from the response
             rents.push({
               id: doc.id,
-              ...(doc.data() as Omit<TRentRecordPayload, "id">),
+              ...(doc.data() as Omit<TRentRecord, "id">),
             });
           });
 
-          return { data: rents as TRentRecordPayload[] };
+          return { data: rents as TRentRecord[] };
         } catch (error) {
           return {
             error: {
@@ -137,7 +136,7 @@ export const rentApi = createApi({
     // Get rent records by property ID, tenant list, and current rent month.
     // all filters are required by default
     getRentsByPropertyIdWithFilters: builder.query<
-      TRentRecordPayload[],
+      TRentRecord[],
       TGetRentByPropertyIdWithFiltersProps
     >({
       async queryFn({
@@ -145,7 +144,7 @@ export const rentApi = createApi({
         tenantEmails,
         rentMonth,
       }: TGetRentByPropertyIdWithFiltersProps): Promise<
-        QueryReturnValue<TRentRecordPayload[], TCustomError>
+        QueryReturnValue<TRentRecord[], TCustomError>
       > {
         try {
           const q = query(
@@ -155,7 +154,7 @@ export const rentApi = createApi({
 
           const querySnapshot = await getDocs(q);
 
-          const rents: TRentRecordPayload[] = [];
+          const rents: TRentRecord[] = [];
           const targetMonth = rentMonth.toLowerCase();
 
           const tenantEmailSet = new Set<string>(
@@ -163,7 +162,7 @@ export const rentApi = createApi({
           );
 
           querySnapshot.forEach((doc) => {
-            const rent = { id: doc.id, ...doc.data() } as TRentRecordPayload;
+            const rent = { id: doc.id, ...doc.data() } as TRentRecord;
 
             const monthMatch = rent.rentMonth?.toLowerCase?.() === targetMonth;
             const isEmailMatch = tenantEmailSet.has(
@@ -174,7 +173,7 @@ export const rentApi = createApi({
             }
           });
 
-          return { data: rents as TRentRecordPayload[] };
+          return { data: rents as TRentRecord[] };
         } catch (error) {
           return {
             error: {
@@ -188,12 +187,12 @@ export const rentApi = createApi({
     }),
 
     // getRentByMonth ...
-    getRentByMonth: builder.query<TRentRecordPayload[], TGetRentByMonthProps>({
+    getRentByMonth: builder.query<TRentRecord[], TGetRentByMonthProps>({
       async queryFn({
         propertyId,
         rentMonth,
       }: TGetRentByMonthProps): Promise<
-        QueryReturnValue<TRentRecordPayload[], TCustomError>
+        QueryReturnValue<TRentRecord[], TCustomError>
       > {
         try {
           const q = query(
@@ -203,14 +202,14 @@ export const rentApi = createApi({
           );
 
           const querySnapshot = await getDocs(q);
-          const rents: TRentRecordPayload[] = [];
+          const rents: TRentRecord[] = [];
 
           querySnapshot.forEach((doc) => {
-            const rent = { id: doc.id, ...doc.data() } as TRentRecordPayload;
+            const rent = { id: doc.id, ...doc.data() } as TRentRecord;
             rents.push(rent);
           });
 
-          return { data: rents as TRentRecordPayload[] };
+          return { data: rents as TRentRecord[] };
         } catch (error) {
           return {
             error: {
@@ -224,10 +223,10 @@ export const rentApi = createApi({
     }),
 
     // createRentRecord ...
-    createRentRecord: builder.mutation<TRentRecordPayload, TRentRecordPayload>({
+    createRentRecord: builder.mutation<TRentRecord, TRentRecord>({
       async queryFn(
         rentData,
-      ): Promise<QueryReturnValue<TRentRecordPayload, TCustomError>> {
+      ): Promise<QueryReturnValue<TRentRecord, TCustomError>> {
         try {
           const { id, tenantId, propertyId, rentMonth, ...rest } = rentData;
 
@@ -268,7 +267,7 @@ export const rentApi = createApi({
 
           const docRef = doc(db, "rents", id);
 
-          const rentRecord: TRentRecordPayload = {
+          const rentRecord: TRentRecord = {
             id,
             tenantId,
             propertyId,

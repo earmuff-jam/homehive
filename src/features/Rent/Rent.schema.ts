@@ -14,15 +14,15 @@ export const TPaymentStatusSchema = z.enum([
 export const TAuditColumnsSchema = z.object({
   createdBy: z.string(),
   createdOn: z.string(),
-  updatedBy: z.string().optional(),
-  updatedOn: z.string().optional(),
+  updatedBy: z.string().nullable().optional(),
+  updatedOn: z.string().nullable().optional(),
 });
 
 // TGeoLocationCoordinatesSchema ...
 // defines the schema for the geolocation co-ordinates
 export const TGeoLocationCoordinatesSchema = z.object({
-  lat: z.string(),
-  lon: z.string(),
+  lat: z.coerce.number().optional(),
+  lon: z.coerce.number().optional(),
 });
 
 // TPropertyFormSchema ...
@@ -61,21 +61,15 @@ export const TPropertyFormSchema = z.object({
   managerName: z.string().optional(),
   managerPhone: z.string().optional(),
   managerAddress: z.string().optional(),
-  location: z
-    .object({
-      lat: z.coerce.number(),
-      lon: z.coerce.number(),
-    })
-    .optional(),
   isDeleted: z.boolean().optional(),
   rentees: z.array(z.string()).optional(),
 });
 
 // TPropertySchema ...
 // defines the schema for TProperty
-export const TPropertySchema = TPropertyFormSchema.extend(
-  TGeoLocationCoordinatesSchema.shape,
-)
+export const TPropertySchema = TPropertyFormSchema.extend({
+  location: TGeoLocationCoordinatesSchema.optional(),
+})
   .extend(TAuditColumnsSchema.shape)
   .extend({
     id: z.string(),
