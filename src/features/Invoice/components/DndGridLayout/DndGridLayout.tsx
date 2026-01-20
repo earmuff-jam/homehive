@@ -16,7 +16,7 @@ import {
 } from "@dnd-kit/sortable";
 import { Box, Stack } from "@mui/material";
 import EmptyComponent from "common/EmptyComponent";
-import { TWidget } from "features/Invoice/Invoice.types";
+import { TWidget } from "features/Invoice/Invoice.schema";
 import Widget from "features/Invoice/components/DndGridLayout/Widget";
 import WidgetProps from "features/Invoice/components/DndGridLayout/WidgetProps";
 

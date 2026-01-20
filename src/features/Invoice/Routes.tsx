@@ -23,7 +23,7 @@ import {
   ViewInvoiceRoutePath,
   ViewInvoiceRouteUri,
 } from "common/utils";
-import { InvoiceAppRoute } from "features/Invoice/Invoice.types";
+import { TAppRoute } from "src/types";
 
 const Dashboard = React.lazy(
   () => import("features/Invoice/components/Dashboard/Dashboard"),
@@ -40,17 +40,13 @@ const RecieverInfo = React.lazy(
 const SenderInfo = React.lazy(
   () => import("features/Invoice/components/SenderInfo/SenderInfo"),
 );
-
 const FrequentlyAskedQuestions = React.lazy(
   () => import("features/Invoice/components/Faq/FrequentlyAskedQuestions"),
 );
 
-/**
- * InvoiceAppRoutes ...
- *
- * routes that are built for invoice app
- */
-export const InvoiceAppRoutes: InvoiceAppRoute[] = [
+// InvoiceAppRoutes ...
+// defines routes that are used within the invoice app
+export const InvoiceAppRoutes: TAppRoute[] = [
   {
     id: 1,
     label: "Dashboard",
@@ -64,6 +60,7 @@ export const InvoiceAppRoutes: InvoiceAppRoute[] = [
         value: "View Dashboard",
         icon: <DashboardRounded fontSize="small" />,
       },
+      isLoggedInFeature: false,
       displayInNavBar: true,
       displayHelpSelector: true,
       displayPrintSelector: false,
@@ -82,6 +79,7 @@ export const InvoiceAppRoutes: InvoiceAppRoute[] = [
         value: "View Invoice",
         icon: <ReceiptRounded fontSize="small" />,
       },
+      isLoggedInFeature: false,
       displayInNavBar: true,
       displayHelpSelector: true,
       displayPrintSelector: true,
@@ -100,6 +98,7 @@ export const InvoiceAppRoutes: InvoiceAppRoute[] = [
         value: "Edit Invoice",
         icon: <EditRounded fontSize="small" />,
       },
+      isLoggedInFeature: false,
       displayInNavBar: true,
       displayHelpSelector: true,
       displayPrintSelector: false,
@@ -118,6 +117,7 @@ export const InvoiceAppRoutes: InvoiceAppRoute[] = [
         value: "Sender Information",
         icon: <Person2Rounded fontSize="small" />,
       },
+      isLoggedInFeature: false,
       displayInNavBar: true,
       displayHelpSelector: true,
       displayPrintSelector: false,
@@ -136,6 +136,7 @@ export const InvoiceAppRoutes: InvoiceAppRoute[] = [
         value: "Reciever Information",
         icon: <Person2Rounded fontSize="small" />,
       },
+      isLoggedInFeature: false,
       displayInNavBar: true,
       displayHelpSelector: true,
       displayPrintSelector: false,
@@ -154,6 +155,7 @@ export const InvoiceAppRoutes: InvoiceAppRoute[] = [
         value: "Invoice App Help Center",
         icon: <QuestionAnswerRounded fontSize="small" />,
       },
+      isLoggedInFeature: false,
       displayInNavBar: true,
       displayHelpSelector: false,
       displayPrintSelector: false,

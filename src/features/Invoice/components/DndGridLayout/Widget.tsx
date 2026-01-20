@@ -3,15 +3,15 @@ import { ReactNode } from "react";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { CancelRounded, DragIndicatorRounded } from "@mui/icons-material";
-import { Badge, Box, IconButton, Paper, Stack, Tooltip } from "@mui/material";
+import { Badge, Box, Paper, Stack, Tooltip } from "@mui/material";
 import AIconButton from "common/AIconButton";
-import { TWidget } from "features/Invoice/Invoice.types";
+import { TWidget } from "features/Invoice/Invoice.schema";
 
 // WidgetProps ...
 type WidgetProps = {
   editMode: boolean;
   widget: TWidget;
-  handleRemoveWidget: (widgetID: string) => void;
+  handleRemoveWidget: (id: number) => void;
   children: ReactNode;
 };
 
@@ -49,7 +49,7 @@ export default function Widget({
               disableRipple
               disableFocusRipple
               disableTouchRipple
-              onClick={() => handleRemoveWidget(widget?.widgetID || "")}
+              onClick={() => handleRemoveWidget(widget.id)}
               label={<CancelRounded fontSize="small" />}
             />
           )

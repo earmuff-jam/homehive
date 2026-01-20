@@ -21,7 +21,7 @@ import {
 import AButton from "common/AButton";
 import CustomSnackbar from "common/CustomSnackbar/CustomSnackbar";
 import { parseJsonUtility, pluralize } from "common/utils";
-import { TWidget } from "features/Invoice/Invoice.types";
+import { TWidget } from "features/Invoice/Invoice.schema";
 import AddWidget from "features/Invoice/components/AddWidget/AddWidget";
 import DndGridLayout from "features/Invoice/components/DndGridLayout/DndGridLayout";
 import RowHeader from "features/Invoice/components/RowHeader/InvoiceRowHeader";

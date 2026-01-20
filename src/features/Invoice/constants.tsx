@@ -5,10 +5,10 @@ import {
   LocalAtmRounded,
   PaidRounded,
 } from "@mui/icons-material";
+import { TWidget } from "features/Invoice/Invoice.schema";
 import {
-  Category,
+  TCategory,
   TInvoiceStatusOption,
-  TWidget,
 } from "features/Invoice/Invoice.types";
 
 // Widgets ...
@@ -111,7 +111,7 @@ export const DefaultInvoiceStatusOptions: TInvoiceStatusOption[] = [
 ];
 
 // InvoiceCategoryOptions ...
-export const InvoiceCategoryOptions: Category[] = [
+export const InvoiceCategoryOptions: TCategory[] = [
   { label: "Products", value: "products" },
   { label: "Services", value: "services" },
   { label: "Fees", value: "fees" },

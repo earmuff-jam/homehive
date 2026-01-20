@@ -17,27 +17,9 @@ export type TOutletContext = {
   showWatermark: boolean;
 };
 
-// WidgetConfig ...
-export type WidgetConfig = {
-  inset: boolean; // makes text have extra spacing infront
-  height: string;
-  width: string;
-  widgetId: string; // for provision only
-};
-
-// TWidget ...
-export type TWidget = {
-  id: number; // used for selecting widget
-  widgetID: string; // used for drag and drop
-  label: string;
-  caption: string;
-  columns: string[];
-  data: string[];
-  config: WidgetConfig;
-};
-
-// Category ...
-export type Category = {
+// TCategory ...
+// defines type for each category of payment
+export type TCategory = {
   label: string;
   value: string;
 };
@@ -50,7 +32,7 @@ export type LineItem = {
   price: number;
   payment: number;
   paymentMethod: string;
-  category: Category;
+  category: TCategory;
 };
 
 // Invoice ...
