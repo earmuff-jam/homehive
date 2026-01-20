@@ -5,11 +5,34 @@ import {
   LocalAtmRounded,
   PaidRounded,
 } from "@mui/icons-material";
-import { TWidget } from "features/Invoice/Invoice.schema";
 import {
   TCategory,
   TInvoiceStatusOption,
-} from "features/Invoice/Invoice.types";
+  TWidget,
+} from "features/Invoice/Invoice.schema";
+
+// InvoiceStatusOptionsIconEnumValues ...
+export const InvoiceStatusOptionsIconEnumValues = {
+  paid: <PaidRounded fontSize="small" />,
+  draft: <DraftsRounded fontSize="small" />,
+  overdue: <LocalAtmRounded fontSize="small" />,
+  cancel: <CancelRounded fontSize="small" />,
+  none: <DeblurRounded fontSize="small" />,
+};
+
+// InvoiceCategoryOptions ...
+export const InvoiceCategoryOptions: TCategory[] = [
+  { label: "Products", value: "products" },
+  { label: "Services", value: "services" },
+  { label: "Fees", value: "fees" },
+  { label: "Subscriptions/Recurring Charges", value: "subscriptions" },
+  { label: "Travel & Lodging", value: "travelLodging" },
+  { label: "Marketing & Advertising", value: "marketing" },
+  { label: "Office/Administrative", value: "officeAdmin" },
+  { label: "Utilities & Overhead", value: "utilities" },
+  { label: "Taxes", value: "taxes" },
+  { label: "Other", value: "other" },
+];
 
 // Widgets ...
 export const Widgets: TWidget[] = [
@@ -76,50 +99,36 @@ export const DefaultInvoiceStatusOptions: TInvoiceStatusOption[] = [
   {
     id: 1,
     label: "Paid",
-    icon: <PaidRounded />,
+    icon: "paid",
     selected: true,
     display: true,
   },
   {
     id: 2,
     label: "Draft",
-    icon: <DraftsRounded />,
+    icon: "draft",
     selected: false,
     display: true,
   },
   {
     id: 3,
     label: "Overdue",
-    icon: <LocalAtmRounded />,
+    icon: "overdue",
     selected: false,
     display: true,
   },
   {
     id: 4,
     label: "Cancelled",
-    icon: <CancelRounded />,
+    icon: "cancel",
     selected: false,
     display: true,
   },
   {
     id: 5,
     label: "None",
-    icon: <DeblurRounded />,
+    icon: "none",
     selected: false,
     display: false, // does not display status if none is selected
   },
-];
-
-// InvoiceCategoryOptions ...
-export const InvoiceCategoryOptions: TCategory[] = [
-  { label: "Products", value: "products" },
-  { label: "Services", value: "services" },
-  { label: "Fees", value: "fees" },
-  { label: "Subscriptions/Recurring Charges", value: "subscriptions" },
-  { label: "Travel & Lodging", value: "travelLodging" },
-  { label: "Marketing & Advertising", value: "marketing" },
-  { label: "Office/Administrative", value: "officeAdmin" },
-  { label: "Utilities & Overhead", value: "utilities" },
-  { label: "Taxes", value: "taxes" },
-  { label: "Other", value: "other" },
 ];

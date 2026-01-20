@@ -38,7 +38,10 @@ import {
   TInvoiceStatusOption,
 } from "features/Invoice/Invoice.schema";
 import EditPdfLineItemAccordion from "features/Invoice/components/EditPdf/EditPdfLineItemAccordion";
-import { DefaultInvoiceStatusOptions } from "features/Invoice/constants";
+import {
+  DefaultInvoiceStatusOptions,
+  InvoiceStatusOptionsIconEnumValues,
+} from "features/Invoice/constants";
 import { useAppTitle } from "hooks/useAppTitle";
 import { produce } from "immer";
 
@@ -362,7 +365,9 @@ export default function EditPdf() {
           <MenuList>
             {options.map(({ id, label, icon, selected }) => (
               <MenuItem key={id} onClick={() => handleSelection(label)}>
-                <ListItemIcon>{icon}</ListItemIcon>
+                <ListItemIcon>
+                  {InvoiceStatusOptionsIconEnumValues[icon]}
+                </ListItemIcon>
                 <ListItemText>{label}</ListItemText>
                 {selected ? <CheckRounded /> : null}
               </MenuItem>

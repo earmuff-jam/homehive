@@ -14,7 +14,7 @@ import {
   TInvoiceStatusOption,
   TLineItem,
 } from "features/Invoice/Invoice.schema";
-import { numberFormatter } from "features/Invoice/utils";
+import { formatNumber } from "features/Invoice/utils";
 
 // TReportTableProps ...
 export type TReportTableProps = {
@@ -91,12 +91,10 @@ export default function ReportTable({
                 </Stack>
               </TableCell>
               <TableCell align="right">{row.quantity}</TableCell>
-              <TableCell align="right">{numberFormatter(row.price)}</TableCell>
+              <TableCell align="right">{formatNumber(row.price)}</TableCell>
+              <TableCell align="right">{formatNumber(row.payment)}</TableCell>
               <TableCell align="right">
-                {numberFormatter(row.payment)}
-              </TableCell>
-              <TableCell align="right">
-                {numberFormatter(row.price - row.payment)}
+                {formatNumber(row.price - row.payment)}
               </TableCell>
             </TableRow>
           ))}
@@ -106,7 +104,7 @@ export default function ReportTable({
               Subtotal
             </TableCell>
             <TableCell align="right" sx={{ fontWeight: "bold" }}>
-              {numberFormatter(invoiceSubtotal)}
+              {formatNumber(invoiceSubtotal)}
             </TableCell>
           </TableRow>
 
@@ -116,7 +114,7 @@ export default function ReportTable({
               {formattedTax}%
             </TableCell>
             <TableCell align="right" sx={{ fontWeight: "bold" }}>
-              {numberFormatter(invoiceTaxes)}
+              {formatNumber(invoiceTaxes)}
             </TableCell>
           </TableRow>
 
@@ -145,7 +143,7 @@ export default function ReportTable({
               </Stack>
             </TableCell>
             <TableCell align="right" sx={{ fontWeight: "bold" }}>
-              {numberFormatter(invoiceTotal)}
+              {formatNumber(invoiceTotal)}
             </TableCell>
           </TableRow>
         </TableBody>

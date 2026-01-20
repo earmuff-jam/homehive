@@ -1,28 +1,28 @@
 import dayjs from "dayjs";
 
 import {
-  Invoice,
-  InvoiceItemTypeChartData,
-  InvoiceRow,
-  ItemTypeChartRow,
-  MonthTotal,
-  TrendsChartDataset,
-} from "features/Invoice/Invoice.types";
+  TInvoice,
+  TInvoiceItemTypeChartData,
+  TInvoiceRow,
+  TItemTypeChartRow,
+  TScatterChart,
+} from "features/Invoice/Invoice.schema";
+import { MonthTotal } from "features/Invoice/Invoice.types";
 
-// numberFormatter ...
-export function numberFormatter(digit: number): string {
-  return Number(digit).toFixed(2);
-}
+// formatNumber ...
+// defines a function used to convert number to string with passed in trim count value, default 2
+export const formatNumber = (
+  amt: number = 0,
+  trimCount: number = 2,
+): string => {
+  return amt.toFixed(trimCount);
+};
 
 // normalizeDetailsTableData ...
-export function normalizeDetailsTableData(list: Invoice[]): InvoiceRow[] {
+export function normalizeDetailsTableData(list: TInvoice[]): TInvoiceRow[] {
   return list.map((invoice) => {
     const items = invoice.lineItems || [];
-
-    const total = items.reduce(
-      (sum, item) => sum + Number(item.payment || 0),
-      0,
-    );
+    const total = items.reduce((sum, item) => sum + item.payment, 0);
 
     const category = [
       ...new Set(items.map((i) => i.category?.label).filter(Boolean)),
@@ -46,8 +46,8 @@ export function normalizeDetailsTableData(list: Invoice[]): InvoiceRow[] {
 
 // normalizeInvoiceItemTypeChartDataset ...
 export function normalizeInvoiceItemTypeChartDataset(
-  list: Invoice[],
-): InvoiceItemTypeChartData {
+  list: TInvoice[],
+): TInvoiceItemTypeChartData {
   const itemCountMap = new Map<string, number>();
   const booleanFilteredList = list.filter(Boolean);
 
@@ -83,9 +83,9 @@ export function normalizeInvoiceItemTypeChartDataset(
 
 // normalizeInvoiceTrendsChartsDataset ...
 export function normalizeInvoiceTrendsChartsDataset(
-  list: Invoice[],
+  list: TInvoice[],
   chartType: string,
-): TrendsChartDataset[] {
+): TScatterChart[] {
   const monthMap = new Map<string, MonthTotal>();
   const booleanFilteredList = list.filter(Boolean);
 
@@ -150,8 +150,8 @@ export function normalizeInvoiceTrendsChartsDataset(
 
 // normalizeInvoiceTimelineChartDataset ...
 export function normalizeInvoiceTimelineChartDataset(
-  list: Invoice[],
-): TrendsChartDataset {
+  list: TInvoice[],
+): TScatterChart {
   const months = new Set<string>();
   const booleanFilteredList = list.filter(Boolean);
 
@@ -162,7 +162,7 @@ export function normalizeInvoiceTimelineChartDataset(
 
   const monthLabels = Array.from(months);
 
-  const datasets: ItemTypeChartRow[] = booleanFilteredList.map(
+  const datasets: TItemTypeChartRow[] = booleanFilteredList.map(
     (invoice, id) => {
       const month = dayjs(invoice.startDate).format("MMMM");
       const index = monthLabels.indexOf(month);

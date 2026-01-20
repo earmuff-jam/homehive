@@ -43,9 +43,9 @@ export const TInvoiceStatusOptionSchema = z.object({
 export const TLineItemSchema = z.object({
   description: z.string(),
   caption: z.string(),
-  quantity: z.number(),
-  price: z.number(),
-  payment: z.number(),
+  quantity: z.coerce.number(),
+  price: z.coerce.number(),
+  payment: z.coerce.number(),
   paymentMethod: z.string(),
   category: TCategorySchema,
 });
@@ -59,7 +59,7 @@ export const TInvoiceSchema = z.object({
   startDate: z.string(),
   endDate: z.string(),
   header: z.string(),
-  taxRate: z.number(),
+  taxRate: z.coerce.number(),
   invoiceStatus: TInvoiceStatusOptionSchema,
   lineItems: z.array(TLineItemSchema),
   updatedOn: z.string(),

@@ -7,10 +7,10 @@ import EmptyComponent from "common/EmptyComponent";
 import { parseJsonUtility } from "common/utils";
 import relativeTime from "dayjs/plugin/relativeTime";
 import {
-  Invoice,
-  InvoiceRow,
+  TInvoice,
+  TInvoiceRow,
   TInvoiceStatusOption,
-} from "features/Invoice/Invoice.types";
+} from "features/Invoice/Invoice.schema";
 import RowHeader from "features/Invoice/components/RowHeader/InvoiceRowHeader";
 import { normalizeDetailsTableData } from "features/Invoice/utils";
 import {
@@ -27,17 +27,17 @@ type DetailsTableViewProps = {
 };
 
 const DetailsTableView = ({ label, caption }: DetailsTableViewProps) => {
-  const [tableData, setTableData] = useState<InvoiceRow[]>([]);
+  const [tableData, setTableData] = useState<TInvoiceRow[]>([]);
 
   useEffect(() => {
-    const draftData = parseJsonUtility<Invoice>(
+    const draftData = parseJsonUtility<TInvoice>(
       localStorage.getItem("pdfDetails"),
     );
     const invoiceStatus = parseJsonUtility<{
       invoiceStatus: TInvoiceStatusOption;
     }>(localStorage.getItem("invoiceStatus"));
 
-    const formattedData: Invoice = {
+    const formattedData: TInvoice = {
       ...draftData,
       ...(invoiceStatus && {
         invoiceStatus: invoiceStatus?.invoiceStatus,
