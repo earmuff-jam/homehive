@@ -1,9 +1,9 @@
 import { Stack, Typography } from "@mui/material";
-import { UserInfo } from "features/Invoice/Invoice.types";
+import { TInvoiceUserInfo } from "features/Invoice/Invoice.schema";
 
 // SalutationProps ...
 export type SalutationProps = {
-  userInfo: UserInfo;
+  userInfo: TInvoiceUserInfo;
   isEnd?: boolean;
 };
 

@@ -1,5 +1,3 @@
-import React from "react";
-
 import { Control } from "react-hook-form";
 
 import { DeleteRounded, ExpandMoreRounded } from "@mui/icons-material";
@@ -11,14 +9,14 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import { Invoice } from "features/Invoice/Invoice.types";
+import { TInvoice } from "features/Invoice/Invoice.schema";
 import EditPdfLineItem from "features/Invoice/components/EditPdf/EditPdfLineItem";
 
 // EditPdfLineItemAccordion ...
 type EditPdfLineItemAccordion = {
   title: string;
   index: number;
-  control: Control<Invoice>;
+  control: Control<TInvoice>;
   onDelete: (digit: number) => void;
 };
 

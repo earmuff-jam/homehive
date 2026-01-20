@@ -2,12 +2,12 @@ import { Control, Controller } from "react-hook-form";
 
 import { Autocomplete, Stack, TextField, Typography } from "@mui/material";
 import TextFieldWithLabel from "common/TextFieldWithLabel";
-import { Invoice } from "features/Invoice/Invoice.types";
+import { TInvoice } from "features/Invoice/Invoice.schema";
 import { InvoiceCategoryOptions } from "features/Invoice/constants";
 
 // TEditPdfLineItemProps ...
 type TEditPdfLineItemProps = {
-  control: Control<Invoice>;
+  control: Control<TInvoice>;
   index: number;
 };
 

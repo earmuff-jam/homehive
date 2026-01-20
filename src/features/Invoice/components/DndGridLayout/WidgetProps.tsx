@@ -1,5 +1,5 @@
 import { Box } from "@mui/material";
-import { TWidget } from "features/Invoice/Invoice.types";
+import { TWidget } from "features/Invoice/Invoice.schema";
 import DetailsTableView from "features/Invoice/components/Widgets/DetailsTableView";
 import InvoiceTimelineChart from "features/Invoice/components/Widgets/InvoiceTimelineChart";
 import InvoiceTrendsChart from "features/Invoice/components/Widgets/InvoiceTrends";

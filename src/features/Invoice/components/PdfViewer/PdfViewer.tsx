@@ -5,11 +5,8 @@ import dayjs from "dayjs";
 import { Container, Stack, Typography } from "@mui/material";
 import EmptyComponent from "common/EmptyComponent";
 import { EditInvoiceRouteUri, parseJsonUtility } from "common/utils";
-import {
-  Invoice,
-  TOutletContext,
-  UserInfo,
-} from "features/Invoice/Invoice.types";
+import { TInvoice, TInvoiceUserInfo } from "features/Invoice/Invoice.schema";
+import { TOutletContext } from "features/Invoice/Invoice.types";
 import ReportTable from "features/Invoice/components/PdfViewer/ReportTable";
 import RowHeader from "features/Invoice/components/RowHeader/InvoiceRowHeader";
 import Salutation from "features/Invoice/components/UserInfo/Salutation";
@@ -21,13 +18,13 @@ export default function PdfViewer() {
   const navigate = useNavigate();
   const { showWatermark } = useOutletContext<TOutletContext>();
 
-  const senderInfo = parseJsonUtility<UserInfo>(
+  const senderInfo = parseJsonUtility<TInvoiceUserInfo>(
     localStorage.getItem("senderInfo"),
   );
-  const recieverInfo = parseJsonUtility<UserInfo>(
+  const recieverInfo = parseJsonUtility<TInvoiceUserInfo>(
     localStorage.getItem("recieverInfo"),
   );
-  const invoiceForm = parseJsonUtility<Invoice>(
+  const invoiceForm = parseJsonUtility<TInvoice>(
     localStorage.getItem("pdfDetails"),
   );
 

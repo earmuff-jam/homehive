@@ -33,7 +33,10 @@ import {
   useGetPdfDetailsQuery,
   useUpsertPdfDetailsMutation,
 } from "features/Api/invoiceApi";
-import { Invoice, TInvoiceStatusOption } from "features/Invoice/Invoice.types";
+import {
+  TInvoice,
+  TInvoiceStatusOption,
+} from "features/Invoice/Invoice.schema";
 import EditPdfLineItemAccordion from "features/Invoice/components/EditPdf/EditPdfLineItemAccordion";
 import { DefaultInvoiceStatusOptions } from "features/Invoice/constants";
 import { useAppTitle } from "hooks/useAppTitle";
@@ -60,13 +63,13 @@ export default function EditPdf() {
     handleSubmit,
     formState: { errors, isValid },
     reset,
-  } = useForm<Invoice>({
+  } = useForm<TInvoice>({
     defaultValues: {
       title: "Edit Pdf",
       caption: "Edit data to populate invoice",
       note: "",
-      startDate: dayjs(),
-      endDate: dayjs(),
+      startDate: dayjs().toISOString(),
+      endDate: dayjs().toISOString(),
       header: "",
       taxRate: 0,
       lineItems: [],
@@ -108,7 +111,7 @@ export default function EditPdf() {
     });
   };
 
-  const submit = (data: Invoice) => {
+  const submit = (data: TInvoice) => {
     upsertPdf({
       ...data,
       updatedOn: dayjs().toISOString(),
@@ -130,8 +133,8 @@ export default function EditPdf() {
         title: pdfDetails.title || "",
         caption: pdfDetails.caption || "",
         note: pdfDetails.note || "",
-        startDate: pdfDetails.startDate || dayjs(),
-        endDate: pdfDetails.endDate || dayjs(),
+        startDate: pdfDetails.startDate || dayjs().toISOString(),
+        endDate: pdfDetails.endDate || dayjs().toISOString(),
         taxRate: pdfDetails.taxRate || "",
         header: pdfDetails.header || "",
         lineItems: pdfDetails.lineItems || [],

@@ -11,7 +11,7 @@ import {
   useGetReceiverInfoQuery,
   useUpsertReceiverInfoMutation,
 } from "features/Api/invoiceApi";
-import { UserInfo } from "features/Invoice/Invoice.types";
+import { TInvoiceUserInfo } from "features/Invoice/Invoice.schema";
 import RowHeader from "features/Invoice/components/RowHeader/InvoiceRowHeader";
 import UserInfoViewer from "features/Invoice/components/UserInfo/UserInfoViewer";
 import { useAppTitle } from "hooks/useAppTitle";
@@ -40,7 +40,7 @@ export default function RecieverInfo() {
     handleSubmit,
     formState: { errors, isValid },
     reset,
-  } = useForm<UserInfo>({
+  } = useForm<TInvoiceUserInfo>({
     mode: "onChange",
     defaultValues: {
       firstName: "",
@@ -54,8 +54,8 @@ export default function RecieverInfo() {
     },
   });
 
-  const submit = (formData: UserInfo) => {
-    formData["updatedOn"] = dayjs();
+  const submit = (formData: TInvoiceUserInfo) => {
+    formData["updatedOn"] = dayjs().toISOString();
     upsertRecieverInfo(formData);
   };
 

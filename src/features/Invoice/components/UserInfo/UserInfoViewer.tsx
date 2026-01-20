@@ -3,14 +3,14 @@ import { FieldErrors, UseFormRegister } from "react-hook-form";
 import { Container, Stack, Typography } from "@mui/material";
 import AButton from "common/AButton";
 import TextFieldWithLabel from "common/TextFieldWithLabel";
-import { UserInfo } from "features/Invoice/Invoice.types";
+import { TInvoiceUserInfo } from "features/Invoice/Invoice.schema";
 
 // UserInfoViewerProps ...
 export type UserInfoViewerProps = {
   title: string;
   caption: string;
-  register: UseFormRegister<UserInfo>;
-  errors: FieldErrors<UserInfo>;
+  register: UseFormRegister<TInvoiceUserInfo>;
+  errors: FieldErrors<TInvoiceUserInfo>;
   loading: boolean;
   isDisabled: boolean;
   onSubmit: () => void;
