@@ -2,8 +2,12 @@ import { useEffect, useState } from "react";
 
 import dayjs from "dayjs";
 
+import { ExpandMoreRounded } from "@mui/icons-material";
 import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
   Box,
   List,
   ListItem,
@@ -33,10 +37,10 @@ const typeLabels: TTypeLabelTypes = {
   Fixes: "Fixes",
 };
 
-//  groupReleaseNotes ...
+//  groupReleaseNoteByFeatureType ...
 // defines a function that groups array values by type of release note
-const groupReleaseNotes = (
-  items: TReleaseNotes[],
+const groupReleaseNoteByFeatureType = (
+  items: TReleaseNotes[] = [],
 ): Record<string, TReleaseNotes[]> => {
   return items.reduce<Record<string, TReleaseNotes[]>>((acc, item) => {
     const type = item.type;
@@ -47,14 +51,22 @@ const groupReleaseNotes = (
 };
 
 export default function ReleaseNotes() {
-  const [data, setData] = useState<TReleaseDetails | null>(null);
-
-  const groupedNotes = groupReleaseNotes(data.notes);
+  const [releaseDetails, setReleaseDetails] = useState<TReleaseDetails[]>([]);
 
   useEffect(() => {
-    fetch("/release-docs.json")
-      .then((res) => res.json())
-      .then(setData);
+    const loadReleaseNotes = async () => {
+      try {
+        const res = await fetch("/release-docs.json");
+        if (!res.ok) throw new Error("Failed to fetch release notes");
+        const response = await res.json();
+
+        setReleaseDetails(response);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    loadReleaseNotes();
   }, []);
 
   return (
@@ -71,47 +83,69 @@ export default function ReleaseNotes() {
           View the latest updates and changes to HomeHiveSolutions.
         </Typography>
       </Box>
-      <Box mb={4} px={2}>
-        <Typography variant="subtitle2" gutterBottom>
-          Version {data.version} &mdash;&nbsp;
-          <em>Released on {dayjs(data.date).format("MMMM-DD-YYYY")}</em>
-        </Typography>
 
-        {Object.entries(groupedNotes).map(([type, items]) => (
-          <Box key={type} mt={2}>
-            <Typography
-              variant="body2"
-              fontWeight={600}
-              gutterBottom
-              textTransform="capitalize"
-            >
-              {typeLabels[type] || type}
+      {releaseDetails.map((releaseDetail, index) => {
+        const groupedReleaseNotes = groupReleaseNoteByFeatureType(
+          releaseDetail.notes,
+        );
+
+        return (
+          <Box key={index} mb={4} px={2}>
+            <Typography variant="subtitle2" gutterBottom>
+              Version {releaseDetail.version}
+            </Typography>
+            <Typography variant="caption" fontStyle="italic" gutterBottom>
+              Released on {dayjs(releaseDetail.date).format("MMMM-DD-YYYY")}
             </Typography>
 
-            <List dense disablePadding>
-              {items.map((change, idx) => (
-                <ListItem key={idx} disableGutters alignItems="center">
-                  <ListItemIcon sx={{ minWidth: 24, mt: 0.5 }}>
-                    <FiberManualRecordIcon sx={{ fontSize: 6 }} />
-                  </ListItemIcon>
-                  <ListItemText
-                    primary={
-                      <Typography color="text.secondary" variant="subtitle2">
-                        {change.value}
-                      </Typography>
-                    }
-                    secondary={
-                      <Typography variant="caption" color="text.secondary">
-                        {change.caption}
-                      </Typography>
-                    }
-                  />
-                </ListItem>
-              ))}
-            </List>
+            {Object.entries(groupedReleaseNotes).map(([type, items], index) => (
+              <Accordion key={index} elevation={0}>
+                <AccordionSummary
+                  expandIcon={<ExpandMoreRounded fontSize="small" />}
+                >
+                  <Typography
+                    variant="body2"
+                    fontWeight={600}
+                    gutterBottom
+                    textTransform="capitalize"
+                  >
+                    {typeLabels[type] || type}
+                  </Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                  <List dense disablePadding>
+                    {items.map((change, idx) => (
+                      <ListItem key={idx} disableGutters alignItems="center">
+                        <ListItemIcon sx={{ minWidth: 24, mt: 0.5 }}>
+                          <FiberManualRecordIcon sx={{ fontSize: 6 }} />
+                        </ListItemIcon>
+                        <ListItemText
+                          primary={
+                            <Typography
+                              color="text.secondary"
+                              variant="subtitle2"
+                            >
+                              {change.value}
+                            </Typography>
+                          }
+                          secondary={
+                            <Typography
+                              variant="caption"
+                              color="text.secondary"
+                            >
+                              {change.caption}
+                            </Typography>
+                          }
+                        />
+                      </ListItem>
+                    ))}
+                  </List>
+                </AccordionDetails>
+              </Accordion>
+            ))}
           </Box>
-        ))}
-      </Box>
+        );
+      })}
     </>
   );
 }
