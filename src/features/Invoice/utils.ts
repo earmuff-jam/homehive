@@ -22,7 +22,7 @@ export const formatNumber = (
 export function normalizeDetailsTableData(list: TInvoice[]): TInvoiceRow[] {
   return list.map((invoice) => {
     const items = invoice.lineItems || [];
-    const total = items.reduce((sum, item) => sum + item.payment, 0);
+    const total = items.reduce((sum, item) => sum + (item.payment || 0), 0);
 
     const category = [
       ...new Set(items.map((i) => i.category?.label).filter(Boolean)),

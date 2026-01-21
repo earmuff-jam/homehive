@@ -31,19 +31,6 @@ jest.mock("react-secure-storage", () => ({
   },
 }));
 
-// mock validateClientPermissions ...
-// jest.mock("common/rootLevelEnabledFeatures", () => ({
-//   __esModule: true,
-//   default: () =>
-//     new Map([
-//       ["analytics", true],
-//       ["invoicer", true],
-//       ["invoicerPro", false],
-//       ["userInformation", true],
-//       ["sendEmail", true],
-//     ]),
-// }));
-
 // mock AIconButton ...
 jest.mock("common/AIconButton", () => ({
   __esModule: true,

@@ -143,7 +143,7 @@ export default function EditPdf() {
         lineItems: pdfDetails.lineItems || [],
       });
 
-      const existingInvoiceStatus = pdfDetails?.invoiceStatus.label;
+      const existingInvoiceStatus = pdfDetails?.invoiceStatus?.label;
       handleSelection(existingInvoiceStatus);
     }
   }, [isPdfDetailsLoading]);

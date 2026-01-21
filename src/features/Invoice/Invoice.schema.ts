@@ -114,7 +114,7 @@ export const TInvoiceUserInfoSchema = z.object({
   city: z.string().optional(),
   state: z.string().optional(),
   zipcode: z.string().optional(),
-  updatedOn: z.string(),
+  updatedOn: z.string().optional(),
 });
 
 // export types

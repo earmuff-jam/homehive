@@ -16,17 +16,17 @@ describe("Invoice normalization utilities", () => {
           updatedOn: "2025-01-11",
           lineItems: [
             {
-              payment: "100",
+              payment: 100,
               category: { label: "Rent" },
               paymentMethod: "Card",
             },
             {
-              payment: "50",
+              payment: 50,
               category: { label: "Rent" }, // duplicate category
               paymentMethod: "Card", // duplicate method
             },
             {
-              payment: "25",
+              payment: 25,
               category: { label: "Utilities" },
               paymentMethod: "Cash",
             },
@@ -58,7 +58,7 @@ describe("Invoice normalization utilities", () => {
       const mockInvoice = [
         {
           lineItems: [
-            { payment: "0", category: { label: "Rent" } },
+            { payment: 0, category: { label: "Rent" } },
             { payment: undefined, category: { label: "Rent" } },
           ],
         },

@@ -10,7 +10,7 @@ export const useFormatEmailWithInvoiceDetails = () => {
   );
 
   const isDisabled = data === null;
-  const draftInvoiceHeader = data.header;
+  const draftInvoiceHeader = data?.header;
   const draftRecieverUserEmailAddress = draftRecieverUserInfo?.email;
 
   return {

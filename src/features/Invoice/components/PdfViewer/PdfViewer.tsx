@@ -6,9 +6,8 @@ import { Container, Stack, Typography } from "@mui/material";
 import EmptyComponent from "common/EmptyComponent";
 import { EditInvoiceRouteUri, parseJsonUtility } from "common/utils";
 import {
-  TInvoice,
   TInvoiceSchema,
-  TInvoiceUserInfo,
+  TInvoiceUserInfoSchema,
 } from "features/Invoice/Invoice.schema";
 import { TOutletContext } from "features/Invoice/Invoice.types";
 import ReportTable from "features/Invoice/components/PdfViewer/ReportTable";
@@ -22,16 +21,25 @@ export default function PdfViewer() {
   const navigate = useNavigate();
   const { showWatermark } = useOutletContext<TOutletContext>();
 
-  const senderInfo = parseJsonUtility<TInvoiceUserInfo>(
+  const draftSenderInfo = parseJsonUtility<unknown>(
     localStorage.getItem("senderInfo"),
   );
-  const recieverInfo = parseJsonUtility<TInvoiceUserInfo>(
+  const draftRecieverInfo = parseJsonUtility<unknown>(
     localStorage.getItem("recieverInfo"),
   );
-  const draftInvoiceForm = parseJsonUtility<TInvoice>(
+  const draftInvoiceForm = parseJsonUtility<unknown>(
     localStorage.getItem("pdfDetails"),
   );
-  const invoiceForm = TInvoiceSchema.parse(draftInvoiceForm);
+
+  const parsedInvoice = TInvoiceSchema.safeParse(draftInvoiceForm);
+  const parsedSenderInfo = TInvoiceUserInfoSchema.safeParse(draftSenderInfo);
+  const parsedRecieverInfo =
+    TInvoiceUserInfoSchema.safeParse(draftRecieverInfo);
+  const invoiceForm = parsedInvoice.success ? parsedInvoice.data : null;
+  const senderInfo = parsedSenderInfo.success ? parsedSenderInfo.data : null;
+  const recieverInfo = parsedRecieverInfo.success
+    ? parsedRecieverInfo.data
+    : null;
 
   return (
     <Container maxWidth="md" data-tour="view-pdf-0">

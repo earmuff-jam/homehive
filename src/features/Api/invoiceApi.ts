@@ -36,7 +36,7 @@ export const invoiceApi = createApi({
         try {
           return {
             data: {
-              ...JSON.parse(localStorage.getItem("pdfDetails")),
+              pdfDetails: JSON.parse(localStorage.getItem("pdfDetails")),
               recieverInfo: JSON.parse(localStorage.getItem("recieverInfo")),
             },
           };
