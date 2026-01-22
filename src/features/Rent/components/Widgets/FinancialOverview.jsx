@@ -1,11 +1,8 @@
 import React from "react";
 
 import { Card, CardContent, Skeleton, Stack, Typography } from "@mui/material";
-import RowHeader from "common/RowHeader/RowHeader";
-import {
-  derieveTotalRent,
-  formatCurrency,
-} from "features/Rent/utils";
+import RowHeader from "common/RowHeader";
+import { derieveTotalRent, formatCurrency } from "features/Rent/utils";
 
 export default function FinancialOverview({
   isTenantsLoading,

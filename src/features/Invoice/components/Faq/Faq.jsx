@@ -7,7 +7,7 @@ import {
   SaveAltRounded,
   SendRounded,
 } from "@mui/icons-material";
-import FaqDetails from "common/FaqDetails/FaqDetails";
+import FaqDetails from "common/FaqDetails";
 
 const faqItems = [
   {

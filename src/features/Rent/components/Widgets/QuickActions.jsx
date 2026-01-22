@@ -15,8 +15,8 @@ import {
   Stack,
 } from "@mui/material";
 import AButton from "common/AButton";
-import CustomSnackbar from "common/CustomSnackbar/CustomSnackbar";
-import RowHeader from "common/RowHeader/RowHeader";
+import CustomSnackbar from "common/CustomSnackbar";
+import RowHeader from "common/RowHeader";
 import { useUpdatePropertyByIdMutation } from "features/Api/propertiesApi";
 import {
   AddPropertyTextString,

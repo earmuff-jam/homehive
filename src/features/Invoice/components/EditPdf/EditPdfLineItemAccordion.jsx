@@ -15,6 +15,7 @@ export default function EditPdfLineItemAccordion({
   title,
   index,
   control,
+  errors,
   onDelete,
 }) {
   return (
@@ -32,7 +33,7 @@ export default function EditPdfLineItemAccordion({
         </Stack>
       </AccordionSummary>
       <AccordionDetails>
-         <EditPdfLineItem control={control} index={index} />
+        <EditPdfLineItem control={control} errors={errors} index={index} />
       </AccordionDetails>
     </Accordion>
   );

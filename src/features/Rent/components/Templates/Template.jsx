@@ -3,7 +3,7 @@ import React from "react";
 import { TuneRounded } from "@mui/icons-material";
 import { Box, Stack, Tooltip } from "@mui/material";
 import AIconButton from "common/AIconButton";
-import RowHeader from "common/RowHeader/RowHeader";
+import RowHeader from "common/RowHeader";
 import TemplateForm from "features/Rent/components/Templates/TemplateForm";
 
 export default function Template({ template, handleSave }) {

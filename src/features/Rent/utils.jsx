@@ -1,7 +1,5 @@
 import React from "react";
 
-import secureLocalStorage from "react-secure-storage";
-
 /**
  * Utility file for properties
  */
@@ -78,17 +76,6 @@ export const isValid = (email) => {
     }
   }
   return true;
-};
-
-/**
- * fetchLoggedInUser ...
- *
- * used to retrieve the logged in userId.
- *
- * @returns string - the logged in userId
- */
-export const fetchLoggedInUser = () => {
-  return secureLocalStorage.getItem("user");
 };
 
 /**

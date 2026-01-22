@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 
 import { Card, CardContent, Skeleton, Stack } from "@mui/material";
-import CustomSnackbar from "common/CustomSnackbar/CustomSnackbar";
-import RowHeader from "common/RowHeader/RowHeader";
+import CustomSnackbar from "common/CustomSnackbar";
+import RowHeader from "common/RowHeader";
 import {
   useCreateEsignFromTemplateMutation,
   useGetEsignTemplatesQuery,

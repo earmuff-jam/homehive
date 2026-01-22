@@ -24,8 +24,9 @@ import {
   Typography,
 } from "@mui/material";
 import AButton from "common/AButton";
-import CustomSnackbar from "common/CustomSnackbar/CustomSnackbar";
-import RowHeader from "common/RowHeader/RowHeader";
+import CustomSnackbar from "common/CustomSnackbar";
+import RowHeader from "common/RowHeader";
+import { fetchLoggedInUser } from "common/utils";
 import { useGetUserDataByIdQuery } from "features/Api/firebaseUserApi";
 import {
   useCreateRentRecordMutation,
@@ -35,7 +36,7 @@ import { useGetTenantByPropertyIdQuery } from "features/Api/tenantsApi";
 import { getStripeFailureReasons } from "features/Rent/components/Settings/common";
 import { useCheckStripeAccountStatus } from "features/Rent/hooks/useCheckStripeAccountStatus";
 import { useGenerateStripeCheckoutSession } from "features/Rent/hooks/useGenerateStripeCheckoutSession";
-import { fetchLoggedInUser, formatCurrency } from "features/Rent/utils";
+import { formatCurrency } from "features/Rent/utils";
 
 export default function PropertyOwnerInfoCard({
   isViewingRental = false,
@@ -269,7 +270,7 @@ export default function PropertyOwnerInfoCard({
                     </Typography>
                   </Alert>
                 </Box>
-                
+
                 <AButton
                   size="small"
                   variant="contained"

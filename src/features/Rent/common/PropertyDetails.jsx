@@ -11,7 +11,7 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
-import RowHeader from "common/RowHeader/RowHeader";
+import RowHeader from "common/RowHeader";
 import PropertyMap from "features/Rent/components/PropertyMap/PropertyMap";
 
 export default function PropertyDetails({

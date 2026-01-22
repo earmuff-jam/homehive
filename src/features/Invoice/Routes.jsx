@@ -42,11 +42,7 @@ const SenderInfo = React.lazy(
 
 const Faq = React.lazy(() => import("features/Invoice/components/Faq/Faq"));
 
-/**
- * InvoiceAppRoutes ...
- *
- * routes that are built for invoice app
- */
+// InvoiceAppRoutes ...
 export const InvoiceAppRoutes = [
   {
     id: 1,

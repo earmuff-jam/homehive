@@ -1,13 +1,7 @@
 import dayjs from "dayjs";
 
-/**
- * noramlizeDetailsTableData
- *
- * used to build out a invoice details table data
- *
- * @param {Array} draftInvoiceList - Array of invoices
- * @returns Array of invoice details built for table view
- */
+// noramlizeDetailsTableData ...
+// defines a function that normalizes the table data
 export function noramlizeDetailsTableData(draftInvoiceList = []) {
   return draftInvoiceList.map((invoice) => {
     const items = invoice.lineItems || [];
@@ -21,30 +15,24 @@ export function noramlizeDetailsTableData(draftInvoiceList = []) {
       ...new Set(items.map((i) => i.category?.label).filter(Boolean)),
     ].join(" / ");
 
-    const payment_method = [
+    const paymentMethod = [
       ...new Set(items.map((i) => i.payment_method).filter(Boolean)),
     ].join(" / ");
 
     return {
       category,
       invoiceStatus: invoice.invoiceStatus || "",
-      start_date: invoice.start_date,
-      end_date: invoice.end_date,
+      startDate: invoice.startDate,
+      endDate: invoice.endDate,
       total,
-      payment_method,
+      paymentMethod,
       updatedOn: invoice.updatedOn,
     };
   });
 }
 
-/**
- * normalizeInvoiceItemTypeChartDataset
- *
- * used to build out a item type chart from the provided dataset
- *
- * @param {Array} draftInvoiceList - Array of invoices
- * @returns Object containing the built dataset based on the passed in args
- */
+// normalizeInvoiceItemTypeChartDataset ...
+// defines a function that is used to normalize the invoice item type chart dataset
 export function normalizeInvoiceItemTypeChartDataset(draftInvoiceList = []) {
   const itemCountMap = {};
 
@@ -77,15 +65,7 @@ export function normalizeInvoiceItemTypeChartDataset(draftInvoiceList = []) {
   };
 }
 
-/**
- * normalizeInvoiceTrendsChartsDataset
- *
- * used to build out a bar chart dataset for chartjs.
- *
- * @param {Array} draftInvoiceList - Array of invoices
- * @param {String} chartType - The type of chart
- * @returns Object containing the built dataset based on the passed in args
- */
+// normalizeInvoiceTrendsChartsDataset ...
 export function normalizeInvoiceTrendsChartsDataset(
   draftInvoiceList = [],
   chartType = "",
@@ -95,8 +75,8 @@ export function normalizeInvoiceTrendsChartsDataset(
   const filteredDraftInvoiceList = draftInvoiceList.filter(Boolean); // remove unwanted values
 
   filteredDraftInvoiceList.forEach((invoice) => {
-    const month = dayjs(invoice.start_date).format("MMMM");
-    const taxRate = Number(invoice.tax_rate || 0);
+    const month = dayjs(invoice.startDate).format("MMMM");
+    const taxRate = Number(invoice.taxRate || 0);
 
     const collectedTotal = invoice?.lineItems?.reduce((acc, item) => {
       return acc + Number(item?.payment || 0);
@@ -151,35 +131,27 @@ export function normalizeInvoiceTrendsChartsDataset(
   ];
 }
 
-/**
- * normalizeInvoiceTimelineChartDataset
- *
- * used to build out a bar chart dataset for chartjs.
- *
- * @param {Array} draftInvoiceList - Array of invoices
- * @returns Object containing the built dataset based on the passed in args
- */
+// normalizeInvoiceTimelineChartDataset ...
 export function normalizeInvoiceTimelineChartDataset(draftInvoiceList = []) {
   const months = new Set();
-
   const filteredDraftInvoiceList = draftInvoiceList.filter(Boolean); // remove unwanted values
 
   filteredDraftInvoiceList.forEach((invoice) => {
-    const month = dayjs(invoice.start_date).format("MMMM");
+    const month = dayjs(invoice.startDate).format("MMMM");
     months.add(month);
   });
 
   const monthLabels = Array.from(months);
 
   const datasets = draftInvoiceList.map((invoice, id) => {
-    const month = dayjs(invoice.start_date).format("MMMM");
+    const month = dayjs(invoice.startDate).format("MMMM");
     const index = monthLabels.indexOf(month);
 
-    const duration = dayjs(invoice.end_date).diff(invoice.start_date, "day");
+    const duration = dayjs(invoice.end_date).diff(invoice.startDate, "day");
     const data = monthLabels.map((_, idx) => (idx === index ? duration : null));
 
     return {
-      label: `Payment: $${invoice.lineItems?.[0]?.payment} via ${invoice.lineItems?.[0]?.payment_method}`,
+      label: `Payment: $${invoice.lineItems?.[0]?.payment} via ${invoice.lineItems?.[0]?.paymentMethod}`,
       data,
       backgroundColor: id % 2 === 0 ? "#4CAF50" : "rgba(255, 99, 132, 0.7)",
       borderWidth: 1,

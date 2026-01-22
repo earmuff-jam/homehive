@@ -7,8 +7,8 @@ import { useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
 
 import { Stack } from "@mui/material";
-import CustomSnackbar from "common/CustomSnackbar/CustomSnackbar";
-import RowHeader from "common/RowHeader/RowHeader";
+import CustomSnackbar from "common/CustomSnackbar";
+import RowHeader from "common/RowHeader";
 import {
   useGetReceiverInfoQuery,
   useUpsertReceiverInfoMutation,
@@ -43,11 +43,11 @@ export default function RecieverInfo() {
   } = useForm({
     mode: "onChange",
     defaultValues: {
-      first_name: "",
-      last_name: "",
-      email_address: "",
-      phone_number: "",
-      street_address: "",
+      firstName: "",
+      lastName: "",
+      email: "",
+      phone: "",
+      streetAddress: "",
       city: "",
       state: "",
       zipcode: "",
@@ -67,12 +67,13 @@ export default function RecieverInfo() {
 
   useEffect(() => {
     if (isRecieverInfoSuccess) {
+      console.log(recieverInfo);
       reset({
-        first_name: recieverInfo.first_name,
-        last_name: recieverInfo.last_name,
-        email_address: recieverInfo.email_address,
-        phone_number: recieverInfo.phone_number,
-        street_address: recieverInfo.street_address,
+        firstName: recieverInfo.firstName,
+        lastName: recieverInfo.lastName,
+        email: recieverInfo.email,
+        phone: recieverInfo.phone,
+        streetAddress: recieverInfo.streetAddress,
         city: recieverInfo.city,
         state: recieverInfo.state,
         zipcode: recieverInfo.zipcode,

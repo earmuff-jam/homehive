@@ -5,6 +5,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { Alert, Grid, Paper, Skeleton, Stack, Typography } from "@mui/material";
 import AButton from "common/AButton";
 import EmptyComponent from "common/EmptyComponent";
+import { fetchLoggedInUser } from "common/utils";
 import { useGetUserDataByIdQuery } from "features/Api/firebaseUserApi";
 import { useGetPropertiesByPropertyIdQuery } from "features/Api/propertiesApi";
 import { useGetRentsByPropertyIdQuery } from "features/Api/rentApi";
@@ -19,7 +20,6 @@ import PropertyStatistics from "features/Rent/common/PropertyStatistics";
 import DocumentsOverview from "features/Rent/components/Widgets/DocumentsOverview";
 import FinancialOverview from "features/Rent/components/Widgets/FinancialOverview";
 import RentalPaymentOverview from "features/Rent/components/Widgets/RentalPaymentOverview";
-import { fetchLoggedInUser } from "features/Rent/utils";
 import { useAppTitle } from "hooks/useAppTitle";
 
 const MyRental = () => {
@@ -146,8 +146,8 @@ const MyRental = () => {
             propertyName={property?.name || "Unknown"}
           />
           <DocumentsOverview
-          // only property owners can edit the document templates
-          // functional because only rentees can view this page
+            // only property owners can edit the document templates
+            // functional because only rentees can view this page
             isVewingRental
             dataTour="rental-6"
             property={property}

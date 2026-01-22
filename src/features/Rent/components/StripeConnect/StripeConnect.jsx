@@ -22,7 +22,7 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import RowHeader from "common/RowHeader/RowHeader";
+import RowHeader from "common/RowHeader";
 import {
   useGetUserDataByIdQuery,
   useUpdateUserByUidMutation,

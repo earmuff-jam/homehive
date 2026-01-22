@@ -15,7 +15,7 @@ import {
 import AButton from "common/AButton";
 import AIconButton from "common/AIconButton";
 import EmptyComponent from "common/EmptyComponent";
-import RowHeader from "common/RowHeader/RowHeader";
+import RowHeader from "common/RowHeader";
 import Tenants from "features/Rent/components/Widgets/Tenants";
 
 export default function TenantsOverview({

@@ -2,20 +2,15 @@ import secureLocalStorage from "react-secure-storage";
 
 import { getApps, initializeApp } from "firebase/app";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { deleteDoc, doc, getDoc, getFirestore, setDoc } from "firebase/firestore";
+import {
+  deleteDoc,
+  doc,
+  getDoc,
+  getFirestore,
+  setDoc,
+} from "firebase/firestore";
 
-// -------------------------------------------
-// Util functions
-
-/**
- * isFirebaseConfigOptionsValid ...
- *
- * function is used to check if the passed in configuration for the authenticator app
- * is valid or not. Can be used to validate others.
- *
- * @param {Object} ConfigOptions - FirebaseConfig app
- * @returns boolean - true or false
- */
+// isFirebaseConfigOptionsValid ...
 const isFirebaseConfigOptionsValid = ({ options }) =>
   options &&
   !Object.values(options).some((option) => option?.length === 0) &&
@@ -23,8 +18,6 @@ const isFirebaseConfigOptionsValid = ({ options }) =>
   typeof options?.authDomain === "string" &&
   typeof options?.projectId === "string";
 
-// -------------------------------------------
-// Analytics App
 const analyticsFirebaseConfig = {
   apiKey: import.meta.env.VITE_ANALYTICS_FIREBASE_API_KEY,
   authDomain: import.meta.env.VITE_ANALYTICS_FIREBASE_AUTH_DOMAIN,
@@ -41,15 +34,9 @@ const analyticsConfig =
   getApps().find((app) => app.name === "[DEFAULT]") ||
   initializeApp(analyticsFirebaseConfig);
 
-/**
- * analyticsFirestore ...
- *
- * the db used to store analytics events for the application
- */
+// analyticsFirestore ...
 export const analyticsFirestore = getFirestore(analyticsConfig);
 
-// -------------------------------------------
-// Authenticator App
 const authenticatorFirebaseConfig = {
   apiKey: import.meta.env.VITE_AUTH_FIREBASE_API_KEY,
   authDomain: import.meta.env.VITE_AUTH_FIREBASE_AUTH_DOMAIN,
@@ -60,11 +47,7 @@ const authenticatorFirebaseConfig = {
   measurementId: import.meta.env.VITE_AUTH_FIREBASE_MEASUREMENTID,
 };
 
-/**
- * GeneralUserConfigValues ...
- *
- * these are general configuration values that can be used in the application.
- */
+// GeneralUserConfigValues ...
 export const GeneralUserConfigValues = {
   StripeConnectionInstructionsLink: import.meta.env
     .VITE_AUTH_STRIPE_CONNECTION_INSTRUCTIONS,
@@ -74,13 +57,7 @@ export const GeneralUserConfigValues = {
     .VITE_AUTH_STRIPE_SECURITY_AND_COMPLIANCE,
 };
 
-/**
- * authenticatorConfig ...
- *
- * authenticatorConfig is the configuration manager used to authenticate
- * users into the backend system.
- *
- */
+// authenticatorConfig ...
 export const authenticatorConfig =
   getApps().find((app) => app.name === "AUTHENTICATOR") ||
   initializeApp(authenticatorFirebaseConfig, "AUTHENTICATOR");
@@ -127,7 +104,7 @@ if (isFirebaseConfigOptionsValid(authenticatorConfig)) {
 
       // remove invite doc if user is created
       await deleteDoc(inviteRef);
-      
+
       secureLocalStorage.setItem("user", {
         uid: user.uid,
         role: invite.role,
@@ -150,20 +127,12 @@ if (isFirebaseConfigOptionsValid(authenticatorConfig)) {
   );
 }
 
-/**
- * authenticatorApp ...
- *
- * the authenticator for the db
- */
+// authenticatorApp ...
 export const authenticatorApp = isFirebaseConfigOptionsValid(
   authenticatorConfig,
 )
   ? getAuth(authenticatorConfig)
   : null;
 
-/**
- * authenticatedFirestore ...
- *
- * the db for all authenticated users
- */
+// authenticatorFirestore ...
 export const authenticatorFirestore = getFirestore(authenticatorConfig);

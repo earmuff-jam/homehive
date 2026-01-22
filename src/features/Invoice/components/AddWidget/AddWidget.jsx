@@ -24,7 +24,7 @@ export default function AddWidget({ handleAddWidget }) {
             onClick={() => handleAddWidget(widgetType.id)}
           >
             <ListItemIcon>
-              <AddRounded />
+              <AddRounded fontSize="small" />
             </ListItemIcon>
             <ListItemText inset={widgetType.config.inset}>
               {widgetType.label}

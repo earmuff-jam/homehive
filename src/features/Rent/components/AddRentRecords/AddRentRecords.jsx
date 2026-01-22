@@ -12,13 +12,14 @@ import { LocalizationProvider, MobileDatePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import AButton from "common/AButton";
 import TextFieldWithLabel from "common/TextFieldWithLabel";
+import { fetchLoggedInUser } from "common/utils";
 import {
   useGetUserByEmailAddressQuery,
   useGetUserDataByIdQuery,
 } from "features/Api/firebaseUserApi";
 import { useCreateRentRecordMutation } from "features/Api/rentApi";
 import { useGetTenantByPropertyIdQuery } from "features/Api/tenantsApi";
-import { fetchLoggedInUser, formatCurrency } from "features/Rent/utils";
+import { formatCurrency } from "features/Rent/utils";
 
 export default function AddRentRecords({
   property,

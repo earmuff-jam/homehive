@@ -5,7 +5,7 @@ import dayjs from "dayjs";
 import { CloudUploadRounded } from "@mui/icons-material";
 import { Box, Paper, Stack } from "@mui/material";
 import AButton from "common/AButton";
-import CustomSnackbar from "common/CustomSnackbar/CustomSnackbar";
+import CustomSnackbar from "common/CustomSnackbar";
 import FileDetails from "features/Rent/components/UploadDocument/FileDetails";
 import { fetchLoggedInUser } from "features/Rent/utils";
 

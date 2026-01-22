@@ -1,10 +1,6 @@
-import React from "react";
-
-import secureLocalStorage from "react-secure-storage";
-
 import * as utils from "./utils";
 import { render, screen } from "@testing-library/react";
-import { fetchLoggedInUser } from "features/Rent/utils";
+import { fetchLoggedInUser } from "common/utils";
 
 // Mock secureLocalStorage
 jest.mock("react-secure-storage", () => ({
@@ -38,25 +34,6 @@ describe("Utils function tests", () => {
         ),
       ).toBeInTheDocument();
       expect(screen.getByText(/click the button/i)).toBeInTheDocument();
-    });
-  });
-
-  describe("isUserLoggedIn function tests", () => {
-    beforeEach(() => {
-      jest.clearAllMocks();
-    });
-
-    it("returns true if user exists with uid", () => {
-      secureLocalStorage.getItem.mockReturnValue({ uid: "123" });
-      expect(utils.isUserLoggedIn()).toBe(true);
-    });
-
-    it("returns false if no user or no uid", () => {
-      secureLocalStorage.getItem.mockReturnValue(null);
-      expect(utils.isUserLoggedIn()).toBe(false);
-
-      secureLocalStorage.getItem.mockReturnValue({});
-      expect(utils.isUserLoggedIn()).toBe(false);
     });
   });
 

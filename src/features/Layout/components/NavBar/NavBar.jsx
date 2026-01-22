@@ -22,12 +22,11 @@ import validateClientPermissions, {
 import {
   MainInvoiceAppRouteUri,
   MainRentAppRouteUri,
-  isUserLoggedIn,
+  fetchLoggedInUser,
 } from "common/utils";
 import { InvoiceAppRoutes } from "features/Invoice/Routes";
 import NavigationGroup from "features/Layout/components/NavBar/NavigationGroup";
 import { RentalAppRoutes } from "features/Rent/Routes";
-import { fetchLoggedInUser } from "features/Rent/utils";
 import { MainAppRoutes } from "src/Routes";
 
 export default function NavBar({
@@ -63,7 +62,7 @@ export default function NavBar({
       if (validRoles.length > 0 && !validRoles.includes(roleType)) return false;
 
       const requiresLogin = Boolean(config?.isLoggedInFeature);
-      if (requiresLogin && !isUserLoggedIn()) return false;
+      if (requiresLogin && !user?.uid) return false;
 
       return true;
     });
@@ -134,7 +133,7 @@ export default function NavBar({
                 return null;
 
               const requiresLogin = Boolean(config?.isLoggedInFeature);
-              if (requiresLogin && !isUserLoggedIn()) return null;
+              if (requiresLogin && !user?.uid) return null;
 
               let childRoutes = [];
 

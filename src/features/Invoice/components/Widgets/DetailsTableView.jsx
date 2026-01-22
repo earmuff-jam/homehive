@@ -4,7 +4,7 @@ import dayjs from "dayjs";
 
 import { Stack } from "@mui/material";
 import EmptyComponent from "common/EmptyComponent";
-import RowHeader from "common/RowHeader/RowHeader";
+import RowHeader from "common/RowHeader";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { noramlizeDetailsTableData } from "features/Invoice/utils";
 import {
@@ -48,14 +48,14 @@ const DetailsTableView = ({ label, caption }) => {
         Cell: ({ cell }) => (cell.getValue() ? cell.getValue() : "-"),
       },
       {
-        accessorKey: "start_date",
+        accessorKey: "startDate",
         header: "Start Month",
         Cell: ({ cell }) =>
           cell.getValue() ? dayjs(cell.getValue()).format("MM-DD-YYYY") : "-",
         size: 150,
       },
       {
-        accessorKey: "end_date",
+        accessorKey: "endDate",
         header: "End Month",
         Cell: ({ cell }) =>
           cell.getValue() ? dayjs(cell.getValue()).format("MM-DD-YYYY") : "-",
@@ -71,10 +71,11 @@ const DetailsTableView = ({ label, caption }) => {
         accessorKey: "invoiceStatus",
         header: "Invoice Status",
         size: 100,
-        Cell: ({ cell }) => (cell.getValue() ? cell.getValue() : "-"),
+        Cell: ({ cell }) =>
+          cell.getValue()?.label ? cell.getValue()?.label : "-",
       },
       {
-        accessorKey: "payment_method",
+        accessorKey: "paymentMethod",
         header: "Payment method",
         size: 150,
         Cell: ({ cell }) => (cell.getValue() ? cell.getValue() : "-"),

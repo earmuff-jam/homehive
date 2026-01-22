@@ -20,7 +20,7 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
-import CustomSnackbar from "common/CustomSnackbar/CustomSnackbar";
+import CustomSnackbar from "common/CustomSnackbar";
 import { useUpdatePropertyByIdMutation } from "features/Api/propertiesApi";
 import { useUpdateTenantByIdMutation } from "features/Api/tenantsApi";
 import { fetchLoggedInUser, formatCurrency } from "features/Rent/utils";

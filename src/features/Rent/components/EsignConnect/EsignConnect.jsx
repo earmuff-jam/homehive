@@ -10,7 +10,8 @@ import {
   SupportAgentRounded,
 } from "@mui/icons-material";
 import { Grid2, Skeleton } from "@mui/material";
-import CustomSnackbar from "common/CustomSnackbar/CustomSnackbar";
+import CustomSnackbar from "common/CustomSnackbar";
+import { fetchLoggedInUser } from "common/utils";
 import { useCreateWorkspaceMutation } from "features/Api/externalIntegrationsApi";
 import {
   useGetUserDataByIdQuery,
@@ -19,7 +20,6 @@ import {
 import RecentDocuments from "features/Rent/components/EsignConnect/RecentDocuments";
 import StatusCard from "features/Rent/components/EsignConnect/StatusCard";
 import HelpAndSupport from "features/Rent/components/ExternalIntegrations/HelpAndSupport";
-import { fetchLoggedInUser } from "features/Rent/utils";
 
 const EsignConnectOptions = [
   {

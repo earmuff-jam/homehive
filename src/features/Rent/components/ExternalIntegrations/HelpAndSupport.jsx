@@ -2,7 +2,7 @@ import React from "react";
 
 import { Box, Card, Stack, Typography } from "@mui/material";
 import AButton from "common/AButton";
-import RowHeader from "common/RowHeader/RowHeader";
+import RowHeader from "common/RowHeader";
 
 export default function HelpAndSupport({ options = [] }) {
   return (

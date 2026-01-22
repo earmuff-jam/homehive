@@ -14,11 +14,11 @@ import {
   useTheme,
 } from "@mui/material";
 import AButton from "common/AButton";
-import CustomSnackbar from "common/CustomSnackbar/CustomSnackbar";
-import { DefaultTourStepsMapperObj } from "common/Tour/TourSteps";
-import { isUserLoggedIn } from "common/utils";
+import CustomSnackbar from "common/CustomSnackbar";
+import { DefaultTourStepsMapperObj } from "common/TourSteps";
+import { fetchLoggedInUser } from "common/utils";
 import { useLogoutMutation } from "features/Api/firebaseUserApi";
-import { useLocalStorageData } from "features/Invoice/hooks/useGenerateUserData";
+import { useRetrieveInvoiceDetails } from "features/Invoice/hooks/useRetrieveInvoiceDetails";
 import MenuOptions from "features/Layout/components/NavBar/MenuOptions";
 import { retrieveTourKey } from "features/Layout/utils";
 import { isFeatureEnabled } from "features/Rent/utils";
@@ -35,7 +35,9 @@ export default function AppToolbar({
 }) {
   const theme = useTheme();
   const location = useLocation();
+
   const navigate = useNavigate();
+  const user = fetchLoggedInUser();
 
   const smallFormFactor = useMediaQuery(theme.breakpoints.down("sm"));
   const { sendEmail, reset, loading, error, success } = useSendEmail();
@@ -50,7 +52,7 @@ export default function AppToolbar({
     draftInvoiceStatusLabel,
     draftRecieverUserEmailAddress,
     isDisabled,
-  } = useLocalStorageData();
+  } = useRetrieveInvoiceDetails();
 
   const currentSubRoute = currentRoute?.element.props?.routes?.find((route) =>
     matchPath(route.routeUri, location.pathname),
@@ -138,7 +140,7 @@ export default function AppToolbar({
           <Typography variant="h5">Homehive</Typography>
         </Stack>
         <Stack direction="row" spacing={1} alignItems="center">
-          {isUserLoggedIn() && (
+          {user?.uid && (
             <Tooltip title="logout">
               <AButton
                 label="Logout"

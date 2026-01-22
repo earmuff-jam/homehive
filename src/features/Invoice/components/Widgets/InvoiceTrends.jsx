@@ -16,7 +16,7 @@ import {
   Tooltip,
 } from "chart.js";
 import EmptyComponent from "common/EmptyComponent";
-import RowHeader from "common/RowHeader/RowHeader";
+import RowHeader from "common/RowHeader";
 import { normalizeInvoiceTrendsChartsDataset } from "features/Invoice/utils";
 
 ChartJS.register(
@@ -94,15 +94,14 @@ const InvoiceTrendsChart = ({ label, caption }) => {
             aria-label="bar or line chart"
           >
             <ToggleButton value="bar" aria-label="bar chart" size="small">
-              <BarChartRounded />
+              <BarChartRounded fontSize="small" />
             </ToggleButton>
             <ToggleButton value="line" aria-label="line chart" size="small">
-              <StackedLineChartRounded />
+              <StackedLineChartRounded fontSize="small" />
             </ToggleButton>
           </ToggleButtonGroup>
         </Box>
       </Stack>
-
       <Box>
         {chartData === null ? (
           <EmptyComponent />

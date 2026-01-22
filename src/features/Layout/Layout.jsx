@@ -24,7 +24,7 @@ import Banner from "common/Banner";
 import {
   DefaultTourStepsMapperObj,
   GeneratedTourSteps,
-} from "common/Tour/TourSteps";
+} from "common/TourSteps";
 import { HomeRouteUri } from "common/utils";
 import AppToolbar from "features/Layout/components/AppToolbar/AppToolbar";
 import BreadCrumbs from "features/Layout/components/AppToolbar/BreadCrumbs";
