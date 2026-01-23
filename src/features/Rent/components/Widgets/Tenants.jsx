@@ -21,9 +21,10 @@ import {
   Typography,
 } from "@mui/material";
 import CustomSnackbar from "common/CustomSnackbar";
+import { fetchLoggedInUser } from "common/utils";
 import { useUpdatePropertyByIdMutation } from "features/Api/propertiesApi";
 import { useUpdateTenantByIdMutation } from "features/Api/tenantsApi";
-import { fetchLoggedInUser, formatCurrency } from "features/Rent/utils";
+import { formatCurrency } from "features/Rent/utils";
 
 export default function Tenants({ tenants = [], property }) {
   const user = fetchLoggedInUser();

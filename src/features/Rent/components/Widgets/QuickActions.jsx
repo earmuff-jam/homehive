@@ -17,6 +17,7 @@ import {
 import AButton from "common/AButton";
 import CustomSnackbar from "common/CustomSnackbar";
 import RowHeader from "common/RowHeader";
+import { fetchLoggedInUser } from "common/utils";
 import { useUpdatePropertyByIdMutation } from "features/Api/propertiesApi";
 import {
   AddPropertyTextString,
@@ -24,7 +25,7 @@ import {
 } from "features/Rent/common/constants";
 import AddProperty from "features/Rent/components/AddProperty/AddProperty";
 import AddRentRecords from "features/Rent/components/AddRentRecords/AddRentRecords";
-import { fetchLoggedInUser, sanitizeApiFields } from "features/Rent/utils";
+import { sanitizeApiFields } from "features/Rent/utils";
 
 const defaultDialog = {
   title: "",
