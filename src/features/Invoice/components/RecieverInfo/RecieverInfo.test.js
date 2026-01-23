@@ -11,7 +11,7 @@ jest.mock("hooks/useAppTitle", () => ({
   useAppTitle: jest.fn(),
 }));
 
-jest.mock("common/RowHeader/RowHeader", () => ({
+jest.mock("common/RowHeader", () => ({
   __esModule: true,
   default: ({ title, caption }) => (
     <div>
@@ -27,7 +27,7 @@ jest.mock("features/Invoice/components/UserInfo/UserInfoViewer", () => ({
     <form
       onSubmit={(e) => {
         e.preventDefault();
-        onSubmit({ first_name: "John" });
+        onSubmit({ firstName: "John" });
       }}
     >
       <button type="submit">Submit</button>

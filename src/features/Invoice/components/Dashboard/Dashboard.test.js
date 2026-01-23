@@ -15,6 +15,15 @@ jest.mock("common/ValidateClientPermissions", () => ({
     ]),
 }));
 
+jest.mock("common/AButton", () => ({
+  __esModule: true,
+  default: ({ label, onClick, disabled }) => (
+    <button onClick={onClick} disabled={disabled}>
+      {label}
+    </button>
+  ),
+}));
+
 jest.mock("react-secure-storage", () => ({
   getItem: jest.fn(),
   setItem: jest.fn(),

@@ -16,7 +16,7 @@ export function noramlizeDetailsTableData(draftInvoiceList = []) {
     ].join(" / ");
 
     const paymentMethod = [
-      ...new Set(items.map((i) => i.payment_method).filter(Boolean)),
+      ...new Set(items.map((i) => i.paymentMethod).filter(Boolean)),
     ].join(" / ");
 
     return {
@@ -147,7 +147,7 @@ export function normalizeInvoiceTimelineChartDataset(draftInvoiceList = []) {
     const month = dayjs(invoice.startDate).format("MMMM");
     const index = monthLabels.indexOf(month);
 
-    const duration = dayjs(invoice.end_date).diff(invoice.startDate, "day");
+    const duration = dayjs(invoice.endDate).diff(invoice.startDate, "day");
     const data = monthLabels.map((_, idx) => (idx === index ? duration : null));
 
     return {
