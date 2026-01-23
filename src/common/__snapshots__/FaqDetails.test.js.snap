@@ -23,7 +23,7 @@ exports[`FaqDetails component tests it should render and pass all snapshot tests
       />
     </div>
     <div
-      class="MuiBox-root css-1msdb6p"
+      class="MuiBox-root css-b368pp"
     />
   </div>
 </DocumentFragment>

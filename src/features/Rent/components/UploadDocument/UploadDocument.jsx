@@ -6,8 +6,8 @@ import { CloudUploadRounded } from "@mui/icons-material";
 import { Box, Paper, Stack } from "@mui/material";
 import AButton from "common/AButton";
 import CustomSnackbar from "common/CustomSnackbar";
+import { fetchLoggedInUser } from "common/utils";
 import FileDetails from "features/Rent/components/UploadDocument/FileDetails";
-import { fetchLoggedInUser } from "features/Rent/utils";
 
 export default function UploadDocument({ selectedFile, setSelectedFile }) {
   const user = fetchLoggedInUser();
