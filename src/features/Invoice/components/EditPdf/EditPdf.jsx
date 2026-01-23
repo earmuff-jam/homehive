@@ -390,7 +390,6 @@ export default function EditPdf({
             key={item.id}
             title={`Edit line ${index + 1}`}
             control={control}
-            errors={errors}
             index={index}
             onDelete={() => remove(index)}
           />

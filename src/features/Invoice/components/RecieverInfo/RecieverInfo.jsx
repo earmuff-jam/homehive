@@ -67,7 +67,6 @@ export default function RecieverInfo() {
 
   useEffect(() => {
     if (isRecieverInfoSuccess) {
-      console.log(recieverInfo);
       reset({
         firstName: recieverInfo.firstName,
         lastName: recieverInfo.lastName,

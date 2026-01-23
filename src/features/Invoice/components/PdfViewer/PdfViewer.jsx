@@ -17,7 +17,6 @@ import RowHeader from "common/RowHeader";
 import { EditInvoiceRouteUri } from "common/utils";
 import ReportTable from "features/Invoice/components/PdfViewer/ReportTable";
 import Salutation from "features/Invoice/components/UserInfo/Salutation";
-import { DefaultInvoiceStatusOptions } from "features/Invoice/constants";
 import { useAppTitle } from "hooks/useAppTitle";
 
 const DefaultInvoiceStatusIcons = {

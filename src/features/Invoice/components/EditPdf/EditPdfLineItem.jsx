@@ -6,7 +6,7 @@ import { Autocomplete, Stack, TextField, Typography } from "@mui/material";
 import TextFieldWithLabel from "common/TextFieldWithLabel";
 import { InvoiceCategoryOptions } from "features/Invoice/constants";
 
-export default function EditPdfLineItem({ control, errors, index }) {
+export default function EditPdfLineItem({ control, index }) {
   return (
     <Stack spacing={2}>
       {/* Category */}
