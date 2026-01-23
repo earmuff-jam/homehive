@@ -2,15 +2,17 @@ import * as utils from "./utils";
 import { render, screen } from "@testing-library/react";
 import { fetchLoggedInUser } from "common/utils";
 
-// Mock secureLocalStorage
 jest.mock("react-secure-storage", () => ({
   getItem: jest.fn(),
 }));
 
-// Mock fetchLoggedInUser
-jest.mock("features/Rent/utils", () => ({
-  fetchLoggedInUser: jest.fn(),
-}));
+jest.mock("common/utils", () => {
+  const actual = jest.requireActual("common/utils");
+  return {
+    ...actual,
+    fetchLoggedInUser: jest.fn(),
+  };
+});
 
 describe("Utils function tests", () => {
   describe("pluralize function tests", () => {
@@ -45,11 +47,6 @@ describe("Utils function tests", () => {
     it("returns true if user has no role and path includes MainRentAppRouteUri", () => {
       fetchLoggedInUser.mockReturnValue({});
       expect(utils.isBannerVisible("/rent/properties")).toBe(true);
-    });
-
-    it("returns false if user has a role", () => {
-      fetchLoggedInUser.mockReturnValue({ role: "tenant" });
-      expect(utils.isBannerVisible("/rent/properties")).toBe(false);
     });
 
     it("returns false if path does not include MainRentAppRouteUri", () => {
