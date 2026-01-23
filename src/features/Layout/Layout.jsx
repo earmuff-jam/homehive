@@ -24,7 +24,7 @@ import Banner from "common/Banner";
 import {
   DefaultTourStepsMapperObj,
   GeneratedTourSteps,
-} from "common/Tour/TourSteps";
+} from "common/TourSteps";
 import { HomeRouteUri } from "common/utils";
 import AppToolbar from "features/Layout/components/AppToolbar/AppToolbar";
 import BreadCrumbs from "features/Layout/components/AppToolbar/BreadCrumbs";
@@ -58,11 +58,10 @@ export default function Layout({
   const smScreenSizeAndHigher = useMediaQuery(theme.breakpoints.up("sm"));
   const lgScreenSizeAndHigher = useMediaQuery(theme.breakpoints.up("lg"));
 
-  const [dialog, setDialog] = useState(defaultDialog);
+  const defaultOpenDrawerState = smScreenSizeAndHigher ? true : false;
 
-  const [openDrawer, setOpenDrawer] = useState(
-    smScreenSizeAndHigher ? true : false,
-  );
+  const [dialog, setDialog] = useState(defaultDialog);
+  const [openDrawer, setOpenDrawer] = useState(defaultOpenDrawerState);
 
   const closeDialog = () => setDialog(defaultDialog);
 
@@ -74,7 +73,6 @@ export default function Layout({
     const currentTourEl = DefaultTourStepsMapperObj[key];
 
     let formattedDraftTourSteps;
-
     formattedDraftTourSteps = GeneratedTourSteps.slice(
       currentTourEl.start,
       currentTourEl.end,

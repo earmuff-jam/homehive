@@ -32,7 +32,7 @@ exports[`InvoiceTrends renders correctly and matches snapshot 1`] = `
           >
             <svg
               aria-hidden="true"
-              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1umw9bq-MuiSvgIcon-root"
+              class="MuiSvgIcon-root MuiSvgIcon-fontSizeSmall css-120dh41-MuiSvgIcon-root"
               data-testid="BarChartRoundedIcon"
               focusable="false"
               viewBox="0 0 24 24"
@@ -52,7 +52,7 @@ exports[`InvoiceTrends renders correctly and matches snapshot 1`] = `
           >
             <svg
               aria-hidden="true"
-              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1umw9bq-MuiSvgIcon-root"
+              class="MuiSvgIcon-root MuiSvgIcon-fontSizeSmall css-120dh41-MuiSvgIcon-root"
               data-testid="StackedLineChartRoundedIcon"
               focusable="false"
               viewBox="0 0 24 24"

@@ -9,7 +9,7 @@ export const AssociateTenantTextString = "ASSOCIATE_TENANT";
 
 /**
  * LEASE_TERM_MENU_OPTIONS ...
- * 
+ *
  * also used to prepare lease statements. hence, the amount value
  * is placed in months unit for easier calculations.
  */

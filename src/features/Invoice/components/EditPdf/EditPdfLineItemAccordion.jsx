@@ -32,7 +32,7 @@ export default function EditPdfLineItemAccordion({
         </Stack>
       </AccordionSummary>
       <AccordionDetails>
-         <EditPdfLineItem control={control} index={index} />
+        <EditPdfLineItem control={control} index={index} />
       </AccordionDetails>
     </Accordion>
   );

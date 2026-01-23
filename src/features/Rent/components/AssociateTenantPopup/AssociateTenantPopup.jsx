@@ -22,15 +22,13 @@ import {
 } from "@mui/material";
 import { LocalizationProvider, MobileDatePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import CustomSnackbar from "common/CustomSnackbar/CustomSnackbar";
+import CustomSnackbar from "common/CustomSnackbar";
 import TextFieldWithLabel from "common/TextFieldWithLabel";
+import { fetchLoggedInUser } from "common/utils";
 import { useAssociateTenantMutation } from "features/Api/tenantsApi";
 import { LEASE_TERM_MENU_OPTIONS } from "features/Rent/common/constants";
 import TenantEmailAutocomplete from "features/Rent/components/AssociateTenantPopup/TenantEmailAutocomplete";
-import {
-  fetchLoggedInUser,
-  isAssociatedPropertySoR,
-} from "features/Rent/utils";
+import { isAssociatedPropertySoR } from "features/Rent/utils";
 
 export default function AssociateTenantPopup({
   closeDialog,

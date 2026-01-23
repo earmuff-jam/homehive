@@ -1,12 +1,12 @@
 import dayjs from "dayjs";
 
+import { fetchLoggedInUser } from "common/utils";
 import { processTemplate } from "features/Rent/components/Settings/common";
 import {
   CreateInvoiceEnumValue,
   PaymentReminderEnumValue,
   RenewLeaseNoticeEnumValue,
   SendDefaultInvoiceEnumValue,
-  fetchLoggedInUser,
   isFeatureEnabled,
   stripHTMLForEmailMessages,
 } from "features/Rent/utils";

@@ -10,7 +10,7 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import RowHeader from "common/RowHeader/RowHeader";
+import RowHeader from "common/RowHeader";
 
 export default function FaqDetails({ data }) {
   return (
@@ -23,14 +23,14 @@ export default function FaqDetails({ data }) {
       <Box
         sx={{
           mx: "auto",
-          maxWidth: { sm: "none", md: "50%" },
+          maxWidth: { sm: "none", md: "75%" },
         }}
       >
         {data?.map((item, index) => {
           return (
             <Accordion
               key={index}
-              defaultExpanded={index === 0}
+              defaultExpanded
               disableGutters
               elevation={0}
               sx={{ marginBottom: "1rem" }}

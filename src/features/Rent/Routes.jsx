@@ -33,11 +33,7 @@ const Settings = React.lazy(
 );
 const Faq = React.lazy(() => import("features/Rent/components/Faq/Faq"));
 
-/**
- * RentalAppRoutes ...
- *
- * routes that are built for rent app
- */
+// RentalAppRoutes ...
 export const RentalAppRoutes = [
   {
     id: 1,

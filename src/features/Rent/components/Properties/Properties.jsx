@@ -27,9 +27,10 @@ import {
   Typography,
 } from "@mui/material";
 import AButton from "common/AButton";
-import CustomSnackbar from "common/CustomSnackbar/CustomSnackbar";
+import CustomSnackbar from "common/CustomSnackbar";
 import EmptyComponent from "common/EmptyComponent";
-import RowHeader from "common/RowHeader/RowHeader";
+import RowHeader from "common/RowHeader";
+import { fetchLoggedInUser } from "common/utils";
 import { useGetUserDataByIdQuery } from "features/Api/firebaseUserApi";
 import {
   useCreatePropertyMutation,
@@ -40,7 +41,7 @@ import { useLazyGetRentsByPropertyIdWithFiltersQuery } from "features/Api/rentAp
 import { AddPropertyTextString } from "features/Rent/common/constants";
 import AddProperty from "features/Rent/components/AddProperty/AddProperty";
 import ViewPropertyAccordionDetails from "features/Rent/components/Properties/ViewPropertyAccordionDetails";
-import { fetchLoggedInUser, sanitizeApiFields } from "features/Rent/utils";
+import { sanitizeApiFields } from "features/Rent/utils";
 import { useAppTitle } from "hooks/useAppTitle";
 
 const defaultDialog = {

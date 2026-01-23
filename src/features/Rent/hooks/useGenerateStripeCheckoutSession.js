@@ -1,12 +1,7 @@
 import { useState } from "react";
 
-/**
- * useGenerateStripeCheckoutSession ...
- *
- * fn used to generate secure stripe checkout session
- *
- * @ returns
- */
+// useGenerateStripeCheckoutSession ...
+// defines a function that generates secure stripe checkout session
 export const useGenerateStripeCheckoutSession = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);

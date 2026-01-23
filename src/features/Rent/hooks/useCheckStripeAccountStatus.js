@@ -1,11 +1,7 @@
 import { useState } from "react";
 
-/**
- * useCheckStripeAccountStatus ...
- *
- * fn used to check if the current logged in user has setup
- * stripe fully
- */
+// useCheckStripeAccountStatus ...
+// defines a function which returns the stripe account status if exists
 export const useCheckStripeAccountStatus = () => {
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState(null);

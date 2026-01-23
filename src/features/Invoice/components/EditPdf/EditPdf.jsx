@@ -26,7 +26,7 @@ import {
 import { LocalizationProvider, MobileDatePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import AButton from "common/AButton";
-import CustomSnackbar from "common/CustomSnackbar/CustomSnackbar";
+import CustomSnackbar from "common/CustomSnackbar";
 import TextFieldWithLabel from "common/TextFieldWithLabel";
 import {
   useGetPdfDetailsQuery,
@@ -37,6 +37,17 @@ import { DefaultInvoiceStatusOptions } from "features/Invoice/constants";
 import { useAppTitle } from "hooks/useAppTitle";
 import { produce } from "immer";
 
+const defaultInvoiceFormFields = {
+  title: "",
+  caption: "",
+  note: "",
+  startDate: null,
+  endDate: null,
+  invoiceHeader: "",
+  taxRate: "1.00",
+  lineItems: [],
+};
+
 export default function EditPdf({
   title = "Edit Pdf",
   caption = "Edit data to populate invoice",
@@ -45,33 +56,21 @@ export default function EditPdf({
   const navigate = useNavigate();
 
   const {
-    data: pdfDetails,
+    data,
     isLoading: isPdfDetailsLoading,
     isSuccess: isPdfDetailsSuccess,
   } = useGetPdfDetailsQuery();
 
-  const [
-    upsertPdf,
-    { isLoading: isUpsertPdfLoading, isSuccess: isUpsertPdfSuccess },
-  ] = useUpsertPdfDetailsMutation();
+  const [upsertPdf, upsertPdfResult] = useUpsertPdfDetailsMutation();
 
   const {
-    watch,
     control,
     handleSubmit,
     formState: { errors, isValid },
     reset,
   } = useForm({
-    defaultValues: {
-      title: "",
-      caption: "",
-      note: "",
-      start_date: "",
-      end_date: "",
-      invoice_header: "",
-      tax_rate: "",
-      lineItems: [],
-    },
+    mode: "onChange",
+    defaultValues: defaultInvoiceFormFields,
   });
 
   const { fields, append, remove } = useFieldArray({
@@ -100,7 +99,7 @@ export default function EditPdf({
       quantity: "",
       price: "",
       payment: "",
-      payment_method: "",
+      paymentMethod: "",
     });
   };
 
@@ -108,33 +107,36 @@ export default function EditPdf({
     upsertPdf({
       ...data,
       updatedOn: dayjs().toISOString(),
-      end_date: dayjs(data.end_date).toISOString(),
-      start_date: dayjs(data.start_date).toISOString(),
-      invoiceStatus: options.find((option) => option.selected).label,
+      endDate: dayjs(data.endDate).toISOString(),
+      startDate: dayjs(data.startDate).toISOString(),
+      invoiceStatus: options.find((option) => option.selected),
     });
   };
 
   useEffect(() => {
-    if (isUpsertPdfSuccess) {
+    if (upsertPdfResult.isSuccess) {
       setShowSnackbar(true);
     }
-  }, [isUpsertPdfLoading]);
+  }, [upsertPdfResult.isLoading]);
 
   useEffect(() => {
     if (isPdfDetailsSuccess) {
-      reset({
-        title: pdfDetails.title || "",
-        caption: pdfDetails.caption || "",
-        note: pdfDetails.note || "",
-        start_date: pdfDetails.start_date || dayjs(),
-        end_date: pdfDetails.end_date || dayjs(),
-        tax_rate: pdfDetails.tax_rate || "",
-        invoice_header: pdfDetails.invoice_header || "",
-        lineItems: pdfDetails.lineItems || [],
-      });
+      const invoiceDetails = data?.invoiceDetails;
+      if (invoiceDetails) {
+        reset({
+          title: invoiceDetails.title || "",
+          caption: invoiceDetails.caption || "",
+          note: invoiceDetails.note || "",
+          startDate: invoiceDetails.startDate || dayjs(),
+          endDate: invoiceDetails.endDate || dayjs(),
+          taxRate: invoiceDetails.taxRate || "",
+          invoiceHeader: invoiceDetails.invoiceHeader || "",
+          lineItems: invoiceDetails.lineItems || [],
+        });
+      }
 
-      const existingInvoiceStatus = pdfDetails?.invoiceStatus;
-      handleSelection(existingInvoiceStatus);
+      const existingInvoiceStatus = invoiceDetails?.invoiceStatus;
+      handleSelection(existingInvoiceStatus?.label);
     }
   }, [isPdfDetailsLoading]);
 
@@ -241,7 +243,7 @@ export default function EditPdf({
         {/* Start and end dates */}
         <Stack direction="row" spacing={2} data-tour="edit-pdf-4">
           <Controller
-            name="start_date"
+            name="startDate"
             control={control}
             defaultValue={null}
             rules={{ required: "Start Date is required" }}
@@ -266,15 +268,11 @@ export default function EditPdf({
             )}
           />
           <Controller
-            name="end_date"
+            name="endDate"
             control={control}
             defaultValue={null}
             rules={{
               required: "End Date is required",
-              validate: (value) =>
-                value && dayjs(value)?.isAfter(watch("start_date"))
-                  ? true
-                  : "End Date must be after Start Date",
             }}
             render={({ field, fieldState }) => (
               <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -299,7 +297,7 @@ export default function EditPdf({
         </Stack>
         {/* Invoice Header */}
         <Controller
-          name="invoice_header"
+          name="invoiceHeader"
           control={control}
           rules={{
             required: "Invoice Header is required",
@@ -317,24 +315,39 @@ export default function EditPdf({
               fullWidth
               dataTour="edit-pdf-5"
               label="Invoice Header *"
-              error={!!errors.title}
-              errorMsg={errors.title?.message}
+              error={!!errors.invoiceHeader}
+              errorMsg={errors.invoiceHeader?.message}
               placeholder="The title of the bill. Eg., Rent Details"
             />
           )}
         />
         {/* Tax Rate */}
         <Controller
-          name="tax_rate"
+          name="taxRate"
           control={control}
+          rules={{
+            required: "Tax rate is required",
+            pattern: {
+              value: /^\d+(\.\d{1,2})?$/,
+              message:
+                "Tax rate must be a valid 2 digit decimal. e.g. 2.70. Leave '1.00' for default",
+            },
+            validate: (value) =>
+              value.trim().length > 3 ||
+              "Tax rate must be more than 3 characters",
+            maxLength: {
+              value: 20,
+              message: "Tax rate should be less than 20 characters",
+            },
+          }}
           render={({ field }) => (
             <TextFieldWithLabel
               {...field}
               fullWidth
-              label="Tax Rate"
+              label="Tax Rate *"
               dataTour="edit-pdf-6"
-              error={!!errors.tax_rate}
-              errorMsg={errors.tax_rate?.message}
+              error={!!errors.taxRate}
+              errorMsg={errors.taxRate?.message}
               placeholder="The rate of tax in upto 2 decimal places. Eg., 8.25 "
             />
           )}

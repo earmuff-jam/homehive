@@ -1,7 +1,7 @@
 import React from "react";
 
 import { Card, CardContent, Skeleton, Stack } from "@mui/material";
-import RowHeader from "common/RowHeader/RowHeader";
+import RowHeader from "common/RowHeader";
 import ViewRentalPaymentSummary from "features/Rent/components/Widgets/ViewRentalPaymentSummary";
 
 export default function RentalPaymentOverview({

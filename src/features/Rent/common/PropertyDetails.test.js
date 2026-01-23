@@ -8,9 +8,7 @@ jest.mock("features/Rent/components/PropertyMap/PropertyMap", () => () => (
   <div data-testid="property-map" />
 ));
 
-jest.mock("common/RowHeader/RowHeader", () => ({ title }) => (
-  <div>{title}</div>
-));
+jest.mock("common/RowHeader", () => ({ title }) => <div>{title}</div>);
 
 // no snapshot test as it conflicts with dayjs xx time from now
 describe("PropertyDetails Jest Tests", () => {

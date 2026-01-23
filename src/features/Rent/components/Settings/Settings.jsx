@@ -18,7 +18,7 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import RowHeader from "common/RowHeader/RowHeader";
+import RowHeader from "common/RowHeader";
 import relativeTime from "dayjs/plugin/relativeTime";
 import ExternalIntegrations from "features/Rent/components/ExternalIntegrations/ExternalIntegrations";
 import ProfileDetails from "features/Rent/components/ProfileDetails/ProfileDetails";

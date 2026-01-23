@@ -26,7 +26,7 @@ exports[`UserInfoViewer component renders correctly and matches snapshot 1`] = `
         class="MuiStack-root css-pl8gqh-MuiStack-root"
       >
         <div
-          data-testid="first_name"
+          data-testid="firstName"
         >
           <label>
             First Name *
@@ -36,7 +36,7 @@ exports[`UserInfoViewer component renders correctly and matches snapshot 1`] = `
           />
         </div>
         <div
-          data-testid="last_name"
+          data-testid="lastName"
         >
           <label>
             Last Name *
@@ -50,7 +50,7 @@ exports[`UserInfoViewer component renders correctly and matches snapshot 1`] = `
         class="MuiStack-root css-pl8gqh-MuiStack-root"
       >
         <div
-          data-testid="email_address"
+          data-testid="email"
         >
           <label>
             Email address *
@@ -60,7 +60,7 @@ exports[`UserInfoViewer component renders correctly and matches snapshot 1`] = `
           />
         </div>
         <div
-          data-testid="phone_number"
+          data-testid="phone"
         >
           <label>
             Phone Number *
@@ -71,7 +71,7 @@ exports[`UserInfoViewer component renders correctly and matches snapshot 1`] = `
         </div>
       </div>
       <div
-        data-testid="street_address"
+        data-testid="streetAddress"
       >
         <label>
           Street Address *

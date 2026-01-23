@@ -13,10 +13,8 @@ import {
   Tooltip,
 } from "chart.js";
 import EmptyComponent from "common/EmptyComponent";
-import RowHeader from "common/RowHeader/RowHeader";
+import RowHeader from "common/RowHeader";
 import { normalizeInvoiceItemTypeChartDataset } from "features/Invoice/utils";
-
-normalizeInvoiceItemTypeChartDataset;
 
 ChartJS.register(
   CategoryScale,
@@ -31,9 +29,9 @@ const ItemTypeFreqChart = ({ label, caption }) => {
   const [chartData, setChartData] = useState({});
 
   useEffect(() => {
-    const draftData = JSON.parse(localStorage.getItem("pdfDetails"));
-    if (draftData) {
-      const chartData = normalizeInvoiceItemTypeChartDataset([draftData]);
+    const draftInvoice = JSON.parse(localStorage.getItem("pdfDetails"));
+    if (draftInvoice) {
+      const chartData = normalizeInvoiceItemTypeChartDataset([draftInvoice]);
       setChartData(chartData);
     }
   }, []);

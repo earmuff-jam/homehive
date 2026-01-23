@@ -1,7 +1,5 @@
 import React from "react";
 
-import secureLocalStorage from "react-secure-storage";
-
 /**
  * Utility file for properties
  */
@@ -12,94 +10,29 @@ import {
   MoneyOffRounded,
   PaidRounded,
 } from "@mui/icons-material";
-import validateClientPermissions from "common/ValidateClientPermissions";
+import { authorizedServerLevelFeatureFlags } from "common/ApplicationConfig";
 import { LEASE_TERM_MENU_OPTIONS } from "features/Rent/common/constants";
 import { produce } from "immer";
-
-// ---------------------------
-// enum values
 
 // stripe rent status
 export const PaidRentStatusEnumValue = "paid";
 export const ManualRentStatusEnumValue = "manual";
 
-// template processor actions
 export const CreateInvoiceEnumValue = "Create_Invoice";
 export const SendDefaultInvoiceEnumValue = "Send_Default_Invoice";
 export const PaymentReminderEnumValue = "Payment_Reminder";
 export const RenewLeaseNoticeEnumValue = "Renew_Lease_Notice_Enum_Value";
 
-/**
- * stripHTMLForEmailMessages ...
- *
- * fn used to strip html messages for plain text formatting.
- * this is done so to act as a fallback for clients who do not
- * have email setup
- *
- * @param {Document} htmlDocument
- * @returns Document - cleaned up version of the document without any tags or formatting
- */
+// stripHTMLForEmailMessages ...
+// defines a fuction that returns email messages that are stripped from its html contents
 export const stripHTMLForEmailMessages = (htmlDocument) => {
   const div = document.createElement("div");
   div.innerHTML = htmlDocument;
   return div.textContent || div.innerText || "";
 };
 
-/**
- * Email Validators
- */
-const emailValidators = [
-  {
-    validate: (value) => value.trim().length <= 0,
-    message: "Email address is required",
-  },
-  {
-    validate: (value) => value.trim().length >= 150,
-    message: "Email address should be less than 150 characters",
-  },
-  {
-    validate: (value) => !/^[\w-.]+@([\w-]+\.)+[\w-]{2,}$/.test(value),
-    message: "Email address is not valid",
-  },
-];
-
-/**
- * isValid ...
- *
- * function used to determine if an email is valid or not
- *
- * @param {string} email
- * @returns boolean - true / false
- */
-export const isValid = (email) => {
-  for (const validator of emailValidators) {
-    if (validator.validate(email)) {
-      return false;
-    }
-  }
-  return true;
-};
-
-/**
- * fetchLoggedInUser ...
- *
- * used to retrieve the logged in userId.
- *
- * @returns string - the logged in userId
- */
-export const fetchLoggedInUser = () => {
-  return secureLocalStorage.getItem("user");
-};
-
-/**
- * updateDateTime function
- *
- * util function used to updateDateTime. used to update the
- * next projected rent due date
- *
- * @param {string} startDate - the start date of the event
- * @returns updatedDateTime with a month added.
- */
+// updateDateTime ...
+// defines a function that returns the next projected due date
 export const updateDateTime = (startDate) => {
   const today = dayjs();
   const monthsSinceStart = today.diff(startDate, "month");
@@ -107,27 +40,14 @@ export const updateDateTime = (startDate) => {
   return dayjs(nextDueDate).toISOString();
 };
 
-/**
- * formatCurrency ...
- *
- * used to format the current passed in amount.
- *
- * @param {Number} amount - the amount that needs to be formatted, default 0
- *
- * @returns {Number} formatted result
- */
+// formatCurrency ...
+// defines a function that formats a currency to a string value
 export const formatCurrency = (amt = 0) => {
   return amt.toFixed(2);
 };
 
-/**
- * sumCentsToDollars ...
- *
- * used to sum the total for all the provided args
- *
- * @param  {...String} values - String representation of numbers in cents
- * @returns sum of the total numbers in dollars
- */
+// sumCentsToDollars ...
+// defines a function that converts cents into dollars
 export const sumCentsToDollars = (...values) => {
   return values.reduce((total, val) => {
     const num = Number(val || 0);
@@ -135,29 +55,17 @@ export const sumCentsToDollars = (...values) => {
   }, 0);
 };
 
-/**
- * derieveTotalRent
- *
- * function used to retrieve the total rent of any given property. For homes
- * with a SoR, rent are calculated per room. The property unit as a whole can have
- * additional charges.
- *
- * @param {Object} property - the property object
- * @param {Array} tenants - the array of tenants that are residing in the property
- * @param {Boolean} isAnyTenantSoR - true / false - determine if the property is single occupancy or not
- *
- * @returns {Number} - amount of rent in US Dollars
- */
+// deriveTotalRent ...
+// defines a function that returns total rent based on params.
+// SoR tenants are calculated on a per room basis
 export const derieveTotalRent = (property, tenants, isAnyTenantSoR) => {
   const totalRent =
-    Number(property?.rent || 0) + Number(property?.additional_rent || 0); // can have additional charges
+    Number(property?.rent || 0) + Number(property?.additionalRent || 0); // can have additional charges
 
   if (isAnyTenantSoR) {
     return tenants.reduce(
       (total, tenant) =>
-        total +
-        parseInt(tenant.rent || 0) +
-        parseInt(property?.additional_rent),
+        total + parseInt(tenant.rent || 0) + parseInt(property?.additionalRent),
       0,
     );
   } else {
@@ -165,18 +73,8 @@ export const derieveTotalRent = (property, tenants, isAnyTenantSoR) => {
   }
 };
 
-/**
- * getOccupancyRate ...
- *
- * function used to determine the occupancy rate of the selected
- * property.
- *
- * @param {Object} property - the property object
- * @param {Array} tenants - the array of tenants that are residing in the property
- * @param {Boolean} isAnyTenantSoR - true / false - determine if the property is single occupancy or not
- *
- * @returns {Number} - the percent of the occupancy of the selected property
- */
+// getOccupancyRate ...
+// defines a function that returns the occupancy rate for each home
 export const getOccupancyRate = (property, tenants, isAnyTenantSoR) => {
   if (isAnyTenantSoR) {
     const totalUnits = parseInt(property?.units || 0);
@@ -188,15 +86,9 @@ export const getOccupancyRate = (property, tenants, isAnyTenantSoR) => {
   }
 };
 
-/**
- * getNextMonthlyDueDate ...
- *
- *
- * function used to return next due date (monthly) based on the original lease start date.
- *
- * @param {string | Date} startDate - The tenant's lease start date.
- * @returns {string} - The next due date in YYYY-MM-DD format.
- */
+// getMonthlyDueDate ...
+// defines a function that returns next monthly due date based on params
+// TODO: investigate why there is so many similar code in rental app
 export function getNextMonthlyDueDate(startDate) {
   if (!startDate) return "";
 
@@ -212,16 +104,8 @@ export function getNextMonthlyDueDate(startDate) {
   return nextDue.format("YYYY-MM-DD");
 }
 
-/**
- * getColorAndLabelForCurrentMonth ...
- *
- * used to return label, color and icon for the current month based on rent status.
- *
- * @param {String} startDate - the startDate of the tenant
- * @param {Object} rent - the rent details for the current month
- * @param {Number} gracePeriod - the days grace period is provided. Defaults to 3.
- * @returns {Object} { color: string, label: string, icon: React.ReactNode }
- */
+// getColorAndLabelForCurrentMonth ...
+// defines a function that returns a specific color and label based on params and gracePeriod
 export const getColorAndLabelForCurrentMonth = (
   startDate,
   rent,
@@ -250,16 +134,9 @@ export const getColorAndLabelForCurrentMonth = (
   }
 };
 
-/**
- * Checks if rent is currently due.
- *
- * @param {string} startDate - The lease start date in MM-DD-YYYY format.
- * @param {number} gracePeriodDays - Number of grace days before rent is due each month.
- * @param {Array} currentMonthRent - Rent details if exists, for the current month.
- *
- * @returns {boolean} - True if rent is currently due.
- */
-
+// isRentDue ...
+// defines a function that returns boolean value based on params
+// TODO: this is also very similar to couple of other functions that we need to clean up.
 export const isRentDue = (startDate, gracePeriod = 3, currentMonthRent) => {
   const today = dayjs();
   const leaseStart = dayjs(startDate, "MM-DD-YYYY");
@@ -276,26 +153,14 @@ export const isRentDue = (startDate, gracePeriod = 3, currentMonthRent) => {
   return pastGracePeriod && !rentPaid;
 };
 
-/**
- * getRentStatus ...
- *
- * function used to get the rent status
- * @param {Object} { isPaid, isLate } - object containing these values
- * @returns Object containing the color and label. Eg, { color: "warning", label: "Unpaid" }
- */
+// getRentStatus ...
 export function getRentStatus({ isPaid, isLate }) {
   if (isPaid) return { color: "success", label: "Paid" };
   if (isLate) return { color: "error", label: "Overdue" };
   return { color: "warning", label: "Unpaid" };
 }
 
-/**
- * The function `getRentDetails` retrieves rent details for the current month based on the provided
- * data array and rent status criteria.
- * @returns The `getRentDetails` function returns an object from the `data` array that matches the
- * current month and has a status that matches either the `PaidRentStatusEnumValue` or
- * `ManualRentStatusEnumValue`.
- */
+// getRentDetails ...
 export function getRentDetails(
   data = [],
   currentMonth = dayjs().format("MMMM"),
@@ -308,11 +173,7 @@ export function getRentDetails(
   );
 }
 
-/**
- * The function `isAssociatedPropertySoR` checks if a property has active tenants who are on a standard
- * or regulated tenancy.
- * @returns The function `isAssociatedPropertySoR` returns a boolean value.
- */
+// isAssociatedPropertySoR ...
 export const isAssociatedPropertySoR = (property, tenants) => {
   if (tenants?.length <= 0) return true;
   return (
@@ -321,15 +182,8 @@ export const isAssociatedPropertySoR = (property, tenants) => {
   );
 };
 
-/**
- * The function `buildPaymentLineItems` creates an array of payment line items with labels and values
- * based on property and tenant information.
- * @returns The function `buildPaymentLineItems` returns an array of objects, where each object
- * represents a line item for payment. Each object has a `name` property containing a label and a
- * value. The label describes the type of payment (e.g., Rent Amount, Additional Charges, Initial Late
- * fee, Daily Late fee), and the value is the corresponding numerical amount retrieved from the
- * `property` and `tenant`.
- */
+// buildPaymentLineItems ...
+// defines a function that builds payment line items for each invoice
 export const buildPaymentLineItems = (property = {}, tenant = []) => {
   return [
     {
@@ -341,7 +195,7 @@ export const buildPaymentLineItems = (property = {}, tenant = []) => {
     {
       name: {
         label: "Additional Charges",
-        value: Number(property?.additional_rent) || 0,
+        value: Number(property?.additionalRent) || 0,
       },
     },
     {
@@ -359,45 +213,20 @@ export const buildPaymentLineItems = (property = {}, tenant = []) => {
   ];
 };
 
-/**
- * The function isFeatureEnabled checks if a specific feature is enabled based on client permissions.
- * @returns The function `isFeatureEnabled` returns the value associated with the provided `key` in the
- * `enabledFlagMap`, or `false` if the key is not found in the map.
- */
+// isFeatureEnabled ...
 export const isFeatureEnabled = (key) => {
-  const enabledFlagMap = validateClientPermissions();
+  const enabledFlagMap = authorizedServerLevelFeatureFlags();
   return enabledFlagMap.get(key) || false;
 };
 
-/**
- * The function `convertFileToBase64Encoding` takes a file as input and returns a Promise that resolves
- * to the base64 encoding of the file.
- */
-export const convertFileToBase64Encoding = ({ file }) =>
-  new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => resolve(reader.result);
-    reader.onerror = reject;
-  });
-
-/**
- * The `sanitizeApiFields` function removes any key-value pairs from an object where the value is null
- * or undefined.
- */
+// sanitizeApiFields ...
+// defines a function that removes all null or undefined values from an object for external integration
 export const sanitizeApiFields = (obj = {}) =>
   /* eslint-disable no-unused-vars */
   Object.fromEntries(Object.entries(obj).filter(([_, value]) => value != null));
 
-/**
- * The function `sanitizeEsignFieldsForNewLease` sanitizes and prepares data fields for a new lease
- * agreement
- *
- * @returns The function `sanitizeEsignFieldsForNewLease` returns sanitized and updated data for a new
- * lease agreement, including information about the property, property owner, tenant, and lease terms.
- * The data is processed and modified using the `produce` function from the Immer library, and then
- * passed through the `sanitizeApiFields` function before being returned.
- */
+// sanitizeEsignFieldsForNewLease ...
+// defines a function that populates correct fields for esign purposes
 export const sanitizeEsignFieldsForNewLease = (
   rowData,
   property,
@@ -408,14 +237,14 @@ export const sanitizeEsignFieldsForNewLease = (
   const draftData = produce(rowData, (draft) => {
     draft.id = rowData.uuid;
     draft.owner = validateFullName(
-      propertyOwnerData?.first_name,
-      propertyOwnerData?.last_name,
+      propertyOwnerData?.firstName,
+      propertyOwnerData?.lastName,
       propertyOwnerData?.googleDisplayName,
     );
-    draft.ownerEmail = property?.owner_email;
+    draft.ownerEmail = property?.email;
     draft.tenant = validateFullName(
-      tenantData?.first_name,
-      tenantData?.last_name,
+      tenantData?.firstName,
+      tenantData?.lastName,
       tenantData?.googleDisplayName || primaryTenant.email,
     );
     draft.tenantEmail = primaryTenant.email;
@@ -424,9 +253,9 @@ export const sanitizeEsignFieldsForNewLease = (
     draft.state = property?.state;
     draft.zipCode = property?.zipCode;
     draft.county = property?.county;
-    draft.startDate = dayjs(primaryTenant?.start_date).format("MM-DD-YYYY");
+    draft.startDate = dayjs(primaryTenant?.startDate).format("MM-DD-YYYY");
     draft.endDate = dayjs(
-      derieveEndDate(primaryTenant?.start_date, primaryTenant?.term),
+      derieveEndDate(primaryTenant?.startDate, primaryTenant?.term),
     ).format("MM-DD-YYYY");
     draft.isAutoRenew = primaryTenant?.isAutoRenewPolicySet;
     draft.autoRenewDays = primaryTenant?.autoRenewDays;
@@ -490,12 +319,8 @@ export const sanitizeEsignFieldsForNewLease = (
   return sanitizeApiFields(draftData);
 };
 
-/**
- * The function `sanitizeEsignFieldsForLeaseExtension` sanitizes and prepares data for a lease
- * extension document.
- * @returns The function `sanitizeEsignFieldsForLeaseExtension` returns the sanitized `draftData`
- * object with updated fields based on the input `rowData`, `property`, and `propertyOwnerData`.
- */
+// sanitizeEsignFieldsForLeaseExtension ...
+// defines a function that sanitizes and populates correct fields for esign purposes
 export const sanitizeEsignFieldsForLeaseExtension = (
   rowData,
   property,
@@ -508,35 +333,31 @@ export const sanitizeEsignFieldsForLeaseExtension = (
     draft.city = property?.city;
     draft.state = property?.state;
     draft.owner = validateFullName(
-      propertyOwnerData?.first_name,
-      propertyOwnerData?.last_name,
+      propertyOwnerData?.firstName,
+      propertyOwnerData?.lastName,
       propertyOwnerData?.googleDisplayName,
     );
     draft.dateOfExtension = dayjs().format("MM-DD-YYYY");
     draft.newExpirationDate = dayjs().add("12", "month").format("MM-DD-YYYY");
-    draft.isRentChanged = property?.rent_increment > 0;
-    draft.isRentNotChanged = property?.rent_increment === 0;
-    draft.rentChangeAmt = property?.rent_increment;
+    draft.isRentChanged = property?.rentIncrement > 0;
+    draft.isRentNotChanged = property?.rentIncrement === 0;
+    draft.rentChangeAmt = property?.rentIncrement;
     draft.expirationDate = dayjs().add("12", "month").format("MM-DD-YYYY");
     draft.isTenantNotVacating = true; // lease extension
-    draft.isRentChanged = property?.rent_increment !== 0; // no rent increment
-    draft.rentChangeAmount = property?.rent_increment;
-    draft.isRentNotChanged = property?.rent_increment === 0;
+    draft.isRentChanged = property?.rentIncrement !== 0; // no rent increment
+    draft.rentChangeAmount = property?.rentIncrement;
+    draft.isRentNotChanged = property?.rentIncrement === 0;
     draft.isTenantVacating = true; // simulate tenant vacating for renew
     draft.endDate = dayjs(
-      derieveEndDate(primaryTenant?.start_date, primaryTenant?.term),
+      derieveEndDate(primaryTenant?.startDate, primaryTenant?.term),
     ).format("MM-DD-YYYY");
   });
 
   return sanitizeApiFields(draftData);
 };
 
-/**
- * The function `derieveEndDate` calculates the end date based on a given start date and length of
- * stay.
- * @returns The function `derieveEndDate` returns the end date calculated based on the provided start
- * date and length of stay. The end date is converted to an ISO string format before being returned.
- */
+// derieveEndDate ...
+// defines a function that calculates the end date based on params
 const derieveEndDate = (startDate, lengthOfStay) => {
   const lengthOfStayValue = LEASE_TERM_MENU_OPTIONS.find(
     (option) => option.value === lengthOfStay,
@@ -545,17 +366,11 @@ const derieveEndDate = (startDate, lengthOfStay) => {
   return endDate.toISOString();
 };
 
-/**
- * The function `validateFullName` takes three parameters (firstName, lastName, otherName) and returns
- * a formatted full name or other name if first and last names are missing.
- * @returns The function `validateFullName` returns the full name in the format "firstName, lastName"
- * if both `firstName` and `lastName` are provided. If either `firstName` or `lastName` is missing, it
- * returns the `otherName` if provided, or an empty string if `otherName` is not provided. If none of
- * the names are provided, it returns "N/A".
- */
+// validateFullName ...
+// defines a function that returns valid user name if found, default "N/A"
 const validateFullName = (firstName, lastName, otherName) => {
   if (!firstName || !lastName) {
-    return otherName || "";
+    return otherName || "N/A";
   } else if (firstName && lastName) {
     return `${firstName}, ${lastName}`;
   } else {

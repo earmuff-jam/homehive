@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 
 import { Card, CardContent, Skeleton, Stack } from "@mui/material";
-import CustomSnackbar from "common/CustomSnackbar/CustomSnackbar";
-import RowHeader from "common/RowHeader/RowHeader";
+import CustomSnackbar from "common/CustomSnackbar";
+import RowHeader from "common/RowHeader";
+import { fetchLoggedInUser } from "common/utils";
 import {
   useCreateEsignFromTemplateMutation,
   useGetEsignTemplatesQuery,
@@ -13,7 +14,6 @@ import {
 } from "features/Api/firebaseUserApi";
 import EsignTemplateDetails from "features/Rent/components/EsignConnect/EsignTemplateDetails";
 import {
-  fetchLoggedInUser,
   sanitizeEsignFieldsForLeaseExtension,
   sanitizeEsignFieldsForNewLease,
 } from "features/Rent/utils";

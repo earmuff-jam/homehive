@@ -59,7 +59,7 @@ jest.mock("features/Rent/hooks/useGenerateStripeCheckoutSession", () => ({
 }));
 
 // Misc components
-jest.mock("common/CustomSnackbar/CustomSnackbar", () => () => null);
+jest.mock("common/CustomSnackbar", () => () => null);
 jest.mock("features/Rent/components/Settings/common", () => ({
   getStripeFailureReasons: () => [],
 }));

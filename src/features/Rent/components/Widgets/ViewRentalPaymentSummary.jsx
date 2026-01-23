@@ -5,10 +5,7 @@ import dayjs from "dayjs";
 import { Stack, Typography } from "@mui/material";
 import EmptyComponent from "common/EmptyComponent";
 import relativeTime from "dayjs/plugin/relativeTime";
-import {
-  formatCurrency,
-  sumCentsToDollars,
-} from "features/Rent/utils";
+import { formatCurrency, sumCentsToDollars } from "features/Rent/utils";
 import {
   MaterialReactTable,
   useMaterialReactTable,

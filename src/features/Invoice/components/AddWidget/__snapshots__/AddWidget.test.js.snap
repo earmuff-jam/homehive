@@ -28,7 +28,7 @@ exports[`AddWidget Component AddWidget Component snapshot tests Footer matches s
         >
           <svg
             aria-hidden="true"
-            class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1umw9bq-MuiSvgIcon-root"
+            class="MuiSvgIcon-root MuiSvgIcon-fontSizeSmall css-120dh41-MuiSvgIcon-root"
             data-testid="AddRoundedIcon"
             focusable="false"
             viewBox="0 0 24 24"
@@ -58,7 +58,7 @@ exports[`AddWidget Component AddWidget Component snapshot tests Footer matches s
         >
           <svg
             aria-hidden="true"
-            class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1umw9bq-MuiSvgIcon-root"
+            class="MuiSvgIcon-root MuiSvgIcon-fontSizeSmall css-120dh41-MuiSvgIcon-root"
             data-testid="AddRoundedIcon"
             focusable="false"
             viewBox="0 0 24 24"
