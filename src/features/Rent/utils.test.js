@@ -1,5 +1,19 @@
 const dayjs = require("dayjs");
-const { stripHTMLForEmailMessages, isValid, updateDateTime, formatCurrency, sumCentsToDollars, derieveTotalRent, getOccupancyRate, getNextMonthlyDueDate, isRentDue, getRentStatus, getRentDetails, isAssociatedPropertySoR, buildPaymentLineItems, isFeatureEnabled } = require("features/Rent/utils");
+const {
+  stripHTMLForEmailMessages,
+  updateDateTime,
+  formatCurrency,
+  sumCentsToDollars,
+  derieveTotalRent,
+  getOccupancyRate,
+  getNextMonthlyDueDate,
+  isRentDue,
+  getRentStatus,
+  getRentDetails,
+  isAssociatedPropertySoR,
+  buildPaymentLineItems,
+  isFeatureEnabled,
+} = require("features/Rent/utils");
 
 describe("Test utility functions", () => {
   afterEach(() => {
@@ -26,35 +40,6 @@ describe("Test utility functions", () => {
       const result = stripHTMLForEmailMessages("");
 
       expect(result).toBe("");
-    });
-  });
-
-  describe("test isValid (email validator) function", () => {
-    it("returns false for empty email", () => {
-      expect(isValid("")).toBe(false);
-      expect(isValid("   ")).toBe(false);
-    });
-
-    it("returns false for invalid email format", () => {
-      expect(isValid("test")).toBe(false);
-      expect(isValid("test@")).toBe(false);
-      expect(isValid("test@test")).toBe(false);
-      expect(isValid("test@test.")).toBe(false);
-    });
-
-    it("returns false when email exceeds 150 characters", () => {
-      const longEmail = "a".repeat(145) + "@test.com"; // >150 chars total
-
-      expect(isValid(longEmail)).toBe(false);
-    });
-
-    it("returns true for a valid email", () => {
-      expect(isValid("test@example.com")).toBe(true);
-      expect(isValid("john.doe-1@sub.domain.co")).toBe(true);
-    });
-
-    it("does not trim whitespace before validation", () => {
-      expect(isValid("  test@example.com  ")).toBe(false);
     });
   });
 
@@ -91,13 +76,13 @@ describe("Test utility functions", () => {
 
   describe("test derieveTotalRent function", () => {
     it("returns total rent for non-SoR property", () => {
-      const property = { rent: 1000, additional_rent: 100 };
+      const property = { rent: 1000, additionalRent: 100 };
 
       expect(derieveTotalRent(property, [], false)).toBe(1100);
     });
 
     it("calculates per-tenant rent for SoR", () => {
-      const property = { additional_rent: 50 };
+      const property = { additionalRent: 50 };
       const tenants = [{ rent: 500 }, { rent: 600 }];
 
       expect(derieveTotalRent(property, tenants, true)).toBe(1200);
@@ -179,7 +164,7 @@ describe("Test utility functions", () => {
 
   describe("test buildPaymentLineItems function", () => {
     it("builds payment line items", () => {
-      const property = { rent: 1000, additional_rent: 100 };
+      const property = { rent: 1000, additionalRent: 100 };
       const tenant = { initialLateFee: 25, dailyLateFee: 5 };
 
       const result = buildPaymentLineItems(property, tenant);

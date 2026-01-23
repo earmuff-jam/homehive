@@ -25,10 +25,9 @@ jest.mock("react-secure-storage", () => ({
   },
 }));
 
-// mock authorizedServerLevelFeatureFlags
-jest.mock("common/authorizedServerLevelFeatureFlags", () => ({
+jest.mock("common/ApplicationConfig", () => ({
   __esModule: true,
-  default: () =>
+  authorizedServerLevelFeatureFlags: () =>
     new Map([
       ["analytics", true],
       ["invoicer", true],
