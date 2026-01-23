@@ -23,6 +23,7 @@ import {
   Typography,
 } from "@mui/material";
 import RowHeader from "common/RowHeader";
+import { fetchLoggedInUser } from "common/utils";
 import {
   useGetUserDataByIdQuery,
   useUpdateUserByUidMutation,
@@ -43,7 +44,6 @@ import {
   useCreateStripeAccount,
   useCreateStripeAccountLink,
 } from "features/Rent/hooks/useStripe";
-import { fetchLoggedInUser } from "features/Rent/utils";
 
 const stripeConnectOptions = [
   {

@@ -88,11 +88,8 @@ export const DefaultInvoiceStatusOptions = [
   },
 ];
 
-/**
- * Invoice Category Options
- *
- * used to build out the autocomplete component in edit / view invoice
- */
+// InvoiceCategoryOptions ...
+// defines options for inovoice category
 export const InvoiceCategoryOptions = [
   { label: "Products", value: "products" },
   { label: "Services", value: "services" },

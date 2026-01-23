@@ -15,10 +15,11 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import validateClientPermissions, {
-  filterValidRoutesForNavigationBar,
-  isValidPermissions,
-} from "common/ValidateClientPermissions";
+import {
+  authorizedServerLevelFeatureFlags,
+  filterAuthorizedRoutesForNavBar,
+  isValidFeatureFlagsForRoutes,
+} from "common/ApplicationConfig";
 import {
   MainInvoiceAppRouteUri,
   MainRentAppRouteUri,
@@ -51,11 +52,14 @@ export default function NavBar({
   };
 
   const getValidRoutes = (routes = [], roleType = "") => {
-    const validRouteFlags = validateClientPermissions();
-    const filteredNavigationRoutes = filterValidRoutesForNavigationBar(routes);
+    const validRouteFlags = authorizedServerLevelFeatureFlags();
+    const filteredNavigationRoutes = filterAuthorizedRoutesForNavBar(routes);
 
     return filteredNavigationRoutes.filter(({ requiredFlags, config }) => {
-      const isRouteValid = isValidPermissions(validRouteFlags, requiredFlags);
+      const isRouteValid = isValidFeatureFlagsForRoutes(
+        validRouteFlags,
+        requiredFlags,
+      );
       if (!isRouteValid) return false;
 
       const validRoles = config?.enabledForRoles || [];
@@ -122,8 +126,8 @@ export default function NavBar({
         >
           {MainAppRoutes.map(
             ({ id, label, icon, path, requiredFlags, config }) => {
-              const isRouteValid = isValidPermissions(
-                validateClientPermissions(),
+              const isRouteValid = isValidFeatureFlagsForRoutes(
+                authorizedServerLevelFeatureFlags(),
                 requiredFlags,
               );
               if (!isRouteValid) return null;
@@ -152,7 +156,7 @@ export default function NavBar({
                     pathname={pathname}
                     theme={theme}
                     navigate={handleMenuItemClick}
-                    childrenRoutes={filterValidRoutesForNavigationBar(
+                    childrenRoutes={filterAuthorizedRoutesForNavBar(
                       childRoutes,
                     )}
                   />

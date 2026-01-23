@@ -25,8 +25,8 @@ jest.mock("react-secure-storage", () => ({
   },
 }));
 
-// mock validateClientPermissions
-jest.mock("common/ValidateClientPermissions", () => ({
+// mock authorizedServerLevelFeatureFlags
+jest.mock("common/authorizedServerLevelFeatureFlags", () => ({
   __esModule: true,
   default: () =>
     new Map([
