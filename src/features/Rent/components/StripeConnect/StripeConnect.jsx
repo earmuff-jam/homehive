@@ -1,5 +1,4 @@
-import { useEffect, useState } from "react";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import dayjs from "dayjs";
 
@@ -45,6 +44,7 @@ import {
   useCreateStripeAccountLink,
 } from "features/Rent/hooks/useStripe";
 
+// stripeConnectOptions ...
 const stripeConnectOptions = [
   {
     id: 1,
