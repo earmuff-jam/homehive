@@ -7,12 +7,9 @@ import {
   ReceiptRounded,
 } from "@mui/icons-material";
 
-/**
- * DefaultTemplateData ...
- *
- * used to create default email templates to send to the client directly.
- */
-export const DefaultTemplateData = {
+// DefaultRentalAppEmailTemplates ...
+// defines a function that returns the default email templates for rental app
+export const DefaultRentalAppEmailTemplates = {
   invoice: {
     label: "Invoice Template",
     title: "invoice",

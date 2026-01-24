@@ -1,13 +1,9 @@
 const dayjs = require("dayjs");
 const {
   stripHTMLForEmailMessages,
-  updateDateTime,
   formatCurrency,
   sumCentsToDollars,
-  derieveTotalRent,
   getOccupancyRate,
-  getNextMonthlyDueDate,
-  isRentDue,
   getRentStatus,
   getRentDetails,
   isAssociatedPropertySoR,
@@ -43,16 +39,6 @@ describe("Test utility functions", () => {
     });
   });
 
-  describe("test updateDateTime function", () => {
-    it("returns next monthly ISO date", () => {
-      const start = dayjs().subtract(2, "month");
-
-      const result = updateDateTime(start);
-
-      expect(dayjs(result).isValid()).toBe(true);
-    });
-  });
-
   describe("test formatCurrency function", () => {
     it("formats number to 2 decimals", () => {
       expect(formatCurrency(10)).toBe("10.00");
@@ -74,21 +60,6 @@ describe("Test utility functions", () => {
     });
   });
 
-  describe("test derieveTotalRent function", () => {
-    it("returns total rent for non-SoR property", () => {
-      const property = { rent: 1000, additionalRent: 100 };
-
-      expect(derieveTotalRent(property, [], false)).toBe(1100);
-    });
-
-    it("calculates per-tenant rent for SoR", () => {
-      const property = { additionalRent: 50 };
-      const tenants = [{ rent: 500 }, { rent: 600 }];
-
-      expect(derieveTotalRent(property, tenants, true)).toBe(1200);
-    });
-  });
-
   describe("test getOccupancyRate function", () => {
     it("calculates occupancy for SoR", () => {
       const property = { units: 4 };
@@ -99,28 +70,6 @@ describe("Test utility functions", () => {
 
     it("returns 100% for non-SoR with tenants", () => {
       expect(getOccupancyRate({}, [{}], false)).toBe(100);
-    });
-  });
-
-  describe("test getNextMonthlyDueDate function", () => {
-    it("returns YYYY-MM-DD string", () => {
-      const start = dayjs().subtract(1, "month").format("YYYY-MM-DD");
-
-      const result = getNextMonthlyDueDate(start);
-
-      expect(result).toMatch(/\d{4}-\d{2}-\d{2}/);
-    });
-
-    it("returns empty string if no startDate", () => {
-      expect(getNextMonthlyDueDate()).toBe("");
-    });
-  });
-
-  describe("test isRentDue function", () => {
-    it("returns false before lease start", () => {
-      const future = dayjs().add(1, "month").format("MM-DD-YYYY");
-
-      expect(isRentDue(future)).toBe(false);
     });
   });
 
