@@ -4,9 +4,18 @@ import PropertyStatistics from "./PropertyStatistics";
 import { render, screen } from "@testing-library/react";
 
 jest.mock("features/Rent/utils", () => ({
-  derieveTotalRent: jest.fn(() => 2500),
   formatCurrency: jest.fn((v) => `$${v}`),
   getOccupancyRate: jest.fn(() => 75),
+}));
+
+jest.mock("features/Rent/hooks/useGetSelectedPropertyDetails", () => ({
+  __esModule: true,
+  useSelectedPropertyDetails: jest.fn(() => ({
+    totalRent: "2500",
+    getOccupancyRate: 75,
+    nextPaymentDueDate: "Feb 01, 2024",
+    isSelectedPropertySoR: false,
+  })),
 }));
 
 const mockProperty = {

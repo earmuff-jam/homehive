@@ -2,10 +2,8 @@ import dayjs from "dayjs";
 
 // useSelectedPropertyDetails ...
 // defines a function that returns details about a specific property
-// does not display gracePeriod to reduce confusion
+// does not take gracePeriod into consideration to reduce confusion
 export const useSelectedPropertyDetails = (property, tenants) => {
-  if (!property) return null;
-
   const today = dayjs();
 
   const isAnyPropertySoR = tenants?.some((tenant) => tenant.isSoR);

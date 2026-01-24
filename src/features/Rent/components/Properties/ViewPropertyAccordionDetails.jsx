@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 
 import { useNavigate } from "react-router-dom";
 
@@ -47,7 +47,8 @@ const ViewPropertyAccordionDetails = ({
     });
 
   const { sendEmail, reset, error, success } = useSendEmail();
-  const [getUserDetails, getUserDetailsResult] = useLazyGetUserDataByIdQuery();
+  const [getPropertyOwnerData, getPropertyOwnerDataResult] =
+    useLazyGetUserDataByIdQuery();
 
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -74,38 +75,15 @@ const ViewPropertyAccordionDetails = ({
     Number(primaryTenant?.gracePeriod),
   );
 
-  const handleQuickConnectMenuItem = (
-    action,
-    property,
-    primaryTenant,
-    propertyOwnerData,
-    redirectTo,
-    sendEmail,
-  ) => {
-    let savedTemplates = {};
-    savedTemplates = JSON.parse(localStorage.getItem("templates") || "{}");
-
-    if (!savedTemplates || Object.keys(savedTemplates).length === 0) {
-      savedTemplates = DefaultRentalAppEmailTemplates;
-    }
-
-    handleQuickConnectAction(
-      action,
-      property,
-      totalRent,
-      nextPaymentDueDate,
-      primaryTenant,
-      propertyOwnerData,
-      savedTemplates,
-      redirectTo,
-      sendEmail,
-    );
-  };
+  const templates = useMemo(() => {
+    const stored = localStorage.getItem("templates");
+    return stored ? JSON.parse(stored) : DefaultRentalAppEmailTemplates;
+  }, []);
 
   if (
     isGetTenantsLoading ||
     isRentDetailsLoading ||
-    getUserDetailsResult.isLoading
+    getPropertyOwnerDataResult.isLoading
   )
     return <Skeleton height="10rem" />;
 
@@ -264,7 +242,7 @@ const ViewPropertyAccordionDetails = ({
               disabled={tenants?.length <= 0}
               onClick={(e) => {
                 e.stopPropagation();
-                getUserDetails(property?.createdBy);
+                getPropertyOwnerData(property?.createdBy);
                 handleOpenQuickConnect(e);
               }}
               size="small"
@@ -277,17 +255,18 @@ const ViewPropertyAccordionDetails = ({
               property={property}
               onClose={handleCloseQuickConnect}
               onMenuItemClick={(action) =>
-                handleQuickConnectMenuItem(
+                handleQuickConnectAction(
                   action,
                   property,
+                  totalRent,
+                  nextPaymentDueDate,
                   primaryTenant,
-                  propertyOwnerData,
+                  getPropertyOwnerDataResult.data,
+                  templates,
                   redirectTo,
                   sendEmail,
                 )
               }
-              openMaintenanceForm={(o) => o}
-              openNoticeComposer={(o) => o}
             />
           </Stack>
         </Box>

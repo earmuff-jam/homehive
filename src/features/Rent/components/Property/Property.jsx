@@ -93,7 +93,6 @@ const Property = () => {
             isTenantsLoading={isTenantsLoading}
             property={property}
             tenants={tenants}
-            isAnyTenantSoR={isAnyTenantSoR}
             dataTour="property-2"
           />
           <TenantsOverview

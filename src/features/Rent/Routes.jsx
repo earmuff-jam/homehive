@@ -48,7 +48,7 @@ export const RentalAppRoutes = [
         value: "My properties",
         icon: <CottageRounded fontSize="small" />,
       },
-      isLoggedInFeature: true, // only display if logged in
+      isLoggedInFeature: true,
       displayInNavBar: true,
       displayHelpSelector: true,
       displayPrintSelector: false,
@@ -67,7 +67,7 @@ export const RentalAppRoutes = [
         value: "My rental unit",
         icon: <CottageRounded fontSize="small" />,
       },
-      isLoggedInFeature: true, // only display if logged in
+      isLoggedInFeature: true,
       displayInNavBar: true,
       displayHelpSelector: true,
       displayPrintSelector: false,
@@ -86,7 +86,7 @@ export const RentalAppRoutes = [
         value: "My settings",
         icon: <SettingsRounded fontSize="small" />,
       },
-      isLoggedInFeature: true, // only display if logged in
+      isLoggedInFeature: true,
       displayInNavBar: true,
       displayHelpSelector: true,
       displayPrintSelector: false,
@@ -105,7 +105,7 @@ export const RentalAppRoutes = [
         value: "My property",
         icon: <CottageRounded fontSize="small" />,
       },
-      isLoggedInFeature: true, // only display if logged in
+      isLoggedInFeature: true,
       displayInNavBar: false,
       displayHelpSelector: true,
       displayPrintSelector: false,

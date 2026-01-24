@@ -1,11 +1,8 @@
 import React from "react";
 
 import { Card, CardContent, Grid, Skeleton, Typography } from "@mui/material";
-import {
-  derieveTotalRent,
-  formatCurrency,
-  getOccupancyRate,
-} from "features/Rent/utils";
+import { useSelectedPropertyDetails } from "features/Rent/hooks/useGetSelectedPropertyDetails";
+import { formatCurrency, getOccupancyRate } from "features/Rent/utils";
 
 export default function PropertyStatistics({
   isPropertyLoading,
@@ -14,6 +11,7 @@ export default function PropertyStatistics({
   tenants,
   dataTour,
 }) {
+  const { totalRent } = useSelectedPropertyDetails(property, tenants);
   return (
     <Grid container spacing={3} sx={{ mt: 2 }} data-tour={dataTour}>
       <Grid item xs={12} sm={6} md={3}>
@@ -72,9 +70,7 @@ export default function PropertyStatistics({
           <Card variant="outlined">
             <CardContent sx={{ textAlign: "center" }}>
               <Typography variant="h4" color="success.main">
-                {formatCurrency(
-                  derieveTotalRent(property, tenants, isAnyTenantSoR),
-                )}
+                {formatCurrency(totalRent)}
               </Typography>
               <Typography variant="body2" color="text.secondary">
                 Monthly Revenue
