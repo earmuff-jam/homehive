@@ -7,13 +7,8 @@ export const AddPropertyTextString = "ADD_PROPERTY";
 export const AddRentRecordsTextString = "ADD_RENT_RECORDS";
 export const AssociateTenantTextString = "ASSOCIATE_TENANT";
 
-/**
- * LEASE_TERM_MENU_OPTIONS ...
- *
- * also used to prepare lease statements. hence, the amount value
- * is placed in months unit for easier calculations.
- */
-export const LEASE_TERM_MENU_OPTIONS = [
+// DefaultLeaseTermOptions ...
+export const DefaultLeaseTermOptions = [
   {
     id: 1,
     value: "1m",

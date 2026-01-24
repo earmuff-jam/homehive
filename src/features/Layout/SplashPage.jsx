@@ -4,7 +4,11 @@ import { useNavigate } from "react-router-dom";
 
 import { HomeRounded, ReceiptRounded } from "@mui/icons-material";
 import { Alert, Box, Container, Stack, Typography } from "@mui/material";
-import { InvoiceDashboardRouteUri, PropertiesRouteUri } from "common/utils";
+import {
+  InvoiceDashboardRouteUri,
+  PropertiesRouteUri,
+  fetchLoggedInUser,
+} from "common/utils";
 import { useAuthenticateMutation } from "features/Api/firebaseUserApi";
 import TitleCard from "features/Layout/components/TitleCard/TitleCard";
 import { useAppTitle } from "hooks/useAppTitle";
@@ -12,29 +16,32 @@ import { useAppTitle } from "hooks/useAppTitle";
 export default function SplashPage() {
   useAppTitle("Home");
   const navigate = useNavigate();
+  const user = fetchLoggedInUser();
 
-  const [
-    authenticate,
-    {
-      isSuccess: isAuthSuccess,
-      isLoading: isAuthLoading,
-      isError: isAuthError,
-      error: authError,
-    },
-  ] = useAuthenticateMutation();
+  const [authenticate, authenticateResult] = useAuthenticateMutation();
 
-  useEffect(() => {
-    if (!isAuthLoading && isAuthSuccess) {
+  const handleAuthenticate = () => {
+    if (!user?.uid) {
+      authenticate();
+    } else {
       window.location.replace(PropertiesRouteUri);
     }
-  }, [isAuthLoading]);
+  };
 
-  if (isAuthError) {
+  useEffect(() => {
+    if (!authenticateResult.isLoading && authenticateResult.isSuccess) {
+      window.location.replace(PropertiesRouteUri);
+    }
+  }, [authenticateResult.isLoading]);
+
+  if (authenticateResult.isError) {
     return (
       <Alert severity="error">
         <Stack>
           <Typography>Error during log in. Please try again later.</Typography>
-          <Typography variant="caption">{authError?.message}</Typography>
+          <Typography variant="caption">
+            {authenticateResult.error?.message}
+          </Typography>
         </Stack>
       </Alert>
     );
@@ -96,7 +103,7 @@ export default function SplashPage() {
                 sx={{ fontSize: 32, color: "primary.main", mr: 1.5 }}
               />
             }
-            onClick={authenticate}
+            onClick={handleAuthenticate}
           />
           <TitleCard
             title="Invoicer App"

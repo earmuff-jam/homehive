@@ -36,7 +36,11 @@ import { useGetTenantByPropertyIdQuery } from "features/Api/tenantsApi";
 import { getStripeFailureReasons } from "features/Rent/components/Settings/common";
 import { useCheckStripeAccountStatus } from "features/Rent/hooks/useCheckStripeAccountStatus";
 import { useGenerateStripeCheckoutSession } from "features/Rent/hooks/useGenerateStripeCheckoutSession";
-import { formatCurrency } from "features/Rent/utils";
+import {
+  ManualRentStatusEnumValue,
+  PaidRentStatusEnumValue,
+  formatCurrency,
+} from "features/Rent/utils";
 
 export default function PropertyOwnerInfoCard({
   isViewingRental = false,
@@ -45,12 +49,6 @@ export default function PropertyOwnerInfoCard({
   dataTour,
 }) {
   const user = fetchLoggedInUser();
-  const { generateStripeCheckoutSession } = useGenerateStripeCheckoutSession();
-  const { checkStatus, loading: isCheckStripeAccountStatusLoading } =
-    useCheckStripeAccountStatus();
-
-  const [createRentRecord, { isError: isCreatingRentRecordError, error }] =
-    useCreateRentRecordMutation();
 
   const { data: owner = {}, isLoading } = useGetUserDataByIdQuery(
     property?.createdBy,
@@ -63,15 +61,23 @@ export default function PropertyOwnerInfoCard({
     skip: !property?.id,
   });
 
-  const tenant = data.find((item) => item);
+  const [getRentByMonth, getRentByMonthResult] = useLazyGetRentByMonthQuery();
 
-  const [triggerGetRentByMonth, { data: rentMonthData = [] }] =
-    useLazyGetRentByMonthQuery();
+  const { generateStripeCheckoutSession } = useGenerateStripeCheckoutSession();
+  const { checkStatus, loading: isCheckStripeAccountStatusLoading } =
+    useCheckStripeAccountStatus();
+
+  const [createRentRecord, createRentRecordResult] =
+    useCreateRentRecordMutation();
 
   const [stripeValid, setStripeValid] = useState(false);
 
-  const paymentCompleteForCurrentMonth = rentMonthData?.some(
-    (item) => item.status === "paid" || item.status === "manual",
+  const tenant = data.find((item) => item);
+  const currentMonthRentData = getRentByMonthResult?.data;
+  const paymentCompleteForCurrentMonth = currentMonthRentData?.some(
+    (item) =>
+      item.status === PaidRentStatusEnumValue ||
+      item.status === ManualRentStatusEnumValue,
   );
 
   const handleRentPayment = async ({
@@ -127,10 +133,9 @@ export default function PropertyOwnerInfoCard({
 
   useEffect(() => {
     if (property?.id) {
-      const currentMonth = dayjs().format("MMMM");
-      triggerGetRentByMonth({
+      getRentByMonth({
         propertyId: property?.id,
-        rentMonth: currentMonth,
+        rentMonth: dayjs().format("MMMM"),
       });
     }
   }, [property?.id]);
@@ -168,7 +173,7 @@ export default function PropertyOwnerInfoCard({
             variant: "subtitle2",
             fontWeight: "bold",
           }}
-          caption={<BusinessRounded color="primary" />}
+          caption={<BusinessRounded color="primary" fontSize="small" />}
         />
         {isPropertyLoading ? (
           <Skeleton height="10rem" />
@@ -186,8 +191,8 @@ export default function PropertyOwnerInfoCard({
                 src={owner?.googlePhotoURL}
                 sx={{ width: 56, height: 56 }}
               >
-                {owner?.first_name?.charAt(0)}
-                {owner?.last_name?.charAt(0)}
+                {owner?.firstName?.charAt(0)}
+                {owner?.lastName?.charAt(0)}
               </Avatar>
               <Box>
                 <Stack direction="row" spacing={1}>
@@ -204,7 +209,7 @@ export default function PropertyOwnerInfoCard({
                       }}
                     >
                       {owner?.googleDisplayName ||
-                        `${owner?.first_name || ""} ${owner?.last_name || ""}`}
+                        `${owner?.firstName || ""} ${owner?.lastName || ""}`}
                     </Typography>
                     <Typography
                       flexGrow={1}
@@ -221,7 +226,7 @@ export default function PropertyOwnerInfoCard({
                     </Typography>
                   </Stack>
                   {isViewingRental && (
-                    <Tooltip title="Send Email">
+                    <Tooltip title="Send email">
                       <IconButton
                         sx={{ scale: 0.875 }}
                         href={`mailto:${owner?.email}`}
@@ -285,17 +290,17 @@ export default function PropertyOwnerInfoCard({
                       propertyId: property?.id,
                       propertyOwnerId: property?.createdBy, // the owner of the property
                       tenantId: user?.uid, // the current payee which is also a tenant
-                      tenantRentDueDate: tenant?.start_date,
+                      tenantRentDueDate: tenant?.startDate,
                       tenantEmail: user?.email, // the current renter
                       rentAmount: formatCurrency(Number(property?.rent)),
                       additionalCharges: formatCurrency(
-                        Number(property?.additional_rent),
+                        Number(property?.additionalRent),
                       ),
                       initialLateFee: formatCurrency(
-                        Number(tenant?.initial_late_fee),
+                        Number(tenant?.initialLateFee),
                       ),
                       dailyLateFee: formatCurrency(
-                        Number(tenant?.daily_late_fee),
+                        Number(tenant?.dailyLateFee),
                       ),
                     })
                   }
@@ -307,9 +312,9 @@ export default function PropertyOwnerInfoCard({
       </CardContent>
       <CustomSnackbar
         severity="warning"
-        showSnackbar={isCreatingRentRecordError}
+        showSnackbar={createRentRecordResult.isError}
         setShowSnackbar={() => {}}
-        title={`${error?.message}`}
+        title={`${createRentRecordResult.error?.message}`}
       />
     </Card>
   );

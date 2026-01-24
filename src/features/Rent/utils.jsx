@@ -11,7 +11,7 @@ import {
   PaidRounded,
 } from "@mui/icons-material";
 import { authorizedServerLevelFeatureFlags } from "common/ApplicationConfig";
-import { LEASE_TERM_MENU_OPTIONS } from "features/Rent/common/constants";
+import { DefaultLeaseTermOptions } from "features/Rent/common/constants";
 import { produce } from "immer";
 
 // stripe rent status
@@ -297,7 +297,7 @@ export const sanitizeEsignFieldsForLeaseExtension = (
 // derieveEndDate ...
 // defines a function that calculates the end date based on params
 const derieveEndDate = (startDate, lengthOfStay) => {
-  const lengthOfStayValue = LEASE_TERM_MENU_OPTIONS.find(
+  const lengthOfStayValue = DefaultLeaseTermOptions.find(
     (option) => option.value === lengthOfStay,
   );
   const endDate = dayjs(startDate).add(lengthOfStayValue?.amount, "month");

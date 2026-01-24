@@ -23,7 +23,7 @@ exports[`PropertyOwnerInfoCard Jest Tests PropertyOwnerInfoCard Snapshot tests r
         >
           <svg
             aria-hidden="true"
-            class="MuiSvgIcon-root MuiSvgIcon-colorPrimary MuiSvgIcon-fontSizeMedium css-1wtp6o0-MuiSvgIcon-root"
+            class="MuiSvgIcon-root MuiSvgIcon-colorPrimary MuiSvgIcon-fontSizeSmall css-os5i4q-MuiSvgIcon-root"
             data-testid="BusinessRoundedIcon"
             focusable="false"
             viewBox="0 0 24 24"
