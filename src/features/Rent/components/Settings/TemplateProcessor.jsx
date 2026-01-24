@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
 
-import { fetchLoggedInUser } from "common/utils";
+import { EditInvoiceRouteUri, fetchLoggedInUser } from "common/utils";
 import { processTemplate } from "features/Rent/components/Settings/common";
 import {
   CreateInvoiceEnumValue,
@@ -32,9 +32,9 @@ export const handleQuickConnectAction = (
 
   const templateVariables = {
     leaseEndDate: leaseEndDate,
-    rentIncrement: Number(property?.rent_increment) || 0,
+    rentIncrement: Number(property?.rentIncrement) || 0,
     oneYearRentChange:
-      Number(property?.rent || 0) + Number(property?.rent_increment || 0),
+      Number(property?.rent || 0) + Number(property?.rentIncrement || 0),
     responseDeadline: today.add(1, "M").format("MM-DD-YYYY"), // add 30 days for response deadline
     ownerPhone: propertyOwner?.phone,
     ownerEmail: propertyOwner?.email,
@@ -46,13 +46,13 @@ export const handleQuickConnectAction = (
     month: today.format("MMMM"),
     year: today.get("year"),
     ownerName: propertyOwner?.googleDisplayName,
-    companyName: propertyOwner?.company_name || "",
+    companyName: propertyOwner?.companyName || "",
     contactInfo: propertyOwner?.email || "",
   };
 
   switch (action) {
     case CreateInvoiceEnumValue: {
-      redirectTo("/invoice/edit");
+      redirectTo(EditInvoiceRouteUri);
       break;
     }
 

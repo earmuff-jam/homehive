@@ -136,7 +136,6 @@ const MyRental = () => {
             isTenantsLoading={isTenantsLoading}
             property={property}
             tenants={tenants}
-            isAnyTenantSoR={isAnyTenantSoR}
             dataTour="rental-2"
           />
           <RentalPaymentOverview

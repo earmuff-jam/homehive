@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Card, Stack } from "@mui/material";
 import TabPanel from "features/Rent/common/TabPanel";
 import Template from "features/Rent/components/Templates/Template";
-import { DefaultTemplateData as options } from "features/Rent/components/Templates/constants";
+import { DefaultRentalAppEmailTemplates } from "features/Rent/components/Templates/constants";
 import { produce } from "immer";
 
 export default function Templates() {
@@ -25,7 +25,7 @@ export default function Templates() {
     <Stack alignItems="center" spacing={1}>
       <Stack direction="row" spacing={2}>
         <TabPanel
-          options={options}
+          options={DefaultRentalAppEmailTemplates}
           selected={selectedTemplate}
           updateSelected={updatedSelected}
         />
@@ -43,7 +43,7 @@ export default function Templates() {
         >
           <Template
             handleSave={handleSave}
-            template={options[selectedTemplate]}
+            template={DefaultRentalAppEmailTemplates[selectedTemplate]}
           />
         </Card>
       </Stack>

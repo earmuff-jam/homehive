@@ -11,7 +11,7 @@ import {
   PaidRounded,
 } from "@mui/icons-material";
 import { authorizedServerLevelFeatureFlags } from "common/ApplicationConfig";
-import { LEASE_TERM_MENU_OPTIONS } from "features/Rent/common/constants";
+import { DefaultLeaseTermOptions } from "features/Rent/common/constants";
 import { produce } from "immer";
 
 // stripe rent status
@@ -31,15 +31,6 @@ export const stripHTMLForEmailMessages = (htmlDocument) => {
   return div.textContent || div.innerText || "";
 };
 
-// updateDateTime ...
-// defines a function that returns the next projected due date
-export const updateDateTime = (startDate) => {
-  const today = dayjs();
-  const monthsSinceStart = today.diff(startDate, "month");
-  const nextDueDate = startDate.add(monthsSinceStart + 1, "month");
-  return dayjs(nextDueDate).toISOString();
-};
-
 // formatCurrency ...
 // defines a function that formats a currency to a string value
 export const formatCurrency = (amt = 0) => {
@@ -55,24 +46,6 @@ export const sumCentsToDollars = (...values) => {
   }, 0);
 };
 
-// deriveTotalRent ...
-// defines a function that returns total rent based on params.
-// SoR tenants are calculated on a per room basis
-export const derieveTotalRent = (property, tenants, isAnyTenantSoR) => {
-  const totalRent =
-    Number(property?.rent || 0) + Number(property?.additionalRent || 0); // can have additional charges
-
-  if (isAnyTenantSoR) {
-    return tenants.reduce(
-      (total, tenant) =>
-        total + parseInt(tenant.rent || 0) + parseInt(property?.additionalRent),
-      0,
-    );
-  } else {
-    return totalRent || 0;
-  }
-};
-
 // getOccupancyRate ...
 // defines a function that returns the occupancy rate for each home
 export const getOccupancyRate = (property, tenants, isAnyTenantSoR) => {
@@ -85,24 +58,6 @@ export const getOccupancyRate = (property, tenants, isAnyTenantSoR) => {
     return tenants?.length > 0 ? 100 : 0;
   }
 };
-
-// getMonthlyDueDate ...
-// defines a function that returns next monthly due date based on params
-// TODO: investigate why there is so many similar code in rental app
-export function getNextMonthlyDueDate(startDate) {
-  if (!startDate) return "";
-
-  const original = dayjs(startDate);
-  const today = dayjs();
-  const targetDay = original.date();
-
-  const nextDue =
-    today.date() <= targetDay
-      ? today.set("date", targetDay)
-      : today.add(1, "month").set("date", targetDay);
-
-  return nextDue.format("YYYY-MM-DD");
-}
 
 // getColorAndLabelForCurrentMonth ...
 // defines a function that returns a specific color and label based on params and gracePeriod
@@ -134,26 +89,8 @@ export const getColorAndLabelForCurrentMonth = (
   }
 };
 
-// isRentDue ...
-// defines a function that returns boolean value based on params
-// TODO: this is also very similar to couple of other functions that we need to clean up.
-export const isRentDue = (startDate, gracePeriod = 3, currentMonthRent) => {
-  const today = dayjs();
-  const leaseStart = dayjs(startDate, "MM-DD-YYYY");
-
-  if (today.isBefore(leaseStart, "day")) return false;
-
-  const graceDate = today.startOf("month").add(gracePeriod, "day");
-  const pastGracePeriod = today.isAfter(graceDate, "day");
-
-  const currentMonth = today.format("MMMM");
-  const rentPaid =
-    currentMonthRent?.rentMonth === currentMonth &&
-    currentMonthRent.status?.toLowerCase() === "paid";
-  return pastGracePeriod && !rentPaid;
-};
-
 // getRentStatus ...
+// this also feels like similar to color and label
 export function getRentStatus({ isPaid, isLate }) {
   if (isPaid) return { color: "success", label: "Paid" };
   if (isLate) return { color: "error", label: "Overdue" };
@@ -161,6 +98,7 @@ export function getRentStatus({ isPaid, isLate }) {
 }
 
 // getRentDetails ...
+// feels like this is same as totalRent
 export function getRentDetails(
   data = [],
   currentMonth = dayjs().format("MMMM"),
@@ -359,7 +297,7 @@ export const sanitizeEsignFieldsForLeaseExtension = (
 // derieveEndDate ...
 // defines a function that calculates the end date based on params
 const derieveEndDate = (startDate, lengthOfStay) => {
-  const lengthOfStayValue = LEASE_TERM_MENU_OPTIONS.find(
+  const lengthOfStayValue = DefaultLeaseTermOptions.find(
     (option) => option.value === lengthOfStay,
   );
   const endDate = dayjs(startDate).add(lengthOfStayValue?.amount, "month");

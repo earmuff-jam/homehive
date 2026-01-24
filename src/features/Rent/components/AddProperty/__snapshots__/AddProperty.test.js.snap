@@ -754,8 +754,8 @@ exports[`AddProperty Component Tests AddProperty Snapshot Tests matches AddPrope
               <input
                 aria-invalid="false"
                 class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputSizeSmall css-1pzfmz2-MuiInputBase-input-MuiOutlinedInput-input"
-                id="additional_rent"
-                name="additional_rent"
+                id="additionalRent"
+                name="additionalRent"
                 placeholder="Additional fee. Eg, 400.00"
                 type="text"
                 value=""

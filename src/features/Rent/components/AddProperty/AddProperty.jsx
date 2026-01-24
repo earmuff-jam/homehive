@@ -318,11 +318,11 @@ export default function AddProperty({
                 <Typography variant="subtitle2">Add ons</Typography>
               </Stack>
             }
-            id="additional_rent"
+            id="additionalRent"
             placeholder="Additional fee. Eg, 400.00"
-            errorMsg={errors.additional_rent?.message}
+            errorMsg={errors.additionalRent?.message}
             inputProps={{
-              ...register("additional_rent", {
+              ...register("additionalRent", {
                 pattern: {
                   value: /^\d+(\.\d{1,2})?$/,
                   message: "Additional fee must be a valid amount (e.g. 75.00)",

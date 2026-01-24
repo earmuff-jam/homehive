@@ -35,7 +35,7 @@ export const rentApi = createApi({
 
           const propertyData = propertyDoc.data();
 
-          const isOwner = propertyData.owner_email === currentUserEmail;
+          const isOwner = propertyData.ownerEmail === currentUserEmail;
           const isRentee = (propertyData.rentees || []).some(
             (email) => email === currentUserEmail,
           );

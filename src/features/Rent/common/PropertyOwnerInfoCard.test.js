@@ -24,8 +24,8 @@ jest.mock("features/Rent/utils", () => ({
 jest.mock("features/Api/firebaseUserApi", () => ({
   useGetUserDataByIdQuery: () => ({
     data: {
-      first_name: "John",
-      last_name: "Doe",
+      firstName: "John",
+      lastName: "Doe",
       googleEmailAddress: "owner@test.com",
       stripeAccountIsActive: true,
     },
@@ -68,7 +68,7 @@ const mockProperty = {
   id: "property-1",
   createdBy: "owner-1",
   rent: 1200,
-  additional_rent: 0,
+  additionalRent: 0,
 };
 
 describe("PropertyOwnerInfoCard Jest Tests", () => {

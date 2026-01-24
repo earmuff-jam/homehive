@@ -67,20 +67,13 @@ export default function Properties() {
     skip: !user?.uid,
   });
 
-  const [
-    triggerGetRents,
-    { data: rentDetails = [], isLoading: isRentDetailsLoading },
-  ] = useLazyGetRentsByPropertyIdWithFiltersQuery();
+  const [createProperty, createPropertyResult] = useCreatePropertyMutation();
 
-  const [
-    createProperty,
-    { isSuccess: isCreatePropertySuccess, isLoading: isCreatePropertyLoading },
-  ] = useCreatePropertyMutation();
+  const [triggerGetRents, getRentsResult] =
+    useLazyGetRentsByPropertyIdWithFiltersQuery();
 
-  const [
-    updateProperty,
-    { isSuccess: isUpdatePropertySuccess, isLoading: isUpdatePropertyLoading },
-  ] = useUpdatePropertyByIdMutation();
+  const [updateProperty, updatePropertyResult] =
+    useUpdatePropertyByIdMutation();
 
   const {
     register,
@@ -89,7 +82,6 @@ export default function Properties() {
     handleSubmit,
     formState: { errors, isValid },
     reset,
-    setValue,
   } = useForm({
     mode: "onChange",
     defaultValues: {
@@ -109,8 +101,8 @@ export default function Properties() {
       isOwnerCoveredUtilities: false,
       ownerCoveredUtilities: "",
       rent: 0,
-      additional_rent: 0,
-      rent_increment: 100,
+      additionalRent: 0,
+      rentIncrement: 100,
       securityDeposit: 0,
       allowedVehicleCounts: 0,
       paymentID: "",
@@ -168,7 +160,6 @@ export default function Properties() {
     };
 
     const sanitizedPayload = sanitizeApiFields(result);
-
     createProperty(sanitizedPayload);
     closeDialog();
   };
@@ -179,17 +170,10 @@ export default function Properties() {
   const isOwnerCoveredUtilities = watch("isOwnerCoveredUtilities");
 
   useEffect(() => {
-    if (isCreatePropertySuccess || isUpdatePropertySuccess) {
+    if (createPropertyResult.isSuccess || updatePropertyResult.isSuccess) {
       setShowSnackbar(true);
     }
-  }, [isCreatePropertyLoading, isUpdatePropertyLoading]);
-
-  useEffect(() => {
-    // update form fields if present
-    if (userData?.email) {
-      setValue("owner_email", userData.email);
-    }
-  }, [userData, setValue]);
+  }, [createPropertyResult.isLoading, updatePropertyResult.isLoading]);
 
   if (isLoading) return <Skeleton height="10rem" />;
 
@@ -205,7 +189,9 @@ export default function Properties() {
           label="Add Property"
           size="small"
           variant="outlined"
-          loading={isCreatePropertyLoading || isUpdatePropertyLoading}
+          loading={
+            createPropertyResult.isLoading || updatePropertyResult.isLoading
+          }
           endIcon={<AddRounded fontSize="small" />}
           onClick={toggleAddPropertyPopup}
         />
@@ -240,7 +226,7 @@ export default function Properties() {
                       }
                     }}
                   >
-                    <ExpandMoreRounded />
+                    <ExpandMoreRounded fontSize="small" />
                   </IconButton>
                 }
               >
@@ -308,8 +294,8 @@ export default function Properties() {
                 <ViewPropertyAccordionDetails
                   property={property}
                   userData={userData}
-                  rentDetails={rentDetails}
-                  isRentDetailsLoading={isRentDetailsLoading}
+                  rentDetails={getRentsResult.data}
+                  isRentDetailsLoading={getRentsResult.isLoading}
                 />
               </AccordionDetails>
             </Accordion>

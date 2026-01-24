@@ -1,8 +1,6 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 
 import { useNavigate } from "react-router-dom";
-
-import dayjs from "dayjs";
 
 import {
   CheckCircleOutlineRounded,
@@ -27,13 +25,11 @@ import { useLazyGetUserDataByIdQuery } from "features/Api/firebaseUserApi";
 import { useGetTenantByPropertyIdQuery } from "features/Api/tenantsApi";
 import QuickConnectMenu from "features/Rent/components/QuickConnect/QuickConnectMenu";
 import { handleQuickConnectAction } from "features/Rent/components/Settings/TemplateProcessor";
-import { DefaultTemplateData } from "features/Rent/components/Templates/constants";
+import { DefaultRentalAppEmailTemplates } from "features/Rent/components/Templates/constants";
+import { useSelectedPropertyDetails } from "features/Rent/hooks/useGetSelectedPropertyDetails";
 import {
-  derieveTotalRent,
   getColorAndLabelForCurrentMonth,
-  getNextMonthlyDueDate,
   getRentDetails,
-  updateDateTime,
 } from "features/Rent/utils";
 import useSendEmail from "hooks/useSendEmail";
 
@@ -45,72 +41,50 @@ const ViewPropertyAccordionDetails = ({
   const navigate = useNavigate();
   const redirectTo = (path) => navigate(path);
 
-  const { data: tenants = [], isLoading } = useGetTenantByPropertyIdQuery(
-    property?.id,
-    {
+  const { data: tenants = [], isLoading: isGetTenantsLoading } =
+    useGetTenantByPropertyIdQuery(property?.id, {
       skip: !property?.id,
-    },
-  );
-
-  const [
-    triggerGetUserData,
-    { data: propertyOwnerData, isLoading: isUserDataLoading },
-  ] = useLazyGetUserDataByIdQuery();
+    });
 
   const { sendEmail, reset, error, success } = useSendEmail();
+  const [getPropertyOwnerData, getPropertyOwnerDataResult] =
+    useLazyGetUserDataByIdQuery();
 
   const [anchorEl, setAnchorEl] = useState(null);
 
   const isOpen = Boolean(anchorEl);
   const currentMonthRent = getRentDetails(rentDetails);
 
-  const isAnyPropertySoR = tenants?.some((tenant) => tenant.isSoR);
   const primaryTenant = tenants?.find((tenant) => tenant.isPrimary);
 
   const handleCloseQuickConnect = () => setAnchorEl(null);
   const handleOpenQuickConnect = (ev) => setAnchorEl(ev.currentTarget);
+
+  const { nextPaymentDueDate, totalRent } = useSelectedPropertyDetails(
+    property,
+    tenants,
+  );
 
   const {
     color: statusColor,
     label: statusLabel,
     icon: statusIcon,
   } = getColorAndLabelForCurrentMonth(
-    primaryTenant?.start_date,
+    primaryTenant?.startDate,
     currentMonthRent,
-    Number(primaryTenant?.grace_period),
+    Number(primaryTenant?.gracePeriod),
   );
 
-  const handleQuickConnectMenuItem = (
-    action,
-    property,
-    primaryTenant,
-    propertyOwnerData,
-    redirectTo,
-    sendEmail,
-  ) => {
-    const totalRent = derieveTotalRent(property, tenants, isAnyPropertySoR);
+  const templates = useMemo(() => {
+    const stored = localStorage.getItem("templates");
+    return stored ? JSON.parse(stored) : DefaultRentalAppEmailTemplates;
+  }, []);
 
-    let savedTemplates = {};
-    savedTemplates = JSON.parse(localStorage.getItem("templates") || "{}");
-
-    if (!savedTemplates || Object.keys(savedTemplates).length === 0) {
-      savedTemplates = DefaultTemplateData;
-    }
-
-    handleQuickConnectAction(
-      action,
-      property,
-      totalRent,
-      getNextMonthlyDueDate(primaryTenant?.start_date),
-      primaryTenant,
-      propertyOwnerData,
-      savedTemplates,
-      redirectTo,
-      sendEmail,
-    );
-  };
-
-  if (isLoading || isRentDetailsLoading || isUserDataLoading)
+  if (
+    isGetTenantsLoading ||
+    isRentDetailsLoading ||
+    getPropertyOwnerDataResult.isLoading
+  )
     return <Skeleton height="10rem" />;
 
   if (!tenants || tenants.length === 0) {
@@ -133,7 +107,7 @@ const ViewPropertyAccordionDetails = ({
         {/* LEFT SECTION */}
         <Stack direction="row" spacing={2} flex={1}>
           <Avatar sx={{ bgcolor: "primary.main", mt: 0.5 }}>
-            {primaryTenant?.first_name ||
+            {primaryTenant?.firstName ||
               primaryTenant?.googleDisplayName ||
               "U"}
           </Avatar>
@@ -141,7 +115,7 @@ const ViewPropertyAccordionDetails = ({
             <Stack direction="row" spacing={1}>
               <Tooltip
                 title={
-                  primaryTenant?.first_name ||
+                  primaryTenant?.firstName ||
                   primaryTenant?.googleDisplayName ||
                   primaryTenant?.email
                 }
@@ -158,7 +132,7 @@ const ViewPropertyAccordionDetails = ({
                     maxWidth: 150,
                   }}
                 >
-                  {primaryTenant?.first_name ||
+                  {primaryTenant?.firstName ||
                     primaryTenant?.googleDisplayName ||
                     primaryTenant?.email}
                 </Typography>
@@ -189,9 +163,7 @@ const ViewPropertyAccordionDetails = ({
               </Stack>
               <Stack>
                 <Typography variant="subtitle2" fontSize="2rem" color="primary">
-                  {dayjs(
-                    updateDateTime(dayjs(primaryTenant?.start_date)),
-                  ).format("MMM DD")}
+                  {nextPaymentDueDate}
                 </Typography>
                 <Typography variant="subtitle2" color="textSecondary">
                   Next payment due date
@@ -270,7 +242,7 @@ const ViewPropertyAccordionDetails = ({
               disabled={tenants?.length <= 0}
               onClick={(e) => {
                 e.stopPropagation();
-                triggerGetUserData(property?.createdBy);
+                getPropertyOwnerData(property?.createdBy);
                 handleOpenQuickConnect(e);
               }}
               size="small"
@@ -283,17 +255,18 @@ const ViewPropertyAccordionDetails = ({
               property={property}
               onClose={handleCloseQuickConnect}
               onMenuItemClick={(action) =>
-                handleQuickConnectMenuItem(
+                handleQuickConnectAction(
                   action,
                   property,
+                  totalRent,
+                  nextPaymentDueDate,
                   primaryTenant,
-                  propertyOwnerData,
+                  getPropertyOwnerDataResult.data,
+                  templates,
                   redirectTo,
                   sendEmail,
                 )
               }
-              openMaintenanceForm={(o) => o}
-              openNoticeComposer={(o) => o}
             />
           </Stack>
         </Box>

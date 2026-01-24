@@ -26,7 +26,7 @@ import CustomSnackbar from "common/CustomSnackbar";
 import TextFieldWithLabel from "common/TextFieldWithLabel";
 import { fetchLoggedInUser } from "common/utils";
 import { useAssociateTenantMutation } from "features/Api/tenantsApi";
-import { LEASE_TERM_MENU_OPTIONS } from "features/Rent/common/constants";
+import { DefaultLeaseTermOptions } from "features/Rent/common/constants";
 import TenantEmailAutocomplete from "features/Rent/components/AssociateTenantPopup/TenantEmailAutocomplete";
 import { isAssociatedPropertySoR } from "features/Rent/utils";
 
@@ -36,12 +36,7 @@ export default function AssociateTenantPopup({
   tenants,
 }) {
   const user = fetchLoggedInUser();
-  const currentUserId = user?.uid;
-
-  const [
-    associateTenant,
-    { isLoading: associateTenantLoading, isSuccess: associateTenantSuccess },
-  ] = useAssociateTenantMutation();
+  const [associateTenant, associateTenantResult] = useAssociateTenantMutation();
 
   const [showSnackbar, setShowSnackbar] = useState(false);
 
@@ -59,16 +54,16 @@ export default function AssociateTenantPopup({
     mode: "onChange",
     defaultValues: {
       email: "",
-      start_date: dayjs().toISOString(),
+      startDate: dayjs().toISOString(),
       term: "",
-      tax_rate: 1,
+      taxRate: 1,
       rent: "",
       initialLateFee: 75,
       dailyLateFee: 10,
       initialAnimalVoilationFee: 300,
       dailyAnimalVoilationFee: 25,
       returnedPaymentFee: 75,
-      grace_period: 3,
+      gracePeriod: 3,
       isAutoRenewPolicySet: false,
       autoRenewDays: 60,
       isPrimary: false,
@@ -91,9 +86,9 @@ export default function AssociateTenantPopup({
     draftData.id = uuidv4();
     draftData.isActive = true;
     draftData.propertyId = property.id;
-    draftData.createdBy = currentUserId;
+    draftData.createdBy = user?.uid;
     draftData.createdOn = dayjs().toISOString();
-    draftData.updatedBy = currentUserId;
+    draftData.updatedBy = user?.uid;
     draftData.updatedOn = dayjs().toISOString();
 
     associateTenant({ draftData, property });
@@ -109,12 +104,12 @@ export default function AssociateTenantPopup({
   }, [property]);
 
   useEffect(() => {
-    if (associateTenantSuccess) {
+    if (associateTenantResult.isSuccess) {
       setShowSnackbar(true);
       reset();
       closeDialog();
     }
-  }, [associateTenantLoading]);
+  }, [associateTenantResult.isLoading]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -125,7 +120,7 @@ export default function AssociateTenantPopup({
         {/* Lease Start Date */}
         <Box sx={{ flex: 1 }}>
           <Controller
-            name="start_date"
+            name="startDate"
             control={control}
             defaultValue={null}
             rules={{ required: "Start date is required" }}
@@ -179,7 +174,7 @@ export default function AssociateTenantPopup({
                 <MenuItem value="" disabled>
                   <em>Select Lease Term</em>
                 </MenuItem>
-                {LEASE_TERM_MENU_OPTIONS.map((option) => (
+                {DefaultLeaseTermOptions.map((option) => (
                   <MenuItem key={option.id} value={option?.value}>
                     {option?.label}
                   </MenuItem>
@@ -204,10 +199,10 @@ export default function AssociateTenantPopup({
                 <Typography variant="subtitle2">Standard Tax rate *</Typography>
               </Stack>
             }
-            id="tax_rate"
+            id="taxRate"
             placeholder="Standard tax rate. Eg, 1"
-            errorMsg={errors.tax_rate?.message}
-            inputProps={register("tax_rate", {
+            errorMsg={errors.taxRate?.message}
+            inputProps={register("taxRate", {
               required: "Tax rate is required.",
               pattern: {
                 value: /^\d+(\.\d{1,2})?$/,
@@ -388,11 +383,11 @@ export default function AssociateTenantPopup({
                 <Typography variant="subtitle2"> Grace period *</Typography>
               </Stack>
             }
-            id="grace_period"
+            id="gracePeriod"
             placeholder="The days before the late fee is calculated"
-            errorMsg={errors.grace_period?.message}
+            errorMsg={errors.gracePeriod?.message}
             inputProps={{
-              ...register("grace_period", {
+              ...register("gracePeriod", {
                 required:
                   "Grace period is required and must be in number format.",
                 pattern: {
