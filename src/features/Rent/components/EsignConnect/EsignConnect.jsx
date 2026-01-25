@@ -64,20 +64,8 @@ export default function EsignConnect() {
       skip: !user?.uid,
     });
 
-  const [
-    updateUser,
-    { isLoading: isUpdateUserLoading, isSuccess: isUpdateUserSuccess },
-  ] = useUpdateUserByUidMutation();
-
-  const [
-    createWorkspace,
-    {
-      originalArgs,
-      isLoading: isCreateWorkspaceLoading,
-      isSuccess: isCreateWorkspaceSuccess,
-      data: createWorkspaceRespData,
-    },
-  ] = useCreateWorkspaceMutation();
+  const [updateUser, updateUserResult] = useUpdateUserByUidMutation();
+  const [createWorkspace, createWorkspaceResult] = useCreateWorkspaceMutation();
 
   const [showSnackbar, setShowSnackbar] = useState(false);
 
@@ -113,23 +101,25 @@ export default function EsignConnect() {
     });
 
   useEffect(() => {
-    if (isUpdateUserSuccess) {
+    if (updateUserResult.isSuccess) {
       setShowSnackbar(true);
     }
-  }, [isUpdateUserLoading]);
+  }, [updateUserResult.isLoading]);
 
   useEffect(() => {
-    if (isCreateWorkspaceSuccess) {
+    if (createWorkspaceResult.isSuccess) {
+      const data = createWorkspaceResult?.data;
+      const workspaceId = createWorkspaceResult.originalArgs.workspaceId;
       updateUsr({
         esignAccountIsActive: true,
-        esignAccountWorkspaceId: originalArgs.workspaceId,
-        esignAccountWorkspaceName: createWorkspaceRespData?.name,
-        esignAccountWorkspaceCreatedAt: createWorkspaceRespData?.createdAt,
+        esignAccountWorkspaceId: workspaceId,
+        esignAccountWorkspaceName: data?.name,
+        esignAccountWorkspaceCreatedAt: data?.createdAt,
         updatedBy: user?.uid,
         updatedOn: dayjs().toISOString(),
       });
     }
-  }, [isCreateWorkspaceLoading]);
+  }, [createWorkspaceResult.isLoading]);
 
   if (isUserDataFromDbLoading) return <Skeleton height="10rem" width="100%" />;
 
