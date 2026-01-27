@@ -128,7 +128,7 @@ export default function EsignConnect() {
       <Grid2 size={12}>
         <StatusCard
           connectEsign={connectEsign}
-          isUpdateUserLoading={isUpdateUserLoading}
+          isUpdateUserLoading={updateUserResult.isLoading}
           handleClick={isEsignConnected ? disconnectEsign : connectEsign}
           isEsignConnected={isEsignConnected}
           esignAccountWorkspaceId={userData?.esignAccountWorkspaceId}
