@@ -23,11 +23,15 @@ export const handler = async (event) => {
   try {
     const { fUrl, fMethod, payload } = JSON.parse(event.body);
 
+    const IntegrationKey = process.env.VITE_INTEGRATION_KEY;
     const response = await fetch(
       `${process.env.VITE_SITE_URL}/.netlify/functions/${fUrl}`,
       {
         method: fMethod,
-        headers: DefaultHeaders,
+        headers: {
+          ...DefaultHeaders,
+          "x-api-key": IntegrationKey,
+        },
         body: "POST" || "PUT" === fMethod ? JSON.stringify(payload) : null,
       },
     );

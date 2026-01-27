@@ -16,12 +16,12 @@ const faqItems = [
   {
     icon: <HomeRounded fontSize="small" />,
     q: "How can I create a new property?",
-    ans: 'Click on Add Property" button and ensure all fields are filled out. Press submit when done.',
+    ans: 'Click on "Add Property" button and ensure all fields are filled out. Press submit when done.',
   },
   {
     icon: <SaveAltRounded fontSize="small" />,
     q: "Can I update property data even after tenants are added to the property?",
-    ans: "Yes, you can only update general property information at any time. 'Rental Information' section is disabled if you currently have active tenants.",
+    ans: "Yes, you can update property data after tenants are added to the property, however once e-sign is completed, editing is prohibited until tenants are removed from the property. Performing actions such as removing a tenant from a property, adding rent payments to the property and / or editing the property will alert the tenant and property owner VIA email.",
   },
   {
     icon: <AddCircleOutlineRounded fontSize="small" />,
@@ -46,7 +46,7 @@ const faqItems = [
   {
     icon: <PrintOutlined fontSize="small" />,
     q: "Can i print my data?",
-    ans: "We don’t have a built-in “Print” button, but you’re free to print anything you see. Just use your browser’s print command (Ctrl / Cmd + P) or right-click → Print.",
+    ans: "Use your browser’s print command (Ctrl / Cmd + P) or right-click → Print.",
   },
   {
     icon: <HelpRounded fontSize="small" />,
