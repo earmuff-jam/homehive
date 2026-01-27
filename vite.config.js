@@ -60,8 +60,12 @@ export default defineConfig({
         enabled: true,
       },
     }),
+
     visualizer({ open: true }),
   ],
+  server: {
+    allowedHosts: ["heptagonal-lionhearted-britta.ngrok-free.dev"],
+  },
   build: {
     rollupOptions: {
       output: {

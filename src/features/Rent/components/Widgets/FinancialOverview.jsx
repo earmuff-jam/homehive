@@ -32,7 +32,10 @@ export default function FinancialOverview({
                   color="success"
                   sx={{ fontSize: "2rem" }}
                 >
-                  {formatCurrency(totalRent)}
+                  ${formatCurrency(totalRent)}
+                  <Typography component="span" variant="caption">
+                    {` USD / m`}
+                  </Typography>
                 </Typography>
                 <Typography variant="subtitle2" color="text.secondary">
                   Monthly Revenue
@@ -44,7 +47,10 @@ export default function FinancialOverview({
                   color="success"
                   sx={{ fontSize: "2rem" }}
                 >
-                  {formatCurrency(totalRent * 12)}
+                  ${formatCurrency(totalRent * 12)}
+                  <Typography component="span" variant="caption">
+                    {` USD / yr`}
+                  </Typography>
                 </Typography>
                 <Typography variant="subtitle2" color="text.secondary">
                   Projected Annual Revenue

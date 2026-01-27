@@ -62,7 +62,7 @@ describe("PropertyStatistics Jest tests", () => {
 
       expect(screen.getByText("4")).toBeInTheDocument();
       expect(screen.getByText("Total Units")).toBeInTheDocument();
-      expect(screen.getByText("Occupied Units")).toBeInTheDocument();
+      expect(screen.getByText("Unit(s) occupied")).toBeInTheDocument();
       expect(screen.getByText("75%")).toBeInTheDocument();
       expect(screen.getByText("$2500")).toBeInTheDocument();
       expect(screen.getByText("Monthly Revenue")).toBeInTheDocument();
@@ -79,7 +79,7 @@ describe("PropertyStatistics Jest tests", () => {
       );
 
       expect(screen.getByText("Total Bedrooms")).toBeInTheDocument();
-      expect(screen.getByText("Occupied Home")).toBeInTheDocument();
+      expect(screen.getByText("Home Occupied")).toBeInTheDocument();
     });
   });
 });

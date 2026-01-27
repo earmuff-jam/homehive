@@ -3,8 +3,9 @@ import React, { useState } from "react";
 import dayjs from "dayjs";
 
 import {
+  AutorenewOutlined,
   CalendarTodayRounded,
-  LockClockRounded,
+  LockRounded,
   PersonRounded,
   RemoveCircleOutlineRounded,
 } from "@mui/icons-material";
@@ -24,6 +25,7 @@ import CustomSnackbar from "common/CustomSnackbar";
 import { fetchLoggedInUser } from "common/utils";
 import { useUpdatePropertyByIdMutation } from "features/Api/propertiesApi";
 import { useUpdateTenantByIdMutation } from "features/Api/tenantsApi";
+import { useSelectedPropertyDetails } from "features/Rent/hooks/useGetSelectedPropertyDetails";
 import { formatCurrency } from "features/Rent/utils";
 
 export default function Tenants({ tenants = [], property }) {
@@ -32,6 +34,8 @@ export default function Tenants({ tenants = [], property }) {
   const [updateProperty] = useUpdatePropertyByIdMutation();
 
   const [showSnackbar, setShowSnackbar] = useState(false);
+
+  const { nextPaymentDueDate } = useSelectedPropertyDetails(property, tenants);
 
   const sortedByPrimaryStatus = (arr) => {
     return [...arr].sort((a, b) => b.isPrimary - a.isPrimary);
@@ -71,7 +75,7 @@ export default function Tenants({ tenants = [], property }) {
       {sortedByPrimaryStatus(tenants)?.map((tenant) => (
         <Stack key={tenant?.id}>
           <Card sx={{ width: "100%" }}>
-            <CardContent sx={{ p: 3 }}>
+            <CardContent sx={{ p: 1 }}>
               {/* Header with Avatar and Primary Badge */}
               <Box sx={{ display: "flex", alignItems: "flex-start", mb: 2.5 }}>
                 <Avatar
@@ -107,30 +111,50 @@ export default function Tenants({ tenants = [], property }) {
                         {tenant.email}
                       </Typography>
                     </Tooltip>
+                  </Box>
 
+                  <Stack direction="row" spacing={1} alignItems="center">
                     {tenant?.isSoR && (
                       <Tooltip title="Single occupancy room rentee">
-                        <LockClockRounded fontSize="small" />
+                        <LockRounded fontSize="small" color="warning" />
                       </Tooltip>
                     )}
-                  </Box>
-
-                  <Box>
-                    <Chip
-                      label={
-                        tenant?.isPrimary
-                          ? "Primary Renter"
-                          : "Secondary Renter"
-                      }
-                      size="small"
-                      color={tenant?.isPrimary ? "primary" : "background"}
-                      sx={{
-                        height: 24,
-                        fontSize: "0.75rem",
-                        fontWeight: 500,
-                      }}
-                    />
-                  </Box>
+                    {!tenant?.isSoR && (
+                      <Tooltip title="Autorenew lease extension is on">
+                        <AutorenewOutlined fontSize="small" color="info" />
+                      </Tooltip>
+                    )}
+                    <Box>
+                      <Chip
+                        label={
+                          tenant?.isPrimary
+                            ? "Primary Renter"
+                            : "Secondary Renter"
+                        }
+                        size="small"
+                        color={tenant?.isPrimary ? "primary" : "background"}
+                        sx={{
+                          height: 24,
+                          fontSize: "0.75rem",
+                          fontWeight: 500,
+                        }}
+                      />
+                    </Box>
+                    <Box>
+                      <Tooltip title="Next payment due date">
+                        <Chip
+                          label={dayjs(nextPaymentDueDate).format("DD MMMM")}
+                          size="small"
+                          color={tenant?.isPrimary ? "primary" : "background"}
+                          sx={{
+                            height: 24,
+                            fontSize: "0.75rem",
+                            fontWeight: 500,
+                          }}
+                        />
+                      </Tooltip>
+                    </Box>
+                  </Stack>
                 </Stack>
                 <Tooltip title="Remove tenant from property">
                   <IconButton
@@ -171,7 +195,7 @@ export default function Tenants({ tenants = [], property }) {
                       >
                         {formatCurrency(
                           Number(tenant?.rent || 0) +
-                            Number(property?.additional_rent || 0),
+                            Number(property?.additionalRent || 0),
                         )}
                       </Typography>
 
@@ -199,7 +223,7 @@ export default function Tenants({ tenants = [], property }) {
                       START DATE
                     </Typography>
                     <Typography variant="subtitle2" color="text.secondary">
-                      {dayjs(tenant?.start_date).format("MMM DD, YYYY")}
+                      {dayjs(tenant?.startDate).format("MMM DD, YYYY")}
                     </Typography>
                   </Stack>
                 </Box>

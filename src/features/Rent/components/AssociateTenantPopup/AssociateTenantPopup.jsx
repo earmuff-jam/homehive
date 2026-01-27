@@ -6,7 +6,11 @@ import { v4 as uuidv4 } from "uuid";
 
 import dayjs from "dayjs";
 
-import { InfoRounded, UpdateRounded } from "@mui/icons-material";
+import {
+  AutorenewOutlined,
+  InfoRounded,
+  UpdateRounded,
+} from "@mui/icons-material";
 import {
   Box,
   Button,
@@ -421,6 +425,7 @@ export default function AssociateTenantPopup({
                 control={<Checkbox {...field} checked={field.value} />}
                 label={
                   <Stack direction="row" spacing={1} alignItems="center">
+                    <AutorenewOutlined />
                     <Typography variant="subtitle2">
                       {`Setup auto renewal for ${property?.name}`}
                     </Typography>
