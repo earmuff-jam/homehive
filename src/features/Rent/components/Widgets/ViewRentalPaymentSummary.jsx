@@ -26,7 +26,7 @@ const ViewRentalPaymentSummary = ({ rentData = [] }) => {
         header: "Amount Paid ($)",
         accessorFn: (row) =>
           sumCentsToDollars(
-            row?.rentAmount,
+            row?.rent,
             row?.additionalCharges,
             row?.initialLateFee,
             row?.dailyLateFee,
@@ -35,14 +35,8 @@ const ViewRentalPaymentSummary = ({ rentData = [] }) => {
         Cell: ({ cell }) => formatCurrency(cell.getValue()),
       },
       {
-        accessorKey: "method",
-        header: "Payment Method",
-        size: 100,
-        Cell: ({ cell }) => cell.getValue() || "-",
-      },
-      {
         accessorKey: "status",
-        header: "Status",
+        header: "Payment Method",
         size: 100,
         Cell: ({ cell }) => cell.getValue() || "-",
       },

@@ -41,7 +41,7 @@ export default function PropertyStatistics({
                 {isAnyTenantSoR ? tenants?.length : tenants?.length > 0 ? 1 : 0}
               </Typography>
               <Typography variant="body2" color="text.secondary">
-                {isAnyTenantSoR ? "Occupied Units" : "Occupied Home"}
+                {isAnyTenantSoR ? "Unit(s) occupied" : "Home Occupied"}
               </Typography>
             </CardContent>
           </Card>

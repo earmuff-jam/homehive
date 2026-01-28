@@ -21,7 +21,10 @@ export default function PropertyDetails({
 }) {
   return (
     <Card sx={{ mb: 3 }} data-tour={dataTour}>
-      <PropertyMap location={property?.location} />
+      <PropertyMap
+        location={property?.location}
+        address={`${property?.address}, ${property?.city}, ${property?.state} ${property?.zipcode}`}
+      />
       <CardContent data-tour="rental-5">
         <RowHeader
           title="Property Details"
@@ -58,6 +61,7 @@ export default function PropertyDetails({
                 </Typography>
               </Stack>
             </Stack>
+
             <Stack direction="row">
               <Stack textAlign="center" flexGrow={1}>
                 <Tooltip
