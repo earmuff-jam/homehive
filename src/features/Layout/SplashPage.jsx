@@ -7,9 +7,11 @@ import { Alert, Box, Container, Stack, Typography } from "@mui/material";
 import {
   InvoiceDashboardRouteUri,
   PropertiesRouteUri,
+  RentalRouteUri,
   fetchLoggedInUser,
 } from "common/utils";
 import { useAuthenticateMutation } from "features/Api/firebaseUserApi";
+import { Role } from "features/Auth/AuthHelper";
 import TitleCard from "features/Layout/components/TitleCard/TitleCard";
 import { useAppTitle } from "hooks/useAppTitle";
 
@@ -24,13 +26,19 @@ export default function SplashPage() {
     if (!user?.uid) {
       authenticate();
     } else {
-      window.location.replace(PropertiesRouteUri);
+      const currentUserRole = user?.role;
+      currentUserRole === Role.Tenant
+        ? window.location.replace(RentalRouteUri)
+        : window.location.replace(PropertiesRouteUri);
     }
   };
 
   useEffect(() => {
     if (!authenticateResult.isLoading && authenticateResult.isSuccess) {
-      window.location.replace(PropertiesRouteUri);
+      const currentUserRole = authenticateResult.data.role;
+      currentUserRole === Role.Tenant
+        ? window.location.replace(RentalRouteUri)
+        : window.location.replace(PropertiesRouteUri);
     }
   }, [authenticateResult.isLoading]);
 

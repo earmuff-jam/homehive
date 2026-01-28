@@ -80,14 +80,14 @@ export const firebaseUserApi = createApi({
           const refetchUserDataSnapshot = await getDoc(userRef);
           const refetchUserData = refetchUserDataSnapshot.data();
 
-          if (userDetails?.uid) {
-            secureLocalStorage.setItem("user", {
-              uid: userDetails?.uid,
-              role: refetchUserData?.role,
-              email: userDetails?.email,
-            });
-          }
-          return { data: userDetails };
+          let userWithRole = {
+            uid: userDetails?.uid,
+            role: refetchUserData?.role,
+            email: userDetails?.googleEmailAddress,
+          };
+
+          secureLocalStorage.setItem("user", userWithRole);
+          return { data: userWithRole };
         } catch (error) {
           return {
             error: {
