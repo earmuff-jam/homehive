@@ -2,7 +2,6 @@ import React from "react";
 
 import { useLocation, useNavigate } from "react-router-dom";
 
-import { useTheme } from "@emotion/react";
 import { ChevronLeftRounded, ChevronRightRounded } from "@mui/icons-material";
 import {
   Divider,
@@ -14,6 +13,7 @@ import {
   ListItemText,
   Stack,
   Typography,
+  useTheme,
 } from "@mui/material";
 import {
   authorizedServerLevelFeatureFlags,
@@ -140,7 +140,6 @@ export default function NavBar({
               if (requiresLogin && !user?.uid) return null;
 
               let childRoutes = [];
-
               if (path.startsWith(MainInvoiceAppRouteUri)) {
                 childRoutes = getValidRoutes(InvoiceAppRoutes, user?.role);
               } else if (path.startsWith(MainRentAppRouteUri)) {
@@ -155,6 +154,7 @@ export default function NavBar({
                     icon={icon}
                     pathname={pathname}
                     theme={theme}
+                    parentRoute={path}
                     navigate={handleMenuItemClick}
                     childrenRoutes={filterAuthorizedRoutesForNavBar(
                       childRoutes,

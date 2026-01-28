@@ -20,6 +20,8 @@ import {
   Stack,
   Tooltip,
   Typography,
+  useMediaQuery,
+  useTheme,
 } from "@mui/material";
 import CustomSnackbar from "common/CustomSnackbar";
 import { fetchLoggedInUser } from "common/utils";
@@ -29,12 +31,14 @@ import { useSelectedPropertyDetails } from "features/Rent/hooks/useGetSelectedPr
 import { formatCurrency } from "features/Rent/utils";
 
 export default function Tenants({ tenants = [], property }) {
+  const theme = useTheme();
   const user = fetchLoggedInUser();
   const [updateTenant] = useUpdateTenantByIdMutation();
   const [updateProperty] = useUpdatePropertyByIdMutation();
 
   const [showSnackbar, setShowSnackbar] = useState(false);
 
+  const smallFormFactorGt = useMediaQuery(theme.breakpoints.up("sm"));
   const { nextPaymentDueDate } = useSelectedPropertyDetails(property, tenants);
 
   const sortedByPrimaryStatus = (arr) => {
@@ -78,15 +82,17 @@ export default function Tenants({ tenants = [], property }) {
             <CardContent sx={{ p: 1 }}>
               {/* Header with Avatar and Primary Badge */}
               <Box sx={{ display: "flex", alignItems: "flex-start", mb: 2.5 }}>
-                <Avatar
-                  sx={{
-                    bgcolor: "primary.main",
-                    width: 48,
-                    height: 48,
-                  }}
-                >
-                  {tenant.email.charAt(0).toUpperCase()}
-                </Avatar>
+                {smallFormFactorGt ? (
+                  <Avatar
+                    sx={{
+                      bgcolor: "primary.main",
+                      width: 48,
+                      height: 48,
+                    }}
+                  >
+                    {tenant.email.charAt(0).toUpperCase()}
+                  </Avatar>
+                ) : null}
                 <Stack sx={{ ml: 2, flex: 1 }}>
                   <Box
                     sx={{
@@ -95,22 +101,9 @@ export default function Tenants({ tenants = [], property }) {
                       gap: "0.2rem",
                     }}
                   >
-                    <Tooltip title={tenant.email}>
-                      <Typography
-                        flexGrow={1}
-                        variant="subtitle2"
-                        color="primary"
-                        sx={{
-                          whiteSpace: "nowrap",
-                          overflow: "hidden",
-                          alignContent: "center",
-                          textOverflow: "ellipsis",
-                          maxWidth: 150,
-                        }}
-                      >
-                        {tenant.email}
-                      </Typography>
-                    </Tooltip>
+                    <Typography variant="subtitle2" color="primary">
+                      {tenant.email}
+                    </Typography>
                   </Box>
 
                   <Stack direction="row" spacing={1} alignItems="center">
@@ -145,7 +138,6 @@ export default function Tenants({ tenants = [], property }) {
                         <Chip
                           label={dayjs(nextPaymentDueDate).format("DD MMMM")}
                           size="small"
-                          color={tenant?.isPrimary ? "primary" : "background"}
                           sx={{
                             height: 24,
                             fontSize: "0.75rem",
