@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
 
-import { useLocation } from "react-router-dom";
-
 import { ExpandLess, ExpandMore } from "@mui/icons-material";
 import {
   Collapse,
@@ -17,7 +15,6 @@ const NavigationGroup = ({
   pathname,
   childrenRoutes = [],
   navigate,
-  parentRoute,
   theme,
 }) => {
   const [open, setOpen] = useState(false);
@@ -43,9 +40,6 @@ const NavigationGroup = ({
       <Collapse in={open} timeout="auto" unmountOnExit>
         <List component="div" disablePadding sx={{ pl: 4 }}>
           {childrenRoutes.map(({ id, routeUri, label, icon }) => {
-            const shouldBeSelected = [parentRoute].includes(routeUri);
-
-            console.log(routeUri, shouldBeSelected);
             return (
               <ListItemButton
                 key={id}

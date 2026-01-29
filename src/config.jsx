@@ -1,14 +1,6 @@
-import secureLocalStorage from "react-secure-storage";
-
 import { getApps, initializeApp } from "firebase/app";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
-import {
-  deleteDoc,
-  doc,
-  getDoc,
-  getFirestore,
-  setDoc,
-} from "firebase/firestore";
+import { getAuth } from "firebase/auth";
+import { getFirestore } from "firebase/firestore";
 
 // isFirebaseConfigOptionsValid ...
 const isFirebaseConfigOptionsValid = ({ options }) =>
@@ -61,71 +53,6 @@ export const GeneralUserConfigValues = {
 export const authenticatorConfig =
   getApps().find((app) => app.name === "AUTHENTICATOR") ||
   initializeApp(authenticatorFirebaseConfig, "AUTHENTICATOR");
-
-// update user details only if auth config is valid based on auth state
-if (isFirebaseConfigOptionsValid(authenticatorConfig)) {
-  const auth = getAuth(authenticatorConfig);
-  onAuthStateChanged(auth, async (user) => {
-    if (!user) {
-      secureLocalStorage.removeItem("user");
-      return;
-    }
-
-    const email = user.email?.toLowerCase();
-    const userRef = doc(authenticatorFirestore, "users", user.uid);
-    const userSnapshot = await getDoc(userRef);
-
-    if (userSnapshot.exists()) {
-      const userData = userSnapshot.data();
-      if (userData.role) {
-        secureLocalStorage.setItem("user", {
-          uid: user.uid,
-          role: userData.role,
-          email: user.email,
-        });
-        return;
-      }
-    }
-
-    // check invites if the user has any invites
-    const inviteRef = doc(authenticatorFirestore, "invites", email);
-    const inviteSnapshot = await getDoc(inviteRef);
-
-    if (inviteSnapshot.exists()) {
-      const invite = inviteSnapshot.data();
-      // Create user from invite
-      await setDoc(userRef, {
-        uid: user.uid,
-        googleEmailAddress: user.email,
-        googleDisplayName: user.displayName ?? null,
-        googlePhotoURL: user.photoURL ?? null,
-        role: invite.role,
-      });
-
-      // remove invite doc if user is created
-      await deleteDoc(inviteRef);
-
-      secureLocalStorage.setItem("user", {
-        uid: user.uid,
-        role: invite.role,
-        email: user.email,
-      });
-
-      return;
-    }
-
-    // fallback; user is regarded as trial user
-    secureLocalStorage.setItem("user", {
-      uid: user.uid,
-      email: user.email,
-    });
-  });
-} else {
-  /* eslint-disable no-console */
-  console.error(
-    "Invalid Firebase config. Auth state listener not initialized.",
-  );
-}
 
 // authenticatorApp ...
 export const authenticatorApp = isFirebaseConfigOptionsValid(

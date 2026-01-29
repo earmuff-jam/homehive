@@ -154,7 +154,6 @@ export default function NavBar({
                     icon={icon}
                     pathname={pathname}
                     theme={theme}
-                    parentRoute={path}
                     navigate={handleMenuItemClick}
                     childrenRoutes={filterAuthorizedRoutesForNavBar(
                       childRoutes,
