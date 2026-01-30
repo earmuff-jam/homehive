@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
 
-import { v4 as uuidv4 } from "uuid";
-
 import dayjs from "dayjs";
 
 import {
@@ -12,7 +10,6 @@ import {
 import { Grid2, Skeleton } from "@mui/material";
 import CustomSnackbar from "common/CustomSnackbar";
 import { fetchLoggedInUser } from "common/utils";
-import { useCreateWorkspaceMutation } from "features/Api/externalIntegrationsApi";
 import {
   useGetUserDataByIdQuery,
   useUpdateUserByUidMutation,
@@ -30,7 +27,7 @@ const EsignConnectOptions = [
       <HelpOutlineRounded sx={{ fontSize: 32, color: "primary.main", mb: 1 }} />
     ),
     buttonText: "How it works",
-    to: "https://firma.dev/insights",
+    to: "https://goodsign.io/blog/How-GoodSign-Simplifies-Your-Workflow",
   },
   {
     id: 2,
@@ -41,8 +38,8 @@ const EsignConnectOptions = [
         sx={{ fontSize: 32, color: "primary.main", mb: 1 }}
       />
     ),
-    buttonText: "Contact us",
-    to: "https://firma.dev/contact",
+    buttonText: "Contact us via Esign chart support",
+    to: "https://crisp.chat/en/",
   },
   {
     id: 3,
@@ -52,7 +49,7 @@ const EsignConnectOptions = [
       <SecurityRounded sx={{ fontSize: 32, color: "primary.main", mb: 1 }} />
     ),
     buttonText: "View Compliance",
-    to: "https://firma.dev/insights/how-to-keep-your-e-signatures-secure-without-adding-complexity",
+    to: "https://goodsign.io/security",
   },
 ];
 
@@ -65,7 +62,6 @@ export default function EsignConnect() {
     });
 
   const [updateUser, updateUserResult] = useUpdateUserByUidMutation();
-  const [createWorkspace, createWorkspaceResult] = useCreateWorkspaceMutation();
 
   const [showSnackbar, setShowSnackbar] = useState(false);
 
@@ -78,19 +74,6 @@ export default function EsignConnect() {
         ...data,
       },
     });
-  };
-
-  // fetch unique workspaceID only if none exists
-  const connectEsign = () => {
-    if (!userData?.esignAccountWorkspaceId) {
-      createWorkspace({ workspaceId: uuidv4() });
-    } else {
-      updateUsr({
-        esignAccountIsActive: true,
-        updatedOn: dayjs().toISOString(),
-        updatedBy: user?.uid,
-      });
-    }
   };
 
   const disconnectEsign = () =>
@@ -106,30 +89,13 @@ export default function EsignConnect() {
     }
   }, [updateUserResult.isLoading]);
 
-  useEffect(() => {
-    if (createWorkspaceResult.isSuccess) {
-      const data = createWorkspaceResult?.data;
-      const workspaceId = createWorkspaceResult.originalArgs.workspaceId;
-      updateUsr({
-        esignAccountIsActive: true,
-        esignAccountWorkspaceId: workspaceId,
-        esignAccountWorkspaceName: data?.name,
-        esignAccountWorkspaceCreatedAt: data?.createdAt,
-        updatedBy: user?.uid,
-        updatedOn: dayjs().toISOString(),
-      });
-    }
-  }, [createWorkspaceResult.isLoading]);
-
   if (isUserDataFromDbLoading) return <Skeleton height="10rem" width="100%" />;
 
   return (
     <Grid2 container spacing={2}>
       <Grid2 size={12}>
         <StatusCard
-          connectEsign={connectEsign}
-          isUpdateUserLoading={updateUserResult.isLoading}
-          handleClick={isEsignConnected ? disconnectEsign : connectEsign}
+          disconnectEsign={disconnectEsign}
           isEsignConnected={isEsignConnected}
           esignAccountWorkspaceId={userData?.esignAccountWorkspaceId}
         />

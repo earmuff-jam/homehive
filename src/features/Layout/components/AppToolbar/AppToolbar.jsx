@@ -5,6 +5,7 @@ import { matchPath, useLocation, useNavigate } from "react-router-dom";
 import { MenuOutlined } from "@mui/icons-material";
 import {
   AppBar,
+  Button,
   IconButton,
   Stack,
   Toolbar,
@@ -13,7 +14,6 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import AButton from "common/AButton";
 import CustomSnackbar from "common/CustomSnackbar";
 import { DefaultTourStepsMapperObj } from "common/TourSteps";
 import { fetchLoggedInUser } from "common/utils";
@@ -142,13 +142,9 @@ export default function AppToolbar({
         <Stack direction="row" spacing={1} alignItems="center">
           {user?.uid && (
             <Tooltip title="logout">
-              <AButton
-                label="Logout"
-                variant="outlined"
-                size="small"
-                disabled={false} // support demo users
-                onClick={() => logout()}
-              />
+              <Button variant="outlined" size="small" onClick={() => logout()}>
+                Logout
+              </Button>
             </Tooltip>
           )}
           <MenuOptions

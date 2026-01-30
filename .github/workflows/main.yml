@@ -26,6 +26,10 @@ jobs:
         run: |
           npm run lint
 
+      - name: Run prettier checks
+        run: |
+          npm run prettierc
+
       - name: Run jest tests
         run: |
           npm run test

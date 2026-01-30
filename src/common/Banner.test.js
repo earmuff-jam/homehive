@@ -4,7 +4,7 @@ import { useLocation } from "react-router-dom";
 
 import Banner from "./Banner";
 import { render, screen } from "@testing-library/react";
-import { isBannerVisible } from "common/utils";
+import { isBasePlanUser } from "common/utils";
 
 // mock react-router
 jest.mock("react-router-dom", () => ({
@@ -13,7 +13,7 @@ jest.mock("react-router-dom", () => ({
 
 // mock util
 jest.mock("common/utils", () => ({
-  isBannerVisible: jest.fn(),
+  isBasePlanUser: jest.fn(),
 }));
 
 describe("Banner Jest Tests", () => {
@@ -22,9 +22,9 @@ describe("Banner Jest Tests", () => {
       jest.clearAllMocks();
     });
 
-    it("renders banner when isBannerVisible returns true", () => {
+    it("renders banner when isBasePlanUser returns true", () => {
       useLocation.mockReturnValue({ pathname: "/dashboard" });
-      isBannerVisible.mockReturnValue(true);
+      isBasePlanUser.mockReturnValue(true);
 
       render(<Banner />);
 
@@ -33,9 +33,9 @@ describe("Banner Jest Tests", () => {
       ).toBeInTheDocument();
     });
 
-    it("does not render banner when isBannerVisible returns false", () => {
+    it("does not render banner when isBasePlanUser returns false", () => {
       useLocation.mockReturnValue({ pathname: "/dashboard" });
-      isBannerVisible.mockReturnValue(false);
+      isBasePlanUser.mockReturnValue(false);
 
       render(<Banner />);
 

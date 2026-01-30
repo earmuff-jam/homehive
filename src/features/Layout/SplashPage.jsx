@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 import { HomeRounded, ReceiptRounded } from "@mui/icons-material";
 import { Alert, Box, Container, Stack, Typography } from "@mui/material";
+import AButton from "common/AButton";
 import {
   InvoiceDashboardRouteUri,
   PropertiesRouteUri,
@@ -12,6 +13,8 @@ import {
 } from "common/utils";
 import { useAuthenticateMutation } from "features/Api/firebaseUserApi";
 import { Role } from "features/Auth/AuthHelper";
+import Pricing from "features/Layout/components/Pricing/Pricing";
+import Review from "features/Layout/components/Review/Review";
 import TitleCard from "features/Layout/components/TitleCard/TitleCard";
 import { useAppTitle } from "hooks/useAppTitle";
 
@@ -127,6 +130,74 @@ export default function SplashPage() {
               />
             }
             onClick={() => navigate(InvoiceDashboardRouteUri)}
+          />
+        </Stack>
+        {/* Reviews */}
+        <Stack direction="column" gap={2} marginTop="5rem">
+          <Typography
+            textAlign="center"
+            variant="h2"
+            sx={{
+              fontWeight: 300,
+              mb: 1,
+            }}
+          >
+            See what our users have to say
+          </Typography>
+
+          <Typography
+            textAlign="center"
+            variant="body1"
+            sx={{
+              color: "#999",
+              fontWeight: 300,
+            }}
+          >
+            Trusted by our regular users — read their reviews
+          </Typography>
+          <Review />
+        </Stack>
+        {/* Subscription Fees */}
+        <Stack direction="column" gap={2} marginTop="5rem">
+          <Typography
+            textAlign="center"
+            variant="h2"
+            sx={{
+              fontWeight: 300,
+              mb: 1,
+            }}
+          >
+            Subscription and Fees
+          </Typography>
+
+          <Typography
+            textAlign="center"
+            variant="body1"
+            sx={{
+              color: "#999",
+              fontWeight: 300,
+            }}
+          >
+            Simple plans designed to fit your needs — subscribe to get started
+          </Typography>
+          <Pricing />
+        </Stack>
+        {/* Subscription Fees */}
+        <Stack direction="column" gap={2} marginTop="1rem">
+          <Typography
+            textAlign="center"
+            variant="body1"
+            sx={{
+              color: "#999",
+              fontWeight: 300,
+            }}
+          >
+            Login with Google and subscribe to get started.
+          </Typography>
+          <AButton
+            label="Login with Google"
+            variant="outlined"
+            onClick={handleAuthenticate}
           />
         </Stack>
       </Container>

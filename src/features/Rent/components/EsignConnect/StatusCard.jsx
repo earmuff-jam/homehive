@@ -1,22 +1,69 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+
+import { useForm } from "react-hook-form";
+
+import { v4 as uuidv4 } from "uuid";
+
+import dayjs from "dayjs";
 
 import {
   AddLinkRounded,
-  CloudCircleRounded,
   RemoveCircleOutlineRounded,
 } from "@mui/icons-material";
 import { Alert, Box, Card, Stack, Tooltip, Typography } from "@mui/material";
-import AButton from "common/AButton";
 import AIconButton from "common/AIconButton";
+import CustomSnackbar from "common/CustomSnackbar";
 import RowHeader from "common/RowHeader";
+import { fetchLoggedInUser } from "common/utils";
+import { useUpdateUserByUidMutation } from "features/Api/firebaseUserApi";
+import EsignAgreement from "features/Rent/components/EsignConnect/EsignAgreement";
 
 export default function StatusCard({
   isEsignConnected,
-  handleClick,
-  connectEsign,
-  isUpdateUserLoading,
+  disconnectEsign,
   esignAccountWorkspaceId,
 }) {
+  const user = fetchLoggedInUser();
+
+  const [updateUser, updateUserResult] = useUpdateUserByUidMutation();
+
+  const [showSnackbar, setShowSnackbar] = useState(false);
+
+  const { watch, control, handleSubmit } = useForm({
+    mode: "onChange",
+    defaultValues: {
+      noLegalAdviceDisclaimerAgreement: false,
+      noComplianceDisclaimerAgreement: false,
+    },
+  });
+
+  const hasAcceptedAllAgreements =
+    watch("noLegalAdviceDisclaimerAgreement") &&
+    watch("noComplianceDisclaimerAgreement");
+
+  const onSubmit = (data) => {
+    const draftData = {
+      ...data,
+      esignAccountIsActive: true,
+      esignAccountWorkspaceId: uuidv4(),
+      esignDisclaimersSignedAt: dayjs().toISOString(),
+      createdBy: user?.uid,
+      createdOn: dayjs().toISOString(),
+      updatedBy: user?.uid,
+      updatedOn: dayjs().toISOString(),
+    };
+    updateUser({
+      uid: user?.uid,
+      newData: draftData,
+    });
+  };
+
+  useEffect(() => {
+    if (updateUserResult.isSuccess) {
+      setShowSnackbar(true);
+    }
+  }, [updateUserResult.isLoading]);
+
   return (
     <Card elevation={0} sx={{ p: 1 }}>
       <Box sx={{ display: "flex", alignItems: "center" }}>
@@ -43,24 +90,24 @@ export default function StatusCard({
                   <AddLinkRounded color="error" fontSize="small" />
                 )
               }
-              onClick={handleClick}
+              onClick={disconnectEsign}
             />
           </Tooltip>
         </Box>
       </Box>
-      <Alert severity={!isEsignConnected ? "info" : "success"}>
-        Link with our provider esign account for easy access for signed
-        documents.
-      </Alert>
+      <Box margin={0.5}>
+        <Alert severity="warning">
+          Landlord tenant laws may vary by city and property type. This platform
+          provides document automation services, not legal services.
+        </Alert>
+      </Box>
 
       {!isEsignConnected ? (
-        <AButton
-          sx={{ mt: 2 }}
-          startIcon={<CloudCircleRounded fontSize="small" />}
-          label="Link Esign"
-          variant="contained"
-          onClick={connectEsign}
-          loading={isUpdateUserLoading}
+        <EsignAgreement
+          control={control}
+          onSubmit={handleSubmit(onSubmit)}
+          isEsignLinkDisabled={!hasAcceptedAllAgreements}
+          isButtonComponentLoading={updateUserResult.isLoading}
         />
       ) : (
         <>
@@ -88,6 +135,11 @@ export default function StatusCard({
           </Stack>
         </>
       )}
+      <CustomSnackbar
+        showSnackbar={showSnackbar}
+        setShowSnackbar={setShowSnackbar}
+        title="Changes saved."
+      />
     </Card>
   );
 }

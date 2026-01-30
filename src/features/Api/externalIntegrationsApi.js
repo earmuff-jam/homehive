@@ -26,17 +26,6 @@ export const externalIntegrationsApi = createApi({
       }),
       providesTags: [TagTypes.EsignWorkspaces],
     }),
-    createWorkspace: builder.mutation({
-      query: (workspaceId) => ({
-        method: "POST",
-        body: JSON.stringify({
-          fUrl: "0014_create_esign_workspace",
-          fMethod: "POST",
-          payload: workspaceId,
-        }),
-      }),
-      invalidatesTags: [TagTypes.EsignWorkspaces],
-    }),
     getEsignTemplates: builder.query({
       query: (userId) => ({
         method: "POST",
@@ -85,7 +74,6 @@ export const externalIntegrationsApi = createApi({
 
 export const {
   useGetEsignTemplatesQuery,
-  useCreateWorkspaceMutation,
   useGetWorkspacesMutation,
   useCreateTemplateMutation,
   useDeleteTemplateMutation,

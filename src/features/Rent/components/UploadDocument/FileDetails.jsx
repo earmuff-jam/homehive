@@ -2,10 +2,7 @@ import React from "react";
 
 import dayjs from "dayjs";
 
-import {
-  CloseOutlined,
-  DescriptionOutlined,
-} from "@mui/icons-material";
+import { CloseOutlined, DescriptionOutlined } from "@mui/icons-material";
 import { Avatar, Stack, Typography } from "@mui/material";
 import AIconButton from "common/AIconButton";
 
@@ -32,7 +29,7 @@ export default function FileDetails({ selectedFile, reset }) {
       spacing={1}
     >
       <Avatar sx={{ bgcolor: "primary.main", width: 70, height: 70 }}>
-        <DescriptionOutlined fontSize="large"/>
+        <DescriptionOutlined fontSize="large" />
       </Avatar>
       <Stack direction="column">
         <Stack direction="row" alignItems="center" spacing={1}>

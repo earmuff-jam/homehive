@@ -4,28 +4,14 @@ import { useNavigate, useOutletContext } from "react-router-dom";
 
 import dayjs from "dayjs";
 
-import {
-  CancelRounded,
-  DeblurRounded,
-  DraftsRounded,
-  LocalAtmRounded,
-  PaidRounded,
-} from "@mui/icons-material";
 import { Container, Stack, Typography } from "@mui/material";
 import EmptyComponent from "common/EmptyComponent";
 import RowHeader from "common/RowHeader";
 import { EditInvoiceRouteUri } from "common/utils";
 import ReportTable from "features/Invoice/components/PdfViewer/ReportTable";
 import Salutation from "features/Invoice/components/UserInfo/Salutation";
+import { DefaultInvoiceStatusIcons } from "features/Invoice/constants";
 import { useAppTitle } from "hooks/useAppTitle";
-
-const DefaultInvoiceStatusIcons = {
-  Paid: <PaidRounded fontSize="small" />,
-  Draft: <DraftsRounded fontSize="small" />,
-  Overdue: <LocalAtmRounded fontSize="small" />,
-  Cancelled: <CancelRounded fontSize="small" />,
-  None: <DeblurRounded fontSize="small" />,
-};
 
 export default function PdfViewer() {
   useAppTitle("View Invoice");

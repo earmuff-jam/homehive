@@ -8,17 +8,17 @@ import { useState } from "react";
 export function generateInvoiceHTML(recieverInfo, data, invoiceStatus = "") {
   return `
     <p> Dear ${
-      recieverInfo.first_name
+      recieverInfo.firstName
     }, Please see the attached invoice details.</p>
     <br />
     <br />
     <h2>${data.title}</h2>
-    <p><strong>Header:</strong> ${data.invoice_header}</p>
+    <p><strong>Header:</strong> ${data.invoiceHeader}</p>
 
     <p style="color: red;"><strong>Invoice Status: ${invoiceStatus}</strong></p>
 
-    <p><strong>Date Range:</strong> ${data.start_date} to ${data.end_date}</p>
-    <p><strong>Tax Rate:</strong> ${data.tax_rate}%</p>
+    <p><strong>Date Range:</strong> ${data.startDate} to ${data.endDate}</p>
+    <p><strong>Tax Rate:</strong> ${data.taxRate}%</p>
 
     <table border="1" cellpadding="5" cellspacing="0" style="border-collapse: collapse; width: 100%;">
       <thead>
@@ -43,7 +43,7 @@ export function generateInvoiceHTML(recieverInfo, data, invoiceStatus = "") {
             <td>${item.quantity}</td>
             <td>$${item.price}</td>
             <td>$${item.payment}</td>
-            <td>${item.payment_method}</td>
+            <td>${item.paymentMethod}</td>
           </tr>
         `,
           )

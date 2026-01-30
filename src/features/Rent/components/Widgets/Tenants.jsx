@@ -165,7 +165,7 @@ export default function Tenants({ tenants = [], property }) {
               <Paper
                 elevation={0}
                 sx={{
-                  padding: "1rem",
+                  padding: 1,
                   bgcolor: "background.default",
                 }}
               >

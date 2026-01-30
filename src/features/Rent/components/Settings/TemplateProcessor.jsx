@@ -26,7 +26,7 @@ export const handleQuickConnectAction = (
   const user = fetchLoggedInUser();
 
   const unit = primaryTenant?.term.endsWith("y") ? "year" : "month";
-  const leaseEndDate = dayjs(primaryTenant?.start_date)
+  const leaseEndDate = dayjs(primaryTenant?.startDate)
     .add(parseInt(primaryTenant?.term), unit)
     .format("MM-DD-YYYY");
 

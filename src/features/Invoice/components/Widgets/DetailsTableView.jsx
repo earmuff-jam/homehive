@@ -29,7 +29,7 @@ const DetailsTableView = ({ label, caption }) => {
     if (draftInvoiceStatus) {
       formattedData = {
         ...formattedData,
-        invoice_status: draftInvoiceStatus?.label,
+        invoiceStatus: draftInvoiceStatus?.label,
       };
     }
 

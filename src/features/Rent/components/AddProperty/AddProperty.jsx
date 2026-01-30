@@ -349,11 +349,11 @@ export default function AddProperty({
                 </Typography>
               </Stack>
             }
-            id="rent_increment"
+            id="rentIncrement"
             placeholder="Projected Rent Increase in USD. Eg, 200.00"
-            errorMsg={errors.rent_increment?.message}
+            errorMsg={errors.rentIncrement?.message}
             inputProps={{
-              ...register("rent_increment", {
+              ...register("rentIncrement", {
                 required:
                   "Projected Rent Increase is required and must be in number format.",
                 pattern: {
