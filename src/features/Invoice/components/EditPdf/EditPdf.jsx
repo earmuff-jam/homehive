@@ -33,7 +33,10 @@ import {
   useUpsertPdfDetailsMutation,
 } from "features/Api/invoiceApi";
 import EditPdfLineItemAccordion from "features/Invoice/components/EditPdf/EditPdfLineItemAccordion";
-import { DefaultInvoiceStatusOptions } from "features/Invoice/constants";
+import {
+  DefaultInvoiceStatusIcons,
+  DefaultInvoiceStatusOptions,
+} from "features/Invoice/constants";
 import { useAppTitle } from "hooks/useAppTitle";
 import { produce } from "immer";
 
@@ -365,13 +368,17 @@ export default function EditPdf({
             </Stack>
           </Tooltip>
           <MenuList>
-            {options.map(({ id, label, icon, selected }) => (
-              <MenuItem key={id} onClick={() => handleSelection(label)}>
-                <ListItemIcon>{icon}</ListItemIcon>
-                <ListItemText>{label}</ListItemText>
-                {selected ? <CheckRounded /> : null}
-              </MenuItem>
-            ))}
+            {options.map(({ id, label, selected }) => {
+              const selectedIcon = DefaultInvoiceStatusIcons[label];
+
+              return (
+                <MenuItem key={id} onClick={() => handleSelection(label)}>
+                  <ListItemIcon>{selectedIcon}</ListItemIcon>
+                  <ListItemText>{label}</ListItemText>
+                  {selected ? <CheckRounded /> : null}
+                </MenuItem>
+              );
+            })}
           </MenuList>
         </Paper>
 

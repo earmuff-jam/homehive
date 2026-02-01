@@ -1,3 +1,13 @@
+import React from "react";
+
+import {
+  CancelRounded,
+  DeblurRounded,
+  DraftsRounded,
+  LocalAtmRounded,
+  PaidRounded,
+} from "@mui/icons-material";
+
 // WidgetTypeList ...
 // defines a constants of various types of widgets
 export const WidgetTypeList = [
@@ -87,6 +97,16 @@ export const DefaultInvoiceStatusOptions = [
     display: false, // does not display status if none is selected
   },
 ];
+
+// DefaultInvoiceStatusIcons ...
+// defines a invoice status icons
+export const DefaultInvoiceStatusIcons = {
+  Paid: <PaidRounded fontSize="small" />,
+  Draft: <DraftsRounded fontSize="small" />,
+  Overdue: <LocalAtmRounded fontSize="small" />,
+  Cancelled: <CancelRounded fontSize="small" />,
+  None: <DeblurRounded fontSize="small" />,
+};
 
 // InvoiceCategoryOptions ...
 // defines options for inovoice category

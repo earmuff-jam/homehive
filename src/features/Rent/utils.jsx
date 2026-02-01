@@ -18,10 +18,10 @@ import { produce } from "immer";
 export const PaidRentStatusEnumValue = "paid";
 export const ManualRentStatusEnumValue = "manual";
 
-export const CreateInvoiceEnumValue = "Create_Invoice";
-export const SendDefaultInvoiceEnumValue = "Send_Default_Invoice";
-export const PaymentReminderEnumValue = "Payment_Reminder";
-export const RenewLeaseNoticeEnumValue = "Renew_Lease_Notice_Enum_Value";
+export const CreateInvoiceEnumValue = "CreateInvoice";
+export const SendDefaultInvoiceEnumValue = "SendDefaultInvoice";
+export const PaymentReminderEnumValue = "PaymentReminder";
+export const RenewLeaseNoticeEnumValue = "RenewLeaseNoticeEnumValue";
 
 // stripHTMLForEmailMessages ...
 // defines a fuction that returns email messages that are stripped from its html contents

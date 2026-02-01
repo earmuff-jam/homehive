@@ -22,38 +22,46 @@ jest.mock("common/AIconButton", () => {
   };
 });
 
+jest.mock(
+  "features/Rent/components/EsignConnect/EsignAgreement",
+  () =>
+    ({ isEsignLinkDisabled }) => (
+      <button disabled={isEsignLinkDisabled}>Link Esign</button>
+    ),
+);
+
+jest.mock("features/Api/firebaseUserApi", () => ({
+  useUpdateUserByUidMutation: jest.fn(() => [
+    jest.fn(),
+    {
+      isSuccess: false,
+      isLoading: false,
+    },
+  ]),
+}));
+
 describe("StatusCard tests", () => {
-  describe("StatusCard snapshot tests", () => {
-    it("matches AddRentRecords snapshot", () => {
-      const defaultProps = {
-        isEsignConnected: false,
-        handleClick: jest.fn(),
-        connectEsign: jest.fn(),
-        isUpdateUserLoading: false,
-        esignAccountWorkspaceId: "WS-123",
-      };
+  const defaultProps = {
+    isEsignConnected: false,
+    disconnectEsign: jest.fn(),
+    esignAccountWorkspaceId: "WS-123",
+  };
+
+  describe("snapshot tests", () => {
+    it("matches snapshot when not connected", () => {
       const { asFragment } = render(<StatusCard {...defaultProps} />);
       expect(asFragment()).toMatchSnapshot();
     });
   });
-  describe("StatusCard component tests", () => {
-    const defaultProps = {
-      isEsignConnected: false,
-      handleClick: jest.fn(),
-      connectEsign: jest.fn(),
-      isUpdateUserLoading: false,
-      esignAccountWorkspaceId: "WS-123",
-    };
 
-    test("renders Link Esign button when not connected", () => {
+  describe("component behavior tests", () => {
+    test("renders disabled Link Esign button when not connected", () => {
       render(<StatusCard {...defaultProps} />);
 
-      expect(screen.getByText("Link Esign")).toBeInTheDocument();
-      expect(
-        screen.getByText(
-          "Link with our provider esign account for easy access for signed documents.",
-        ),
-      ).toBeInTheDocument();
+      const button = screen.getByText("Link Esign");
+
+      expect(button).toBeInTheDocument();
+      expect(button).toBeDisabled();
     });
 
     test("renders workspace details when connected", () => {

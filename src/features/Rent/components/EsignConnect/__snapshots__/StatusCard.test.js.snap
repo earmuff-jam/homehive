@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`StatusCard tests StatusCard snapshot tests matches AddRentRecords snapshot 1`] = `
+exports[`StatusCard tests snapshot tests matches snapshot when not connected 1`] = `
 <DocumentFragment>
   <div
     class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation0 MuiCard-root css-vv2cv8-MuiPaper-root-MuiCard-root"
@@ -51,32 +51,38 @@ exports[`StatusCard tests StatusCard snapshot tests matches AddRentRecords snaps
       </div>
     </div>
     <div
-      class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation0 MuiAlert-root MuiAlert-colorInfo MuiAlert-standardInfo MuiAlert-standard css-k1p3sh-MuiPaper-root-MuiAlert-root"
-      role="alert"
-      style="--Paper-shadow: none;"
+      class="MuiBox-root css-1kxrbkv"
     >
       <div
-        class="MuiAlert-icon css-vab54s-MuiAlert-icon"
+        class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation0 MuiAlert-root MuiAlert-colorWarning MuiAlert-standardWarning MuiAlert-standard css-10cv5sc-MuiPaper-root-MuiAlert-root"
+        role="alert"
+        style="--Paper-shadow: none;"
       >
-        <svg
-          aria-hidden="true"
-          class="MuiSvgIcon-root MuiSvgIcon-fontSizeInherit css-1ckov0h-MuiSvgIcon-root"
-          data-testid="InfoOutlinedIcon"
-          focusable="false"
-          viewBox="0 0 24 24"
+        <div
+          class="MuiAlert-icon css-vab54s-MuiAlert-icon"
         >
-          <path
-            d="M11,9H13V7H11M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20, 12C20,16.41 16.41,20 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10, 10 0 0,0 12,2M11,17H13V11H11V17Z"
-          />
-        </svg>
-      </div>
-      <div
-        class="MuiAlert-message css-zioonp-MuiAlert-message"
-      >
-        Link with our provider esign account for easy access for signed documents.
+          <svg
+            aria-hidden="true"
+            class="MuiSvgIcon-root MuiSvgIcon-fontSizeInherit css-1ckov0h-MuiSvgIcon-root"
+            data-testid="ReportProblemOutlinedIcon"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M12 5.99L19.53 19H4.47L12 5.99M12 2L1 21h22L12 2zm1 14h-2v2h2v-2zm0-6h-2v4h2v-4z"
+            />
+          </svg>
+        </div>
+        <div
+          class="MuiAlert-message css-zioonp-MuiAlert-message"
+        >
+          Landlord tenant laws may vary by city and property type. This platform provides document automation services, not legal services.
+        </div>
       </div>
     </div>
-    <button>
+    <button
+      disabled=""
+    >
       Link Esign
     </button>
   </div>

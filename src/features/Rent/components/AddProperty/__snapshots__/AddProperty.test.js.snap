@@ -824,8 +824,8 @@ exports[`AddProperty Component Tests AddProperty Snapshot Tests matches AddPrope
               <input
                 aria-invalid="false"
                 class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputSizeSmall css-1pzfmz2-MuiInputBase-input-MuiOutlinedInput-input"
-                id="rent_increment"
-                name="rent_increment"
+                id="rentIncrement"
+                name="rentIncrement"
                 placeholder="Projected Rent Increase in USD. Eg, 200.00"
                 type="text"
                 value=""

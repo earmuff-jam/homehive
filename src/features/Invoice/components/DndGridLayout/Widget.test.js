@@ -1,6 +1,7 @@
 import React from "react";
-import { render, screen } from "@testing-library/react";
+
 import Widget from "./Widget";
+import { render, screen } from "@testing-library/react";
 
 describe("Widget", () => {
   const mockHandleRemoveWidget = jest.fn();
@@ -21,7 +22,7 @@ describe("Widget", () => {
         handleRemoveWidget={mockHandleRemoveWidget}
       >
         <div>Child Content</div>
-      </Widget>
+      </Widget>,
     );
 
     expect(screen.getByText(/Child Content/i)).toBeInTheDocument();
@@ -36,7 +37,7 @@ describe("Widget", () => {
         handleRemoveWidget={mockHandleRemoveWidget}
       >
         <div>Child Content</div>
-      </Widget>
+      </Widget>,
     );
 
     expect(asFragment()).toMatchSnapshot();

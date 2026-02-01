@@ -60,9 +60,9 @@ export const fetchLoggedInUser = () => {
   return secureLocalStorage.getItem("user");
 };
 
-// isBannerVisible ...
-// defines a function to know when to display banner
-export const isBannerVisible = (pathname = "") => {
+// isBasePlanUser ...
+// defines a function to determine if a user is without a role
+export const isBasePlanUser = (pathname = "") => {
   if (pathname.includes(MainRentAppRouteUri)) {
     const user = fetchLoggedInUser();
     if (!user?.role) return true;

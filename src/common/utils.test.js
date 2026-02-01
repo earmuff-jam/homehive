@@ -39,19 +39,19 @@ describe("Utils function tests", () => {
     });
   });
 
-  describe("isBannerVisible function tests", () => {
+  describe("isBasePlanUser function tests", () => {
     beforeEach(() => {
       jest.clearAllMocks();
     });
 
     it("returns true if user has no role and path includes MainRentAppRouteUri", () => {
       fetchLoggedInUser.mockReturnValue({});
-      expect(utils.isBannerVisible("/rent/properties")).toBe(true);
+      expect(utils.isBasePlanUser("/rent/properties")).toBe(true);
     });
 
     it("returns false if path does not include MainRentAppRouteUri", () => {
       fetchLoggedInUser.mockReturnValue({});
-      expect(utils.isBannerVisible("/invoice/dashboard")).toBe(false);
+      expect(utils.isBasePlanUser("/invoice/dashboard")).toBe(false);
     });
   });
 });

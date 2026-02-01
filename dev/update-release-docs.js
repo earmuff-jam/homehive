@@ -11,7 +11,10 @@ const event = JSON.parse(
 );
 
 const inputs = event.inputs || {};
-const releaseDocsOutboundFile = path.join(__dirname, "../public/release-docs.json");
+const releaseDocsOutboundFile = path.join(
+  __dirname,
+  "../public/release-docs.json",
+);
 
 const version = (inputs.version || "").replace(/^v/, "");
 const date = inputs.date || "";

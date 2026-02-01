@@ -18,7 +18,7 @@ export default function EsignTemplateDetails({
     () => [
       {
         accessorKey: "name",
-        header: "Template Name",
+        header: "Name",
         Cell: ({ cell }) => (
           <Typography variant="subtitle2" color="success">
             {cell.getValue() ? cell.getValue() : "-"}
