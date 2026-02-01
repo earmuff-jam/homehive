@@ -1,4 +1,4 @@
-import React, { forwardRef } from "react";
+import React, { forwardRef, useMemo } from "react";
 
 import { useLocation } from "react-router-dom";
 
@@ -29,13 +29,20 @@ const analyticsEnabled = import.meta.env.VITE_ENABLE_ANALYTICS || "false";
  */
 
 const AButton = forwardRef(function AButton(
-  { label, onClick = () => {}, loading = false, disabled = true, ...rest },
+  { label, onClick = () => {}, loading = false, disabled = false, ...rest },
   ref,
 ) {
   const location = useLocation();
   const starterPlanUser = isBasePlanUser(location.pathname);
 
   const buttonAnalytics = useButtonAnalytics();
+
+  const shouldDisableClick = useMemo(() => {
+    if (starterPlanUser) {
+      return true;
+    }
+    return disabled;
+  }, [starterPlanUser, disabled]);
 
   const handleClick = (ev) => {
     // log data only if analytics is enabled
@@ -50,7 +57,7 @@ const AButton = forwardRef(function AButton(
       ref={ref}
       onClick={handleClick}
       loading={loading}
-      disabled={disabled || starterPlanUser}
+      disabled={shouldDisableClick}
       {...rest} // at the end so that we can overwrite default settings
     >
       {label}
