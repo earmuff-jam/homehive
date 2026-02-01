@@ -305,7 +305,7 @@ export default function AssociateTenantPopup({
         {/* Initial animal voilation fee and daily animal voilation fee */}
         <Stack direction={{ xs: "column", md: "row" }} spacing={2}>
           <TextFieldWithLabel
-           label={
+            label={
               <Stack direction="row" alignItems="center">
                 <Tooltip title="Initial Animal Voilation Fee is the voilation fee applied the first day after the voilation was noted. Eg, an initial animal voilation fee would be eg, $300.00">
                   <InfoRounded
@@ -314,7 +314,9 @@ export default function AssociateTenantPopup({
                     sx={{ fontSize: "0.875rem", margin: "0.2rem" }}
                   />
                 </Tooltip>
-                <Typography variant="subtitle2">Initial Animal Voilation Fee *</Typography>
+                <Typography variant="subtitle2">
+                  Initial Animal Voilation Fee *
+                </Typography>
               </Stack>
             }
             id="initialAnimalVoilationFee"

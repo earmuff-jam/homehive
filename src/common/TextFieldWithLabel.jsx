@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Box, Stack, TextField, Tooltip, Typography } from "@mui/material";
+import { Box, Stack, TextField, Tooltip } from "@mui/material";
 
 const TextFieldWithLabel = React.forwardRef(
   (
