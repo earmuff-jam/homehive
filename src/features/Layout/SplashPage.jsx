@@ -3,8 +3,14 @@ import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { HomeRounded, ReceiptRounded } from "@mui/icons-material";
-import { Alert, Box, Container, Stack, Typography } from "@mui/material";
-import AButton from "common/AButton";
+import {
+  Alert,
+  Box,
+  Button,
+  Container,
+  Stack,
+  Typography,
+} from "@mui/material";
 import {
   InvoiceDashboardRouteUri,
   PropertiesRouteUri,
@@ -194,11 +200,9 @@ export default function SplashPage() {
           >
             Login with Google and subscribe to get started.
           </Typography>
-          <AButton
-            label="Login with Google"
-            variant="outlined"
-            onClick={handleAuthenticate}
-          />
+          <Button variant="outlined" onClick={handleAuthenticate}>
+            Login with Google
+          </Button>
         </Stack>
       </Container>
     </Box>
