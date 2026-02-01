@@ -6,7 +6,6 @@ import {
   AccordionDetails,
   AccordionSummary,
   Box,
-  IconButton,
   Stack,
   Typography,
 } from "@mui/material";
@@ -39,7 +38,7 @@ export default function FaqDetails({ data }) {
                 expandIcon={<ExpandMoreIcon fontSize="small" />}
               >
                 <Stack direction="row" spacing={1}>
-                  <IconButton size="small">{item.icon}</IconButton>
+                  <Box sx={{ color: "info.main" }}>{item.icon}</Box>
                   <Typography fontWeight="bold" fontSize="0.875rem">
                     {item.q}
                   </Typography>

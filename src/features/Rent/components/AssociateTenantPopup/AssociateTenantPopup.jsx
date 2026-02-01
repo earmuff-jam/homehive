@@ -245,7 +245,18 @@ export default function AssociateTenantPopup({
         {/* Initial Late Fee and Daily Late Fee */}
         <Stack direction={{ xs: "column", md: "row" }} spacing={2}>
           <TextFieldWithLabel
-            label="Initial Late Fee *"
+            label={
+              <Stack direction="row" alignItems="center">
+                <Tooltip title="Initial Late fee is the late fee applied the first day after the grace period is over. Eg, an initial late fee would be eg, $75.00">
+                  <InfoRounded
+                    color="secondary"
+                    fontSize="small"
+                    sx={{ fontSize: "0.875rem", margin: "0.2rem" }}
+                  />
+                </Tooltip>
+                <Typography variant="subtitle2">Initial Late fee *</Typography>
+              </Stack>
+            }
             id="initialLateFee"
             placeholder="Initial Late fee. Eg, 75.00"
             errorMsg={errors.initialLateFee?.message}
@@ -294,7 +305,20 @@ export default function AssociateTenantPopup({
         {/* Initial animal voilation fee and daily animal voilation fee */}
         <Stack direction={{ xs: "column", md: "row" }} spacing={2}>
           <TextFieldWithLabel
-            label="Initial Animal Voilation Fee *"
+            label={
+              <Stack direction="row" alignItems="center">
+                <Tooltip title="Initial Animal Voilation Fee is the voilation fee applied the first day after the voilation was noted. Eg, an initial animal voilation fee would be eg, $300.00">
+                  <InfoRounded
+                    color="secondary"
+                    fontSize="small"
+                    sx={{ fontSize: "0.875rem", margin: "0.2rem" }}
+                  />
+                </Tooltip>
+                <Typography variant="subtitle2">
+                  Initial Animal Voilation Fee *
+                </Typography>
+              </Stack>
+            }
             id="initialAnimalVoilationFee"
             placeholder="Initial Animal Voilation fee. Eg, 300.00"
             errorMsg={errors.initialAnimalVoilationFee?.message}

@@ -16,12 +16,11 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
-  ButtonBase,
+  Box,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
-  IconButton,
   Skeleton,
   Stack,
   Typography,
@@ -212,22 +211,21 @@ export default function Properties() {
             >
               <AccordionSummary
                 data-tour="properties-4"
+                onClick={() => {
+                  if (property?.id) {
+                    handleExpand(property.id);
+                    triggerGetRents({
+                      propertyId: property?.id,
+                      tenantEmails: property?.rentees,
+                      rentMonth: dayjs().format("MMMM"),
+                    });
+                  }
+                }}
                 expandIcon={
-                  <IconButton
+                  <ExpandMoreRounded
+                    fontSize="small"
                     data-tour="properties-3"
-                    onClick={() => {
-                      if (property?.id) {
-                        handleExpand(property.id);
-                        triggerGetRents({
-                          propertyId: property?.id,
-                          tenantEmails: property?.rentees,
-                          rentMonth: dayjs().format("MMMM"),
-                        });
-                      }
-                    }}
-                  >
-                    <ExpandMoreRounded fontSize="small" />
-                  </IconButton>
+                  />
                 }
               >
                 <Stack flexGrow={1} spacing={0.5}>
@@ -252,43 +250,45 @@ export default function Properties() {
                           </Typography>
                         </Stack>
                       </Stack>
-                      <ButtonBase
+                      <Stack
+                        sx={{
+                          justifyContent: "left",
+                          textAlign: "left",
+                          borderRadius: 1,
+                          width: "100%",
+                        }}
                         onClick={(ev) => {
                           ev.stopPropagation();
                           navigate(`/rent/property/${property?.id}`);
                         }}
                       >
-                        <Stack
-                          sx={{
-                            justifyContent: "left",
-                            textAlign: "left",
-                            borderRadius: 1,
-                            width: "100%",
-                          }}
-                        >
-                          <Typography variant="caption">
-                            {property.address}
-                          </Typography>
-                          <Typography variant="caption">
-                            {property.city} {property.state}, {property.zipcode}
-                          </Typography>
-                        </Stack>
-                      </ButtonBase>
+                        <Typography variant="caption">
+                          {property.address}
+                        </Typography>
+                        <Typography variant="caption">
+                          {property.city} {property.state}, {property.zipcode}
+                        </Typography>
+                      </Stack>
                     </Stack>
                   </Stack>
                 </Stack>
-                <Stack justifyContent="center">
-                  <IconButton
-                    data-tour="properties-2"
-                    size="small"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleUpdate(property.id);
+                <Box
+                  alignContent="center"
+                  data-tour="properties-2"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleUpdate(property.id);
+                  }}
+                >
+                  <DeleteRounded
+                    fontSize="small"
+                    color="error"
+                    sx={{
+                      cursor: "pointer",
+                      "&:hover": { backgroundColor: "action.hover" },
                     }}
-                  >
-                    <DeleteRounded fontSize="small" color="error" />
-                  </IconButton>
-                </Stack>
+                  />
+                </Box>
               </AccordionSummary>
               <AccordionDetails>
                 <ViewPropertyAccordionDetails
