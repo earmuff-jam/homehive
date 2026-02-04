@@ -134,7 +134,7 @@ export default function DocumentsOverview({
               onClick={() => navigate(`${SettingsRouteUri}?tabIdx=2`)}
             >
               Esign here.
-            </Typography>{" "}
+            </Typography>
           </EmptyComponent>
         )}
       </CardContent>
