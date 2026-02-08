@@ -1,6 +1,7 @@
 import React from "react";
 
 import { Box } from "@mui/material";
+import { appendDisclaimer } from "features/Rent/utils";
 
 /**
  * Types of stripe accounts allowed in the system. This matches
@@ -128,25 +129,12 @@ export const processTemplate = (template, variables, userEmail = "") => {
 
   // disclaimers
   if (userEmail) {
-    processedTemplate = processedTemplate.concat(
-      `
-      <div>
-        <p>
-          This email was sent via Quick Connect by ${userEmail}. Please do not reply to this email as this is an auto generated email.
-        </p>
-      </div>
-`,
-    );
+    appendDisclaimer(processedTemplate, userEmail);
   }
 
   return processedTemplate;
 };
 
-/**
- * Tab Panel Common Component
- *
- * used to render the tabs for the settings page
- */
 export function TabPanel({ children, value, index, ...other }) {
   return (
     <div

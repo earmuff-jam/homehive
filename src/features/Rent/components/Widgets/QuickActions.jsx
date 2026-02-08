@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
 
 import {
+  Box,
   Card,
   CardContent,
   Dialog,
@@ -216,13 +217,23 @@ export default function QuickActions({ property }) {
           >
             <DialogTitle>
               {dialog.type === AddPropertyTextString && (
-                <RowHeader
-                  title="Edit property"
-                  caption="Edit property values"
-                  sxProps={{
-                    textAlign: "left",
-                  }}
-                />
+                <Stack direction="row" justifyContent="space-between">
+                  <RowHeader
+                    title="Edit property"
+                    caption={`Edit property details for ${property?.name}`}
+                    sxProps={{
+                      textAlign: "left",
+                    }}
+                  />
+                  <Box>
+                    <AButton
+                      label="Edit Property"
+                      variant="outlined"
+                      onClick={handleSubmit(onSubmit)}
+                      disabled={!isValid || isUpdatePropertyLoading}
+                    />
+                  </Box>
+                </Stack>
               )}
               {dialog.type === AddRentRecordsTextString && (
                 <RowHeader

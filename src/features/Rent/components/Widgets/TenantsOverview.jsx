@@ -26,7 +26,7 @@ export default function TenantsOverview({
   dataTour,
 }) {
   const theme = useTheme();
-  const medFormFactor = useMediaQuery(theme.breakpoints.down("md"));
+  const ltMedFormFactor = useMediaQuery(theme.breakpoints.down("md"));
   return (
     <Card sx={{ mb: 3 }} data-tour={dataTour}>
       <CardContent>
@@ -47,7 +47,7 @@ export default function TenantsOverview({
             <Tooltip title="Associate tenants">
               <Badge badgeContent={tenants.length} color="error">
                 <Box>
-                  {medFormFactor ? (
+                  {ltMedFormFactor ? (
                     <AIconButton
                       size="small"
                       variant="outlined"

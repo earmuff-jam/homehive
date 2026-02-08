@@ -2,6 +2,8 @@ import React, { useMemo, useState } from "react";
 
 import { useNavigate } from "react-router-dom";
 
+import dayjs from "dayjs";
+
 import {
   CheckCircleOutlineRounded,
   EmailRounded,
@@ -21,17 +23,14 @@ import {
 import AButton from "common/AButton";
 import CustomSnackbar from "common/CustomSnackbar";
 import EmptyComponent from "common/EmptyComponent";
+import { useSendEmailMutation } from "features/Api/externalIntegrationsApi";
 import { useLazyGetUserDataByIdQuery } from "features/Api/firebaseUserApi";
 import { useGetTenantByPropertyIdQuery } from "features/Api/tenantsApi";
 import QuickConnectMenu from "features/Rent/components/QuickConnect/QuickConnectMenu";
 import { handleQuickConnectAction } from "features/Rent/components/Settings/TemplateProcessor";
 import { DefaultRentalAppEmailTemplates } from "features/Rent/components/Templates/constants";
 import { useSelectedPropertyDetails } from "features/Rent/hooks/useGetSelectedPropertyDetails";
-import {
-  getColorAndLabelForCurrentMonth,
-  getRentDetails,
-} from "features/Rent/utils";
-import useSendEmail from "hooks/useSendEmail";
+import { getColorAndLabelForCurrentMonth } from "features/Rent/utils";
 
 const ViewPropertyAccordionDetails = ({
   property,
@@ -46,14 +45,17 @@ const ViewPropertyAccordionDetails = ({
       skip: !property?.id,
     });
 
-  const { sendEmail, reset, error, success } = useSendEmail();
+  const [sendEmail, sendEmailResult] = useSendEmailMutation();
   const [getPropertyOwnerData, getPropertyOwnerDataResult] =
     useLazyGetUserDataByIdQuery();
 
   const [anchorEl, setAnchorEl] = useState(null);
 
   const isOpen = Boolean(anchorEl);
-  const currentMonthRent = getRentDetails(rentDetails);
+  const currentMonth = dayjs().format("MMMM");
+  const currentMonthRent = rentDetails?.find(
+    (rentDetail) => rentDetail.rentMonth === currentMonth,
+  );
 
   const primaryTenant = tenants?.find((tenant) => tenant.isPrimary);
 
@@ -272,11 +274,11 @@ const ViewPropertyAccordionDetails = ({
         </Box>
       </Paper>
       <CustomSnackbar
-        showSnackbar={success || error !== null}
-        setShowSnackbar={reset}
-        severity={success ? "success" : "error"}
+        showSnackbar={sendEmailResult.isSuccess || sendEmailResult.isError}
+        setShowSnackbar={() => {}}
+        severity={sendEmailResult.isSuccess ? "success" : "error"}
         title={
-          success
+          sendEmailResult.isSuccess
             ? "Email sent successfully. Check spam if necessary."
             : "Error sending email."
         }

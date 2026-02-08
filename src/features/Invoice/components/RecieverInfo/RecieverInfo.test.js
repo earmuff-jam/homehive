@@ -47,6 +47,15 @@ jest.mock("features/Api/invoiceApi", () => ({
   ],
 }));
 
+jest.mock("common/AButton", () => ({
+  __esModule: true,
+  default: ({ label, onClick, disabled }) => (
+    <button onClick={onClick} disabled={disabled}>
+      {label}
+    </button>
+  ),
+}));
+
 describe("RecieverInfo component", () => {
   it("renders correctly and matches snapshot", () => {
     const store = configureStore({ reducer: () => ({}) });

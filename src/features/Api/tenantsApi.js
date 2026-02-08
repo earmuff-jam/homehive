@@ -237,6 +237,43 @@ export const tenantsApi = createApi({
       },
       invalidatesTags: ["tenants", "properties"],
     }),
+    // removeTenantAssociation
+    // removes selected tenant, updates property
+    removeTenantAssociation: builder.mutation({
+      async queryFn({ tenantId, propertyId, rentees, updatedBy, updatedOn }) {
+        try {
+          const tenantRef = doc(db, "tenants", tenantId);
+          await setDoc(
+            tenantRef,
+            { isActive: false, updatedBy, updatedOn },
+            { merge: true },
+          );
+
+          const propertyRef = doc(db, "properties", propertyId);
+          await setDoc(
+            propertyRef,
+            {
+              rentees,
+              updatedBy,
+              updatedOn,
+            },
+            { merge: true },
+          );
+
+          return { data: null };
+        } catch (error) {
+          /* eslint-disable no-console */
+          console.error("Unable to process request. Error: ", error);
+          return {
+            error: {
+              message: error.message,
+              code: error.code,
+            },
+          };
+        }
+      },
+      invalidatesTags: ["tenants", "properties"],
+    }),
   }),
 });
 
@@ -250,4 +287,5 @@ export const {
   useUpdateTenantByIdMutation,
   useDeleteTenantByIdMutation,
   useAssociateTenantMutation,
+  useRemoveTenantAssociationMutation,
 } = tenantsApi;

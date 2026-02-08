@@ -28,7 +28,7 @@ export const rentApi = createApi({
             return {
               error: {
                 message: "Property not found",
-                code: "not-found",
+                code: "404",
               },
             };
           }

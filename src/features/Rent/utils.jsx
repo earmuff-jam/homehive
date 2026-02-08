@@ -1,20 +1,16 @@
 import React from "react";
 
-/**
- * Utility file for properties
- */
 import dayjs from "dayjs";
 
 import {
   AssignmentLateRounded,
-  MoneyOffRounded,
+  BubbleChartOutlined,
   PaidRounded,
 } from "@mui/icons-material";
 import { authorizedServerLevelFeatureFlags } from "common/ApplicationConfig";
 import { DefaultLeaseTermOptions } from "features/Rent/common/constants";
 import { produce } from "immer";
 
-// stripe rent status
 export const PaidRentStatusEnumValue = "paid";
 export const ManualRentStatusEnumValue = "manual";
 
@@ -22,6 +18,15 @@ export const CreateInvoiceEnumValue = "CreateInvoice";
 export const SendDefaultInvoiceEnumValue = "SendDefaultInvoice";
 export const PaymentReminderEnumValue = "PaymentReminder";
 export const RenewLeaseNoticeEnumValue = "RenewLeaseNoticeEnumValue";
+export const RemoveTenantNotificationEnumValue = "Notice of Removal";
+export const AddTenantNotificationEnumValue = "Notice of Addition";
+export const AddRentPaymentNotificationEnumValue = "Notice of Rent Payment";
+
+export const AddNotificationEnumType = "AddNotification";
+export const RemoveNotificationEnumType = "RemoveNotification";
+
+export const EmailNotificationDisclaimer =
+  "You are being notified either since you are the property owner, tenant or anyone tasked with such responsibility.";
 
 // stripHTMLForEmailMessages ...
 // defines a fuction that returns email messages that are stripped from its html contents
@@ -31,19 +36,28 @@ export const stripHTMLForEmailMessages = (htmlDocument) => {
   return div.textContent || div.innerText || "";
 };
 
+// appendDisclaimer ...
+// defines a function that is used to append disclaimer to the parent string
+export const appendDisclaimer = (parent, senderEmail) => {
+  if (typeof parent !== "string") {
+    console.debug("Invalid parameter passed, Skipping appendDisclaimer...");
+    return parent;
+  }
+  return parent.concat(`
+      <div>
+        <p>
+          <em>
+            This email was sent as a result of an action performed by ${senderEmail}. Please do not reply to this email as this is an auto generated email.
+          </em>
+        </p>
+      </div>
+`);
+};
+
 // formatCurrency ...
 // defines a function that formats a currency to a string value
 export const formatCurrency = (amt = 0) => {
   return amt.toFixed(2);
-};
-
-// sumCentsToDollars ...
-// defines a function that converts cents into dollars
-export const sumCentsToDollars = (...values) => {
-  return values.reduce((total, val) => {
-    const num = Number(val || 0);
-    return total + (isNaN(num) ? 0 : num / 100);
-  }, 0);
 };
 
 // getOccupancyRate ...
@@ -59,57 +73,152 @@ export const getOccupancyRate = (property, tenants, isAnyTenantSoR) => {
   }
 };
 
+// formatAndSendNotification ...
+// defines a function that sends email notification to array of users based on params
+export const formatAndSendNotification = ({
+  to,
+  subject = "",
+  body = "",
+  html = "",
+  ccEmailIds = [],
+  bccEmailIds = [],
+  sendEmail,
+}) => {
+  const isDevEnv = isFeatureEnabled("devEnv");
+  const isEmailEnabled = isFeatureEnabled("sendEmail");
+
+  if (isEmailEnabled) {
+    switch (isDevEnv) {
+      // dev workflow
+      case true:
+        console.debug(
+          `Sending email. Email enabled: ${isEmailEnabled}, Env dev: ${isDevEnv}`,
+        );
+        console.debug(
+          `Valid email params: To: ${to}, Subject: ${subject}, Text: ${stripHTMLForEmailMessages(body)}, HTML: ${html} emailList: ${[to, ...ccEmailIds, ...bccEmailIds]}`,
+        );
+        break;
+
+      // prod / test workflow
+      case false:
+        console.debug(
+          `Sending email. Email enabled: ${isEmailEnabled}, Env dev: ${isDevEnv}`,
+        );
+        sendEmail({
+          to: to,
+          subject: subject,
+          text: stripHTMLForEmailMessages(body),
+          html: html,
+          ccEmailIds,
+          bccEmailIds,
+        });
+        break;
+
+      default:
+        console.debug(
+          `Unable to send email. Email enabled: ${isEmailEnabled}, Env dev: ${isDevEnv}`,
+        );
+        break;
+    }
+  }
+};
+
+const noActionToPerformStr =
+  "<b>There is no action for you to take at this time. If this seems unfamiliar or suspicious please reach out to your administrator.</b>";
+
+// emailMessageBuilder ...
+// defines a function that appends email message with extra disclaimer
+export const emailMessageBuilder = (msgType, propertyName) => {
+  switch (msgType) {
+    case AddNotificationEnumType:
+      return `
+    Hello there, 
+      This notification is to alert you that you have been added to the property listed as ${propertyName}.
+
+      ${EmailNotificationDisclaimer}
+      ${noActionToPerformStr}
+
+    With Regards,
+    Earmuffjam LLC
+  `;
+    case RemoveNotificationEnumType:
+      return `
+  Hello there,
+    This notification is to alert you that you have been removed from the role of tenant from the property listed as ${propertyName}. 
+  
+    ${EmailNotificationDisclaimer}
+    ${noActionToPerformStr}
+  
+  With Regards,
+  Earmuffjam LLC
+`;
+    case AddRentPaymentNotificationEnumValue:
+      return `
+    Hello there,
+      This notification is to alert you that rental payment has been made manually for the property listed as ${propertyName}.
+    
+      ${EmailNotificationDisclaimer}
+      ${noActionToPerformStr}
+    
+    With Regards,
+    Earmuffjam LLC
+`;
+
+    default:
+      return `
+    Hello there,
+      This notification is to alert you that changes have been made to an assigned property listed as ${propertyName}. 
+
+      ${EmailNotificationDisclaimer}
+      ${noActionToPerformStr}
+   
+    With Regards,
+    Earmuffjam LLC
+`;
+  }
+};
+
 // getColorAndLabelForCurrentMonth ...
 // defines a function that returns a specific color and label based on params and gracePeriod
+// if rent is paid, returns a success
+// if rent is past grace period, returns a error
+// if rent is pre-grace period,
+// ignore first month since the tenant is not staying just yet, return a secondary label
 export const getColorAndLabelForCurrentMonth = (
   startDate,
   rent,
   gracePeriod = 3,
 ) => {
-  if (!rent || !startDate) return false;
-
-  const leaseStart = dayjs(startDate, "MM-DD-YYYY");
-  if (dayjs().isBefore(leaseStart, "day")) return false;
-  const graceDate = dayjs().startOf("month").add(gracePeriod, "day");
-  const pastGracePeriod = dayjs().isAfter(graceDate, "day");
-
+  const isFirstMonthRenting = dayjs(startDate).isSame(dayjs(), "month");
+  const formattedGracePeriodInDateTime = dayjs()
+    .startOf("month")
+    .add(gracePeriod, "day");
+  const unitOfMeasurement = isFirstMonthRenting ? "month" : "day";
+  const isPastGracePeriod = dayjs().isAfter(
+    formattedGracePeriodInDateTime,
+    unitOfMeasurement,
+  );
   if (
-    rent?.status.toLowerCase() === PaidRentStatusEnumValue ||
-    rent?.status.toLowerCase() === ManualRentStatusEnumValue
+    [PaidRentStatusEnumValue, ManualRentStatusEnumValue].includes(
+      rent?.status.toLowerCase(),
+    )
   ) {
     return { color: "success", label: "Paid", icon: <PaidRounded /> };
-  } else if (pastGracePeriod) {
+  }
+  if (isPastGracePeriod) {
     return {
       color: "error",
-      label: "Overdue",
+      label: "Past due",
       icon: <AssignmentLateRounded />,
     };
   } else {
-    return { color: "warning", label: "Unpaid", icon: <MoneyOffRounded /> };
+    return {
+      color: "secondary",
+      label: "Grace Period",
+      icon: <BubbleChartOutlined />,
+    };
   }
 };
-
-// getRentStatus ...
-// this also feels like similar to color and label
-export function getRentStatus({ isPaid, isLate }) {
-  if (isPaid) return { color: "success", label: "Paid" };
-  if (isLate) return { color: "error", label: "Overdue" };
-  return { color: "warning", label: "Unpaid" };
-}
-
-// getRentDetails ...
-// feels like this is same as totalRent
-export function getRentDetails(
-  data = [],
-  currentMonth = dayjs().format("MMMM"),
-) {
-  return data.find(
-    (rent) =>
-      rent.rentMonth === currentMonth &&
-      (PaidRentStatusEnumValue === rent.status?.toLowerCase() ||
-        ManualRentStatusEnumValue === rent.status?.toLowerCase()),
-  );
-}
 
 // isAssociatedPropertySoR ...
 export const isAssociatedPropertySoR = (property, tenants) => {

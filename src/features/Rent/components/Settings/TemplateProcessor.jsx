@@ -138,12 +138,8 @@ export const handleQuickConnectAction = (
   }
 };
 
-/**
- * formatEmail ...
- *
- * function used to send email via sendEmail functionality
- * @param {Object} userInformation - object containing reciever information
- */
+// formatEmail ...
+// defines a function that is used to send email notification
 const formatEmail = ({ to, subject, body, html }, sendEmail) => {
   const isEmailEnabled = isFeatureEnabled("sendEmail");
 

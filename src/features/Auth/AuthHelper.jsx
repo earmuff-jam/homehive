@@ -8,6 +8,7 @@ import { authenticatorApp } from "src/config";
 export const Role = {
   User: "USER",
   Admin: "ADMIN",
+  Owner: "OWNER",
   Tenant: "TENANT",
 };
 

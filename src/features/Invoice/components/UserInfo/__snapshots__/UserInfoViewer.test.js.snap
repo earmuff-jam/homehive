@@ -9,18 +9,29 @@ exports[`UserInfoViewer component renders correctly and matches snapshot 1`] = `
       class="MuiStack-root css-1sazv7p-MuiStack-root"
     >
       <div
-        class="MuiStack-root css-nen11g-MuiStack-root"
+        class="MuiStack-root css-gmwslw-MuiStack-root"
       >
-        <h5
-          class="MuiTypography-root MuiTypography-h5 css-stnzmu-MuiTypography-root"
+        <div
+          class="MuiStack-root css-nen11g-MuiStack-root"
         >
-          Sender Information
-        </h5>
-        <h6
-          class="MuiTypography-root MuiTypography-subtitle2 css-1ypmsg6-MuiTypography-root"
+          <h5
+            class="MuiTypography-root MuiTypography-h5 css-stnzmu-MuiTypography-root"
+          >
+            Sender Information
+          </h5>
+          <h6
+            class="MuiTypography-root MuiTypography-subtitle2 css-1ypmsg6-MuiTypography-root"
+          >
+            Add details about the sender
+          </h6>
+        </div>
+        <div
+          class="MuiBox-root css-0"
         >
-          Add details about the sender
-        </h6>
+          <button>
+            Reset
+          </button>
+        </div>
       </div>
       <div
         class="MuiStack-root css-pl8gqh-MuiStack-root"

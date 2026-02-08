@@ -29,10 +29,18 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import CustomSnackbar from "common/CustomSnackbar";
 import TextFieldWithLabel from "common/TextFieldWithLabel";
 import { fetchLoggedInUser } from "common/utils";
+import { useSendEmailMutation } from "features/Api/externalIntegrationsApi";
 import { useAssociateTenantMutation } from "features/Api/tenantsApi";
 import { DefaultLeaseTermOptions } from "features/Rent/common/constants";
 import TenantEmailAutocomplete from "features/Rent/components/AssociateTenantPopup/TenantEmailAutocomplete";
-import { isAssociatedPropertySoR } from "features/Rent/utils";
+import {
+  AddNotificationEnumType,
+  AddTenantNotificationEnumValue,
+  appendDisclaimer,
+  emailMessageBuilder,
+  formatAndSendNotification,
+  isAssociatedPropertySoR,
+} from "features/Rent/utils";
 
 export default function AssociateTenantPopup({
   closeDialog,
@@ -40,6 +48,8 @@ export default function AssociateTenantPopup({
   tenants,
 }) {
   const user = fetchLoggedInUser();
+
+  const [sendEmail] = useSendEmailMutation();
   const [associateTenant, associateTenantResult] = useAssociateTenantMutation();
 
   const [showSnackbar, setShowSnackbar] = useState(false);
@@ -59,7 +69,9 @@ export default function AssociateTenantPopup({
     defaultValues: {
       email: "",
       startDate: dayjs().toISOString(),
-      term: "",
+      term: DefaultLeaseTermOptions.find(
+        (leaseOption) => leaseOption.amount === 12,
+      ).value,
       taxRate: 1,
       rent: "",
       initialLateFee: 75,
@@ -70,7 +82,7 @@ export default function AssociateTenantPopup({
       gracePeriod: 3,
       isAutoRenewPolicySet: false,
       autoRenewDays: 60,
-      isPrimary: false,
+      isPrimary: true,
       isSoR: false,
       assignedRoomName: "",
       guestsPermittedStayDays: 15,
@@ -85,11 +97,14 @@ export default function AssociateTenantPopup({
   const onSubmit = async (data) => {
     const draftData = { ...data };
 
-    if (!draftData.isSoR) delete draftData.assignedRoomName;
-
+    if (!draftData.isSoR) {
+      draftData.isPrimary = true;
+      delete draftData.assignedRoomName;
+    }
     draftData.id = uuidv4();
     draftData.isActive = true;
     draftData.propertyId = property.id;
+    draftData.propertyName = property.name;
     draftData.createdBy = user?.uid;
     draftData.createdOn = dayjs().toISOString();
     draftData.updatedBy = user?.uid;
@@ -99,6 +114,7 @@ export default function AssociateTenantPopup({
   };
 
   const isSoR = watch("isSoR");
+  const isPrimaryTenant = watch("isPrimary");
   const isAutoRenewPolicySet = watch("isAutoRenewPolicySet");
 
   useEffect(() => {
@@ -110,6 +126,23 @@ export default function AssociateTenantPopup({
   useEffect(() => {
     if (associateTenantResult.isSuccess) {
       setShowSnackbar(true);
+
+      const emailMsgWithDisclaimer = appendDisclaimer(
+        emailMessageBuilder(
+          AddNotificationEnumType,
+          associateTenantResult.originalArgs.property?.name,
+        ),
+        user?.email,
+      );
+
+      formatAndSendNotification({
+        to: associateTenantResult.originalArgs.draftData.email,
+        subject: `${AddTenantNotificationEnumValue} - ${associateTenantResult.originalArgs.property?.name}`,
+        body: emailMsgWithDisclaimer,
+        ccEmailIds: [user?.email],
+        sendEmail,
+      });
+
       reset();
       closeDialog();
     }
@@ -507,7 +540,7 @@ export default function AssociateTenantPopup({
                   <Checkbox
                     {...field}
                     checked={field.value}
-                    disabled={tenants?.some((t) => t.isPrimary)}
+                    disabled={tenants.some((t) => t.isPrimary)}
                   />
                 }
                 label="Primary point of contact (PoC)"
@@ -738,7 +771,7 @@ export default function AssociateTenantPopup({
           startIcon={<UpdateRounded fontSize="small" />}
           variant="outlined"
           type="submit"
-          disabled={!isValid}
+          disabled={!isValid || (!isSoR && !isPrimaryTenant)}
         >
           Update
         </Button>

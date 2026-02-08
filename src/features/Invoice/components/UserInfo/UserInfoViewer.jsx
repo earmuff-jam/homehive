@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Container, Stack, Typography } from "@mui/material";
+import { Box, Container, Stack, Typography } from "@mui/material";
 import AButton from "common/AButton";
 import TextFieldWithLabel from "common/TextFieldWithLabel";
 
@@ -12,6 +12,7 @@ export default function UserInfoViewer({
   isDisabled,
   onSubmit,
   loading,
+  handleReset,
 }) {
   return (
     <Container
@@ -24,11 +25,16 @@ export default function UserInfoViewer({
       }}
     >
       <Stack spacing={2}>
-        <Stack>
-          <Typography variant="h5" fontWeight="bold">
-            {title}
-          </Typography>
-          <Typography variant="subtitle2">{caption}</Typography>
+        <Stack direction="row" justifyContent="space-between">
+          <Stack>
+            <Typography variant="h5" fontWeight="bold">
+              {title}
+            </Typography>
+            <Typography variant="subtitle2">{caption}</Typography>
+          </Stack>
+          <Box>
+            <AButton label="Reset" variant="outlined" onClick={handleReset} />
+          </Box>
         </Stack>
 
         {/* First and Last Name */}

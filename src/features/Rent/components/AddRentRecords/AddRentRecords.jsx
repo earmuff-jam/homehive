@@ -13,13 +13,20 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import AButton from "common/AButton";
 import TextFieldWithLabel from "common/TextFieldWithLabel";
 import { fetchLoggedInUser } from "common/utils";
+import { useSendEmailMutation } from "features/Api/externalIntegrationsApi";
 import {
   useGetUserByEmailAddressQuery,
   useGetUserDataByIdQuery,
 } from "features/Api/firebaseUserApi";
 import { useCreateRentRecordMutation } from "features/Api/rentApi";
 import { useGetTenantByPropertyIdQuery } from "features/Api/tenantsApi";
-import { formatCurrency } from "features/Rent/utils";
+import {
+  AddRentPaymentNotificationEnumValue,
+  appendDisclaimer,
+  emailMessageBuilder,
+  formatAndSendNotification,
+  formatCurrency,
+} from "features/Rent/utils";
 
 export default function AddRentRecords({
   property,
@@ -27,6 +34,8 @@ export default function AddRentRecords({
   closeDialog,
 }) {
   const user = fetchLoggedInUser();
+
+  const [sendEmail] = useSendEmailMutation();
   const [createRentRecord, createRentRecordResult] =
     useCreateRentRecordMutation();
 
@@ -96,6 +105,19 @@ export default function AddRentRecords({
     if (createRentRecordResult.isSuccess) {
       closeDialog();
       setShowSnackbar(true);
+
+      const emailMsgWithDisclaimer = appendDisclaimer(
+        emailMessageBuilder(AddRentPaymentNotificationEnumValue, property.name),
+        user?.email,
+      );
+
+      formatAndSendNotification({
+        to: createRentRecordResult.originalArgs.tenantEmail,
+        subject: `${AddRentPaymentNotificationEnumValue} - ${property.name}`,
+        body: emailMsgWithDisclaimer,
+        ccEmailIds: [user?.email],
+        sendEmail,
+      });
     }
   }, [createRentRecordResult.isLoading]);
 
