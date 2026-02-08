@@ -75,15 +75,17 @@ const Property = () => {
         {isPropertyLoading ? (
           <Skeleton height="5rem" />
         ) : (
-          <PropertyHeader property={property} />
+          <>
+            <PropertyHeader property={property} />
+            <PropertyStatistics
+              dataTour="property-1"
+              property={property}
+              isPropertyLoading={isPropertyLoading}
+              isAnyTenantSoR={isAnyTenantSoR}
+              tenants={tenants}
+            />
+          </>
         )}
-        <PropertyStatistics
-          dataTour="property-1"
-          property={property}
-          isPropertyLoading={isPropertyLoading}
-          isAnyTenantSoR={isAnyTenantSoR}
-          tenants={tenants}
-        />
       </Paper>
 
       <Grid container spacing={3}>

@@ -64,7 +64,7 @@ export default function EsignTemplateDetails({
       density: "comfortable",
     },
     renderEmptyRowsFallback: () => (
-      <EmptyComponent caption="Default templates are currently unavailable." />
+      <EmptyComponent caption="No matching Esign templates found" />
     ),
     mrtTheme: (theme) => ({
       baseBackgroundColor: theme.palette.transparent.main,

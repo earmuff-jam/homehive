@@ -17,7 +17,7 @@ import {
 import AButton from "common/AButton";
 import CustomSnackbar from "common/CustomSnackbar";
 import RowHeader from "common/RowHeader";
-import { fetchLoggedInUser } from "common/utils";
+import { SettingsRouteUri, fetchLoggedInUser } from "common/utils";
 import { useUpdatePropertyByIdMutation } from "features/Api/propertiesApi";
 import {
   AddPropertyTextString,
@@ -185,7 +185,7 @@ export default function QuickActions({ property }) {
           <AButton
             variant="outlined"
             fullWidth
-            onClick={() => navigate("/rent/settings?tabIdx=2")}
+            onClick={() => navigate(`${SettingsRouteUri}?tabIdx=2`)}
             label="View Stripe Payment History"
           />
           <AButton

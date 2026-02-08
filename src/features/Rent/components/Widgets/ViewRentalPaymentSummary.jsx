@@ -26,7 +26,7 @@ const ViewRentalPaymentSummary = ({ rentData = [] }) => {
         header: "Amount Paid ($)",
         accessorFn: (row) =>
           sumCentsToDollars(
-            row?.rent,
+            row?.rentAmount,
             row?.additionalCharges,
             row?.initialLateFee,
             row?.dailyLateFee,
