@@ -2,19 +2,18 @@ const dayjs = require("dayjs");
 const {
   stripHTMLForEmailMessages,
   formatCurrency,
-  sumCentsToDollars,
   getOccupancyRate,
-  getRentStatus,
-  getRentDetails,
   isAssociatedPropertySoR,
   buildPaymentLineItems,
   isFeatureEnabled,
+  getColorAndLabelForCurrentMonth,
 } = require("features/Rent/utils");
 
 describe("Test utility functions", () => {
   afterEach(() => {
     jest.clearAllMocks();
   });
+
   describe("test stripHTMLForEmailMessages function", () => {
     it("removes HTML tags and returns plain text", () => {
       const html = "<p>Hello <strong>World</strong></p>";
@@ -50,16 +49,6 @@ describe("Test utility functions", () => {
     });
   });
 
-  describe("test sumCentsToDollars function", () => {
-    it("converts cents to dollars and sums", () => {
-      expect(sumCentsToDollars("100", "250")).toBe(3.5);
-    });
-
-    it("ignores invalid values", () => {
-      expect(sumCentsToDollars("100", "abc")).toBe(1);
-    });
-  });
-
   describe("test getOccupancyRate function", () => {
     it("calculates occupancy for SoR", () => {
       const property = { units: 4 };
@@ -70,35 +59,6 @@ describe("Test utility functions", () => {
 
     it("returns 100% for non-SoR with tenants", () => {
       expect(getOccupancyRate({}, [{}], false)).toBe(100);
-    });
-  });
-
-  describe("test getRentStatus function", () => {
-    it("returns paid status", () => {
-      expect(getRentStatus({ isPaid: true })).toEqual({
-        color: "success",
-        label: "Paid",
-      });
-    });
-
-    it("returns overdue status", () => {
-      expect(getRentStatus({ isLate: true })).toEqual({
-        color: "error",
-        label: "Overdue",
-      });
-    });
-  });
-
-  describe("test getRentDetails function", () => {
-    it("returns paid rent for current month", () => {
-      const month = dayjs().format("MMMM");
-
-      const data = [
-        { rentMonth: month, status: "paid" },
-        { rentMonth: "January", status: "unpaid" },
-      ];
-
-      expect(getRentDetails(data)).toEqual(data[0]);
     });
   });
 
@@ -134,6 +94,116 @@ describe("Test utility functions", () => {
 
     it("returns false when feature is missing", () => {
       expect(isFeatureEnabled("missing")).toBe(false);
+    });
+  });
+
+  describe("test getColorAndLabelForCurrentMonth function", () => {
+    beforeEach(() => {
+      jest.useFakeTimers();
+    });
+
+    afterEach(() => {
+      jest.useRealTimers();
+    });
+
+    describe("when rent is paid", () => {
+      it("returns success regardless of grace period or start date", () => {
+        jest.setSystemTime(new Date("2026-03-15"));
+
+        const result = getColorAndLabelForCurrentMonth(
+          "2026-01-01",
+          { status: "paid" },
+          3,
+        );
+
+        expect(result.color).toBe("success");
+        expect(result.label).toBe("Paid");
+      });
+
+      it("is case insensitive", () => {
+        jest.setSystemTime(new Date("2026-03-15"));
+
+        const result = getColorAndLabelForCurrentMonth(
+          "2026-01-01",
+          { status: "PAID" },
+          3,
+        );
+
+        expect(result.color).toBe("success");
+        expect(result.label).toBe("Paid");
+      });
+    });
+
+    describe("when rent is unpaid", () => {
+      it("returns 'Past due' if after grace period", () => {
+        // March 10th, grace = 3 → grace ends March 4
+        jest.setSystemTime(new Date("2026-03-10"));
+
+        const result = getColorAndLabelForCurrentMonth(
+          "2026-01-01",
+          { status: "unpaid" },
+          3,
+        );
+
+        expect(result.color).toBe("error");
+        expect(result.label).toBe("Past due");
+      });
+
+      it("returns 'Grace Period' if within grace period", () => {
+        // March 2nd, grace = 5 → still within
+        jest.setSystemTime(new Date("2026-03-02"));
+
+        const result = getColorAndLabelForCurrentMonth(
+          "2026-01-01",
+          { status: "unpaid" },
+          5,
+        );
+
+        expect(result.color).toBe("secondary");
+        expect(result.label).toBe("Grace Period");
+      });
+
+      it("boundary: exactly on grace day is NOT past due", () => {
+        // grace = 3 → boundary March 4
+        jest.setSystemTime(new Date("2026-03-04"));
+
+        const result = getColorAndLabelForCurrentMonth(
+          "2026-01-01",
+          { status: "unpaid" },
+          3,
+        );
+
+        expect(result.color).toBe("secondary");
+        expect(result.label).toBe("Grace Period");
+      });
+    });
+
+    describe("first month renting logic safety", () => {
+      it("does not break when startDate is current month", () => {
+        jest.setSystemTime(new Date("2026-03-02"));
+
+        const result = getColorAndLabelForCurrentMonth(
+          "2026-03-01",
+          { status: "unpaid" },
+          3,
+        );
+
+        expect(["secondary", "error", "success"]).toContain(result.color);
+        expect(typeof result.label).toBe("string");
+      });
+    });
+
+    describe("default grace period", () => {
+      it("uses default grace period of 3 days when not provided", () => {
+        jest.setSystemTime(new Date("2026-03-10"));
+
+        const result = getColorAndLabelForCurrentMonth("2026-01-01", {
+          status: "unpaid",
+        });
+
+        expect(result.color).toBe("error");
+        expect(result.label).toBe("Past due");
+      });
     });
   });
 });

@@ -26,6 +26,9 @@ import {
   Typography,
 } from "@mui/material";
 import AButton from "common/AButton";
+import ConfirmationBox, {
+  DefaultConfirmationBoxProps,
+} from "common/ConfirmationBox";
 import CustomSnackbar from "common/CustomSnackbar";
 import EmptyComponent from "common/EmptyComponent";
 import RowHeader from "common/RowHeader";
@@ -33,10 +36,11 @@ import { fetchLoggedInUser } from "common/utils";
 import { useGetUserDataByIdQuery } from "features/Api/firebaseUserApi";
 import {
   useCreatePropertyMutation,
+  useDeletePropertyByIdMutation,
   useGetPropertiesByUserIdQuery,
-  useUpdatePropertyByIdMutation,
 } from "features/Api/propertiesApi";
 import { useLazyGetRentsByPropertyIdWithFiltersQuery } from "features/Api/rentApi";
+import { Role } from "features/Auth/AuthHelper";
 import { AddPropertyTextString } from "features/Rent/common/constants";
 import AddProperty from "features/Rent/components/AddProperty/AddProperty";
 import ViewPropertyAccordionDetails from "features/Rent/components/Properties/ViewPropertyAccordionDetails";
@@ -71,8 +75,8 @@ export default function Properties() {
   const [triggerGetRents, getRentsResult] =
     useLazyGetRentsByPropertyIdWithFiltersQuery();
 
-  const [updateProperty, updatePropertyResult] =
-    useUpdatePropertyByIdMutation();
+  const [deleteProperty, deletePropertyResult] =
+    useDeletePropertyByIdMutation();
 
   const {
     register,
@@ -121,6 +125,9 @@ export default function Properties() {
   const [expanded, setExpanded] = useState(null);
   const [dialog, setDialog] = useState(defaultDialog);
   const [showSnackbar, setShowSnackbar] = useState(false);
+  const [showConfirmationBox, setShowConfirmationBox] = useState(
+    DefaultConfirmationBoxProps,
+  );
 
   const handleExpand = (id) => setExpanded((prev) => (prev === id ? null : id));
 
@@ -129,14 +136,15 @@ export default function Properties() {
     reset();
   };
 
-  const handleUpdate = (propertyId) => {
+  const handleDelete = (propertyId) => {
     if (!propertyId) return;
-    updateProperty({
+    deleteProperty({
       id: propertyId,
       isDeleted: true,
       updatedBy: user?.uid,
       updatedOn: dayjs().toISOString(),
     });
+    setShowConfirmationBox(DefaultConfirmationBoxProps);
   };
 
   const toggleAddPropertyPopup = () => {
@@ -169,10 +177,10 @@ export default function Properties() {
   const isOwnerCoveredUtilities = watch("isOwnerCoveredUtilities");
 
   useEffect(() => {
-    if (createPropertyResult.isSuccess || updatePropertyResult.isSuccess) {
+    if (createPropertyResult.isSuccess || deletePropertyResult.isSuccess) {
       setShowSnackbar(true);
     }
-  }, [createPropertyResult.isLoading, updatePropertyResult.isLoading]);
+  }, [createPropertyResult.isLoading, deletePropertyResult.isLoading]);
 
   if (isLoading) return <Skeleton height="10rem" />;
 
@@ -189,8 +197,9 @@ export default function Properties() {
           size="small"
           variant="outlined"
           loading={
-            createPropertyResult.isLoading || updatePropertyResult.isLoading
+            createPropertyResult.isLoading || deletePropertyResult.isLoading
           }
+          disabled={![Role.Admin, Role.Owner].includes(user?.role)}
           endIcon={<AddRounded fontSize="small" />}
           onClick={toggleAddPropertyPopup}
         />
@@ -277,7 +286,10 @@ export default function Properties() {
                   data-tour="properties-2"
                   onClick={(e) => {
                     e.stopPropagation();
-                    handleUpdate(property.id);
+                    setShowConfirmationBox({
+                      value: true,
+                      updateKey: property?.id,
+                    });
                   }}
                 >
                   <DeleteRounded
@@ -335,6 +347,12 @@ export default function Properties() {
           />
         </DialogActions>
       </Dialog>
+
+      <ConfirmationBox
+        isOpen={showConfirmationBox.value}
+        handleConfirm={() => handleDelete(showConfirmationBox.updateKey)}
+        handleCancel={() => setShowConfirmationBox(DefaultConfirmationBoxProps)}
+      />
 
       <CustomSnackbar
         showSnackbar={showSnackbar}

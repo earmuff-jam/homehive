@@ -26,6 +26,9 @@ import {
 import { LocalizationProvider, MobileDatePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import AButton from "common/AButton";
+import ConfirmationBox, {
+  DefaultConfirmationBoxProps,
+} from "common/ConfirmationBox";
 import CustomSnackbar from "common/CustomSnackbar";
 import TextFieldWithLabel from "common/TextFieldWithLabel";
 import {
@@ -82,7 +85,12 @@ export default function EditPdf({
   });
 
   const [showSnackbar, setShowSnackbar] = useState(false);
+
   const [options, setOptions] = useState(DefaultInvoiceStatusOptions);
+
+  const [showConfirmationBox, setShowConfirmationBox] = useState(
+    DefaultConfirmationBoxProps,
+  );
 
   const handleSelection = (label) => {
     setOptions((prevItems) =>
@@ -104,6 +112,11 @@ export default function EditPdf({
       payment: "",
       paymentMethod: "",
     });
+  };
+
+  const handleConfirmDelete = () => {
+    showConfirmationBox?.value && remove(showConfirmationBox.updateKey);
+    setShowConfirmationBox(DefaultConfirmationBoxProps);
   };
 
   const submit = (data) => {
@@ -398,7 +411,9 @@ export default function EditPdf({
             title={`Edit line ${index + 1}`}
             control={control}
             index={index}
-            onDelete={() => remove(index)}
+            onDelete={() =>
+              setShowConfirmationBox({ value: true, updateKey: index })
+            }
           />
         ))}
         <AButton
@@ -409,6 +424,13 @@ export default function EditPdf({
           label="Save"
         />
       </Stack>
+      <ConfirmationBox
+        isOpen={showConfirmationBox?.value}
+        handleCancel={() =>
+          setShowConfirmationBox({ value: false, updateKey: "" })
+        }
+        handleConfirm={handleConfirmDelete}
+      />
       <CustomSnackbar
         showSnackbar={showSnackbar}
         setShowSnackbar={setShowSnackbar}

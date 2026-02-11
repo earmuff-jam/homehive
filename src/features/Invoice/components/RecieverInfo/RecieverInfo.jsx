@@ -16,6 +16,17 @@ import {
 import UserInfoViewer from "features/Invoice/components/UserInfo/UserInfoViewer";
 import { useAppTitle } from "hooks/useAppTitle";
 
+const DefaultReceiverInfo = {
+  firstName: "",
+  lastName: "",
+  email: "",
+  phone: "",
+  streetAddress: "",
+  city: "",
+  state: "",
+  zipcode: "",
+};
+
 export default function RecieverInfo() {
   useAppTitle("Reciever Information");
   const navigate = useNavigate();
@@ -42,16 +53,7 @@ export default function RecieverInfo() {
     reset,
   } = useForm({
     mode: "onChange",
-    defaultValues: {
-      firstName: "",
-      lastName: "",
-      email: "",
-      phone: "",
-      streetAddress: "",
-      city: "",
-      state: "",
-      zipcode: "",
-    },
+    defaultValues: DefaultReceiverInfo,
   });
 
   const submit = (formData) => {
@@ -95,6 +97,7 @@ export default function RecieverInfo() {
         isDisabled={!isValid}
         onSubmit={handleSubmit(submit)}
         loading={isUpsertRecieverInfoLoading}
+        handleReset={() => reset(DefaultReceiverInfo)}
       />
       <CustomSnackbar
         showSnackbar={showSnackbar}

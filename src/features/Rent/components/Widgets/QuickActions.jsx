@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
 
 import {
+  Box,
   Card,
   CardContent,
   Dialog,
@@ -13,6 +14,7 @@ import {
   DialogContent,
   DialogTitle,
   Stack,
+  Tooltip,
 } from "@mui/material";
 import AButton from "common/AButton";
 import CustomSnackbar from "common/CustomSnackbar";
@@ -170,18 +172,29 @@ export default function QuickActions({ property }) {
           }}
         />
         <Stack spacing={1}>
-          <AButton
-            variant="outlined"
-            fullWidth
-            onClick={() =>
-              setDialog({
-                title: "Edit property",
-                type: AddPropertyTextString,
-                display: true,
-              })
+          <Tooltip
+            title={
+              property?.rentees.length > 0
+                ? "Editing a property is disabled when tenants are present"
+                : ""
             }
-            label="Edit Property"
-          />
+          >
+            <span>
+              <AButton
+                variant="outlined"
+                fullWidth
+                disabled={property?.rentees.length > 0}
+                onClick={() =>
+                  setDialog({
+                    title: "Edit property",
+                    type: AddPropertyTextString,
+                    display: true,
+                  })
+                }
+                label="Edit Property"
+              />
+            </span>
+          </Tooltip>
           <AButton
             variant="outlined"
             fullWidth
@@ -216,13 +229,23 @@ export default function QuickActions({ property }) {
           >
             <DialogTitle>
               {dialog.type === AddPropertyTextString && (
-                <RowHeader
-                  title="Edit property"
-                  caption="Edit property values"
-                  sxProps={{
-                    textAlign: "left",
-                  }}
-                />
+                <Stack direction="row" justifyContent="space-between">
+                  <RowHeader
+                    title="Edit property"
+                    caption={`Edit property details for ${property?.name}`}
+                    sxProps={{
+                      textAlign: "left",
+                    }}
+                  />
+                  <Box>
+                    <AButton
+                      label="Edit Property"
+                      variant="outlined"
+                      onClick={handleSubmit(onSubmit)}
+                      disabled={!isValid || isUpdatePropertyLoading}
+                    />
+                  </Box>
+                </Stack>
               )}
               {dialog.type === AddRentRecordsTextString && (
                 <RowHeader

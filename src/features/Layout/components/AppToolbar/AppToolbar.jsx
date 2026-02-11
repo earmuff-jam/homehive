@@ -17,12 +17,12 @@ import {
 import CustomSnackbar from "common/CustomSnackbar";
 import { DefaultTourStepsMapperObj } from "common/TourSteps";
 import { fetchLoggedInUser } from "common/utils";
+import { useSendEmailMutation } from "features/Api/externalIntegrationsApi";
 import { useLogoutMutation } from "features/Api/firebaseUserApi";
 import { useRetrieveInvoiceDetails } from "features/Invoice/hooks/useRetrieveInvoiceDetails";
 import MenuOptions from "features/Layout/components/NavBar/MenuOptions";
-import { retrieveTourKey } from "features/Layout/utils";
+import { generateInvoiceHTML, retrieveTourKey } from "features/Layout/utils";
 import { isFeatureEnabled } from "features/Rent/utils";
-import useSendEmail, { generateInvoiceHTML } from "hooks/useSendEmail";
 
 export default function AppToolbar({
   currentUri,
@@ -40,7 +40,8 @@ export default function AppToolbar({
   const user = fetchLoggedInUser();
 
   const smallFormFactor = useMediaQuery(theme.breakpoints.down("sm"));
-  const { sendEmail, reset, loading, error, success } = useSendEmail();
+
+  const [sendEmail, sendEmailResult] = useSendEmailMutation();
 
   const [logout, { isSuccess: isLogoutSuccess, isLoading: isLogoutLoading }] =
     useLogoutMutation();
@@ -157,16 +158,16 @@ export default function AppToolbar({
             isDisabled={isDisabled} // valid data check
             isLightTheme={Number(currentThemeIdx) === 1}
             showHelpAndSupport={showHelp}
-            isSendEmailLoading={loading}
+            isSendEmailLoading={sendEmailResult.isLoading}
           />
         </Stack>
       </Toolbar>
       <CustomSnackbar
-        showSnackbar={success || error !== null}
-        setShowSnackbar={reset}
-        severity={success ? "success" : "error"}
+        showSnackbar={sendEmailResult.isSuccess || sendEmailResult.isError}
+        setShowSnackbar={() => {}}
+        severity={sendEmailResult.isSuccess ? "success" : "error"}
         title={
-          success
+          sendEmailResult.isSuccess
             ? "Email sent successfully. Check spam if necessary."
             : "Error sending email."
         }

@@ -15,6 +15,17 @@ import {
 import UserInfoViewer from "features/Invoice/components/UserInfo/UserInfoViewer";
 import { useAppTitle } from "hooks/useAppTitle";
 
+const DefaultSenderInfo = {
+  firstName: "",
+  lastName: "",
+  email: "",
+  phone: "",
+  streetAddress: "",
+  city: "",
+  state: "",
+  zipcode: "",
+};
+
 export default function SenderInfo() {
   useAppTitle("Sender Information");
   const navigate = useNavigate();
@@ -38,16 +49,7 @@ export default function SenderInfo() {
     reset,
   } = useForm({
     mode: "onChange",
-    defaultValues: {
-      firstName: "",
-      lastName: "",
-      email: "",
-      phone: "",
-      streetAddress: "",
-      city: "",
-      state: "",
-      zipcode: "",
-    },
+    defaultValues: DefaultSenderInfo,
   });
 
   const submit = (formData) => {
@@ -91,6 +93,7 @@ export default function SenderInfo() {
         isDisabled={!isValid}
         onSubmit={handleSubmit(submit)}
         loading={isUpsertSendingInfoLoading}
+        handleReset={() => reset(DefaultSenderInfo)}
       />
       <CustomSnackbar
         showSnackbar={showSnackbar}

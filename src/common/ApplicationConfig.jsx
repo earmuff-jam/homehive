@@ -14,6 +14,7 @@ export function authorizedServerLevelFeatureFlags() {
   const invoicerAppUserInformationEnabled = import.meta.env
     .VITE_ENABLE_INVOICER_USER_INFORMATION;
   const invoicerAppSendEmailEnabled = import.meta.env.VITE_ENABLE_EMAIL_FEATURE;
+  const isDevEnvironmentEnabled = import.meta.env.VITE_ENABLE_DEV_ENV;
 
   return new Map([
     ["analytics", invoicerAppAnalyticsEnabled === "true"],
@@ -21,6 +22,7 @@ export function authorizedServerLevelFeatureFlags() {
     ["invoicerPro", invoicerAppProFeaturesEnabled === "true"],
     ["userInformation", invoicerAppUserInformationEnabled === "true"],
     ["sendEmail", invoicerAppSendEmailEnabled === "true"],
+    ["devEnv", isDevEnvironmentEnabled === "true"],
   ]);
 }
 

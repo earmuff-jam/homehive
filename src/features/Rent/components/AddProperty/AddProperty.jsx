@@ -633,9 +633,9 @@ export default function AddProperty({
         </Stack>
 
         <AButton
-          variant="contained"
           disabled={isDisabled}
           type="submit"
+          variant="outlined"
           label={isEditing ? "Edit Property" : "Add Property"}
         />
       </Stack>

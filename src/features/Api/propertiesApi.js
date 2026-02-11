@@ -135,6 +135,27 @@ export const propertiesApi = createApi({
       },
       invalidatesTags: ["properties"],
     }),
+    // deletePropertyById ...
+    // defines a function that marks a property as deleted
+    deletePropertyById: builder.mutation({
+      async queryFn(data) {
+        try {
+          const propertyRef = doc(db, "properties", data?.id);
+          await setDoc(propertyRef, data, {
+            merge: true,
+          });
+          return { data };
+        } catch (error) {
+          return {
+            error: {
+              message: error.message,
+              code: error.code,
+            },
+          };
+        }
+      },
+      invalidatesTags: ["properties"],
+    }),
   }),
 });
 
@@ -142,5 +163,6 @@ export const {
   useGetPropertiesByPropertyIdQuery,
   useGetPropertiesByUserIdQuery,
   useCreatePropertyMutation,
+  useDeletePropertyByIdMutation,
   useUpdatePropertyByIdMutation,
 } = propertiesApi;

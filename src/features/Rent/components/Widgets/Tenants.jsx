@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import dayjs from "dayjs";
 
@@ -23,56 +23,81 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
+import ConfirmationBox, {
+  DefaultConfirmationBoxProps,
+} from "common/ConfirmationBox";
 import CustomSnackbar from "common/CustomSnackbar";
 import { fetchLoggedInUser } from "common/utils";
-import { useUpdatePropertyByIdMutation } from "features/Api/propertiesApi";
-import { useUpdateTenantByIdMutation } from "features/Api/tenantsApi";
+import { useSendEmailMutation } from "features/Api/externalIntegrationsApi";
+import { useRemoveTenantAssociationMutation } from "features/Api/tenantsApi";
 import { useSelectedPropertyDetails } from "features/Rent/hooks/useGetSelectedPropertyDetails";
-import { formatCurrency } from "features/Rent/utils";
+import {
+  RemoveTenantNotificationEnumValue,
+  appendDisclaimer,
+  emailMessageBuilder,
+  formatAndSendNotification,
+  formatCurrency,
+} from "features/Rent/utils";
 
-export default function Tenants({ tenants = [], property }) {
+export default function Tenants({
+  tenants = [],
+  property,
+  refetchGetProperty,
+}) {
   const theme = useTheme();
   const user = fetchLoggedInUser();
-  const [updateTenant] = useUpdateTenantByIdMutation();
-  const [updateProperty] = useUpdatePropertyByIdMutation();
+
+  const [sendEmail] = useSendEmailMutation();
+  const [removeTenant, removeTenantResult] =
+    useRemoveTenantAssociationMutation();
 
   const [showSnackbar, setShowSnackbar] = useState(false);
+  const [showConfirmationBox, setShowConfirmationBox] = useState(
+    DefaultConfirmationBoxProps,
+  );
 
-  const smallFormFactorGt = useMediaQuery(theme.breakpoints.up("sm"));
+  const gtSmallFormFactor = useMediaQuery(theme.breakpoints.up("sm"));
   const { nextPaymentDueDate } = useSelectedPropertyDetails(property, tenants);
 
   const sortedByPrimaryStatus = (arr) => {
     return [...arr].sort((a, b) => b.isPrimary - a.isPrimary);
   };
 
-  const handleRemoveAssociatedTenant = async (ev, tenant) => {
-    ev.preventDefault();
-
-    if (!tenant?.id) return;
-
-    const filteredRentees = property?.rentees.filter(
-      (rentee) => rentee !== tenant.email,
-    );
-
-    await updateTenant({
-      id: tenant?.id,
-      newData: {
-        isActive: false,
-        updatedBy: user?.uid,
-        updatedOn: dayjs().toISOString(),
-      },
-    });
-
-    await updateProperty({
-      ...property,
-      id: property?.id,
-      rentees: filteredRentees,
+  const handleRemoveAssociatedTenant = (tenant) => {
+    const updatedData = {
+      tenantId: tenant?.id,
+      propertyId: property?.id,
+      removedPropertyName: property?.name, // used only for RTK query
+      removedTenantEmail: tenant?.email, // used only for RTK query
+      rentees: property?.rentees.filter((rentee) => rentee !== tenant.email),
       updatedBy: user?.uid,
       updatedOn: dayjs().toISOString(),
-    });
-
-    setShowSnackbar(true);
+    };
+    removeTenant(updatedData);
   };
+
+  useEffect(() => {
+    if (removeTenantResult.isSuccess) {
+      const emailMsgWithDisclaimer = appendDisclaimer(
+        emailMessageBuilder(
+          RemoveTenantNotificationEnumValue,
+          removeTenantResult.originalArgs.removedPropertyName,
+        ),
+        user?.email,
+      );
+
+      formatAndSendNotification({
+        to: removeTenantResult.originalArgs.removedTenantEmail,
+        subject: `${RemoveTenantNotificationEnumValue} - ${removeTenantResult.originalArgs.removedPropertyName}`,
+        body: emailMsgWithDisclaimer,
+        ccEmailIds: [user?.email],
+        sendEmail,
+      });
+
+      setShowSnackbar(true);
+      refetchGetProperty();
+    }
+  }, [removeTenantResult.isLoading]);
 
   return (
     <Stack spacing={1} maxHeight="22rem" overflow="auto">
@@ -82,7 +107,7 @@ export default function Tenants({ tenants = [], property }) {
             <CardContent sx={{ p: 1 }}>
               {/* Header with Avatar and Primary Badge */}
               <Box sx={{ display: "flex", alignItems: "flex-start", mb: 2.5 }}>
-                {smallFormFactorGt ? (
+                {gtSmallFormFactor ? (
                   <Avatar
                     sx={{
                       bgcolor: "primary.main",
@@ -151,7 +176,9 @@ export default function Tenants({ tenants = [], property }) {
                 <Tooltip title="Remove tenant from property">
                   <IconButton
                     size="small"
-                    onClick={(ev) => handleRemoveAssociatedTenant(ev, tenant)}
+                    onClick={() =>
+                      setShowConfirmationBox({ value: true, updateKey: tenant })
+                    }
                   >
                     <RemoveCircleOutlineRounded
                       fontSize="small"
@@ -225,6 +252,13 @@ export default function Tenants({ tenants = [], property }) {
         </Stack>
       ))}
 
+      <ConfirmationBox
+        isOpen={showConfirmationBox.value}
+        handleConfirm={() =>
+          handleRemoveAssociatedTenant(showConfirmationBox.updateKey)
+        }
+        handleCancel={() => setShowConfirmationBox(DefaultConfirmationBoxProps)}
+      />
       <CustomSnackbar
         showSnackbar={showSnackbar}
         setShowSnackbar={setShowSnackbar}
