@@ -14,6 +14,7 @@ import {
   DialogContent,
   DialogTitle,
   Stack,
+  Tooltip,
 } from "@mui/material";
 import AButton from "common/AButton";
 import CustomSnackbar from "common/CustomSnackbar";
@@ -171,18 +172,29 @@ export default function QuickActions({ property }) {
           }}
         />
         <Stack spacing={1}>
-          <AButton
-            variant="outlined"
-            fullWidth
-            onClick={() =>
-              setDialog({
-                title: "Edit property",
-                type: AddPropertyTextString,
-                display: true,
-              })
+          <Tooltip
+            title={
+              property?.rentees.length > 0
+                ? "Editing a property is disabled when tenants are present"
+                : ""
             }
-            label="Edit Property"
-          />
+          >
+            <span>
+              <AButton
+                variant="outlined"
+                fullWidth
+                disabled={property?.rentees.length > 0}
+                onClick={() =>
+                  setDialog({
+                    title: "Edit property",
+                    type: AddPropertyTextString,
+                    display: true,
+                  })
+                }
+                label="Edit Property"
+              />
+            </span>
+          </Tooltip>
           <AButton
             variant="outlined"
             fullWidth

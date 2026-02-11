@@ -22,6 +22,7 @@ export default function TenantsOverview({
   property,
   tenants = [],
   isTenantsLoading,
+  refetchGetProperty,
   toggleAssociateTenantsPopup,
   dataTour,
 }) {
@@ -72,7 +73,11 @@ export default function TenantsOverview({
         ) : tenants.length === 0 ? (
           <EmptyComponent caption="Associate tenants to begin." />
         ) : (
-          <Tenants tenants={tenants || []} property={property} />
+          <Tenants
+            tenants={tenants || []}
+            property={property}
+            refetchGetProperty={refetchGetProperty}
+          />
         )}
       </CardContent>
     </Card>

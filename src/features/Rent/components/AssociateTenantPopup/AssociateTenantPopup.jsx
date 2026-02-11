@@ -26,6 +26,7 @@ import {
 } from "@mui/material";
 import { LocalizationProvider, MobileDatePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import AButton from "common/AButton";
 import CustomSnackbar from "common/CustomSnackbar";
 import TextFieldWithLabel from "common/TextFieldWithLabel";
 import { fetchLoggedInUser } from "common/utils";
@@ -46,6 +47,7 @@ export default function AssociateTenantPopup({
   closeDialog,
   property,
   tenants,
+  refetchGetProperty,
 }) {
   const user = fetchLoggedInUser();
 
@@ -145,6 +147,7 @@ export default function AssociateTenantPopup({
 
       reset();
       closeDialog();
+      refetchGetProperty();
     }
   }, [associateTenantResult.isLoading]);
 
@@ -767,14 +770,13 @@ export default function AssociateTenantPopup({
           />
         </Stack>
 
-        <Button
+        <AButton
+          label="Associate"
           startIcon={<UpdateRounded fontSize="small" />}
           variant="outlined"
           type="submit"
           disabled={!isValid || (!isSoR && !isPrimaryTenant)}
-        >
-          Update
-        </Button>
+        />
 
         <CustomSnackbar
           showSnackbar={showSnackbar}

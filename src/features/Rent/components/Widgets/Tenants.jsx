@@ -39,7 +39,11 @@ import {
   formatCurrency,
 } from "features/Rent/utils";
 
-export default function Tenants({ tenants = [], property }) {
+export default function Tenants({
+  tenants = [],
+  property,
+  refetchGetProperty,
+}) {
   const theme = useTheme();
   const user = fetchLoggedInUser();
 
@@ -74,8 +78,6 @@ export default function Tenants({ tenants = [], property }) {
 
   useEffect(() => {
     if (removeTenantResult.isSuccess) {
-      setShowSnackbar(true);
-
       const emailMsgWithDisclaimer = appendDisclaimer(
         emailMessageBuilder(
           RemoveTenantNotificationEnumValue,
@@ -91,6 +93,9 @@ export default function Tenants({ tenants = [], property }) {
         ccEmailIds: [user?.email],
         sendEmail,
       });
+
+      setShowSnackbar(true);
+      refetchGetProperty();
     }
   }, [removeTenantResult.isLoading]);
 
