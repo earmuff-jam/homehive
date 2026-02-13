@@ -74,7 +74,7 @@ export default function AssociateTenantPopup({
         (leaseOption) => leaseOption.amount === 12,
       ).value,
       taxRate: 1,
-      rent: "",
+      rent: 0,
       initialLateFee: 75,
       dailyLateFee: 10,
       initialAnimalVoilationFee: 300,
@@ -120,7 +120,7 @@ export default function AssociateTenantPopup({
 
   useEffect(() => {
     if (property) {
-      setValue("rent", property?.rent || "");
+      setValue("rent", property?.rent || 0);
     }
   }, [property]);
 

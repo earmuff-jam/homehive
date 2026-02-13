@@ -112,7 +112,7 @@ describe("Test utility functions", () => {
 
         const result = getColorAndLabelForCurrentMonth(
           "2026-01-01",
-          { status: "paid" },
+          { status: "complete" },
           3,
         );
 
@@ -125,7 +125,7 @@ describe("Test utility functions", () => {
 
         const result = getColorAndLabelForCurrentMonth(
           "2026-01-01",
-          { status: "PAID" },
+          { status: "CompleTe" },
           3,
         );
 

@@ -11,8 +11,8 @@ import { authorizedServerLevelFeatureFlags } from "common/ApplicationConfig";
 import { DefaultLeaseTermOptions } from "features/Rent/common/constants";
 import { produce } from "immer";
 
-export const PaidRentStatusEnumValue = "paid";
 export const ManualRentStatusEnumValue = "manual";
+export const CompleteRentStatusEnumValue = "complete";
 
 export const CreateInvoiceEnumValue = "CreateInvoice";
 export const SendDefaultInvoiceEnumValue = "SendDefaultInvoice";
@@ -178,6 +178,32 @@ export const emailMessageBuilder = (msgType, propertyName) => {
   }
 };
 
+// getNumberOfDaysPastDue ...
+// defines a function that returns an object { value: boolean, count: number }
+// if rent is pre-grace period, ignore first month
+export const getNumberOfDaysPastDue = (startDate, gracePeriod = 3) => {
+  const now = dayjs();
+  const start = dayjs(startDate);
+  const isFirstMonthRenting = start.isSame(now, "month");
+
+  const formattedGracePeriodInDateTime = now
+    .startOf("month")
+    .add(gracePeriod, "day");
+
+  const unitOfMeasurement = isFirstMonthRenting ? "month" : "day";
+
+  const isPastGracePeriod = now.isAfter(
+    formattedGracePeriodInDateTime,
+    unitOfMeasurement,
+  );
+
+  const daysPastGracePeriod = isFirstMonthRenting
+    ? now.diff(start.startOf("day"), "day")
+    : now.diff(formattedGracePeriodInDateTime.startOf("day"), "day");
+
+  return { value: isPastGracePeriod, count: daysPastGracePeriod };
+};
+
 // getColorAndLabelForCurrentMonth ...
 // defines a function that returns a specific color and label based on params and gracePeriod
 // if rent is paid, returns a success
@@ -189,17 +215,12 @@ export const getColorAndLabelForCurrentMonth = (
   rent,
   gracePeriod = 3,
 ) => {
-  const isFirstMonthRenting = dayjs(startDate).isSame(dayjs(), "month");
-  const formattedGracePeriodInDateTime = dayjs()
-    .startOf("month")
-    .add(gracePeriod, "day");
-  const unitOfMeasurement = isFirstMonthRenting ? "month" : "day";
-  const isPastGracePeriod = dayjs().isAfter(
-    formattedGracePeriodInDateTime,
-    unitOfMeasurement,
+  const { value: isPastGracePeriod } = getNumberOfDaysPastDue(
+    startDate,
+    gracePeriod,
   );
   if (
-    [PaidRentStatusEnumValue, ManualRentStatusEnumValue].includes(
+    [CompleteRentStatusEnumValue, ManualRentStatusEnumValue].includes(
       rent?.status.toLowerCase(),
     )
   ) {

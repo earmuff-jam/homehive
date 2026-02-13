@@ -25,17 +25,15 @@ const ViewRentalPaymentSummary = ({ rentData = [] }) => {
       {
         header: "Amount Paid ($)",
         accessorFn: (row) => {
-          const total =
-            [
-              row?.rentAmount,
-              row?.additionalCharges,
-              row?.initialLateFee,
-              row?.dailyLateFee,
-            ].reduce((sum, val) => {
-              const num = Number(val);
-              return sum + (Number.isFinite(num) ? num : 0);
-            }, 0) / 100;
-
+          const total = [
+            row?.rentAmount,
+            row?.additionalCharges,
+            row?.initialLateFee,
+            row?.dailyLateFee,
+          ].reduce((sum, val) => {
+            const num = Number(val);
+            return sum + (Number.isFinite(num) ? num : 0);
+          }, 0);
           return total;
         },
         id: "amountPaid",

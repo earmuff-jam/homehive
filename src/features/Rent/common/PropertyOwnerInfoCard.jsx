@@ -37,9 +37,10 @@ import { getStripeFailureReasons } from "features/Rent/components/Settings/commo
 import { useCheckStripeAccountStatus } from "features/Rent/hooks/useCheckStripeAccountStatus";
 import { useGenerateStripeCheckoutSession } from "features/Rent/hooks/useGenerateStripeCheckoutSession";
 import {
+  CompleteRentStatusEnumValue,
   ManualRentStatusEnumValue,
-  PaidRentStatusEnumValue,
   formatCurrency,
+  getNumberOfDaysPastDue,
 } from "features/Rent/utils";
 
 export default function PropertyOwnerInfoCard({
@@ -76,7 +77,7 @@ export default function PropertyOwnerInfoCard({
   const currentMonthRentData = getRentByMonthResult?.data;
   const paymentCompleteForCurrentMonth = currentMonthRentData?.some(
     (item) =>
-      item.status === PaidRentStatusEnumValue ||
+      item.status === CompleteRentStatusEnumValue ||
       item.status === ManualRentStatusEnumValue,
   );
 
@@ -85,7 +86,6 @@ export default function PropertyOwnerInfoCard({
     additionalCharges,
     initialLateFee,
     dailyLateFee,
-    tenantRentDueDate,
     stripeOwnerAccountId,
     stripeAccountIsActive,
     propertyId,
@@ -97,16 +97,12 @@ export default function PropertyOwnerInfoCard({
       return;
     }
 
-    const upcommingDueDate = dayjs().date(dayjs(tenantRentDueDate).date());
-    const diffDays = upcommingDueDate.diff(dayjs(), "day");
-
     const draftData = {
       id: uuidv4(),
-      rentAmount: Math.round(rentAmount * 100),
-      additionalCharges: Math.round(additionalCharges * 100),
-      initialLateFee: Math.round(Number(initialLateFee) || 0 * 100),
-      dailyLateFee:
-        Math.round(Number(dailyLateFee) || 0 * 100) * Math.abs(diffDays),
+      rentAmount,
+      additionalCharges,
+      initialLateFee,
+      dailyLateFee,
       stripeOwnerAccountId, // the person who the payment must go towards
       tenantEmail,
       propertyId,
@@ -115,8 +111,17 @@ export default function PropertyOwnerInfoCard({
       rentMonth: dayjs().format("MMMM"),
     };
 
-    const stripeCheckoutSessionData =
-      await generateStripeCheckoutSession(draftData);
+    const draftDataWithCentsDirectives = {
+      ...draftData,
+      rentAmount: Math.round(rentAmount * 100),
+      additionalCharges: Math.round(additionalCharges * 100),
+      initialLateFee: Math.round(Number(initialLateFee) * 100),
+      dailyLateFee: Math.round(Number(dailyLateFee) * 100),
+    };
+
+    const stripeCheckoutSessionData = await generateStripeCheckoutSession(
+      draftDataWithCentsDirectives,
+    );
 
     await createRentRecord({
       ...draftData,
@@ -290,7 +295,6 @@ export default function PropertyOwnerInfoCard({
                       propertyId: property?.id,
                       propertyOwnerId: property?.createdBy, // the owner of the property
                       tenantId: user?.uid, // the current payee which is also a tenant
-                      tenantRentDueDate: tenant?.startDate,
                       tenantEmail: user?.email, // the current renter
                       rentAmount: formatCurrency(Number(property?.rent)),
                       additionalCharges: formatCurrency(
@@ -300,7 +304,11 @@ export default function PropertyOwnerInfoCard({
                         Number(tenant?.initialLateFee),
                       ),
                       dailyLateFee: formatCurrency(
-                        Number(tenant?.dailyLateFee),
+                        Number(tenant?.dailyLateFee) *
+                          getNumberOfDaysPastDue(
+                            tenant?.startDate,
+                            tenant?.gracePeriod,
+                          ).count,
                       ),
                     })
                   }

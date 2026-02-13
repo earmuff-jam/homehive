@@ -20,7 +20,6 @@ export const useGenerateStripeCheckoutSession = () => {
   }) => {
     setLoading(true);
     setError(null);
-
     try {
       const response = await fetch("/.netlify/functions/proxy", {
         method: "POST",
