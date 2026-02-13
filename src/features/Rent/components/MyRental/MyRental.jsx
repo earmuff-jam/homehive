@@ -76,7 +76,7 @@ const MyRental = () => {
     if (Number(success) === 1 && sessionId && owner?.stripeAccountId) {
       navigate(location?.pathname, { replace: true });
       setAlert({
-        title: "Refresh",
+        label: "Refresh",
         caption:
           "To maintain data integrity and get latest payment details, please refresh your browser",
         severity: "info",
