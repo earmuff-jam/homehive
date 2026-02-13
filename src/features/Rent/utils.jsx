@@ -11,8 +11,8 @@ import { authorizedServerLevelFeatureFlags } from "common/ApplicationConfig";
 import { DefaultLeaseTermOptions } from "features/Rent/common/constants";
 import { produce } from "immer";
 
-export const PaidRentStatusEnumValue = "paid";
 export const ManualRentStatusEnumValue = "manual";
+export const CompleteRentStatusEnumValue = "complete";
 
 export const CreateInvoiceEnumValue = "CreateInvoice";
 export const SendDefaultInvoiceEnumValue = "SendDefaultInvoice";
@@ -220,7 +220,7 @@ export const getColorAndLabelForCurrentMonth = (
     gracePeriod,
   );
   if (
-    [PaidRentStatusEnumValue, ManualRentStatusEnumValue].includes(
+    [CompleteRentStatusEnumValue, ManualRentStatusEnumValue].includes(
       rent?.status.toLowerCase(),
     )
   ) {
