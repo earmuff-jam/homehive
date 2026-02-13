@@ -2,7 +2,6 @@ import React from "react";
 
 import { useLocation, useNavigate } from "react-router-dom";
 
-import { useTheme } from "@emotion/react";
 import { ChevronLeftRounded, ChevronRightRounded } from "@mui/icons-material";
 import {
   Divider,
@@ -14,20 +13,21 @@ import {
   ListItemText,
   Stack,
   Typography,
+  useTheme,
 } from "@mui/material";
-import validateClientPermissions, {
-  filterValidRoutesForNavigationBar,
-  isValidPermissions,
-} from "common/ValidateClientPermissions";
+import {
+  authorizedServerLevelFeatureFlags,
+  filterAuthorizedRoutesForNavBar,
+  isValidFeatureFlagsForRoutes,
+} from "common/ApplicationConfig";
 import {
   MainInvoiceAppRouteUri,
   MainRentAppRouteUri,
-  isUserLoggedIn,
+  fetchLoggedInUser,
 } from "common/utils";
 import { InvoiceAppRoutes } from "features/Invoice/Routes";
 import NavigationGroup from "features/Layout/components/NavBar/NavigationGroup";
 import { RentalAppRoutes } from "features/Rent/Routes";
-import { fetchLoggedInUser } from "features/Rent/utils";
 import { MainAppRoutes } from "src/Routes";
 
 export default function NavBar({
@@ -52,18 +52,21 @@ export default function NavBar({
   };
 
   const getValidRoutes = (routes = [], roleType = "") => {
-    const validRouteFlags = validateClientPermissions();
-    const filteredNavigationRoutes = filterValidRoutesForNavigationBar(routes);
+    const validRouteFlags = authorizedServerLevelFeatureFlags();
+    const filteredNavigationRoutes = filterAuthorizedRoutesForNavBar(routes);
 
     return filteredNavigationRoutes.filter(({ requiredFlags, config }) => {
-      const isRouteValid = isValidPermissions(validRouteFlags, requiredFlags);
+      const isRouteValid = isValidFeatureFlagsForRoutes(
+        validRouteFlags,
+        requiredFlags,
+      );
       if (!isRouteValid) return false;
 
       const validRoles = config?.enabledForRoles || [];
       if (validRoles.length > 0 && !validRoles.includes(roleType)) return false;
 
       const requiresLogin = Boolean(config?.isLoggedInFeature);
-      if (requiresLogin && !isUserLoggedIn()) return false;
+      if (requiresLogin && !user?.uid) return false;
 
       return true;
     });
@@ -123,8 +126,8 @@ export default function NavBar({
         >
           {MainAppRoutes.map(
             ({ id, label, icon, path, requiredFlags, config }) => {
-              const isRouteValid = isValidPermissions(
-                validateClientPermissions(),
+              const isRouteValid = isValidFeatureFlagsForRoutes(
+                authorizedServerLevelFeatureFlags(),
                 requiredFlags,
               );
               if (!isRouteValid) return null;
@@ -134,10 +137,9 @@ export default function NavBar({
                 return null;
 
               const requiresLogin = Boolean(config?.isLoggedInFeature);
-              if (requiresLogin && !isUserLoggedIn()) return null;
+              if (requiresLogin && !user?.uid) return null;
 
               let childRoutes = [];
-
               if (path.startsWith(MainInvoiceAppRouteUri)) {
                 childRoutes = getValidRoutes(InvoiceAppRoutes, user?.role);
               } else if (path.startsWith(MainRentAppRouteUri)) {
@@ -153,7 +155,7 @@ export default function NavBar({
                     pathname={pathname}
                     theme={theme}
                     navigate={handleMenuItemClick}
-                    childrenRoutes={filterValidRoutesForNavigationBar(
+                    childrenRoutes={filterAuthorizedRoutesForNavBar(
                       childRoutes,
                     )}
                   />

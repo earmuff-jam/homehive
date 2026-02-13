@@ -7,16 +7,16 @@ import globals from "globals";
 export default [
   {
     ignores: [
-      "dist",
-      "dev",
-      "dev-dist",
       "vite.config.js",
-      "netlify",
-      ".netlify",
-      "__mocks__",
+      "**/dist/**",
+      "**/dev/**",
+      "**/dev-dist/**",
+      "**/.netlify/**",
+      "**/netlify/**",
+      "**/__mocks__/**",
       "**/*.test.js",
-      "*.setup.js",
-      "coverage",
+      "**/*.setup.js",
+      "**/coverage/**",
     ],
   },
   {

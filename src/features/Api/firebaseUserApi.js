@@ -1,10 +1,11 @@
 import secureLocalStorage from "react-secure-storage";
 
 import { createApi, fakeBaseQuery } from "@reduxjs/toolkit/query/react";
-import { authenticateViaGoogle } from "features/Auth/AuthHelper";
+import { Role, authenticateViaGoogle } from "features/Auth/AuthHelper";
 import { getAuth, signOut } from "firebase/auth";
 import {
   collection,
+  deleteDoc,
   doc,
   getDoc,
   getDocs,
@@ -80,14 +81,41 @@ export const firebaseUserApi = createApi({
           const refetchUserDataSnapshot = await getDoc(userRef);
           const refetchUserData = refetchUserDataSnapshot.data();
 
-          if (userDetails?.uid) {
-            secureLocalStorage.setItem("user", {
-              uid: userDetails?.uid,
-              role: refetchUserData?.role,
-              email: userDetails?.email,
-            });
+          let userWithRole = {
+            uid: userDetails?.uid,
+            role: refetchUserData?.role,
+            email: userDetails?.googleEmailAddress,
+          };
+
+          // if the user has no roles, the user is a generic user
+          // generic users can have associated invites.
+          if (!Object.values(Role).includes(userWithRole.role)) {
+            const inviteRef = doc(
+              db,
+              "invites",
+              userDetails?.googleEmailAddress,
+            );
+            const inviteSnapshot = await getDoc(inviteRef);
+
+            if (inviteSnapshot.exists()) {
+              const invite = inviteSnapshot.data();
+              // Create user from invite
+              await setDoc(userRef, {
+                uid: userDetails?.uid,
+                googleEmailAddress: userDetails.googleEmailAddress,
+                googleDisplayName: userDetails.displayName ?? null,
+                googlePhotoURL: userDetails.photoURL ?? null,
+                role: invite.role,
+              });
+
+              // remove invite doc if user is created
+              await deleteDoc(inviteRef);
+              return;
+            }
           }
-          return { data: userDetails };
+
+          secureLocalStorage.setItem("user", userWithRole);
+          return { data: userWithRole };
         } catch (error) {
           return {
             error: {

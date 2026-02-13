@@ -1,9 +1,9 @@
-import React, { forwardRef } from "react";
+import React, { forwardRef, useMemo } from "react";
 
 import { useLocation } from "react-router-dom";
 
 import { Button } from "@mui/material";
-import { isBannerVisible } from "common/utils";
+import { isBasePlanUser } from "common/utils";
 import { useButtonAnalytics } from "hooks/useButtonAnalytics";
 
 const analyticsEnabled = import.meta.env.VITE_ENABLE_ANALYTICS || "false";
@@ -17,6 +17,10 @@ const analyticsEnabled = import.meta.env.VITE_ENABLE_ANALYTICS || "false";
  * starterPlanUser are users who are enrolled into the application but have not
  * completed their form of payment to use the application.
  *
+ * expiredPlanUser are users who were enrolled at one point, but have decided to
+ * remove subscription or not continue subscription. Todo: we need to create be for
+ * support of this functionality. broken down into other tickets - #253
+ *
  * @param {string} label - the label of the button component
  * @param {boolean} loading - the loading state of the selected component, defaults to false
  * @param {function} onClick - the onClick handler to perform action on the button
@@ -25,13 +29,20 @@ const analyticsEnabled = import.meta.env.VITE_ENABLE_ANALYTICS || "false";
  */
 
 const AButton = forwardRef(function AButton(
-  { label, onClick = () => {}, loading = false, ...rest },
+  { label, onClick = () => {}, loading = false, disabled = false, ...rest },
   ref,
 ) {
   const location = useLocation();
-  const starterPlanUser = isBannerVisible(location.pathname);
+  const starterPlanUser = isBasePlanUser(location.pathname);
 
   const buttonAnalytics = useButtonAnalytics();
+
+  const shouldDisableClick = useMemo(() => {
+    if (starterPlanUser) {
+      return true;
+    }
+    return disabled;
+  }, [starterPlanUser, disabled]);
 
   const handleClick = (ev) => {
     // log data only if analytics is enabled
@@ -46,7 +57,7 @@ const AButton = forwardRef(function AButton(
       ref={ref}
       onClick={handleClick}
       loading={loading}
-      disabled={starterPlanUser}
+      disabled={shouldDisableClick}
       {...rest} // at the end so that we can overwrite default settings
     >
       {label}

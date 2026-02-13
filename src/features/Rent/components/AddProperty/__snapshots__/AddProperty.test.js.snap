@@ -30,11 +30,12 @@ exports[`AddProperty Component Tests AddProperty Snapshot Tests matches AddPrope
           <div
             class="MuiStack-root css-niqf4j-MuiStack-root"
           >
-            <p
-              class="MuiTypography-root MuiTypography-body2 css-hol6i2-MuiTypography-root"
+            <span
+              class="MuiBox-root css-1ta4aep"
+              variant="body2"
             >
               Property Name *
-            </p>
+            </span>
           </div>
           <div
             class="MuiFormControl-root MuiFormControl-fullWidth MuiTextField-root css-cmpglg-MuiFormControl-root-MuiTextField-root"
@@ -78,11 +79,12 @@ exports[`AddProperty Component Tests AddProperty Snapshot Tests matches AddPrope
             <div
               class="MuiStack-root css-niqf4j-MuiStack-root"
             >
-              <p
-                class="MuiTypography-root MuiTypography-body2 css-hol6i2-MuiTypography-root"
+              <span
+                class="MuiBox-root css-1ta4aep"
+                variant="body2"
               >
                 Address *
-              </p>
+              </span>
             </div>
             <div
               class="MuiFormControl-root MuiFormControl-fullWidth MuiTextField-root css-cmpglg-MuiFormControl-root-MuiTextField-root"
@@ -123,11 +125,12 @@ exports[`AddProperty Component Tests AddProperty Snapshot Tests matches AddPrope
             <div
               class="MuiStack-root css-niqf4j-MuiStack-root"
             >
-              <p
-                class="MuiTypography-root MuiTypography-body2 css-hol6i2-MuiTypography-root"
+              <span
+                class="MuiBox-root css-1ta4aep"
+                variant="body2"
               >
                 County
-              </p>
+              </span>
             </div>
             <div
               class="MuiFormControl-root MuiFormControl-fullWidth MuiTextField-root css-cmpglg-MuiFormControl-root-MuiTextField-root"
@@ -173,11 +176,12 @@ exports[`AddProperty Component Tests AddProperty Snapshot Tests matches AddPrope
           <div
             class="MuiStack-root css-niqf4j-MuiStack-root"
           >
-            <p
-              class="MuiTypography-root MuiTypography-body2 css-hol6i2-MuiTypography-root"
+            <span
+              class="MuiBox-root css-1ta4aep"
+              variant="body2"
             >
               City *
-            </p>
+            </span>
           </div>
           <div
             class="MuiFormControl-root MuiFormControl-fullWidth MuiTextField-root css-cmpglg-MuiFormControl-root-MuiTextField-root"
@@ -218,11 +222,12 @@ exports[`AddProperty Component Tests AddProperty Snapshot Tests matches AddPrope
           <div
             class="MuiStack-root css-niqf4j-MuiStack-root"
           >
-            <p
-              class="MuiTypography-root MuiTypography-body2 css-hol6i2-MuiTypography-root"
+            <span
+              class="MuiBox-root css-1ta4aep"
+              variant="body2"
             >
               State *
-            </p>
+            </span>
           </div>
           <div
             class="MuiFormControl-root MuiFormControl-fullWidth MuiTextField-root css-cmpglg-MuiFormControl-root-MuiTextField-root"
@@ -263,11 +268,12 @@ exports[`AddProperty Component Tests AddProperty Snapshot Tests matches AddPrope
           <div
             class="MuiStack-root css-niqf4j-MuiStack-root"
           >
-            <p
-              class="MuiTypography-root MuiTypography-body2 css-hol6i2-MuiTypography-root"
+            <span
+              class="MuiBox-root css-1ta4aep"
+              variant="body2"
             >
               ZIP Code *
-            </p>
+            </span>
           </div>
           <div
             class="MuiFormControl-root MuiFormControl-fullWidth MuiTextField-root css-cmpglg-MuiFormControl-root-MuiTextField-root"
@@ -312,11 +318,12 @@ exports[`AddProperty Component Tests AddProperty Snapshot Tests matches AddPrope
           <div
             class="MuiStack-root css-niqf4j-MuiStack-root"
           >
-            <p
-              class="MuiTypography-root MuiTypography-body2 css-hol6i2-MuiTypography-root"
+            <span
+              class="MuiBox-root css-1ta4aep"
+              variant="body2"
             >
               Number of Units / Bedroom *
-            </p>
+            </span>
           </div>
           <div
             class="MuiFormControl-root MuiFormControl-fullWidth MuiTextField-root css-cmpglg-MuiFormControl-root-MuiTextField-root"
@@ -357,11 +364,12 @@ exports[`AddProperty Component Tests AddProperty Snapshot Tests matches AddPrope
           <div
             class="MuiStack-root css-niqf4j-MuiStack-root"
           >
-            <p
-              class="MuiTypography-root MuiTypography-body2 css-hol6i2-MuiTypography-root"
+            <span
+              class="MuiBox-root css-1ta4aep"
+              variant="body2"
             >
               Number of Bathrooms *
-            </p>
+            </span>
           </div>
           <div
             class="MuiFormControl-root MuiFormControl-fullWidth MuiTextField-root css-cmpglg-MuiFormControl-root-MuiTextField-root"
@@ -406,11 +414,12 @@ exports[`AddProperty Component Tests AddProperty Snapshot Tests matches AddPrope
           <div
             class="MuiStack-root css-niqf4j-MuiStack-root"
           >
-            <p
-              class="MuiTypography-root MuiTypography-body2 css-hol6i2-MuiTypography-root"
+            <span
+              class="MuiBox-root css-1ta4aep"
+              variant="body2"
             >
               Area of the home in sq ft. *
-            </p>
+            </span>
           </div>
           <div
             class="MuiFormControl-root MuiFormControl-fullWidth MuiTextField-root css-cmpglg-MuiFormControl-root-MuiTextField-root"
@@ -452,11 +461,12 @@ exports[`AddProperty Component Tests AddProperty Snapshot Tests matches AddPrope
         <div
           class="MuiStack-root css-niqf4j-MuiStack-root"
         >
-          <p
-            class="MuiTypography-root MuiTypography-body2 css-hol6i2-MuiTypography-root"
+          <span
+            class="MuiBox-root css-1ta4aep"
+            variant="body2"
           >
             Additional Notes
-          </p>
+          </span>
         </div>
         <div
           class="MuiFormControl-root MuiFormControl-fullWidth MuiTextField-root css-cmpglg-MuiFormControl-root-MuiTextField-root"
@@ -522,11 +532,12 @@ exports[`AddProperty Component Tests AddProperty Snapshot Tests matches AddPrope
           <div
             class="MuiStack-root css-niqf4j-MuiStack-root"
           >
-            <p
-              class="MuiTypography-root MuiTypography-body2 css-hol6i2-MuiTypography-root"
+            <span
+              class="MuiBox-root css-1ta4aep"
+              variant="body2"
             >
               Emergency Contact *
-            </p>
+            </span>
           </div>
           <div
             class="MuiFormControl-root MuiFormControl-fullWidth MuiTextField-root css-cmpglg-MuiFormControl-root-MuiTextField-root"
@@ -673,11 +684,12 @@ exports[`AddProperty Component Tests AddProperty Snapshot Tests matches AddPrope
           <div
             class="MuiStack-root css-niqf4j-MuiStack-root"
           >
-            <p
-              class="MuiTypography-root MuiTypography-body2 css-hol6i2-MuiTypography-root"
+            <span
+              class="MuiBox-root css-1ta4aep"
+              variant="body2"
             >
               Monthly Rent *
-            </p>
+            </span>
           </div>
           <div
             class="MuiFormControl-root MuiFormControl-fullWidth MuiTextField-root css-cmpglg-MuiFormControl-root-MuiTextField-root"
@@ -718,32 +730,33 @@ exports[`AddProperty Component Tests AddProperty Snapshot Tests matches AddPrope
           <div
             class="MuiStack-root css-niqf4j-MuiStack-root"
           >
-            <p
-              class="MuiTypography-root MuiTypography-body2 css-hol6i2-MuiTypography-root"
-            />
-            <div
-              class="MuiStack-root css-1d9cypr-MuiStack-root"
+            <span
+              class="MuiBox-root css-1ta4aep"
+              variant="body2"
             >
-              <svg
-                aria-hidden="true"
-                aria-label="Includes recurring charges such as utilities, parking, or other monthly services."
-                class="MuiSvgIcon-root MuiSvgIcon-colorSecondary MuiSvgIcon-fontSizeSmall css-1s79gy0-MuiSvgIcon-root"
-                data-mui-internal-clone-element="true"
-                data-testid="InfoRoundedIcon"
-                focusable="false"
-                viewBox="0 0 24 24"
+              <div
+                class="MuiStack-root css-1d9cypr-MuiStack-root"
               >
-                <path
-                  d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m0 15c-.55 0-1-.45-1-1v-4c0-.55.45-1 1-1s1 .45 1 1v4c0 .55-.45 1-1 1m1-8h-2V7h2z"
-                />
-              </svg>
-              <h6
-                class="MuiTypography-root MuiTypography-subtitle2 css-1ypmsg6-MuiTypography-root"
-              >
-                Add ons
-              </h6>
-            </div>
-            <p />
+                <svg
+                  aria-hidden="true"
+                  aria-label="Includes recurring charges such as utilities, parking, or other monthly services."
+                  class="MuiSvgIcon-root MuiSvgIcon-colorSecondary MuiSvgIcon-fontSizeSmall css-1s79gy0-MuiSvgIcon-root"
+                  data-mui-internal-clone-element="true"
+                  data-testid="InfoRoundedIcon"
+                  focusable="false"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m0 15c-.55 0-1-.45-1-1v-4c0-.55.45-1 1-1s1 .45 1 1v4c0 .55-.45 1-1 1m1-8h-2V7h2z"
+                  />
+                </svg>
+                <h6
+                  class="MuiTypography-root MuiTypography-subtitle2 css-1ypmsg6-MuiTypography-root"
+                >
+                  Add ons
+                </h6>
+              </div>
+            </span>
           </div>
           <div
             class="MuiFormControl-root MuiFormControl-fullWidth MuiTextField-root css-cmpglg-MuiFormControl-root-MuiTextField-root"
@@ -754,8 +767,8 @@ exports[`AddProperty Component Tests AddProperty Snapshot Tests matches AddPrope
               <input
                 aria-invalid="false"
                 class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputSizeSmall css-1pzfmz2-MuiInputBase-input-MuiOutlinedInput-input"
-                id="additional_rent"
-                name="additional_rent"
+                id="additionalRent"
+                name="additionalRent"
                 placeholder="Additional fee. Eg, 400.00"
                 type="text"
                 value=""
@@ -788,32 +801,33 @@ exports[`AddProperty Component Tests AddProperty Snapshot Tests matches AddPrope
           <div
             class="MuiStack-root css-niqf4j-MuiStack-root"
           >
-            <p
-              class="MuiTypography-root MuiTypography-body2 css-hol6i2-MuiTypography-root"
-            />
-            <div
-              class="MuiStack-root css-1d9cypr-MuiStack-root"
+            <span
+              class="MuiBox-root css-1ta4aep"
+              variant="body2"
             >
-              <svg
-                aria-hidden="true"
-                aria-label="Estimated rent increment for next lease term. Prefilling this allows you to generate automatic templates to send to your tenant. You can edit this value later on."
-                class="MuiSvgIcon-root MuiSvgIcon-colorSecondary MuiSvgIcon-fontSizeSmall css-1s79gy0-MuiSvgIcon-root"
-                data-mui-internal-clone-element="true"
-                data-testid="InfoRoundedIcon"
-                focusable="false"
-                viewBox="0 0 24 24"
+              <div
+                class="MuiStack-root css-1d9cypr-MuiStack-root"
               >
-                <path
-                  d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m0 15c-.55 0-1-.45-1-1v-4c0-.55.45-1 1-1s1 .45 1 1v4c0 .55-.45 1-1 1m1-8h-2V7h2z"
-                />
-              </svg>
-              <h6
-                class="MuiTypography-root MuiTypography-subtitle2 css-1ypmsg6-MuiTypography-root"
-              >
-                Projected Rent Increase *
-              </h6>
-            </div>
-            <p />
+                <svg
+                  aria-hidden="true"
+                  aria-label="Estimated rent increment for next lease term. Prefilling this allows you to generate automatic templates to send to your tenant. You can edit this value later on."
+                  class="MuiSvgIcon-root MuiSvgIcon-colorSecondary MuiSvgIcon-fontSizeSmall css-1s79gy0-MuiSvgIcon-root"
+                  data-mui-internal-clone-element="true"
+                  data-testid="InfoRoundedIcon"
+                  focusable="false"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m0 15c-.55 0-1-.45-1-1v-4c0-.55.45-1 1-1s1 .45 1 1v4c0 .55-.45 1-1 1m1-8h-2V7h2z"
+                  />
+                </svg>
+                <h6
+                  class="MuiTypography-root MuiTypography-subtitle2 css-1ypmsg6-MuiTypography-root"
+                >
+                  Projected Rent Increase *
+                </h6>
+              </div>
+            </span>
           </div>
           <div
             class="MuiFormControl-root MuiFormControl-fullWidth MuiTextField-root css-cmpglg-MuiFormControl-root-MuiTextField-root"
@@ -824,8 +838,8 @@ exports[`AddProperty Component Tests AddProperty Snapshot Tests matches AddPrope
               <input
                 aria-invalid="false"
                 class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputSizeSmall css-1pzfmz2-MuiInputBase-input-MuiOutlinedInput-input"
-                id="rent_increment"
-                name="rent_increment"
+                id="rentIncrement"
+                name="rentIncrement"
                 placeholder="Projected Rent Increase in USD. Eg, 200.00"
                 type="text"
                 value=""
@@ -854,32 +868,33 @@ exports[`AddProperty Component Tests AddProperty Snapshot Tests matches AddPrope
           <div
             class="MuiStack-root css-niqf4j-MuiStack-root"
           >
-            <p
-              class="MuiTypography-root MuiTypography-body2 css-hol6i2-MuiTypography-root"
-            />
-            <div
-              class="MuiStack-root css-1d9cypr-MuiStack-root"
+            <span
+              class="MuiBox-root css-1ta4aep"
+              variant="body2"
             >
-              <svg
-                aria-hidden="true"
-                aria-label="Security deposit is payment identifier"
-                class="MuiSvgIcon-root MuiSvgIcon-colorSecondary MuiSvgIcon-fontSizeSmall css-1s79gy0-MuiSvgIcon-root"
-                data-mui-internal-clone-element="true"
-                data-testid="InfoRoundedIcon"
-                focusable="false"
-                viewBox="0 0 24 24"
+              <div
+                class="MuiStack-root css-1d9cypr-MuiStack-root"
               >
-                <path
-                  d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m0 15c-.55 0-1-.45-1-1v-4c0-.55.45-1 1-1s1 .45 1 1v4c0 .55-.45 1-1 1m1-8h-2V7h2z"
-                />
-              </svg>
-              <h6
-                class="MuiTypography-root MuiTypography-subtitle2 css-1ypmsg6-MuiTypography-root"
-              >
-                Security deposit *
-              </h6>
-            </div>
-            <p />
+                <svg
+                  aria-hidden="true"
+                  aria-label="Security deposit is payment identifier"
+                  class="MuiSvgIcon-root MuiSvgIcon-colorSecondary MuiSvgIcon-fontSizeSmall css-1s79gy0-MuiSvgIcon-root"
+                  data-mui-internal-clone-element="true"
+                  data-testid="InfoRoundedIcon"
+                  focusable="false"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m0 15c-.55 0-1-.45-1-1v-4c0-.55.45-1 1-1s1 .45 1 1v4c0 .55-.45 1-1 1m1-8h-2V7h2z"
+                  />
+                </svg>
+                <h6
+                  class="MuiTypography-root MuiTypography-subtitle2 css-1ypmsg6-MuiTypography-root"
+                >
+                  Security deposit *
+                </h6>
+              </div>
+            </span>
           </div>
           <div
             class="MuiFormControl-root MuiFormControl-fullWidth MuiTextField-root css-cmpglg-MuiFormControl-root-MuiTextField-root"
@@ -924,32 +939,33 @@ exports[`AddProperty Component Tests AddProperty Snapshot Tests matches AddPrope
           <div
             class="MuiStack-root css-niqf4j-MuiStack-root"
           >
-            <p
-              class="MuiTypography-root MuiTypography-body2 css-hol6i2-MuiTypography-root"
-            />
-            <div
-              class="MuiStack-root css-1d9cypr-MuiStack-root"
+            <span
+              class="MuiBox-root css-1ta4aep"
+              variant="body2"
             >
-              <svg
-                aria-hidden="true"
-                aria-label="Limit the amount of parking spots for the residents of this property."
-                class="MuiSvgIcon-root MuiSvgIcon-colorSecondary MuiSvgIcon-fontSizeSmall css-1s79gy0-MuiSvgIcon-root"
-                data-mui-internal-clone-element="true"
-                data-testid="InfoRoundedIcon"
-                focusable="false"
-                viewBox="0 0 24 24"
+              <div
+                class="MuiStack-root css-1d9cypr-MuiStack-root"
               >
-                <path
-                  d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m0 15c-.55 0-1-.45-1-1v-4c0-.55.45-1 1-1s1 .45 1 1v4c0 .55-.45 1-1 1m1-8h-2V7h2z"
-                />
-              </svg>
-              <h6
-                class="MuiTypography-root MuiTypography-subtitle2 css-1ypmsg6-MuiTypography-root"
-              >
-                Allocated parking spots
-              </h6>
-            </div>
-            <p />
+                <svg
+                  aria-hidden="true"
+                  aria-label="Limit the amount of parking spots for the residents of this property."
+                  class="MuiSvgIcon-root MuiSvgIcon-colorSecondary MuiSvgIcon-fontSizeSmall css-1s79gy0-MuiSvgIcon-root"
+                  data-mui-internal-clone-element="true"
+                  data-testid="InfoRoundedIcon"
+                  focusable="false"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m0 15c-.55 0-1-.45-1-1v-4c0-.55.45-1 1-1s1 .45 1 1v4c0 .55-.45 1-1 1m1-8h-2V7h2z"
+                  />
+                </svg>
+                <h6
+                  class="MuiTypography-root MuiTypography-subtitle2 css-1ypmsg6-MuiTypography-root"
+                >
+                  Allocated parking spots
+                </h6>
+              </div>
+            </span>
           </div>
           <div
             class="MuiFormControl-root MuiFormControl-fullWidth MuiTextField-root css-cmpglg-MuiFormControl-root-MuiTextField-root"
@@ -990,32 +1006,33 @@ exports[`AddProperty Component Tests AddProperty Snapshot Tests matches AddPrope
           <div
             class="MuiStack-root css-niqf4j-MuiStack-root"
           >
-            <p
-              class="MuiTypography-root MuiTypography-body2 css-hol6i2-MuiTypography-root"
-            />
-            <div
-              class="MuiStack-root css-1d9cypr-MuiStack-root"
+            <span
+              class="MuiBox-root css-1ta4aep"
+              variant="body2"
             >
-              <svg
-                aria-hidden="true"
-                aria-label="Payment ID is payment identifier associated with rental payments for the owner"
-                class="MuiSvgIcon-root MuiSvgIcon-colorSecondary MuiSvgIcon-fontSizeSmall css-1s79gy0-MuiSvgIcon-root"
-                data-mui-internal-clone-element="true"
-                data-testid="InfoRoundedIcon"
-                focusable="false"
-                viewBox="0 0 24 24"
+              <div
+                class="MuiStack-root css-1d9cypr-MuiStack-root"
               >
-                <path
-                  d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m0 15c-.55 0-1-.45-1-1v-4c0-.55.45-1 1-1s1 .45 1 1v4c0 .55-.45 1-1 1m1-8h-2V7h2z"
-                />
-              </svg>
-              <h6
-                class="MuiTypography-root MuiTypography-subtitle2 css-1ypmsg6-MuiTypography-root"
-              >
-                Payee ID *
-              </h6>
-            </div>
-            <p />
+                <svg
+                  aria-hidden="true"
+                  aria-label="Payment ID is payment identifier associated with rental payments for the owner"
+                  class="MuiSvgIcon-root MuiSvgIcon-colorSecondary MuiSvgIcon-fontSizeSmall css-1s79gy0-MuiSvgIcon-root"
+                  data-mui-internal-clone-element="true"
+                  data-testid="InfoRoundedIcon"
+                  focusable="false"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m0 15c-.55 0-1-.45-1-1v-4c0-.55.45-1 1-1s1 .45 1 1v4c0 .55-.45 1-1 1m1-8h-2V7h2z"
+                  />
+                </svg>
+                <h6
+                  class="MuiTypography-root MuiTypography-subtitle2 css-1ypmsg6-MuiTypography-root"
+                >
+                  Payee ID *
+                </h6>
+              </div>
+            </span>
           </div>
           <div
             class="MuiFormControl-root MuiFormControl-fullWidth MuiTextField-root css-cmpglg-MuiFormControl-root-MuiTextField-root"
@@ -1060,11 +1077,12 @@ exports[`AddProperty Component Tests AddProperty Snapshot Tests matches AddPrope
           <div
             class="MuiStack-root css-niqf4j-MuiStack-root"
           >
-            <p
-              class="MuiTypography-root MuiTypography-body2 css-hol6i2-MuiTypography-root"
+            <span
+              class="MuiBox-root css-1ta4aep"
+              variant="body2"
             >
               Special Provisions
-            </p>
+            </span>
           </div>
           <div
             class="MuiFormControl-root MuiFormControl-fullWidth MuiTextField-root css-cmpglg-MuiFormControl-root-MuiTextField-root"

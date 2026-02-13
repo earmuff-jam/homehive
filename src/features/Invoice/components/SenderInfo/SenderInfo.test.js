@@ -12,13 +12,13 @@ jest.mock("hooks/useAppTitle", () => ({
   useAppTitle: jest.fn(),
 }));
 
-jest.mock("common/CustomSnackbar/CustomSnackbar", () => ({
+jest.mock("common/CustomSnackbar", () => ({
   __esModule: true,
   default: ({ showSnackbar }) =>
     showSnackbar ? <div data-testid="snackbar">Changes saved.</div> : null,
 }));
 
-jest.mock("common/RowHeader/RowHeader", () => ({
+jest.mock("common/RowHeader", () => ({
   __esModule: true,
   default: ({ title, caption }) => (
     <div>

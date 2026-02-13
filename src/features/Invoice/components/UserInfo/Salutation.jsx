@@ -10,14 +10,14 @@ export default function Salutation({ userInfo, isEnd = false }) {
       </Typography>
       <Stack direction="row" spacing={0.5}>
         <Typography variant="subtitle2" color="text.secondary">
-          {userInfo.first_name}
+          {userInfo.firstName}
         </Typography>
         <Typography variant="subtitle2" color="text.secondary">
-          {userInfo.last_name}
+          {userInfo.lastName}
         </Typography>
       </Stack>
       <Typography variant="subtitle2" color="text.secondary">
-        {userInfo.street_address}
+        {userInfo.streetAddress}
       </Typography>
       <Typography variant="subtitle2" color="text.secondary">
         {userInfo.city} {userInfo.state}, {userInfo.zipcode}

@@ -1,6 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 const TagTypes = {
+  SendEmail: "send-email",
   EsignTemplates: "esign-templates",
   EsignWorkspaces: "esign-workspaces",
 };
@@ -16,6 +17,21 @@ export const externalIntegrationsApi = createApi({
     },
   }),
   endpoints: (builder) => ({
+    // sendEmail ...
+    // defines a mutation that sends email
+    sendEmail: builder.mutation({
+      query: ({ to, subject, text, html, ccEmailIds, bccEmailIds }) => ({
+        method: "POST",
+        body: JSON.stringify({
+          fUrl: "0001_send_email_fn",
+          fMethod: "POST",
+          payload: { to, subject, text, html, ccEmailIds, bccEmailIds },
+        }),
+      }),
+      providesTags: [TagTypes.SendEmail],
+    }),
+    // getWorkspaces ...
+    // defines an mutation that returns a list of workspaces
     getWorkspaces: builder.mutation({
       query: () => ({
         method: "POST",
@@ -26,17 +42,8 @@ export const externalIntegrationsApi = createApi({
       }),
       providesTags: [TagTypes.EsignWorkspaces],
     }),
-    createWorkspace: builder.mutation({
-      query: (workspaceId) => ({
-        method: "POST",
-        body: JSON.stringify({
-          fUrl: "0014_create_esign_workspace",
-          fMethod: "POST",
-          payload: workspaceId,
-        }),
-      }),
-      invalidatesTags: [TagTypes.EsignWorkspaces],
-    }),
+    // getEsignTemplates ...
+    // defines a function that returns esign templates
     getEsignTemplates: builder.query({
       query: (userId) => ({
         method: "POST",
@@ -48,6 +55,8 @@ export const externalIntegrationsApi = createApi({
       }),
       providesTags: [TagTypes.EsignTemplates],
     }),
+    // createTemplate ...
+    // defines a function that creates template
     createTemplate: builder.mutation({
       query: (data) => ({
         method: "POST",
@@ -59,6 +68,8 @@ export const externalIntegrationsApi = createApi({
       }),
       invalidatesTags: [TagTypes.EsignTemplates],
     }),
+    // deleteTemplate ...
+    // defines a function that removes template
     deleteTemplate: builder.mutation({
       query: (data) => ({
         method: "POST",
@@ -70,6 +81,8 @@ export const externalIntegrationsApi = createApi({
       }),
       invalidatesTags: [TagTypes.EsignTemplates],
     }),
+    // createEsignFromTemplate ...
+    // defines a function that creates Esign documents from the template
     createEsignFromTemplate: builder.mutation({
       query: (data) => ({
         method: "POST",
@@ -84,8 +97,8 @@ export const externalIntegrationsApi = createApi({
 });
 
 export const {
+  useSendEmailMutation,
   useGetEsignTemplatesQuery,
-  useCreateWorkspaceMutation,
   useGetWorkspacesMutation,
   useCreateTemplateMutation,
   useDeleteTemplateMutation,

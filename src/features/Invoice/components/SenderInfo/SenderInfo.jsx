@@ -6,14 +6,25 @@ import { useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
 
 import { Stack } from "@mui/material";
-import CustomSnackbar from "common/CustomSnackbar/CustomSnackbar";
-import RowHeader from "common/RowHeader/RowHeader";
+import CustomSnackbar from "common/CustomSnackbar";
+import RowHeader from "common/RowHeader";
 import {
   useGetSenderInfoQuery,
   useUpsertSenderInfoMutation,
 } from "features/Api/invoiceApi";
 import UserInfoViewer from "features/Invoice/components/UserInfo/UserInfoViewer";
 import { useAppTitle } from "hooks/useAppTitle";
+
+const DefaultSenderInfo = {
+  firstName: "",
+  lastName: "",
+  email: "",
+  phone: "",
+  streetAddress: "",
+  city: "",
+  state: "",
+  zipcode: "",
+};
 
 export default function SenderInfo() {
   useAppTitle("Sender Information");
@@ -38,16 +49,7 @@ export default function SenderInfo() {
     reset,
   } = useForm({
     mode: "onChange",
-    defaultValues: {
-      first_name: "",
-      last_name: "",
-      email_address: "",
-      phone_number: "",
-      street_address: "",
-      city: "",
-      state: "",
-      zipcode: "",
-    },
+    defaultValues: DefaultSenderInfo,
   });
 
   const submit = (formData) => {
@@ -64,11 +66,11 @@ export default function SenderInfo() {
   useEffect(() => {
     if (senderInfo) {
       reset({
-        first_name: senderInfo.first_name,
-        last_name: senderInfo.last_name,
-        email_address: senderInfo.email_address,
-        phone_number: senderInfo.phone_number,
-        street_address: senderInfo.street_address,
+        firstName: senderInfo.firstName,
+        lastName: senderInfo.lastName,
+        email: senderInfo.email,
+        phone: senderInfo.phone,
+        streetAddress: senderInfo.streetAddress,
         city: senderInfo.city,
         state: senderInfo.state,
         zipcode: senderInfo.zipcode,
@@ -91,6 +93,7 @@ export default function SenderInfo() {
         isDisabled={!isValid}
         onSubmit={handleSubmit(submit)}
         loading={isUpsertSendingInfoLoading}
+        handleReset={() => reset(DefaultSenderInfo)}
       />
       <CustomSnackbar
         showSnackbar={showSnackbar}

@@ -1,5 +1,56 @@
 [
   {
+    "version": "1.0.6-rc1",
+    "date": "2026-02-13",
+    "notes": [
+      {
+        "type": "maintenance",
+        "value": "Refactor Invoicer App to remove unused values by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/241",
+        "caption": "Refactor Invoicer App to remove unused values by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/241"
+      },
+      {
+        "type": "maintenance",
+        "value": "Add rent app cleanup by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/243",
+        "caption": "Add rent app cleanup by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/243"
+      },
+      {
+        "type": "maintenance",
+        "value": "add more cleanup by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/246",
+        "caption": "add more cleanup by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/246"
+      },
+      {
+        "type": "maintenance",
+        "value": "Added Rent Cleanup by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/248",
+        "caption": "Added Rent Cleanup by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/248"
+      },
+      {
+        "type": "maintenance",
+        "value": "Added support to navigate user based on role by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/249 [bufix] - Added cleanup for AuthStateHandler fn by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/251",
+        "caption": "Added support to navigate user based on role by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/249 [bufix] - Added cleanup for AuthStateHandler fn by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/251"
+      },
+      {
+        "type": "maintenance",
+        "value": "Update landing page for subscription elements by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/252",
+        "caption": "Update landing page for subscription elements by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/252"
+      },
+      {
+        "type": "maintenance",
+        "value": "Update AButton Component to better handle disabled click by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/255 [bufix] - Updated document widget by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/258",
+        "caption": "Update AButton Component to better handle disabled click by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/255 [bufix] - Updated document widget by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/258"
+      },
+      {
+        "type": "feature",
+        "value": "Add Associate tenant improvements by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/259",
+        "caption": "Add Associate tenant improvements by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/259"
+      },
+      {
+        "type": "maintenance",
+        "value": "Added minor cleanup to stripe handlers in web by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/261",
+        "caption": "Added minor cleanup to stripe handlers in web by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/261"
+      }
+    ]
+  },
+  {
     "version": "1.0.5",
     "date": "2026-01-01",
     "notes": [

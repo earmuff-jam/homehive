@@ -5,6 +5,7 @@ import { matchPath, useLocation, useNavigate } from "react-router-dom";
 import { MenuOutlined } from "@mui/icons-material";
 import {
   AppBar,
+  Button,
   IconButton,
   Stack,
   Toolbar,
@@ -13,16 +14,15 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import AButton from "common/AButton";
-import CustomSnackbar from "common/CustomSnackbar/CustomSnackbar";
-import { DefaultTourStepsMapperObj } from "common/Tour/TourSteps";
-import { isUserLoggedIn } from "common/utils";
+import CustomSnackbar from "common/CustomSnackbar";
+import { DefaultTourStepsMapperObj } from "common/TourSteps";
+import { fetchLoggedInUser } from "common/utils";
+import { useSendEmailMutation } from "features/Api/externalIntegrationsApi";
 import { useLogoutMutation } from "features/Api/firebaseUserApi";
-import { useLocalStorageData } from "features/Invoice/hooks/useGenerateUserData";
+import { useRetrieveInvoiceDetails } from "features/Invoice/hooks/useRetrieveInvoiceDetails";
 import MenuOptions from "features/Layout/components/NavBar/MenuOptions";
-import { retrieveTourKey } from "features/Layout/utils";
+import { generateInvoiceHTML, retrieveTourKey } from "features/Layout/utils";
 import { isFeatureEnabled } from "features/Rent/utils";
-import useSendEmail, { generateInvoiceHTML } from "hooks/useSendEmail";
 
 export default function AppToolbar({
   currentUri,
@@ -35,10 +35,13 @@ export default function AppToolbar({
 }) {
   const theme = useTheme();
   const location = useLocation();
+
   const navigate = useNavigate();
+  const user = fetchLoggedInUser();
 
   const smallFormFactor = useMediaQuery(theme.breakpoints.down("sm"));
-  const { sendEmail, reset, loading, error, success } = useSendEmail();
+
+  const [sendEmail, sendEmailResult] = useSendEmailMutation();
 
   const [logout, { isSuccess: isLogoutSuccess, isLoading: isLogoutLoading }] =
     useLogoutMutation();
@@ -50,7 +53,7 @@ export default function AppToolbar({
     draftInvoiceStatusLabel,
     draftRecieverUserEmailAddress,
     isDisabled,
-  } = useLocalStorageData();
+  } = useRetrieveInvoiceDetails();
 
   const currentSubRoute = currentRoute?.element.props?.routes?.find((route) =>
     matchPath(route.routeUri, location.pathname),
@@ -138,15 +141,11 @@ export default function AppToolbar({
           <Typography variant="h5">Homehive</Typography>
         </Stack>
         <Stack direction="row" spacing={1} alignItems="center">
-          {isUserLoggedIn() && (
+          {user?.uid && (
             <Tooltip title="logout">
-              <AButton
-                label="Logout"
-                variant="outlined"
-                size="small"
-                disabled={false} // support demo users
-                onClick={() => logout()}
-              />
+              <Button variant="outlined" size="small" onClick={() => logout()}>
+                Logout
+              </Button>
             </Tooltip>
           )}
           <MenuOptions
@@ -159,16 +158,16 @@ export default function AppToolbar({
             isDisabled={isDisabled} // valid data check
             isLightTheme={Number(currentThemeIdx) === 1}
             showHelpAndSupport={showHelp}
-            isSendEmailLoading={loading}
+            isSendEmailLoading={sendEmailResult.isLoading}
           />
         </Stack>
       </Toolbar>
       <CustomSnackbar
-        showSnackbar={success || error !== null}
-        setShowSnackbar={reset}
-        severity={success ? "success" : "error"}
+        showSnackbar={sendEmailResult.isSuccess || sendEmailResult.isError}
+        setShowSnackbar={() => {}}
+        severity={sendEmailResult.isSuccess ? "success" : "error"}
         title={
-          success
+          sendEmailResult.isSuccess
             ? "Email sent successfully. Check spam if necessary."
             : "Error sending email."
         }

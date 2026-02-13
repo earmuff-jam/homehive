@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 
-import { Box, Stack, Typography } from "@mui/material";
+import { Box, Stack, Typography, useTheme } from "@mui/material";
 import Feature from "ol/Feature";
 import Map from "ol/Map.js";
 import View from "ol/View.js";
@@ -25,11 +25,13 @@ const PropertyMap = ({
   location = { lon: -90.7129, lat: 37.0902 }, // USA default
   onLocationChange,
   subtitle,
-  height = "15vh",
+  height = "30vh",
   disabled = false,
   editMode = false,
+  address = "",
 }) => {
   const mapRef = useRef();
+  const theme = useTheme();
   const markerRef = useRef();
 
   useEffect(() => {
@@ -42,7 +44,7 @@ const PropertyMap = ({
         new LayerTile({
           source: new SourceOSM({
             attributions: [
-              '© <a href="https://geocode.maps.co/">Map data contributors</a>.',
+              '© <a href="https://geocode.maps.co/" style="color: inherit; text-decoration: none;">Map data contributors</a>.',
               "© OpenStreetMap contributors.",
             ],
           }),
@@ -108,7 +110,7 @@ const PropertyMap = ({
           "& .ol-attribution": {
             display: "flex",
             flexDirection: "row",
-            backgroundColor: "lightgrey",
+            backgroundColor: theme.palette.background.paper,
             fontSize: "0.65rem",
             opacity: 0.7,
           },
@@ -127,6 +129,19 @@ const PropertyMap = ({
         }}
       >
         <Box sx={{ height: "100%", width: "100%" }} ref={mapRef} />
+        <Box
+          sx={{
+            position: "relative",
+            bottom: 18,
+            backgroundColor: theme.palette.background.paper,
+            opacity: 0.7,
+            px: 1,
+            fontSize: "0.7rem",
+            pointerEvents: "none",
+          }}
+        >
+          {address}
+        </Box>
       </Box>
     </Stack>
   );

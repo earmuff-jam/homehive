@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import dayjs from "dayjs";
 
 import {
+  AutorenewOutlined,
   CalendarTodayRounded,
-  LockClockRounded,
+  LockRounded,
   PersonRounded,
   RemoveCircleOutlineRounded,
 } from "@mui/icons-material";
@@ -19,69 +20,104 @@ import {
   Stack,
   Tooltip,
   Typography,
+  useMediaQuery,
+  useTheme,
 } from "@mui/material";
-import CustomSnackbar from "common/CustomSnackbar/CustomSnackbar";
-import { useUpdatePropertyByIdMutation } from "features/Api/propertiesApi";
-import { useUpdateTenantByIdMutation } from "features/Api/tenantsApi";
-import { fetchLoggedInUser, formatCurrency } from "features/Rent/utils";
+import ConfirmationBox, {
+  DefaultConfirmationBoxProps,
+} from "common/ConfirmationBox";
+import CustomSnackbar from "common/CustomSnackbar";
+import { fetchLoggedInUser } from "common/utils";
+import { useSendEmailMutation } from "features/Api/externalIntegrationsApi";
+import { useRemoveTenantAssociationMutation } from "features/Api/tenantsApi";
+import { useSelectedPropertyDetails } from "features/Rent/hooks/useGetSelectedPropertyDetails";
+import {
+  RemoveTenantNotificationEnumValue,
+  appendDisclaimer,
+  emailMessageBuilder,
+  formatAndSendNotification,
+  formatCurrency,
+} from "features/Rent/utils";
 
-export default function Tenants({ tenants = [], property }) {
+export default function Tenants({
+  tenants = [],
+  property,
+  refetchGetProperty,
+}) {
+  const theme = useTheme();
   const user = fetchLoggedInUser();
-  const [updateTenant] = useUpdateTenantByIdMutation();
-  const [updateProperty] = useUpdatePropertyByIdMutation();
+
+  const [sendEmail] = useSendEmailMutation();
+  const [removeTenant, removeTenantResult] =
+    useRemoveTenantAssociationMutation();
 
   const [showSnackbar, setShowSnackbar] = useState(false);
+  const [showConfirmationBox, setShowConfirmationBox] = useState(
+    DefaultConfirmationBoxProps,
+  );
+
+  const gtSmallFormFactor = useMediaQuery(theme.breakpoints.up("sm"));
+  const { nextPaymentDueDate } = useSelectedPropertyDetails(property, tenants);
 
   const sortedByPrimaryStatus = (arr) => {
     return [...arr].sort((a, b) => b.isPrimary - a.isPrimary);
   };
 
-  const handleRemoveAssociatedTenant = async (ev, tenant) => {
-    ev.preventDefault();
-
-    if (!tenant?.id) return;
-
-    const filteredRentees = property?.rentees.filter(
-      (rentee) => rentee !== tenant.email,
-    );
-
-    await updateTenant({
-      id: tenant?.id,
-      newData: {
-        isActive: false,
-        updatedBy: user?.uid,
-        updatedOn: dayjs().toISOString(),
-      },
-    });
-
-    await updateProperty({
-      ...property,
-      id: property?.id,
-      rentees: filteredRentees,
+  const handleRemoveAssociatedTenant = (tenant) => {
+    const updatedData = {
+      tenantId: tenant?.id,
+      propertyId: property?.id,
+      removedPropertyName: property?.name, // used only for RTK query
+      removedTenantEmail: tenant?.email, // used only for RTK query
+      rentees: property?.rentees.filter((rentee) => rentee !== tenant.email),
       updatedBy: user?.uid,
       updatedOn: dayjs().toISOString(),
-    });
-
-    setShowSnackbar(true);
+    };
+    removeTenant(updatedData);
   };
+
+  useEffect(() => {
+    if (removeTenantResult.isSuccess) {
+      const emailMsgWithDisclaimer = appendDisclaimer(
+        emailMessageBuilder(
+          RemoveTenantNotificationEnumValue,
+          removeTenantResult.originalArgs.removedPropertyName,
+        ),
+        user?.email,
+      );
+
+      formatAndSendNotification({
+        to: removeTenantResult.originalArgs.removedTenantEmail,
+        subject: `${RemoveTenantNotificationEnumValue} - ${removeTenantResult.originalArgs.removedPropertyName}`,
+        body: emailMsgWithDisclaimer,
+        ccEmailIds: [user?.email],
+        sendEmail,
+      });
+
+      setShowSnackbar(true);
+      refetchGetProperty();
+    }
+  }, [removeTenantResult.isLoading]);
 
   return (
     <Stack spacing={1} maxHeight="22rem" overflow="auto">
       {sortedByPrimaryStatus(tenants)?.map((tenant) => (
         <Stack key={tenant?.id}>
           <Card sx={{ width: "100%" }}>
-            <CardContent sx={{ p: 3 }}>
+            <CardContent sx={{ p: 1 }}>
               {/* Header with Avatar and Primary Badge */}
               <Box sx={{ display: "flex", alignItems: "flex-start", mb: 2.5 }}>
-                <Avatar
-                  sx={{
-                    bgcolor: "primary.main",
-                    width: 48,
-                    height: 48,
-                  }}
-                >
-                  {tenant.email.charAt(0).toUpperCase()}
-                </Avatar>
+                {gtSmallFormFactor ? (
+                  <Avatar
+                    sx={{
+                      bgcolor: "primary.main",
+                      width: 48,
+                      height: 48,
+                    }}
+                  >
+                    {tenant.email.charAt(0).toUpperCase()}
+                  </Avatar>
+                ) : null}
                 <Stack sx={{ ml: 2, flex: 1 }}>
                   <Box
                     sx={{
@@ -90,51 +126,59 @@ export default function Tenants({ tenants = [], property }) {
                       gap: "0.2rem",
                     }}
                   >
-                    <Tooltip title={tenant.email}>
-                      <Typography
-                        flexGrow={1}
-                        variant="subtitle2"
-                        color="primary"
-                        sx={{
-                          whiteSpace: "nowrap",
-                          overflow: "hidden",
-                          alignContent: "center",
-                          textOverflow: "ellipsis",
-                          maxWidth: 150,
-                        }}
-                      >
-                        {tenant.email}
-                      </Typography>
-                    </Tooltip>
+                    <Typography variant="subtitle2" color="primary">
+                      {tenant.email}
+                    </Typography>
+                  </Box>
 
+                  <Stack direction="row" spacing={1} alignItems="center">
                     {tenant?.isSoR && (
                       <Tooltip title="Single occupancy room rentee">
-                        <LockClockRounded fontSize="small" />
+                        <LockRounded fontSize="small" color="warning" />
                       </Tooltip>
                     )}
-                  </Box>
-
-                  <Box>
-                    <Chip
-                      label={
-                        tenant?.isPrimary
-                          ? "Primary Renter"
-                          : "Secondary Renter"
-                      }
-                      size="small"
-                      color={tenant?.isPrimary ? "primary" : "background"}
-                      sx={{
-                        height: 24,
-                        fontSize: "0.75rem",
-                        fontWeight: 500,
-                      }}
-                    />
-                  </Box>
+                    {!tenant?.isSoR && (
+                      <Tooltip title="Autorenew lease extension is on">
+                        <AutorenewOutlined fontSize="small" color="info" />
+                      </Tooltip>
+                    )}
+                    <Box>
+                      <Chip
+                        label={
+                          tenant?.isPrimary
+                            ? "Primary Renter"
+                            : "Secondary Renter"
+                        }
+                        size="small"
+                        color={tenant?.isPrimary ? "primary" : "background"}
+                        sx={{
+                          height: 24,
+                          fontSize: "0.75rem",
+                          fontWeight: 500,
+                        }}
+                      />
+                    </Box>
+                    <Box>
+                      <Tooltip title="Next payment due date">
+                        <Chip
+                          label={dayjs(nextPaymentDueDate).format("DD MMMM")}
+                          size="small"
+                          sx={{
+                            height: 24,
+                            fontSize: "0.75rem",
+                            fontWeight: 500,
+                          }}
+                        />
+                      </Tooltip>
+                    </Box>
+                  </Stack>
                 </Stack>
                 <Tooltip title="Remove tenant from property">
                   <IconButton
                     size="small"
-                    onClick={(ev) => handleRemoveAssociatedTenant(ev, tenant)}
+                    onClick={() =>
+                      setShowConfirmationBox({ value: true, updateKey: tenant })
+                    }
                   >
                     <RemoveCircleOutlineRounded
                       fontSize="small"
@@ -148,7 +192,7 @@ export default function Tenants({ tenants = [], property }) {
               <Paper
                 elevation={0}
                 sx={{
-                  padding: "1rem",
+                  padding: 1,
                   bgcolor: "background.default",
                 }}
               >
@@ -170,7 +214,7 @@ export default function Tenants({ tenants = [], property }) {
                       >
                         {formatCurrency(
                           Number(tenant?.rent || 0) +
-                            Number(property?.additional_rent || 0),
+                            Number(property?.additionalRent || 0),
                         )}
                       </Typography>
 
@@ -198,7 +242,7 @@ export default function Tenants({ tenants = [], property }) {
                       START DATE
                     </Typography>
                     <Typography variant="subtitle2" color="text.secondary">
-                      {dayjs(tenant?.start_date).format("MMM DD, YYYY")}
+                      {dayjs(tenant?.startDate).format("MMM DD, YYYY")}
                     </Typography>
                   </Stack>
                 </Box>
@@ -208,6 +252,13 @@ export default function Tenants({ tenants = [], property }) {
         </Stack>
       ))}
 
+      <ConfirmationBox
+        isOpen={showConfirmationBox.value}
+        handleConfirm={() =>
+          handleRemoveAssociatedTenant(showConfirmationBox.updateKey)
+        }
+        handleCancel={() => setShowConfirmationBox(DefaultConfirmationBoxProps)}
+      />
       <CustomSnackbar
         showSnackbar={showSnackbar}
         setShowSnackbar={setShowSnackbar}

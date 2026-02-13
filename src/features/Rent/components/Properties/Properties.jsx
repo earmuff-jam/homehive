@@ -16,31 +16,35 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
-  ButtonBase,
+  Box,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
-  IconButton,
   Skeleton,
   Stack,
   Typography,
 } from "@mui/material";
 import AButton from "common/AButton";
-import CustomSnackbar from "common/CustomSnackbar/CustomSnackbar";
+import ConfirmationBox, {
+  DefaultConfirmationBoxProps,
+} from "common/ConfirmationBox";
+import CustomSnackbar from "common/CustomSnackbar";
 import EmptyComponent from "common/EmptyComponent";
-import RowHeader from "common/RowHeader/RowHeader";
+import RowHeader from "common/RowHeader";
+import { fetchLoggedInUser } from "common/utils";
 import { useGetUserDataByIdQuery } from "features/Api/firebaseUserApi";
 import {
   useCreatePropertyMutation,
+  useDeletePropertyByIdMutation,
   useGetPropertiesByUserIdQuery,
-  useUpdatePropertyByIdMutation,
 } from "features/Api/propertiesApi";
 import { useLazyGetRentsByPropertyIdWithFiltersQuery } from "features/Api/rentApi";
+import { Role } from "features/Auth/AuthHelper";
 import { AddPropertyTextString } from "features/Rent/common/constants";
 import AddProperty from "features/Rent/components/AddProperty/AddProperty";
 import ViewPropertyAccordionDetails from "features/Rent/components/Properties/ViewPropertyAccordionDetails";
-import { fetchLoggedInUser, sanitizeApiFields } from "features/Rent/utils";
+import { sanitizeApiFields } from "features/Rent/utils";
 import { useAppTitle } from "hooks/useAppTitle";
 
 const defaultDialog = {
@@ -66,20 +70,13 @@ export default function Properties() {
     skip: !user?.uid,
   });
 
-  const [
-    triggerGetRents,
-    { data: rentDetails = [], isLoading: isRentDetailsLoading },
-  ] = useLazyGetRentsByPropertyIdWithFiltersQuery();
+  const [createProperty, createPropertyResult] = useCreatePropertyMutation();
 
-  const [
-    createProperty,
-    { isSuccess: isCreatePropertySuccess, isLoading: isCreatePropertyLoading },
-  ] = useCreatePropertyMutation();
+  const [triggerGetRents, getRentsResult] =
+    useLazyGetRentsByPropertyIdWithFiltersQuery();
 
-  const [
-    updateProperty,
-    { isSuccess: isUpdatePropertySuccess, isLoading: isUpdatePropertyLoading },
-  ] = useUpdatePropertyByIdMutation();
+  const [deleteProperty, deletePropertyResult] =
+    useDeletePropertyByIdMutation();
 
   const {
     register,
@@ -88,7 +85,6 @@ export default function Properties() {
     handleSubmit,
     formState: { errors, isValid },
     reset,
-    setValue,
   } = useForm({
     mode: "onChange",
     defaultValues: {
@@ -108,8 +104,8 @@ export default function Properties() {
       isOwnerCoveredUtilities: false,
       ownerCoveredUtilities: "",
       rent: 0,
-      additional_rent: 0,
-      rent_increment: 100,
+      additionalRent: 0,
+      rentIncrement: 100,
       securityDeposit: 0,
       allowedVehicleCounts: 0,
       paymentID: "",
@@ -129,6 +125,9 @@ export default function Properties() {
   const [expanded, setExpanded] = useState(null);
   const [dialog, setDialog] = useState(defaultDialog);
   const [showSnackbar, setShowSnackbar] = useState(false);
+  const [showConfirmationBox, setShowConfirmationBox] = useState(
+    DefaultConfirmationBoxProps,
+  );
 
   const handleExpand = (id) => setExpanded((prev) => (prev === id ? null : id));
 
@@ -137,14 +136,15 @@ export default function Properties() {
     reset();
   };
 
-  const handleUpdate = (propertyId) => {
+  const handleDelete = (propertyId) => {
     if (!propertyId) return;
-    updateProperty({
+    deleteProperty({
       id: propertyId,
       isDeleted: true,
       updatedBy: user?.uid,
       updatedOn: dayjs().toISOString(),
     });
+    setShowConfirmationBox(DefaultConfirmationBoxProps);
   };
 
   const toggleAddPropertyPopup = () => {
@@ -167,7 +167,6 @@ export default function Properties() {
     };
 
     const sanitizedPayload = sanitizeApiFields(result);
-
     createProperty(sanitizedPayload);
     closeDialog();
   };
@@ -178,17 +177,10 @@ export default function Properties() {
   const isOwnerCoveredUtilities = watch("isOwnerCoveredUtilities");
 
   useEffect(() => {
-    if (isCreatePropertySuccess || isUpdatePropertySuccess) {
+    if (createPropertyResult.isSuccess || deletePropertyResult.isSuccess) {
       setShowSnackbar(true);
     }
-  }, [isCreatePropertyLoading, isUpdatePropertyLoading]);
-
-  useEffect(() => {
-    // update form fields if present
-    if (userData?.email) {
-      setValue("owner_email", userData.email);
-    }
-  }, [userData, setValue]);
+  }, [createPropertyResult.isLoading, deletePropertyResult.isLoading]);
 
   if (isLoading) return <Skeleton height="10rem" />;
 
@@ -204,7 +196,10 @@ export default function Properties() {
           label="Add Property"
           size="small"
           variant="outlined"
-          loading={isCreatePropertyLoading || isUpdatePropertyLoading}
+          loading={
+            createPropertyResult.isLoading || deletePropertyResult.isLoading
+          }
+          disabled={![Role.Admin, Role.Owner].includes(user?.role)}
           endIcon={<AddRounded fontSize="small" />}
           onClick={toggleAddPropertyPopup}
         />
@@ -225,22 +220,21 @@ export default function Properties() {
             >
               <AccordionSummary
                 data-tour="properties-4"
+                onClick={() => {
+                  if (property?.id) {
+                    handleExpand(property.id);
+                    triggerGetRents({
+                      propertyId: property?.id,
+                      tenantEmails: property?.rentees,
+                      rentMonth: dayjs().format("MMMM"),
+                    });
+                  }
+                }}
                 expandIcon={
-                  <IconButton
+                  <ExpandMoreRounded
+                    fontSize="small"
                     data-tour="properties-3"
-                    onClick={() => {
-                      if (property?.id) {
-                        handleExpand(property.id);
-                        triggerGetRents({
-                          propertyId: property?.id,
-                          tenantEmails: property?.rentees,
-                          rentMonth: dayjs().format("MMMM"),
-                        });
-                      }
-                    }}
-                  >
-                    <ExpandMoreRounded />
-                  </IconButton>
+                  />
                 }
               >
                 <Stack flexGrow={1} spacing={0.5}>
@@ -265,50 +259,55 @@ export default function Properties() {
                           </Typography>
                         </Stack>
                       </Stack>
-                      <ButtonBase
+                      <Stack
+                        sx={{
+                          justifyContent: "left",
+                          textAlign: "left",
+                          borderRadius: 1,
+                          width: "100%",
+                        }}
                         onClick={(ev) => {
                           ev.stopPropagation();
                           navigate(`/rent/property/${property?.id}`);
                         }}
                       >
-                        <Stack
-                          sx={{
-                            justifyContent: "left",
-                            textAlign: "left",
-                            borderRadius: 1,
-                            width: "100%",
-                          }}
-                        >
-                          <Typography variant="caption">
-                            {property.address}
-                          </Typography>
-                          <Typography variant="caption">
-                            {property.city} {property.state}, {property.zipcode}
-                          </Typography>
-                        </Stack>
-                      </ButtonBase>
+                        <Typography variant="caption">
+                          {property.address}
+                        </Typography>
+                        <Typography variant="caption">
+                          {property.city} {property.state}, {property.zipcode}
+                        </Typography>
+                      </Stack>
                     </Stack>
                   </Stack>
                 </Stack>
-                <Stack justifyContent="center">
-                  <IconButton
-                    data-tour="properties-2"
-                    size="small"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleUpdate(property.id);
+                <Box
+                  alignContent="center"
+                  data-tour="properties-2"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setShowConfirmationBox({
+                      value: true,
+                      updateKey: property?.id,
+                    });
+                  }}
+                >
+                  <DeleteRounded
+                    fontSize="small"
+                    color="error"
+                    sx={{
+                      cursor: "pointer",
+                      "&:hover": { backgroundColor: "action.hover" },
                     }}
-                  >
-                    <DeleteRounded fontSize="small" color="error" />
-                  </IconButton>
-                </Stack>
+                  />
+                </Box>
               </AccordionSummary>
               <AccordionDetails>
                 <ViewPropertyAccordionDetails
                   property={property}
                   userData={userData}
-                  rentDetails={rentDetails}
-                  isRentDetailsLoading={isRentDetailsLoading}
+                  rentDetails={getRentsResult.data}
+                  isRentDetailsLoading={getRentsResult.isLoading}
                 />
               </AccordionDetails>
             </Accordion>
@@ -348,6 +347,12 @@ export default function Properties() {
           />
         </DialogActions>
       </Dialog>
+
+      <ConfirmationBox
+        isOpen={showConfirmationBox.value}
+        handleConfirm={() => handleDelete(showConfirmationBox.updateKey)}
+        handleCancel={() => setShowConfirmationBox(DefaultConfirmationBoxProps)}
+      />
 
       <CustomSnackbar
         showSnackbar={showSnackbar}

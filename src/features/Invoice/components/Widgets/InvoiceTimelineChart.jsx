@@ -12,7 +12,7 @@ import {
   Tooltip,
 } from "chart.js";
 import EmptyComponent from "common/EmptyComponent";
-import RowHeader from "common/RowHeader/RowHeader";
+import RowHeader from "common/RowHeader";
 import { normalizeInvoiceTimelineChartDataset } from "features/Invoice/utils";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Title);

@@ -8,21 +8,17 @@ import {
   PaidRounded,
 } from "@mui/icons-material";
 
-/**
- * WidgetTypeList ...
- *
- * widget type list is the different types of widgets
- * that we can display in the dashboard
- */
+// WidgetTypeList ...
+// defines a constants of various types of widgets
 export const WidgetTypeList = [
   {
     id: 1,
     label: "Invoice Timeline Chart",
-    caption: "Displays period of timeline events",
+    caption: "Visual diagram displaying invoice timeline.",
     config: {
       inset: false, // makes text have extra spacing infront
       height: "25rem",
-      width: "45rem",
+      width: "40rem",
       widgetID: "9caef12d-a611-4573-8fd2-b5bd3036ce13", // widgetID for config is for provision only
     },
   },
@@ -35,7 +31,7 @@ export const WidgetTypeList = [
     config: {
       inset: false,
       height: "25rem",
-      width: "45rem",
+      width: "40rem",
       widgetID: "c04637c7-080d-4641-a4f4-4fd523280d74",
     },
   },
@@ -48,7 +44,7 @@ export const WidgetTypeList = [
     config: {
       inset: false,
       height: "25rem",
-      width: "45rem",
+      width: "40rem",
       widgetID: "052fda00-2d37-4d0f-81b7-3fcb451e5ee1",
     },
   },
@@ -67,55 +63,53 @@ export const WidgetTypeList = [
   },
 ];
 
-/**
- * DefaultInvoiceStatusOptions ...
- *
- * default invoice status options used to mark
- * the status of the invoice
- */
+// DefaultInvoiceStatusOptions ...
+// defines the type for default invoice status options
 export const DefaultInvoiceStatusOptions = [
   {
     id: 1,
     label: "Paid",
-    icon: <PaidRounded />,
     selected: true,
     display: true,
   },
   {
     id: 2,
     label: "Draft",
-    icon: <DraftsRounded />,
     selected: false,
     display: true,
   },
   {
     id: 3,
     label: "Overdue",
-    icon: <LocalAtmRounded />,
     selected: false,
     display: true,
   },
   {
     id: 4,
     label: "Cancelled",
-    icon: <CancelRounded />,
     selected: false,
     display: true,
   },
   {
     id: 5,
     label: "None",
-    icon: <DeblurRounded />,
     selected: false,
     display: false, // does not display status if none is selected
   },
 ];
 
-/**
- * Invoice Category Options
- *
- * used to build out the autocomplete component in edit / view invoice
- */
+// DefaultInvoiceStatusIcons ...
+// defines a invoice status icons
+export const DefaultInvoiceStatusIcons = {
+  Paid: <PaidRounded fontSize="small" />,
+  Draft: <DraftsRounded fontSize="small" />,
+  Overdue: <LocalAtmRounded fontSize="small" />,
+  Cancelled: <CancelRounded fontSize="small" />,
+  None: <DeblurRounded fontSize="small" />,
+};
+
+// InvoiceCategoryOptions ...
+// defines options for inovoice category
 export const InvoiceCategoryOptions = [
   { label: "Products", value: "products" },
   { label: "Services", value: "services" },

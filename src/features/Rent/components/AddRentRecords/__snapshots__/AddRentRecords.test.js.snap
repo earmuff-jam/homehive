@@ -30,11 +30,12 @@ exports[`AddRentRecords Component Tests AddRentRecords Snapshot Tests matches Ad
           <div
             class="MuiStack-root css-niqf4j-MuiStack-root"
           >
-            <p
-              class="MuiTypography-root MuiTypography-body2 css-fzryi2-MuiTypography-root"
+            <span
+              class="MuiBox-root css-1mmsew2"
+              variant="body2"
             >
               Owner First Name *
-            </p>
+            </span>
           </div>
           <div
             class="MuiFormControl-root MuiFormControl-fullWidth MuiTextField-root css-cmpglg-MuiFormControl-root-MuiTextField-root"
@@ -46,8 +47,8 @@ exports[`AddRentRecords Component Tests AddRentRecords Snapshot Tests matches Ad
                 aria-invalid="false"
                 class="MuiInputBase-input MuiOutlinedInput-input Mui-disabled MuiInputBase-inputSizeSmall css-1pzfmz2-MuiInputBase-input-MuiOutlinedInput-input"
                 disabled=""
-                id="owner_first_name"
-                name="owner_first_name"
+                id="ownerFirstName"
+                name="ownerFirstName"
                 placeholder="First Name of your property owner"
                 type="text"
                 value=""
@@ -76,11 +77,12 @@ exports[`AddRentRecords Component Tests AddRentRecords Snapshot Tests matches Ad
           <div
             class="MuiStack-root css-niqf4j-MuiStack-root"
           >
-            <p
-              class="MuiTypography-root MuiTypography-body2 css-fzryi2-MuiTypography-root"
+            <span
+              class="MuiBox-root css-1mmsew2"
+              variant="body2"
             >
               Owner Last Name *
-            </p>
+            </span>
           </div>
           <div
             class="MuiFormControl-root MuiFormControl-fullWidth MuiTextField-root css-cmpglg-MuiFormControl-root-MuiTextField-root"
@@ -92,8 +94,8 @@ exports[`AddRentRecords Component Tests AddRentRecords Snapshot Tests matches Ad
                 aria-invalid="false"
                 class="MuiInputBase-input MuiOutlinedInput-input Mui-disabled MuiInputBase-inputSizeSmall css-1pzfmz2-MuiInputBase-input-MuiOutlinedInput-input"
                 disabled=""
-                id="owner_last_name"
-                name="owner_last_name"
+                id="ownerLastName"
+                name="ownerLastName"
                 placeholder="Last Name of your property owner"
                 type="text"
                 value=""
@@ -123,11 +125,12 @@ exports[`AddRentRecords Component Tests AddRentRecords Snapshot Tests matches Ad
         <div
           class="MuiStack-root css-niqf4j-MuiStack-root"
         >
-          <p
-            class="MuiTypography-root MuiTypography-body2 css-fzryi2-MuiTypography-root"
+          <span
+            class="MuiBox-root css-1mmsew2"
+            variant="body2"
           >
             Email Address *
-          </p>
+          </span>
         </div>
         <div
           class="MuiFormControl-root MuiFormControl-fullWidth MuiTextField-root css-cmpglg-MuiFormControl-root-MuiTextField-root"
@@ -187,11 +190,12 @@ exports[`AddRentRecords Component Tests AddRentRecords Snapshot Tests matches Ad
           <div
             class="MuiStack-root css-niqf4j-MuiStack-root"
           >
-            <p
-              class="MuiTypography-root MuiTypography-body2 css-hol6i2-MuiTypography-root"
+            <span
+              class="MuiBox-root css-1ta4aep"
+              variant="body2"
             >
               Tenant First Name *
-            </p>
+            </span>
           </div>
           <div
             class="MuiFormControl-root MuiFormControl-fullWidth MuiTextField-root css-cmpglg-MuiFormControl-root-MuiTextField-root"
@@ -202,8 +206,8 @@ exports[`AddRentRecords Component Tests AddRentRecords Snapshot Tests matches Ad
               <input
                 aria-invalid="false"
                 class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputSizeSmall css-1pzfmz2-MuiInputBase-input-MuiOutlinedInput-input"
-                id="tenant_first_name"
-                name="tenant_first_name"
+                id="tenantFirstName"
+                name="tenantFirstName"
                 placeholder="First Name of your primary tenant"
                 type="text"
                 value=""
@@ -232,11 +236,12 @@ exports[`AddRentRecords Component Tests AddRentRecords Snapshot Tests matches Ad
           <div
             class="MuiStack-root css-niqf4j-MuiStack-root"
           >
-            <p
-              class="MuiTypography-root MuiTypography-body2 css-hol6i2-MuiTypography-root"
+            <span
+              class="MuiBox-root css-1ta4aep"
+              variant="body2"
             >
               Tenant Last Name *
-            </p>
+            </span>
           </div>
           <div
             class="MuiFormControl-root MuiFormControl-fullWidth MuiTextField-root css-cmpglg-MuiFormControl-root-MuiTextField-root"
@@ -247,8 +252,8 @@ exports[`AddRentRecords Component Tests AddRentRecords Snapshot Tests matches Ad
               <input
                 aria-invalid="false"
                 class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputSizeSmall css-1pzfmz2-MuiInputBase-input-MuiOutlinedInput-input"
-                id="tenant_last_name"
-                name="tenant_last_name"
+                id="tenantLastName"
+                name="tenantLastName"
                 placeholder="Last Name of your primary tenant"
                 type="text"
                 value=""
@@ -278,11 +283,12 @@ exports[`AddRentRecords Component Tests AddRentRecords Snapshot Tests matches Ad
         <div
           class="MuiStack-root css-niqf4j-MuiStack-root"
         >
-          <p
-            class="MuiTypography-root MuiTypography-body2 css-hol6i2-MuiTypography-root"
+          <span
+            class="MuiBox-root css-1ta4aep"
+            variant="body2"
           >
             Email Address *
-          </p>
+          </span>
         </div>
         <div
           class="MuiFormControl-root MuiFormControl-fullWidth MuiTextField-root css-cmpglg-MuiFormControl-root-MuiTextField-root"
@@ -293,8 +299,8 @@ exports[`AddRentRecords Component Tests AddRentRecords Snapshot Tests matches Ad
             <input
               aria-invalid="false"
               class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputSizeSmall css-1pzfmz2-MuiInputBase-input-MuiOutlinedInput-input"
-              id="tenant_email_address"
-              name="tenant_email_address"
+              id="tenantEmailAddress"
+              name="tenantEmailAddress"
               placeholder="Email address of the primary tenant"
               type="text"
               value=""
@@ -341,11 +347,12 @@ exports[`AddRentRecords Component Tests AddRentRecords Snapshot Tests matches Ad
           <div
             class="MuiStack-root css-niqf4j-MuiStack-root"
           >
-            <p
-              class="MuiTypography-root MuiTypography-body2 css-hol6i2-MuiTypography-root"
+            <span
+              class="MuiBox-root css-1ta4aep"
+              variant="body2"
             >
               Rent Amount *
-            </p>
+            </span>
           </div>
           <div
             class="MuiFormControl-root MuiFormControl-fullWidth MuiTextField-root css-cmpglg-MuiFormControl-root-MuiTextField-root"
@@ -356,8 +363,8 @@ exports[`AddRentRecords Component Tests AddRentRecords Snapshot Tests matches Ad
               <input
                 aria-invalid="false"
                 class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputSizeSmall css-1pzfmz2-MuiInputBase-input-MuiOutlinedInput-input"
-                id="rent_amount"
-                name="rent_amount"
+                id="rentAmount"
+                name="rentAmount"
                 placeholder="Rent Amount"
                 type="text"
                 value=""
@@ -386,11 +393,12 @@ exports[`AddRentRecords Component Tests AddRentRecords Snapshot Tests matches Ad
           <div
             class="MuiStack-root css-niqf4j-MuiStack-root"
           >
-            <p
-              class="MuiTypography-root MuiTypography-body2 css-hol6i2-MuiTypography-root"
+            <span
+              class="MuiBox-root css-1ta4aep"
+              variant="body2"
             >
               Payment Method *
-            </p>
+            </span>
           </div>
           <div
             class="MuiFormControl-root MuiFormControl-fullWidth MuiTextField-root css-cmpglg-MuiFormControl-root-MuiTextField-root"
@@ -401,8 +409,8 @@ exports[`AddRentRecords Component Tests AddRentRecords Snapshot Tests matches Ad
               <input
                 aria-invalid="false"
                 class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputSizeSmall css-1pzfmz2-MuiInputBase-input-MuiOutlinedInput-input"
-                id="payment_method"
-                name="payment_method"
+                id="paymentMethod"
+                name="paymentMethod"
                 placeholder="Payment Method"
                 type="text"
                 value=""
@@ -535,11 +543,12 @@ exports[`AddRentRecords Component Tests AddRentRecords Snapshot Tests matches Ad
           <div
             class="MuiStack-root css-niqf4j-MuiStack-root"
           >
-            <p
-              class="MuiTypography-root MuiTypography-body2 css-hol6i2-MuiTypography-root"
+            <span
+              class="MuiBox-root css-1ta4aep"
+              variant="body2"
             >
               Note
-            </p>
+            </span>
           </div>
           <div
             class="MuiFormControl-root MuiFormControl-fullWidth MuiTextField-root css-cmpglg-MuiFormControl-root-MuiTextField-root"

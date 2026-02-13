@@ -1,11 +1,7 @@
 import { useState } from "react";
 
-/**
- * useCreateStripeAccount
- *
- * Hook to create a Stripe connected account via Netlify function
- * @returns createAccount function, loading state, error state, success state
- */
+// useCreateStripeAccount ...
+// defines a function which provides the ability to create new stripe account
 export const useCreateStripeAccount = () => {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -51,12 +47,8 @@ export const useCreateStripeAccount = () => {
   return { createAccount, reset, loading, error, success };
 };
 
-/**
- * useCreateStripeAccountLink
- *
- * Hook to create a Stripe onboarding link for a connected account
- * @returns createAccountLink function, loading state, error state, success state
- */
+// useCreateStripeAccountLink ...
+// defines a function that is used to create stripe account assocation securely
 export const useCreateStripeAccountLink = () => {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -106,11 +98,8 @@ export const useCreateStripeAccountLink = () => {
   return { createAccountLink, reset, loading, error, success };
 };
 
-/**
- * useCreateLoginLinkStripeAccount ...
- *
- * Hook to generate a Stripe dashboard login link and redirect the user.
- */
+// useCreateLoginLinkStripeAccount ...
+// defines a function which is used to create a login link for stripe account
 export const useCreateLoginLinkStripeAccount = () => {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -146,11 +135,8 @@ export const useCreateLoginLinkStripeAccount = () => {
   return { createStripeLoginLink, loading, error };
 };
 
-/**
- * useGetRecentTransactions ...
- *
- * Hook to fetch the recent transactions based on the account Id
- */
+// useGetRecentTransactions ...
+// defines a function that is used to retrieve recent transactions
 export const useGetRecentTransactions = () => {
   const [transactions, setTransactions] = useState([]);
   const [loading, setLoading] = useState(false);

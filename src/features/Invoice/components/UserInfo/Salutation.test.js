@@ -1,12 +1,13 @@
 import React from "react";
-import { render, screen } from "@testing-library/react";
+
 import Salutation from "./Salutation";
+import { render, screen } from "@testing-library/react";
 
 describe("Salutation component", () => {
   const mockUser = {
-    first_name: "John",
-    last_name: "Doe",
-    street_address: "123 Main St",
+    firstName: "John",
+    lastName: "Doe",
+    streetAddress: "123 Main St",
     city: "Austin",
     state: "TX",
     zipcode: "78701",

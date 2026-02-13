@@ -21,7 +21,7 @@ jest.mock("react-secure-storage", () => ({
   removeItem: jest.fn(),
 }));
 
-jest.mock("common/ValidateClientPermissions", () => ({
+jest.mock("common/ApplicationConfig", () => ({
   __esModule: true,
   default: () => new Map([]),
 }));

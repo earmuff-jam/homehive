@@ -18,7 +18,7 @@ export default function EsignTemplateDetails({
     () => [
       {
         accessorKey: "name",
-        header: "Template Name",
+        header: "Name",
         Cell: ({ cell }) => (
           <Typography variant="subtitle2" color="success">
             {cell.getValue() ? cell.getValue() : "-"}
@@ -64,7 +64,7 @@ export default function EsignTemplateDetails({
       density: "comfortable",
     },
     renderEmptyRowsFallback: () => (
-      <EmptyComponent caption="Default templates are currently unavailable." />
+      <EmptyComponent caption="No matching Esign templates found" />
     ),
     mrtTheme: (theme) => ({
       baseBackgroundColor: theme.palette.transparent.main,

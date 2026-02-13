@@ -5,10 +5,7 @@ import dayjs from "dayjs";
 import { Stack, Typography } from "@mui/material";
 import EmptyComponent from "common/EmptyComponent";
 import relativeTime from "dayjs/plugin/relativeTime";
-import {
-  formatCurrency,
-  sumCentsToDollars,
-} from "features/Rent/utils";
+import { formatCurrency } from "features/Rent/utils";
 import {
   MaterialReactTable,
   useMaterialReactTable,
@@ -27,25 +24,24 @@ const ViewRentalPaymentSummary = ({ rentData = [] }) => {
       },
       {
         header: "Amount Paid ($)",
-        accessorFn: (row) =>
-          sumCentsToDollars(
+        accessorFn: (row) => {
+          const total = [
             row?.rentAmount,
             row?.additionalCharges,
             row?.initialLateFee,
             row?.dailyLateFee,
-          ),
+          ].reduce((sum, val) => {
+            const num = Number(val);
+            return sum + (Number.isFinite(num) ? num : 0);
+          }, 0);
+          return total;
+        },
         id: "amountPaid",
         Cell: ({ cell }) => formatCurrency(cell.getValue()),
       },
       {
-        accessorKey: "method",
-        header: "Payment Method",
-        size: 100,
-        Cell: ({ cell }) => cell.getValue() || "-",
-      },
-      {
         accessorKey: "status",
-        header: "Status",
+        header: "Payment Method",
         size: 100,
         Cell: ({ cell }) => cell.getValue() || "-",
       },

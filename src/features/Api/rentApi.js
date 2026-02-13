@@ -28,14 +28,14 @@ export const rentApi = createApi({
             return {
               error: {
                 message: "Property not found",
-                code: "not-found",
+                code: "404",
               },
             };
           }
 
           const propertyData = propertyDoc.data();
 
-          const isOwner = propertyData.owner_email === currentUserEmail;
+          const isOwner = propertyData.ownerEmail === currentUserEmail;
           const isRentee = (propertyData.rentees || []).some(
             (email) => email === currentUserEmail,
           );

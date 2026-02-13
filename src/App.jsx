@@ -5,16 +5,14 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { ThemeProvider } from "@emotion/react";
 import { CssBaseline } from "@mui/material";
 import { TourProvider } from "@reactour/tour";
+import { buildAppRoutes } from "common/ApplicationConfig";
 import ScrollTopProvider from "common/ScrollTop/ScrollTopProvider";
-import { GeneratedTourSteps } from "common/Tour/TourSteps";
-import { buildAppRoutes } from "common/ValidateClientPermissions";
+import { GeneratedTourSteps } from "common/TourSteps";
 import Layout from "features/Layout/Layout";
-import { fetchLoggedInUser } from "features/Rent/utils";
 import { MainAppRoutes } from "src/Routes";
 import { darkTheme, lightTheme } from "src/Theme";
 
 function App() {
-  const user = fetchLoggedInUser();
   const [currentThemeIdx, setCurrentThemeIdx] = useState(
     localStorage.getItem("theme") || 0,
   );
@@ -38,7 +36,7 @@ function App() {
                   />
                 }
               >
-                {buildAppRoutes(MainAppRoutes, user?.role)}
+                {buildAppRoutes(MainAppRoutes)}
               </Route>
             </Routes>
           </BrowserRouter>

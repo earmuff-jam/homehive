@@ -16,26 +16,24 @@ import {
   Typography,
 } from "@mui/material";
 import AButton from "common/AButton";
-import CustomSnackbar from "common/CustomSnackbar/CustomSnackbar";
-import RowHeader from "common/RowHeader/RowHeader";
+import CustomSnackbar from "common/CustomSnackbar";
+import RowHeader from "common/RowHeader";
 import TextFieldWithLabel from "common/TextFieldWithLabel";
+import { fetchLoggedInUser } from "common/utils";
 import {
   useGetUserDataByIdQuery,
   useUpdateUserByUidMutation,
 } from "features/Api/firebaseUserApi";
-import { fetchLoggedInUser } from "features/Rent/utils";
 
 export default function ProfileDetails() {
   const user = fetchLoggedInUser();
 
-  const { data: userData, isLoading } = useGetUserDataByIdQuery(user?.uid, {
-    skip: !user?.uid,
-  });
+  const { data: userData, isLoading: isUserDataLoading } =
+    useGetUserDataByIdQuery(user?.uid, {
+      skip: !user?.uid,
+    });
 
-  const [
-    updateUser,
-    { isSuccess: isUpdateUserSuccess, isLoading: isUpdateUserLoading },
-  ] = useUpdateUserByUidMutation();
+  const [updateUser, updateUserResult] = useUpdateUserByUidMutation();
 
   const [showSnackbar, setShowSnackbar] = useState(false);
 
@@ -47,10 +45,10 @@ export default function ProfileDetails() {
   } = useForm({
     mode: "onChange",
     defaultValues: {
-      first_name: "",
-      last_name: "",
+      firstName: "",
+      lastName: "",
       phone: "",
-      street_address: "",
+      streetAddress: "",
       city: "",
       state: "",
       zipcode: "",
@@ -76,24 +74,24 @@ export default function ProfileDetails() {
   };
 
   useEffect(() => {
-    if (isUpdateUserSuccess) setShowSnackbar(false);
-  }, [isUpdateUserSuccess]);
+    if (updateUserResult.isSuccess) setShowSnackbar(false);
+  }, [updateUserResult.isLoading]);
 
   useEffect(() => {
     if (userData) {
       reset({
-        first_name: userData?.first_name || "",
-        last_name: userData?.last_name || "",
+        firstName: userData?.firstName || "",
+        lastName: userData?.lastName || "",
         phone: userData?.phone || "",
-        street_address: userData?.street_address || "",
+        streetAddress: userData?.streetAddress || "",
         city: userData?.city || "",
         state: userData?.state || "",
         zipcode: userData?.zipcode || "",
       });
     }
-  }, [isLoading, reset]);
+  }, [isUserDataLoading, reset]);
 
-  if (isLoading) return <Skeleton height="10rem" />;
+  if (isUserDataLoading) return <Skeleton height="10rem" />;
 
   return (
     <Grid container spacing={3}>
@@ -136,9 +134,9 @@ export default function ProfileDetails() {
           >
             <RowHeader
               title="Personal Information"
+              caption="View or edit your personal information"
               sxProps={{
                 textAlign: "left",
-                fontWeight: "bold",
                 color: "text.secondary",
               }}
             />
@@ -146,7 +144,7 @@ export default function ProfileDetails() {
             {/* First and Last Name */}
             <Stack direction={{ xs: "column", md: "row" }} spacing={1}>
               <Controller
-                name="first_name"
+                name="firstName"
                 control={control}
                 rules={{
                   required: "First name is required",
@@ -162,18 +160,18 @@ export default function ProfileDetails() {
                   <TextFieldWithLabel
                     {...field}
                     label="First Name *"
-                    id="first_name"
-                    name="first_name"
+                    id="firstName"
+                    name="firstName"
                     placeholder="Enter your first name"
-                    error={!!errors.first_name}
-                    errorMsg={errors.first_name?.message}
+                    error={!!errors.firstName}
+                    errorMsg={errors.firstName?.message}
                     fullWidth
                   />
                 )}
               />
 
               <Controller
-                name="last_name"
+                name="lastName"
                 control={control}
                 rules={{
                   required: "Last name is required",
@@ -188,11 +186,11 @@ export default function ProfileDetails() {
                   <TextFieldWithLabel
                     {...field}
                     label="Last Name *"
-                    id="last_name"
-                    name="last_name"
+                    id="lastName"
+                    name="lastName"
                     placeholder="Enter your Last Name"
-                    error={!!errors.last_name}
-                    errorMsg={errors.last_name?.message}
+                    error={!!errors.lastName}
+                    errorMsg={errors.lastName?.message}
                     fullWidth
                   />
                 )}
@@ -239,7 +237,7 @@ export default function ProfileDetails() {
 
             {/* Street Address */}
             <Controller
-              name="street_address"
+              name="streetAddress"
               control={control}
               rules={{
                 required: "Street address is required",
@@ -252,11 +250,11 @@ export default function ProfileDetails() {
                 <TextFieldWithLabel
                   {...field}
                   label="Street Address *"
-                  id="street_address"
-                  name="street_address"
+                  id="streetAddress"
+                  name="streetAddress"
                   placeholder="Enter your primary street address"
-                  error={!!errors.street_address}
-                  errorMsg={errors.street_address?.message}
+                  error={!!errors.streetAddress}
+                  errorMsg={errors.streetAddress?.message}
                 />
               )}
             />
@@ -341,7 +339,7 @@ export default function ProfileDetails() {
                 variant="contained"
                 type="submit"
                 disabled={!isValid}
-                loading={isUpdateUserLoading}
+                loading={updateUserResult.isLoading}
               />
             </Box>
             <Typography variant="caption" sx={{ fontStyle: "italic" }}>

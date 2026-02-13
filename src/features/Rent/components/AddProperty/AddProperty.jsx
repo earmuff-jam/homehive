@@ -318,11 +318,11 @@ export default function AddProperty({
                 <Typography variant="subtitle2">Add ons</Typography>
               </Stack>
             }
-            id="additional_rent"
+            id="additionalRent"
             placeholder="Additional fee. Eg, 400.00"
-            errorMsg={errors.additional_rent?.message}
+            errorMsg={errors.additionalRent?.message}
             inputProps={{
-              ...register("additional_rent", {
+              ...register("additionalRent", {
                 pattern: {
                   value: /^\d+(\.\d{1,2})?$/,
                   message: "Additional fee must be a valid amount (e.g. 75.00)",
@@ -349,11 +349,11 @@ export default function AddProperty({
                 </Typography>
               </Stack>
             }
-            id="rent_increment"
+            id="rentIncrement"
             placeholder="Projected Rent Increase in USD. Eg, 200.00"
-            errorMsg={errors.rent_increment?.message}
+            errorMsg={errors.rentIncrement?.message}
             inputProps={{
-              ...register("rent_increment", {
+              ...register("rentIncrement", {
                 required:
                   "Projected Rent Increase is required and must be in number format.",
                 pattern: {
@@ -633,9 +633,9 @@ export default function AddProperty({
         </Stack>
 
         <AButton
-          variant="contained"
           disabled={isDisabled}
           type="submit"
+          variant="outlined"
           label={isEditing ? "Edit Property" : "Add Property"}
         />
       </Stack>

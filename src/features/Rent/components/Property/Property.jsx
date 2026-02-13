@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 
 import {
+  Box,
   Dialog,
   DialogActions,
   DialogContent,
@@ -13,6 +14,8 @@ import {
   Stack,
 } from "@mui/material";
 import AButton from "common/AButton";
+import RowHeader from "common/RowHeader";
+import { fetchLoggedInUser } from "common/utils";
 import { useGetUserDataByIdQuery } from "features/Api/firebaseUserApi";
 import { useGetPropertiesByPropertyIdQuery } from "features/Api/propertiesApi";
 import { useGetRentsByPropertyIdQuery } from "features/Api/rentApi";
@@ -27,17 +30,19 @@ import FinancialOverview from "features/Rent/components/Widgets/FinancialOvervie
 import QuickActions from "features/Rent/components/Widgets/QuickActions";
 import RentalPaymentOverview from "features/Rent/components/Widgets/RentalPaymentOverview";
 import TenantsOverview from "features/Rent/components/Widgets/TenantsOverview";
-import { fetchLoggedInUser } from "features/Rent/utils";
 import { useAppTitle } from "hooks/useAppTitle";
 
 const Property = () => {
   const params = useParams();
   const user = fetchLoggedInUser();
 
-  const { data: property, isLoading: isPropertyLoading } =
-    useGetPropertiesByPropertyIdQuery(params?.id, {
-      skip: !params?.id,
-    });
+  const {
+    data: property,
+    refetch: refetchGetProperty,
+    isLoading: isPropertyLoading,
+  } = useGetPropertiesByPropertyIdQuery(params?.id, {
+    skip: !params?.id,
+  });
 
   const { data: tenants = [], isLoading: isTenantsLoading } =
     useGetTenantByPropertyIdQuery(params?.id, {
@@ -75,15 +80,17 @@ const Property = () => {
         {isPropertyLoading ? (
           <Skeleton height="5rem" />
         ) : (
-          <PropertyHeader property={property} />
+          <>
+            <PropertyHeader property={property} />
+            <PropertyStatistics
+              dataTour="property-1"
+              property={property}
+              isPropertyLoading={isPropertyLoading}
+              isAnyTenantSoR={isAnyTenantSoR}
+              tenants={tenants}
+            />
+          </>
         )}
-        <PropertyStatistics
-          dataTour="property-1"
-          property={property}
-          isPropertyLoading={isPropertyLoading}
-          isAnyTenantSoR={isAnyTenantSoR}
-          tenants={tenants}
-        />
       </Paper>
 
       <Grid container spacing={3}>
@@ -93,7 +100,6 @@ const Property = () => {
             isTenantsLoading={isTenantsLoading}
             property={property}
             tenants={tenants}
-            isAnyTenantSoR={isAnyTenantSoR}
             dataTour="property-2"
           />
           <TenantsOverview
@@ -101,6 +107,7 @@ const Property = () => {
             tenants={tenants.filter((tenant) => tenant.isActive)}
             isTenantsLoading={isTenantsLoading}
             dataTour="property-8"
+            refetchGetProperty={refetchGetProperty}
             toggleAssociateTenantsPopup={toggleAssociateTenantsPopup}
           />
           <RentalPaymentOverview
@@ -141,12 +148,32 @@ const Property = () => {
         maxWidth="lg"
         aria-describedby="alert-dialog-slide-description"
       >
-        <DialogTitle>Associate Tenants</DialogTitle>
+        <DialogTitle
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
+          }}
+        >
+          <RowHeader
+            title="Associate Tenants"
+            caption={`Associate tenant for ${property?.name}`}
+            sxProps={{
+              textAlign: "left",
+              fontWeight: "bold",
+              color: "text.secondary",
+            }}
+          />
+          <Box>
+            <AButton label="Associate" variant="outlined" />
+          </Box>
+        </DialogTitle>
         <DialogContent>
           <AssociateTenantPopup
-            closeDialog={toggleAssociateTenantsPopup}
             property={property}
             tenants={tenants}
+            refetchGetProperty={refetchGetProperty}
+            closeDialog={toggleAssociateTenantsPopup}
           />
         </DialogContent>
         <DialogActions>

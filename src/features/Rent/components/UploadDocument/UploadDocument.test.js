@@ -9,15 +9,13 @@ jest.mock("common/AButton", () => (props) => (
   </button>
 ));
 
-jest.mock("common/CustomSnackbar/CustomSnackbar", () => () => (
-  <div data-testid="snackbar" />
-));
+jest.mock("common/CustomSnackbar", () => () => <div data-testid="snackbar" />);
 
 jest.mock("features/Rent/components/UploadDocument/FileDetails", () => () => (
   <div data-testid="file-details" />
 ));
 
-jest.mock("features/Rent/utils", () => ({
+jest.mock("common/utils", () => ({
   fetchLoggedInUser: () => ({ uid: "test-user" }),
 }));
 
@@ -28,7 +26,7 @@ describe("UploadDocument Snapshot Tests", () => {
         selectedFile={null}
         setSelectedFile={jest.fn()}
         getWorkspaces={jest.fn()}
-      />
+      />,
     );
 
     expect(asFragment()).toMatchSnapshot();

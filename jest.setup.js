@@ -1,11 +1,10 @@
 /**
- * 
- * Jest setup test file. 
- * 
- * All commonly used modules that need to be mocked can be placed here instead of 
+ *
+ * Jest setup test file.
+ *
+ * All commonly used modules that need to be mocked can be placed here instead of
  * placing them in specific test scenarios.
  */
-
 // import app level jest settings here
 import dayjs from "dayjs";
 
@@ -14,7 +13,6 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import { TextDecoder, TextEncoder } from "util";
 
 dayjs.extend(relativeTime);
-
 
 // mock react secure storage
 jest.mock("react-secure-storage", () => ({
@@ -27,10 +25,9 @@ jest.mock("react-secure-storage", () => ({
   },
 }));
 
-// mock validateClientPermissions
-jest.mock("common/ValidateClientPermissions", () => ({
+jest.mock("common/ApplicationConfig", () => ({
   __esModule: true,
-  default: () =>
+  authorizedServerLevelFeatureFlags: () =>
     new Map([
       ["analytics", true],
       ["invoicer", true],
@@ -39,6 +36,14 @@ jest.mock("common/ValidateClientPermissions", () => ({
       ["sendEmail", true],
     ]),
 }));
+
+global.import = {
+  meta: {
+    env: {
+      VITE_ENABLE_ANALYTICS: "false",
+    },
+  },
+};
 
 global.TextEncoder = TextEncoder;
 global.TextDecoder = TextDecoder;

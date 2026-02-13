@@ -5,7 +5,7 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
-  IconButton,
+  Box,
   Stack,
   Typography,
 } from "@mui/material";
@@ -24,15 +24,17 @@ export default function EditPdfLineItemAccordion({
         aria-controls="panel1-content"
         id="panel1-header"
       >
-        <Stack alignItems={"center"} direction="row">
-          <IconButton size="small" onClick={() => onDelete(index)}>
+        <Stack spacing={1} alignItems="center" direction="row">
+          <Box onClick={() => onDelete(index)}>
             <DeleteRounded fontSize="small" color="error" />
-          </IconButton>
-          <Typography>{title}</Typography>
+          </Box>
+          <Typography variant="body1" fontWeight="300">
+            {title}
+          </Typography>
         </Stack>
       </AccordionSummary>
       <AccordionDetails>
-         <EditPdfLineItem control={control} index={index} />
+        <EditPdfLineItem control={control} index={index} />
       </AccordionDetails>
     </Accordion>
   );

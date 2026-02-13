@@ -18,6 +18,7 @@ const NavigationGroup = ({
   theme,
 }) => {
   const [open, setOpen] = useState(false);
+
   const handleToggle = () => setOpen((prev) => !prev);
 
   useEffect(() => {
@@ -38,25 +39,27 @@ const NavigationGroup = ({
       </ListItemButton>
       <Collapse in={open} timeout="auto" unmountOnExit>
         <List component="div" disablePadding sx={{ pl: 4 }}>
-          {childrenRoutes.map(({ id, routeUri, label, icon }) => (
-            <ListItemButton
-              key={id}
-              selected={pathname === routeUri}
-              onClick={() => navigate(routeUri)}
-            >
-              <ListItemIcon
-                sx={{
-                  color:
-                    pathname === routeUri
-                      ? theme.palette.primary.main
-                      : undefined,
-                }}
+          {childrenRoutes.map(({ id, routeUri, label, icon }) => {
+            return (
+              <ListItemButton
+                key={id}
+                selected={pathname === routeUri}
+                onClick={() => navigate(routeUri)}
               >
-                {icon}
-              </ListItemIcon>
-              <ListItemText primary={label} />
-            </ListItemButton>
-          ))}
+                <ListItemIcon
+                  sx={{
+                    color:
+                      pathname === routeUri
+                        ? theme.palette.primary.main
+                        : undefined,
+                  }}
+                >
+                  {icon}
+                </ListItemIcon>
+                <ListItemText primary={label} />
+              </ListItemButton>
+            );
+          })}
         </List>
       </Collapse>
     </>

@@ -1,12 +1,12 @@
 import dayjs from "dayjs";
 
+import { EditInvoiceRouteUri, fetchLoggedInUser } from "common/utils";
 import { processTemplate } from "features/Rent/components/Settings/common";
 import {
   CreateInvoiceEnumValue,
   PaymentReminderEnumValue,
   RenewLeaseNoticeEnumValue,
   SendDefaultInvoiceEnumValue,
-  fetchLoggedInUser,
   isFeatureEnabled,
   stripHTMLForEmailMessages,
 } from "features/Rent/utils";
@@ -26,15 +26,15 @@ export const handleQuickConnectAction = (
   const user = fetchLoggedInUser();
 
   const unit = primaryTenant?.term.endsWith("y") ? "year" : "month";
-  const leaseEndDate = dayjs(primaryTenant?.start_date)
+  const leaseEndDate = dayjs(primaryTenant?.startDate)
     .add(parseInt(primaryTenant?.term), unit)
     .format("MM-DD-YYYY");
 
   const templateVariables = {
     leaseEndDate: leaseEndDate,
-    rentIncrement: Number(property?.rent_increment) || 0,
+    rentIncrement: Number(property?.rentIncrement) || 0,
     oneYearRentChange:
-      Number(property?.rent || 0) + Number(property?.rent_increment || 0),
+      Number(property?.rent || 0) + Number(property?.rentIncrement || 0),
     responseDeadline: today.add(1, "M").format("MM-DD-YYYY"), // add 30 days for response deadline
     ownerPhone: propertyOwner?.phone,
     ownerEmail: propertyOwner?.email,
@@ -46,13 +46,13 @@ export const handleQuickConnectAction = (
     month: today.format("MMMM"),
     year: today.get("year"),
     ownerName: propertyOwner?.googleDisplayName,
-    companyName: propertyOwner?.company_name || "",
+    companyName: propertyOwner?.companyName || "",
     contactInfo: propertyOwner?.email || "",
   };
 
   switch (action) {
     case CreateInvoiceEnumValue: {
-      redirectTo("/invoice/edit");
+      redirectTo(EditInvoiceRouteUri);
       break;
     }
 
@@ -138,12 +138,8 @@ export const handleQuickConnectAction = (
   }
 };
 
-/**
- * formatEmail ...
- *
- * function used to send email via sendEmail functionality
- * @param {Object} userInformation - object containing reciever information
- */
+// formatEmail ...
+// defines a function that is used to send email notification
 const formatEmail = ({ to, subject, body, html }, sendEmail) => {
   const isEmailEnabled = isFeatureEnabled("sendEmail");
 

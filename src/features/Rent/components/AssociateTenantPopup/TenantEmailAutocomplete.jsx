@@ -24,12 +24,10 @@ export default function TenantEmailAutocomplete({
   clearErrors,
 }) {
   const { data: activeTenants, isLoading } = useGetTenantListQuery(true);
+  const [getExistingTenants, getExistingTenantsResult] =
+    useLazyGetTenantListQuery();
 
-  const [
-    triggerGetExistingTenants,
-    { data: inactiveTenants = [], isLoading: isInactiveTenantsLoading },
-  ] = useLazyGetTenantListQuery();
-
+  const inactiveTenants = getExistingTenantsResult?.data || [];
   if (isLoading) return <Skeleton height="inherit" />;
 
   return (
@@ -47,14 +45,14 @@ export default function TenantEmailAutocomplete({
             selectOnFocus
             clearOnBlur
             handleHomeEndKeys
-            loading={isInactiveTenantsLoading}
+            loading={getExistingTenantsResult.isLoading}
             options={inactiveTenants.map((t) => ({ title: t.email })) || []}
             getOptionLabel={(option) => {
               if (typeof option === "string") return option;
               if (option.inputValue) return option.inputValue;
               return option.title;
             }}
-            onOpen={() => triggerGetExistingTenants(false)}
+            onOpen={() => getExistingTenants(false)}
             filterOptions={(options, params) => {
               const filtered = filter(options, params);
               const { inputValue } = params;

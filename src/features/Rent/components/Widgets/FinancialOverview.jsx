@@ -1,19 +1,18 @@
 import React from "react";
 
 import { Card, CardContent, Skeleton, Stack, Typography } from "@mui/material";
-import RowHeader from "common/RowHeader/RowHeader";
-import {
-  derieveTotalRent,
-  formatCurrency,
-} from "features/Rent/utils";
+import RowHeader from "common/RowHeader";
+import { useSelectedPropertyDetails } from "features/Rent/hooks/useGetSelectedPropertyDetails";
+import { formatCurrency } from "features/Rent/utils";
 
 export default function FinancialOverview({
   isTenantsLoading,
   property,
   tenants,
-  isAnyTenantSoR,
   dataTour,
 }) {
+  const { totalRent } = useSelectedPropertyDetails(property, tenants);
+
   return (
     <Card sx={{ mb: 3 }} data-tour={dataTour}>
       <CardContent>
@@ -33,9 +32,10 @@ export default function FinancialOverview({
                   color="success"
                   sx={{ fontSize: "2rem" }}
                 >
-                  {formatCurrency(
-                    derieveTotalRent(property, tenants, isAnyTenantSoR),
-                  )}
+                  ${formatCurrency(totalRent)}
+                  <Typography component="span" variant="caption">
+                    {` USD / m`}
+                  </Typography>
                 </Typography>
                 <Typography variant="subtitle2" color="text.secondary">
                   Monthly Revenue
@@ -47,9 +47,10 @@ export default function FinancialOverview({
                   color="success"
                   sx={{ fontSize: "2rem" }}
                 >
-                  {formatCurrency(
-                    derieveTotalRent(property, tenants, isAnyTenantSoR) * 12,
-                  )}
+                  ${formatCurrency(totalRent * 12)}
+                  <Typography component="span" variant="caption">
+                    {` USD / yr`}
+                  </Typography>
                 </Typography>
                 <Typography variant="subtitle2" color="text.secondary">
                   Projected Annual Revenue

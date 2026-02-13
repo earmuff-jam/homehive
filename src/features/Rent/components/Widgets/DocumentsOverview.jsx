@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from "react";
 
-import { Card, CardContent, Skeleton, Stack } from "@mui/material";
-import CustomSnackbar from "common/CustomSnackbar/CustomSnackbar";
-import RowHeader from "common/RowHeader/RowHeader";
+import { useNavigate } from "react-router-dom";
+
+import { Card, CardContent, Skeleton, Stack, Typography } from "@mui/material";
+import CustomSnackbar from "common/CustomSnackbar";
+import EmptyComponent from "common/EmptyComponent";
+import RowHeader from "common/RowHeader";
+import { SettingsRouteUri, fetchLoggedInUser } from "common/utils";
 import {
   useCreateEsignFromTemplateMutation,
   useGetEsignTemplatesQuery,
@@ -13,7 +17,6 @@ import {
 } from "features/Api/firebaseUserApi";
 import EsignTemplateDetails from "features/Rent/components/EsignConnect/EsignTemplateDetails";
 import {
-  fetchLoggedInUser,
   sanitizeEsignFieldsForLeaseExtension,
   sanitizeEsignFieldsForNewLease,
 } from "features/Rent/utils";
@@ -26,7 +29,9 @@ export default function DocumentsOverview({
   isPropertyLoading,
   isViewingRental = false,
 }) {
+  const navigate = useNavigate();
   const user = fetchLoggedInUser();
+
   const { data: esignTemplates, isLoading: isGetEsignTemplatesLoading } =
     useGetEsignTemplatesQuery(user?.uid, {
       skip: !isEsignConnected,
@@ -107,17 +112,31 @@ export default function DocumentsOverview({
           caption={`View documents assoicated with ${property?.name}`}
           sxProps={{ textAlign: "left", color: "text.secondary" }}
         />
-        <Stack spacing={2}>
-          {isPropertyLoading ? (
-            <Skeleton height="5rem" />
-          ) : (
-            <EsignTemplateDetails
-              templates={templates}
-              isViewingRental={isViewingRental}
-              prepareDocumentForEsign={prepareDocumentForEsign}
-            />
-          )}
-        </Stack>
+        {isEsignConnected ? (
+          <Stack spacing={2}>
+            {isPropertyLoading ? (
+              <Skeleton height="5rem" />
+            ) : (
+              <EsignTemplateDetails
+                templates={templates}
+                isViewingRental={isViewingRental}
+                prepareDocumentForEsign={prepareDocumentForEsign}
+              />
+            )}
+          </Stack>
+        ) : (
+          <EmptyComponent caption="Setup your esign account for">
+            <Typography
+              component={"span"}
+              variant="caption"
+              color="primary"
+              sx={{ cursor: "pointer" }}
+              onClick={() => navigate(`${SettingsRouteUri}?tabIdx=2`)}
+            >
+              Esign here.
+            </Typography>
+          </EmptyComponent>
+        )}
       </CardContent>
       <CustomSnackbar
         showSnackbar={showSnackbar}

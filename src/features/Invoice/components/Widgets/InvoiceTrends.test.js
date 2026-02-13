@@ -5,17 +5,14 @@ import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/react";
 import * as utils from "features/Invoice/utils";
 
-// Mock chart.js components
 jest.mock("react-chartjs-2", () => ({
   Bar: jest.fn(() => <div data-testid="bar-chart" />),
   Line: jest.fn(() => <div data-testid="line-chart" />),
 }));
-
-// Mock other components
 jest.mock("common/EmptyComponent", () => () => (
   <div data-testid="empty-component" />
 ));
-jest.mock("common/RowHeader/RowHeader", () => (props) => (
+jest.mock("common/RowHeader", () => (props) => (
   <div data-testid="row-header">
     {props.title} - {props.caption}
   </div>

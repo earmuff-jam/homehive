@@ -1,5 +1,4 @@
-import { useEffect, useState } from "react";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import dayjs from "dayjs";
 
@@ -22,7 +21,8 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import RowHeader from "common/RowHeader/RowHeader";
+import RowHeader from "common/RowHeader";
+import { fetchLoggedInUser } from "common/utils";
 import {
   useGetUserDataByIdQuery,
   useUpdateUserByUidMutation,
@@ -43,8 +43,8 @@ import {
   useCreateStripeAccount,
   useCreateStripeAccountLink,
 } from "features/Rent/hooks/useStripe";
-import { fetchLoggedInUser } from "features/Rent/utils";
 
+// stripeConnectOptions ...
 const stripeConnectOptions = [
   {
     id: 1,

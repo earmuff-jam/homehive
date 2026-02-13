@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
 
 import {
+  Box,
   Card,
   CardContent,
   Dialog,
@@ -13,10 +14,12 @@ import {
   DialogContent,
   DialogTitle,
   Stack,
+  Tooltip,
 } from "@mui/material";
 import AButton from "common/AButton";
-import CustomSnackbar from "common/CustomSnackbar/CustomSnackbar";
-import RowHeader from "common/RowHeader/RowHeader";
+import CustomSnackbar from "common/CustomSnackbar";
+import RowHeader from "common/RowHeader";
+import { SettingsRouteUri, fetchLoggedInUser } from "common/utils";
 import { useUpdatePropertyByIdMutation } from "features/Api/propertiesApi";
 import {
   AddPropertyTextString,
@@ -24,7 +27,7 @@ import {
 } from "features/Rent/common/constants";
 import AddProperty from "features/Rent/components/AddProperty/AddProperty";
 import AddRentRecords from "features/Rent/components/AddRentRecords/AddRentRecords";
-import { fetchLoggedInUser, sanitizeApiFields } from "features/Rent/utils";
+import { sanitizeApiFields } from "features/Rent/utils";
 
 const defaultDialog = {
   title: "",
@@ -66,8 +69,8 @@ export default function QuickActions({ property }) {
       isOwnerCoveredUtilities: false,
       ownerCoveredUtilities: "",
       rent: 0,
-      additional_rent: 0,
-      rent_increment: 100,
+      additionalRent: 0,
+      rentIncrement: 100,
       securityDeposit: 0,
       allowedVehicleCounts: 0,
       paymentID: "",
@@ -127,14 +130,14 @@ export default function QuickActions({ property }) {
         state: property?.state || "",
         county: property?.county || "",
         zipcode: property?.zipcode || "",
-        owner_email: property?.owner_email || "",
+        ownerEmail: property?.ownerEmail || "",
         units: property?.units || "",
         bathrooms: property?.bathrooms || "",
         rent: property?.rent || "",
-        additional_rent: property?.additional_rent || "",
+        additionalRent: property?.additionalRent || "",
         note: property?.note || "",
         sqFt: property?.sqFt || "",
-        rent_increment: property?.rent_increment || "",
+        rentIncrement: property?.rentIncrement || "",
         emergencyContactNumber: property?.emergencyContactNumber,
         isTenantCleaningYard: property?.isTenantCleaningYard,
         isSmoking: property?.isSmoking,
@@ -169,22 +172,33 @@ export default function QuickActions({ property }) {
           }}
         />
         <Stack spacing={1}>
-          <AButton
-            variant="outlined"
-            fullWidth
-            onClick={() =>
-              setDialog({
-                title: "Edit property",
-                type: AddPropertyTextString,
-                display: true,
-              })
+          <Tooltip
+            title={
+              property?.rentees.length > 0
+                ? "Editing a property is disabled when tenants are present"
+                : ""
             }
-            label="Edit Property"
-          />
+          >
+            <span>
+              <AButton
+                variant="outlined"
+                fullWidth
+                disabled={property?.rentees.length > 0}
+                onClick={() =>
+                  setDialog({
+                    title: "Edit property",
+                    type: AddPropertyTextString,
+                    display: true,
+                  })
+                }
+                label="Edit Property"
+              />
+            </span>
+          </Tooltip>
           <AButton
             variant="outlined"
             fullWidth
-            onClick={() => navigate("/rent/settings?tabIdx=2")}
+            onClick={() => navigate(`${SettingsRouteUri}?tabIdx=2`)}
             label="View Stripe Payment History"
           />
           <AButton
@@ -215,13 +229,23 @@ export default function QuickActions({ property }) {
           >
             <DialogTitle>
               {dialog.type === AddPropertyTextString && (
-                <RowHeader
-                  title="Edit property"
-                  caption="Edit property values"
-                  sxProps={{
-                    textAlign: "left",
-                  }}
-                />
+                <Stack direction="row" justifyContent="space-between">
+                  <RowHeader
+                    title="Edit property"
+                    caption={`Edit property details for ${property?.name}`}
+                    sxProps={{
+                      textAlign: "left",
+                    }}
+                  />
+                  <Box>
+                    <AButton
+                      label="Edit Property"
+                      variant="outlined"
+                      onClick={handleSubmit(onSubmit)}
+                      disabled={!isValid || isUpdatePropertyLoading}
+                    />
+                  </Box>
+                </Stack>
               )}
               {dialog.type === AddRentRecordsTextString && (
                 <RowHeader

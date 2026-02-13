@@ -6,10 +6,13 @@ import { v4 as uuidv4 } from "uuid";
 
 import dayjs from "dayjs";
 
-import { InfoRounded, UpdateRounded } from "@mui/icons-material";
+import {
+  AutorenewOutlined,
+  InfoRounded,
+  UpdateRounded,
+} from "@mui/icons-material";
 import {
   Box,
-  Button,
   Checkbox,
   Divider,
   FormControl,
@@ -22,13 +25,20 @@ import {
 } from "@mui/material";
 import { LocalizationProvider, MobileDatePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import CustomSnackbar from "common/CustomSnackbar/CustomSnackbar";
+import AButton from "common/AButton";
+import CustomSnackbar from "common/CustomSnackbar";
 import TextFieldWithLabel from "common/TextFieldWithLabel";
+import { fetchLoggedInUser } from "common/utils";
+import { useSendEmailMutation } from "features/Api/externalIntegrationsApi";
 import { useAssociateTenantMutation } from "features/Api/tenantsApi";
-import { LEASE_TERM_MENU_OPTIONS } from "features/Rent/common/constants";
+import { DefaultLeaseTermOptions } from "features/Rent/common/constants";
 import TenantEmailAutocomplete from "features/Rent/components/AssociateTenantPopup/TenantEmailAutocomplete";
 import {
-  fetchLoggedInUser,
+  AddNotificationEnumType,
+  AddTenantNotificationEnumValue,
+  appendDisclaimer,
+  emailMessageBuilder,
+  formatAndSendNotification,
   isAssociatedPropertySoR,
 } from "features/Rent/utils";
 
@@ -36,14 +46,12 @@ export default function AssociateTenantPopup({
   closeDialog,
   property,
   tenants,
+  refetchGetProperty,
 }) {
   const user = fetchLoggedInUser();
-  const currentUserId = user?.uid;
 
-  const [
-    associateTenant,
-    { isLoading: associateTenantLoading, isSuccess: associateTenantSuccess },
-  ] = useAssociateTenantMutation();
+  const [sendEmail] = useSendEmailMutation();
+  const [associateTenant, associateTenantResult] = useAssociateTenantMutation();
 
   const [showSnackbar, setShowSnackbar] = useState(false);
 
@@ -61,19 +69,21 @@ export default function AssociateTenantPopup({
     mode: "onChange",
     defaultValues: {
       email: "",
-      start_date: dayjs().toISOString(),
-      term: "",
-      tax_rate: 1,
-      rent: "",
+      startDate: dayjs().toISOString(),
+      term: DefaultLeaseTermOptions.find(
+        (leaseOption) => leaseOption.amount === 12,
+      ).value,
+      taxRate: 1,
+      rent: 0,
       initialLateFee: 75,
       dailyLateFee: 10,
       initialAnimalVoilationFee: 300,
       dailyAnimalVoilationFee: 25,
       returnedPaymentFee: 75,
-      grace_period: 3,
+      gracePeriod: 3,
       isAutoRenewPolicySet: false,
       autoRenewDays: 60,
-      isPrimary: false,
+      isPrimary: true,
       isSoR: false,
       assignedRoomName: "",
       guestsPermittedStayDays: 15,
@@ -88,35 +98,57 @@ export default function AssociateTenantPopup({
   const onSubmit = async (data) => {
     const draftData = { ...data };
 
-    if (!draftData.isSoR) delete draftData.assignedRoomName;
-
+    if (!draftData.isSoR) {
+      draftData.isPrimary = true;
+      delete draftData.assignedRoomName;
+    }
     draftData.id = uuidv4();
     draftData.isActive = true;
     draftData.propertyId = property.id;
-    draftData.createdBy = currentUserId;
+    draftData.propertyName = property.name;
+    draftData.createdBy = user?.uid;
     draftData.createdOn = dayjs().toISOString();
-    draftData.updatedBy = currentUserId;
+    draftData.updatedBy = user?.uid;
     draftData.updatedOn = dayjs().toISOString();
 
     associateTenant({ draftData, property });
   };
 
   const isSoR = watch("isSoR");
+  const isPrimaryTenant = watch("isPrimary");
   const isAutoRenewPolicySet = watch("isAutoRenewPolicySet");
 
   useEffect(() => {
     if (property) {
-      setValue("rent", property?.rent || "");
+      setValue("rent", property?.rent || 0);
     }
   }, [property]);
 
   useEffect(() => {
-    if (associateTenantSuccess) {
+    if (associateTenantResult.isSuccess) {
       setShowSnackbar(true);
+
+      const emailMsgWithDisclaimer = appendDisclaimer(
+        emailMessageBuilder(
+          AddNotificationEnumType,
+          associateTenantResult.originalArgs.property?.name,
+        ),
+        user?.email,
+      );
+
+      formatAndSendNotification({
+        to: associateTenantResult.originalArgs.draftData.email,
+        subject: `${AddTenantNotificationEnumValue} - ${associateTenantResult.originalArgs.property?.name}`,
+        body: emailMsgWithDisclaimer,
+        ccEmailIds: [user?.email],
+        sendEmail,
+      });
+
       reset();
       closeDialog();
+      refetchGetProperty();
     }
-  }, [associateTenantLoading]);
+  }, [associateTenantResult.isLoading]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -127,7 +159,7 @@ export default function AssociateTenantPopup({
         {/* Lease Start Date */}
         <Box sx={{ flex: 1 }}>
           <Controller
-            name="start_date"
+            name="startDate"
             control={control}
             defaultValue={null}
             rules={{ required: "Start date is required" }}
@@ -181,7 +213,7 @@ export default function AssociateTenantPopup({
                 <MenuItem value="" disabled>
                   <em>Select Lease Term</em>
                 </MenuItem>
-                {LEASE_TERM_MENU_OPTIONS.map((option) => (
+                {DefaultLeaseTermOptions.map((option) => (
                   <MenuItem key={option.id} value={option?.value}>
                     {option?.label}
                   </MenuItem>
@@ -206,10 +238,10 @@ export default function AssociateTenantPopup({
                 <Typography variant="subtitle2">Standard Tax rate *</Typography>
               </Stack>
             }
-            id="tax_rate"
+            id="taxRate"
             placeholder="Standard tax rate. Eg, 1"
-            errorMsg={errors.tax_rate?.message}
-            inputProps={register("tax_rate", {
+            errorMsg={errors.taxRate?.message}
+            inputProps={register("taxRate", {
               required: "Tax rate is required.",
               pattern: {
                 value: /^\d+(\.\d{1,2})?$/,
@@ -248,7 +280,18 @@ export default function AssociateTenantPopup({
         {/* Initial Late Fee and Daily Late Fee */}
         <Stack direction={{ xs: "column", md: "row" }} spacing={2}>
           <TextFieldWithLabel
-            label="Initial Late Fee *"
+            label={
+              <Stack direction="row" alignItems="center">
+                <Tooltip title="Initial Late fee is the late fee applied the first day after the grace period is over. Eg, an initial late fee would be eg, $75.00">
+                  <InfoRounded
+                    color="secondary"
+                    fontSize="small"
+                    sx={{ fontSize: "0.875rem", margin: "0.2rem" }}
+                  />
+                </Tooltip>
+                <Typography variant="subtitle2">Initial Late fee *</Typography>
+              </Stack>
+            }
             id="initialLateFee"
             placeholder="Initial Late fee. Eg, 75.00"
             errorMsg={errors.initialLateFee?.message}
@@ -297,7 +340,20 @@ export default function AssociateTenantPopup({
         {/* Initial animal voilation fee and daily animal voilation fee */}
         <Stack direction={{ xs: "column", md: "row" }} spacing={2}>
           <TextFieldWithLabel
-            label="Initial Animal Voilation Fee *"
+            label={
+              <Stack direction="row" alignItems="center">
+                <Tooltip title="Initial Animal Voilation Fee is the voilation fee applied the first day after the voilation was noted. Eg, an initial animal voilation fee would be eg, $300.00">
+                  <InfoRounded
+                    color="secondary"
+                    fontSize="small"
+                    sx={{ fontSize: "0.875rem", margin: "0.2rem" }}
+                  />
+                </Tooltip>
+                <Typography variant="subtitle2">
+                  Initial Animal Voilation Fee *
+                </Typography>
+              </Stack>
+            }
             id="initialAnimalVoilationFee"
             placeholder="Initial Animal Voilation fee. Eg, 300.00"
             errorMsg={errors.initialAnimalVoilationFee?.message}
@@ -390,11 +446,11 @@ export default function AssociateTenantPopup({
                 <Typography variant="subtitle2"> Grace period *</Typography>
               </Stack>
             }
-            id="grace_period"
+            id="gracePeriod"
             placeholder="The days before the late fee is calculated"
-            errorMsg={errors.grace_period?.message}
+            errorMsg={errors.gracePeriod?.message}
             inputProps={{
-              ...register("grace_period", {
+              ...register("gracePeriod", {
                 required:
                   "Grace period is required and must be in number format.",
                 pattern: {
@@ -428,6 +484,7 @@ export default function AssociateTenantPopup({
                 control={<Checkbox {...field} checked={field.value} />}
                 label={
                   <Stack direction="row" spacing={1} alignItems="center">
+                    <AutorenewOutlined />
                     <Typography variant="subtitle2">
                       {`Setup auto renewal for ${property?.name}`}
                     </Typography>
@@ -485,7 +542,7 @@ export default function AssociateTenantPopup({
                   <Checkbox
                     {...field}
                     checked={field.value}
-                    disabled={tenants?.some((t) => t.isPrimary)}
+                    disabled={tenants.some((t) => t.isPrimary)}
                   />
                 }
                 label="Primary point of contact (PoC)"
@@ -712,14 +769,13 @@ export default function AssociateTenantPopup({
           />
         </Stack>
 
-        <Button
+        <AButton
+          label="Associate"
           startIcon={<UpdateRounded fontSize="small" />}
           variant="outlined"
           type="submit"
-          disabled={!isValid}
-        >
-          Update
-        </Button>
+          disabled={!isValid || (!isSoR && !isPrimaryTenant)}
+        />
 
         <CustomSnackbar
           showSnackbar={showSnackbar}

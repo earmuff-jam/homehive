@@ -3,7 +3,7 @@ import React, { forwardRef } from "react";
 import { useLocation } from "react-router-dom";
 
 import { IconButton } from "@mui/material";
-import { isBannerVisible } from "common/utils";
+import { isBasePlanUser } from "common/utils";
 import { useButtonAnalytics } from "hooks/useButtonAnalytics";
 
 const analyticsEnabled = import.meta.env.VITE_ENABLE_ANALYTICS || "false";
@@ -27,7 +27,7 @@ const AIconButton = forwardRef(function AIconButton(
   ref,
 ) {
   const location = useLocation();
-  const starterPlanUser = isBannerVisible(location.pathname);
+  const starterPlanUser = isBasePlanUser(location.pathname);
 
   const buttonAnalytics = useButtonAnalytics();
 

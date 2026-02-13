@@ -140,7 +140,11 @@ export default function MenuOptions({
           sx={{ gap: "0.5rem" }}
         >
           <ListItemIcon>
-            {isLightTheme ? <LightModeRounded /> : <DarkModeRounded />}
+            {isLightTheme ? (
+              <LightModeRounded fontSize="small" />
+            ) : (
+              <DarkModeRounded fontSize="small" />
+            )}
           </ListItemIcon>
           <ListItemText
             primary="Change Theme"
@@ -162,7 +166,7 @@ export default function MenuOptions({
             sx={{ gap: "0.5rem" }}
           >
             <ListItemIcon>
-              <HelpOutlineRounded />
+              <HelpOutlineRounded fontSize="small" />
             </ListItemIcon>
             <ListItemText
               primary="Help and Support"

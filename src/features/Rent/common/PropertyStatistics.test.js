@@ -4,9 +4,18 @@ import PropertyStatistics from "./PropertyStatistics";
 import { render, screen } from "@testing-library/react";
 
 jest.mock("features/Rent/utils", () => ({
-  derieveTotalRent: jest.fn(() => 2500),
   formatCurrency: jest.fn((v) => `$${v}`),
   getOccupancyRate: jest.fn(() => 75),
+}));
+
+jest.mock("features/Rent/hooks/useGetSelectedPropertyDetails", () => ({
+  __esModule: true,
+  useSelectedPropertyDetails: jest.fn(() => ({
+    totalRent: "2500",
+    getOccupancyRate: 75,
+    nextPaymentDueDate: "Feb 01, 2024",
+    isSelectedPropertySoR: false,
+  })),
 }));
 
 const mockProperty = {
@@ -53,7 +62,7 @@ describe("PropertyStatistics Jest tests", () => {
 
       expect(screen.getByText("4")).toBeInTheDocument();
       expect(screen.getByText("Total Units")).toBeInTheDocument();
-      expect(screen.getByText("Occupied Units")).toBeInTheDocument();
+      expect(screen.getByText("Unit(s) occupied")).toBeInTheDocument();
       expect(screen.getByText("75%")).toBeInTheDocument();
       expect(screen.getByText("$2500")).toBeInTheDocument();
       expect(screen.getByText("Monthly Revenue")).toBeInTheDocument();
@@ -70,7 +79,7 @@ describe("PropertyStatistics Jest tests", () => {
       );
 
       expect(screen.getByText("Total Bedrooms")).toBeInTheDocument();
-      expect(screen.getByText("Occupied Home")).toBeInTheDocument();
+      expect(screen.getByText("Home Occupied")).toBeInTheDocument();
     });
   });
 });

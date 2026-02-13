@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Container, Stack, Typography } from "@mui/material";
+import { Box, Container, Stack, Typography } from "@mui/material";
 import AButton from "common/AButton";
 import TextFieldWithLabel from "common/TextFieldWithLabel";
 
@@ -12,6 +12,7 @@ export default function UserInfoViewer({
   isDisabled,
   onSubmit,
   loading,
+  handleReset,
 }) {
   return (
     <Container
@@ -24,22 +25,27 @@ export default function UserInfoViewer({
       }}
     >
       <Stack spacing={2}>
-        <Stack>
-          <Typography variant="h5" fontWeight="bold">
-            {title}
-          </Typography>
-          <Typography variant="subtitle2">{caption}</Typography>
+        <Stack direction="row" justifyContent="space-between">
+          <Stack>
+            <Typography variant="h5" fontWeight="bold">
+              {title}
+            </Typography>
+            <Typography variant="subtitle2">{caption}</Typography>
+          </Stack>
+          <Box>
+            <AButton label="Reset" variant="outlined" onClick={handleReset} />
+          </Box>
         </Stack>
 
         {/* First and Last Name */}
         <Stack direction="row" spacing={2}>
           <TextFieldWithLabel
             label="First Name *"
-            id="first_name"
+            id="firstName"
             placeholder="First Name"
-            errorMsg={errors.first_name?.message}
+            errorMsg={errors.firstName?.message}
             inputProps={{
-              ...register("first_name", {
+              ...register("firstName", {
                 required: "First Name is required",
                 minLength: {
                   value: 3,
@@ -54,11 +60,11 @@ export default function UserInfoViewer({
           />
           <TextFieldWithLabel
             label="Last Name *"
-            id="last_name"
+            id="lastName"
             placeholder="Last Name"
-            errorMsg={errors.last_name?.message}
+            errorMsg={errors.lastName?.message}
             inputProps={{
-              ...register("last_name", {
+              ...register("lastName", {
                 required: "Last Name is required",
                 minLength: {
                   value: 3,
@@ -77,11 +83,11 @@ export default function UserInfoViewer({
         <Stack direction="row" spacing={2}>
           <TextFieldWithLabel
             label="Email address *"
-            id="email_address"
+            id="email"
             placeholder="Email Address"
-            errorMsg={errors.email_address?.message}
+            errorMsg={errors.email?.message}
             inputProps={{
-              ...register("email_address", {
+              ...register("email", {
                 required: "Email Address is required",
                 pattern: {
                   value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
@@ -92,11 +98,11 @@ export default function UserInfoViewer({
           />
           <TextFieldWithLabel
             label="Phone Number *"
-            id="phone_number"
+            id="phone"
             placeholder="Phone Number"
-            errorMsg={errors.phone_number?.message}
+            errorMsg={errors.phone?.message}
             inputProps={{
-              ...register("phone_number", {
+              ...register("phone", {
                 required: "Phone number is required",
                 pattern: {
                   value: /^\+?[\d\s\-().]{10,15}$/,
@@ -110,11 +116,11 @@ export default function UserInfoViewer({
         {/* Street Address */}
         <TextFieldWithLabel
           label="Street Address *"
-          id="street_address"
+          id="streetAddress"
           placeholder="Street Address"
-          errorMsg={errors.street_address?.message}
+          errorMsg={errors.streetAddress?.message}
           inputProps={{
-            ...register("street_address", {
+            ...register("streetAddress", {
               required: "Street address is required",
             }),
           }}

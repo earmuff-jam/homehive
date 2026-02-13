@@ -123,7 +123,7 @@ export default function ReportTable({
                     <Typography
                       color="error.light"
                       variant="caption"
-                      className={!showWatermark && "no-print"} // print only when allowed
+                      className={!showWatermark ? "no-print" : ""} // print only when allowed
                       sx={{
                         textTransform: "uppercase",
                         fontSize: "2rem",

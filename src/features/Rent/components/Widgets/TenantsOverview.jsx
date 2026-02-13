@@ -15,18 +15,19 @@ import {
 import AButton from "common/AButton";
 import AIconButton from "common/AIconButton";
 import EmptyComponent from "common/EmptyComponent";
-import RowHeader from "common/RowHeader/RowHeader";
+import RowHeader from "common/RowHeader";
 import Tenants from "features/Rent/components/Widgets/Tenants";
 
 export default function TenantsOverview({
   property,
   tenants = [],
   isTenantsLoading,
+  refetchGetProperty,
   toggleAssociateTenantsPopup,
   dataTour,
 }) {
   const theme = useTheme();
-  const medFormFactor = useMediaQuery(theme.breakpoints.down("md"));
+  const ltMedFormFactor = useMediaQuery(theme.breakpoints.down("md"));
   return (
     <Card sx={{ mb: 3 }} data-tour={dataTour}>
       <CardContent>
@@ -47,7 +48,7 @@ export default function TenantsOverview({
             <Tooltip title="Associate tenants">
               <Badge badgeContent={tenants.length} color="error">
                 <Box>
-                  {medFormFactor ? (
+                  {ltMedFormFactor ? (
                     <AIconButton
                       size="small"
                       variant="outlined"
@@ -72,7 +73,11 @@ export default function TenantsOverview({
         ) : tenants.length === 0 ? (
           <EmptyComponent caption="Associate tenants to begin." />
         ) : (
-          <Tenants tenants={tenants || []} property={property} />
+          <Tenants
+            tenants={tenants || []}
+            property={property}
+            refetchGetProperty={refetchGetProperty}
+          />
         )}
       </CardContent>
     </Card>

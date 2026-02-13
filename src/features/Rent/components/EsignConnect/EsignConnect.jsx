@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
 
-import { v4 as uuidv4 } from "uuid";
-
 import dayjs from "dayjs";
 
 import {
@@ -10,8 +8,8 @@ import {
   SupportAgentRounded,
 } from "@mui/icons-material";
 import { Grid2, Skeleton } from "@mui/material";
-import CustomSnackbar from "common/CustomSnackbar/CustomSnackbar";
-import { useCreateWorkspaceMutation } from "features/Api/externalIntegrationsApi";
+import CustomSnackbar from "common/CustomSnackbar";
+import { fetchLoggedInUser } from "common/utils";
 import {
   useGetUserDataByIdQuery,
   useUpdateUserByUidMutation,
@@ -19,7 +17,6 @@ import {
 import RecentDocuments from "features/Rent/components/EsignConnect/RecentDocuments";
 import StatusCard from "features/Rent/components/EsignConnect/StatusCard";
 import HelpAndSupport from "features/Rent/components/ExternalIntegrations/HelpAndSupport";
-import { fetchLoggedInUser } from "features/Rent/utils";
 
 const EsignConnectOptions = [
   {
@@ -30,7 +27,7 @@ const EsignConnectOptions = [
       <HelpOutlineRounded sx={{ fontSize: 32, color: "primary.main", mb: 1 }} />
     ),
     buttonText: "How it works",
-    to: "https://firma.dev/insights",
+    to: "https://goodsign.io/blog/How-GoodSign-Simplifies-Your-Workflow",
   },
   {
     id: 2,
@@ -41,8 +38,8 @@ const EsignConnectOptions = [
         sx={{ fontSize: 32, color: "primary.main", mb: 1 }}
       />
     ),
-    buttonText: "Contact us",
-    to: "https://firma.dev/contact",
+    buttonText: "Contact us via Esign chart support",
+    to: "https://crisp.chat/en/",
   },
   {
     id: 3,
@@ -52,7 +49,7 @@ const EsignConnectOptions = [
       <SecurityRounded sx={{ fontSize: 32, color: "primary.main", mb: 1 }} />
     ),
     buttonText: "View Compliance",
-    to: "https://firma.dev/insights/how-to-keep-your-e-signatures-secure-without-adding-complexity",
+    to: "https://goodsign.io/security",
   },
 ];
 
@@ -64,20 +61,7 @@ export default function EsignConnect() {
       skip: !user?.uid,
     });
 
-  const [
-    updateUser,
-    { isLoading: isUpdateUserLoading, isSuccess: isUpdateUserSuccess },
-  ] = useUpdateUserByUidMutation();
-
-  const [
-    createWorkspace,
-    {
-      originalArgs,
-      isLoading: isCreateWorkspaceLoading,
-      isSuccess: isCreateWorkspaceSuccess,
-      data: createWorkspaceRespData,
-    },
-  ] = useCreateWorkspaceMutation();
+  const [updateUser, updateUserResult] = useUpdateUserByUidMutation();
 
   const [showSnackbar, setShowSnackbar] = useState(false);
 
@@ -92,19 +76,6 @@ export default function EsignConnect() {
     });
   };
 
-  // fetch unique workspaceID only if none exists
-  const connectEsign = () => {
-    if (!userData?.esignAccountWorkspaceId) {
-      createWorkspace({ workspaceId: uuidv4() });
-    } else {
-      updateUsr({
-        esignAccountIsActive: true,
-        updatedOn: dayjs().toISOString(),
-        updatedBy: user?.uid,
-      });
-    }
-  };
-
   const disconnectEsign = () =>
     updateUsr({
       esignAccountIsActive: false,
@@ -113,23 +84,10 @@ export default function EsignConnect() {
     });
 
   useEffect(() => {
-    if (isUpdateUserSuccess) {
+    if (updateUserResult.isSuccess) {
       setShowSnackbar(true);
     }
-  }, [isUpdateUserLoading]);
-
-  useEffect(() => {
-    if (isCreateWorkspaceSuccess) {
-      updateUsr({
-        esignAccountIsActive: true,
-        esignAccountWorkspaceId: originalArgs.workspaceId,
-        esignAccountWorkspaceName: createWorkspaceRespData?.name,
-        esignAccountWorkspaceCreatedAt: createWorkspaceRespData?.createdAt,
-        updatedBy: user?.uid,
-        updatedOn: dayjs().toISOString(),
-      });
-    }
-  }, [isCreateWorkspaceLoading]);
+  }, [updateUserResult.isLoading]);
 
   if (isUserDataFromDbLoading) return <Skeleton height="10rem" width="100%" />;
 
@@ -137,9 +95,7 @@ export default function EsignConnect() {
     <Grid2 container spacing={2}>
       <Grid2 size={12}>
         <StatusCard
-          connectEsign={connectEsign}
-          isUpdateUserLoading={isUpdateUserLoading}
-          handleClick={isEsignConnected ? disconnectEsign : connectEsign}
+          disconnectEsign={disconnectEsign}
           isEsignConnected={isEsignConnected}
           esignAccountWorkspaceId={userData?.esignAccountWorkspaceId}
         />

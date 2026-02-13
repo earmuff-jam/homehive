@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Stack, TextField, Tooltip, Typography } from "@mui/material";
+import { Box, Stack, TextField, Tooltip } from "@mui/material";
 
 const TextFieldWithLabel = React.forwardRef(
   (
@@ -18,6 +18,7 @@ const TextFieldWithLabel = React.forwardRef(
       labelIconHelper = "",
       inputProps = {},
       value,
+      variant = "body2",
       onChange,
       onBlur,
     },
@@ -26,13 +27,14 @@ const TextFieldWithLabel = React.forwardRef(
     return (
       <Stack spacing={0.5} width="100%" data-tour={dataTour}>
         <Stack direction="row" spacing={1}>
-          <Typography
-            variant="body2"
+          <Box
+            component="span"
+            variant={variant}
             color={isDisabled ? "textSecondary" : "textPrimary"}
             fontWeight="medium"
           >
             {label}
-          </Typography>
+          </Box>
           {labelIcon && <Tooltip title={labelIconHelper}>{labelIcon}</Tooltip>}
         </Stack>
         <TextField

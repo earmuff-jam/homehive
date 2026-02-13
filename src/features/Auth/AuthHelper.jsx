@@ -3,23 +3,17 @@ import dayjs from "dayjs";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { authenticatorApp } from "src/config";
 
-/**
- * Role ...
- *
- * web roles and permissions
- */
+// Role ...
+// defines a function that returns valid roles
 export const Role = {
   User: "USER",
   Admin: "ADMIN",
+  Owner: "OWNER",
   Tenant: "TENANT",
 };
 
-/**
- * authenticateViaGoogle...
- *
- * function used to login to google.
- * @returns {Object} userDetails
- */
+// authenticateViaGoogle ...
+// defines a function that authenticates users
 export const authenticateViaGoogle = async () => {
   const provider = new GoogleAuthProvider();
   const result = await signInWithPopup(authenticatorApp, provider);

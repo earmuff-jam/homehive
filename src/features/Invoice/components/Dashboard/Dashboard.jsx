@@ -10,7 +10,6 @@ import {
 import {
   Alert,
   Box,
-  Button,
   IconButton,
   Popover,
   Stack,
@@ -19,8 +18,9 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import CustomSnackbar from "common/CustomSnackbar/CustomSnackbar";
-import RowHeader from "common/RowHeader/RowHeader";
+import AButton from "common/AButton";
+import CustomSnackbar from "common/CustomSnackbar";
+import RowHeader from "common/RowHeader";
 import { pluralize } from "common/utils";
 import AddWidget from "features/Invoice/components/AddWidget/AddWidget";
 import DndGridLayout from "features/Invoice/components/DndGridLayout/DndGridLayout";
@@ -54,7 +54,6 @@ export default function Dashboard() {
         { ...selectedWidget, widgetID: uuidv4() },
       ];
       localStorage.setItem("widgets", JSON.stringify(updatedWidgets));
-
       return updatedWidgets;
     });
 
@@ -136,14 +135,13 @@ export default function Dashboard() {
               <AddRounded fontSize="small" color="primary" />
             </IconButton>
           </Tooltip>
-          <Button
+          <AButton
             data-tour={"dashboard-2"}
             variant="outlined"
-            endIcon={<RestartAltRounded />}
+            endIcon={<RestartAltRounded fontSize="small" />}
             onClick={reset}
-          >
-            Reset
-          </Button>
+            label="Reset"
+          />
         </Stack>
       </Stack>
 

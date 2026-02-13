@@ -6,9 +6,11 @@ import dayjs from "dayjs";
 
 import { Container, Stack, Typography } from "@mui/material";
 import EmptyComponent from "common/EmptyComponent";
-import RowHeader from "common/RowHeader/RowHeader";
+import RowHeader from "common/RowHeader";
+import { EditInvoiceRouteUri } from "common/utils";
 import ReportTable from "features/Invoice/components/PdfViewer/ReportTable";
 import Salutation from "features/Invoice/components/UserInfo/Salutation";
+import { DefaultInvoiceStatusIcons } from "features/Invoice/constants";
 import { useAppTitle } from "hooks/useAppTitle";
 
 export default function PdfViewer() {
@@ -19,14 +21,18 @@ export default function PdfViewer() {
 
   const senderInfo = JSON.parse(localStorage.getItem("senderInfo"));
   const recieverInfo = JSON.parse(localStorage.getItem("recieverInfo"));
-  const invoice_form = JSON.parse(localStorage.getItem("pdfDetails"));
-  const invoiceStatus = JSON.parse(localStorage.getItem("invoiceStatus"));
+  const pdfDetails = JSON.parse(localStorage.getItem("pdfDetails"));
 
-  const handleNavigate = () => navigate("/invoice/edit");
+  const invoiceStatusWithIcon = {
+    ...pdfDetails?.invoiceStatus,
+    icon: DefaultInvoiceStatusIcons[pdfDetails?.invoiceStatus?.label],
+  };
+
+  const handleNavigate = () => navigate(EditInvoiceRouteUri);
 
   return (
     <Container maxWidth="md" data-tour="view-pdf-0">
-      {!invoice_form ? (
+      {!pdfDetails ? (
         <EmptyComponent
           title="Sorry, no invoice found to display"
           caption="Create new invoice from"
@@ -45,10 +51,10 @@ export default function PdfViewer() {
         <Stack spacing={"2rem"}>
           {recieverInfo ? <Salutation userInfo={recieverInfo} /> : null}
           <RowHeader
-            title={invoice_form.title}
-            caption={invoice_form.caption}
+            title={pdfDetails.title}
+            caption={pdfDetails.caption}
             showDate={true}
-            createdDate={dayjs(invoice_form?.updatedOn?.fromNow).format(
+            createdDate={dayjs(pdfDetails?.updatedOn?.fromNow).format(
               "DD-MM-YYYY",
             )}
           />
@@ -57,24 +63,24 @@ export default function PdfViewer() {
             color="text.secondary"
             sx={{ fontStyle: "italic" }}
           >
-            {`Period ${dayjs(invoice_form.start_date)?.format(
+            {`Period ${dayjs(pdfDetails.startDate)?.format(
               "MM-DD-YYYY",
-            )} to ${dayjs(invoice_form.end_date)?.format("MM-DD-YYYY")}`}
+            )} to ${dayjs(pdfDetails.endDate)?.format("MM-DD-YYYY")}`}
           </Typography>
           <ReportTable
-            rows={invoice_form.lineItems || []}
-            taxRate={invoice_form.tax_rate}
-            invoiceTitle={invoice_form.invoice_header}
-            invoiceStatus={invoiceStatus}
+            rows={pdfDetails?.lineItems}
+            taxRate={pdfDetails?.taxRate}
+            invoiceTitle={pdfDetails?.invoiceHeader}
+            invoiceStatus={invoiceStatusWithIcon}
             showWatermark={showWatermark}
           />
-          {invoice_form?.note.length > 0 && (
+          {pdfDetails?.note.length > 0 && (
             <Typography
               variant="caption"
               fontStyle="italic"
               fontWeight="medium"
             >
-              Note: {invoice_form?.note}
+              Note: {pdfDetails?.note}
             </Typography>
           )}
           {senderInfo ? (

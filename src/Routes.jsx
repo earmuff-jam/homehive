@@ -22,11 +22,7 @@ const ReleaseNotes = lazy(
   () => import("features/Layout/components/HelpAndSupport/ReleaseNotes"),
 );
 
-/**
- * MainAppRoutes ...
- *
- * root routes for the app
- */
+// MainAppRoutes ...
 export const MainAppRoutes = [
   {
     id: 1,

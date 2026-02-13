@@ -8,8 +8,9 @@ exports[`TextFieldWithLabel Jest Tests TextFieldWithLabel snapshot tests should 
     <div
       class="MuiStack-root css-niqf4j-MuiStack-root"
     >
-      <p
-        class="MuiTypography-root MuiTypography-body2 css-hol6i2-MuiTypography-root"
+      <span
+        class="MuiBox-root css-1ta4aep"
+        variant="body2"
       />
     </div>
     <div

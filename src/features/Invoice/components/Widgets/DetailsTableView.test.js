@@ -1,9 +1,9 @@
 import React from "react";
-import { render, screen } from "@testing-library/react";
-import DetailsTableView from "./DetailsTableView";
 
-// Mock common components and libraries
-jest.mock("common/RowHeader/RowHeader", () => ({
+import DetailsTableView from "./DetailsTableView";
+import { render, screen } from "@testing-library/react";
+
+jest.mock("common/RowHeader", () => ({
   __esModule: true,
   default: ({ title, caption }) => (
     <div data-testid="row-header">
@@ -37,7 +37,7 @@ describe("DetailsTableView component", () => {
 
   it("renders correctly and matches snapshot", () => {
     const { asFragment } = render(
-      <DetailsTableView label="Invoice Details" caption="Summary view" />
+      <DetailsTableView label="Invoice Details" caption="Summary view" />,
     );
     expect(asFragment()).toMatchSnapshot();
   });

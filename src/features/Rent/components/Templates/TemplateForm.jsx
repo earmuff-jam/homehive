@@ -53,21 +53,23 @@ export default function TemplateForm({ template, handleSave }) {
         />
 
         <Tooltip title="Customize this template with text of your choice. You can even directly use html markup in the above template. Use the variables listed on the side to bring your templates to life.">
-          <TextFieldWithLabel
-            label="Message HTML *"
-            id="html"
-            fullWidth
-            multiline
-            maxRows={15}
-            size="small"
-            placeholder="The message to submit in HTML format"
-            errorMsg={errors.html?.message}
-            inputProps={{
-              ...register("html", {
-                required: "Message HTML is required",
-              }),
-            }}
-          />
+          <span>
+            <TextFieldWithLabel
+              label="Message HTML *"
+              id="html"
+              fullWidth
+              multiline
+              maxRows={15}
+              size="small"
+              placeholder="The message to submit in HTML format"
+              errorMsg={errors.html?.message}
+              inputProps={{
+                ...register("html", {
+                  required: "Message HTML is required",
+                }),
+              }}
+            />
+          </span>
         </Tooltip>
         <AButton
           type="submit"
