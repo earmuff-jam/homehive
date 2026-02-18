@@ -174,7 +174,7 @@ export default function QuickActions({ property }) {
         <Stack spacing={1}>
           <Tooltip
             title={
-              property?.rentees.length > 0
+              property?.rentees?.length > 0
                 ? "Editing a property is disabled when tenants are present"
                 : ""
             }
@@ -183,7 +183,7 @@ export default function QuickActions({ property }) {
               <AButton
                 variant="outlined"
                 fullWidth
-                disabled={property?.rentees.length > 0}
+                disabled={property?.rentees?.length > 0}
                 onClick={() =>
                   setDialog({
                     title: "Edit property",
