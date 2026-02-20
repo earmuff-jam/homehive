@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 
 import {
-  Box,
   Dialog,
   DialogActions,
   DialogContent,
@@ -148,13 +147,7 @@ const Property = () => {
         maxWidth="lg"
         aria-describedby="alert-dialog-slide-description"
       >
-        <DialogTitle
-          sx={{
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "space-between",
-          }}
-        >
+        <DialogTitle>
           <RowHeader
             title="Associate Tenants"
             caption={`Associate tenant for ${property?.name}`}
@@ -164,9 +157,6 @@ const Property = () => {
               color: "text.secondary",
             }}
           />
-          <Box>
-            <AButton label="Associate" variant="outlined" />
-          </Box>
         </DialogTitle>
         <DialogContent>
           <AssociateTenantPopup

@@ -25,7 +25,6 @@ import {
   appendDisclaimer,
   emailMessageBuilder,
   formatAndSendNotification,
-  formatCurrency,
 } from "features/Rent/utils";
 
 export default function AddRentRecords({
@@ -72,18 +71,13 @@ export default function AddRentRecords({
   } = useForm({ mode: "onChange" });
 
   const onSubmit = (data) => {
-    const draftRentAmount = formatCurrency(Number(property?.rent));
-    const draftAdditionalCharges = formatCurrency(
-      Number(property?.additionalRent),
-    );
     const draftData = {
       id: uuidv4(),
-      rentAmount: Math.round(draftRentAmount * 100),
-      additionalCharges: Math.round(draftAdditionalCharges * 100),
       tenantEmail: primaryTenant?.email,
       propertyId: property?.id,
       propertyOwnerId: property?.createdBy,
       tenantId: primaryTenant?.id,
+      rentAmount: data?.rentAmount,
       rentMonth: dayjs(data?.rentMonth).format("MMMM"),
       note: data?.note,
       ...(propertyOwnerData?.stripeOwnerAccountId && {

@@ -61,7 +61,9 @@ exports[`PropertyOwnerInfoCard Jest Tests PropertyOwnerInfoCard Snapshot tests r
               </span>
               <span
                 class="MuiTypography-root MuiTypography-caption css-1le9of1-MuiTypography-root"
-              />
+              >
+                owner@test.com
+              </span>
             </div>
           </div>
         </div>

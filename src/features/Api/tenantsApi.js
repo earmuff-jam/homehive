@@ -216,7 +216,7 @@ export const tenantsApi = createApi({
           await setDoc(inviteRef, {
             role: Role.Tenant,
             propertyId: property.id,
-            googleEmailAddress: draftData.email.toLowerCase(),
+            email: draftData.email.toLowerCase(),
             createdBy: draftData.createdBy,
             createdOn: draftData.createdOn,
             updatedBy: draftData.updatedBy,

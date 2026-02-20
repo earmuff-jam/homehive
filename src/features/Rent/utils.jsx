@@ -309,7 +309,7 @@ export const sanitizeEsignFieldsForNewLease = (
       propertyOwnerData?.lastName,
       propertyOwnerData?.googleDisplayName,
     );
-    draft.ownerEmail = property?.email;
+    draft.ownerEmail = property?.ownerEmail;
     draft.tenant = validateFullName(
       tenantData?.firstName,
       tenantData?.lastName,
