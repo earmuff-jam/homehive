@@ -27,6 +27,7 @@ import {
 } from "common/utils";
 import { InvoiceAppRoutes } from "features/Invoice/Routes";
 import NavigationGroup from "features/Layout/components/NavBar/NavigationGroup";
+import { buildValidRoutes } from "features/Layout/utils";
 import { RentalAppRoutes } from "features/Rent/Routes";
 import { MainAppRoutes } from "src/Routes";
 
@@ -49,27 +50,6 @@ export default function NavBar({
     setTimeout(() => {
       navigate(to);
     }, 200);
-  };
-
-  const getValidRoutes = (routes = [], roleType = "") => {
-    const validRouteFlags = authorizedServerLevelFeatureFlags();
-    const filteredNavigationRoutes = filterAuthorizedRoutesForNavBar(routes);
-
-    return filteredNavigationRoutes.filter(({ requiredFlags, config }) => {
-      const isRouteValid = isValidFeatureFlagsForRoutes(
-        validRouteFlags,
-        requiredFlags,
-      );
-      if (!isRouteValid) return false;
-
-      const validRoles = config?.enabledForRoles || [];
-      if (validRoles.length > 0 && !validRoles.includes(roleType)) return false;
-
-      const requiresLogin = Boolean(config?.isLoggedInFeature);
-      if (requiresLogin && !user?.uid) return false;
-
-      return true;
-    });
   };
 
   return (
@@ -141,9 +121,9 @@ export default function NavBar({
 
               let childRoutes = [];
               if (path.startsWith(MainInvoiceAppRouteUri)) {
-                childRoutes = getValidRoutes(InvoiceAppRoutes, user?.role);
+                childRoutes = buildValidRoutes(InvoiceAppRoutes, user);
               } else if (path.startsWith(MainRentAppRouteUri)) {
-                childRoutes = getValidRoutes(RentalAppRoutes, user?.role);
+                childRoutes = buildValidRoutes(RentalAppRoutes, user);
               }
 
               if (childRoutes.length > 0) {

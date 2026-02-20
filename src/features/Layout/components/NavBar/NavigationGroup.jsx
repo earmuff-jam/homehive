@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 
+import { matchPath } from "react-router-dom";
+
 import { ExpandLess, ExpandMore } from "@mui/icons-material";
 import {
   Collapse,
@@ -8,6 +10,7 @@ import {
   ListItemIcon,
   ListItemText,
 } from "@mui/material";
+import { PropertiesRouteUri, PropertyRouteUri } from "common/utils";
 
 const NavigationGroup = ({
   label,
@@ -21,11 +24,16 @@ const NavigationGroup = ({
 
   const handleToggle = () => setOpen((prev) => !prev);
 
+  const isPropertyRoute = !!matchPath(
+    { path: PropertyRouteUri, end: false },
+    pathname,
+  );
+
   useEffect(() => {
-    // adding this to allow fade transition
-    // the nav bar can open slightly
     const shouldOpen = childrenRoutes?.some(
-      (routes) => routes.routeUri === pathname,
+      (routes) =>
+        routes.routeUri === pathname ||
+        (isPropertyRoute && routes.routeUri === PropertiesRouteUri),
     );
     setOpen(shouldOpen);
   }, [childrenRoutes]);
@@ -38,12 +46,15 @@ const NavigationGroup = ({
         {open ? <ExpandLess /> : <ExpandMore />}
       </ListItemButton>
       <Collapse in={open} timeout="auto" unmountOnExit>
-        <List component="div" disablePadding sx={{ pl: 4 }}>
+        <List component="div" disablePadding sx={{ paddingLeft: 4 }}>
           {childrenRoutes.map(({ id, routeUri, label, icon }) => {
             return (
               <ListItemButton
                 key={id}
-                selected={pathname === routeUri}
+                selected={
+                  pathname === routeUri ||
+                  (isPropertyRoute && routeUri === PropertiesRouteUri)
+                }
                 onClick={() => navigate(routeUri)}
               >
                 <ListItemIcon
