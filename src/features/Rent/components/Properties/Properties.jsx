@@ -161,6 +161,7 @@ export default function Properties() {
       id: uuidv4(),
       isDeleted: false,
       createdBy: user?.uid,
+      ownerEmail: user?.email, // used for rtk query for rents
       createdOn: dayjs().toISOString(),
       updatedBy: user?.uid,
       updatedOn: dayjs().toISOString(),

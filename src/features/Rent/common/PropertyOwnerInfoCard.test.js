@@ -15,7 +15,7 @@ jest.mock("common/AButton", () => ({
 jest.mock("features/Rent/utils", () => ({
   fetchLoggedInUser: () => ({
     uid: "user-1",
-    googleEmailAddress: "tenant@test.com",
+    email: "tenant@test.com",
   }),
   formatCurrency: (v) => v,
 }));
@@ -26,7 +26,7 @@ jest.mock("features/Api/firebaseUserApi", () => ({
     data: {
       firstName: "John",
       lastName: "Doe",
-      googleEmailAddress: "owner@test.com",
+      email: "owner@test.com",
       stripeAccountIsActive: true,
     },
     isLoading: false,

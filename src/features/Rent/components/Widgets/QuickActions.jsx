@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
 
 import {
+  Alert,
   Box,
   Card,
   CardContent,
@@ -21,6 +22,7 @@ import CustomSnackbar from "common/CustomSnackbar";
 import RowHeader from "common/RowHeader";
 import { SettingsRouteUri, fetchLoggedInUser } from "common/utils";
 import { useUpdatePropertyByIdMutation } from "features/Api/propertiesApi";
+import { useGetRentsByPropertyIdQuery } from "features/Api/rentApi";
 import {
   AddPropertyTextString,
   AddRentRecordsTextString,
@@ -38,6 +40,14 @@ const defaultDialog = {
 export default function QuickActions({ property }) {
   const navigate = useNavigate();
   const user = fetchLoggedInUser();
+
+  const { data: rentList = [] } = useGetRentsByPropertyIdQuery(
+    { propertyId: property?.id, currentUserEmail: user?.email },
+    {
+      skip: !property?.id,
+    },
+  );
+
   const [
     updateProperty,
     { isSuccess: isUpdatePropertySuccess, isLoading: isUpdatePropertyLoading },
@@ -114,6 +124,11 @@ export default function QuickActions({ property }) {
   const isManagerManaged = watch("isManagerManaged");
   const isOwnerCoveredUtilities = watch("isOwnerCoveredUtilities");
 
+  const sevenDaysAgo = dayjs().subtract(7, "day");
+  const hasRecentPaymentAttemptBeenMade = rentList.some((rent) =>
+    dayjs(rent.updatedOn).isAfter(sevenDaysAgo),
+  );
+
   useEffect(() => {
     if (isUpdatePropertySuccess) {
       closeDialog();
@@ -130,7 +145,6 @@ export default function QuickActions({ property }) {
         state: property?.state || "",
         county: property?.county || "",
         zipcode: property?.zipcode || "",
-        ownerEmail: property?.ownerEmail || "",
         units: property?.units || "",
         bathrooms: property?.bathrooms || "",
         rent: property?.rent || "",
@@ -248,13 +262,22 @@ export default function QuickActions({ property }) {
                 </Stack>
               )}
               {dialog.type === AddRentRecordsTextString && (
-                <RowHeader
-                  title="Add rent records"
-                  caption="Editing an existing row is prohibited. Confirm rent validity before submission."
-                  sxProps={{
-                    textAlign: "left",
-                  }}
-                />
+                <Stack>
+                  <RowHeader
+                    title="Add rent records"
+                    caption="Editing an existing row is prohibited. Confirm rent validity before submission."
+                    sxProps={{
+                      textAlign: "left",
+                    }}
+                  />
+                  {hasRecentPaymentAttemptBeenMade ? (
+                    <Alert variant="outlined" severity="warning">
+                      A rent payment was recently attempted. Businesses may take
+                      upto 2-3 days for processing. Creating a new record will
+                      reset the workflow.
+                    </Alert>
+                  ) : null}
+                </Stack>
               )}
             </DialogTitle>
             <DialogContent>

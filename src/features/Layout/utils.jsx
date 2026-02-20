@@ -1,3 +1,7 @@
+import {
+  authorizedServerLevelFeatureFlags,
+  isValidFeatureFlagsForRoutes,
+} from "common/ApplicationConfig";
 import { PropertyRouteUri } from "common/utils";
 
 // retrieveTourKey ...
@@ -61,4 +65,26 @@ export function generateInvoiceHTML(recieverInfo, data, invoiceStatus = "") {
 
     <p><em>Invoice last updated on: ${data.updatedOn}</em></p>
   `;
+}
+
+// buildValidRoutes ...
+// defines a function that is used to build valid routes; ignores navbar validity
+export function buildValidRoutes(routes = [], user) {
+  const validRouteFlags = authorizedServerLevelFeatureFlags();
+
+  return routes.filter(({ requiredFlags, config }) => {
+    const isRouteValid = isValidFeatureFlagsForRoutes(
+      validRouteFlags,
+      requiredFlags,
+    );
+    if (!isRouteValid) return false;
+
+    const validRoles = config?.enabledForRoles || [];
+    if (validRoles.length > 0 && !validRoles.includes(user?.role)) return false;
+
+    const requiresLogin = Boolean(config?.isLoggedInFeature);
+    if (requiresLogin && !user?.uid) return false;
+
+    return true;
+  });
 }

@@ -47,7 +47,7 @@ export const firebaseUserApi = createApi({
         try {
           const q = query(
             collection(db, "users"),
-            where("googleEmailAddress", "==", emailAddress),
+            where("emailAddress", "==", emailAddress),
           );
 
           const querySnapshot = await getDocs(q);
@@ -84,17 +84,13 @@ export const firebaseUserApi = createApi({
           let userWithRole = {
             uid: userDetails?.uid,
             role: refetchUserData?.role,
-            email: userDetails?.googleEmailAddress,
+            email: userDetails?.email,
           };
 
           // if the user has no roles, the user is a generic user
           // generic users can have associated invites.
           if (!Object.values(Role).includes(userWithRole.role)) {
-            const inviteRef = doc(
-              db,
-              "invites",
-              userDetails?.googleEmailAddress,
-            );
+            const inviteRef = doc(db, "invites", userDetails?.email);
             const inviteSnapshot = await getDoc(inviteRef);
 
             if (inviteSnapshot.exists()) {
@@ -102,7 +98,7 @@ export const firebaseUserApi = createApi({
               // Create user from invite
               await setDoc(userRef, {
                 uid: userDetails?.uid,
-                googleEmailAddress: userDetails.googleEmailAddress,
+                email: userDetails.email,
                 googleDisplayName: userDetails.displayName ?? null,
                 googlePhotoURL: userDetails.photoURL ?? null,
                 role: invite.role,
