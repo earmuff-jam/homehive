@@ -43,7 +43,12 @@ const ViewRentalPaymentSummary = ({ rentData = [] }) => {
         accessorKey: "status",
         header: "Payment Method",
         size: 100,
-        Cell: ({ cell }) => cell.getValue() || "-",
+        Cell: ({ cell }) =>
+          (
+            <Typography textTransform="capitalize">
+              {cell.getValue()}
+            </Typography>
+          ) || "-",
       },
       {
         accessorKey: "rentMonth",
