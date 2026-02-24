@@ -1,6 +1,6 @@
-import { Role } from "features/Auth/AuthHelper";
 import { buildChildrenRoutes, retrieveTourKey } from "./utils";
 import { isValidFeatureFlagsForRoutes } from "common/ApplicationConfig";
+import { Role } from "features/Auth/AuthHelper";
 
 jest.mock("common/ApplicationConfig", () => ({
   isValidFeatureFlagsForRoutes: jest.fn(),
