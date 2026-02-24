@@ -27,7 +27,7 @@ import {
 } from "common/utils";
 import { InvoiceAppRoutes } from "features/Invoice/Routes";
 import NavigationGroup from "features/Layout/components/NavBar/NavigationGroup";
-import { buildValidRoutes } from "features/Layout/utils";
+import { buildChildrenRoutes } from "features/Layout/utils";
 import { RentalAppRoutes } from "features/Rent/Routes";
 import { MainAppRoutes } from "src/Routes";
 
@@ -121,9 +121,9 @@ export default function NavBar({
 
               let childRoutes = [];
               if (path.startsWith(MainInvoiceAppRouteUri)) {
-                childRoutes = buildValidRoutes(InvoiceAppRoutes, user);
+                childRoutes = buildChildrenRoutes(InvoiceAppRoutes, user);
               } else if (path.startsWith(MainRentAppRouteUri)) {
-                childRoutes = buildValidRoutes(RentalAppRoutes, user);
+                childRoutes = buildChildrenRoutes(RentalAppRoutes, user);
               }
 
               if (childRoutes.length > 0) {

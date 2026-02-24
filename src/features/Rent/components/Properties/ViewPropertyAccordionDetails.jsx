@@ -157,7 +157,7 @@ const ViewPropertyAccordionDetails = ({
                   fontSize="1.875rem"
                   color="primary"
                 >
-                  ${primaryTenant?.rent}
+                  ${totalRent}
                 </Typography>
                 <Typography variant="subtitle2" color="textSecondary">
                   Total Monthly Rent
