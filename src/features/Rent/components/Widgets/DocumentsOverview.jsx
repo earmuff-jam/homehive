@@ -15,6 +15,7 @@ import {
   useLazyGetUserByEmailAddressQuery,
   useLazyGetUserDataByIdQuery,
 } from "features/Api/firebaseUserApi";
+import { Role } from "features/Auth/AuthHelper";
 import EsignTemplateDetails from "features/Rent/components/EsignConnect/EsignTemplateDetails";
 import {
   sanitizeEsignFieldsForLeaseExtension,
@@ -124,7 +125,7 @@ export default function DocumentsOverview({
               />
             )}
           </Stack>
-        ) : (
+        ) : ![Role.Tenant].includes(user?.role) ? (
           <EmptyComponent caption="Setup your esign account for">
             <Typography
               component={"span"}
@@ -136,6 +137,8 @@ export default function DocumentsOverview({
               Esign here.
             </Typography>
           </EmptyComponent>
+        ) : (
+          <EmptyComponent caption="Contact property owner to setup E-Sign"></EmptyComponent>
         )}
       </CardContent>
       <CustomSnackbar

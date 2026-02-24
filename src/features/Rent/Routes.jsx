@@ -18,6 +18,7 @@ import {
   SettingsRoutePath,
   SettingsRouteUri,
 } from "common/utils";
+import { Role } from "features/Auth/AuthHelper";
 
 const MyRental = React.lazy(
   () => import("features/Rent/components/MyRental/MyRental"),
@@ -48,6 +49,7 @@ export const RentalAppRoutes = [
         value: "My properties",
         icon: <CottageRounded fontSize="small" />,
       },
+      invalidRoles: [Role.Tenant],
       isLoggedInFeature: true,
       displayInNavBar: true,
       displayHelpSelector: true,
@@ -67,6 +69,7 @@ export const RentalAppRoutes = [
         value: "My rental unit",
         icon: <CottageRounded fontSize="small" />,
       },
+      invalidRoles: [Role.Owner],
       isLoggedInFeature: true,
       displayInNavBar: true,
       displayHelpSelector: true,
@@ -86,6 +89,7 @@ export const RentalAppRoutes = [
         value: "My settings",
         icon: <SettingsRounded fontSize="small" />,
       },
+      invalidRoles: [],
       isLoggedInFeature: true,
       displayInNavBar: true,
       displayHelpSelector: true,
@@ -105,6 +109,7 @@ export const RentalAppRoutes = [
         value: "My property",
         icon: <CottageRounded fontSize="small" />,
       },
+      invalidRoles: [],
       isLoggedInFeature: true,
       displayInNavBar: false,
       displayHelpSelector: true,
@@ -124,6 +129,7 @@ export const RentalAppRoutes = [
         value: "Invoice App Help Center",
         icon: <QuestionAnswerRounded fontSize="small" />,
       },
+      invalidRoles: [],
       displayInNavBar: true,
       displayHelpSelector: false,
       displayPrintSelector: false,

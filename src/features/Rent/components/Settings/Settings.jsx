@@ -19,7 +19,9 @@ import {
   useTheme,
 } from "@mui/material";
 import RowHeader from "common/RowHeader";
+import { fetchLoggedInUser } from "common/utils";
 import relativeTime from "dayjs/plugin/relativeTime";
+import { Role } from "features/Auth/AuthHelper";
 import ExternalIntegrations from "features/Rent/components/ExternalIntegrations/ExternalIntegrations";
 import ProfileDetails from "features/Rent/components/ProfileDetails/ProfileDetails";
 import { TabPanel } from "features/Rent/components/Settings/common";
@@ -32,8 +34,10 @@ export default function Settings() {
   useAppTitle("View Settings");
 
   const theme = useTheme();
+  const user = fetchLoggedInUser();
   const [searchParams] = useSearchParams();
 
+  const isTenant = user?.role === Role.Tenant;
   const currentTab = Number(searchParams.get("tabIdx")) || 0;
   const smallFormFactor = useMediaQuery(theme.breakpoints.down("sm"));
 
@@ -43,7 +47,7 @@ export default function Settings() {
     setActiveTab(newValue);
   };
 
-  const tabConfig = [
+  const baseTabs = [
     {
       label: "Profile",
       icon: <PersonRounded fontSize="small" />,
@@ -53,6 +57,9 @@ export default function Settings() {
         </TabPanel>
       ),
     },
+  ];
+
+  const propertyOwnerTabs = [
     {
       label: "Templates",
       icon: <EmailRounded fontSize="small" />,
@@ -72,6 +79,8 @@ export default function Settings() {
       ),
     },
   ];
+
+  const tabConfig = [...baseTabs, ...(!isTenant ? propertyOwnerTabs : [])];
 
   return (
     <Stack spacing={1} data-tour={"settings-0"}>
