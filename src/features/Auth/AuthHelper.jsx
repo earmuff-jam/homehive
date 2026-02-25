@@ -26,7 +26,57 @@ export const authenticateViaGoogle = async () => {
     provider: user.providerData[0]?.providerId,
     googleAccountLinkedAt: dayjs().toISOString(),
     googleLastLoginAt: dayjs().toISOString(),
+    createdOn: dayjs(Number(user.metadata.createdAt)).toISOString(),
+    createdBy: user.uid,
   };
 
   return userDetails;
+};
+
+// setupStripe ...
+// defines a function that allows the user to setup stripe services
+export const setupStripe = async (email) => {
+  try {
+    const response = await fetch("/.netlify/functions/proxy", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        fUrl: "0020_setup_stripe_for_customer",
+        fMethod: "POST",
+        payload: { email },
+      }),
+    });
+
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.error || "Failed to fetch status");
+
+    return data;
+  } catch (err) {
+    console.debug("unable to setup stripe. Error: ", err);
+    return null;
+  }
+};
+
+// generateUserWithRoleShape ...
+// defines a function that generates the shape for RentApp user with role
+export const generateUserWithRoleShape = (userData) => {
+  return {
+    uid: userData?.uid,
+    role: userData?.role,
+    email: userData?.email,
+  };
+};
+
+// generateUserWithSubscriptionsShape ...
+// defines a function that generates the shape for Rent App subscription
+export const generateUserWithSubscriptionsShape = (userData) => {
+  const rentAppSubscriptionShape = {
+    status: userData?.isStripeSubscriptionActive ?? false,
+  };
+
+  return [
+    {
+      rentApp: rentAppSubscriptionShape,
+    },
+  ];
 };

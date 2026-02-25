@@ -71,7 +71,6 @@ export default function Properties() {
   });
 
   const [createProperty, createPropertyResult] = useCreatePropertyMutation();
-
   const [triggerGetRents, getRentsResult] =
     useLazyGetRentsByPropertyIdWithFiltersQuery();
 

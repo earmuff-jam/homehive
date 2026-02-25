@@ -3,6 +3,7 @@ import React from "react";
 import { Route } from "react-router-dom";
 
 import AuthenticationProvider from "features/Auth/AuthenticationProvider";
+import SubscriptionProvider from "features/Subscription/SubscriptionProvider";
 
 // authorizedServerLevelFeatureFlags ...
 // defines a function that returns a map of all valid feature flags in the app
@@ -60,7 +61,9 @@ export function buildAppRoutes(draftRoutes = []) {
       const requiresLogin = Boolean(config.isLoggedInFeature);
 
       const wrappedEl = requiresLogin ? (
-        <AuthenticationProvider>{element}</AuthenticationProvider>
+        <AuthenticationProvider>
+          <SubscriptionProvider>{element}</SubscriptionProvider>
+        </AuthenticationProvider>
       ) : (
         element
       );
