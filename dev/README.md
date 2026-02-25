@@ -16,6 +16,10 @@ developer. This setup generally is for quick testing, unit testing etc. To enabl
 
 Need to test something specific during dev environment? Look below.
 
+#### Free up existing port ?
+
+For Linux machines: `fuser <port_number>/tcp` or `sudo fuser -k Port_Number/tcp`
+
 #### Test Netlify functions in dev environment
 
 To run `netlify functions` which incorporate some of the core procedures we should also install `netlify cli` in the host OS. To install `netlify cli` simply run `npm install -g netlify-cli` and run `netlify dev`. If you have already installed the CLI tool, then simply run the later command.
@@ -56,7 +60,7 @@ stripe listen --api-key sk_test_xxx --forward-to http://localhost:9999/.netlify/
 4. Run your stripe cli to forward api calls `stripe listen --forward-to http://localhost:9999/.netlify/functions/0011_fetch_stripe_webhook`
 5. trigger event - `stripe trigger payment_intent.succeeded`
 6. Breakpoint should hit.
-7. For all webhook notifications, when you listen at step 4, you should get a secret key. Use that key for env variable `VITE_AUTH_STRIPE_WEBHOOK_SECRET` as we need it to properly execute a webhook event.
+7. For all webhook notifications, when you listen at step 4, you should get a secret key. Use that key for env variable `STRIPE_WEBHOOK_SECRET` in server repository as we need it to properly execute a webhook event.
 
 ### Deployment and Git Tag
 

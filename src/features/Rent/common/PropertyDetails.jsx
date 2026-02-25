@@ -20,7 +20,7 @@ export default function PropertyDetails({
   isPropertyLoading,
 }) {
   return (
-    <Card sx={{ mb: 3 }} data-tour={dataTour}>
+    <Card sx={{ marginBottom: 3 }} data-tour={dataTour}>
       <PropertyMap
         location={property?.location}
         address={`${property?.address}, ${property?.city}, ${property?.state} ${property?.zipcode}`}

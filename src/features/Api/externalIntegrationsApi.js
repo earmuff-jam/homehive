@@ -160,6 +160,42 @@ export const externalIntegrationsApi = createApi({
       }),
       providesTags: [TagTypes.RecentStripeTransactions],
     }),
+    // createStripeCustomerLinkMutation ...
+    // defines a function that creates stripe customer for subscription
+    createStripeCustomerLink: builder.mutation({
+      query: (data) => ({
+        method: "POST",
+        body: JSON.stringify({
+          fUrl: "0021_create_stripe_customer_link",
+          fMethod: "POST",
+          payload: data,
+        }),
+      }),
+    }),
+    // getSubscriptionOptions ...
+    // defines a mutation that checks if the user has a valid stripe account
+    getSubscriptionOptions: builder.query({
+      query: () => ({
+        method: "POST",
+        body: JSON.stringify({
+          fUrl: "0022_retrieve_subscriptions_options",
+          fMethod: "POST",
+        }),
+      }),
+      providesTags: [TagTypes.CheckStripeAccountStatus],
+    }),
+    // createStripeManageSubscriptionLink ...
+    // defines a function that creates stripe link for subscription
+    createStripeManageSubscriptionLink: builder.mutation({
+      query: (data) => ({
+        method: "POST",
+        body: JSON.stringify({
+          fUrl: "0025_create_stripe_subs_manage_link",
+          fMethod: "POST",
+          payload: data,
+        }),
+      }),
+    }),
   }),
 });
 
@@ -175,4 +211,7 @@ export const {
   useCreateStripeAccountLinkMutation,
   useCreateSecureStripeLoginLinkMutation,
   useGetRecentTransactionsQuery,
+  useCreateStripeCustomerLinkMutation,
+  useGetSubscriptionOptionsQuery,
+  useCreateStripeManageSubscriptionLinkMutation,
 } = externalIntegrationsApi;

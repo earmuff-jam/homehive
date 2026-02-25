@@ -171,7 +171,7 @@ export default function PropertyOwnerInfoCard({
   if (isLoading) return <Skeleton height="10rem" />;
 
   return (
-    <Card sx={{ mb: 3 }} data-tour={dataTour}>
+    <Card sx={{ marginBottom: 3 }} data-tour={dataTour}>
       <CardContent>
         <RowHeader
           title="Property Owner"
@@ -195,7 +195,7 @@ export default function PropertyOwnerInfoCard({
                 display: "flex",
                 alignItems: "center",
                 gap: 2,
-                mb: 2,
+                marginBottom: 2,
               }}
             >
               <Avatar
