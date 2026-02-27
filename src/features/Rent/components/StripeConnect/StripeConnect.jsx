@@ -23,6 +23,7 @@ import {
 } from "@mui/material";
 import RowHeader from "common/RowHeader";
 import { fetchLoggedInUser } from "common/utils";
+import { useCheckStripeAccountStatusQuery } from "features/Api/externalIntegrationsApi";
 import {
   useGetUserDataByIdQuery,
   useUpdateUserByUidMutation,
@@ -37,7 +38,6 @@ import ConnectionAlert from "features/Rent/components/StripeConnect/ConnectionAl
 import ConnectionButton from "features/Rent/components/StripeConnect/ConnectionButton";
 import ConnectionStatus from "features/Rent/components/StripeConnect/ConnectionStatus";
 import RecentTransactions from "features/Rent/components/StripeConnect/RecentTransactions";
-import { useCheckStripeAccountStatus } from "features/Rent/hooks/useCheckStripeAccountStatus";
 import {
   useCreateLoginLinkStripeAccount,
   useCreateStripeAccount,
@@ -92,9 +92,13 @@ export default function StripeConnect() {
   const { createAccount } = useCreateStripeAccount();
   const { createAccountLink } = useCreateStripeAccountLink();
 
-  // check account status from stripe
-  const { checkStatus, loading: isCheckStripeAccountStatusLoading } =
-    useCheckStripeAccountStatus();
+  const {
+    data: stripeStatus,
+    isLoading: isStripeStatusLoading,
+    isSuccess: isStripeStatusSuccess,
+  } = useCheckStripeAccountStatusQuery(userData?.stripeAccountId, {
+    skip: !userData?.stripeAccountId,
+  });
 
   // allow users to change stripe payment info securely
   const { createStripeLoginLink } = useCreateLoginLinkStripeAccount();
@@ -163,8 +167,8 @@ export default function StripeConnect() {
   };
 
   useEffect(() => {
-    const handleCheckStripeStatus = async (id) => {
-      const { status, bankAccount } = await checkStatus({ accountId: id });
+    if (!isStripeStatusLoading && isStripeStatusSuccess) {
+      const { status, bankAccount } = stripeStatus;
 
       if (bankAccount) {
         setStripeAccountData({
@@ -200,14 +204,10 @@ export default function StripeConnect() {
           });
         }
       }
-    };
-
-    if (userData?.stripeAccountId) {
-      handleCheckStripeStatus(userData.stripeAccountId);
     }
-  }, [userData?.stripeAccountId]);
+  }, [isStripeStatusSuccess]);
 
-  if (isUserDataFromDbLoading || isCheckStripeAccountStatusLoading)
+  if (isUserDataFromDbLoading || isStripeStatusLoading)
     return <Skeleton height="10rem" width="100%" />;
 
   return (

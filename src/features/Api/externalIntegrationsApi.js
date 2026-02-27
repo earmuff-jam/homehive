@@ -4,6 +4,7 @@ const TagTypes = {
   SendEmail: "send-email",
   EsignTemplates: "esign-templates",
   EsignWorkspaces: "esign-workspaces",
+  CheckStripeAccountStatus: "check-stripe-account-status",
 };
 
 export const externalIntegrationsApi = createApi({
@@ -17,6 +18,19 @@ export const externalIntegrationsApi = createApi({
     },
   }),
   endpoints: (builder) => ({
+    // checkStripeAccountStatus ...
+    // defines a mutation that checks if the user has a valid stripe account
+    checkStripeAccountStatus: builder.query({
+      query: (accountId) => ({
+        method: "POST",
+        body: JSON.stringify({
+          fUrl: "0004_fetch_stripe_account_status",
+          fMethod: "POST",
+          payload: { accountId },
+        }),
+      }),
+      providesTags: [TagTypes.CheckStripeAccountStatus],
+    }),
     // sendEmail ...
     // defines a mutation that sends email
     sendEmail: builder.mutation({
@@ -103,4 +117,5 @@ export const {
   useCreateTemplateMutation,
   useDeleteTemplateMutation,
   useCreateEsignFromTemplateMutation,
+  useCheckStripeAccountStatusQuery,
 } = externalIntegrationsApi;
