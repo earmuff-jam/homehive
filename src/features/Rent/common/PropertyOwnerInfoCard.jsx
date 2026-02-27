@@ -27,6 +27,7 @@ import AButton from "common/AButton";
 import CustomSnackbar from "common/CustomSnackbar";
 import RowHeader from "common/RowHeader";
 import { fetchLoggedInUser } from "common/utils";
+import { useCheckStripeAccountStatusQuery } from "features/Api/externalIntegrationsApi";
 import { useGetUserDataByIdQuery } from "features/Api/firebaseUserApi";
 import {
   useCreateRentRecordMutation,
@@ -34,7 +35,6 @@ import {
 } from "features/Api/rentApi";
 import { useGetTenantByPropertyIdQuery } from "features/Api/tenantsApi";
 import { getStripeFailureReasons } from "features/Rent/components/Settings/common";
-import { useCheckStripeAccountStatus } from "features/Rent/hooks/useCheckStripeAccountStatus";
 import { useGenerateStripeCheckoutSession } from "features/Rent/hooks/useGenerateStripeCheckoutSession";
 import {
   CompleteRentStatusEnumValue,
@@ -65,8 +65,15 @@ export default function PropertyOwnerInfoCard({
   const [getRentByMonth, getRentByMonthResult] = useLazyGetRentByMonthQuery();
 
   const { generateStripeCheckoutSession } = useGenerateStripeCheckoutSession();
-  const { checkStatus, loading: isCheckStripeAccountStatusLoading } =
-    useCheckStripeAccountStatus();
+
+  const {
+    data: stripeStatus,
+    isLoading: isStripeStatusLoading,
+    isError: isStripeStatusError,
+    isSuccess: isStripeStatusSuccess,
+  } = useCheckStripeAccountStatusQuery(owner?.stripeAccountId, {
+    skip: !owner?.stripeAccountId,
+  });
 
   const [createRentRecord, createRentRecordResult] =
     useCreateRentRecordMutation();
@@ -146,21 +153,20 @@ export default function PropertyOwnerInfoCard({
   }, [property?.id]);
 
   useEffect(() => {
-    const checkStripeStatus = async (accountId) => {
-      try {
-        const status = await checkStatus({ accountId });
-        const reasons = getStripeFailureReasons(status?.status);
-        if (reasons?.length <= 0) {
-          setStripeValid(true);
-        }
-      } catch (err) {
+    if (isStripeStatusSuccess) {
+      const reasons = getStripeFailureReasons(stripeStatus?.status);
+
+      if (!reasons || reasons.length === 0) {
+        setStripeValid(true);
+      } else {
         setStripeValid(false);
-        /* eslint-disable no-console */
-        console.error(err);
       }
-    };
-    owner?.stripeAccountId && checkStripeStatus(owner?.stripeAccountId);
-  }, [owner?.stripeAccountId, isPropertyLoading]);
+    }
+
+    if (isStripeStatusError) {
+      setStripeValid(false);
+    }
+  }, [isStripeStatusSuccess, isStripeStatusError]);
 
   if (isLoading) return <Skeleton height="10rem" />;
 
@@ -286,7 +292,7 @@ export default function PropertyOwnerInfoCard({
                   variant="contained"
                   label="Pay rent"
                   sx={{ margin: "0.4rem 0rem" }}
-                  loading={isCheckStripeAccountStatusLoading}
+                  loading={isStripeStatusLoading}
                   disabled={!stripeValid || paymentCompleteForCurrentMonth}
                   onClick={() =>
                     handleRentPayment({
