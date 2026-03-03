@@ -5,7 +5,6 @@ import {
   Role,
   authenticateViaGoogle,
   generateUserWithRoleShape,
-  generateUserWithSubscriptionsShape,
   setupStripe,
 } from "features/Auth/AuthHelper";
 import { getAuth, signOut } from "firebase/auth";
@@ -86,15 +85,17 @@ export const firebaseUserApi = createApi({
           // refetch to get accurate roles
           const refetchUserDataSnapshot = await getDoc(userRef);
           const refetchUserData = refetchUserDataSnapshot.data();
-
-          const subscriptions =
-            generateUserWithSubscriptionsShape(refetchUserData);
           const userWithRole = generateUserWithRoleShape(refetchUserData);
 
           // default user
           if (!Object.values(Role).includes(refetchUserData?.role)) {
             const inviteRef = doc(db, "invites", userDetails?.email);
             const inviteSnapshot = await getDoc(inviteRef);
+
+            // setup stripe subscription
+            // takes precendence over creating new user to minimize overflow
+            const stripeCompletedSetup = await setupStripe();
+            console.log(stripeCompletedSetup);
 
             if (inviteSnapshot.exists()) {
               const invite = inviteSnapshot.data();
@@ -111,15 +112,15 @@ export const firebaseUserApi = createApi({
               await deleteDoc(inviteRef);
               return;
             }
-
-            // setup stripe subscription; 1st time logging in
-            await setupStripe();
           }
 
-          const userWithRoleAndSubs = { ...userWithRole, subscriptions };
-          secureLocalStorage.setItem("user", userWithRoleAndSubs);
-          return { data: userWithRoleAndSubs };
+          secureLocalStorage.setItem("user", userWithRole);
+          return { data: userWithRole };
         } catch (error) {
+          console.debug(
+            "unable to authenticate user. details: ",
+            error?.message,
+          );
           return {
             error: {
               message: error.message,

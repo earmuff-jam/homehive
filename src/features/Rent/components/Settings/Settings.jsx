@@ -21,12 +21,14 @@ import {
 import RowHeader from "common/RowHeader";
 import { fetchLoggedInUser } from "common/utils";
 import relativeTime from "dayjs/plugin/relativeTime";
+import { useGetUserDataByIdQuery } from "features/Api/firebaseUserApi";
 import { Role } from "features/Auth/AuthHelper";
 import ExternalIntegrations from "features/Rent/components/ExternalIntegrations/ExternalIntegrations";
 import ProfileDetails from "features/Rent/components/ProfileDetails/ProfileDetails";
 import { TabPanel } from "features/Rent/components/Settings/common";
 import Templates from "features/Rent/components/Templates/Templates";
 import ManageSubscription from "features/Subscription/ManageSubscription";
+import { validateSubscription } from "features/Subscription/SubscriptionGuard";
 import { useAppTitle } from "hooks/useAppTitle";
 
 dayjs.extend(relativeTime);
@@ -42,7 +44,9 @@ export default function Settings() {
   const currentTab = Number(searchParams.get("tabIdx")) || 0;
 
   const smallFormFactor = useMediaQuery(theme.breakpoints.down("sm"));
-  const isValidSubscription = Boolean(user?.subscriptions[0].rentApp.status);
+  const { data: userDetails } = useGetUserDataByIdQuery(user?.uid, {
+    skip: !user?.uid,
+  });
 
   const [activeTab, setActiveTab] = useState(currentTab);
 
@@ -87,7 +91,7 @@ export default function Settings() {
 
   return (
     <>
-      {!isValidSubscription && <ManageSubscription />}
+      {!validateSubscription(userDetails) && <ManageSubscription />}
       <Stack spacing={1} data-tour={"settings-0"}>
         <RowHeader
           title="Account Settings"

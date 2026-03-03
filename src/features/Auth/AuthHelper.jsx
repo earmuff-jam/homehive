@@ -37,6 +37,7 @@ export const authenticateViaGoogle = async () => {
 // defines a function that allows the user to setup stripe services
 export const setupStripe = async (email) => {
   try {
+    console.debug("Attempting to create stripe customer for RentApp");
     const response = await fetch("/.netlify/functions/proxy", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -48,11 +49,16 @@ export const setupStripe = async (email) => {
     });
 
     const data = await response.json();
-    if (!response.ok) throw new Error(data.error || "Failed to fetch status");
+    console.debug("Successfully created stripe customer account for RentApp");
+    if (!response.ok)
+      throw new Error(
+        "Unable to create stripe customer account. Details: ",
+        data?.error,
+      );
 
     return data;
   } catch (err) {
-    console.debug("unable to setup stripe. Error: ", err);
+    console.debug("Unable to setup stripe. Error: ", err);
     return null;
   }
 };
@@ -65,18 +71,4 @@ export const generateUserWithRoleShape = (userData) => {
     role: userData?.role,
     email: userData?.email,
   };
-};
-
-// generateUserWithSubscriptionsShape ...
-// defines a function that generates the shape for Rent App subscription
-export const generateUserWithSubscriptionsShape = (userData) => {
-  const rentAppSubscriptionShape = {
-    status: userData?.isStripeSubscriptionActive ?? false,
-  };
-
-  return [
-    {
-      rentApp: rentAppSubscriptionShape,
-    },
-  ];
 };

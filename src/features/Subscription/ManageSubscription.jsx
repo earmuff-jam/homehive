@@ -37,7 +37,11 @@ export default function ManageSubscription() {
   const handleCreateStripeCustomerLink = () => {
     const draftStripeCustomerLink = {
       email: user?.email,
-      priceId: selectedSubscription?.priceId,
+      userId: user?.uid,
+      productName: selectedSubscription?.productName,
+      productCost: selectedSubscription?.amount,
+      productPriceId: selectedSubscription?.priceId,
+      productInterval: selectedSubscription?.interval,
     };
     createStripeCustomerLink(draftStripeCustomerLink);
   };
