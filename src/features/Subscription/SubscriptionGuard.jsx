@@ -13,23 +13,6 @@ import {
 import { useGetUserDataByIdQuery } from "features/Api/firebaseUserApi";
 import { Role } from "features/Auth/AuthHelper";
 
-export const validateSubscription = (userDetails) => {
-  const rentAppSubscription = userDetails?.subscriptionList?.find(
-    (sl) => sl.title === "Rent App",
-  );
-  const hasActiveSubscription = rentAppSubscription?.isValid ?? false;
-  const withinTrial = dayjs().isBefore(
-    dayjs(userDetails?.createdOn).add(7, "days"),
-  );
-  const isValid =
-    withinTrial ||
-    hasActiveSubscription ||
-    userDetails?.role === Role.Admin ||
-    userDetails?.role === Role.Tenant;
-
-  return isValid;
-};
-
 export default function SubscriptionGuard({ children }) {
   const user = fetchLoggedInUser();
 
@@ -49,3 +32,20 @@ export default function SubscriptionGuard({ children }) {
 
   return children;
 }
+
+// validateSubscription ...
+// defines a function that is used to validate an existing subscription
+export const validateSubscription = (userDetails) => {
+  const rentAppSubscription = userDetails?.subscriptionList?.find(
+    (sl) => sl.title === "Rent App",
+  );
+  const hasActiveSubscription = rentAppSubscription?.isValid ?? false;
+  const withinTrial = dayjs().isBefore(
+    dayjs(userDetails?.createdOn).add(7, "days"),
+  );
+
+  const isValid =
+    withinTrial || hasActiveSubscription || userDetails?.role !== Role.Owner;
+
+  return isValid;
+};
