@@ -1,7 +1,12 @@
 import secureLocalStorage from "react-secure-storage";
 
 import { createApi, fakeBaseQuery } from "@reduxjs/toolkit/query/react";
-import { Role, authenticateViaGoogle } from "features/Auth/AuthHelper";
+import {
+  Role,
+  authenticateViaGoogle,
+  generateUserWithRoleShape,
+  setupStripe,
+} from "features/Auth/AuthHelper";
 import { getAuth, signOut } from "firebase/auth";
 import {
   collection,
@@ -80,18 +85,16 @@ export const firebaseUserApi = createApi({
           // refetch to get accurate roles
           const refetchUserDataSnapshot = await getDoc(userRef);
           const refetchUserData = refetchUserDataSnapshot.data();
+          const userWithRole = generateUserWithRoleShape(refetchUserData);
 
-          let userWithRole = {
-            uid: userDetails?.uid,
-            role: refetchUserData?.role,
-            email: userDetails?.email,
-          };
-
-          // if the user has no roles, the user is a generic user
-          // generic users can have associated invites.
-          if (!Object.values(Role).includes(userWithRole.role)) {
+          // default user
+          if (!Object.values(Role).includes(refetchUserData?.role)) {
             const inviteRef = doc(db, "invites", userDetails?.email);
             const inviteSnapshot = await getDoc(inviteRef);
+
+            // setup stripe subscription
+            // takes precendence over creating new user to minimize overflow
+            await setupStripe();
 
             if (inviteSnapshot.exists()) {
               const invite = inviteSnapshot.data();
@@ -113,6 +116,10 @@ export const firebaseUserApi = createApi({
           secureLocalStorage.setItem("user", userWithRole);
           return { data: userWithRole };
         } catch (error) {
+          console.debug(
+            "unable to authenticate user. details: ",
+            error?.message,
+          );
           return {
             error: {
               message: error.message,

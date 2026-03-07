@@ -56,7 +56,7 @@ stripe listen --api-key sk_test_xxx --forward-to http://localhost:9999/.netlify/
 4. Run your stripe cli to forward api calls `stripe listen --forward-to http://localhost:9999/.netlify/functions/0011_fetch_stripe_webhook`
 5. trigger event - `stripe trigger payment_intent.succeeded`
 6. Breakpoint should hit.
-7. For all webhook notifications, when you listen at step 4, you should get a secret key. Use that key for env variable `VITE_AUTH_STRIPE_WEBHOOK_SECRET` as we need it to properly execute a webhook event.
+7. For all webhook notifications, when you listen at step 4, you should get a secret key. Use that key for env variable `STRIPE_WEBHOOK_SECRET` in server repository as we need it to properly execute a webhook event.
 
 ### Deployment and Git Tag
 
