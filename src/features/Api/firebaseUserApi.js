@@ -94,8 +94,7 @@ export const firebaseUserApi = createApi({
 
             // setup stripe subscription
             // takes precendence over creating new user to minimize overflow
-            const stripeCompletedSetup = await setupStripe();
-            console.log(stripeCompletedSetup);
+            await setupStripe();
 
             if (inviteSnapshot.exists()) {
               const invite = inviteSnapshot.data();

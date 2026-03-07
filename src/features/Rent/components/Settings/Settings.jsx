@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 
 import { useSearchParams } from "react-router-dom";
 
@@ -22,6 +22,7 @@ import RowHeader from "common/RowHeader";
 import { fetchLoggedInUser } from "common/utils";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { useGetUserDataByIdQuery } from "features/Api/firebaseUserApi";
+import { useGetSubscriptionByEmailQuery } from "features/Api/subscriptionApi";
 import { Role } from "features/Auth/AuthHelper";
 import ExternalIntegrations from "features/Rent/components/ExternalIntegrations/ExternalIntegrations";
 import ProfileDetails from "features/Rent/components/ProfileDetails/ProfileDetails";
@@ -44,9 +45,19 @@ export default function Settings() {
   const currentTab = Number(searchParams.get("tabIdx")) || 0;
 
   const smallFormFactor = useMediaQuery(theme.breakpoints.down("sm"));
-  const { data: userDetails } = useGetUserDataByIdQuery(user?.uid, {
-    skip: !user?.uid,
-  });
+
+  const { data: userDetails, isLoading: isUserDetailsLoading } =
+    useGetUserDataByIdQuery(user?.uid, {
+      skip: !user?.uid,
+    });
+
+  const { latestSubscription, isLoading: isSubscriptionDetailsLoading } =
+    useGetSubscriptionByEmailQuery(user.email, {
+      selectFromResult: ({ data }) => ({
+        latestSubscription:
+          data?.sort((a, b) => b.updatedOn - a.updatedOn)[0] ?? null,
+      }),
+    });
 
   const [activeTab, setActiveTab] = useState(currentTab);
 
@@ -88,10 +99,18 @@ export default function Settings() {
   ];
 
   const tabConfig = [...baseTabs, ...(!isTenant ? propertyOwnerTabs : [])];
+  const data = useMemo(() => {
+    if (!isSubscriptionDetailsLoading && !isUserDetailsLoading) {
+      return {
+        ...latestSubscription,
+        role: userDetails?.role,
+      };
+    }
+  }, [isSubscriptionDetailsLoading, isUserDetailsLoading]);
 
   return (
     <>
-      {!validateSubscription(userDetails) && <ManageSubscription />}
+      {!validateSubscription(data) && <ManageSubscription />}
       <Stack spacing={1} data-tour={"settings-0"}>
         <RowHeader
           title="Account Settings"

@@ -6,6 +6,7 @@ import { invoiceApi } from "features/Api/invoiceApi";
 import { mapServiceApi } from "features/Api/mapServiceApi";
 import { propertiesApi } from "features/Api/propertiesApi";
 import { rentApi } from "features/Api/rentApi";
+import { subscriptionApi } from "features/Api/subscriptionApi";
 import { tenantsApi } from "features/Api/tenantsApi";
 
 export const store = configureStore({
@@ -17,6 +18,7 @@ export const store = configureStore({
     [invoiceApi.reducerPath]: invoiceApi.reducer,
     [mapServiceApi.reducerPath]: mapServiceApi.reducer,
     [analyticsApi.reducerPath]: analyticsApi.reducer,
+    [subscriptionApi.reducerPath]: subscriptionApi.reducer,
     [externalIntegrationsApi.reducerPath]: externalIntegrationsApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
@@ -28,6 +30,7 @@ export const store = configureStore({
       invoiceApi.middleware,
       mapServiceApi.middleware,
       analyticsApi.middleware,
+      subscriptionApi.middleware,
       externalIntegrationsApi.middleware,
     ]),
 });
