@@ -186,7 +186,7 @@ export default function SplashPage() {
           >
             Simple plans designed to fit your needs — subscribe to get started
           </Typography>
-          <Pricing />
+          <Pricing readOnly />
         </Stack>
         {/* Subscription Fees */}
         <Stack direction="column" gap={2} marginTop="1rem">
