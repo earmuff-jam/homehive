@@ -67,7 +67,7 @@ export const subscriptionApi = createApi({
           if (subscriptions.length > 0) {
             isFirstSubscriptionForCustomer = false;
             latestSubscription = subscriptions.reduce((latest, current) => {
-              return dayjs(current.updatedOn).isAfter(dayjs(latest.updatedOn))
+              return dayjs(current.createdOn).isAfter(dayjs(latest.createdOn))
                 ? current
                 : latest;
             }, subscriptions[0]);
