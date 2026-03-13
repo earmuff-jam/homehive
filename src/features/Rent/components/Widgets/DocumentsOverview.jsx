@@ -12,8 +12,8 @@ import {
   useGetEsignTemplatesQuery,
 } from "features/Api/externalIntegrationsApi";
 import {
-  useLazyGetUserByEmailAddressQuery,
-  useLazyGetUserDataByIdQuery,
+  useGetUserByEmailAddressQuery,
+  useGetUserDataByIdQuery,
 } from "features/Api/firebaseUserApi";
 import { Role } from "features/Auth/AuthHelper";
 import EsignTemplateDetails from "features/Rent/components/EsignConnect/EsignTemplateDetails";
@@ -33,24 +33,26 @@ export default function DocumentsOverview({
   const navigate = useNavigate();
   const user = fetchLoggedInUser();
 
+  const tenantEmail = property?.rentees?.find((email) => email);
+
   const { data: esignTemplates, isLoading: isGetEsignTemplatesLoading } =
     useGetEsignTemplatesQuery(user?.uid, {
       skip: !isEsignConnected,
     });
 
-  const [triggerGetOwnerData, { data: propertyOwnerData }] =
-    useLazyGetUserDataByIdQuery();
+  const { data: tenantData } = useGetUserByEmailAddressQuery(tenantEmail, {
+    skip: !tenantEmail,
+  });
 
-  const [
-    createEsignFromTemplate,
+  const { data: propertyOwnerData } = useGetUserDataByIdQuery(
+    property?.createdBy,
     {
-      isLoading: isPrepareTemplateLoading,
-      isSuccess: isPrepareTemplateSuccess,
+      skip: !property?.createdBy,
     },
-  ] = useCreateEsignFromTemplateMutation();
+  );
 
-  const [triggerGetTenantData, { data: tenantData }] =
-    useLazyGetUserByEmailAddressQuery();
+  const [createEsignFromTemplate, { isSuccess: isPrepareTemplateSuccess }] =
+    useCreateEsignFromTemplateMutation();
 
   const [showSnackbar, setShowSnackbar] = useState(false);
 
@@ -89,19 +91,10 @@ export default function DocumentsOverview({
   };
 
   useEffect(() => {
-    if (property?.id && Array.isArray(property?.rentees)) {
-      const propertyOwnerID = property?.createdBy;
-      const tenantEmail = property?.rentees.find((rentee) => rentee);
-      triggerGetOwnerData(propertyOwnerID);
-      triggerGetTenantData(tenantEmail);
-    }
-  }, [property?.id]);
-
-  useEffect(() => {
     if (isPrepareTemplateSuccess) {
       setShowSnackbar(true);
     }
-  }, [isPrepareTemplateLoading]);
+  }, [isPrepareTemplateSuccess]);
 
   if (isGetEsignTemplatesLoading) return <Skeleton height="10rem" />;
 

@@ -169,7 +169,7 @@ const MyPropertiesListHelpSteps = [
   },
   {
     element:
-      "View current rent payment status and the next payment due date. Use Quick Connect to quickly send invoices, reminders or even lease renewal templates. Do not like what you see? Navigate to settings -> templates to change the default template.",
+      "View current rent payment status and the next payment due date. Use Quick Connect to quickly send invoices, reminders or even lease renewal templates.",
   },
   {
     element: "Click on this property to dive deeper into that property.",
