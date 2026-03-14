@@ -9,6 +9,7 @@ import dayjs from "dayjs";
 
 import {
   AddRounded,
+  AutoAwesomeRounded,
   DeleteRounded,
   ExpandMoreRounded,
 } from "@mui/icons-material";
@@ -17,6 +18,7 @@ import {
   AccordionDetails,
   AccordionSummary,
   Box,
+  Chip,
   Dialog,
   DialogActions,
   DialogContent,
@@ -25,6 +27,7 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
+import { keyframes } from "@mui/system";
 import AButton from "common/AButton";
 import ConfirmationBox, {
   DefaultConfirmationBoxProps,
@@ -41,11 +44,28 @@ import {
 } from "features/Api/propertiesApi";
 import { useLazyGetRentsByPropertyIdWithFiltersQuery } from "features/Api/rentApi";
 import { Role } from "features/Auth/AuthHelper";
+import RaspyDialog from "features/Raspy/RaspyDialog";
 import { AddPropertyTextString } from "features/Rent/common/constants";
 import AddProperty from "features/Rent/components/AddProperty/AddProperty";
 import ViewPropertyAccordionDetails from "features/Rent/components/Properties/ViewPropertyAccordionDetails";
 import { sanitizeApiFields } from "features/Rent/utils";
 import { useAppTitle } from "hooks/useAppTitle";
+
+// used to elevate the Raspy Chat Drawer
+const glitter = keyframes`
+  0% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 0px rgba(255,255,255,0));
+  }
+  50% {
+    transform: scale(1.08);
+    filter: drop-shadow(0 0 6px rgba(255,215,0,0.8));
+  }
+  100% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 0px rgba(255,255,255,0));
+  }
+`;
 
 const defaultDialog = {
   title: "",
@@ -122,6 +142,7 @@ export default function Properties() {
   });
 
   const [expanded, setExpanded] = useState(null);
+  const [raspyOpen, setRaspyOpen] = useState(false);
   const [dialog, setDialog] = useState(defaultDialog);
   const [showSnackbar, setShowSnackbar] = useState(false);
   const [showConfirmationBox, setShowConfirmationBox] = useState(
@@ -188,7 +209,38 @@ export default function Properties() {
     <Stack data-tour="properties-0">
       <Stack direction="row" justifyContent="space-between">
         <RowHeader
-          title="Properties"
+          title={
+            <Stack direction="row" spacing={1} alignItems="center">
+              <Typography variant="h5" fontWeight="medium">
+                Properties
+              </Typography>
+              <Box
+                color="primary.main"
+                onClick={(ev) => {
+                  ev.stopPropagation();
+                  setRaspyOpen(!raspyOpen);
+                }}
+                sx={{
+                  cursor: "pointer",
+                  display: "inline-flex",
+                  animation: `${glitter} 1s ease-in-out 10`,
+                }}
+              >
+                <Chip
+                  label="Recap"
+                  color="success"
+                  size="small"
+                  onDelete={(ev) => {
+                    ev.stopPropagation();
+                    setRaspyOpen(!raspyOpen);
+                  }}
+                  deleteIcon={
+                    <AutoAwesomeRounded color="primary" fontSize="small" />
+                  }
+                />
+              </Box>
+            </Stack>
+          }
           sxProps={{ fontWeight: "bold", color: "text.secondary" }}
         />
         <AButton
@@ -314,7 +366,6 @@ export default function Properties() {
           ))
         )}
       </Stack>
-
       <Dialog
         open={dialog.display}
         keepMounted
@@ -347,13 +398,12 @@ export default function Properties() {
           />
         </DialogActions>
       </Dialog>
-
       <ConfirmationBox
         isOpen={showConfirmationBox.value}
         handleConfirm={() => handleDelete(showConfirmationBox.updateKey)}
         handleCancel={() => setShowConfirmationBox(DefaultConfirmationBoxProps)}
       />
-
+      <RaspyDialog raspyOpen={raspyOpen} setRaspyOpen={setRaspyOpen} />
       <CustomSnackbar
         showSnackbar={showSnackbar}
         setShowSnackbar={setShowSnackbar}

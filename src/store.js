@@ -5,6 +5,7 @@ import { firebaseUserApi } from "features/Api/firebaseUserApi";
 import { invoiceApi } from "features/Api/invoiceApi";
 import { mapServiceApi } from "features/Api/mapServiceApi";
 import { propertiesApi } from "features/Api/propertiesApi";
+import { raspyApi } from "features/Api/raspyApi";
 import { rentApi } from "features/Api/rentApi";
 import { subscriptionApi } from "features/Api/subscriptionApi";
 import { tenantsApi } from "features/Api/tenantsApi";
@@ -20,6 +21,7 @@ export const store = configureStore({
     [analyticsApi.reducerPath]: analyticsApi.reducer,
     [subscriptionApi.reducerPath]: subscriptionApi.reducer,
     [externalIntegrationsApi.reducerPath]: externalIntegrationsApi.reducer,
+    [raspyApi.reducerPath]: raspyApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat([
@@ -32,5 +34,6 @@ export const store = configureStore({
       analyticsApi.middleware,
       subscriptionApi.middleware,
       externalIntegrationsApi.middleware,
+      raspyApi.middleware,
     ]),
 });
