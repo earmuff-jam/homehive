@@ -1,0 +1,108 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Pricing tests snapshot tests matches snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="MuiStack-root css-v2woy3-MuiStack-root"
+  >
+    <div
+      class="MuiStack-root css-10uwq2g-MuiStack-root"
+    >
+      <div
+        class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 MuiCard-root css-1b9y2ik-MuiPaper-root-MuiCard-root"
+        style="--Paper-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12);"
+      >
+        <div
+          class="MuiCardContent-root css-j4isg9-MuiCardContent-root"
+        >
+          <span
+            class="MuiBadge-root css-63ezxx-MuiBadge-root"
+          >
+            <div
+              class="MuiStack-root css-jfdv4h-MuiStack-root"
+            >
+              <h6
+                class="MuiTypography-root MuiTypography-h6 css-fe0fwj-MuiTypography-root"
+              >
+                Basic
+              </h6>
+              <div
+                class="MuiStack-root css-1dvvyqt-MuiStack-root"
+              >
+                <h4
+                  class="MuiTypography-root MuiTypography-h4 css-1h0dqxm-MuiTypography-root"
+                >
+                  $5
+                </h4>
+                <p
+                  class="MuiTypography-root MuiTypography-body2 css-1wle3ir-MuiTypography-root"
+                >
+                  /month
+                </p>
+              </div>
+              <hr
+                class="MuiDivider-root MuiDivider-fullWidth css-1jpc804-MuiDivider-root"
+              />
+              <p
+                class="MuiTypography-root MuiTypography-body2 css-1wle3ir-MuiTypography-root"
+              >
+                Basic plan
+              </p>
+            </div>
+            <span
+              class="MuiBadge-badge MuiBadge-standard MuiBadge-anchorOriginTopRight MuiBadge-anchorOriginTopRightRectangular MuiBadge-overlapRectangular css-2ao5rv-MuiBadge-badge"
+            />
+          </span>
+        </div>
+      </div>
+      <div
+        class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 MuiCard-root css-1b9y2ik-MuiPaper-root-MuiCard-root"
+        style="--Paper-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12);"
+      >
+        <div
+          class="MuiCardContent-root css-j4isg9-MuiCardContent-root"
+        >
+          <span
+            class="MuiBadge-root css-63ezxx-MuiBadge-root"
+          >
+            <div
+              class="MuiStack-root css-jfdv4h-MuiStack-root"
+            >
+              <h6
+                class="MuiTypography-root MuiTypography-h6 css-fe0fwj-MuiTypography-root"
+              >
+                Pro
+              </h6>
+              <div
+                class="MuiStack-root css-1dvvyqt-MuiStack-root"
+              >
+                <h4
+                  class="MuiTypography-root MuiTypography-h4 css-1h0dqxm-MuiTypography-root"
+                >
+                  $15
+                </h4>
+                <p
+                  class="MuiTypography-root MuiTypography-body2 css-1wle3ir-MuiTypography-root"
+                >
+                  /month
+                </p>
+              </div>
+              <hr
+                class="MuiDivider-root MuiDivider-fullWidth css-1jpc804-MuiDivider-root"
+              />
+              <p
+                class="MuiTypography-root MuiTypography-body2 css-1wle3ir-MuiTypography-root"
+              >
+                Pro plan
+              </p>
+            </div>
+            <span
+              class="MuiBadge-badge MuiBadge-standard MuiBadge-anchorOriginTopRight MuiBadge-anchorOriginTopRightRectangular MuiBadge-overlapRectangular css-2ao5rv-MuiBadge-badge"
+            />
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;
