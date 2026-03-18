@@ -116,7 +116,7 @@ export const externalIntegrationsApi = createApi({
         body: JSON.stringify({
           fUrl: "0002_create_stripe_account",
           fMethod: "POST",
-          payload: { email },
+          payload: email,
         }),
       }),
       invalidatesTags: [TagTypes.CheckStripeAccountStatus],
@@ -124,12 +124,12 @@ export const externalIntegrationsApi = createApi({
     // createStripeAccountLink ...
     // defines a mutation that creates a stripe account
     createStripeAccountLink: builder.mutation({
-      query: (accountId) => ({
+      query: (data) => ({
         method: "POST",
         body: JSON.stringify({
           fUrl: "0003_link_stripe_account",
           fMethod: "POST",
-          payload: { accountId },
+          payload: data,
         }),
       }),
       invalidatesTags: [TagTypes.CheckStripeAccountStatus],

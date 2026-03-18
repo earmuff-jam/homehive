@@ -60,24 +60,28 @@ export const validateSubscription = (
   role = "",
   userCreatedOn,
 ) => {
-  if (Object.keys(selectedSubscription).length <= 0) return false;
+  if (role === Role.Owner) {
+    if (Object.keys(selectedSubscription).length <= 0) return false;
 
-  const withinTrial =
-    selectedSubscription?.isFirstSubscriptionForCustomer &&
-    dayjs().isBefore(dayjs(userCreatedOn).add(7, "days"));
+    const withinTrial =
+      selectedSubscription?.isFirstSubscriptionForCustomer &&
+      dayjs().isBefore(dayjs(userCreatedOn).add(7, "days"));
 
-  if (
-    !withinTrial &&
-    (!selectedSubscription.subscriptionStatus ||
-      !selectedSubscription.stripeSubscriptionId)
-  ) {
-    return false;
+    if (
+      !withinTrial &&
+      (!selectedSubscription.subscriptionStatus ||
+        !selectedSubscription.stripeSubscriptionId)
+    ) {
+      return false;
+    }
+
+    withinTrial && console.debug("User subscription is within grace period.");
+    const isValid =
+      withinTrial ||
+      role !== Role.Owner ||
+      selectedSubscription?.subscriptionStatus === StripePaymentStatusCompleted;
+    return isValid;
+  } else {
+    return true;
   }
-
-  withinTrial && console.debug("User subscription is within grace period.");
-  const isValid =
-    withinTrial ||
-    role !== Role.Owner ||
-    selectedSubscription?.subscriptionStatus === StripePaymentStatusCompleted;
-  return isValid;
 };
