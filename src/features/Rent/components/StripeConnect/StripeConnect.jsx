@@ -101,10 +101,7 @@ export default function StripeConnect() {
   const handleCreateStripe = () => {
     // connect stripe if there is no previous connection
     if (!userData?.stripeAccountId) {
-      createAccount({
-        uid: userData?.uid,
-        email: userData?.email,
-      });
+      createAccount({ email: userData?.email });
     } else {
       updateUser({
         uid: userData?.uid,
@@ -149,7 +146,7 @@ export default function StripeConnect() {
       !createSecureAccountLinkResult.isLoading
     ) {
       const secureURL = createSecureAccountLinkResult.data;
-      window.open(secureURL, "_blank", "noopener,noreferrer");
+      window.open(secureURL?.url, "_blank", "noopener,noreferrer");
       return;
     }
   }, [createSecureAccountLinkResult.isLoading]);
