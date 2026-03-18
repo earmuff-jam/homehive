@@ -9,7 +9,6 @@ import dayjs from "dayjs";
 
 import {
   AddRounded,
-  AutoAwesomeRounded,
   DeleteRounded,
   ExpandMoreRounded,
 } from "@mui/icons-material";

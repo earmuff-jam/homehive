@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 
 import dayjs from "dayjs";
 
-import { Button, Paper, Stack, Typography } from "@mui/material";
+import { Button, Paper, Stack } from "@mui/material";
 import CustomSnackbar from "common/CustomSnackbar";
 import EmptyComponent from "common/EmptyComponent";
 import TextFieldWithLabel from "common/TextFieldWithLabel";
@@ -15,7 +15,11 @@ import {
 } from "features/Api/raspyApi";
 import ResponseDetails from "features/Raspy/ResponseDetails";
 
-export default function ChatForm({ properties = [], tenants = [] }) {
+export default function ChatForm({
+  properties = [],
+  tenants = [],
+  rents = [],
+}) {
   const user = fetchLoggedInUser();
   const [handleRaspyMessage, handleRaspyMessageResult] = useGetAnswerMutation();
   const [decodeUserIntent, decodeUserIntentResult] = useDecodeIntentMutation();
@@ -34,8 +38,8 @@ export default function ChatForm({ properties = [], tenants = [] }) {
   const submit = (formData) => {
     formData["email"] = user?.email;
     formData["properties"] = properties || [];
-    formData["rents"] = [];
-    formData["tenants"] = [];
+    formData["rents"] = rents || [];
+    formData["tenants"] = tenants || [];
     formData["updatedOn"] = dayjs().toISOString();
 
     decodeUserIntent(formData);

@@ -129,8 +129,8 @@ export default function ResponseDetails({ data = {} }) {
     <Stack spacing={1}>
       {/* Recommended Action Alert Blocks */}
       <Stack alignSelf="flex-end" direction="row" spacing={0.5}>
-        {recommendedActionsArr?.map(() => (
-          <RecommendedActionBlock blockColor="error.main" />
+        {recommendedActionsArr?.map((item) => (
+          <RecommendedActionBlock key={item} blockColor="error.main" />
         ))}
       </Stack>
       {/* Portfolio overall health blocks */}

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import { AutoAwesomeRounded, CloseRounded } from "@mui/icons-material";
 import {
@@ -15,17 +15,39 @@ import {
 import AButton from "common/AButton";
 import { fetchLoggedInUser } from "common/utils";
 import { useGetPropertiesByUserIdQuery } from "features/Api/propertiesApi";
+import { useLazyGetRentsByPropertiesQuery } from "features/Api/rentApi";
+import { useLazyGetTenantsByPropertiesArrQuery } from "features/Api/tenantsApi";
 import ChatForm from "features/Raspy/ChatForm";
 
 export default function RaspyDialog({ raspyOpen, setRaspyOpen }) {
   const user = fetchLoggedInUser();
-  const { data: properties = [], isLoading: isPropertiesListLoading } =
-    useGetPropertiesByUserIdQuery(user.uid, {
-      skip: !user?.uid,
-    });
+  const {
+    data: properties = [],
+    isLoading: isPropertiesListLoading,
+    isSuccess: isPropertiesListSuccess,
+  } = useGetPropertiesByUserIdQuery(user.uid, {
+    skip: !user?.uid,
+  });
 
-  if (isPropertiesListLoading) {
-    setLoadingText(RecapTextEnumValues.Loading);
+  const [getExistingTenants, getExistingTenantsResult] =
+    useLazyGetTenantsByPropertiesArrQuery();
+
+  const [getExistingRents, getExistingRentsResult] =
+    useLazyGetRentsByPropertiesQuery();
+
+  useEffect(() => {
+    if (!isPropertiesListLoading && isPropertiesListSuccess) {
+      const propertiesIds = properties?.map((property) => property.id);
+      getExistingTenants(propertiesIds);
+      getExistingRents(propertiesIds);
+    }
+  }, [isPropertiesListLoading]);
+
+  if (
+    isPropertiesListLoading ||
+    getExistingTenantsResult.isLoading ||
+    getExistingRentsResult.isLoading
+  ) {
     return <Skeleton height="10rem" />;
   }
 
@@ -65,7 +87,11 @@ export default function RaspyDialog({ raspyOpen, setRaspyOpen }) {
         </Stack>
       </DialogTitle>
       <DialogContent>
-        <ChatForm properties={properties} tenants={[]} />
+        <ChatForm
+          properties={properties}
+          rents={getExistingRentsResult.data || []}
+          tenants={getExistingTenantsResult.data || []}
+        />
       </DialogContent>
       <DialogActions>
         <AButton

@@ -23,7 +23,7 @@ export default function TenantEmailAutocomplete({
   setError,
   clearErrors,
 }) {
-  const { data: activeTenants, isLoading } = useGetTenantListQuery(true);
+  const { data: activeTenants, isLoading } = useGetTenantListQuery();
   const [getExistingTenants, getExistingTenantsResult] =
     useLazyGetTenantListQuery();
 
