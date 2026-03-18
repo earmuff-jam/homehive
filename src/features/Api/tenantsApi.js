@@ -49,6 +49,49 @@ export const tenantsApi = createApi({
       },
       providesTags: ["tenants"],
     }),
+    // getTenantsByPropertiesArr ...
+    // defines a query fn to return tenants list for each property passed in query; supports active flag
+    getTenantsByPropertiesArr: builder.query({
+      async queryFn(propertiesList = [], isActive = true) {
+        try {
+          // firestore needs to use batch processing for more than 10
+          if (propertiesList.length > 10) {
+            console.debug("Unable to process properties > 10");
+            throw new Error({
+              code: 500,
+              message: "Limit hit for properties list",
+            });
+          }
+
+          const uniqueTenants = [];
+          const foundEmailAddress = new Set();
+
+          const q = query(
+            collection(db, "tenants"),
+            where("isActive", "==", isActive),
+            where("propertyId", "in", propertiesList),
+          );
+          const querySnapshot = await getDocs(q);
+          querySnapshot.forEach((doc) => {
+            const data = doc.data();
+            if (!foundEmailAddress.has(data.email)) {
+              foundEmailAddress.add(data.email);
+              uniqueTenants.push({ id: doc.id, ...data });
+            }
+          });
+
+          return { data: uniqueTenants };
+        } catch (error) {
+          return {
+            error: {
+              message: error.message,
+              code: error.code,
+            },
+          };
+        }
+      },
+      providesTags: ["tenants"],
+    }),
     // fetch matching tenants by email who are also active
     getActiveTenantsByEmailAddress: builder.query({
       async queryFn(email) {
@@ -281,6 +324,7 @@ export const {
   useGetTenantListQuery,
   useLazyGetTenantListQuery,
   useGetTenantsByUserIdQuery,
+  useLazyGetTenantsByPropertiesArrQuery,
   useGetActiveTenantsByEmailAddressQuery,
   useGetTenantByPropertyIdQuery,
   useCreateTenantMutation,
