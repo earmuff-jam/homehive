@@ -13,6 +13,7 @@ export default function EsignTemplateDetails({
   templates = [],
   isViewingRental,
   prepareDocumentForEsign,
+  isPrepareTemplateLoading,
 }) {
   const columns = useMemo(
     () => [
@@ -91,7 +92,9 @@ export default function EsignTemplateDetails({
           <AButton
             size="small"
             label="Prepare"
+            disabled={true} // TODO: #282
             variant="outlined"
+            loading={isPrepareTemplateLoading}
             onClick={() => prepareDocumentForEsign(row?.original)}
             startIcon={<UpgradeRounded fontSize="small" color="primary" />}
           />
