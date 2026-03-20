@@ -51,8 +51,13 @@ export default function DocumentsOverview({
     },
   );
 
-  const [createEsignFromTemplate, { isSuccess: isPrepareTemplateSuccess }] =
-    useCreateEsignFromTemplateMutation();
+  const [
+    createEsignFromTemplate,
+    {
+      isLoading: isPrepareTemplateLoading,
+      isSuccess: isPrepareTemplateSuccess,
+    },
+  ] = useCreateEsignFromTemplateMutation();
 
   const [showSnackbar, setShowSnackbar] = useState(false);
 
@@ -117,6 +122,7 @@ export default function DocumentsOverview({
                 templates={templates}
                 isViewingRental={isViewingRental}
                 prepareDocumentForEsign={prepareDocumentForEsign}
+                isPrepareTemplateLoading={isPrepareTemplateLoading}
               />
             )}
           </Stack>
