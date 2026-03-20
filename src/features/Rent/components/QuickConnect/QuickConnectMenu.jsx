@@ -3,6 +3,7 @@ import React from "react";
 import {
   CampaignRounded,
   NotificationsRounded,
+  PaymentsRounded,
   ReceiptLongRounded,
 } from "@mui/icons-material";
 import {
@@ -14,6 +15,7 @@ import {
 } from "@mui/material";
 import {
   CreateInvoiceEnumValue,
+  OneTimePaymentRequest,
   PaymentReminderEnumValue,
   RenewLeaseNoticeEnumValue,
   SendDefaultInvoiceEnumValue,
@@ -33,7 +35,7 @@ export default function QuickConnectMenu({
   const menuItems = [
     {
       id: "invoice",
-      label: "Create your own Invoice",
+      label: "Create custom Invoice",
       icon: <ReceiptLongRounded fontSize="small" />,
       action: CreateInvoiceEnumValue,
     },
@@ -54,6 +56,12 @@ export default function QuickConnectMenu({
       label: "Send renew Lease Reminder",
       icon: <CampaignRounded fontSize="small" />,
       action: RenewLeaseNoticeEnumValue,
+    },
+    {
+      id: "additional-charge",
+      label: "Send one time payment request",
+      icon: <PaymentsRounded fontSize="small" />,
+      action: OneTimePaymentRequest,
     },
   ];
 

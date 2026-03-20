@@ -15,15 +15,16 @@ export const ManualRentStatusEnumValue = "manual";
 export const CompleteRentStatusEnumValue = "complete";
 
 export const CreateInvoiceEnumValue = "CreateInvoice";
-export const SendDefaultInvoiceEnumValue = "SendDefaultInvoice";
 export const PaymentReminderEnumValue = "PaymentReminder";
+export const OneTimePaymentRequest = "OneTimePaymentRequest";
+export const SendDefaultInvoiceEnumValue = "SendDefaultInvoice";
 export const RenewLeaseNoticeEnumValue = "RenewLeaseNoticeEnumValue";
-export const RemoveTenantNotificationEnumValue = "Notice of Removal";
-export const AddTenantNotificationEnumValue = "Notice of Addition";
-export const AddRentPaymentNotificationEnumValue = "Notice of Rent Payment";
 
 export const AddNotificationEnumType = "AddNotification";
 export const RemoveNotificationEnumType = "RemoveNotification";
+export const AddTenantNotificationEnumValue = "Notice of Addition";
+export const RemoveTenantNotificationEnumValue = "Notice of Removal";
+export const AddRentPaymentNotificationEnumValue = "Notice of Rent Payment";
 
 export const EmailNotificationDisclaimer =
   "You are being notified either since you are the property owner, tenant or anyone tasked with such responsibility.";
