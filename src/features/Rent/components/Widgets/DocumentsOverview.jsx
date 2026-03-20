@@ -81,6 +81,8 @@ export default function DocumentsOverview({
       userId: user?.uid,
       doc_name: rowData?.name,
       uuid: rowData?.uuid,
+      propertyId: property?.id,
+      primaryTenantId: primaryTenant?.id,
       additional_senders: "earmuffjam@homehivesolutions.com",
       fields: {
         ...sanitizedFieldsForNewLease,

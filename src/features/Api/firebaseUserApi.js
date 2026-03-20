@@ -52,7 +52,7 @@ export const firebaseUserApi = createApi({
         try {
           const q = query(
             collection(db, "users"),
-            where("emailAddress", "==", emailAddress),
+            where("email", "==", emailAddress),
           );
 
           const querySnapshot = await getDocs(q);
