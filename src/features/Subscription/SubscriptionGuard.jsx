@@ -75,7 +75,8 @@ export const validateSubscription = (
       return false;
     }
 
-    withinTrial && console.debug("User subscription is within trial version of Rental App.");
+    withinTrial &&
+      console.debug("User subscription is within trial version of Rental App.");
     const isValid =
       withinTrial ||
       role !== Role.Owner ||
