@@ -23,7 +23,10 @@ import {
 import AButton from "common/AButton";
 import CustomSnackbar from "common/CustomSnackbar";
 import EmptyComponent from "common/EmptyComponent";
-import { useSendEmailMutation } from "features/Api/externalIntegrationsApi";
+import {
+  useAddressOneTimePaymentMutation,
+  useSendEmailMutation,
+} from "features/Api/externalIntegrationsApi";
 import { useGetUserDataByIdQuery } from "features/Api/firebaseUserApi";
 import { useGetTenantByPropertyIdQuery } from "features/Api/tenantsApi";
 import QuickConnectMenu from "features/Rent/components/QuickConnect/QuickConnectMenu";
@@ -46,6 +49,9 @@ const ViewPropertyAccordionDetails = ({
     });
 
   const [sendEmail, sendEmailResult] = useSendEmailMutation();
+  const [addressOneTimePayment, addressOneTimePaymentResult] =
+    useAddressOneTimePaymentMutation();
+
   const { data: propertyOwnerData } = useGetUserDataByIdQuery(
     property?.createdBy,
     {
@@ -270,6 +276,7 @@ const ViewPropertyAccordionDetails = ({
                   templates,
                   redirectTo,
                   sendEmail,
+                  addressOneTimePayment,
                 )
               }
             />
@@ -285,6 +292,13 @@ const ViewPropertyAccordionDetails = ({
             ? "Email sent successfully. Check spam if necessary."
             : "Error sending email."
         }
+      />
+
+      <CustomSnackbar
+        showSnackbar={addressOneTimePaymentResult.isSuccess}
+        setShowSnackbar={() => {}}
+        severity="success"
+        title="One time payment sent successfully"
       />
     </Stack>
   );

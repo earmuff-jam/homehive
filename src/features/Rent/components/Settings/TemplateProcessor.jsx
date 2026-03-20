@@ -22,6 +22,7 @@ export const handleQuickConnectAction = (
   templates,
   redirectTo,
   sendEmail,
+  addressOneTimePayment,
 ) => {
   const today = dayjs();
   const user = fetchLoggedInUser();
@@ -58,11 +59,12 @@ export const handleQuickConnectAction = (
     }
 
     case OneTimePaymentRequest: {
-      // TODO:
-      // 1. gather data
-      // 2. send to stripe fn to add 1 time charge request to tenant
-      // 3. write backend fn to do that.
-      // 4. let the webhook handle rest
+      addressOneTimePayment({
+        email: primaryTenant?.email,
+        propertyId: property?.id,
+        createdBy: user?.uid,
+        stripeCustomerId: primaryTenant?.stripeCustomerId || "",
+      });
       break;
     }
 
