@@ -205,7 +205,7 @@ options.
   <p>
     <strong>• SEMI ANNUAL LEASE RENEWAL:</strong><br />
     If you choose to switch to a semi-annual lease, please be advised that the monthly rent will increase by 
-    {{ rentIncrement }} US Dollars only. This option provides flexibility but comes with a higher monthly cost.
+    {{rentIncrement}} US Dollars. This option provides flexibility but comes with a higher monthly cost.
   </p>
 
   <p style="font-weight: bold;">
