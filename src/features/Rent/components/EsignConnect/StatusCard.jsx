@@ -97,8 +97,10 @@ export default function StatusCard({
       </Box>
       <Box margin={0.5}>
         <Alert severity="warning">
-          Landlord tenant laws may vary by city and property type. This platform
-          provides document automation services, not legal services.
+          <Typography variant="subtitle2">
+            Landlord tenant laws may vary by city and property type. This
+            platform provides document automation services, not legal services.
+          </Typography>
         </Alert>
       </Box>
 

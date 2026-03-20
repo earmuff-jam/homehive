@@ -76,7 +76,11 @@ exports[`StatusCard tests snapshot tests matches snapshot when not connected 1`]
         <div
           class="MuiAlert-message css-zioonp-MuiAlert-message"
         >
-          Landlord tenant laws may vary by city and property type. This platform provides document automation services, not legal services.
+          <h6
+            class="MuiTypography-root MuiTypography-subtitle2 css-1ypmsg6-MuiTypography-root"
+          >
+            Landlord tenant laws may vary by city and property type. This platform provides document automation services, not legal services.
+          </h6>
         </div>
       </div>
     </div>
