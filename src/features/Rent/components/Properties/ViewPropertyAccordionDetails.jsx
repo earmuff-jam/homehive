@@ -24,7 +24,7 @@ import AButton from "common/AButton";
 import CustomSnackbar from "common/CustomSnackbar";
 import EmptyComponent from "common/EmptyComponent";
 import { useSendEmailMutation } from "features/Api/externalIntegrationsApi";
-import { useLazyGetUserDataByIdQuery } from "features/Api/firebaseUserApi";
+import { useGetUserDataByIdQuery } from "features/Api/firebaseUserApi";
 import { useGetTenantByPropertyIdQuery } from "features/Api/tenantsApi";
 import QuickConnectMenu from "features/Rent/components/QuickConnect/QuickConnectMenu";
 import { handleQuickConnectAction } from "features/Rent/components/Settings/TemplateProcessor";
@@ -46,8 +46,12 @@ const ViewPropertyAccordionDetails = ({
     });
 
   const [sendEmail, sendEmailResult] = useSendEmailMutation();
-  const [getPropertyOwnerData, getPropertyOwnerDataResult] =
-    useLazyGetUserDataByIdQuery();
+  const { data: propertyOwnerData } = useGetUserDataByIdQuery(
+    property?.createdBy,
+    {
+      skip: !property?.createdBy,
+    },
+  );
 
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -60,7 +64,9 @@ const ViewPropertyAccordionDetails = ({
   const primaryTenant = tenants?.find((tenant) => tenant.isPrimary);
 
   const handleCloseQuickConnect = () => setAnchorEl(null);
-  const handleOpenQuickConnect = (ev) => setAnchorEl(ev.currentTarget);
+  const handleOpenQuickConnect = (ev) => {
+    setAnchorEl(ev.currentTarget);
+  };
 
   const { nextPaymentDueDate, totalRent } = useSelectedPropertyDetails(
     property,
@@ -82,11 +88,7 @@ const ViewPropertyAccordionDetails = ({
     return stored ? JSON.parse(stored) : DefaultRentalAppEmailTemplates;
   }, []);
 
-  if (
-    isGetTenantsLoading ||
-    isRentDetailsLoading ||
-    getPropertyOwnerDataResult.isLoading
-  )
+  if (isGetTenantsLoading || isRentDetailsLoading)
     return <Skeleton height="10rem" />;
 
   if (!tenants || tenants.length === 0) {
@@ -242,10 +244,11 @@ const ViewPropertyAccordionDetails = ({
             <AButton
               label="Quick Connect"
               disabled={tenants?.length <= 0}
-              onClick={(e) => {
-                e.stopPropagation();
-                getPropertyOwnerData(property?.createdBy);
-                handleOpenQuickConnect(e);
+              type="button"
+              onClick={(ev) => {
+                ev.preventDefault();
+                ev.stopPropagation();
+                handleOpenQuickConnect(ev);
               }}
               size="small"
               variant="contained"
@@ -263,7 +266,7 @@ const ViewPropertyAccordionDetails = ({
                   totalRent,
                   nextPaymentDueDate,
                   primaryTenant,
-                  getPropertyOwnerDataResult.data,
+                  propertyOwnerData,
                   templates,
                   redirectTo,
                   sendEmail,
