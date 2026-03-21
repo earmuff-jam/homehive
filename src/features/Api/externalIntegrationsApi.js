@@ -160,7 +160,7 @@ export const externalIntegrationsApi = createApi({
       }),
       providesTags: [TagTypes.RecentStripeTransactions],
     }),
-    // createStripeCustomerLinkMutation ...
+    // createStripeCustomerLink ...
     // defines a function that creates stripe customer for subscription
     createStripeCustomerLink: builder.mutation({
       query: (data) => ({

@@ -6,6 +6,7 @@ import { PaymentRounded } from "@mui/icons-material";
 import {
   Alert,
   Box,
+  Button,
   Dialog,
   DialogActions,
   DialogContent,
@@ -159,7 +160,8 @@ export default function ManageSubscription() {
       </DialogContent>
 
       <DialogActions sx={{ padding: "0rem 1rem 1rem 0rem", gap: 1 }}>
-        <AButton variant="text" label="Maybe later" onClick={() => logout()} />
+        {/* MUIv5 button to support logout */}
+        <Button variant="text" label="Maybe later" onClick={() => logout()} />
         <AButton
           disabled={alert?.value}
           variant="contained"

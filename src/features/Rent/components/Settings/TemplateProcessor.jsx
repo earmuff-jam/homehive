@@ -22,7 +22,7 @@ export const handleQuickConnectAction = (
   templates,
   redirectTo,
   sendEmail,
-  addressOneTimePayment,
+  setOnetimeCharge,
 ) => {
   const today = dayjs();
   const user = fetchLoggedInUser();
@@ -59,12 +59,7 @@ export const handleQuickConnectAction = (
     }
 
     case OneTimePaymentRequest: {
-      addressOneTimePayment({
-        email: primaryTenant?.email,
-        propertyId: property?.id,
-        createdBy: user?.uid,
-        stripeCustomerId: primaryTenant?.stripeCustomerId || "",
-      });
+      setOnetimeCharge(true);
       break;
     }
 
