@@ -202,7 +202,7 @@ export const externalIntegrationsApi = createApi({
       query: (data) => ({
         method: "POST",
         body: JSON.stringify({
-          fUrl: "0028_AddressOneTimePayment",
+          fUrl: "0028_AddressOnetimePayment",
           fMethod: "POST",
           payload: data,
         }),
