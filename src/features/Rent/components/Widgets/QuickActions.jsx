@@ -125,8 +125,9 @@ export default function QuickActions({ property }) {
   const isOwnerCoveredUtilities = watch("isOwnerCoveredUtilities");
 
   const sevenDaysAgo = dayjs().subtract(7, "day");
-  const hasRecentPaymentAttemptBeenMade = rentList.some((rent) =>
-    dayjs(rent.updatedOn).isAfter(sevenDaysAgo),
+  const hasRecentPaymentAttemptBeenMade = rentList.some(
+    (rent) =>
+      !rent.customEventType && dayjs(rent.updatedOn).isAfter(sevenDaysAgo),
   );
 
   useEffect(() => {

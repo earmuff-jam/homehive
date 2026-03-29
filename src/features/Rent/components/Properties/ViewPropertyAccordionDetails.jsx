@@ -139,7 +139,6 @@ const ViewPropertyAccordionDetails = ({
       createdOn: dayjs().toISOString(),
       updatedBy: user?.uid,
       updatedOn: dayjs().toISOString(),
-      stripeCustomerId: primaryTenant?.stripeCustomerId || "",
     });
   };
 
