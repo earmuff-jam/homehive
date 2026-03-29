@@ -160,7 +160,7 @@ export const externalIntegrationsApi = createApi({
       }),
       providesTags: [TagTypes.RecentStripeTransactions],
     }),
-    // createStripeCustomerLinkMutation ...
+    // createStripeCustomerLink ...
     // defines a function that creates stripe customer for subscription
     createStripeCustomerLink: builder.mutation({
       query: (data) => ({
@@ -196,6 +196,18 @@ export const externalIntegrationsApi = createApi({
         }),
       }),
     }),
+    // addressOneTimePayment ...
+    // defines a function that allows property owners to send one time payment
+    addressOneTimePayment: builder.mutation({
+      query: (data) => ({
+        method: "POST",
+        body: JSON.stringify({
+          fUrl: "0028_AddressOnetimePayment",
+          fMethod: "POST",
+          payload: data,
+        }),
+      }),
+    }),
   }),
 });
 
@@ -205,6 +217,7 @@ export const {
   useGetWorkspacesMutation,
   useCreateTemplateMutation,
   useDeleteTemplateMutation,
+  useAddressOneTimePaymentMutation,
   useCreateEsignFromTemplateMutation,
   useCheckStripeAccountStatusQuery,
   useCreateStripeAccountMutation,
