@@ -2,12 +2,7 @@ import React, { useMemo } from "react";
 
 import dayjs from "dayjs";
 
-import {
-  AddRounded,
-  CommentRounded,
-  NoteRounded,
-  Remove,
-} from "@mui/icons-material";
+import { CommentRounded, Remove } from "@mui/icons-material";
 import { Stack, Typography } from "@mui/material";
 import EmptyComponent from "common/EmptyComponent";
 import relativeTime from "dayjs/plugin/relativeTime";
