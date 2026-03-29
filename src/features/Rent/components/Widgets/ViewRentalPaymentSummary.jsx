@@ -2,6 +2,7 @@ import React, { useMemo } from "react";
 
 import dayjs from "dayjs";
 
+import { CommentRounded, Remove } from "@mui/icons-material";
 import { Stack, Typography } from "@mui/material";
 import EmptyComponent from "common/EmptyComponent";
 import relativeTime from "dayjs/plugin/relativeTime";
@@ -74,13 +75,35 @@ const ViewRentalPaymentSummary = ({ rentData = [] }) => {
     data: rentData,
     enableColumnActions: false,
     enableTopToolbar: false,
+    enableExpandAll: false,
+    // hides header for expand column
+    displayColumnDefOptions: {
+      "mrt-row-expand": {
+        header: "",
+      },
+    },
     initialState: {
       density: "compact",
       sorting: [{ id: "updatedOn", desc: true }],
     },
     renderEmptyRowsFallback: () => <EmptyComponent />,
+    renderDetailPanel: ({ row }) => {
+      const note = row?.original?.note;
+      return note ? (
+        <Typography variant="caption" fontStyle="italic">
+          {row?.original?.note}
+        </Typography>
+      ) : null;
+    },
     mrtTheme: (theme) => ({
       baseBackgroundColor: theme.palette.transparent.main,
+    }),
+    muiExpandButtonProps: ({ row }) => ({
+      children: row.getIsExpanded() ? (
+        <Remove sx={{ height: "0.875rem", width: "0.875rem" }} />
+      ) : (
+        <CommentRounded sx={{ height: "0.875rem", width: "0.875rem" }} />
+      ),
     }),
     muiTableContainerProps: {
       sx: {
