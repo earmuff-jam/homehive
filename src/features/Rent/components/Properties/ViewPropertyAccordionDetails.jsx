@@ -52,7 +52,7 @@ import {
 // DefaultOneTimePaymentValues ...
 // defines the default values for one time payment form
 const DefaultOneTimePaymentValues = {
-  amount: 0,
+  amount: "",
   note: "",
 };
 
@@ -299,9 +299,10 @@ const ViewPropertyAccordionDetails = ({
               >
                 {primaryTenant?.email}
               </Typography>
-              <Tooltip title="Send Email">
+              <Tooltip title="Create personalized email">
                 <IconButton
                   size="small"
+                  component="a"
                   href={`mailto:${primaryTenant?.email}`}
                   target="_blank"
                 >
