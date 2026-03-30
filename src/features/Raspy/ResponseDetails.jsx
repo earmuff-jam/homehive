@@ -14,6 +14,8 @@ import {
 } from "@mui/material";
 import EmptyComponent from "common/EmptyComponent";
 import { pluralize } from "common/utils";
+import RaspyAIPieChart from "features/Raspy/VisualElements/RaspyAIPieChart";
+import RaspyAISeriesChart from "features/Raspy/VisualElements/RaspyAISeriesChart";
 
 const RecommendedActionList = ({ data = [] }) => {
   if (data?.length <= 0) {
@@ -125,6 +127,12 @@ export default function ResponseDetails({ data = {} }) {
 
   const portfolioHealth = data?.portfolioHealth || {};
   const financialHealth = data?.financialHealth || {};
+  const projectedRentalChangeData = data?.projectedRentalChange || [];
+  const projectedYearlyRentData = data?.projectedYearlyRent || [];
+
+  const isProjectedDatasetEmpty =
+    projectedRentalChangeData.length <= 0 ||
+    projectedYearlyRentData.length <= 0;
   return (
     <Stack spacing={1}>
       {/* Recommended Action Alert Blocks */}
@@ -170,6 +178,27 @@ export default function ResponseDetails({ data = {} }) {
           data={financialHealth?.securityDepositsCollected || 0}
           label="Collected Security Deposits"
         />
+      </Stack>
+      <Stack
+        spacing={1}
+        justifyContent="space-between"
+        direction={{ sm: "row", xs: "column" }}
+        alignSelf={isProjectedDatasetEmpty ? "center" : "inherit"}
+      >
+        {isProjectedDatasetEmpty ? (
+          <EmptyComponent caption="No recommendations to display" />
+        ) : (
+          <>
+            <RaspyAISeriesChart
+              label="Rental Income Projection"
+              data={projectedRentalChangeData}
+            />
+            <RaspyAIPieChart
+              label="Collected Rents"
+              data={projectedYearlyRentData}
+            />
+          </>
+        )}
       </Stack>
       {/* Recommended Actions List View */}
       <Stack>
