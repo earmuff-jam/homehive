@@ -796,7 +796,10 @@ export default function AssociateTenantPopup({
           variant="outlined"
           type="submit"
           disabled={
-            !isValid || (!isSoR && !isPrimaryTenant) || showLateFeeAlert
+            !isValid ||
+            Object.keys(errors).length > 0 ||
+            (!isSoR && !isPrimaryTenant) ||
+            showLateFeeAlert
           }
         />
 
