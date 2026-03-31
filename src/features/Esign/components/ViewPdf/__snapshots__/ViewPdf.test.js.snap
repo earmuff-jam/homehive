@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ViewPdf Tests ViewPdf Snapshot Tests matches snapshot 1`] = `
+<div>
+  <div
+    class="MuiStack-root css-18pmt2b-MuiStack-root"
+  />
+</div>
+`;

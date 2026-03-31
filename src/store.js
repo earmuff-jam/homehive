@@ -1,5 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { analyticsApi } from "features/Api/analyticsApi";
+import { externalIntegrationMultipart } from "features/Api/externalIntegrationMultipart";
 import { externalIntegrationsApi } from "features/Api/externalIntegrationsApi";
 import { firebaseUserApi } from "features/Api/firebaseUserApi";
 import { invoiceApi } from "features/Api/invoiceApi";
@@ -22,6 +23,8 @@ export const store = configureStore({
     [subscriptionApi.reducerPath]: subscriptionApi.reducer,
     [externalIntegrationsApi.reducerPath]: externalIntegrationsApi.reducer,
     [raspyApi.reducerPath]: raspyApi.reducer,
+    [externalIntegrationMultipart.reducerPath]:
+      externalIntegrationMultipart.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat([
@@ -35,5 +38,6 @@ export const store = configureStore({
       subscriptionApi.middleware,
       externalIntegrationsApi.middleware,
       raspyApi.middleware,
+      externalIntegrationMultipart.middleware,
     ]),
 });

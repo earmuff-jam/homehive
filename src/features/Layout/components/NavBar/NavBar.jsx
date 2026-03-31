@@ -21,10 +21,12 @@ import {
   isValidFeatureFlagsForRoutes,
 } from "common/ApplicationConfig";
 import {
+  MainEsignAppRouteUri,
   MainInvoiceAppRouteUri,
   MainRentAppRouteUri,
   fetchLoggedInUser,
 } from "common/utils";
+import { EsignAppRoutes } from "features/Esign/Routes";
 import { InvoiceAppRoutes } from "features/Invoice/Routes";
 import NavigationGroup from "features/Layout/components/NavBar/NavigationGroup";
 import { buildChildrenRoutes } from "features/Layout/utils";
@@ -124,6 +126,8 @@ export default function NavBar({
                 childRoutes = buildChildrenRoutes(InvoiceAppRoutes, user);
               } else if (path.startsWith(MainRentAppRouteUri)) {
                 childRoutes = buildChildrenRoutes(RentalAppRoutes, user);
+              } else if (path.startsWith(MainEsignAppRouteUri)) {
+                childRoutes = buildChildrenRoutes(EsignAppRoutes, user);
               }
 
               if (childRoutes.length > 0) {

@@ -15,9 +15,7 @@ exports[`EmptyComponent Jest Tests EmptyComponent Snapshot tests should render t
     >
       <span
         class="MuiTypography-root MuiTypography-caption css-mpaqru-MuiTypography-root"
-      >
-         
-      </span>
+      />
     </div>
   </div>
 </DocumentFragment>

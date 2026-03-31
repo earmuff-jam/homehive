@@ -1,6 +1,7 @@
 import React, { lazy } from "react";
 
 import {
+  ArchitectureRounded,
   CottageRounded,
   HomeRounded,
   HomeWorkRounded,
@@ -9,10 +10,12 @@ import {
 } from "@mui/icons-material";
 import {
   HomeRouteUri,
+  MainEsignAppRouteUri,
   MainInvoiceAppRouteUri,
   MainRentAppRouteUri,
   NotesRouteUri,
 } from "common/utils";
+import { EsignAppRoutes } from "features/Esign/Routes";
 import { InvoiceAppRoutes } from "features/Invoice/Routes";
 import SplashPage from "features/Layout/SplashPage";
 import { RentalAppRoutes } from "features/Rent/Routes";
@@ -52,7 +55,7 @@ export const MainAppRoutes = [
       />
     ),
     icon: <HomeWorkRounded fontSize="small" />,
-    requiredFlags: ["invoicerPro"],
+    requiredFlags: [],
     config: {
       breadcrumb: {
         value: "Rent App",
@@ -75,7 +78,7 @@ export const MainAppRoutes = [
       />
     ),
     icon: <ReceiptRounded fontSize="small" />,
-    requiredFlags: ["invoicer"],
+    requiredFlags: [],
     config: {
       breadcrumb: {
         value: "Invoice App",
@@ -88,11 +91,33 @@ export const MainAppRoutes = [
   },
   {
     id: 4,
+    label: "Esign App",
+    path: "/esign/*",
+    element: (
+      <SubAppRouter
+        routes={EsignAppRoutes}
+        fallbackPath={MainEsignAppRouteUri}
+      />
+    ),
+    icon: <ArchitectureRounded fontSize="small" />,
+    requiredFlags: [],
+    config: {
+      breadcrumb: {
+        value: "Esign App",
+        icon: <ArchitectureRounded fontSize="small" />,
+      },
+      displayInNavBar: true,
+      displayHelpSelector: true,
+      displayPrintSelector: true,
+    },
+  },
+  {
+    id: 5,
     label: "Release Notes",
     path: NotesRouteUri,
     element: <ReleaseNotes />,
     icon: <WhatshotRounded fontSize="small" />,
-    requiredFlags: ["invoicer"],
+    requiredFlags: [],
     config: {
       breadcrumb: {
         value: "Release Notes",
