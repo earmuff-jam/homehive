@@ -101,9 +101,11 @@ export default function PdfEditor() {
   const handleUpload = async (e) => {
     const uploadedFile = e.target.files[0];
     if (!uploadedFile) return;
+
     setFile(uploadedFile);
-    setSignatureBoxes([]);
     setScrollTop(0);
+    setSignatureBoxes([]);
+
     pageHeights.current = {};
     pageOffsets.current = {};
 
@@ -134,9 +136,11 @@ export default function PdfEditor() {
       pageHeights.current[pageNum] = viewport.height;
 
       const annotations = await page.getAnnotations();
+
       annotations.forEach((a) => {
         if (a.subtype !== "Widget") return;
         const fieldName = a.fieldName || `field_${pageNum}_${a.id}`;
+
         const [x1, y1, x2, y2] = a.rect;
         const left = x1 * SCALE;
         const top = viewport.height - y2 * SCALE;
@@ -183,8 +187,18 @@ export default function PdfEditor() {
             top: `${top}px`,
             width: `${width}px`,
             height: `${height}px`,
+            fontSize: a?.multiLine ? `16px` : `${height * 0.6}px`,
+            lineHeight: a?.multiLine ? `16px` : `${height}px`,
+            padding: "2px 4px",
+            boxSizing: "border-box",
+            border: "1px solid #ccc",
+            fontFamily: "Helvetica, Arial, sans-serif",
+            fontWeight: "500",
           });
+
           pageDiv.appendChild(input);
+
+          // always adds to newFields, even if hidden to protect export pdf from crashing out
           newFields.push({
             name: fieldName,
             value: a.fieldValue || "",
@@ -195,42 +209,8 @@ export default function PdfEditor() {
         if (a.fieldType === "Btn" && !a.radioButton) {
           const input = document.createElement("input");
           input.type = "checkbox";
-          input.checked = a.fieldValue === "Yes" || a.fieldValue === "On";
-          Object.assign(input.style, {
-            position: "absolute",
-            left: `${left}px`,
-            top: `${top}px`,
-            width: `${width}px`,
-            height: `${height}px`,
-            cursor: "pointer",
-            opacity: "0.7",
-            margin: "0",
-          });
-          input.onchange = () => {
-            setFields((prev) => {
-              const copy = [...prev];
-              const f = copy.find(
-                (f) => f.name === fieldName && f.pageNum === pageNum,
-              );
-              if (f) f.value = input.checked ? "Yes" : "Off";
-              return copy;
-            });
-          };
-          pageDiv.appendChild(input);
-          newFields.push({
-            name: fieldName,
-            type: "checkbox",
-            value: a.fieldValue || a.defaultFieldValue || "",
-            pageNum,
-          });
-        }
-
-        if (a.fieldType === "Btn") {
-          const input = document.createElement("input");
-          input.type = "checkbox";
 
           const checked = a.fieldValue === "Yes" || a.fieldValue === "On";
-
           input.checked = checked;
 
           Object.assign(input.style, {
@@ -266,7 +246,7 @@ export default function PdfEditor() {
                   type: "checkbox",
                   value,
                   pageNum,
-                  rect: a.rect, // leave original placement for [x] mark
+                  rect: a.rect,
                 });
               }
 
@@ -276,12 +256,13 @@ export default function PdfEditor() {
 
           pageDiv.appendChild(input);
 
+          // always adds to newFields, even if hidden to protect export pdf from crashing out
           newFields.push({
             name: fieldName,
             type: "checkbox",
             value: checked ? "Yes" : "Off",
             pageNum,
-            rect: a.rect, // leave original placement for [x] mark
+            rect: a.rect,
           });
         }
       });
@@ -289,6 +270,7 @@ export default function PdfEditor() {
       container.appendChild(pageDiv);
     }
 
+    console.debug("Captured fields:", newFields.length);
     setFields(newFields);
 
     requestAnimationFrame(() => {
@@ -324,9 +306,9 @@ export default function PdfEditor() {
       return;
     }
 
-    return signatureBoxes?.map((signatureBox) => ({
+    return signatureBoxes?.map((signatureBox, index) => ({
       document_index: 0,
-      api_id: "test_sig",
+      api_id: `sig_${index}`,
       type: "signature",
       signer:
         signatureBox?.signerId === "creator"
@@ -349,55 +331,89 @@ export default function PdfEditor() {
 
     const bytes = await file.arrayBuffer();
     const pdfDoc = await PDFDocument.load(bytes);
-
-    const helveticaFont = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
-
     const form = pdfDoc.getForm();
-    const pdfFields = form.getFields();
+    const pages = pdfDoc.getPages();
 
-    pdfFields.forEach((f) => {
+    const textFields = fields.filter((f) => f.type === "text");
+    const checkboxFields = fields.filter((f) => f.type === "checkbox");
+
+    textFields.forEach((stateField) => {
       try {
-        const stateField = fields.find((sf) => sf.name === f.getName());
-        if (!stateField) return;
-
-        if (stateField.type === "text") {
-          const field = form.getTextField(stateField.name);
-          field.setText(stateField.value || "");
-        }
+        const textField = form.getTextField(stateField.name);
+        textField.setText(stateField.value || "");
       } catch (err) {
-        console.debug("Skipping field due to error", f.getName(), err);
+        console.debug("Failed to set text:", stateField.name, err);
       }
     });
 
-    fields.forEach((stateField) => {
-      if (
-        stateField.type === "checkbox" &&
-        (stateField.value === "Yes" || stateField.value === "On")
-      ) {
-        const rect = stateField.rect;
-        if (!rect) return;
+    // handle checkboxes differently, since we have to burn the false values
+    // as well in the application
+    for (const stateField of checkboxFields) {
+      try {
+        const pageIndex = stateField.pageNum - 1; // 0-indexed
+        if (pageIndex < 0 || pageIndex >= pages.length) continue;
 
-        const [x1, y1, , y2] = rect;
-        const page = pdfDoc.getPage(stateField.pageNum - 1);
-        const boxHeight = y2 - y1;
-        const fontSize = boxHeight * 0.75;
+        const page = pages[pageIndex];
+        const [x1, y1, x2, y2] = stateField.rect;
 
-        page.drawText("X", {
-          x: x1,
-          y: y1 + boxHeight * 0.15,
-          size: fontSize + 3,
-          font: helveticaFont,
+        const isChecked =
+          stateField.value === "Yes" || stateField.value === "On";
+
+        // const x = x1 + 2; // slight offset
+        // const y = y1 + 2;
+        const x = x1;
+        const y = y1;
+
+        // Use simple ASCII [x] and [ ] instead of Unicode
+        const symbol = isChecked ? "[x]" : "[ ]";
+
+        page.drawText(symbol, {
+          x: x,
+          y: y,
+          size: 10,
+          font: await pdfDoc.embedFont(StandardFonts.Helvetica),
           color: rgb(0, 0, 0),
         });
+
+        try {
+          const field = form.getCheckBox(stateField.name);
+          form.removeField(field);
+        } catch (e) {
+          // eat the exception; no error
+          console.debug("Failed to remove the checkbox field", e);
+        }
+      } catch (err) {
+        console.debug("Failed to process checkbox:", stateField.name, err);
+
+        // if buring the checkbox fails, we let the acroForm handle it
+        try {
+          const cb = form.getCheckBox(stateField.name);
+          if (stateField.value === "Yes" || stateField.value === "On") {
+            cb.check();
+          } else {
+            cb.uncheck();
+          }
+        } catch (e) {
+          // do nothing; eat the exception
+          console.debug(
+            "Failed to process checkbox using acroform after attempting to burn the checkboxes. ",
+            e,
+          );
+        }
       }
-    });
+    }
 
-    const newBytes = await pdfDoc.save();
+    try {
+      form.flatten();
+    } catch (err) {
+      console.error("Flatten failed:", err);
+    }
 
+    const finalBytes = await pdfDoc.save();
     const formData = new FormData();
     formData.append(
       "file",
-      new Blob([newBytes], { type: "application/pdf" }),
+      new Blob([finalBytes], { type: "application/pdf" }),
       "prepared-esign.pdf",
     );
     formData.append("fUrl", "0029_SendPreparedEsignDocument");
