@@ -104,8 +104,8 @@ const withDisclaimer = (WrappedComponent) => {
                 variant="body2"
                 sx={{ mt: 1, fontStyle: "italic", fontWeight: "bold" }}
               >
-                By clicking &quot;I Understand&quot;, you confirm that you have read and
-                agree to this disclaimer.
+                By clicking &quot;I Understand&quot;, you confirm that you have
+                read and agree to this disclaimer.
               </Typography>
             </Box>
 
