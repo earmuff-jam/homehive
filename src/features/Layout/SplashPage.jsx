@@ -2,7 +2,11 @@ import React, { useEffect } from "react";
 
 import { useNavigate } from "react-router-dom";
 
-import { HomeRounded, ReceiptRounded } from "@mui/icons-material";
+import {
+  ArchitectureRounded,
+  HomeRounded,
+  ReceiptRounded,
+} from "@mui/icons-material";
 import {
   Alert,
   Box,
@@ -15,6 +19,7 @@ import {
   InvoiceDashboardRouteUri,
   PropertiesRouteUri,
   RentalRouteUri,
+  ViewEsignRouteUri,
   fetchLoggedInUser,
 } from "common/utils";
 import { useAuthenticateMutation } from "features/Api/firebaseUserApi";
@@ -105,7 +110,7 @@ export default function SplashPage() {
           </Typography>
         </Box>
 
-        <Stack direction={{ sm: "column", md: "row" }} gap={2}>
+        <Stack direction={{ sm: "column", md: "row" }} flexWrap="wrap" gap={2}>
           <TitleCard
             title="Rent App"
             subtitle="Manage tenants, leases, and payments"
@@ -120,6 +125,7 @@ export default function SplashPage() {
                 sx={{ fontSize: 32, color: "primary.main", mr: 1.5 }}
               />
             }
+            sx={{ flex: { md: 1 } }}
             onClick={handleAuthenticate}
           />
           <TitleCard
@@ -135,7 +141,24 @@ export default function SplashPage() {
                 sx={{ fontSize: 32, color: "secondary.main", mr: 1.5 }}
               />
             }
+            sx={{ flex: { md: 1 } }}
             onClick={() => navigate(InvoiceDashboardRouteUri)}
+          />
+          <TitleCard
+            title="Esign App"
+            subtitle="Upload documents to Esign"
+            chipLabels={[
+              "Digital Signing",
+              "Real-time Tracking",
+              "Docusign Connected",
+            ]}
+            icon={
+              <ArchitectureRounded
+                sx={{ fontSize: 32, color: "primary.main", mr: 1.5 }}
+              />
+            }
+            sx={{ flex: { md: "100%" } }}
+            onClick={() => navigate(ViewEsignRouteUri)}
           />
         </Stack>
         {/* Reviews */}

@@ -1,0 +1,118 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AddSigner Tests AddSigner Snapshot matches snapshot 1`] = `
+<div>
+  <div
+    class="MuiStack-root css-1i9ykw0-MuiStack-root"
+  >
+    <div
+      class="MuiStack-root css-3y1137-MuiStack-root"
+    >
+      <div
+        class="MuiStack-root css-8xlmm4-MuiStack-root"
+      >
+        <button
+          aria-label="Edit name and email for Creator"
+          class="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedPrimary MuiButton-sizeSmall MuiButton-containedSizeSmall MuiButton-colorPrimary MuiButton-root MuiButton-contained MuiButton-containedPrimary MuiButton-sizeSmall MuiButton-containedSizeSmall MuiButton-colorPrimary css-tw6tsg-MuiButtonBase-root-MuiButton-root"
+          data-mui-internal-clone-element="true"
+          tabindex="0"
+          type="button"
+        >
+          <span
+            class="MuiButton-icon MuiButton-startIcon MuiButton-iconSizeSmall css-d8i980-MuiButton-startIcon"
+          >
+            <svg
+              aria-hidden="true"
+              class="MuiSvgIcon-root MuiSvgIcon-fontSizeSmall css-120dh41-MuiSvgIcon-root"
+              data-testid="EditRoundedIcon"
+              focusable="false"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M3 17.46v3.04c0 .28.22.5.5.5h3.04c.13 0 .26-.05.35-.15L17.81 9.94l-3.75-3.75L3.15 17.1q-.15.15-.15.36M20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.996.996 0 0 0-1.41 0l-1.83 1.83 3.75 3.75z"
+              />
+            </svg>
+          </span>
+          Edit 
+          Creator
+        </button>
+        <div
+          class="MuiButtonBase-root MuiChip-root MuiChip-filled MuiChip-sizeSmall MuiChip-colorDefault MuiChip-clickable MuiChip-clickableColorDefault MuiChip-deletable MuiChip-deletableColorDefault MuiChip-filledDefault css-1p5u4zy-MuiButtonBase-root-MuiChip-root"
+          role="button"
+          tabindex="0"
+        >
+          <span
+            class="MuiChip-label MuiChip-labelSmall css-eccknh-MuiChip-label"
+          >
+            Creator
+          </span>
+          <svg
+            aria-hidden="true"
+            class="MuiSvgIcon-root MuiSvgIcon-fontSizeSmall MuiChip-deleteIcon MuiChip-deleteIconSmall MuiChip-deleteIconColorDefault MuiChip-deleteIconFilledColorDefault css-120dh41-MuiSvgIcon-root"
+            data-testid="CancelRoundedIcon"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2m4.3 14.3c-.39.39-1.02.39-1.41 0L12 13.41 9.11 16.3c-.39.39-1.02.39-1.41 0a.996.996 0 0 1 0-1.41L10.59 12 7.7 9.11a.996.996 0 0 1 0-1.41c.39-.39 1.02-.39 1.41 0L12 10.59l2.89-2.89c.39-.39 1.02-.39 1.41 0s.39 1.02 0 1.41L13.41 12l2.89 2.89c.38.38.38 1.02 0 1.41"
+            />
+          </svg>
+        </div>
+        <div
+          class="MuiButtonBase-root MuiChip-root MuiChip-filled MuiChip-sizeSmall MuiChip-colorDefault MuiChip-clickable MuiChip-clickableColorDefault MuiChip-deletable MuiChip-deletableColorDefault MuiChip-filledDefault css-1hs2b41-MuiButtonBase-root-MuiChip-root"
+          role="button"
+          tabindex="0"
+        >
+          <span
+            class="MuiChip-label MuiChip-labelSmall css-eccknh-MuiChip-label"
+          >
+            Signer 1
+          </span>
+          <svg
+            aria-hidden="true"
+            class="MuiSvgIcon-root MuiSvgIcon-fontSizeSmall MuiChip-deleteIcon MuiChip-deleteIconSmall MuiChip-deleteIconColorDefault MuiChip-deleteIconFilledColorDefault css-120dh41-MuiSvgIcon-root"
+            data-testid="CancelRoundedIcon"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2m4.3 14.3c-.39.39-1.02.39-1.41 0L12 13.41 9.11 16.3c-.39.39-1.02.39-1.41 0a.996.996 0 0 1 0-1.41L10.59 12 7.7 9.11a.996.996 0 0 1 0-1.41c.39-.39 1.02-.39 1.41 0L12 10.59l2.89-2.89c.39-.39 1.02-.39 1.41 0s.39 1.02 0 1.41L13.41 12l2.89 2.89c.38.38.38 1.02 0 1.41"
+            />
+          </svg>
+        </div>
+      </div>
+      <div
+        class="MuiBox-root css-0"
+      >
+        <div
+          aria-label="Add a new signer as a tenant to sign the document"
+          class="MuiBox-root css-0"
+          data-mui-internal-clone-element="true"
+        >
+          <button
+            class="MuiButtonBase-root MuiButton-root MuiButton-outlined MuiButton-outlinedPrimary MuiButton-sizeSmall MuiButton-outlinedSizeSmall MuiButton-colorPrimary MuiButton-root MuiButton-outlined MuiButton-outlinedPrimary MuiButton-sizeSmall MuiButton-outlinedSizeSmall MuiButton-colorPrimary css-wyro15-MuiButtonBase-root-MuiButton-root"
+            tabindex="0"
+            type="button"
+          >
+            Add new signer
+          </button>
+        </div>
+      </div>
+    </div>
+    <span
+      class="MuiTypography-root MuiTypography-caption css-1374baf-MuiTypography-root"
+    >
+      Placing signature for 
+      <strong
+        style="color: rgb(37, 99, 235);"
+      >
+        Creator
+      </strong>
+        — click and drag on the PDF below to place their signature box. Select a different name above to switch.
+    </span>
+    <hr
+      class="MuiDivider-root MuiDivider-fullWidth css-1jpc804-MuiDivider-root"
+    />
+  </div>
+</div>
+`;

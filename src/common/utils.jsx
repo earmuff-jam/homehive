@@ -35,6 +35,11 @@ export const RecieverInforamtionRoutePath = "reciever";
 export const RecieverInforamtionRouteUri = "/invoice/reciever";
 export const InvoiceAppFaqRouteUri = "/invoice/faq";
 
+// Default Esign App Routes
+export const MainEsignAppRouteUri = "/esign";
+export const ViewEsignRoutePath = "documents";
+export const ViewEsignRouteUri = "/esign/documents";
+
 // pluralize ...
 // defines a function that returns extra word based on variable count
 // wordStr with ending letter "y" will transform into "ies"

@@ -16,6 +16,8 @@ import {
 import UserInfoViewer from "features/Invoice/components/UserInfo/UserInfoViewer";
 import { useAppTitle } from "hooks/useAppTitle";
 
+// DefaultReceiverInfo ...
+// defines the default values for the receiever info
 const DefaultReceiverInfo = {
   firstName: "",
   lastName: "",

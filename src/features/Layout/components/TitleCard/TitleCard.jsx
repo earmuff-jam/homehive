@@ -22,6 +22,7 @@ export default function TitleCard({
   subtitle,
   icon,
   chipLabels,
+  sx = {},
   onClick = () => {},
 }) {
   const theme = useTheme();
@@ -32,6 +33,7 @@ export default function TitleCard({
       elevation={0}
       onClick={onClick}
       sx={{
+        ...sx,
         width: smScreenSizeAndHigher ? "30rem" : "inherit",
         cursor: "pointer",
         transition: "transform 0.2s",
