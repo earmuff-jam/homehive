@@ -8,6 +8,7 @@ import CustomSnackbar from "common/CustomSnackbar";
 import EmptyComponent from "common/EmptyComponent";
 import RowHeader from "common/RowHeader";
 import { useSendPreparedDocumentMutation } from "features/Api/externalIntegrationMultipart";
+import withDisclaimer from "features/Esign/components/Esign/withDisclaimer";
 import UploadEsignDocument from "features/Esign/components/Esign/UploadEsignDocument";
 import AddSigner from "features/Esign/components/Signers/AddSigner";
 import ViewSigners from "features/Esign/components/Signers/ViewSigners";
@@ -42,7 +43,7 @@ const InitialSignerEnumValues = [
   },
 ];
 
-export default function PdfEditor() {
+const PdfEditor = () => {
   const containerRef = useRef(null);
   const dragState = useRef(null);
 
@@ -354,7 +355,7 @@ export default function PdfEditor() {
         if (pageIndex < 0 || pageIndex >= pages.length) continue;
 
         const page = pages[pageIndex];
-        const [x1, y1, x2, y2] = stateField.rect;
+        const [x1, y1] = stateField.rect;
 
         const isChecked =
           stateField.value === "Yes" || stateField.value === "On";
@@ -406,7 +407,7 @@ export default function PdfEditor() {
     try {
       form.flatten();
     } catch (err) {
-      console.error("Flatten failed:", err);
+      console.debug("Unable to flatten form.", err);
     }
 
     const finalBytes = await pdfDoc.save();
@@ -691,4 +692,6 @@ export default function PdfEditor() {
       />
     </Stack>
   );
-}
+};
+
+export default withDisclaimer(PdfEditor);
