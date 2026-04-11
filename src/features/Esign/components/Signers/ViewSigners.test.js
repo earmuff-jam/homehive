@@ -12,7 +12,7 @@ describe("ViewSigners Tests", () => {
             {
               id: "creator",
               role: "Creator",
-              email: "test@mail.com",
+              email_address: "test@mail.com",
               color: "#2563eb",
             },
           ]}
@@ -29,8 +29,8 @@ describe("ViewSigners Tests", () => {
       {
         id: "creator",
         role: "Creator",
-        name: "Mohit",
-        email: "m@gmail.com",
+        name: "Jane Doe",
+        email_address: "jane_doe47@gmail.com",
         color: "#2563eb",
       },
     ];
@@ -46,7 +46,7 @@ describe("ViewSigners Tests", () => {
 
       expect(screen.getByText("Assigned Signers:")).toBeInTheDocument();
       expect(screen.getByText("Creator")).toBeInTheDocument();
-      expect(screen.getByText("m@gmail.com")).toBeInTheDocument();
+      expect(screen.getByText("jane_doe47@gmail.com")).toBeInTheDocument();
     });
 
     it("shows success alert when counts match", () => {
@@ -70,8 +70,8 @@ describe("ViewSigners Tests", () => {
             {
               id: "creator",
               role: "Creator",
-              name: "Mohit",
-              email: "", // missing email
+              name: "Jane doe",
+              email_address: "", // missing email
               color: "#2563eb",
             },
           ]}

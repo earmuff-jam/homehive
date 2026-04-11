@@ -9,7 +9,7 @@ import TextFieldWithLabel from "common/TextFieldWithLabel";
 // defines the default signers
 const DefaultSigners = {
   name: "",
-  email: "",
+  email_address: "",
 };
 
 const EditSigners = ({ setEdit, signers, role, updateSignerDetails }) => {
@@ -34,7 +34,7 @@ const EditSigners = ({ setEdit, signers, role, updateSignerDetails }) => {
     if (selectedSigner) {
       reset({
         name: selectedSigner?.name,
-        email: selectedSigner?.email,
+        email_address: selectedSigner?.email_address,
       });
     }
   }, [signers, role]);
@@ -66,7 +66,7 @@ const EditSigners = ({ setEdit, signers, role, updateSignerDetails }) => {
         )}
       />
       <Controller
-        name="email"
+        name="email_address"
         control={control}
         rules={{
           required: "Email Address is required",
@@ -79,8 +79,8 @@ const EditSigners = ({ setEdit, signers, role, updateSignerDetails }) => {
           <TextFieldWithLabel
             {...field}
             label="Email"
-            error={!!errors.email}
-            errorMsg={errors.email?.message}
+            error={!!errors.email_address}
+            errorMsg={errors.email_address?.message}
             placeholder="The email address of the signer"
           />
         )}

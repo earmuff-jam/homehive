@@ -12,8 +12,8 @@ describe("EditSigners Tests", () => {
           signers={[
             {
               role: "Creator",
-              name: "Mohit",
-              email: "m@gmail.com",
+              name: "Jane Smith",
+              email_address: "jane_doe47@gmail.com",
             },
           ]}
           role="Creator"
@@ -31,8 +31,8 @@ describe("EditSigners Tests", () => {
     const signers = [
       {
         role: "Creator",
-        name: "Mohit",
-        email: "m@gmail.com",
+        name: "Jane Smith",
+        email_address: "jane_doe47@gmail.com",
       },
     ];
 
@@ -46,11 +46,11 @@ describe("EditSigners Tests", () => {
         />,
       );
 
-      // RHF reset fills values
-      expect(screen.getByDisplayValue("Mohit")).toBeInTheDocument();
-      expect(screen.getByDisplayValue("m@gmail.com")).toBeInTheDocument();
+      expect(screen.getByDisplayValue("Jane Smith")).toBeInTheDocument();
+      expect(
+        screen.getByDisplayValue("jane_doe47@gmail.com"),
+      ).toBeInTheDocument();
 
-      // also ensures inputs exist via placeholder (more stable than labels)
       expect(
         screen.getByPlaceholderText(/the name of the signer/i),
       ).toBeInTheDocument();

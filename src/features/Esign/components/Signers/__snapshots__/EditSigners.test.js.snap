@@ -31,7 +31,7 @@ exports[`EditSigners Tests EditSigners Snapshot Tests matches snapshot 1`] = `
             name="name"
             placeholder="The name of the signer. Eg, Jane Smith"
             type="text"
-            value="Mohit"
+            value="Jane Smith"
           />
           <fieldset
             aria-hidden="true"
@@ -74,10 +74,10 @@ exports[`EditSigners Tests EditSigners Snapshot Tests matches snapshot 1`] = `
             aria-invalid="false"
             class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputSizeSmall css-1pzfmz2-MuiInputBase-input-MuiOutlinedInput-input"
             id=":r1:"
-            name="email"
+            name="email_address"
             placeholder="The email address of the signer"
             type="text"
-            value="m@gmail.com"
+            value="jane_doe47@gmail.com"
           />
           <fieldset
             aria-hidden="true"

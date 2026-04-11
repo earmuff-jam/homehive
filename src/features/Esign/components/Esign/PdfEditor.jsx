@@ -36,7 +36,7 @@ const InitialSignerEnumValues = [
     id: "creator",
     role: "Creator",
     name: "",
-    email: "",
+    email_address: "",
     color: "#2563eb",
     order: 0,
   },
@@ -72,7 +72,7 @@ export default function PdfEditor() {
       id: `signer_${idx}`,
       role: `Signer ${idx}`,
       name: "",
-      email: "",
+      email_address: "",
       color: ColorEnumValues[Math.abs(colorIdx)],
       order: signers.length,
     };
@@ -85,7 +85,7 @@ export default function PdfEditor() {
 
       if (signer) {
         signer.name = data.name;
-        signer.email = data.email;
+        signer.email_address = data.email_address;
       }
     });
 
@@ -329,7 +329,7 @@ export default function PdfEditor() {
       api_id: "test_sig",
       type: "signature",
       signer:
-        signatureBox?.signerId === "landlord"
+        signatureBox?.signerId === "creator"
           ? 0
           : Number(signatureBox?.signerId?.split("_")[1]), // reads tenant_x number to determine the tenant number to sign
       page: signatureBox?.pageNum,
@@ -394,14 +394,6 @@ export default function PdfEditor() {
 
     const newBytes = await pdfDoc.save();
 
-    // --- 4. Optional: download locally for testing ---
-    const blob = new Blob([newBytes], { type: "application/pdf" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "prepared-esign.pdf";
-    a.click();
-
     const formData = new FormData();
     formData.append(
       "file",
@@ -412,6 +404,7 @@ export default function PdfEditor() {
     formData.append("fMethod", "POST");
     formData.append("title", "Lease agreement");
     formData.append("subject", "Requesting electronic signature");
+    formData.append("signers", JSON.stringify(signers));
     formData.append(
       "message",
       "Please review and sign the provided document at your earliest convenience",

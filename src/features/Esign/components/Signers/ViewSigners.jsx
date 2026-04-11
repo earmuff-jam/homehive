@@ -7,7 +7,7 @@ const ViewSigners = ({ signers = [], signatureBoxes = [] }) => {
   const isSignatureBoxesMatchesSigners =
     signatureBoxes?.length !== signers?.length;
   const isRequiredFieldsMissing =
-    signers?.filter((signer) => signer?.email).filter(Boolean)?.length <= 0;
+    signers?.filter((signer) => signer?.email_address).filter(Boolean)?.length <= 0;
   return (
     <Stack paddingTop="1rem">
       <Stack spacing={1}>
@@ -55,7 +55,7 @@ const ViewSigners = ({ signers = [], signatureBoxes = [] }) => {
               />
               <Stack>
                 <Typography variant="caption">{signer?.role}</Typography>
-                <Typography variant="caption">{signer?.email}</Typography>
+                <Typography variant="caption">{signer?.email_address}</Typography>
               </Stack>
             </Stack>
           ))}
