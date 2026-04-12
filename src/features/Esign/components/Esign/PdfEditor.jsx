@@ -1,20 +1,36 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 
-import { Box, Button, Stack } from "@mui/material";
+import { CurrencyLiraRounded } from "@mui/icons-material";
+import {
+  Alert,
+  Box,
+  Button,
+  Skeleton,
+  Stack,
+  Tooltip,
+  Typography,
+  keyframes,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
 import ConfirmationBox, {
   DefaultConfirmationBoxProps,
 } from "common/ConfirmationBox";
 import CustomSnackbar from "common/CustomSnackbar";
 import EmptyComponent from "common/EmptyComponent";
 import RowHeader from "common/RowHeader";
+import { fetchLoggedInUser } from "common/utils";
+import { useGetEtssTokensByEmailIdQuery } from "features/Api/etssTokenApi";
 import { useSendPreparedDocumentMutation } from "features/Api/externalIntegrationMultipart";
 import UploadEsignDocument from "features/Esign/components/Esign/UploadEsignDocument";
-import withDisclaimer from "features/Esign/components/Esign/withDisclaimer";
+import ViewTokenAlert from "features/Esign/components/Esign/ViewTokenAlert";
 import AddSigner from "features/Esign/components/Signers/AddSigner";
 import ViewSigners from "features/Esign/components/Signers/ViewSigners";
+import ViewTokenMenu from "features/Esign/components/TokenMenu/ViewTokenMenu";
 import SigningBox from "features/Esign/components/ViewPdf/SigningBox";
 import ViewPdf from "features/Esign/components/ViewPdf/ViewPdf";
 import ViewSigningFields from "features/Esign/components/ViewPdf/ViewSigningFields";
+import withDisclaimer from "features/Esign/withDisclaimer";
 import { produce } from "immer";
 import { PDFDocument } from "pdf-lib";
 import { StandardFonts, rgb } from "pdf-lib";
@@ -43,13 +59,37 @@ const InitialSignerEnumValues = [
   },
 ];
 
-const PdfEditor = () => {
-  const containerRef = useRef(null);
-  const dragState = useRef(null);
+const glitter = keyframes`
+  0% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 0px rgba(255,255,255,0));
+  }
+  50% {
+    transform: scale(1.25);
+    filter: drop-shadow(0 0 6px rgba(255,215,0,0.8));
+  }
+  100% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 0px rgba(255,255,255,0));
+  }
+`;
 
-  const overlayRef = useRef(null);
+const PdfEditor = () => {
+  const theme = useTheme();
+  const user = fetchLoggedInUser();
+
   const pageHeights = useRef({});
   const pageOffsets = useRef({});
+
+  const dragState = useRef(null);
+  const overlayRef = useRef(null);
+  const containerRef = useRef(null);
+
+  const {
+    data: validTokensForETSS,
+    isLoading: isLoadingValidTokensForETSS,
+    isSuccess: isSuccessValidTokensForETSS,
+  } = useGetEtssTokensByEmailIdQuery(user?.email);
 
   const [sendPreparedDocument, sendPrepareDocumentResult] =
     useSendPreparedDocumentMutation();
@@ -57,6 +97,8 @@ const PdfEditor = () => {
   const [file, setFile] = useState(null);
   const [fields, setFields] = useState([]);
   const [scrollTop, setScrollTop] = useState(0);
+  const [tokenCount, setTokenCount] = useState(0);
+  const [tokenAnchor, setTokenAnchor] = useState(null);
   const [activeSigner, setActiveSigner] = useState(null);
   const [signers, setSigners] = useState(InitialSignerEnumValues);
 
@@ -65,6 +107,15 @@ const PdfEditor = () => {
   const [showConfirmationBox, setShowConfirmationBox] = useState(
     DefaultConfirmationBoxProps,
   );
+
+  const isTokenAnchorOpen = Boolean(tokenAnchor);
+  const medFormFactor = useMediaQuery(theme.breakpoints.down("md"));
+
+  const handleCloseTokenAnchorMenu = () => setTokenAnchor(null);
+  const handleClickTokenAnchorMenu = (event) => {
+    event.stopPropagation();
+    setTokenAnchor(event.currentTarget);
+  };
 
   const addFollowUpSigners = () => {
     const idx = signers?.length;
@@ -271,7 +322,6 @@ const PdfEditor = () => {
       container.appendChild(pageDiv);
     }
 
-    console.debug("Captured fields:", newFields.length);
     setFields(newFields);
 
     requestAnimationFrame(() => {
@@ -351,7 +401,7 @@ const PdfEditor = () => {
     // as well in the application
     for (const stateField of checkboxFields) {
       try {
-        const pageIndex = stateField.pageNum - 1; // 0-indexed
+        const pageIndex = stateField.pageNum - 1;
         if (pageIndex < 0 || pageIndex >= pages.length) continue;
 
         const page = pages[pageIndex];
@@ -360,13 +410,11 @@ const PdfEditor = () => {
         const isChecked =
           stateField.value === "Yes" || stateField.value === "On";
 
-        // const x = x1 + 2; // slight offset
-        // const y = y1 + 2;
-        const x = x1;
+        const x = x1 + 3;
         const y = y1;
 
         // Use simple ASCII [x] and [ ] instead of Unicode
-        const symbol = isChecked ? "[x]" : "[ ]";
+        const symbol = isChecked ? "[X]" : "[ ]";
 
         page.drawText(symbol, {
           x: x,
@@ -422,6 +470,8 @@ const PdfEditor = () => {
     formData.append("title", "Lease agreement");
     formData.append("subject", "Requesting electronic signature");
     formData.append("signers", JSON.stringify(signers));
+    formData.append("userId", user?.uid);
+    formData.append("stripeCustomerEmail", user?.email);
     formData.append(
       "message",
       "Please review and sign the provided document at your earliest convenience",
@@ -592,6 +642,14 @@ const PdfEditor = () => {
     }
   }, [sendPrepareDocumentResult.isLoading]);
 
+  useEffect(() => {
+    if (!isLoadingValidTokensForETSS && isSuccessValidTokensForETSS) {
+      setTokenCount(validTokensForETSS);
+    }
+  }, [isLoadingValidTokensForETSS]);
+
+  if (isLoadingValidTokensForETSS) return <Skeleton height="10rem" />;
+
   return (
     <Stack>
       <Stack
@@ -605,20 +663,69 @@ const PdfEditor = () => {
           caption="Create or revise documents for Esign"
           sxProps={{ textAlign: "left" }}
         />
-        <Stack direction="row" spacing={1}>
-          <UploadEsignDocument handleUpload={handleUpload} />
-          <Box>
-            <Button
-              size="small"
-              variant="contained"
-              onClick={handleConfirm}
-              disabled={!file || fields.length === 0}
+        <Stack>
+          <Tooltip
+            title={
+              !isTokenAnchorOpen ? "Add non-refundable tokens for E-sign" : null
+            }
+          >
+            <Stack
+              spacing={1}
+              direction="row"
+              alignItems="flex-end"
+              justifyContent="center"
+              onClick={handleClickTokenAnchorMenu}
+              sx={{
+                border: 1,
+                paddingY: 0.5,
+                marginBottom: 0.5,
+                cursor: "pointer",
+                borderColor: "primary.main",
+              }}
             >
-              Prepare Esign
-            </Button>
-          </Box>
+              <Box
+                sx={{
+                  display: "inline-flex",
+                  animation: `${glitter} 1s ease-in-out infinite`,
+                }}
+              >
+                <CurrencyLiraRounded fontSize="small" color="primary" />
+              </Box>
+              <Typography variant="caption" color="primary">
+                Non-Refundable Tokens: {tokenCount}
+              </Typography>
+            </Stack>
+          </Tooltip>
+          <ViewTokenMenu
+            anchorEl={tokenAnchor}
+            open={isTokenAnchorOpen}
+            handleClose={handleCloseTokenAnchorMenu}
+          />
+          <Stack direction="row" spacing={1}>
+            <UploadEsignDocument handleUpload={handleUpload} />
+            <Box>
+              <Button
+                size="small"
+                variant="contained"
+                onClick={handleConfirm}
+                disabled={!file || fields.length === 0}
+              >
+                Prepare Esign
+              </Button>
+            </Box>
+          </Stack>
         </Stack>
       </Stack>
+      {medFormFactor && (
+        <Alert severity="error">
+          <Typography variant="caption">
+            Electronic Signatures are best created on a larger screen. Tokens
+            are non-refundable and errors cannot be undone due to document
+            security.
+          </Typography>
+        </Alert>
+      )}
+      <ViewTokenAlert tokenCount={tokenCount} />
 
       {file && (
         <AddSigner

@@ -7,6 +7,7 @@ const VisuallyHiddenInput = styled("input")({
   clipPath: "inset(50%)",
   overflow: "hidden",
   position: "absolute",
+  width: "100%",
   bottom: 0,
   left: 0,
   whiteSpace: "nowrap",

@@ -12,7 +12,7 @@ exports[`UploadEsignDocument Component Tests UploadEsignDocument Snapshot Tests 
     >
       Upload files
       <input
-        class="css-1twob40"
+        class="css-1ukdhoc"
         type="file"
       />
     </label>

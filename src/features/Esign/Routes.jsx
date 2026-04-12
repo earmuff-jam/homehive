@@ -22,7 +22,7 @@ export const EsignAppRoutes = [
         value: "Esign",
         icon: <ArticleRounded fontSize="small" />,
       },
-      isLoggedInFeature: false, // no login requirement
+      isLoggedInFeature: true,
       displayInNavBar: true,
       displayHelpSelector: false,
       displayPrintSelector: false,
