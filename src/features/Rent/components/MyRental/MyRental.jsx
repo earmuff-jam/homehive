@@ -17,7 +17,6 @@ import PropertyDetails from "features/Rent/common/PropertyDetails";
 import PropertyHeader from "features/Rent/common/PropertyHeader";
 import PropertyOwnerInfoCard from "features/Rent/common/PropertyOwnerInfoCard";
 import PropertyStatistics from "features/Rent/common/PropertyStatistics";
-import DocumentsOverview from "features/Rent/components/Widgets/DocumentsOverview";
 import FinancialOverview from "features/Rent/components/Widgets/FinancialOverview";
 import RentalPaymentOverview from "features/Rent/components/Widgets/RentalPaymentOverview";
 import { useAppTitle } from "hooks/useAppTitle";
@@ -143,14 +142,6 @@ const MyRental = () => {
             rentList={rentList}
             isRentListForPropertyLoading={isRentListForPropertyLoading}
             propertyName={property?.name || "Unknown"}
-          />
-          <DocumentsOverview
-            // only property owners can edit the document templates
-            // functional because only rentees can view this page
-            isVewingRental
-            dataTour="rental-6"
-            property={property}
-            isPropertyLoading={isPropertyLoading}
           />
         </Grid>
 

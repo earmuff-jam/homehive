@@ -15,7 +15,6 @@ import {
 import AButton from "common/AButton";
 import RowHeader from "common/RowHeader";
 import { fetchLoggedInUser } from "common/utils";
-import { useGetUserDataByIdQuery } from "features/Api/firebaseUserApi";
 import { useGetPropertiesByPropertyIdQuery } from "features/Api/propertiesApi";
 import { useGetRentsByPropertyIdQuery } from "features/Api/rentApi";
 import { useGetTenantByPropertyIdQuery } from "features/Api/tenantsApi";
@@ -24,7 +23,6 @@ import PropertyHeader from "features/Rent/common/PropertyHeader";
 import PropertyOwnerInfoCard from "features/Rent/common/PropertyOwnerInfoCard";
 import PropertyStatistics from "features/Rent/common/PropertyStatistics";
 import AssociateTenantPopup from "features/Rent/components/AssociateTenantPopup/AssociateTenantPopup";
-import DocumentsOverview from "features/Rent/components/Widgets/DocumentsOverview";
 import FinancialOverview from "features/Rent/components/Widgets/FinancialOverview";
 import QuickActions from "features/Rent/components/Widgets/QuickActions";
 import RentalPaymentOverview from "features/Rent/components/Widgets/RentalPaymentOverview";
@@ -55,13 +53,6 @@ const Property = () => {
         skip: !params?.id,
       },
     );
-
-  const { data: userData, isLoading: isUserDataFromDbLoading } =
-    useGetUserDataByIdQuery(user?.uid, {
-      skip: !user?.uid,
-    });
-
-  const isEsignConnected = userData?.esignAccountIsActive;
 
   useAppTitle(property?.name || "Selected Property");
 
@@ -114,13 +105,6 @@ const Property = () => {
             rentList={rentList}
             isRentListForPropertyLoading={isRentListForPropertyLoading}
             propertyName={property?.name || "Unknown"}
-          />
-          <DocumentsOverview
-            property={property}
-            dataTour="property-6"
-            primaryTenant={tenants.find((tenant) => tenant.isPrimary) || {}}
-            isEsignConnected={isEsignConnected}
-            isPropertyLoading={isPropertyLoading || isUserDataFromDbLoading}
           />
         </Grid>
 
