@@ -36,7 +36,7 @@ export default function SplashPage() {
 
   const [authenticate, authenticateResult] = useAuthenticateMutation();
 
-  const handleAuthenticate = (isEsign = false) => {
+  const handleAuthenticate = ({ isEsign = false }) => {
     if (!user?.uid) {
       authenticate(isEsign);
     } else if (isEsign) {
