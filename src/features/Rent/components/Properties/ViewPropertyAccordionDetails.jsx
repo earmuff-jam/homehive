@@ -413,6 +413,7 @@ const ViewPropertyAccordionDetails = ({
             label="Send charge"
             variant="outlined"
             disabled={!isValid}
+            loading={addressOneTimePaymentResult?.isLoading}
             onClick={handleSubmit(submit)}
           />
         </DialogActions>
