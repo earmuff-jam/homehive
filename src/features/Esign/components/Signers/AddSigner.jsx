@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+
+import { useForm } from "react-hook-form";
 
 import { CancelRounded, EditRounded } from "@mui/icons-material";
 import {
@@ -6,6 +8,7 @@ import {
   Button,
   Chip,
   Dialog,
+  DialogActions,
   DialogContent,
   DialogTitle,
   Divider,
@@ -16,6 +19,13 @@ import {
 import RowHeader from "common/RowHeader";
 import EditSigners from "features/Esign/components/Signers/EditSigners";
 
+// DefaultSigners ...
+// defines the default signers
+const DefaultSigners = {
+  name: "",
+  email_address: "",
+};
+
 const AddSigner = ({
   signers = [],
   activeSigner,
@@ -25,6 +35,36 @@ const AddSigner = ({
   handleRemoveSigner,
 }) => {
   const [edit, setEdit] = useState(null);
+
+  const {
+    handleSubmit,
+    control,
+    formState: { errors, isValid },
+    reset,
+  } = useForm({
+    mode: "onChange",
+    defaultValues: DefaultSigners,
+  });
+
+  const onSubmit = (data) => {
+    updateSignerDetails({ ...data, role: activeSigner?.role });
+    reset(DefaultSigners);
+    setEdit(null);
+  };
+
+  useEffect(() => {
+    const activeSignerRole = activeSigner?.role;
+    const selectedSigner = signers?.find(
+      (signer) => signer?.role === activeSignerRole,
+    );
+    if (selectedSigner) {
+      reset({
+        name: selectedSigner?.name,
+        email_address: selectedSigner?.email_address,
+      });
+    }
+  }, [signers, activeSigner?.role]);
+
   return (
     <Stack spacing={1} marginBottom="1rem">
       <Stack direction="row" justifyContent="space-between" alignItems="center">
@@ -102,13 +142,20 @@ const AddSigner = ({
           />
         </DialogTitle>
         <DialogContent>
-          <EditSigners
-            setEdit={setEdit}
-            signers={signers}
-            role={activeSigner?.role}
-            updateSignerDetails={updateSignerDetails}
-          />
+          <EditSigners control={control} errors={errors} />
         </DialogContent>
+        <DialogActions>
+          <Box alignSelf="flex-end">
+            <Button
+              variant="outlined"
+              size="small"
+              disabled={!isValid}
+              onClick={handleSubmit(onSubmit)}
+            >
+              Submit
+            </Button>
+          </Box>
+        </DialogActions>
       </Dialog>
 
       <Typography variant="caption" color="text.secondary">

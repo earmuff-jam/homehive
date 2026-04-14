@@ -1,62 +1,56 @@
 import React from "react";
+import { render, screen } from "@testing-library/react";
+import { useForm } from "react-hook-form";
 
 import EditSigners from "./EditSigners";
-import { render, screen } from "@testing-library/react";
+
+// small wrapper to provide RHF context
+const renderComponent = (defaultValues) => {
+  const Wrapper = () => {
+    const {
+      control,
+      formState: { errors },
+    } = useForm({
+      defaultValues,
+      mode: "onChange",
+    });
+
+    return <EditSigners control={control} errors={errors} />;
+  };
+
+  return render(<Wrapper />);
+};
 
 describe("EditSigners Tests", () => {
-  describe("EditSigners Snapshot Tests", () => {
+  describe("Snapshot Tests", () => {
     it("matches snapshot", () => {
-      const { container } = render(
-        <EditSigners
-          setEdit={jest.fn()}
-          signers={[
-            {
-              role: "Creator",
-              name: "Jane Smith",
-              email_address: "jane_doe47@gmail.com",
-            },
-          ]}
-          role="Creator"
-          updateSignerDetails={jest.fn()}
-        />,
-      );
+      const { container } = renderComponent({
+        name: "Jane Smith",
+        email_address: "jane_doe47@gmail.com",
+      });
 
       expect(container).toMatchSnapshot();
     });
   });
-  describe("EditSigners Component Tests", () => {
-    const mockUpdate = jest.fn();
-    const mockSetEdit = jest.fn();
 
-    const signers = [
-      {
-        role: "Creator",
+  describe("Component Tests", () => {
+    it("renders form fields with prefilled values", () => {
+      renderComponent({
         name: "Jane Smith",
         email_address: "jane_doe47@gmail.com",
-      },
-    ];
-
-    it("renders form fields with prefilled values", () => {
-      render(
-        <EditSigners
-          setEdit={mockSetEdit}
-          signers={signers}
-          role="Creator"
-          updateSignerDetails={mockUpdate}
-        />,
-      );
+      });
 
       expect(screen.getByDisplayValue("Jane Smith")).toBeInTheDocument();
       expect(
-        screen.getByDisplayValue("jane_doe47@gmail.com"),
+        screen.getByDisplayValue("jane_doe47@gmail.com")
       ).toBeInTheDocument();
 
       expect(
-        screen.getByPlaceholderText(/the name of the signer/i),
+        screen.getByPlaceholderText(/the name of the signer/i)
       ).toBeInTheDocument();
 
       expect(
-        screen.getByPlaceholderText(/the email address of the signer/i),
+        screen.getByPlaceholderText(/the email address of the signer/i)
       ).toBeInTheDocument();
     });
   });
