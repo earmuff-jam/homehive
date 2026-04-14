@@ -784,6 +784,7 @@ const PdfEditor = () => {
         title="Send document to signers?"
         captionText="Action consumes 1 non-refundable token. Proceed?"
         isOpen={showConfirmationBox?.value}
+        isLoading={sendPrepareDocumentResult?.isLoading}
         handleCancel={() =>
           setShowConfirmationBox({ value: false, updateKey: "" })
         }

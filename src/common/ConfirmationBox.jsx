@@ -19,6 +19,7 @@ export const DefaultConfirmationBoxProps = {
 
 export default function ConfirmationBox({
   isOpen,
+  isLoading = false,
   handleCancel,
   handleConfirm,
   title = "Confirm Delete",
@@ -39,7 +40,7 @@ export default function ConfirmationBox({
         <Stack>{children}</Stack>
       </DialogContent>
       <DialogActions>
-        <AButton label="Confirm" onClick={handleConfirm} />
+        <AButton label="Confirm" onClick={handleConfirm} loading={isLoading} />
         <AButton label="Cancel" variant="outlined" onClick={handleCancel} />
       </DialogActions>
     </Dialog>
