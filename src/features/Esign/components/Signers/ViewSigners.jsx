@@ -3,7 +3,7 @@ import React from "react";
 import { PermIdentityRounded } from "@mui/icons-material";
 import { Alert, Paper, Stack, Typography } from "@mui/material";
 
-const ViewSigners = ({ signers = [], signatureBoxes = [] }) => {
+const ViewSigners = ({ tokenCount = 0, signers = [], signatureBoxes = [] }) => {
   const isSignatureBoxesMatchesSigners =
     signatureBoxes?.length !== signers?.length;
   const isRequiredFieldsMissing =
@@ -32,6 +32,14 @@ const ViewSigners = ({ signers = [], signatureBoxes = [] }) => {
             <Typography variant="caption">
               Missing required fields. Please ensure full name and email is
               filled out for each signer including the Creator.
+            </Typography>
+          </Alert>
+        ) : null}
+
+        {tokenCount <= 0 ? (
+          <Alert severity="error">
+            <Typography variant="caption">
+              Not enough tokens to send electronic signature.
             </Typography>
           </Alert>
         ) : null}

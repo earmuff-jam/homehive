@@ -6,7 +6,7 @@ export const LOW_TOKEN_TEXT =
   "Your token is low. Purchase Tokens to send Electronic Signature.";
 
 export const NO_TOKEN_TEXT =
-  "You do not have enough tokens left to send Electronic Signature. Purchase Tokens to send Electronic Signature.";
+  "You do not have enough tokens to send Electronic Signature. Purchase Tokens to send Electronic Signature.";
 
 const ViewTokenAlert = ({ tokenCount = 0 }) => {
   if (tokenCount === 0) {

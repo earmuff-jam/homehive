@@ -25,7 +25,7 @@ exports[`ViewTokenAlert Tests ViewTokenAlert Snapshot tests tokenCount = 0 1`] =
     <div
       class="MuiAlert-message css-zioonp-MuiAlert-message"
     >
-      You do not have enough tokens left to send Electronic Signature. Purchase Tokens to send Electronic Signature.
+      You do not have enough tokens to send Electronic Signature. Purchase Tokens to send Electronic Signature.
     </div>
   </div>
 </DocumentFragment>
