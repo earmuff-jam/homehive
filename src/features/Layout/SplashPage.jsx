@@ -36,9 +36,11 @@ export default function SplashPage() {
 
   const [authenticate, authenticateResult] = useAuthenticateMutation();
 
-  const handleAuthenticate = () => {
+  const handleAuthenticate = (isEsign = false) => {
     if (!user?.uid) {
-      authenticate();
+      authenticate(isEsign);
+    } else if (isEsign) {
+      window.location.replace(ViewEsignRouteUri);
     } else {
       const currentUserRole = user?.role;
       currentUserRole === Role.Tenant
@@ -50,9 +52,14 @@ export default function SplashPage() {
   useEffect(() => {
     if (!authenticateResult.isLoading && authenticateResult.isSuccess) {
       const currentUserRole = authenticateResult.data.role;
-      currentUserRole === Role.Tenant
-        ? window.location.replace(RentalRouteUri)
-        : window.location.replace(PropertiesRouteUri);
+      const isEsign = authenticateResult.originalArgs?.isEsign;
+      if (isEsign) {
+        window.location.replace(ViewEsignRouteUri);
+      } else {
+        currentUserRole === Role.Tenant
+          ? window.location.replace(RentalRouteUri)
+          : window.location.replace(PropertiesRouteUri);
+      }
     }
   }, [authenticateResult.isLoading]);
 
@@ -126,7 +133,7 @@ export default function SplashPage() {
               />
             }
             sx={{ flex: { md: 1 } }}
-            onClick={handleAuthenticate}
+            onClick={() => handleAuthenticate({ isEsign: false })}
           />
           <TitleCard
             title="Invoicer App"
@@ -158,7 +165,7 @@ export default function SplashPage() {
               />
             }
             sx={{ flex: { md: "100%" } }}
-            onClick={() => navigate(ViewEsignRouteUri)}
+            onClick={() => handleAuthenticate({ isEsign: true })}
           />
         </Stack>
         {/* Reviews */}
@@ -223,7 +230,10 @@ export default function SplashPage() {
           >
             Login with Google and subscribe to get started.
           </Typography>
-          <Button variant="outlined" onClick={handleAuthenticate}>
+          <Button
+            variant="outlined"
+            onClick={() => handleAuthenticate({ isEsign: false })}
+          >
             Login with Google
           </Button>
         </Stack>

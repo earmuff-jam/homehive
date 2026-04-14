@@ -208,6 +208,18 @@ export const externalIntegrationsApi = createApi({
         }),
       }),
     }),
+    // purchaseTokenCheckoutSession ...
+    // defines a function that allows users to checkout to stripe to purchase token for electronic signature
+    purchaseTokenCheckoutSession: builder.mutation({
+      query: (data) => ({
+        method: "POST",
+        body: JSON.stringify({
+          fUrl: "0030_PurchaseEsignToken",
+          fMethod: "POST",
+          payload: data,
+        }),
+      }),
+    }),
   }),
 });
 
@@ -226,5 +238,6 @@ export const {
   useGetRecentTransactionsQuery,
   useCreateStripeCustomerLinkMutation,
   useGetSubscriptionOptionsQuery,
+  usePurchaseTokenCheckoutSessionMutation,
   useCreateStripeManageSubscriptionLinkMutation,
 } = externalIntegrationsApi;

@@ -77,7 +77,7 @@ export const firebaseUserApi = createApi({
     }),
     // create user in users db
     authenticate: builder.mutation({
-      async queryFn() {
+      async queryFn(isEsign = false) {
         try {
           const userDetails = await authenticateViaGoogle();
           const userRef = doc(db, "users", userDetails?.uid);
@@ -114,7 +114,7 @@ export const firebaseUserApi = createApi({
           }
 
           secureLocalStorage.setItem("user", userWithRole);
-          return { data: userWithRole };
+          return { data: userWithRole, isEsign };
         } catch (error) {
           console.debug(
             "unable to authenticate user. details: ",

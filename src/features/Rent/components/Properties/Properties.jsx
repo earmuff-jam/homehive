@@ -50,7 +50,6 @@ import ViewPropertyAccordionDetails from "features/Rent/components/Properties/Vi
 import { sanitizeApiFields } from "features/Rent/utils";
 import { useAppTitle } from "hooks/useAppTitle";
 
-// used to elevate the Raspy Chat Drawer
 const glitter = keyframes`
   0% {
     transform: scale(1);

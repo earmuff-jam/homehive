@@ -1,5 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { analyticsApi } from "features/Api/analyticsApi";
+import { etssTokenApi } from "features/Api/etssTokenApi";
 import { externalIntegrationMultipart } from "features/Api/externalIntegrationMultipart";
 import { externalIntegrationsApi } from "features/Api/externalIntegrationsApi";
 import { firebaseUserApi } from "features/Api/firebaseUserApi";
@@ -21,6 +22,7 @@ export const store = configureStore({
     [mapServiceApi.reducerPath]: mapServiceApi.reducer,
     [analyticsApi.reducerPath]: analyticsApi.reducer,
     [subscriptionApi.reducerPath]: subscriptionApi.reducer,
+    [etssTokenApi.reducerPath]: etssTokenApi.reducer,
     [externalIntegrationsApi.reducerPath]: externalIntegrationsApi.reducer,
     [raspyApi.reducerPath]: raspyApi.reducer,
     [externalIntegrationMultipart.reducerPath]:
@@ -36,6 +38,7 @@ export const store = configureStore({
       mapServiceApi.middleware,
       analyticsApi.middleware,
       subscriptionApi.middleware,
+      etssTokenApi.middleware,
       externalIntegrationsApi.middleware,
       raspyApi.middleware,
       externalIntegrationMultipart.middleware,

@@ -107,6 +107,7 @@ export const MainAppRoutes = [
         icon: <ArchitectureRounded fontSize="small" />,
       },
       displayInNavBar: true,
+      isLoggedInFeature: true,
       displayHelpSelector: true,
       displayPrintSelector: true,
     },
