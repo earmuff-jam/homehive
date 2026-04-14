@@ -781,6 +781,7 @@ const PdfEditor = () => {
       )}
 
       <ConfirmationBox
+        isBlocked={tokenCount <= 0}
         title="Send document to signers?"
         captionText="Action consumes 1 non-refundable token. Proceed?"
         isOpen={showConfirmationBox?.value}
@@ -790,7 +791,11 @@ const PdfEditor = () => {
         }
         handleConfirm={exportPdf}
       >
-        <ViewSigners signers={signers} signatureBoxes={signatureBoxes} />
+        <ViewSigners
+          signers={signers}
+          tokenCount={tokenCount}
+          signatureBoxes={signatureBoxes}
+        />
       </ConfirmationBox>
 
       <CustomSnackbar

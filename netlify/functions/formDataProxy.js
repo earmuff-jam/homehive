@@ -4,6 +4,7 @@
  * Proxy used only for multipart/form-data uploads
  */
 
+// DefaultHeaders ...
 const DefaultHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
