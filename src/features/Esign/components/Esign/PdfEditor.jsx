@@ -24,6 +24,7 @@ import { useGetEtssTokensByEmailIdQuery } from "features/Api/etssTokenApi";
 import { useSendPreparedDocumentMutation } from "features/Api/externalIntegrationMultipart";
 import UploadEsignDocument from "features/Esign/components/Esign/UploadEsignDocument";
 import ViewTokenAlert from "features/Esign/components/Esign/ViewTokenAlert";
+import ViewFormTemplates from "features/Esign/components/FormTemplates/ViewFormTemplates";
 import AddSigner from "features/Esign/components/Signers/AddSigner";
 import ViewSigners from "features/Esign/components/Signers/ViewSigners";
 import ViewTokenMenu from "features/Esign/components/TokenMenu/ViewTokenMenu";
@@ -726,6 +727,7 @@ const PdfEditor = () => {
         </Alert>
       )}
       <ViewTokenAlert tokenCount={tokenCount} />
+      <ViewFormTemplates handleUpload={handleUpload} />
 
       {file && (
         <AddSigner
