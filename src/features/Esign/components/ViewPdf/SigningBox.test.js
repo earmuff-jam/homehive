@@ -4,76 +4,60 @@ import SigningBox from "./SigningBox";
 import { fireEvent, render, screen } from "@testing-library/react";
 
 describe("SigningBox Tests", () => {
-  describe("SigningBox Snapshot Tests", () => {
+  const pageOffsets = {
+    current: { 1: 10 },
+  };
+
+  const baseProps = {
+    pageOffsets,
+    scrollTop: 0,
+    removeBox: jest.fn(),
+  };
+
+  const createdBox = {
+    id: "box1",
+    signerRole: "Creator",
+    pageNum: 1,
+    screenX: 100,
+    screenY: 200,
+    screenW: 150,
+    screenH: 50,
+    color: "#2563eb",
+    fieldType: "signature", // ✅ REQUIRED NOW
+  };
+
+  describe("Snapshot Tests", () => {
     it("matches snapshot", () => {
       const { container } = render(
-        <SigningBox
-          pageOffsets={{ current: { 1: 10 } }}
-          createdBox={{
-            id: "box1",
-            signerRole: "Creator",
-            pageNum: 1,
-            screenX: 100,
-            screenY: 200,
-            screenW: 150,
-            screenH: 50,
-            color: "#2563eb",
-          }}
-          removeBox={jest.fn()}
-          scrollTop={0}
-        />,
+        <SigningBox {...baseProps} createdBox={createdBox} />,
       );
 
       expect(container).toMatchSnapshot();
     });
   });
 
-  describe("SigningBox component tests", () => {
-    const mockRemoveBox = jest.fn();
+  describe("Component Tests", () => {
+    it("renders signer role and field type", () => {
+      render(<SigningBox {...baseProps} createdBox={createdBox} />);
 
-    const createdBox = {
-      id: "box1",
-      signerRole: "Creator",
-      pageNum: 1,
-      screenX: 100,
-      screenY: 200,
-      screenW: 150,
-      screenH: 50,
-      color: "#2563eb",
-    };
-
-    const pageOffsets = {
-      current: {
-        1: 10,
-      },
-    };
-
-    it("renders signer role", () => {
-      render(
-        <SigningBox
-          pageOffsets={pageOffsets}
-          createdBox={createdBox}
-          removeBox={mockRemoveBox}
-          scrollTop={0}
-        />,
-      );
-
-      expect(screen.getByText("Creator")).toBeInTheDocument();
+      expect(screen.getByText(/Creator/)).toBeInTheDocument();
+      expect(screen.getByText(/signature/i)).toBeInTheDocument();
     });
 
     it("calls removeBox when delete icon is clicked", () => {
+      const mockRemoveBox = jest.fn();
+
       const { container } = render(
         <SigningBox
-          pageOffsets={pageOffsets}
+          {...baseProps}
           createdBox={createdBox}
           removeBox={mockRemoveBox}
-          scrollTop={0}
         />,
       );
 
-      const deleteButton = container.querySelector("svg");
+      const deleteIcon = container.querySelector("svg");
 
-      fireEvent.click(deleteButton);
+      fireEvent.click(deleteIcon);
 
       expect(mockRemoveBox).toHaveBeenCalledWith("box1");
     });

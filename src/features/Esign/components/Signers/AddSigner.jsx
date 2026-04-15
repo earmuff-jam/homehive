@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+
+import { useForm } from "react-hook-form";
 
 import { CancelRounded, EditRounded } from "@mui/icons-material";
 import {
@@ -6,6 +8,7 @@ import {
   Button,
   Chip,
   Dialog,
+  DialogActions,
   DialogContent,
   DialogTitle,
   Divider,
@@ -16,17 +19,75 @@ import {
 import RowHeader from "common/RowHeader";
 import EditSigners from "features/Esign/components/Signers/EditSigners";
 
+// DefaultSigners ...
+// defines the default signers
+const DefaultSigners = {
+  name: "",
+  email_address: "",
+};
+
 const AddSigner = ({
   signers = [],
   activeSigner,
   setActiveSigner,
+  activeFieldType,
+  setActiveFieldType,
   updateSignerDetails,
   addFollowUpSigners,
   handleRemoveSigner,
 }) => {
   const [edit, setEdit] = useState(null);
+
+  const {
+    handleSubmit,
+    control,
+    formState: { errors, isValid },
+    reset,
+  } = useForm({
+    mode: "onChange",
+    defaultValues: DefaultSigners,
+  });
+
+  const onSubmit = (data) => {
+    updateSignerDetails({ ...data, role: activeSigner?.role });
+    reset(DefaultSigners);
+    setEdit(null);
+  };
+
+  useEffect(() => {
+    const activeSignerRole = activeSigner?.role;
+    const selectedSigner = signers?.find(
+      (signer) => signer?.role === activeSignerRole,
+    );
+    if (selectedSigner) {
+      reset({
+        name: selectedSigner?.name,
+        email_address: selectedSigner?.email_address,
+      });
+    }
+  }, [signers, activeSigner?.role]);
+
   return (
     <Stack spacing={1} marginBottom="1rem">
+      <Box sx={{ marginBottom: 1 }}>
+        <Stack direction="row" spacing={1}>
+          <Button
+            size="small"
+            variant={activeFieldType === "signature" ? "contained" : "outlined"}
+            onClick={() => setActiveFieldType("signature")}
+          >
+            Signature
+          </Button>
+
+          <Button
+            size="small"
+            variant={activeFieldType === "date" ? "contained" : "outlined"}
+            onClick={() => setActiveFieldType("date")}
+          >
+            Date
+          </Button>
+        </Stack>
+      </Box>
       <Stack direction="row" justifyContent="space-between" alignItems="center">
         <Stack direction="row" flexWrap="wrap" gap={1} alignItems="center">
           <Tooltip title={`Edit name and email for ${activeSigner?.role}`}>
@@ -102,29 +163,37 @@ const AddSigner = ({
           />
         </DialogTitle>
         <DialogContent>
-          <EditSigners
-            setEdit={setEdit}
-            signers={signers}
-            role={activeSigner?.role}
-            updateSignerDetails={updateSignerDetails}
-          />
+          <EditSigners control={control} errors={errors} />
         </DialogContent>
+        <DialogActions>
+          <Box alignSelf="flex-end">
+            <Button
+              variant="outlined"
+              size="small"
+              disabled={!isValid}
+              onClick={handleSubmit(onSubmit)}
+            >
+              Submit
+            </Button>
+          </Box>
+        </DialogActions>
       </Dialog>
 
       <Typography variant="caption" color="text.secondary">
         {activeSigner ? (
           <>
-            Placing signature for&nbsp;
+            Placing {activeFieldType} for&nbsp;
             <strong style={{ color: activeSigner.color }}>
               {activeSigner.role}
             </strong>
-            &nbsp; — click and drag on the PDF below to place their signature
-            box. Select a different name above to switch.
+            &nbsp; — click and drag on the PDF below to place their&nbsp;
+            {activeFieldType}&nbsp;box. Select a different name above to switch.
           </>
         ) : (
           <>
-            Select a signer above, then click and drag on the PDF to place their
-            signature box.
+            Select a signer above, then click and drag on the PDF to place
+            their&nbsp;
+            {activeFieldType}&nbsp;box.
           </>
         )}
       </Typography>

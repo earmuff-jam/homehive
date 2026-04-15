@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`EditSigners Tests EditSigners Snapshot Tests matches snapshot 1`] = `
+exports[`EditSigners Tests Snapshot Tests matches snapshot 1`] = `
 <div>
   <div
     class="MuiStack-root css-jfdv4h-MuiStack-root"
@@ -96,18 +96,6 @@ exports[`EditSigners Tests EditSigners Snapshot Tests matches snapshot 1`] = `
           </fieldset>
         </div>
       </div>
-    </div>
-    <div
-      class="MuiBox-root css-56sg73"
-    >
-      <button
-        class="MuiButtonBase-root MuiButton-root MuiButton-outlined MuiButton-outlinedPrimary MuiButton-sizeSmall MuiButton-outlinedSizeSmall MuiButton-colorPrimary Mui-disabled MuiButton-root MuiButton-outlined MuiButton-outlinedPrimary MuiButton-sizeSmall MuiButton-outlinedSizeSmall MuiButton-colorPrimary css-wyro15-MuiButtonBase-root-MuiButton-root"
-        disabled=""
-        tabindex="-1"
-        type="button"
-      >
-        Submit
-      </button>
     </div>
   </div>
 </div>

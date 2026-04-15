@@ -33,12 +33,15 @@ const SigningBox = ({ pageOffsets, createdBox, removeBox, scrollTop }) => {
         sx={{
           color: createdBox.color,
           fontWeight: 700,
-          fontSize: "10px",
+          fontSize: "12px",
           userSelect: "none",
           pointerEvents: "none",
         }}
       >
-        {createdBox.signerRole}
+        {createdBox.signerRole}&nbsp;&#8212;&nbsp;
+        <Box component="span" textTransform="capitalize">
+          {createdBox.fieldType}
+        </Box>
       </Typography>
 
       {/* Delete button */}

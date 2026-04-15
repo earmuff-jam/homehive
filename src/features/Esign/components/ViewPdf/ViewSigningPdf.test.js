@@ -4,13 +4,14 @@ import ViewSigningFields from "./ViewSigningFields";
 import { fireEvent, render, screen } from "@testing-library/react";
 
 describe("ViewSigningFields Tests", () => {
-  describe("ViewSigningFields Snapshot Tests", () => {
+  describe("Snapshot Tests", () => {
     const signatureBoxes = [
       {
         id: "box1",
         signerRole: "Creator",
         pageNum: 1,
         color: "#2563eb",
+        fieldType: "signature",
       },
     ];
 
@@ -25,7 +26,8 @@ describe("ViewSigningFields Tests", () => {
       expect(container).toMatchSnapshot();
     });
   });
-  describe("ViewSigningFields Component Tests", () => {
+
+  describe("Component Tests", () => {
     const mockRemoveBox = jest.fn();
 
     const signatureBoxes = [
@@ -34,12 +36,14 @@ describe("ViewSigningFields Tests", () => {
         signerRole: "Creator",
         pageNum: 1,
         color: "#2563eb",
+        fieldType: "signature",
       },
       {
         id: "box2",
         signerRole: "Signer 2",
         pageNum: 2,
         color: "#16a34a",
+        fieldType: "date",
       },
     ];
 
@@ -51,9 +55,11 @@ describe("ViewSigningFields Tests", () => {
         />,
       );
 
-      expect(screen.getByText("Placed Signature Fields")).toBeInTheDocument();
+      expect(screen.getByText("Placed Fields")).toBeInTheDocument();
+
       expect(screen.getByText("Creator — Page 1")).toBeInTheDocument();
-      expect(screen.getByText("Signer 2 — Page 2")).toBeInTheDocument();
+
+      expect(screen.getByText("Signer 2 (Date) — Page 2")).toBeInTheDocument();
     });
 
     it("calls removeBox when delete icon is clicked", () => {

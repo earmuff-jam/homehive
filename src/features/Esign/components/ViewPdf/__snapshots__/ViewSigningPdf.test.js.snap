@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ViewSigningFields Tests ViewSigningFields Snapshot Tests matches snapshot 1`] = `
+exports[`ViewSigningFields Tests Snapshot Tests matches snapshot 1`] = `
 <div>
   <div
     class="MuiStack-root css-9pj9ev-MuiStack-root"
@@ -8,7 +8,7 @@ exports[`ViewSigningFields Tests ViewSigningFields Snapshot Tests matches snapsh
     <span
       class="MuiTypography-root MuiTypography-caption css-1602dsf-MuiTypography-root"
     >
-      Placed Signature Fields
+      Placed Fields
     </span>
     <div
       class="MuiStack-root css-10k1dl5-MuiStack-root"

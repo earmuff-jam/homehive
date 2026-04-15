@@ -1,44 +1,11 @@
-import React, { useEffect } from "react";
+import React from "react";
 
-import { Controller, useForm } from "react-hook-form";
+import { Controller } from "react-hook-form";
 
-import { Box, Button, Stack } from "@mui/material";
+import { Stack } from "@mui/material";
 import TextFieldWithLabel from "common/TextFieldWithLabel";
 
-// DefaultSigners ...
-// defines the default signers
-const DefaultSigners = {
-  name: "",
-  email_address: "",
-};
-
-const EditSigners = ({ setEdit, signers, role, updateSignerDetails }) => {
-  const {
-    handleSubmit,
-    control,
-    formState: { errors, isValid },
-    reset,
-  } = useForm({
-    mode: "onChange",
-    defaultValues: DefaultSigners,
-  });
-
-  const onSubmit = (data) => {
-    updateSignerDetails({ ...data, role });
-    reset(DefaultSigners);
-    setEdit(null);
-  };
-
-  useEffect(() => {
-    const selectedSigner = signers?.find((signer) => signer?.role === role);
-    if (selectedSigner) {
-      reset({
-        name: selectedSigner?.name,
-        email_address: selectedSigner?.email_address,
-      });
-    }
-  }, [signers, role]);
-
+const EditSigners = ({ control, errors }) => {
   return (
     <Stack spacing={1}>
       <Controller
@@ -85,16 +52,6 @@ const EditSigners = ({ setEdit, signers, role, updateSignerDetails }) => {
           />
         )}
       />
-      <Box alignSelf="flex-end">
-        <Button
-          variant="outlined"
-          size="small"
-          disabled={!isValid}
-          onClick={handleSubmit(onSubmit)}
-        >
-          Submit
-        </Button>
-      </Box>
     </Stack>
   );
 };

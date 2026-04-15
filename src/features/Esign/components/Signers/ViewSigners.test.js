@@ -16,7 +16,12 @@ describe("ViewSigners Tests", () => {
               color: "#2563eb",
             },
           ]}
-          signatureBoxes={[{ id: "box1" }]}
+          signatureBoxes={[
+            {
+              id: "box1",
+              fieldType: "signature",
+            },
+          ]}
         />,
       );
 
@@ -35,31 +40,36 @@ describe("ViewSigners Tests", () => {
       },
     ];
 
-    const baseBox = [
+    const baseSignatureBox = [
       {
         id: "box1",
+        fieldType: "signature",
       },
     ];
 
     it("renders assigned signers", () => {
-      render(<ViewSigners signers={baseSigner} signatureBoxes={baseBox} />);
+      render(
+        <ViewSigners signers={baseSigner} signatureBoxes={baseSignatureBox} />,
+      );
 
       expect(screen.getByText("Assigned Signers:")).toBeInTheDocument();
       expect(screen.getByText("Creator")).toBeInTheDocument();
       expect(screen.getByText("jane_doe47@gmail.com")).toBeInTheDocument();
     });
 
-    it("shows success alert when counts match", () => {
-      render(<ViewSigners signers={baseSigner} signatureBoxes={baseBox} />);
+    it("shows success alert when signature box counts match", () => {
+      render(
+        <ViewSigners signers={baseSigner} signatureBoxes={baseSignatureBox} />,
+      );
 
       expect(screen.getByText(/Found 1 signature boxes/i)).toBeInTheDocument();
     });
 
-    it("shows mismatch error when counts differ", () => {
+    it("shows mismatch error when signature boxes are missing fieldType", () => {
       render(<ViewSigners signers={baseSigner} signatureBoxes={[]} />);
 
       expect(
-        screen.getByText(/You have 1 signers but only 0 signature boxes/i),
+        screen.getByText(/You have 1 signers but 0 signature boxes/i),
       ).toBeInTheDocument();
     });
 
@@ -71,11 +81,11 @@ describe("ViewSigners Tests", () => {
               id: "creator",
               role: "Creator",
               name: "Jane doe",
-              email_address: "", // missing email
+              email_address: "",
               color: "#2563eb",
             },
           ]}
-          signatureBoxes={baseBox}
+          signatureBoxes={baseSignatureBox}
         />,
       );
 

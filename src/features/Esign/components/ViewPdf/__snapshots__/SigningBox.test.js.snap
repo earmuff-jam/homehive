@@ -1,14 +1,20 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`SigningBox Tests SigningBox Snapshot Tests matches snapshot 1`] = `
+exports[`SigningBox Tests Snapshot Tests matches snapshot 1`] = `
 <div>
   <div
     class="MuiBox-root css-cb04qy"
   >
     <span
-      class="MuiTypography-root MuiTypography-caption css-py91wz-MuiTypography-root"
+      class="MuiTypography-root MuiTypography-caption css-12w5ec8-MuiTypography-root"
     >
       Creator
+       — 
+      <span
+        class="MuiBox-root css-10iahqc"
+      >
+        signature
+      </span>
     </span>
     <svg
       aria-hidden="true"
