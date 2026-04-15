@@ -24,6 +24,7 @@ import {
   DialogTitle,
   Skeleton,
   Stack,
+  Tooltip,
   Typography,
 } from "@mui/material";
 import { keyframes } from "@mui/system";
@@ -42,11 +43,13 @@ import {
   useGetPropertiesByUserIdQuery,
 } from "features/Api/propertiesApi";
 import { useLazyGetRentsByPropertyIdWithFiltersQuery } from "features/Api/rentApi";
+import { useGetLatestSubscriptionByEmailQuery } from "features/Api/subscriptionApi";
 import { Role } from "features/Auth/AuthHelper";
 import RaspyDialog from "features/Raspy/RaspyDialog";
 import { AddPropertyTextString } from "features/Rent/common/constants";
 import AddProperty from "features/Rent/components/AddProperty/AddProperty";
 import ViewPropertyAccordionDetails from "features/Rent/components/Properties/ViewPropertyAccordionDetails";
+import { useVerifySubscriptionForProperties } from "features/Rent/hooks/useVerifySubscriptionForProperties";
 import { sanitizeApiFields } from "features/Rent/utils";
 import { useAppTitle } from "hooks/useAppTitle";
 
@@ -87,6 +90,14 @@ export default function Properties() {
   const { data: userData } = useGetUserDataByIdQuery(user?.uid, {
     skip: !user?.uid,
   });
+
+  const { data: latestSubscription = {} } =
+    useGetLatestSubscriptionByEmailQuery(user.email, {
+      skip: !user?.email,
+    });
+
+  const { allowToAddMoreProperties = false } =
+    useVerifySubscriptionForProperties(latestSubscription, properties?.length);
 
   const [createProperty, createPropertyResult] = useCreatePropertyMutation();
   const [triggerGetRents, getRentsResult] =
@@ -195,6 +206,9 @@ export default function Properties() {
   const isManagerManaged = watch("isManagerManaged");
   const isOwnerCoveredUtilities = watch("isOwnerCoveredUtilities");
 
+  const canAddProperty =
+    [Role.Admin, Role.Owner].includes(user?.role) && allowToAddMoreProperties;
+
   useEffect(() => {
     if (createPropertyResult.isSuccess || deletePropertyResult.isSuccess) {
       setShowSnackbar(true);
@@ -235,18 +249,28 @@ export default function Properties() {
           }
           sxProps={{ fontWeight: "bold", color: "text.secondary" }}
         />
-        <AButton
-          data-tour="properties-1"
-          label="Add Property"
-          size="small"
-          variant="outlined"
-          loading={
-            createPropertyResult.isLoading || deletePropertyResult.isLoading
+        <Tooltip
+          title={
+            canAddProperty
+              ? "Add properties to your portfolio"
+              : "Subscription limit reached, cannot add more properties"
           }
-          disabled={![Role.Admin, Role.Owner].includes(user?.role)}
-          endIcon={<AddRounded fontSize="small" />}
-          onClick={toggleAddPropertyPopup}
-        />
+        >
+          <Box>
+            <AButton
+              data-tour="properties-1"
+              label="Add Property"
+              size="small"
+              variant="outlined"
+              loading={
+                createPropertyResult.isLoading || deletePropertyResult.isLoading
+              }
+              disabled={!canAddProperty}
+              endIcon={<AddRounded fontSize="small" />}
+              onClick={toggleAddPropertyPopup}
+            />
+          </Box>
+        </Tooltip>
       </Stack>
 
       <Stack padding={1} spacing={1}>

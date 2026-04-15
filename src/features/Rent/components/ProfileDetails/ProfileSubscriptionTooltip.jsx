@@ -4,6 +4,7 @@ import dayjs from "dayjs";
 
 import { DateRangeRounded, Payment } from "@mui/icons-material";
 import { Box, Divider, Skeleton, Stack, Typography } from "@mui/material";
+import { StripePaymentStatusCompleted } from "features/Subscription/SubscriptionGuard";
 
 export const ProfileSubscriptionTooltip = ({ data, isLoading }) => {
   const capitalizedSubscriptionStatus =
@@ -19,7 +20,7 @@ export const ProfileSubscriptionTooltip = ({ data, isLoading }) => {
         padding: 1,
       }}
     >
-      {data?.subscriptionStatus === "paid" ? (
+      {data?.subscriptionStatus === StripePaymentStatusCompleted ? (
         <Stack>
           <Typography variant="caption" fontWeight="bold">
             Subscription details
