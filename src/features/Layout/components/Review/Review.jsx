@@ -13,7 +13,7 @@ const reviews = [
   {
     id: 1,
     title:
-      "Been using it for a couple of months, and hands down I simply love how its super customizable",
+      "Been using it for a couple of months, and hands down I simply love how its super customizable.",
     rating: 4,
     src: "user1.jpg",
     alt: "Image of the person",
@@ -21,7 +21,7 @@ const reviews = [
   {
     id: 2,
     title:
-      "Love the look and feel of the app. Having the previous information of clients is super helpful and time saving",
+      "Love the look and feel of the app. The automatic system managing email notifications is top tier.",
     rating: 5,
     src: "user2.jpg",
     alt: "Image of the person",

@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Alert, Stack } from "@mui/material";
+import { Alert, Stack, Typography } from "@mui/material";
 
 export default function ConnectionAlert({
   stripeAlert,
@@ -10,9 +10,11 @@ export default function ConnectionAlert({
   if (!stripeAlert || !isUserConnectedToStripe) {
     return (
       <Alert severity="info">
-        Connect your Stripe account to enable online rent payments from your
-        tenants. Stripe handles secure payment processing and deposits funds
-        directly to your bank account.
+        <Typography variant="body2">
+          Connect your Stripe account to enable online rent payments from your
+          tenants. Stripe handles secure payment processing and deposits funds
+          directly to your bank account.
+        </Typography>
       </Alert>
     );
   } else if (stripeAlert) {

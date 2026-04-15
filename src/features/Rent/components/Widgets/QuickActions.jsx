@@ -125,8 +125,9 @@ export default function QuickActions({ property }) {
   const isOwnerCoveredUtilities = watch("isOwnerCoveredUtilities");
 
   const sevenDaysAgo = dayjs().subtract(7, "day");
-  const hasRecentPaymentAttemptBeenMade = rentList.some((rent) =>
-    dayjs(rent.updatedOn).isAfter(sevenDaysAgo),
+  const hasRecentPaymentAttemptBeenMade = rentList.some(
+    (rent) =>
+      !rent.customEventType && dayjs(rent.updatedOn).isAfter(sevenDaysAgo),
   );
 
   useEffect(() => {
@@ -145,13 +146,13 @@ export default function QuickActions({ property }) {
         state: property?.state || "",
         county: property?.county || "",
         zipcode: property?.zipcode || "",
-        units: property?.units || "",
-        bathrooms: property?.bathrooms || "",
-        rent: property?.rent || "",
-        additionalRent: property?.additionalRent || "",
+        units: property?.units || 0,
+        bathrooms: property?.bathrooms || 0,
+        rent: property?.rent || 0,
+        additionalRent: property?.additionalRent || 0,
         note: property?.note || "",
-        sqFt: property?.sqFt || "",
-        rentIncrement: property?.rentIncrement || "",
+        sqFt: property?.sqFt || 0,
+        rentIncrement: property?.rentIncrement || 0,
         emergencyContactNumber: property?.emergencyContactNumber,
         isTenantCleaningYard: property?.isTenantCleaningYard,
         isSmoking: property?.isSmoking,

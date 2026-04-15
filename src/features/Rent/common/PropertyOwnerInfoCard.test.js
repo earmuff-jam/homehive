@@ -44,14 +44,14 @@ jest.mock("features/Api/rentApi", () => ({
   useLazyGetRentByMonthQuery: () => [jest.fn(), { data: [] }],
 }));
 
-// Stripe hooks
-jest.mock("features/Rent/hooks/useCheckStripeAccountStatus", () => ({
-  useCheckStripeAccountStatus: () => ({
-    checkStatus: jest.fn(),
+jest.mock("features/Api/externalIntegrationsApi", () => ({
+  useCheckStripeAccountStatusQuery: () => ({
+    data: [],
     loading: false,
   }),
 }));
 
+// Stripe hooks
 jest.mock("features/Rent/hooks/useGenerateStripeCheckoutSession", () => ({
   useGenerateStripeCheckoutSession: () => ({
     generateStripeCheckoutSession: jest.fn(),

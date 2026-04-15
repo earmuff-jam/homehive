@@ -1,18 +1,26 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 
+import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
 import dayjs from "dayjs";
 
 import {
   CheckCircleOutlineRounded,
+  CloseRounded,
   EmailRounded,
   ExpandMoreRounded,
+  WarningAmberRounded,
 } from "@mui/icons-material";
 import {
+  Alert,
   Avatar,
   Box,
   Chip,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
   IconButton,
   Paper,
   Skeleton,
@@ -23,14 +31,31 @@ import {
 import AButton from "common/AButton";
 import CustomSnackbar from "common/CustomSnackbar";
 import EmptyComponent from "common/EmptyComponent";
-import { useSendEmailMutation } from "features/Api/externalIntegrationsApi";
-import { useLazyGetUserDataByIdQuery } from "features/Api/firebaseUserApi";
+import RowHeader from "common/RowHeader";
+import { SettingsRouteUri, fetchLoggedInUser } from "common/utils";
+import {
+  useAddressOneTimePaymentMutation,
+  useSendEmailMutation,
+} from "features/Api/externalIntegrationsApi";
+import { useGetUserDataByIdQuery } from "features/Api/firebaseUserApi";
 import { useGetTenantByPropertyIdQuery } from "features/Api/tenantsApi";
+import OnetimeChargeForm from "features/Rent/components/OnetimeCharge/OnetimeChargeForm";
 import QuickConnectMenu from "features/Rent/components/QuickConnect/QuickConnectMenu";
 import { handleQuickConnectAction } from "features/Rent/components/Settings/TemplateProcessor";
 import { DefaultRentalAppEmailTemplates } from "features/Rent/components/Templates/constants";
 import { useSelectedPropertyDetails } from "features/Rent/hooks/useGetSelectedPropertyDetails";
-import { getColorAndLabelForCurrentMonth } from "features/Rent/utils";
+import {
+  ManualRentStatusEnumValue,
+  getColorAndLabelForCurrentMonth,
+} from "features/Rent/utils";
+
+// DefaultOneTimePaymentValues ...
+// defines the default values for one time payment form
+const DefaultOneTimePaymentValues = {
+  note: "",
+  amount: "",
+  paymentMethod: "card",
+};
 
 const ViewPropertyAccordionDetails = ({
   property,
@@ -38,6 +63,7 @@ const ViewPropertyAccordionDetails = ({
   isRentDetailsLoading,
 }) => {
   const navigate = useNavigate();
+  const user = fetchLoggedInUser();
   const redirectTo = (path) => navigate(path);
 
   const { data: tenants = [], isLoading: isGetTenantsLoading } =
@@ -46,10 +72,29 @@ const ViewPropertyAccordionDetails = ({
     });
 
   const [sendEmail, sendEmailResult] = useSendEmailMutation();
-  const [getPropertyOwnerData, getPropertyOwnerDataResult] =
-    useLazyGetUserDataByIdQuery();
+  const [addressOneTimePayment, addressOneTimePaymentResult] =
+    useAddressOneTimePaymentMutation();
+
+  const { data: propertyOwnerData } = useGetUserDataByIdQuery(
+    property?.createdBy,
+    {
+      skip: !property?.createdBy,
+    },
+  );
+
+  const {
+    control,
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors, isValid },
+  } = useForm({
+    mode: "onChange",
+    defaultValues: DefaultOneTimePaymentValues,
+  });
 
   const [anchorEl, setAnchorEl] = useState(null);
+  const [onetimeCharge, setOnetimeCharge] = useState(false);
 
   const isOpen = Boolean(anchorEl);
   const currentMonth = dayjs().format("MMMM");
@@ -58,6 +103,11 @@ const ViewPropertyAccordionDetails = ({
   );
 
   const primaryTenant = tenants?.find((tenant) => tenant.isPrimary);
+
+  const handleCloseOnetimePaymentForm = () => {
+    reset(DefaultOneTimePaymentValues);
+    setOnetimeCharge(false);
+  };
 
   const handleCloseQuickConnect = () => setAnchorEl(null);
   const handleOpenQuickConnect = (ev) => setAnchorEl(ev.currentTarget);
@@ -77,16 +127,40 @@ const ViewPropertyAccordionDetails = ({
     Number(primaryTenant?.gracePeriod),
   );
 
+  const submit = (formData) => {
+    addressOneTimePayment({
+      propertyId: property?.id,
+      propertyOwnerId: property?.createdBy,
+      stripeOwnerAccountId: propertyOwnerData?.stripeAccountId,
+      rentAmount: formData?.amount,
+      paymentMethod: formData?.paymentMethod || "card",
+      rentMonth: dayjs().format("MMMM"),
+      status: ManualRentStatusEnumValue,
+      tenantEmail: primaryTenant?.email,
+      tenantId: primaryTenant?.id,
+      note: formData.note,
+      createdBy: user?.uid,
+      createdOn: dayjs().toISOString(),
+      updatedBy: user?.uid,
+      updatedOn: dayjs().toISOString(),
+    });
+  };
+
   const templates = useMemo(() => {
     const stored = localStorage.getItem("templates");
     return stored ? JSON.parse(stored) : DefaultRentalAppEmailTemplates;
   }, []);
 
-  if (
-    isGetTenantsLoading ||
-    isRentDetailsLoading ||
-    getPropertyOwnerDataResult.isLoading
-  )
+  useEffect(() => {
+    if (
+      !addressOneTimePaymentResult.isLoading &&
+      addressOneTimePaymentResult.isSuccess
+    ) {
+      handleCloseOnetimePaymentForm();
+    }
+  }, [addressOneTimePaymentResult.isLoading]);
+
+  if (isGetTenantsLoading || isRentDetailsLoading)
     return <Skeleton height="10rem" />;
 
   if (!tenants || tenants.length === 0) {
@@ -157,7 +231,7 @@ const ViewPropertyAccordionDetails = ({
                   fontSize="1.875rem"
                   color="primary"
                 >
-                  ${primaryTenant?.rent}
+                  ${totalRent}
                 </Typography>
                 <Typography variant="subtitle2" color="textSecondary">
                   Total Monthly Rent
@@ -242,10 +316,11 @@ const ViewPropertyAccordionDetails = ({
             <AButton
               label="Quick Connect"
               disabled={tenants?.length <= 0}
-              onClick={(e) => {
-                e.stopPropagation();
-                getPropertyOwnerData(property?.createdBy);
-                handleOpenQuickConnect(e);
+              type="button"
+              onClick={(ev) => {
+                ev.preventDefault();
+                ev.stopPropagation();
+                handleOpenQuickConnect(ev);
               }}
               size="small"
               variant="contained"
@@ -255,6 +330,7 @@ const ViewPropertyAccordionDetails = ({
               open={isOpen}
               anchorEl={anchorEl}
               property={property}
+              owner={propertyOwnerData}
               onClose={handleCloseQuickConnect}
               onMenuItemClick={(action) =>
                 handleQuickConnectAction(
@@ -263,16 +339,111 @@ const ViewPropertyAccordionDetails = ({
                   totalRent,
                   nextPaymentDueDate,
                   primaryTenant,
-                  getPropertyOwnerDataResult.data,
+                  propertyOwnerData,
                   templates,
                   redirectTo,
                   sendEmail,
+                  setOnetimeCharge,
                 )
               }
             />
           </Stack>
         </Box>
       </Paper>
+      <Dialog
+        open={onetimeCharge}
+        keepMounted
+        fullWidth
+        maxWidth="sm"
+        aria-describedby="onetime-charge-dialog"
+      >
+        <DialogTitle>
+          <Stack
+            direction="row"
+            alignItems="center"
+            justifyContent="space-between"
+          >
+            <Stack direction="row" spacing={1}>
+              <RowHeader
+                title="Request Payment"
+                caption="Please fill out all the required fields"
+                sxProps={{ textAlign: "left" }}
+              />
+            </Stack>
+            <Box alignSelf="flex-end">
+              <IconButton size="small" onClick={() => setOnetimeCharge(false)}>
+                <CloseRounded fontSize="small" />
+              </IconButton>
+            </Box>
+          </Stack>
+        </DialogTitle>
+        <DialogContent>
+          {propertyOwnerData?.stripeAccountIsActive ? (
+            <>
+              <Alert
+                variant="standard"
+                color="error"
+                icon={<WarningAmberRounded fontSize="small" />}
+              >
+                <Typography
+                  color="textSecondary"
+                  fontStyle="italic"
+                  sx={{ fontSize: "0.875rem" }}
+                >
+                  Card payments are processed instantly and includes higher
+                  processing fees. Bank transfers typically take upto 3 business
+                  days to complete but have lower fees.
+                  <Box
+                    component="a"
+                    href="https://stripe.com/pricing"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    sx={{
+                      ml: 0.5,
+                      textDecoration: "underline",
+                      cursor: "pointer",
+                      color: "primary.main",
+                      fontWeight: 500,
+                    }}
+                  >
+                    Learn more
+                  </Box>
+                </Typography>
+              </Alert>
+              <OnetimeChargeForm
+                errors={errors}
+                control={control}
+                register={register}
+              />
+            </>
+          ) : (
+            <EmptyComponent caption="Setup stripe to begin">
+              <Typography
+                component={"span"}
+                variant="caption"
+                color="primary"
+                sx={{ cursor: "pointer" }}
+                onClick={() => navigate(`${SettingsRouteUri}?tabIdx=2`)}
+              >
+                from here
+              </Typography>
+            </EmptyComponent>
+          )}
+        </DialogContent>
+        <DialogActions>
+          <AButton
+            label="Maybe later"
+            onClick={() => setOnetimeCharge(false)}
+          />
+          <AButton
+            label="Send charge"
+            variant="outlined"
+            disabled={!isValid}
+            loading={addressOneTimePaymentResult?.isLoading}
+            onClick={handleSubmit(submit)}
+          />
+        </DialogActions>
+      </Dialog>
       <CustomSnackbar
         showSnackbar={sendEmailResult.isSuccess || sendEmailResult.isError}
         setShowSnackbar={() => {}}
@@ -281,6 +452,19 @@ const ViewPropertyAccordionDetails = ({
           sendEmailResult.isSuccess
             ? "Email sent successfully. Check spam if necessary."
             : "Error sending email."
+        }
+      />
+      <CustomSnackbar
+        showSnackbar={
+          addressOneTimePaymentResult.isSuccess ||
+          addressOneTimePaymentResult.isError
+        }
+        setShowSnackbar={() => {}}
+        severity={addressOneTimePaymentResult.isSuccess ? "success" : "error"}
+        title={
+          addressOneTimePaymentResult.isSuccess
+            ? "Successfully sent email with secure link"
+            : "Unable to create a secure link."
         }
       />
     </Stack>

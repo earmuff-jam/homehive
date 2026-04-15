@@ -1,5 +1,6 @@
-import { buildValidRoutes, retrieveTourKey } from "./utils";
+import { buildChildrenRoutes, retrieveTourKey } from "./utils";
 import { isValidFeatureFlagsForRoutes } from "common/ApplicationConfig";
+import { Role } from "features/Auth/AuthHelper";
 
 jest.mock("common/ApplicationConfig", () => ({
   isValidFeatureFlagsForRoutes: jest.fn(),
@@ -56,10 +57,10 @@ describe("retrieveTourKey tests", () => {
     });
   });
   describe("validate function behavior", () => {
-    describe("buildValidRoutes", () => {
+    describe("buildChildrenRoutes", () => {
       const baseUser = {
         uid: "123",
-        role: "admin",
+        role: "ADMIN",
       };
 
       beforeEach(() => {
@@ -73,13 +74,13 @@ describe("retrieveTourKey tests", () => {
           {
             requiredFlags: ["analytics"],
             config: {
-              enabledForRoles: ["admin"],
+              invalidRoles: [Role.Owner],
               isLoggedInFeature: true,
             },
           },
         ];
 
-        const result = buildValidRoutes(routes, baseUser);
+        const result = buildChildrenRoutes(routes, baseUser);
 
         expect(result).toHaveLength(1);
       });
@@ -94,7 +95,7 @@ describe("retrieveTourKey tests", () => {
           },
         ];
 
-        const result = buildValidRoutes(routes, baseUser);
+        const result = buildChildrenRoutes(routes, baseUser);
 
         expect(result).toHaveLength(0);
       });
@@ -106,12 +107,12 @@ describe("retrieveTourKey tests", () => {
           {
             requiredFlags: [],
             config: {
-              enabledForRoles: ["manager"],
+              invalidRoles: [Role.Admin],
             },
           },
         ];
 
-        const result = buildValidRoutes(routes, baseUser);
+        const result = buildChildrenRoutes(routes, baseUser);
 
         expect(result).toHaveLength(0);
       });
@@ -128,7 +129,7 @@ describe("retrieveTourKey tests", () => {
           },
         ];
 
-        const result = buildValidRoutes(routes, null);
+        const result = buildChildrenRoutes(routes, null);
 
         expect(result).toHaveLength(0);
       });
@@ -143,7 +144,7 @@ describe("retrieveTourKey tests", () => {
           },
         ];
 
-        const result = buildValidRoutes(routes, null);
+        const result = buildChildrenRoutes(routes, null);
 
         expect(result).toHaveLength(1);
       });

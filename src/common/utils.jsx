@@ -35,11 +35,24 @@ export const RecieverInforamtionRoutePath = "reciever";
 export const RecieverInforamtionRouteUri = "/invoice/reciever";
 export const InvoiceAppFaqRouteUri = "/invoice/faq";
 
+// Default Esign App Routes
+export const MainEsignAppRouteUri = "/esign";
+export const ViewEsignRoutePath = "documents";
+export const ViewEsignRouteUri = "/esign/documents";
+
 // pluralize ...
 // defines a function that returns extra word based on variable count
+// wordStr with ending letter "y" will transform into "ies"
 export function pluralize(arrLength, wordStr) {
   if (arrLength <= 1) return wordStr;
-  return `${wordStr}s`;
+
+  const lastChar = wordStr[wordStr.length - 1];
+  if (lastChar === "y") {
+    const newStr = wordStr.slice(0, -1);
+    return `${newStr}ies`;
+  } else {
+    return `${wordStr}s`;
+  }
 }
 
 // createHelperSentences ...

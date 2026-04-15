@@ -4,6 +4,7 @@ import { EditInvoiceRouteUri, fetchLoggedInUser } from "common/utils";
 import { processTemplate } from "features/Rent/components/Settings/common";
 import {
   CreateInvoiceEnumValue,
+  OneTimePaymentRequest,
   PaymentReminderEnumValue,
   RenewLeaseNoticeEnumValue,
   SendDefaultInvoiceEnumValue,
@@ -21,6 +22,7 @@ export const handleQuickConnectAction = (
   templates,
   redirectTo,
   sendEmail,
+  setOnetimeCharge,
 ) => {
   const today = dayjs();
   const user = fetchLoggedInUser();
@@ -53,6 +55,11 @@ export const handleQuickConnectAction = (
   switch (action) {
     case CreateInvoiceEnumValue: {
       redirectTo(EditInvoiceRouteUri);
+      break;
+    }
+
+    case OneTimePaymentRequest: {
+      setOnetimeCharge(true);
       break;
     }
 

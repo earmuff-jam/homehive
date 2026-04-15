@@ -29,7 +29,8 @@ export default function EmptyComponent({
       <Typography {...sxProps}>{title}</Typography>
       <Stack>
         <Typography variant="caption">
-          {caption} {children}
+          {caption}
+          {children}
         </Typography>
       </Stack>
     </Stack>

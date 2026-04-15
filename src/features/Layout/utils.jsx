@@ -67,9 +67,9 @@ export function generateInvoiceHTML(recieverInfo, data, invoiceStatus = "") {
   `;
 }
 
-// buildValidRoutes ...
-// defines a function that is used to build valid routes; ignores navbar validity
-export function buildValidRoutes(routes = [], user) {
+// buildChildrenRoutes ...
+// defines a function that is used to build valid children routes
+export function buildChildrenRoutes(routes = [], user) {
   const validRouteFlags = authorizedServerLevelFeatureFlags();
 
   return routes.filter(({ requiredFlags, config }) => {
@@ -79,8 +79,9 @@ export function buildValidRoutes(routes = [], user) {
     );
     if (!isRouteValid) return false;
 
-    const validRoles = config?.enabledForRoles || [];
-    if (validRoles.length > 0 && !validRoles.includes(user?.role)) return false;
+    const invalidRoles = config?.invalidRoles || [];
+    if (invalidRoles.length > 0 && invalidRoles.includes(user?.role))
+      return false;
 
     const requiresLogin = Boolean(config?.isLoggedInFeature);
     if (requiresLogin && !user?.uid) return false;

@@ -2,7 +2,11 @@ import React, { useEffect } from "react";
 
 import { useNavigate } from "react-router-dom";
 
-import { HomeRounded, ReceiptRounded } from "@mui/icons-material";
+import {
+  ArchitectureRounded,
+  HomeRounded,
+  ReceiptRounded,
+} from "@mui/icons-material";
 import {
   Alert,
   Box,
@@ -15,6 +19,7 @@ import {
   InvoiceDashboardRouteUri,
   PropertiesRouteUri,
   RentalRouteUri,
+  ViewEsignRouteUri,
   fetchLoggedInUser,
 } from "common/utils";
 import { useAuthenticateMutation } from "features/Api/firebaseUserApi";
@@ -31,9 +36,11 @@ export default function SplashPage() {
 
   const [authenticate, authenticateResult] = useAuthenticateMutation();
 
-  const handleAuthenticate = () => {
+  const handleAuthenticate = ({ isEsign = false }) => {
     if (!user?.uid) {
-      authenticate();
+      authenticate(isEsign);
+    } else if (isEsign) {
+      window.location.replace(ViewEsignRouteUri);
     } else {
       const currentUserRole = user?.role;
       currentUserRole === Role.Tenant
@@ -45,9 +52,14 @@ export default function SplashPage() {
   useEffect(() => {
     if (!authenticateResult.isLoading && authenticateResult.isSuccess) {
       const currentUserRole = authenticateResult.data.role;
-      currentUserRole === Role.Tenant
-        ? window.location.replace(RentalRouteUri)
-        : window.location.replace(PropertiesRouteUri);
+      const isEsign = authenticateResult.originalArgs?.isEsign;
+      if (isEsign) {
+        window.location.replace(ViewEsignRouteUri);
+      } else {
+        currentUserRole === Role.Tenant
+          ? window.location.replace(RentalRouteUri)
+          : window.location.replace(PropertiesRouteUri);
+      }
     }
   }, [authenticateResult.isLoading]);
 
@@ -105,7 +117,7 @@ export default function SplashPage() {
           </Typography>
         </Box>
 
-        <Stack direction={{ sm: "column", md: "row" }} gap={2}>
+        <Stack direction={{ sm: "column", md: "row" }} flexWrap="wrap" gap={2}>
           <TitleCard
             title="Rent App"
             subtitle="Manage tenants, leases, and payments"
@@ -120,7 +132,8 @@ export default function SplashPage() {
                 sx={{ fontSize: 32, color: "primary.main", mr: 1.5 }}
               />
             }
-            onClick={handleAuthenticate}
+            sx={{ flex: { md: 1 } }}
+            onClick={() => handleAuthenticate({ isEsign: false })}
           />
           <TitleCard
             title="Invoicer App"
@@ -135,7 +148,24 @@ export default function SplashPage() {
                 sx={{ fontSize: 32, color: "secondary.main", mr: 1.5 }}
               />
             }
+            sx={{ flex: { md: 1 } }}
             onClick={() => navigate(InvoiceDashboardRouteUri)}
+          />
+          <TitleCard
+            title="Esign App"
+            subtitle="Upload documents to Esign"
+            chipLabels={[
+              "Digital Signing",
+              "Real-time Tracking",
+              "Docusign Connected",
+            ]}
+            icon={
+              <ArchitectureRounded
+                sx={{ fontSize: 32, color: "primary.main", mr: 1.5 }}
+              />
+            }
+            sx={{ flex: { md: "100%" } }}
+            onClick={() => handleAuthenticate({ isEsign: true })}
           />
         </Stack>
         {/* Reviews */}
@@ -186,7 +216,7 @@ export default function SplashPage() {
           >
             Simple plans designed to fit your needs — subscribe to get started
           </Typography>
-          <Pricing />
+          <Pricing readOnly />
         </Stack>
         {/* Subscription Fees */}
         <Stack direction="column" gap={2} marginTop="1rem">
@@ -200,7 +230,10 @@ export default function SplashPage() {
           >
             Login with Google and subscribe to get started.
           </Typography>
-          <Button variant="outlined" onClick={handleAuthenticate}>
+          <Button
+            variant="outlined"
+            onClick={() => handleAuthenticate({ isEsign: false })}
+          >
             Login with Google
           </Button>
         </Stack>

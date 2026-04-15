@@ -9,10 +9,12 @@ import {
   Avatar,
   Box,
   Card,
+  CardActions,
   Chip,
   Grid,
   Skeleton,
   Stack,
+  Tooltip,
   Typography,
 } from "@mui/material";
 import AButton from "common/AButton";
@@ -20,10 +22,14 @@ import CustomSnackbar from "common/CustomSnackbar";
 import RowHeader from "common/RowHeader";
 import TextFieldWithLabel from "common/TextFieldWithLabel";
 import { fetchLoggedInUser } from "common/utils";
+import { useCreateStripeManageSubscriptionLinkMutation } from "features/Api/externalIntegrationsApi";
 import {
   useGetUserDataByIdQuery,
   useUpdateUserByUidMutation,
 } from "features/Api/firebaseUserApi";
+import { useGetLatestSubscriptionByEmailQuery } from "features/Api/subscriptionApi";
+import { ProfileSubscriptionTooltip } from "features/Rent/components/ProfileDetails/ProfileSubscriptionTooltip";
+import { StripePaymentStatusCompleted } from "features/Subscription/SubscriptionGuard";
 
 export default function ProfileDetails() {
   const user = fetchLoggedInUser();
@@ -32,6 +38,18 @@ export default function ProfileDetails() {
     useGetUserDataByIdQuery(user?.uid, {
       skip: !user?.uid,
     });
+
+  const {
+    data: latestSubscription = {},
+    isLoading: isSubscriptionDetailsLoading,
+  } = useGetLatestSubscriptionByEmailQuery(user.email, {
+    skip: !user?.email,
+  });
+
+  const [
+    generateStripeManageSubscriptionLink,
+    generateStripeManageSubscriptionLinkResult,
+  ] = useCreateStripeManageSubscriptionLinkMutation();
 
   const [updateUser, updateUserResult] = useUpdateUserByUidMutation();
 
@@ -73,6 +91,20 @@ export default function ProfileDetails() {
     setShowSnackbar(true);
   };
 
+  const handleManageSubscription = (customerId) =>
+    generateStripeManageSubscriptionLink({ customerId: customerId });
+
+  useEffect(() => {
+    if (
+      generateStripeManageSubscriptionLinkResult.isSuccess &&
+      !generateStripeManageSubscriptionLinkResult.isLoading
+    ) {
+      const secureURL = generateStripeManageSubscriptionLinkResult.data?.url;
+      window.open(secureURL, "_blank", "noopener,noreferrer");
+      return;
+    }
+  }, [generateStripeManageSubscriptionLinkResult.isLoading]);
+
   useEffect(() => {
     if (updateUserResult.isSuccess) setShowSnackbar(false);
   }, [updateUserResult.isLoading]);
@@ -91,7 +123,8 @@ export default function ProfileDetails() {
     }
   }, [isUserDataLoading, reset]);
 
-  if (isUserDataLoading) return <Skeleton height="10rem" />;
+  if (isUserDataLoading || isSubscriptionDetailsLoading)
+    return <Skeleton height="10rem" />;
 
   return (
     <Grid container spacing={3}>
@@ -117,7 +150,44 @@ export default function ProfileDetails() {
           <Typography variant="body2" color="text.secondary">
             {user?.role}
           </Typography>
-          <Chip label="Verified" color="primary" size="small" sx={{ mt: 1 }} />
+          {latestSubscription?.subscriptionStatus ===
+            StripePaymentStatusCompleted && (
+            <Tooltip
+              title={
+                <ProfileSubscriptionTooltip
+                  data={latestSubscription}
+                  isLoading={isSubscriptionDetailsLoading}
+                />
+              }
+              slotProps={{
+                tooltip: {
+                  sx: {
+                    padding: 0,
+                  },
+                },
+              }}
+            >
+              <Box>
+                <Chip
+                  label={latestSubscription?.subscriptionProductName}
+                  color="primary"
+                  size="small"
+                />
+              </Box>
+            </Tooltip>
+          )}
+          {latestSubscription?.subscriptionStatus ===
+            StripePaymentStatusCompleted && (
+            <CardActions sx={{ justifyContent: "flex-end" }}>
+              <AButton
+                label="Manage subscription"
+                variant="text"
+                onClick={() =>
+                  handleManageSubscription(latestSubscription?.stripeCustomerId)
+                }
+              />
+            </CardActions>
+          )}
         </Card>
       </Grid>
 

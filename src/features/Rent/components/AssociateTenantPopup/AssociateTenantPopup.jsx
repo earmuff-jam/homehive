@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 
 import { Controller, useForm } from "react-hook-form";
 
@@ -12,6 +12,7 @@ import {
   UpdateRounded,
 } from "@mui/icons-material";
 import {
+  Alert,
   Box,
   Checkbox,
   Divider,
@@ -118,9 +119,21 @@ export default function AssociateTenantPopup({
   const isPrimaryTenant = watch("isPrimary");
   const isAutoRenewPolicySet = watch("isAutoRenewPolicySet");
 
+  const dailyLateFee = watch("dailyLateFee");
+  const initialLateFee = watch("initialLateFee");
+
+  const showLateFeeAlert = useMemo(() => {
+    const totalLateFeePerDay =
+      Number(initialLateFee || 0) + Number(dailyLateFee || 0);
+    const totalPropertyFee =
+      Number(property?.rent || 0) + Number(property?.additionalRent || 0);
+
+    return totalLateFeePerDay > totalPropertyFee * 0.12 || false;
+  }, [property, initialLateFee, dailyLateFee]);
+
   useEffect(() => {
     if (property) {
-      setValue("rent", property?.rent || 0);
+      setValue("rent", Number(property?.rent || 0));
     }
   }, [property]);
 
@@ -276,6 +289,14 @@ export default function AssociateTenantPopup({
         <Divider>
           <Typography variant="caption"> Charges and Fees </Typography>
         </Divider>
+
+        {showLateFeeAlert && (
+          <Alert severity="error">
+            <Typography variant="subtitle2">
+              Late fee should not be greater than 12% of total property cost.
+            </Typography>
+          </Alert>
+        )}
 
         {/* Initial Late Fee and Daily Late Fee */}
         <Stack direction={{ xs: "column", md: "row" }} spacing={2}>
@@ -774,7 +795,9 @@ export default function AssociateTenantPopup({
           startIcon={<UpdateRounded fontSize="small" />}
           variant="outlined"
           type="submit"
-          disabled={!isValid || (!isSoR && !isPrimaryTenant)}
+          disabled={
+            !isValid || (!isSoR && !isPrimaryTenant) || showLateFeeAlert
+          }
         />
 
         <CustomSnackbar

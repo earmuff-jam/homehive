@@ -4,6 +4,8 @@ const TagTypes = {
   SendEmail: "send-email",
   EsignTemplates: "esign-templates",
   EsignWorkspaces: "esign-workspaces",
+  CheckStripeAccountStatus: "check-stripe-account-status",
+  RecentStripeTransactions: "stripe-recent-transactions",
 };
 
 export const externalIntegrationsApi = createApi({
@@ -93,6 +95,131 @@ export const externalIntegrationsApi = createApi({
         }),
       }),
     }),
+    // checkStripeAccountStatus ...
+    // defines a mutation that checks if the user has a valid stripe account
+    checkStripeAccountStatus: builder.query({
+      query: (accountId) => ({
+        method: "POST",
+        body: JSON.stringify({
+          fUrl: "0004_fetch_stripe_account_status",
+          fMethod: "POST",
+          payload: { accountId },
+        }),
+      }),
+      providesTags: [TagTypes.CheckStripeAccountStatus],
+    }),
+    // createStripeAccount ...
+    // defines a mutation that creates a stripe account
+    createStripeAccount: builder.mutation({
+      query: (email) => ({
+        method: "POST",
+        body: JSON.stringify({
+          fUrl: "0002_create_stripe_account",
+          fMethod: "POST",
+          payload: email,
+        }),
+      }),
+      invalidatesTags: [TagTypes.CheckStripeAccountStatus],
+    }),
+    // createStripeAccountLink ...
+    // defines a mutation that creates a stripe account
+    createStripeAccountLink: builder.mutation({
+      query: (data) => ({
+        method: "POST",
+        body: JSON.stringify({
+          fUrl: "0003_link_stripe_account",
+          fMethod: "POST",
+          payload: data,
+        }),
+      }),
+      invalidatesTags: [TagTypes.CheckStripeAccountStatus],
+    }),
+    // createSecureStripeLoginLink ...
+    // defines a mutation that creates a stripe account
+    createSecureStripeLoginLink: builder.mutation({
+      query: (accountId) => ({
+        method: "POST",
+        body: JSON.stringify({
+          fUrl: "0005_fetch_stripe_bank_login_link",
+          fMethod: "POST",
+          payload: { accountId },
+        }),
+      }),
+      invalidatesTags: [TagTypes.CheckStripeAccountStatus],
+    }),
+    // getRecentTransactions ...
+    // defines a query that retrieves recent transactions made under stripe
+    getRecentTransactions: builder.query({
+      query: (connectedAccountId) => ({
+        method: "POST",
+        body: JSON.stringify({
+          fUrl: "0006_fetch_stripe_recent_transactions",
+          fMethod: "POST",
+          payload: { connectedAccountId },
+        }),
+      }),
+      providesTags: [TagTypes.RecentStripeTransactions],
+    }),
+    // createStripeCustomerLink ...
+    // defines a function that creates stripe customer for subscription
+    createStripeCustomerLink: builder.mutation({
+      query: (data) => ({
+        method: "POST",
+        body: JSON.stringify({
+          fUrl: "0021_create_stripe_customer_link",
+          fMethod: "POST",
+          payload: data,
+        }),
+      }),
+    }),
+    // getSubscriptionOptions ...
+    // defines a mutation that checks if the user has a valid stripe account
+    getSubscriptionOptions: builder.query({
+      query: () => ({
+        method: "POST",
+        body: JSON.stringify({
+          fUrl: "0022_retrieve_subscriptions_options",
+          fMethod: "POST",
+        }),
+      }),
+      providesTags: [TagTypes.CheckStripeAccountStatus],
+    }),
+    // createStripeManageSubscriptionLink ...
+    // defines a function that creates stripe link for subscription
+    createStripeManageSubscriptionLink: builder.mutation({
+      query: (data) => ({
+        method: "POST",
+        body: JSON.stringify({
+          fUrl: "0025_create_stripe_subs_manage_link",
+          fMethod: "POST",
+          payload: data,
+        }),
+      }),
+    }),
+    // addressOneTimePayment ...
+    // defines a function that allows property owners to send one time payment
+    addressOneTimePayment: builder.mutation({
+      query: (data) => ({
+        method: "POST",
+        body: JSON.stringify({
+          fUrl: "0028_AddressOnetimePayment",
+          fMethod: "POST",
+          payload: data,
+        }),
+      }),
+    }),
+    // purchaseTokenCheckoutSession ...
+    // defines a function that allows users to checkout to stripe to purchase token for electronic signature
+    purchaseTokenCheckoutSession: builder.mutation({
+      query: (data) => ({
+        method: "POST",
+        body: JSON.stringify({
+          fUrl: "0030_PurchaseEsignToken",
+          fMethod: "POST",
+          payload: data,
+        }),
+      }),
+    }),
   }),
 });
 
@@ -102,5 +229,15 @@ export const {
   useGetWorkspacesMutation,
   useCreateTemplateMutation,
   useDeleteTemplateMutation,
+  useAddressOneTimePaymentMutation,
   useCreateEsignFromTemplateMutation,
+  useCheckStripeAccountStatusQuery,
+  useCreateStripeAccountMutation,
+  useCreateStripeAccountLinkMutation,
+  useCreateSecureStripeLoginLinkMutation,
+  useGetRecentTransactionsQuery,
+  useCreateStripeCustomerLinkMutation,
+  useGetSubscriptionOptionsQuery,
+  usePurchaseTokenCheckoutSessionMutation,
+  useCreateStripeManageSubscriptionLinkMutation,
 } = externalIntegrationsApi;

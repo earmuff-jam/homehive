@@ -288,7 +288,7 @@ export default function AddProperty({
           )}
         </Stack>
 
-        {/* Monthy rent and Additional Rent */}
+        {/* Monthly rent and Additional Rent */}
         <Stack direction={{ xs: "column", md: "row" }} spacing={1}>
           <TextFieldWithLabel
             label="Monthly Rent *"

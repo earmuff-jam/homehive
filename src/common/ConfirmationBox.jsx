@@ -6,6 +6,7 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
+  Stack,
 } from "@mui/material";
 import AButton from "common/AButton";
 
@@ -18,8 +19,13 @@ export const DefaultConfirmationBoxProps = {
 
 export default function ConfirmationBox({
   isOpen,
+  isBlocked = false,
+  isLoading = false,
   handleCancel,
   handleConfirm,
+  title = "Confirm Delete",
+  captionText = "Are you sure you want to proceed with this action?",
+  children,
 }) {
   return (
     <Dialog
@@ -29,14 +35,18 @@ export default function ConfirmationBox({
       maxWidth="xs"
       aria-describedby="alert-dialog-slide-description"
     >
-      <DialogTitle>Confirm delete</DialogTitle>
+      <DialogTitle>{title}</DialogTitle>
       <DialogContent>
-        <DialogContentText>
-          Are you sure you want to proceed with this action?
-        </DialogContentText>
+        <DialogContentText>{captionText}</DialogContentText>
+        <Stack>{children}</Stack>
       </DialogContent>
       <DialogActions>
-        <AButton label="Confirm" onClick={handleConfirm} />
+        <AButton
+          label="Confirm"
+          loading={isLoading}
+          disabled={isBlocked}
+          onClick={handleConfirm}
+        />
         <AButton label="Cancel" variant="outlined" onClick={handleCancel} />
       </DialogActions>
     </Dialog>

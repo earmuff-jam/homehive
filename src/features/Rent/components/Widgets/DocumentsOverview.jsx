@@ -12,9 +12,10 @@ import {
   useGetEsignTemplatesQuery,
 } from "features/Api/externalIntegrationsApi";
 import {
-  useLazyGetUserByEmailAddressQuery,
-  useLazyGetUserDataByIdQuery,
+  useGetUserByEmailAddressQuery,
+  useGetUserDataByIdQuery,
 } from "features/Api/firebaseUserApi";
+import { Role } from "features/Auth/AuthHelper";
 import EsignTemplateDetails from "features/Rent/components/EsignConnect/EsignTemplateDetails";
 import {
   sanitizeEsignFieldsForLeaseExtension,
@@ -32,13 +33,23 @@ export default function DocumentsOverview({
   const navigate = useNavigate();
   const user = fetchLoggedInUser();
 
+  const tenantEmail = property?.rentees?.find((email) => email);
+
   const { data: esignTemplates, isLoading: isGetEsignTemplatesLoading } =
     useGetEsignTemplatesQuery(user?.uid, {
       skip: !isEsignConnected,
     });
 
-  const [triggerGetOwnerData, { data: propertyOwnerData }] =
-    useLazyGetUserDataByIdQuery();
+  const { data: tenantData } = useGetUserByEmailAddressQuery(tenantEmail, {
+    skip: !tenantEmail,
+  });
+
+  const { data: propertyOwnerData } = useGetUserDataByIdQuery(
+    property?.createdBy,
+    {
+      skip: !property?.createdBy,
+    },
+  );
 
   const [
     createEsignFromTemplate,
@@ -47,9 +58,6 @@ export default function DocumentsOverview({
       isSuccess: isPrepareTemplateSuccess,
     },
   ] = useCreateEsignFromTemplateMutation();
-
-  const [triggerGetTenantData, { data: tenantData }] =
-    useLazyGetUserByEmailAddressQuery();
 
   const [showSnackbar, setShowSnackbar] = useState(false);
 
@@ -78,6 +86,8 @@ export default function DocumentsOverview({
       userId: user?.uid,
       doc_name: rowData?.name,
       uuid: rowData?.uuid,
+      propertyId: property?.id,
+      primaryTenantId: primaryTenant?.id,
       additional_senders: "earmuffjam@homehivesolutions.com",
       fields: {
         ...sanitizedFieldsForNewLease,
@@ -88,19 +98,10 @@ export default function DocumentsOverview({
   };
 
   useEffect(() => {
-    if (property?.id && Array.isArray(property?.rentees)) {
-      const propertyOwnerID = property?.createdBy;
-      const tenantEmail = property?.rentees.find((rentee) => rentee);
-      triggerGetOwnerData(propertyOwnerID);
-      triggerGetTenantData(tenantEmail);
-    }
-  }, [property?.id]);
-
-  useEffect(() => {
     if (isPrepareTemplateSuccess) {
       setShowSnackbar(true);
     }
-  }, [isPrepareTemplateLoading]);
+  }, [isPrepareTemplateSuccess]);
 
   if (isGetEsignTemplatesLoading) return <Skeleton height="10rem" />;
 
@@ -121,10 +122,11 @@ export default function DocumentsOverview({
                 templates={templates}
                 isViewingRental={isViewingRental}
                 prepareDocumentForEsign={prepareDocumentForEsign}
+                isPrepareTemplateLoading={isPrepareTemplateLoading}
               />
             )}
           </Stack>
-        ) : (
+        ) : ![Role.Tenant].includes(user?.role) ? (
           <EmptyComponent caption="Setup your esign account for">
             <Typography
               component={"span"}
@@ -136,6 +138,8 @@ export default function DocumentsOverview({
               Esign here.
             </Typography>
           </EmptyComponent>
+        ) : (
+          <EmptyComponent caption="Contact property owner to setup E-Sign"></EmptyComponent>
         )}
       </CardContent>
       <CustomSnackbar

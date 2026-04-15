@@ -89,6 +89,35 @@ export const rentApi = createApi({
       },
       providesTags: ["rent"],
     }),
+    // getRentsByProperties ...
+    // defines a function that returns rents for a list of properties
+    getRentsByProperties: builder.query({
+      async queryFn({ propertyIds }) {
+        try {
+          const draftQuery = query(
+            collection(db, "rents"),
+            where("propertyId", "in", propertyIds),
+          );
+
+          const querySnapshot = await getDocs(draftQuery);
+
+          const rents = [];
+          querySnapshot.forEach((doc) => {
+            rents.push({ id: doc.id, ...doc.data() });
+          });
+
+          return { data: rents };
+        } catch (error) {
+          return {
+            error: {
+              message: error.message,
+              code: error.code,
+            },
+          };
+        }
+      },
+      providesTags: ["rentsByProperties"],
+    }),
     // Get rent records by property ID, tenant list, and current rent month.
     // all filters are required by default
     getRentsByPropertyIdWithFilters: builder.query({
@@ -224,6 +253,7 @@ export const rentApi = createApi({
 
 export const {
   useGetRentsByPropertyIdQuery,
+  useLazyGetRentsByPropertiesQuery,
   useLazyGetRentsByPropertyIdWithFiltersQuery,
   useLazyGetRentByMonthQuery,
   useCreateRentRecordMutation,

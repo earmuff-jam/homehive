@@ -169,7 +169,7 @@ const MyPropertiesListHelpSteps = [
   },
   {
     element:
-      "View current rent payment status and the next payment due date. Use Quick Connect to quickly send invoices, reminders or even lease renewal templates. Do not like what you see? Navigate to settings -> templates to change the default template.",
+      "View current rent payment status and the next payment due date. Use Quick Connect to quickly send invoices, reminders or even lease renewal templates.",
   },
   {
     element: "Click on this property to dive deeper into that property.",
@@ -254,14 +254,14 @@ const RentalHelpSteps = [
   },
   {
     element:
-      "View details about the property owner. You can email the property owner directly if you are a tenant.",
+      "View details about the property owner. Email the property owner if you are a tenant easily. If E-account services are active, pay rent using such services. Eg, stripe.",
   },
   {
     element: "View property details and the state it was last updated in.",
   },
   {
     element:
-      "Perform quick actions against your rental property such as requesting for maintenance. (Feature TBD)",
+      "View more details about the renting property. Chat with your property owner or manager for NON-EMERGENCY issues only. Please dial 911 for life threatening issues. ( Feature TBD )",
   },
   {
     element:

@@ -14,6 +14,17 @@ jest.mock("react-router-dom", () => ({
 // mock util
 jest.mock("common/utils", () => ({
   isBasePlanUser: jest.fn(),
+  fetchLoggedInUser: jest.fn(),
+}));
+
+jest.mock("features/Api/firebaseUserApi", () => ({
+  useUpdateUserByUidMutation: jest.fn(() => [
+    jest.fn(),
+    {
+      isSuccess: false,
+      isLoading: false,
+    },
+  ]),
 }));
 
 describe("Banner Jest Tests", () => {
@@ -29,7 +40,7 @@ describe("Banner Jest Tests", () => {
       render(<Banner />);
 
       expect(
-        screen.getByText(/you are currently using a demo account/i),
+        screen.getByText(/Please confirm your account before we begin .../i),
       ).toBeInTheDocument();
     });
 
@@ -40,7 +51,7 @@ describe("Banner Jest Tests", () => {
       render(<Banner />);
 
       expect(
-        screen.queryByText(/you are currently using a demo account/i),
+        screen.queryByText(/Please confirm your account before we begin .../i),
       ).not.toBeInTheDocument();
     });
   });
