@@ -1,8 +1,9 @@
 import React from "react";
-import { render, screen } from "@testing-library/react";
+
 import { useForm } from "react-hook-form";
 
 import OnetimeChargeForm from "./OnetimeChargeForm";
+import { render, screen } from "@testing-library/react";
 
 // simple mock for RHF register spy
 const mockRegister = jest.fn((name) => ({
@@ -50,7 +51,7 @@ describe("OnetimeChargeForm Unit Tests", () => {
         expect.objectContaining({
           required: expect.any(String),
           pattern: expect.any(Object),
-        })
+        }),
       );
 
       expect(mockRegister).toHaveBeenCalledWith(
@@ -59,7 +60,7 @@ describe("OnetimeChargeForm Unit Tests", () => {
           required: expect.any(String),
           minLength: expect.any(Object),
           maxLength: expect.any(Object),
-        })
+        }),
       );
     });
 
@@ -68,7 +69,7 @@ describe("OnetimeChargeForm Unit Tests", () => {
 
       expect(screen.getByText("Credit Card (Instant)")).toBeInTheDocument();
       expect(
-        screen.getByText("Bank Transfer (Upto 3 business days)")
+        screen.getByText("Bank Transfer (Upto 3 business days)"),
       ).toBeInTheDocument();
     });
   });
