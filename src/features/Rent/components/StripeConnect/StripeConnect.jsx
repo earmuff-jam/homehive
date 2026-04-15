@@ -30,6 +30,7 @@ import BankAccountInformation from "features/Rent/components/StripeConnect/BankA
 import ConnectionAlert from "features/Rent/components/StripeConnect/ConnectionAlert";
 import ConnectionButton from "features/Rent/components/StripeConnect/ConnectionButton";
 import ConnectionStatus from "features/Rent/components/StripeConnect/ConnectionStatus";
+import PaymentPricingInfo from "features/Rent/components/StripeConnect/PaymentPricingInfo";
 import RecentTransactions from "features/Rent/components/StripeConnect/RecentTransactions";
 
 // stripeConnectOptions ...
@@ -271,6 +272,10 @@ export default function StripeConnect() {
           isUserConnectedToStripe={isUserConnectedToStripe}
           handleManageStripeAccount={handleManageStripeAccount}
         />
+      </Grid>
+      {/* Bank Account Information */}
+      <Grid item xs={12} md={6}>
+        <PaymentPricingInfo />
       </Grid>
 
       {/* Transaction History Preview */}

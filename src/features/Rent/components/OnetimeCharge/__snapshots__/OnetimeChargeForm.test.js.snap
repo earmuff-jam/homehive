@@ -1,11 +1,64 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`OnetimeChargeForm Unit Tests OnetimeChargeForm Snapshot tests matches AddProperty snapshot 1`] = `
+exports[`OnetimeChargeForm Unit Tests Snapshot tests matches snapshot 1`] = `
 <DocumentFragment>
   <form>
     <div
       class="MuiStack-root css-1sazv7p-MuiStack-root"
     >
+      <div
+        class="MuiStack-root css-ic9570-MuiStack-root"
+      >
+        <div
+          class="MuiToggleButtonGroup-root MuiToggleButtonGroup-horizontal css-1qb8o-MuiToggleButtonGroup-root"
+          role="group"
+        >
+          <button
+            aria-pressed="true"
+            class="MuiButtonBase-root MuiToggleButtonGroup-grouped MuiToggleButtonGroup-groupedHorizontal MuiToggleButton-root Mui-selected MuiToggleButton-sizeSmall MuiToggleButton-standard MuiToggleButtonGroup-grouped MuiToggleButtonGroup-groupedHorizontal MuiToggleButtonGroup-firstButton css-qofxz1-MuiButtonBase-root-MuiToggleButton-root"
+            tabindex="0"
+            type="button"
+            value="card"
+          >
+            <div
+              class="MuiStack-root css-nen11g-MuiStack-root"
+            >
+              <h6
+                class="MuiTypography-root MuiTypography-subtitle2 css-1ypmsg6-MuiTypography-root"
+              >
+                Credit Card (Instant)
+              </h6>
+              <span
+                class="MuiTypography-root MuiTypography-caption css-mpaqru-MuiTypography-root"
+              >
+                2.9% + 30¢ per successful transaction for domestic cards
+              </span>
+            </div>
+          </button>
+          <button
+            aria-pressed="false"
+            class="MuiButtonBase-root MuiToggleButtonGroup-grouped MuiToggleButtonGroup-groupedHorizontal MuiToggleButton-root MuiToggleButton-sizeSmall MuiToggleButton-standard MuiToggleButtonGroup-grouped MuiToggleButtonGroup-groupedHorizontal MuiToggleButtonGroup-lastButton css-qofxz1-MuiButtonBase-root-MuiToggleButton-root"
+            tabindex="0"
+            type="button"
+            value="us_bank_account"
+          >
+            <div
+              class="MuiStack-root css-nen11g-MuiStack-root"
+            >
+              <h6
+                class="MuiTypography-root MuiTypography-subtitle2 css-1ypmsg6-MuiTypography-root"
+              >
+                Bank Transfer (Upto 3 business days)
+              </h6>
+              <span
+                class="MuiTypography-root MuiTypography-caption css-mpaqru-MuiTypography-root"
+              >
+                0.8% per successful transaction, capped at $5.
+              </span>
+            </div>
+          </button>
+        </div>
+      </div>
       <div
         class="MuiStack-root css-9j5txs-MuiStack-root"
       >

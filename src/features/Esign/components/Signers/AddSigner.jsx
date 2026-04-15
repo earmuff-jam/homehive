@@ -91,15 +91,17 @@ const AddSigner = ({
       <Stack direction="row" justifyContent="space-between" alignItems="center">
         <Stack direction="row" flexWrap="wrap" gap={1} alignItems="center">
           <Tooltip title={`Edit name and email for ${activeSigner?.role}`}>
-            <Button
-              size="small"
-              variant="contained"
-              disabled={!activeSigner}
-              onClick={() => setEdit(activeSigner?.role)}
-              startIcon={<EditRounded fontSize="small" />}
-            >
-              Edit {activeSigner?.role}
-            </Button>
+            <Box>
+              <Button
+                size="small"
+                variant="contained"
+                disabled={!activeSigner}
+                onClick={() => setEdit(activeSigner?.role)}
+                startIcon={<EditRounded fontSize="small" />}
+              >
+                Edit {activeSigner?.role}
+              </Button>
+            </Box>
           </Tooltip>
           {signers.map((signer) => (
             <Chip

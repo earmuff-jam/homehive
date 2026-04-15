@@ -1,12 +1,56 @@
 import React from "react";
 
-import { Stack } from "@mui/material";
+import { Controller } from "react-hook-form";
+
+import {
+  Stack,
+  ToggleButton,
+  ToggleButtonGroup,
+  Typography,
+} from "@mui/material";
 import TextFieldWithLabel from "common/TextFieldWithLabel";
 
-const OnetimeChargeForm = ({ register, errors }) => {
+const OnetimeChargeForm = ({ control, register, errors }) => {
   return (
     <form>
       <Stack spacing={2}>
+        <Stack padding={1} alignItems="center">
+          <Controller
+            name="paymentMethod"
+            control={control}
+            render={({ field }) => (
+              <ToggleButtonGroup
+                size="small"
+                exclusive
+                value={field.value}
+                onChange={(_, value) => {
+                  if (value) field.onChange(value);
+                }}
+              >
+                <ToggleButton value="card">
+                  <Stack>
+                    <Typography variant="subtitle2">
+                      Credit Card (Instant)
+                    </Typography>
+                    <Typography variant="caption">
+                      2.9% + 30¢ per successful transaction for domestic cards
+                    </Typography>
+                  </Stack>
+                </ToggleButton>
+                <ToggleButton value="us_bank_account">
+                  <Stack>
+                    <Typography variant="subtitle2">
+                      Bank Transfer (Upto 3 business days)
+                    </Typography>
+                    <Typography variant="caption">
+                      0.8% per successful transaction, capped at $5.
+                    </Typography>
+                  </Stack>
+                </ToggleButton>
+              </ToggleButtonGroup>
+            )}
+          />
+        </Stack>
         <TextFieldWithLabel
           label="Charge Amount *"
           id="amount"

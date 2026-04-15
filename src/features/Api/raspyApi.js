@@ -11,7 +11,7 @@ export const raspyApi = createApi({
   }),
   endpoints: (builder) => ({
     // getAnswer ...
-    // defines a function that creates stripe link for subscription
+    // defines a function that creates ability to talk to raspy AI
     getAnswer: builder.mutation({
       query: (data) => ({
         method: "POST",
