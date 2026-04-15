@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import {
   CampaignRounded,
@@ -13,6 +13,8 @@ import {
   Menu,
   MenuItem,
 } from "@mui/material";
+import { useCheckStripeAccountStatusQuery } from "features/Api/externalIntegrationsApi";
+import { getStripeFailureReasons } from "features/Rent/components/Settings/common";
 import {
   CreateInvoiceEnumValue,
   OneTimePaymentRequest,
@@ -24,9 +26,21 @@ import {
 export default function QuickConnectMenu({
   anchorEl,
   open,
+  owner,
   onClose,
   onMenuItemClick,
 }) {
+  const {
+    data: stripeStatus,
+    isLoading: isStripeStatusLoading,
+    isError: isStripeStatusError,
+    isSuccess: isStripeStatusSuccess,
+  } = useCheckStripeAccountStatusQuery(owner?.stripeAccountId, {
+    skip: !owner?.stripeAccountId,
+  });
+
+  const [stripeValid, setStripeValid] = useState(false);
+
   const handleMenuItemClick = (action) => {
     onMenuItemClick?.(action);
     onClose();
@@ -57,13 +71,32 @@ export default function QuickConnectMenu({
       icon: <CampaignRounded fontSize="small" />,
       action: RenewLeaseNoticeEnumValue,
     },
-    {
+  ];
+
+  if (stripeValid) {
+    menuItems.push({
       id: "additional-charge",
       label: "Send one time payment request",
       icon: <PaymentsRounded fontSize="small" />,
       action: OneTimePaymentRequest,
-    },
-  ];
+    });
+  }
+
+  useEffect(() => {
+    if (isStripeStatusSuccess) {
+      const reasons = getStripeFailureReasons(stripeStatus?.status);
+
+      if (!reasons || reasons.length === 0) {
+        setStripeValid(true);
+      } else {
+        setStripeValid(false);
+      }
+    }
+
+    if (isStripeStatusError) {
+      setStripeValid(false);
+    }
+  }, [isStripeStatusLoading, isStripeStatusError]);
 
   return (
     <Menu
