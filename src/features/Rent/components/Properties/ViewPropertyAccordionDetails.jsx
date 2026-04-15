@@ -52,8 +52,9 @@ import {
 // DefaultOneTimePaymentValues ...
 // defines the default values for one time payment form
 const DefaultOneTimePaymentValues = {
-  amount: 0,
   note: "",
+  amount: "",
+  paymentMethod: "card",
 };
 
 const ViewPropertyAccordionDetails = ({
@@ -82,6 +83,7 @@ const ViewPropertyAccordionDetails = ({
   );
 
   const {
+    control,
     register,
     handleSubmit,
     reset,
@@ -131,6 +133,7 @@ const ViewPropertyAccordionDetails = ({
       propertyOwnerId: property?.createdBy,
       stripeOwnerAccountId: propertyOwnerData?.stripeAccountId,
       rentAmount: formData?.amount,
+      paymentMethod: formData?.paymentMethod || "card",
       rentMonth: dayjs().format("MMMM"),
       status: ManualRentStatusEnumValue,
       tenantEmail: primaryTenant?.email,
@@ -379,7 +382,7 @@ const ViewPropertyAccordionDetails = ({
             <>
               <Alert
                 variant="standard"
-                color="info"
+                color="error"
                 icon={<WarningAmberRounded fontSize="small" />}
               >
                 <Typography
@@ -387,10 +390,31 @@ const ViewPropertyAccordionDetails = ({
                   fontStyle="italic"
                   sx={{ fontSize: "0.875rem" }}
                 >
-                  Bank transactions may take couple of business days to complete
+                  Card payments are processed instantly and includes higher
+                  processing fees. Bank transfers typically take upto 3 business
+                  days to complete but have lower fees.
+                  <Box
+                    component="a"
+                    href="https://stripe.com/pricing"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    sx={{
+                      ml: 0.5,
+                      textDecoration: "underline",
+                      cursor: "pointer",
+                      color: "primary.main",
+                      fontWeight: 500,
+                    }}
+                  >
+                    Learn more
+                  </Box>
                 </Typography>
               </Alert>
-              <OnetimeChargeForm register={register} errors={errors} />
+              <OnetimeChargeForm
+                errors={errors}
+                control={control}
+                register={register}
+              />
             </>
           ) : (
             <EmptyComponent caption="Setup stripe to begin">

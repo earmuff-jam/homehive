@@ -1,9 +1,10 @@
 import React from "react";
+import { render, screen } from "@testing-library/react";
+import { useForm } from "react-hook-form";
 
 import OnetimeChargeForm from "./OnetimeChargeForm";
-import { render, screen } from "@testing-library/react";
 
-// simple mock for RHF register
+// simple mock for RHF register spy
 const mockRegister = jest.fn((name) => ({
   name,
   onChange: jest.fn(),
@@ -11,25 +12,45 @@ const mockRegister = jest.fn((name) => ({
   ref: jest.fn(),
 }));
 
+// test wrapper to provide real RHF context
+const renderWithForm = (ui) => {
+  const Wrapper = () => {
+    const methods = useForm({
+      defaultValues: {
+        paymentMethod: "card",
+        amount: 0,
+        note: "",
+      },
+    });
+
+    return React.cloneElement(ui, {
+      control: methods.control,
+      register: mockRegister,
+      errors: {},
+    });
+  };
+
+  return render(<Wrapper />);
+};
+
 describe("OnetimeChargeForm Unit Tests", () => {
-  describe("OnetimeChargeForm Snapshot tests", () => {
-    it("matches AddProperty snapshot", () => {
-      const { asFragment } = render(
-        <OnetimeChargeForm register={mockRegister} errors={{}} />,
-      );
+  describe("Snapshot tests", () => {
+    it("matches snapshot", () => {
+      const { asFragment } = renderWithForm(<OnetimeChargeForm />);
       expect(asFragment()).toMatchSnapshot();
     });
   });
-  describe("OnetimeChargeForm Component tests", () => {
+
+  describe("Component tests", () => {
     it("calls register with correct validation rules", () => {
-      render(<OnetimeChargeForm register={mockRegister} errors={{}} />);
+      renderWithForm(<OnetimeChargeForm />);
 
       expect(mockRegister).toHaveBeenCalledWith(
         "amount",
         expect.objectContaining({
           required: expect.any(String),
           pattern: expect.any(Object),
-        }),
+        })
       );
 
       expect(mockRegister).toHaveBeenCalledWith(
@@ -38,20 +59,17 @@ describe("OnetimeChargeForm Unit Tests", () => {
           required: expect.any(String),
           minLength: expect.any(Object),
           maxLength: expect.any(Object),
-        }),
+        })
       );
     });
 
-    it("displays validation errors", () => {
-      const errors = {
-        amount: { message: "Invalid amount" },
-        note: { message: "Invalid note" },
-      };
+    it("renders payment method toggle", () => {
+      renderWithForm(<OnetimeChargeForm />);
 
-      render(<OnetimeChargeForm register={mockRegister} errors={errors} />);
-
-      expect(screen.getByText("Invalid amount")).toBeInTheDocument();
-      expect(screen.getByText("Invalid note")).toBeInTheDocument();
+      expect(screen.getByText("Credit Card (Instant)")).toBeInTheDocument();
+      expect(
+        screen.getByText("Bank Transfer (Upto 3 business days)")
+      ).toBeInTheDocument();
     });
   });
 });

@@ -286,6 +286,38 @@ export default function PropertyOwnerInfoCard({
                     </Typography>
                   </Alert>
                 </Box>
+                <Box>
+                  <Alert
+                    variant="standard"
+                    color="error"
+                    icon={<WarningAmberRounded fontSize="small" />}
+                  >
+                    <Typography
+                      color="textSecondary"
+                      fontStyle="italic"
+                      sx={{ fontSize: "0.875rem" }}
+                    >
+                      Card payments are processed instantly and includes higher
+                      processing fees. Bank transfers typically take upto 3
+                      business days to complete but have lower fees.
+                      <Box
+                        component="a"
+                        href="https://stripe.com/pricing"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        sx={{
+                          ml: 0.5,
+                          textDecoration: "underline",
+                          cursor: "pointer",
+                          color: "primary.main",
+                          fontWeight: 500,
+                        }}
+                      >
+                        Learn more
+                      </Box>
+                    </Typography>
+                  </Alert>
+                </Box>
 
                 <AButton
                   size="small"
