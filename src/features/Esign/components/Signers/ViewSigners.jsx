@@ -4,11 +4,12 @@ import { PermIdentityRounded } from "@mui/icons-material";
 import { Alert, Paper, Stack, Typography } from "@mui/material";
 
 const ViewSigners = ({ tokenCount = 0, signers = [], signatureBoxes = [] }) => {
-  const acuteDateBoxes = signatureBoxes?.map((box) => box.type === "text");
-  const acuteSignatureBoxes = signatureBoxes?.map(
-    (box) => box.type === "signature",
+  const acuteDateBoxes = signatureBoxes?.filter(
+    (box) => box.fieldType === "date",
   );
-
+  const acuteSignatureBoxes = signatureBoxes?.filter(
+    (box) => box.fieldType === "signature",
+  );
   const isSignatureBoxesMatchesSigners =
     acuteSignatureBoxes?.length !== signers?.length;
   const isDateBoxesMatchesSigners = acuteDateBoxes?.length !== signers?.length;

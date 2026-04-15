@@ -4,8 +4,6 @@ import { CancelRounded } from "@mui/icons-material";
 import { Box, Typography } from "@mui/material";
 
 const SigningBox = ({ pageOffsets, createdBox, removeBox, scrollTop }) => {
-  // used to mark date boxes differently
-  const isDate = createdBox.fieldType === "date";
   const pageOffset = pageOffsets.current[createdBox.pageNum] ?? 0;
   // pageOffset is relative to the scroll container's inner content.
   // Subtract scrollTop to get the visible position, then add

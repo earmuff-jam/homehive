@@ -1,5 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 
+import { useNavigate } from "react-router-dom";
+
 import { CurrencyLiraRounded } from "@mui/icons-material";
 import {
   Alert,
@@ -34,7 +36,7 @@ import ViewSigningFields from "features/Esign/components/ViewPdf/ViewSigningFiel
 import withDisclaimer from "features/Esign/withDisclaimer";
 import { produce } from "immer";
 import { PDFDocument } from "pdf-lib";
-import { StandardFonts, rgb } from "pdf-lib";
+import { rgb } from "pdf-lib";
 import * as pdfjsLib from "pdfjs-dist";
 import pdfWorker from "pdfjs-dist/build/pdf.worker.min?url";
 
@@ -77,6 +79,7 @@ const glitter = keyframes`
 
 const PdfEditor = () => {
   const theme = useTheme();
+  const navigate = useNavigate();
   const user = fetchLoggedInUser();
 
   const pageHeights = useRef({});
@@ -86,11 +89,8 @@ const PdfEditor = () => {
   const overlayRef = useRef(null);
   const containerRef = useRef(null);
 
-  const {
-    data: validTokensForETSS,
-    isLoading: isLoadingValidTokensForETSS,
-    isSuccess: isSuccessValidTokensForETSS,
-  } = useGetEtssTokensByEmailIdQuery(user?.email);
+  const { data: validTokensForETSS, isLoading: isLoadingValidTokensForETSS } =
+    useGetEtssTokensByEmailIdQuery(user?.email);
 
   const [sendPreparedDocument, sendPrepareDocumentResult] =
     useSendPreparedDocumentMutation();
@@ -98,7 +98,7 @@ const PdfEditor = () => {
   const [file, setFile] = useState(null);
   const [fields, setFields] = useState([]);
   const [scrollTop, setScrollTop] = useState(0);
-  const [tokenCount, setTokenCount] = useState(0);
+  // const [tokenCount, setTokenCount] = useState(0);
   const [tokenAnchor, setTokenAnchor] = useState(null);
   const [activeSigner, setActiveSigner] = useState(null);
   const [signers, setSigners] = useState(InitialSignerEnumValues);
@@ -412,19 +412,36 @@ const PdfEditor = () => {
         const isChecked =
           stateField.value === "Yes" || stateField.value === "On";
 
-        const x = x1 + 3;
+        const x = x1;
         const y = y1;
 
-        // Use simple ASCII [x] and [ ] instead of Unicode
-        const symbol = isChecked ? "[X]" : "[ ]";
-
-        page.drawText(symbol, {
-          x: x,
-          y: y,
-          size: 10,
-          font: await pdfDoc.embedFont(StandardFonts.Helvetica),
-          color: rgb(0, 0, 0),
+        // draw checkbox field
+        page.drawRectangle({
+          x,
+          y,
+          width: 10,
+          height: 10,
+          borderColor: rgb(0, 0, 0),
+          borderWidth: 1,
+          color: rgb(1, 1, 1),
         });
+
+        // if checked, draw X
+        if (isChecked) {
+          page.drawLine({
+            start: { x: x + 2, y: y + 2 },
+            end: { x: x + 8, y: y + 8 },
+            thickness: 1,
+            color: rgb(0, 0, 0),
+          });
+
+          page.drawLine({
+            start: { x: x + 8, y: y + 2 },
+            end: { x: x + 2, y: y + 8 },
+            thickness: 1,
+            color: rgb(0, 0, 0),
+          });
+        }
 
         try {
           const field = form.getCheckBox(stateField.name);
@@ -485,8 +502,7 @@ const PdfEditor = () => {
       JSON.stringify(createdSignatureFields),
     );
 
-    console.log(createdSignatureFields);
-    // sendPreparedDocument(formData);
+    sendPreparedDocument(formData);
   };
 
   // getPageAndLocalCoords ...
@@ -641,16 +657,13 @@ const PdfEditor = () => {
       !sendPrepareDocumentResult.isLoading &&
       sendPrepareDocumentResult.isSuccess
     ) {
+      setFields([]);
+      setFile(null);
       setShowSnackbar(true);
       setShowConfirmationBox({ value: false, updateKey: "" });
+      navigate(0);
     }
   }, [sendPrepareDocumentResult.isLoading]);
-
-  useEffect(() => {
-    if (!isLoadingValidTokensForETSS && isSuccessValidTokensForETSS) {
-      setTokenCount(validTokensForETSS);
-    }
-  }, [isLoadingValidTokensForETSS]);
 
   if (isLoadingValidTokensForETSS) return <Skeleton height="10rem" />;
 
@@ -696,7 +709,7 @@ const PdfEditor = () => {
                 <CurrencyLiraRounded fontSize="small" color="primary" />
               </Box>
               <Typography variant="caption" color="primary">
-                Non-Refundable Tokens: {tokenCount}
+                Non-Refundable Tokens: {validTokensForETSS}
               </Typography>
             </Stack>
           </Tooltip>
@@ -729,7 +742,7 @@ const PdfEditor = () => {
           </Typography>
         </Alert>
       )}
-      <ViewTokenAlert tokenCount={tokenCount} />
+      <ViewTokenAlert tokenCount={validTokensForETSS} />
       <ViewFormTemplates handleUpload={handleUpload} />
       {file && (
         <AddSigner
@@ -787,7 +800,7 @@ const PdfEditor = () => {
       )}
 
       <ConfirmationBox
-        isBlocked={tokenCount <= 0}
+        isBlocked={validTokensForETSS <= 0}
         title="Send document to signers?"
         captionText="Action consumes 1 non-refundable token. Proceed?"
         isOpen={showConfirmationBox?.value}
@@ -799,7 +812,7 @@ const PdfEditor = () => {
       >
         <ViewSigners
           signers={signers}
-          tokenCount={tokenCount}
+          tokenCount={validTokensForETSS}
           signatureBoxes={signatureBoxes}
         />
       </ConfirmationBox>
