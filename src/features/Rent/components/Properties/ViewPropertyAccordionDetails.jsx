@@ -129,6 +129,7 @@ const ViewPropertyAccordionDetails = ({
     addressOneTimePayment({
       propertyId: property?.id,
       propertyOwnerId: property?.createdBy,
+      stripeOwnerAccountId: propertyOwnerData?.stripeAccountId,
       rentAmount: formData?.amount,
       rentMonth: dayjs().format("MMMM"),
       status: ManualRentStatusEnumValue,
@@ -326,6 +327,7 @@ const ViewPropertyAccordionDetails = ({
               open={isOpen}
               anchorEl={anchorEl}
               property={property}
+              owner={propertyOwnerData}
               onClose={handleCloseQuickConnect}
               onMenuItemClick={(action) =>
                 handleQuickConnectAction(

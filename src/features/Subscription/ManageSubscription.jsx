@@ -161,7 +161,9 @@ export default function ManageSubscription() {
 
       <DialogActions sx={{ padding: "0rem 1rem 1rem 0rem", gap: 1 }}>
         {/* MUIv5 button to support logout */}
-        <Button variant="text" label="Maybe later" onClick={() => logout()} />
+        <Button variant="text" onClick={() => logout()}>
+          Maybe Later
+        </Button>
         <AButton
           disabled={alert?.value}
           variant="contained"
