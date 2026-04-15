@@ -1,8 +1,9 @@
 import React from "react";
-import { render, screen } from "@testing-library/react";
+
 import { useForm } from "react-hook-form";
 
 import EditSigners from "./EditSigners";
+import { render, screen } from "@testing-library/react";
 
 // small wrapper to provide RHF context
 const renderComponent = (defaultValues) => {
@@ -42,15 +43,15 @@ describe("EditSigners Tests", () => {
 
       expect(screen.getByDisplayValue("Jane Smith")).toBeInTheDocument();
       expect(
-        screen.getByDisplayValue("jane_doe47@gmail.com")
+        screen.getByDisplayValue("jane_doe47@gmail.com"),
       ).toBeInTheDocument();
 
       expect(
-        screen.getByPlaceholderText(/the name of the signer/i)
+        screen.getByPlaceholderText(/the name of the signer/i),
       ).toBeInTheDocument();
 
       expect(
-        screen.getByPlaceholderText(/the email address of the signer/i)
+        screen.getByPlaceholderText(/the email address of the signer/i),
       ).toBeInTheDocument();
     });
   });

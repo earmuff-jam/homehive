@@ -1,4 +1,5 @@
 import React from "react";
+
 import ViewSigners from "./ViewSigners";
 import { render, screen } from "@testing-library/react";
 
@@ -65,12 +66,7 @@ describe("ViewSigners Tests", () => {
     });
 
     it("shows mismatch error when signature boxes are missing fieldType", () => {
-      render(
-        <ViewSigners
-          signers={baseSigner}
-          signatureBoxes={[]}
-        />,
-      );
+      render(<ViewSigners signers={baseSigner} signatureBoxes={[]} />);
 
       expect(
         screen.getByText(/You have 1 signers but 0 signature boxes/i),
