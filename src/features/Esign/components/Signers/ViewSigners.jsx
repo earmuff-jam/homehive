@@ -4,8 +4,14 @@ import { PermIdentityRounded } from "@mui/icons-material";
 import { Alert, Paper, Stack, Typography } from "@mui/material";
 
 const ViewSigners = ({ tokenCount = 0, signers = [], signatureBoxes = [] }) => {
+  const acuteDateBoxes = signatureBoxes?.map((box) => box.type === "text");
+  const acuteSignatureBoxes = signatureBoxes?.map(
+    (box) => box.type === "signature",
+  );
+
   const isSignatureBoxesMatchesSigners =
-    signatureBoxes?.length !== signers?.length;
+    acuteSignatureBoxes?.length !== signers?.length;
+  const isDateBoxesMatchesSigners = acuteDateBoxes?.length !== signers?.length;
   const isRequiredFieldsMissing =
     signers?.filter((signer) => signer?.email_address).filter(Boolean)
       ?.length <= 0;
@@ -15,14 +21,27 @@ const ViewSigners = ({ tokenCount = 0, signers = [], signatureBoxes = [] }) => {
         {isSignatureBoxesMatchesSigners ? (
           <Alert severity="error">
             <Typography variant="caption">
-              You have {signers?.length} signers but only{" "}
-              {signatureBoxes?.length} signature boxes. Is this correct?
+              {`You have ${signers?.length} signers but ${acuteSignatureBoxes?.length} signature boxes. Is this correct?`}
             </Typography>
           </Alert>
         ) : (
           <Alert severity="success">
             <Typography variant="caption">
-              Found {signatureBoxes?.length} signature boxes.
+              Found {acuteSignatureBoxes?.length} signature boxes.
+            </Typography>
+          </Alert>
+        )}
+
+        {isDateBoxesMatchesSigners ? (
+          <Alert severity="error">
+            <Typography variant="caption">
+              {`You have ${signers?.length} signers but ${acuteDateBoxes?.length} date boxes. Is this correct?`}
+            </Typography>
+          </Alert>
+        ) : (
+          <Alert severity="success">
+            <Typography variant="caption">
+              Found {acuteDateBoxes?.length} date boxes.
             </Typography>
           </Alert>
         )}

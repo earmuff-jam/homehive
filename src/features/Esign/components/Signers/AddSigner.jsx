@@ -30,6 +30,8 @@ const AddSigner = ({
   signers = [],
   activeSigner,
   setActiveSigner,
+  activeFieldType,
+  setActiveFieldType,
   updateSignerDetails,
   addFollowUpSigners,
   handleRemoveSigner,
@@ -67,6 +69,25 @@ const AddSigner = ({
 
   return (
     <Stack spacing={1} marginBottom="1rem">
+      <Box sx={{ marginBottom: 1 }}>
+        <Stack direction="row" spacing={1}>
+          <Button
+            size="small"
+            variant={activeFieldType === "signature" ? "contained" : "outlined"}
+            onClick={() => setActiveFieldType("signature")}
+          >
+            Signature
+          </Button>
+
+          <Button
+            size="small"
+            variant={activeFieldType === "date" ? "contained" : "outlined"}
+            onClick={() => setActiveFieldType("date")}
+          >
+            Date
+          </Button>
+        </Stack>
+      </Box>
       <Stack direction="row" justifyContent="space-between" alignItems="center">
         <Stack direction="row" flexWrap="wrap" gap={1} alignItems="center">
           <Tooltip title={`Edit name and email for ${activeSigner?.role}`}>
@@ -161,17 +182,18 @@ const AddSigner = ({
       <Typography variant="caption" color="text.secondary">
         {activeSigner ? (
           <>
-            Placing signature for&nbsp;
+            Placing {activeFieldType} for&nbsp;
             <strong style={{ color: activeSigner.color }}>
               {activeSigner.role}
             </strong>
-            &nbsp; — click and drag on the PDF below to place their signature
-            box. Select a different name above to switch.
+            &nbsp; — click and drag on the PDF below to place their&nbsp;
+            {activeFieldType}&nbsp;box. Select a different name above to switch.
           </>
         ) : (
           <>
-            Select a signer above, then click and drag on the PDF to place their
-            signature box.
+            Select a signer above, then click and drag on the PDF to place
+            their&nbsp;
+            {activeFieldType}&nbsp;box.
           </>
         )}
       </Typography>

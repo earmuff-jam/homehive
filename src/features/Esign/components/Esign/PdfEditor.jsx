@@ -102,6 +102,7 @@ const PdfEditor = () => {
   const [tokenAnchor, setTokenAnchor] = useState(null);
   const [activeSigner, setActiveSigner] = useState(null);
   const [signers, setSigners] = useState(InitialSignerEnumValues);
+  const [activeFieldType, setActiveFieldType] = useState("signature");
 
   const [showSnackbar, setShowSnackbar] = useState(false);
   const [signatureBoxes, setSignatureBoxes] = useState([]);
@@ -361,7 +362,7 @@ const PdfEditor = () => {
     return signatureBoxes?.map((signatureBox, index) => ({
       document_index: 0,
       api_id: `sig_${index}`,
-      type: "signature",
+      type: signatureBox.fieldType === "date" ? "text" : "signature",
       signer:
         signatureBox?.signerId === "creator"
           ? 0
@@ -484,7 +485,8 @@ const PdfEditor = () => {
       JSON.stringify(createdSignatureFields),
     );
 
-    sendPreparedDocument(formData);
+    console.log(createdSignatureFields);
+    // sendPreparedDocument(formData);
   };
 
   // getPageAndLocalCoords ...
@@ -605,6 +607,7 @@ const PdfEditor = () => {
           signerId: signer.id,
           signerRole: signer.role,
           color: signer.color,
+          fieldType: activeFieldType,
           pageNum,
           screenX,
           screenY,
@@ -617,7 +620,7 @@ const PdfEditor = () => {
         },
       ]);
     },
-    [getPageAndLocalCoords],
+    [getPageAndLocalCoords, activeFieldType],
   );
 
   useEffect(() => {
@@ -728,12 +731,13 @@ const PdfEditor = () => {
       )}
       <ViewTokenAlert tokenCount={tokenCount} />
       <ViewFormTemplates handleUpload={handleUpload} />
-
       {file && (
         <AddSigner
           signers={signers}
           activeSigner={activeSigner}
           setActiveSigner={setActiveSigner}
+          activeFieldType={activeFieldType}
+          setActiveFieldType={setActiveFieldType}
           updateSignerDetails={updateSignerDetails}
           addFollowUpSigners={addFollowUpSigners}
           handleRemoveSigner={handleRemoveSigner}

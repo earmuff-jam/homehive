@@ -4,6 +4,8 @@ import { CancelRounded } from "@mui/icons-material";
 import { Box, Typography } from "@mui/material";
 
 const SigningBox = ({ pageOffsets, createdBox, removeBox, scrollTop }) => {
+  // used to mark date boxes differently
+  const isDate = createdBox.fieldType === "date";
   const pageOffset = pageOffsets.current[createdBox.pageNum] ?? 0;
   // pageOffset is relative to the scroll container's inner content.
   // Subtract scrollTop to get the visible position, then add
@@ -33,12 +35,15 @@ const SigningBox = ({ pageOffsets, createdBox, removeBox, scrollTop }) => {
         sx={{
           color: createdBox.color,
           fontWeight: 700,
-          fontSize: "10px",
+          fontSize: "12px",
           userSelect: "none",
           pointerEvents: "none",
         }}
       >
-        {createdBox.signerRole}
+        {createdBox.signerRole}&nbsp;&#8212;&nbsp;
+        <Box component="span" textTransform="capitalize">
+          {createdBox.fieldType}
+        </Box>
       </Typography>
 
       {/* Delete button */}
