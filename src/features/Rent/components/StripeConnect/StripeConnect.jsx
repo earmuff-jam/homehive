@@ -44,7 +44,7 @@ const stripeConnectOptions = [
       <HelpOutlineRounded sx={{ fontSize: 32, color: "primary.main", mb: 1 }} />
     ),
     buttonText: "View guide",
-    to: "https://dashboard.stripe.com/register/connect",
+    to: "https://docs.stripe.com/get-started/account/set-up",
   },
   {
     id: 2,
@@ -260,6 +260,10 @@ export default function StripeConnect() {
             handleCreateStripe={handleCreateStripe}
             isUserConnectedToStripe={isUserConnectedToStripe}
             handleStripeOnboardingSetup={handleStripeOnboardingSetup}
+            isLaoding={
+              createAccountResult.isLoading ||
+              createSecureAccountLinkResult.isLoading
+            }
           />
         </Card>
       </Grid>

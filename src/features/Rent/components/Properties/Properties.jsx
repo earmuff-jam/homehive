@@ -36,6 +36,7 @@ import CustomSnackbar from "common/CustomSnackbar";
 import EmptyComponent from "common/EmptyComponent";
 import RowHeader from "common/RowHeader";
 import { fetchLoggedInUser } from "common/utils";
+import { useGetSubscriptionOptionsQuery } from "features/Api/externalIntegrationsApi";
 import { useGetUserDataByIdQuery } from "features/Api/firebaseUserApi";
 import {
   useCreatePropertyMutation,
@@ -44,7 +45,6 @@ import {
 } from "features/Api/propertiesApi";
 import { useLazyGetRentsByPropertyIdWithFiltersQuery } from "features/Api/rentApi";
 import { useGetLatestSubscriptionByEmailQuery } from "features/Api/subscriptionApi";
-import { Role } from "features/Auth/AuthHelper";
 import RaspyDialog from "features/Raspy/RaspyDialog";
 import { AddPropertyTextString } from "features/Rent/common/constants";
 import AddProperty from "features/Rent/components/AddProperty/AddProperty";
@@ -96,8 +96,14 @@ export default function Properties() {
       skip: !user?.email,
     });
 
-  const { allowToAddMoreProperties = false } =
-    useVerifySubscriptionForProperties(latestSubscription, properties?.length);
+  const { data: subscriptionOptions = [] } = useGetSubscriptionOptionsQuery();
+
+  const canAddProperty = useVerifySubscriptionForProperties(
+    user,
+    latestSubscription,
+    subscriptionOptions,
+    properties?.length,
+  );
 
   const [createProperty, createPropertyResult] = useCreatePropertyMutation();
   const [triggerGetRents, getRentsResult] =
@@ -205,9 +211,6 @@ export default function Properties() {
   const isBrokerManaged = watch("isBrokerManaged");
   const isManagerManaged = watch("isManagerManaged");
   const isOwnerCoveredUtilities = watch("isOwnerCoveredUtilities");
-
-  const canAddProperty =
-    [Role.Admin, Role.Owner].includes(user?.role) && allowToAddMoreProperties;
 
   useEffect(() => {
     if (createPropertyResult.isSuccess || deletePropertyResult.isSuccess) {

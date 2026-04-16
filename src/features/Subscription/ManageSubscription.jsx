@@ -96,7 +96,7 @@ export default function ManageSubscription() {
   }, [createStripeCustomerLinkResult.isLoading]);
 
   return (
-    <Dialog open maxWidth="sm" fullWidth>
+    <Dialog open maxWidth="md" fullWidth>
       <DialogTitle>
         <Stack direction="row" alignItems="center" spacing={1}>
           <Box
