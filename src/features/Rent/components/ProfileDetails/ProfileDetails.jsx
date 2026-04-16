@@ -129,7 +129,10 @@ export default function ProfileDetails() {
   return (
     <Grid container spacing={3}>
       <Grid item xs={12} md={4}>
-        <Card elevation={0} sx={{ padding: 3, textAlign: "center" }}>
+        <Card
+          elevation={0}
+          sx={{ paddingX: 3, paddingTop: 3, textAlign: "center" }}
+        >
           <Avatar
             sx={{
               width: 120,
@@ -169,9 +172,9 @@ export default function ProfileDetails() {
             >
               <Box>
                 <Chip
-                  label={latestSubscription?.subscriptionProductName}
-                  color="primary"
                   size="small"
+                  color="primary"
+                  label="Active Subscription"
                 />
               </Box>
             </Tooltip>
@@ -180,7 +183,7 @@ export default function ProfileDetails() {
             StripePaymentStatusCompleted && (
             <CardActions sx={{ justifyContent: "flex-end" }}>
               <AButton
-                label="Manage subscription"
+                label="Manage"
                 variant="text"
                 onClick={() =>
                   handleManageSubscription(latestSubscription?.stripeCustomerId)

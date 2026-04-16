@@ -89,8 +89,10 @@ const PdfEditor = () => {
   const overlayRef = useRef(null);
   const containerRef = useRef(null);
 
-  const { data: validTokensForETSS, isLoading: isLoadingValidTokensForETSS } =
-    useGetEtssTokensByEmailIdQuery(user?.email);
+  const {
+    data: validTokensForETSS = 0,
+    isLoading: isLoadingValidTokensForETSS,
+  } = useGetEtssTokensByEmailIdQuery(user?.email);
 
   const [sendPreparedDocument, sendPrepareDocumentResult] =
     useSendPreparedDocumentMutation();
