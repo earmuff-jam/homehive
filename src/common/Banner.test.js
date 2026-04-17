@@ -40,7 +40,9 @@ describe("Banner Jest Tests", () => {
       render(<Banner />);
 
       expect(
-        screen.getByText(/Please confirm your account before we begin .../i),
+        screen.getByText(
+          /We’ll log you out so you can sign back in and confirm your account./i,
+        ),
       ).toBeInTheDocument();
     });
 
@@ -51,7 +53,9 @@ describe("Banner Jest Tests", () => {
       render(<Banner />);
 
       expect(
-        screen.queryByText(/Please confirm your account before we begin .../i),
+        screen.queryByText(
+          /We’ll log you out so you can sign back in and confirm your account./i,
+        ),
       ).not.toBeInTheDocument();
     });
   });
