@@ -438,7 +438,7 @@ export const DefaultTourStepsMapperObj = {
       <>
         {createHelperSentences(
           "edit / update",
-          "your information and email templates",
+          "your information, customize templates or integrate with 3rd party systems",
         )}
         {DisplaySubHelperSection()}
       </>
