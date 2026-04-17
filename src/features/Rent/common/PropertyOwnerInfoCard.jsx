@@ -39,6 +39,7 @@ import { useGenerateStripeCheckoutSession } from "features/Rent/hooks/useGenerat
 import {
   CompleteRentStatusEnumValue,
   ManualRentStatusEnumValue,
+  PaidRentStatusEnumValue,
   formatCurrency,
   getNumberOfDaysPastDue,
 } from "features/Rent/utils";
@@ -86,6 +87,7 @@ export default function PropertyOwnerInfoCard({
     currentMonthRentData?.some(
       (item) =>
         item.status === CompleteRentStatusEnumValue ||
+        item.status === PaidRentStatusEnumValue ||
         item.status === ManualRentStatusEnumValue,
     ),
   );

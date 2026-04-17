@@ -13,6 +13,7 @@ import { produce } from "immer";
 
 export const ManualRentStatusEnumValue = "manual";
 export const CompleteRentStatusEnumValue = "complete";
+export const PaidRentStatusEnumValue = "paid";
 
 export const CreateInvoiceEnumValue = "CreateInvoice";
 export const PaymentReminderEnumValue = "PaymentReminder";
