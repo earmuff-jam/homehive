@@ -16,6 +16,7 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
+  Alert,
   Box,
   Chip,
   Dialog,
@@ -98,12 +99,14 @@ export default function Properties() {
 
   const { data: subscriptionOptions = [] } = useGetSubscriptionOptionsQuery();
 
-  const canAddProperty = useVerifySubscriptionForProperties(
-    user,
-    latestSubscription,
-    subscriptionOptions,
-    properties?.length,
-  );
+  const { canAddProperty = false, displayAlert = false } =
+    useVerifySubscriptionForProperties(
+      user,
+      userData?.createdOn,
+      latestSubscription,
+      subscriptionOptions,
+      properties?.length,
+    );
 
   const [createProperty, createPropertyResult] = useCreatePropertyMutation();
   const [triggerGetRents, getRentsResult] =
@@ -274,6 +277,16 @@ export default function Properties() {
             />
           </Box>
         </Tooltip>
+      </Stack>
+      <Stack margin={1}>
+        {displayAlert && (
+          <Alert severity="error">
+            <Typography variant="subtitle2">
+              You are within the seven day trial period of subscription. Limited
+              to one property.
+            </Typography>
+          </Alert>
+        )}
       </Stack>
 
       <Stack padding={1} spacing={1}>

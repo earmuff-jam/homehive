@@ -1,4 +1,6 @@
 // AllowedPropertiesSubscription ...
+import dayjs from "dayjs";
+
 import { Role } from "features/Auth/AuthHelper";
 
 // defines the allowed properties for each of the associated plan
@@ -12,6 +14,7 @@ const AllowedPropertiesSubscription = {
 // defines a function that verifies the subscription details for the logged in user.
 export const useVerifySubscriptionForProperties = (
   user,
+  userCreatedOn,
   latestSubscription = {},
   subscriptionOptions = [],
   activePropertiesCount = 0,
@@ -19,11 +22,11 @@ export const useVerifySubscriptionForProperties = (
   const userRole = user?.role || Role.User;
 
   if (userRole === Role.Admin) {
-    return true;
+    return { canAddProperty: true, displayAlert: false };
   }
 
   if (userRole === Role.Tenant) {
-    return false;
+    return { canAddProperty: false, displayAlert: false };
   }
 
   if (userRole === Role.Owner) {
@@ -31,11 +34,25 @@ export const useVerifySubscriptionForProperties = (
       (option) =>
         option.productId === latestSubscription?.subscriptionProductId,
     );
+
+    // check if the user is within the trial period
+    const withinTrial =
+      latestSubscription?.isFirstSubscriptionForCustomer &&
+      dayjs().isBefore(dayjs(userCreatedOn).add(7, "days"));
+
+    if (withinTrial) {
+      // should display the AlertBar to let users know they are within trial period.
+      return { canAddProperty: activePropertiesCount < 1, displayAlert: true };
+    }
+
     const allowedPropertiesLimit =
       AllowedPropertiesSubscription[selectedSubscription?.productId] || 0;
 
-    return activePropertiesCount < allowedPropertiesLimit;
+    return {
+      canAddProperty: activePropertiesCount < allowedPropertiesLimit,
+      displayAlert: false,
+    };
   }
 
-  return false;
+  return { canAddProperty: false, displayAlert: false };
 };
