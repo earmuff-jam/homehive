@@ -21,8 +21,8 @@ export const authenticateViaGoogle = async () => {
   const userDetails = {
     uid: user.uid,
     email: user.email,
-    googleDisplayName: user.displayName,
     googlePhotoURL: user.photoURL,
+    googleDisplayName: user.displayName,
     provider: user.providerData[0]?.providerId,
     googleAccountLinkedAt: dayjs().toISOString(),
     googleLastLoginAt: dayjs().toISOString(),

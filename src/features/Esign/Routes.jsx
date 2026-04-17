@@ -22,10 +22,11 @@ export const EsignAppRoutes = [
         value: "Esign",
         icon: <ArticleRounded fontSize="small" />,
       },
-      isLoggedInFeature: true,
       displayInNavBar: true,
+      isLoggedInFeature: true,
       displayHelpSelector: false,
       displayPrintSelector: false,
+      isProtectedBySubscriptionGuard: false,
     },
   },
 ];

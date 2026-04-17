@@ -39,6 +39,7 @@ import { useGenerateStripeCheckoutSession } from "features/Rent/hooks/useGenerat
 import {
   CompleteRentStatusEnumValue,
   ManualRentStatusEnumValue,
+  PaidRentStatusEnumValue,
   formatCurrency,
   getNumberOfDaysPastDue,
 } from "features/Rent/utils";
@@ -82,10 +83,13 @@ export default function PropertyOwnerInfoCard({
 
   const tenant = data.find((item) => item);
   const currentMonthRentData = getRentByMonthResult?.data;
-  const paymentCompleteForCurrentMonth = currentMonthRentData?.some(
-    (item) =>
-      item.status === CompleteRentStatusEnumValue ||
-      item.status === ManualRentStatusEnumValue,
+  const paymentCompleteForCurrentMonth = Boolean(
+    currentMonthRentData?.some(
+      (item) =>
+        item.status === CompleteRentStatusEnumValue ||
+        item.status === PaidRentStatusEnumValue ||
+        item.status === ManualRentStatusEnumValue,
+    ),
   );
 
   const handleRentPayment = async ({
@@ -279,7 +283,7 @@ export default function PropertyOwnerInfoCard({
                     <Typography
                       color="textSecondary"
                       fontStyle="italic"
-                      sx={{ fontSize: "0.675rem" }}
+                      sx={{ fontSize: "0.875rem" }}
                     >
                       Rent can be paid only if the owner has stripe setup and if
                       current month is due.

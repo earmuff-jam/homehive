@@ -11,6 +11,7 @@ export default function ConnectionButton({
   handleCreateStripe,
   isUserConnectedToStripe,
   handleStripeOnboardingSetup,
+  isLoading,
 }) {
   // first time user or disconnected user
   if (!stripeAlert || !isUserConnectedToStripe) {
@@ -19,6 +20,7 @@ export default function ConnectionButton({
         sx={{ mt: 2 }}
         variant="contained"
         onClick={handleCreateStripe}
+        isLoading={isLoading}
         startIcon={<AccountBalanceRounded />}
         label="Link Stripe"
       />
@@ -29,6 +31,7 @@ export default function ConnectionButton({
         size="medium"
         sx={{ mt: 2 }}
         variant="contained"
+        isLoading={isLoading}
         onClick={handleStripeOnboardingSetup}
         startIcon={<AccountBalanceRounded />}
         label="Complete your onboarding"

@@ -30,20 +30,21 @@ export default function Banner() {
     return (
       <Alert
         icon={<ErrorOutlineRounded fontSize="small" />}
-        severity="success"
+        severity="error"
         action={
           <Button
             size="small"
             variant="outlined"
+            color="error"
             onClick={handleOwnerEmailConfirmation}
           >
-            Confirm account
+            Accept
           </Button>
         }
       >
         <Stack direction="row" alignItems="center">
           <Typography variant="body2">
-            Please confirm your account before we begin ...
+            We’ll log you out so you can sign back in and confirm your account.
           </Typography>
         </Stack>
       </Alert>

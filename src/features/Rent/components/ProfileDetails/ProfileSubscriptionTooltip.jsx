@@ -17,7 +17,7 @@ export const ProfileSubscriptionTooltip = ({ data, isLoading }) => {
       sx={{
         backgroundColor: "background.paper",
         color: "text.primary",
-        padding: 1,
+        padding: 2,
       }}
     >
       {data?.subscriptionStatus === StripePaymentStatusCompleted ? (

@@ -1,5 +1,36 @@
 [
   {
+    "version": "1.0.7",
+    "date": "2026-04-17",
+    "notes": [
+      {
+        "type": "bugfix",
+        "value": "Added cleanup for v1.0.6 release by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/312",
+        "caption": "Added cleanup for v1.0.6 release by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/312"
+      },
+      {
+        "type": "bugfix",
+        "value": "Updated forms for Esign App by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/313",
+        "caption": "Updated forms for Esign App by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/313"
+      },
+      {
+        "type": "bugfix",
+        "value": "Added minor updates for properties and subscription by @earmuff-jam in https://github.com/earmuff-jam/homehive/pull/315",
+        "caption": "Added minor updates for properties and subscription by @earmuff-jam in https://github.com/earmuff-jam/homehive/pull/315"
+      },
+      {
+        "type": "bugfix",
+        "value": "Added more fixes for rent app by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/316",
+        "caption": "Added more fixes for rent app by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/316"
+      },
+      {
+        "type": "bugfix",
+        "value": "Addressed payments hanlder by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/317",
+        "caption": "Addressed payments hanlder by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/317"
+      }
+    ]
+  },
+  {
     "version": "1.0.6",
     "date": "2026-04-15",
     "notes": [

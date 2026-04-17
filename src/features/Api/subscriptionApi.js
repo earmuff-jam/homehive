@@ -43,6 +43,7 @@ export const subscriptionApi = createApi({
     }),
     // getLatestSubscriptionByEmail ...
     // defines a query function that returns the latest subscription details
+    // only returns isFirstSubscriptionForCustomer = true if Admin role exists
     getLatestSubscriptionByEmail: builder.query({
       async queryFn(customerEmail) {
         try {

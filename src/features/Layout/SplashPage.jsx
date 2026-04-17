@@ -52,7 +52,7 @@ export default function SplashPage() {
   useEffect(() => {
     if (!authenticateResult.isLoading && authenticateResult.isSuccess) {
       const currentUserRole = authenticateResult.data.role;
-      const isEsign = authenticateResult.originalArgs?.isEsign;
+      const isEsign = authenticateResult.originalArgs;
       if (isEsign) {
         window.location.replace(ViewEsignRouteUri);
       } else {
