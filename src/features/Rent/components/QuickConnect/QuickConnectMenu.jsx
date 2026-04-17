@@ -55,13 +55,13 @@ export default function QuickConnectMenu({
     },
     {
       id: "default-invoice",
-      label: "Send Default Invoice",
+      label: "Send Default Rent Invoice",
       icon: <ReceiptLongRounded fontSize="small" />,
       action: SendDefaultInvoiceEnumValue,
     },
     {
       id: "payment-reminder",
-      label: "Send Payment Reminder",
+      label: "Send Rent Payment Reminder",
       icon: <NotificationsRounded fontSize="small" />,
       action: PaymentReminderEnumValue,
     },
