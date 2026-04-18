@@ -38,13 +38,9 @@ export default function ChatForm() {
   const [handleRaspyMessage, handleRaspyMessageResult] = useGetAnswerMutation();
   const [decodeUserIntent, decodeUserIntentResult] = useDecodeIntentMutation();
 
-  useEffect(() => {
-    if (!isPropertiesListLoading && isPropertiesListSuccess) {
-      const propertiesIds = properties?.map((property) => property.id);
-      getExistingTenants({ propertyIds: propertiesIds, isActive: true });
-      getExistingRents({ propertyIds: propertiesIds, isActive: true });
-    }
-  }, [isPropertiesListLoading]);
+  const [showSnackbar, setShowSnackbar] = useState(false);
+  const [formattedRaspyResponseDetails, setFormattedRaspyResponseDetails] =
+    useState(null);
 
   const {
     register,
@@ -68,12 +64,31 @@ export default function ChatForm() {
     decodeUserIntent(formData);
   };
 
-  const [showSnackbar, setShowSnackbar] = useState(false);
   const loading =
     handleRaspyMessageResult.isLoading || decodeUserIntentResult.isLoading;
 
   useEffect(() => {
+    if (!isPropertiesListLoading && isPropertiesListSuccess) {
+      const propertiesIds = properties?.map((property) => property.id);
+      getExistingTenants({ propertyIds: propertiesIds, isActive: true });
+      getExistingRents({ propertyIds: propertiesIds, isActive: true });
+    }
+  }, [isPropertiesListLoading]);
+
+  useEffect(() => {
     if (handleRaspyMessageResult.isSuccess) {
+      const raspyRecomendedActions =
+        handleRaspyMessageResult?.data?.recommendedActions || [];
+
+      setFormattedRaspyResponseDetails({
+        portfolioHealth: calculatePropertyHealth(properties),
+        financialHealth: calculateFinancialHealth(
+          properties,
+          getExistingTenantsResult?.data,
+          getExistingRentsResult.data,
+        ),
+        recommendedActions: raspyRecomendedActions,
+      });
       setShowSnackbar(true);
     }
   }, [handleRaspyMessageResult.isLoading]);
@@ -131,7 +146,7 @@ export default function ChatForm() {
 
       {handleRaspyMessageResult?.isSuccess ? (
         <Paper variant="outlined" sx={{ padding: 2 }}>
-          <ResponseDetails data={handleRaspyMessageResult.data} />
+          <ResponseDetails data={formattedRaspyResponseDetails} />
         </Paper>
       ) : (
         <EmptyComponent caption="Dive in with Raspy ..." />
@@ -144,3 +159,43 @@ export default function ChatForm() {
     </Stack>
   );
 }
+
+// calculatePropertyHealth ...
+// defines a function that is used to calculate the health of your property
+const calculatePropertyHealth = (properties = []) => {
+  const totalProperties = properties?.length;
+  const vacantProperties = properties?.filter(
+    (property) => property.rentee?.length === 0,
+  )?.length;
+
+  return {
+    totalProperties: totalProperties,
+    vacantProperties: vacantProperties,
+  };
+};
+
+// calculateFinancialHealth ...
+// defines a function that is used to calculate the financial health of your property.
+const calculateFinancialHealth = (properties, tenants, rents) => {
+  const totalActiveTenants = tenants?.length;
+
+  const totalMonthlyRentalIncome = properties?.reduce((acc, el) => {
+    acc += Number(el?.rent);
+    acc += Number(el?.additionalRent);
+    return acc;
+  }, 0);
+
+  console.log(properties, totalMonthlyRentalIncome, tenants);
+
+  const securityDepositsCollected = tenants.reduce((acc, el) => {
+    const securityDeposit = el?.securityDeposit || 0;
+    acc += securityDeposit;
+
+    return acc;
+  }, 0);
+
+  return {
+    totalMonthlyRentalIncome: "totalMonthlyRentalIncome",
+    securityDepositsCollected: securityDepositsCollected,
+  };
+};
