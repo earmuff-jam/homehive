@@ -52,16 +52,13 @@ export const tenantsApi = createApi({
     // getTenantsByPropertiesArr ...
     // defines a query fn to return tenants list for each property passed in query; supports active flag
     getTenantsByPropertiesArr: builder.query({
-      async queryFn(propertiesList = [], isActive = true) {
+      async queryFn({ propertyIds = [], isActive = true }) {
         try {
-          // firestore needs to use batch processing for more than 10
-          if (propertiesList.length > 10) {
+          // limits filter to 10 for firestore
+          if (propertyIds.length > 10) {
             console.debug("Unable to process properties > 10");
-            throw new Error({
-              code: 500,
-              message: "Limit hit for properties list",
-            });
           }
+          const propertyIdsToUse = propertyIds?.slice(0, 10);
 
           const uniqueTenants = [];
           const foundEmailAddress = new Set();
@@ -69,7 +66,7 @@ export const tenantsApi = createApi({
           const q = query(
             collection(db, "tenants"),
             where("isActive", "==", isActive),
-            where("propertyId", "in", propertiesList),
+            where("propertyId", "in", propertyIdsToUse),
           );
           const querySnapshot = await getDocs(q);
           querySnapshot.forEach((doc) => {

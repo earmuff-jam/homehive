@@ -4,25 +4,47 @@ import { useForm } from "react-hook-form";
 
 import dayjs from "dayjs";
 
-import { Button, Paper, Stack } from "@mui/material";
+import { Button, Paper, Skeleton, Stack } from "@mui/material";
 import CustomSnackbar from "common/CustomSnackbar";
 import EmptyComponent from "common/EmptyComponent";
 import TextFieldWithLabel from "common/TextFieldWithLabel";
 import { fetchLoggedInUser } from "common/utils";
+import { useGetPropertiesByUserIdQuery } from "features/Api/propertiesApi";
 import {
   useDecodeIntentMutation,
   useGetAnswerMutation,
 } from "features/Api/raspyApi";
+import { useLazyGetRentsByPropertiesQuery } from "features/Api/rentApi";
+import { useLazyGetTenantsByPropertiesArrQuery } from "features/Api/tenantsApi";
 import ResponseDetails from "features/Raspy/ResponseDetails";
 
-export default function ChatForm({
-  properties = [],
-  tenants = [],
-  rents = [],
-}) {
+export default function ChatForm() {
   const user = fetchLoggedInUser();
+
+  const {
+    data: properties = [],
+    isLoading: isPropertiesListLoading,
+    isSuccess: isPropertiesListSuccess,
+  } = useGetPropertiesByUserIdQuery(user.uid, {
+    skip: !user?.uid,
+  });
+
+  const [getExistingTenants, getExistingTenantsResult] =
+    useLazyGetTenantsByPropertiesArrQuery();
+
+  const [getExistingRents, getExistingRentsResult] =
+    useLazyGetRentsByPropertiesQuery();
+
   const [handleRaspyMessage, handleRaspyMessageResult] = useGetAnswerMutation();
   const [decodeUserIntent, decodeUserIntentResult] = useDecodeIntentMutation();
+
+  useEffect(() => {
+    if (!isPropertiesListLoading && isPropertiesListSuccess) {
+      const propertiesIds = properties?.map((property) => property.id);
+      getExistingTenants({ propertyIds: propertiesIds, isActive: true });
+      getExistingRents({ propertyIds: propertiesIds, isActive: true });
+    }
+  }, [isPropertiesListLoading]);
 
   const {
     register,
@@ -38,8 +60,9 @@ export default function ChatForm({
   const submit = (formData) => {
     formData["email"] = user?.email;
     formData["properties"] = properties || [];
-    formData["rents"] = rents || [];
-    formData["tenants"] = tenants || [];
+    formData["rents"] = getExistingRents?.data || [];
+    formData["tenants"] = getExistingTenants?.data || [];
+    formData["message"] = formData?.message.trim();
     formData["updatedOn"] = dayjs().toISOString();
 
     decodeUserIntent(formData);
@@ -66,6 +89,14 @@ export default function ChatForm({
       });
     }
   }, [decodeUserIntentResult.isLoading]);
+
+  if (
+    isPropertiesListLoading ||
+    getExistingTenantsResult.isLoading ||
+    getExistingRentsResult.isLoading
+  ) {
+    return <Skeleton height="10rem" />;
+  }
 
   return (
     <Stack spacing={1}>
