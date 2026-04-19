@@ -83,6 +83,9 @@ export default function PropertyOwnerInfoCard({
 
   const tenant = data.find((item) => item);
   const currentMonthRentData = getRentByMonthResult?.data;
+
+  // used to confirm if payee understands that bank transactions sometimes takes > 3 days to complete.
+  const hasRecentPaymentAttemptBeenMade = currentMonthRentData?.length > 0;
   const paymentCompleteForCurrentMonth = Boolean(
     currentMonthRentData?.some(
       (item) =>
@@ -323,10 +326,18 @@ export default function PropertyOwnerInfoCard({
                   </Alert>
                 </Box>
 
+                {hasRecentPaymentAttemptBeenMade ? (
+                  <Alert variant="filled" severity="error">
+                    A rent payment was recently attempted. Some bank accounts
+                    may take upto 2-3 days for processing. Are you sure you want
+                    to proceed?
+                  </Alert>
+                ) : null}
+
                 <AButton
                   size="small"
                   variant="contained"
-                  label="Pay rent"
+                  label="Pay Rent"
                   sx={{ margin: "0.4rem 0rem" }}
                   loading={isStripeStatusLoading}
                   disabled={!stripeValid || paymentCompleteForCurrentMonth}
