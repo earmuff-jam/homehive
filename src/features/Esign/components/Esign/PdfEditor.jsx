@@ -670,7 +670,7 @@ const PdfEditor = () => {
   if (isLoadingValidTokensForETSS) return <Skeleton height="10rem" />;
 
   return (
-    <Stack>
+    <Stack data-tour="esign-0">
       <Stack
         direction="row"
         justifyContent="space-between"
@@ -694,6 +694,7 @@ const PdfEditor = () => {
               alignItems="flex-end"
               justifyContent="center"
               onClick={handleClickTokenAnchorMenu}
+              data-tour="esign-1"
               sx={{
                 border: 1,
                 paddingY: 0.5,
@@ -722,7 +723,7 @@ const PdfEditor = () => {
           />
           <Stack direction="row" spacing={1}>
             <UploadEsignDocument handleUpload={handleUpload} />
-            <Box>
+            <Box data-tour="esign-8">
               <Button
                 size="small"
                 variant="contained"
