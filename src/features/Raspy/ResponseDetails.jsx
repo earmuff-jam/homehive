@@ -9,6 +9,7 @@ import {
   ListItemIcon,
   ListItemText,
   Paper,
+  Skeleton,
   Stack,
   Typography,
 } from "@mui/material";
@@ -24,13 +25,11 @@ export default function ResponseDetails({ data = {} }) {
   const portfolioHealth = data?.portfolioHealth || {};
   const financialHealth = data?.financialHealth || {};
   const projectedRentalChangeData = data?.projectedRentalChange || [];
-  const projectedYearlyRentData = data?.projectedYearlyRent || [];
+  const totalCollectedRentsByProperties =
+    data?.totalCollectedRentsByProperties || [];
 
-  const isProjectedDatasetEmpty =
-    projectedRentalChangeData.length <= 0 ||
-    projectedYearlyRentData.length <= 0;
+  const isProjectedDatasetEmpty = false;
 
-    console.log(portfolioHealth);
   return (
     <Stack spacing={1}>
       {/* Recommended Action Alert Blocks */}
@@ -61,12 +60,12 @@ export default function ResponseDetails({ data = {} }) {
         direction={{ sm: "row", xs: "column" }}
       >
         <FinancialHealthBlock
-          data={financialHealth?.totalMonthlyRentIncome || 0}
+          data={financialHealth?.totalMonthlyRentalIncome || 0}
           label="Total Monthly Rent Income"
         />
         <FinancialHealthBlock
-          data={financialHealth?.averageRentalYield || 0}
-          label="Average Rental Yield"
+          data={financialHealth?.averageRentPerSqFt || 0}
+          label="Average Rent / Sq Ft"
         />
         <FinancialHealthBlock
           data={financialHealth?.securityDepositsCollected || 0}
@@ -77,19 +76,21 @@ export default function ResponseDetails({ data = {} }) {
         spacing={1}
         justifyContent="space-between"
         direction={{ sm: "row", xs: "column" }}
+        width={isProjectedDatasetEmpty ? "stretch" : "auto"}
+        height={isProjectedDatasetEmpty ? "10rem" : "auto"}
         alignSelf={isProjectedDatasetEmpty ? "center" : "inherit"}
       >
         {isProjectedDatasetEmpty ? (
-          <EmptyComponent caption="No recommendations to display" />
+          <Skeleton height="inherit" width="inherit" />
         ) : (
           <>
             <RaspyAISeriesChart
-              label="Rental Income Projection"
+              label="Average Rental Income Projection"
               data={projectedRentalChangeData}
             />
             <RaspyAIPieChart
-              label="Collected Rents"
-              data={projectedYearlyRentData}
+              label="Total Collected Rents"
+              data={totalCollectedRentsByProperties}
             />
           </>
         )}
@@ -169,7 +170,7 @@ const FinancialHealthBlock = ({ data, label = "" }) => {
         borderRadius: 0.8,
       }}
     >
-      <Typography>{data}</Typography>
+      <Typography>${data?.toFixed(2)}</Typography>
       <Typography variant="caption">{label}</Typography>
     </Box>
   );

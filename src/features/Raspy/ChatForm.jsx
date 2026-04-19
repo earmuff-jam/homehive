@@ -17,6 +17,11 @@ import {
 import { useLazyGetRentsByPropertiesQuery } from "features/Api/rentApi";
 import { useLazyGetTenantsByPropertiesArrQuery } from "features/Api/tenantsApi";
 import ResponseDetails from "features/Raspy/ResponseDetails";
+import {
+  CompleteRentStatusEnumValue,
+  ManualRentStatusEnumValue,
+  PaidRentStatusEnumValue,
+} from "features/Rent/utils";
 
 export default function ChatForm() {
   const user = fetchLoggedInUser();
@@ -56,8 +61,8 @@ export default function ChatForm() {
   const submit = (formData) => {
     formData["email"] = user?.email;
     formData["properties"] = properties || [];
-    formData["rents"] = getExistingRents?.data || [];
-    formData["tenants"] = getExistingTenants?.data || [];
+    formData["rents"] = getExistingRentsResult?.data || [];
+    formData["tenants"] = getExistingTenantsResult?.data || [];
     formData["message"] = formData?.message.trim();
     formData["updatedOn"] = dayjs().toISOString();
 
@@ -80,15 +85,26 @@ export default function ChatForm() {
       const raspyRecomendedActions =
         handleRaspyMessageResult?.data?.recommendedActions || [];
 
+      const avgProjectedIncrease = properties?.reduce(
+        (acc, el) => (acc += Number(el?.rentIncrement)),
+        0,
+      );
+
       setFormattedRaspyResponseDetails({
-        portfolioHealth: calculatePropertyHealth(properties),
-        financialHealth: calculateFinancialHealth(
-          properties,
-          getExistingTenantsResult?.data,
-          getExistingRentsResult.data,
-        ),
         recommendedActions: raspyRecomendedActions,
+        portfolioHealth: calculatePropertyHealth(properties),
+        financialHealth: calculateFinancialHealth(properties),
+        projectedRentalChange: calculateProjectedRentalChange(
+          getExistingRentsResult?.data || [],
+          avgProjectedIncrease,
+          3,
+        ),
+        totalCollectedRentsByProperties: calculateTotalCollectedRents(
+          properties,
+          getExistingRentsResult?.data || [],
+        ),
       });
+
       setShowSnackbar(true);
     }
   }, [handleRaspyMessageResult.isLoading]);
@@ -176,26 +192,143 @@ const calculatePropertyHealth = (properties = []) => {
 
 // calculateFinancialHealth ...
 // defines a function that is used to calculate the financial health of your property.
-const calculateFinancialHealth = (properties, tenants, rents) => {
-  const totalActiveTenants = tenants?.length;
-
+const calculateFinancialHealth = (properties) => {
   const totalMonthlyRentalIncome = properties?.reduce((acc, el) => {
-    acc += Number(el?.rent);
-    acc += Number(el?.additionalRent);
+    acc += Number(el?.rent || 0);
+    acc += Number(el?.additionalRent || 0);
     return acc;
   }, 0);
 
-  console.log(properties, totalMonthlyRentalIncome, tenants);
-
-  const securityDepositsCollected = tenants.reduce((acc, el) => {
-    const securityDeposit = el?.securityDeposit || 0;
-    acc += securityDeposit;
-
+  const securityDepositsCollected = properties?.reduce((acc, el) => {
+    acc += Number(el?.securityDeposit || 0);
     return acc;
   }, 0);
+
+  const totalSqFt = properties?.reduce((acc, el) => {
+    acc += Number(el?.sqFt || 0);
+    return acc;
+  }, 0);
+
+  const averageRentPerSqFt =
+    totalSqFt > 0 ? totalMonthlyRentalIncome / totalSqFt : 0;
 
   return {
-    totalMonthlyRentalIncome: "totalMonthlyRentalIncome",
-    securityDepositsCollected: securityDepositsCollected,
+    totalMonthlyRentalIncome,
+    averageRentPerSqFt,
+    securityDepositsCollected,
   };
+};
+
+// calculateProjectedRentalChange ...
+// defines a function that calculates projected rental change
+const calculateProjectedRentalChange = (
+  rents = [],
+  projectRentIncrease = 0,
+  yearsAhead = 3,
+) => {
+  const sortedRentalPayments = rents
+    ?.filter((rent) =>
+      [
+        ManualRentStatusEnumValue,
+        CompleteRentStatusEnumValue,
+        PaidRentStatusEnumValue,
+      ].includes(rent.status),
+    )
+    .sort((a, b) => dayjs(a?.createdOn) - dayjs(b.createdOn));
+
+  if (sortedRentalPayments?.length <= 0) {
+    return { labels: [], historical: [], forecast: [] };
+  }
+
+  const yearlyMap = new Map();
+  sortedRentalPayments.forEach((rent) => {
+    const year = dayjs(rent?.createdOn).year();
+
+    yearlyMap.set(
+      year,
+      (yearlyMap.get(year) || 0) + Number(rent.rentAmount || 0),
+    );
+  });
+
+  const years = Array.from(yearlyMap.keys()).sort();
+  const rentArr = years.map((y) => yearlyMap.get(y));
+
+  const avgRateOfRentalPropertyChange =
+    rentArr.length > 1
+      ? (rentArr[rentArr.length - 1] - rentArr[0]) / (rentArr.length - 1)
+      : 0;
+
+  const forecast = [];
+  let current = rentArr[rentArr.length - 1];
+
+  for (let i = 0; i < yearsAhead; i++) {
+    current =
+      current +
+      avgRateOfRentalPropertyChange * 0.5 + // add market smoothing
+      projectRentIncrease;
+
+    forecast.push(Number(current.toFixed(2)));
+  }
+
+  const lastYear = years[years.length - 1];
+
+  const forecastYears = Array.from(
+    { length: yearsAhead },
+    (_, idx) => lastYear + idx + 1,
+  );
+
+  return {
+    labels: [...years, ...forecastYears],
+    historical: [...rentArr, ...Array(yearsAhead).fill(null)],
+    forecast: [...Array(rentArr.length).fill(null), ...forecast],
+  };
+};
+
+// calculateTotalCollectedRents ...
+// defines a function that calculates the projected yearly rent
+const calculateTotalCollectedRents = (properties, rents) => {
+  if (!properties?.length || !rents?.length) {
+    return [[], [], []];
+  }
+
+  // 1. Only successful payments
+  const validRents = rents.filter(
+    (r) => r.status === "paid" || r.status === "complete",
+  );
+
+  // 2. Group by propertyId
+  const map = {};
+
+  validRents.forEach((r) => {
+    const propertyId = r.propertyId;
+    const amount = Number(r.rentAmount || 0);
+
+    if (!propertyId) return;
+
+    map[propertyId] = (map[propertyId] || 0) + amount;
+  });
+
+  // 3. Build chart arrays
+  const labels = [];
+  const values = [];
+  const backgroundColors = [];
+
+  const palette = [
+    "rgba(153, 102, 255, 0.7)",
+    "rgba(255, 99, 132, 0.7)",
+    "rgba(54, 162, 235, 0.7)",
+    "rgba(255, 206, 86, 0.7)",
+    "rgba(75, 192, 192, 0.7)",
+    "rgba(255, 159, 64, 0.7)",
+  ];
+
+  properties.forEach((p, i) => {
+    const value = map[p.id] || 0;
+
+    labels.push(p.name);
+    values.push(value);
+    backgroundColors.push(palette[i % palette.length]);
+  });
+
+  return [labels, values, backgroundColors];
 };
