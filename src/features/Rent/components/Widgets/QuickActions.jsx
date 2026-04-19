@@ -272,10 +272,10 @@ export default function QuickActions({ property }) {
                     }}
                   />
                   {hasRecentPaymentAttemptBeenMade ? (
-                    <Alert variant="outlined" severity="warning">
+                    <Alert variant="filled" severity="error">
                       A rent payment was recently attempted. Businesses may take
-                      upto 2-3 days for processing. Creating a new record will
-                      reset the workflow.
+                      upto 2-3 days for processing. Are you sure you want to
+                      proceed?
                     </Alert>
                   ) : null}
                 </Stack>
