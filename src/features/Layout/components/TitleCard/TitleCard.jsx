@@ -9,6 +9,7 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
+import AccessBadge from "features/Layout/components/TitleCard/AccessBadge";
 
 const DefaultChipColors = [
   "primary.light",
@@ -22,6 +23,7 @@ export default function TitleCard({
   subtitle,
   icon,
   chipLabels,
+  showLoginRequired = false,
   sx = {},
   onClick = () => {},
 }) {
@@ -42,6 +44,7 @@ export default function TitleCard({
         },
       }}
     >
+      {showLoginRequired && <AccessBadge />}
       <CardContent sx={{ p: 4, textAlign: "center" }}>
         <Box
           sx={{
