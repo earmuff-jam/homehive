@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AccessBadge Tests renders correctly and matches snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="MuiBox-root css-1rqk2gh"
+  >
+    <div
+      class="MuiBox-root css-qsa4sx"
+    />
+    <p
+      class="MuiTypography-root MuiTypography-body1 css-x4bvkp-MuiTypography-root"
+    >
+      Sign in required
+    </p>
+  </div>
+</DocumentFragment>
+`;

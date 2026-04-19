@@ -20,7 +20,7 @@ export default function ConnectionButton({
         sx={{ mt: 2 }}
         variant="contained"
         onClick={handleCreateStripe}
-        isLoading={isLoading}
+        loading={isLoading}
         startIcon={<AccountBalanceRounded />}
         label="Link Stripe"
       />
@@ -31,7 +31,7 @@ export default function ConnectionButton({
         size="medium"
         sx={{ mt: 2 }}
         variant="contained"
-        isLoading={isLoading}
+        loading={isLoading}
         onClick={handleStripeOnboardingSetup}
         startIcon={<AccountBalanceRounded />}
         label="Complete your onboarding"

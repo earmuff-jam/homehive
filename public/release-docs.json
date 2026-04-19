@@ -1,5 +1,31 @@
 [
   {
+    "version": "1.0.8",
+    "date": "2026-04-19",
+    "notes": [
+      {
+        "type": "feature",
+        "value": "Added support for Raspy AI by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/319",
+        "caption": "Added support for Raspy AI by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/319"
+      },
+      {
+        "type": "feature",
+        "value": "Added audio improvements to Raspy AI and to splash page. by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/321",
+        "caption": "Added audio improvements to Raspy AI and to splash page. by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/321"
+      },
+      {
+        "type": "maintenance",
+        "value": "Added support to protect rental payments by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/322",
+        "caption": "Added support to protect rental payments by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/322"
+      },
+      {
+        "type": "feature",
+        "value": "Added help and support for Electronic Signatures by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/323",
+        "caption": "Added help and support for Electronic Signatures by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/323"
+      }
+    ]
+  },
+  {
     "version": "1.0.7",
     "date": "2026-04-17",
     "notes": [

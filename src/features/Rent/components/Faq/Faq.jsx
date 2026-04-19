@@ -21,7 +21,7 @@ const faqItems = [
   {
     icon: <SaveAltRounded fontSize="small" />,
     q: "Can I update property data even after tenants are added to the property?",
-    ans: "Yes, you can update property data after tenants are added to the property, however once e-sign is completed, editing is prohibited until tenants are removed from the property. Performing actions such as removing a tenant from a property, adding rent payments to the property and / or editing the property will alert the tenant and property owner VIA email.",
+    ans: "No, you cannot update property data after tenants are added to the property. You may edit the property details once the tenants are removed from the property. Performing actions such as removing a tenant from a property, adding rent payments to the property and / or editing the property will alert the tenant and property owner VIA email, while keeping all audit trails in effect.",
   },
   {
     icon: <AddCircleOutlineRounded fontSize="small" />,
@@ -41,7 +41,7 @@ const faqItems = [
   {
     icon: <EmailRounded fontSize="small" />,
     q: "Do you send reminders if the rent is due?",
-    ans: "Yes, we do send automatic email reminders. Emails are sent out periodically and can also be manually triggered.",
+    ans: "Yes, our servers are configured to send periodic reminders for rental payments. Tenants are expected to recieve email notifications every 7th, 3rd, 2nd, 1st and the day of. If the due date is passed, tenants can be expected to recieve email notifications every day until the payment is complete or until the month has passed. In the case of the latter, the system automatically repurposes itself with period emails. If you would like to send reminders on your own accord, you also may do such free of charge from the Quick Actions menu.",
   },
   {
     icon: <PrintOutlined fontSize="small" />,

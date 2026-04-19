@@ -3,8 +3,10 @@ import React from "react";
 import { Box, Typography } from "@mui/material";
 import {
   EditInvoiceRouteUri,
+  EsignAppFaqRouteUri,
   InvoiceAppFaqRouteUri,
   InvoiceDashboardRouteUri,
+  MainEsignAppRouteUri,
   MainInvoiceAppRouteUri,
   MainRentAppRouteUri,
   PropertiesRouteUri,
@@ -14,6 +16,7 @@ import {
   RentalRouteUri,
   SenderInforamtionRouteUri,
   SettingsRouteUri,
+  ViewEsignRouteUri,
   ViewInvoiceRouteUri,
   createHelperSentences,
 } from "common/utils";
@@ -203,10 +206,6 @@ const MyPropertyHelpSteps = [
     element: "Perform quick actions against your property such as Editing it.",
   },
   {
-    element:
-      "View all documents that are available between the tenant and the owner.",
-  },
-  {
     element: "View all payment summaries made the tenant for this property.",
   },
   {
@@ -273,6 +272,50 @@ const RentalHelpSteps = [
 ];
 
 /**
+ * EsignHelpSteps
+ *
+ * User helpful steps for viewing esign page
+ */
+const EsignHelpSteps = [
+  {
+    element:
+      "Welcome to Electronic Signatures. Here you can learn how to create valid and functional electronic signatures that come packaged with a audit trails for document security. Before we continue, please understand Landlord - tenant laws may vary by city, state, and property type. This platform provides document automation tools, not legal services. You are fully responsible for reviewing, approving, and ensuring the legality and enforceability of any document you create, upload, send, or sign through the service.",
+  },
+  {
+    element:
+      "Purchase non refundable tokens to send 'envelope'. Envelopes are ready to sign documents that cannot be unsent, hence tokens are non-refundable. Please ensure all fields are correctly filled to the best of your knowledge before sending the 'envelope' for electronic signature. We use stripe as a service to support the purchase of any non-refundable tokens via any credit / debit card.",
+  },
+  {
+    element:
+      "Upload custom fillable pdf form to proceed with the electronic signature. You may use any pdf document of choice, however it is your responsibility to ensure that the document is filled correctly and valid signatures are placed within the boundaries of the uploaded document. Failure to do so, will result in an incorrect submission of pdf document, which will cost non-refundable tokens.",
+  },
+  {
+    element:
+      "Upto four free documents are provided free of charge to use for electronic signatures. However, please note you are fully responsible for reviewing, approving, and ensuring the legality and enforceability of any document you create, upload, send, or sign through the service. For the purposes of this demonstration, please select a default provided template for now. Press the next arrow when done.",
+  },
+  {
+    element:
+      "Once a document is uploaded into the screen, you will be provided with options to add upto four signers along with a creator. Each signer MUST have their own email address and full name which is configured by the 'Edit' button next to the 'Creator' field.",
+  },
+  {
+    element:
+      "Toggle between signature and date to place respective boxes in the pdf. Select Signature to place signature boxes. Select Date to place date signed boxes in the document.",
+  },
+  {
+    element:
+      "Toggle between creator and signers to create signature boxes or date signed boxes respectively. The system allows color codes to help you differentiate between various signers for ease of use.",
+  },
+  {
+    element:
+      "Edit details for each signer. Add a valid email address and valid names, to ensure document security and transparency.",
+  },
+  {
+    element:
+      "Select 'Prepare Esign' when you are ready to send a document. A dialog box will appear requesting you to confirm your actions. If the contents of the document does not match the required format, an alert will be populated however, it does not prevent you from submitting the documents. Please note you are fully responsible for reviewing, approving, and ensuring the legality and enforceability of any document you create, upload, send, or sign through the service.",
+  },
+];
+
+/**
  * derieveTourSteps
  *
  * used to build the necessary object from the steps to render the tour correctly.
@@ -313,6 +356,9 @@ const DisplaySubHelperSection = () => {
         return;
       } else if (existingLocation.includes(MainInvoiceAppRouteUri)) {
         window.location.href = InvoiceAppFaqRouteUri;
+        return;
+      } else if (existingLocation.includes(MainEsignAppRouteUri)) {
+        window.location.href = EsignAppFaqRouteUri;
         return;
       } else {
         return;
@@ -532,6 +578,35 @@ export const DefaultTourStepsMapperObj = {
       MyPropertyHelpSteps.length +
       MyPropertiesListHelpSteps.length,
   },
+  [ViewEsignRouteUri]: {
+    element: (
+      <>
+        {createHelperSentences("edit or send", "electronic signature")}
+        {DisplaySubHelperSection()}
+      </>
+    ),
+    start:
+      ViewPdfHelpSteps.length +
+      EditPdfHelpSteps.length +
+      SenderInfoHelpSteps.length +
+      RecieverInfoHelpSteps.length +
+      DashboardHelpSteps.length +
+      SettingsHelpSteps.length +
+      RentalHelpSteps.length +
+      MyPropertyHelpSteps.length +
+      MyPropertiesListHelpSteps.length,
+    end:
+      ViewPdfHelpSteps.length +
+      EditPdfHelpSteps.length +
+      SenderInfoHelpSteps.length +
+      RecieverInfoHelpSteps.length +
+      DashboardHelpSteps.length +
+      SettingsHelpSteps.length +
+      RentalHelpSteps.length +
+      MyPropertyHelpSteps.length +
+      MyPropertiesListHelpSteps.length +
+      EsignHelpSteps.length,
+  },
 };
 
 /**
@@ -550,4 +625,5 @@ export const GeneratedTourSteps = [
   ...derieveTourSteps(RentalHelpSteps, "rental"),
   ...derieveTourSteps(MyPropertyHelpSteps, "property"),
   ...derieveTourSteps(MyPropertiesListHelpSteps, "properties"),
+  ...derieveTourSteps(EsignHelpSteps, "esign"),
 ];

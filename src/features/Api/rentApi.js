@@ -94,9 +94,15 @@ export const rentApi = createApi({
     getRentsByProperties: builder.query({
       async queryFn({ propertyIds }) {
         try {
+          // limits filter to 10 for firestore
+          if (propertyIds.length > 10) {
+            console.debug("Unable to process properties > 10");
+          }
+          const propertyIdsToUse = propertyIds?.slice(0, 10);
+
           const draftQuery = query(
             collection(db, "rents"),
-            where("propertyId", "in", propertyIds),
+            where("propertyId", "in", propertyIdsToUse),
           );
 
           const querySnapshot = await getDocs(draftQuery);

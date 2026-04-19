@@ -1,11 +1,17 @@
 import React from "react";
 
-import { ArticleRounded } from "@mui/icons-material";
-import { ViewEsignRoutePath, ViewEsignRouteUri } from "common/utils";
+import { ArticleRounded, QuestionAnswerRounded } from "@mui/icons-material";
+import {
+  EsignAppFaqRouteUri,
+  FaqRoutePath,
+  ViewEsignRoutePath,
+  ViewEsignRouteUri,
+} from "common/utils";
 
 const PdfEditor = React.lazy(
   () => import("features/Esign/components/Esign/PdfEditor"),
 );
+const Faq = React.lazy(() => import("features/Esign/components/Faq/Faq"));
 
 // EsignAppRoutes ...
 export const EsignAppRoutes = [
@@ -21,6 +27,26 @@ export const EsignAppRoutes = [
       breadcrumb: {
         value: "Esign",
         icon: <ArticleRounded fontSize="small" />,
+      },
+      displayInNavBar: true,
+      isLoggedInFeature: true,
+      displayHelpSelector: true,
+      displayPrintSelector: false,
+      isProtectedBySubscriptionGuard: false,
+    },
+  },
+  {
+    id: 6,
+    label: "Help Center",
+    path: FaqRoutePath,
+    routeUri: EsignAppFaqRouteUri,
+    element: <Faq />,
+    icon: <QuestionAnswerRounded fontSize="small" />,
+    requiredFlags: ["invoicer"],
+    config: {
+      breadcrumb: {
+        value: "Invoice App Help Center",
+        icon: <QuestionAnswerRounded fontSize="small" />,
       },
       displayInNavBar: true,
       isLoggedInFeature: true,

@@ -43,7 +43,13 @@ const ViewFormTemplates = ({ handleUpload }) => {
     });
   };
   return (
-    <Stack direction="row" spacing={1} justifyContent="center" paddingY={1}>
+    <Stack
+      direction="row"
+      spacing={1}
+      justifyContent="center"
+      paddingY={1}
+      data-tour="esign-3"
+    >
       {DefaultFormTemplates.map((form) => (
         <Button
           key={form.id}

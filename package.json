@@ -43,6 +43,7 @@
     "react-pdf": "^10.4.1",
     "react-redux": "^9.2.0",
     "react-secure-storage": "^1.3.2",
+    "react-speech-recognition": "^4.0.1",
     "uuid": "^11.1.0",
     "vite-plugin-pwa": "^1.0.0"
   },

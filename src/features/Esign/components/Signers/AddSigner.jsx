@@ -68,9 +68,9 @@ const AddSigner = ({
   }, [signers, activeSigner?.role]);
 
   return (
-    <Stack spacing={1} marginBottom="1rem">
+    <Stack spacing={1} marginBottom="1rem" data-tour="esign-4">
       <Box sx={{ marginBottom: 1 }}>
-        <Stack direction="row" spacing={1}>
+        <Stack direction="row" spacing={1} data-tour="esign-5">
           <Button
             size="small"
             variant={activeFieldType === "signature" ? "contained" : "outlined"}
@@ -88,10 +88,15 @@ const AddSigner = ({
           </Button>
         </Stack>
       </Box>
-      <Stack direction="row" justifyContent="space-between" alignItems="center">
+      <Stack
+        direction="row"
+        justifyContent="space-between"
+        alignItems="center"
+        data-tour="esign-6"
+      >
         <Stack direction="row" flexWrap="wrap" gap={1} alignItems="center">
           <Tooltip title={`Edit name and email for ${activeSigner?.role}`}>
-            <Box>
+            <Box data-tour="esign-7">
               <Button
                 size="small"
                 variant="contained"
