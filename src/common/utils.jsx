@@ -39,6 +39,7 @@ export const InvoiceAppFaqRouteUri = "/invoice/faq";
 export const MainEsignAppRouteUri = "/esign";
 export const ViewEsignRoutePath = "documents";
 export const ViewEsignRouteUri = "/esign/documents";
+export const EsignAppFaqRouteUri = "/esign/faq";
 
 // pluralize ...
 // defines a function that returns extra word based on variable count

@@ -15,7 +15,7 @@ const VisuallyHiddenInput = styled("input")({
 
 export default function UploadEsignDocument({ handleUpload }) {
   return (
-    <Box>
+    <Box data-tour="esign-2">
       <Button
         role="undefined"
         component="label"

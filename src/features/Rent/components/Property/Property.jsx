@@ -96,12 +96,12 @@ const Property = () => {
             property={property}
             tenants={tenants.filter((tenant) => tenant.isActive)}
             isTenantsLoading={isTenantsLoading}
-            dataTour="property-8"
+            dataTour="property-7"
             refetchGetProperty={refetchGetProperty}
             toggleAssociateTenantsPopup={toggleAssociateTenantsPopup}
           />
           <RentalPaymentOverview
-            dataTour="property-7"
+            dataTour="property-6"
             rentList={rentList}
             isRentListForPropertyLoading={isRentListForPropertyLoading}
             propertyName={property?.name || "Unknown"}

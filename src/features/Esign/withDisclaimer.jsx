@@ -81,7 +81,7 @@ const withDisclaimer = (WrappedComponent) => {
 
               <Box>
                 <Typography variant="subtitle2" fontWeight="bold">
-                  I have read and understood the privacy policy stated above.
+                  I have read and understood the policy stated above.
                 </Typography>
                 <FormControlLabel
                   required
