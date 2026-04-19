@@ -303,9 +303,10 @@ const ViewPropertyAccordionDetails = ({
               >
                 {primaryTenant?.email}
               </Typography>
-              <Tooltip title="Send Email">
+              <Tooltip title="Create personalized email">
                 <IconButton
                   size="small"
+                  component="a"
                   href={`mailto:${primaryTenant?.email}`}
                   target="_blank"
                 >

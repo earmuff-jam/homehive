@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 
 import { AutoAwesomeRounded, CloseRounded } from "@mui/icons-material";
 import {
@@ -8,49 +8,13 @@ import {
   DialogContent,
   DialogTitle,
   IconButton,
-  Skeleton,
   Stack,
   Typography,
 } from "@mui/material";
 import AButton from "common/AButton";
-import { fetchLoggedInUser } from "common/utils";
-import { useGetPropertiesByUserIdQuery } from "features/Api/propertiesApi";
-import { useLazyGetRentsByPropertiesQuery } from "features/Api/rentApi";
-import { useLazyGetTenantsByPropertiesArrQuery } from "features/Api/tenantsApi";
 import ChatForm from "features/Raspy/ChatForm";
 
 export default function RaspyDialog({ raspyOpen, setRaspyOpen }) {
-  const user = fetchLoggedInUser();
-  const {
-    data: properties = [],
-    isLoading: isPropertiesListLoading,
-    isSuccess: isPropertiesListSuccess,
-  } = useGetPropertiesByUserIdQuery(user.uid, {
-    skip: !user?.uid,
-  });
-
-  const [getExistingTenants, getExistingTenantsResult] =
-    useLazyGetTenantsByPropertiesArrQuery();
-
-  const [getExistingRents, getExistingRentsResult] =
-    useLazyGetRentsByPropertiesQuery();
-
-  useEffect(() => {
-    if (!isPropertiesListLoading && isPropertiesListSuccess) {
-      const propertiesIds = properties?.map((property) => property.id);
-      getExistingTenants(propertiesIds);
-      getExistingRents(propertiesIds);
-    }
-  }, [isPropertiesListLoading]);
-
-  if (
-    isPropertiesListLoading ||
-    getExistingTenantsResult.isLoading ||
-    getExistingRentsResult.isLoading
-  ) {
-    return <Skeleton height="10rem" />;
-  }
-
   return (
     <Dialog
       open={raspyOpen}
@@ -87,11 +51,7 @@ export default function RaspyDialog({ raspyOpen, setRaspyOpen }) {
         </Stack>
       </DialogTitle>
       <DialogContent>
-        <ChatForm
-          properties={properties}
-          rents={getExistingRentsResult.data || []}
-          tenants={getExistingTenantsResult.data || []}
-        />
+        <ChatForm />
       </DialogContent>
       <DialogActions>
         <AButton

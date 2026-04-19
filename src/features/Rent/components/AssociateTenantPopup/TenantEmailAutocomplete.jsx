@@ -113,7 +113,8 @@ export default function TenantEmailAutocomplete({
             renderInput={(params) => (
               <TextField
                 {...params}
-                variant="standard"
+                size="small"
+                variant="outlined"
                 label="Tenant Email Address *"
                 placeholder="Select or enter tenant email address"
                 error={!!errors.email}

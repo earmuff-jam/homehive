@@ -46,13 +46,11 @@ export const appendDisclaimer = (parent, senderEmail) => {
     return parent;
   }
   return parent.concat(`
-      <div>
-        <p>
-          <em>
-            This email was sent as a result of an action performed by ${senderEmail}. Please do not reply to this email as this is an auto generated email.
-          </em>
-        </p>
-      </div>
+
+This email was sent as a result of an action performed by ${senderEmail}. 
+
+Please do not reply to this email as this is an auto generated email.
+
 `);
 };
 
@@ -134,48 +132,48 @@ export const emailMessageBuilder = (msgType, propertyName) => {
   switch (msgType) {
     case AddNotificationEnumType:
       return `
-    Hello there, 
-      This notification is to alert you that you have been added to the property listed as ${propertyName}.
+Hello there, 
+  This notification is to alert you that you have been added to the property listed as ${propertyName}.
 
-      ${EmailNotificationDisclaimer}
-      ${noActionToPerformStr}
+  ${EmailNotificationDisclaimer}
+  ${noActionToPerformStr}
 
-    With Regards,
-    Earmuffjam LLC
+With Regards,
+Earmuffjam LLC
   `;
     case RemoveNotificationEnumType:
       return `
-  Hello there,
-    This notification is to alert you that you have been removed from the role of tenant from the property listed as ${propertyName}. 
-  
-    ${EmailNotificationDisclaimer}
-    ${noActionToPerformStr}
-  
-  With Regards,
-  Earmuffjam LLC
+Hello there,
+  This notification is to alert you that you have been removed from the role of tenant from the property listed as ${propertyName}. 
+
+  ${EmailNotificationDisclaimer}
+  ${noActionToPerformStr}
+
+With Regards,
+Earmuffjam LLC
 `;
     case AddRentPaymentNotificationEnumValue:
       return `
-    Hello there,
-      This notification is to alert you that rental payment has been made manually for the property listed as ${propertyName}.
-    
-      ${EmailNotificationDisclaimer}
-      ${noActionToPerformStr}
-    
-    With Regards,
-    Earmuffjam LLC
+Hello there,
+  This notification is to alert you that rental payment has been made manually for the property listed as ${propertyName}.
+
+  ${EmailNotificationDisclaimer}
+  ${noActionToPerformStr}
+
+With Regards,
+Earmuffjam LLC
 `;
 
     default:
       return `
-    Hello there,
-      This notification is to alert you that changes have been made to an assigned property listed as ${propertyName}. 
+Hello there,
+  This notification is to alert you that changes have been made to an assigned property listed as ${propertyName}. 
 
-      ${EmailNotificationDisclaimer}
-      ${noActionToPerformStr}
-   
-    With Regards,
-    Earmuffjam LLC
+  ${EmailNotificationDisclaimer}
+  ${noActionToPerformStr}
+
+With Regards,
+Earmuffjam LLC
 `;
   }
 };

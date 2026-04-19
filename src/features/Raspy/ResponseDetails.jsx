@@ -9,11 +9,99 @@ import {
   ListItemIcon,
   ListItemText,
   Paper,
+  Skeleton,
   Stack,
   Typography,
 } from "@mui/material";
 import EmptyComponent from "common/EmptyComponent";
 import { pluralize } from "common/utils";
+import RaspyAIPieChart from "features/Raspy/VisualElements/RaspyAIPieChart";
+import RaspyAISeriesChart from "features/Raspy/VisualElements/RaspyAISeriesChart";
+
+export default function ResponseDetails({ data = {} }) {
+  const recommendedActions = data?.recommendedActions || [];
+  const recommendedActionsArr = recommendedActions.map((i) => i + 1);
+
+  const portfolioHealth = data?.portfolioHealth || {};
+  const financialHealth = data?.financialHealth || {};
+  const projectedRentalChangeData = data?.projectedRentalChange || [];
+  const totalCollectedRentsByProperties =
+    data?.totalCollectedRentsByProperties || [];
+
+  const isProjectedDatasetEmpty = false;
+
+  return (
+    <Stack spacing={1}>
+      {/* Recommended Action Alert Blocks */}
+      <Stack alignSelf="flex-end" direction="row" spacing={0.5}>
+        {recommendedActionsArr?.map((item) => (
+          <RecommendedActionBlock key={item} blockColor="error.main" />
+        ))}
+      </Stack>
+      {/* Portfolio overall health blocks */}
+      <Stack
+        spacing={2}
+        justifyContent="center"
+        direction={{ sm: "row", xs: "column" }}
+      >
+        <PortfolioHealthBlock
+          data={portfolioHealth?.totalProperties || 0}
+          label={`Total ${pluralize(portfolioHealth?.totalProperties, "property")}`}
+        />
+        <PortfolioHealthBlock
+          data={portfolioHealth?.vacantProperties || 0}
+          label={`Vacant ${pluralize(portfolioHealth?.vacantProperties, "property")}`}
+        />
+      </Stack>
+      {/* Financial health block */}
+      <Stack
+        spacing={1}
+        justifyContent="center"
+        direction={{ sm: "row", xs: "column" }}
+      >
+        <FinancialHealthBlock
+          data={financialHealth?.totalMonthlyRentalIncome || 0}
+          label="Total Monthly Rent Income"
+        />
+        <FinancialHealthBlock
+          data={financialHealth?.averageRentPerSqFt || 0}
+          label="Average Rent / Sq Ft"
+        />
+        <FinancialHealthBlock
+          data={financialHealth?.securityDepositsCollected || 0}
+          label="Collected Security Deposits"
+        />
+      </Stack>
+      <Stack
+        spacing={1}
+        justifyContent="space-between"
+        direction={{ sm: "row", xs: "column" }}
+        width={isProjectedDatasetEmpty ? "stretch" : "auto"}
+        height={isProjectedDatasetEmpty ? "10rem" : "auto"}
+        alignSelf={isProjectedDatasetEmpty ? "center" : "inherit"}
+      >
+        {isProjectedDatasetEmpty ? (
+          <Skeleton height="inherit" width="inherit" />
+        ) : (
+          <>
+            <RaspyAISeriesChart
+              label="Average Rental Income Projection"
+              data={projectedRentalChangeData}
+            />
+            <RaspyAIPieChart
+              label="Total Collected Rents"
+              data={totalCollectedRentsByProperties}
+            />
+          </>
+        )}
+      </Stack>
+      {/* Recommended Actions List View */}
+      <Stack>
+        <RecommendedActionList data={recommendedActions} />
+      </Stack>
+    </Stack>
+  );
+}
 
 const RecommendedActionList = ({ data = [] }) => {
   if (data?.length <= 0) {
@@ -82,14 +170,13 @@ const FinancialHealthBlock = ({ data, label = "" }) => {
         borderRadius: 0.8,
       }}
     >
-      <Typography>{data}</Typography>
+      <Typography>${data?.toFixed(2)}</Typography>
       <Typography variant="caption">{label}</Typography>
     </Box>
   );
 };
 
 const PortfolioHealthBlock = ({ data, label = "" }) => {
-  if (data === 0) return null;
   return (
     <Box
       sx={{
@@ -118,63 +205,3 @@ const RecommendedActionBlock = ({ blockColor = "primary.main" }) => {
     />
   );
 };
-
-export default function ResponseDetails({ data = {} }) {
-  const recommendedActions = data?.recommendedActions || [];
-  const recommendedActionsArr = recommendedActions.map((i) => i + 1);
-
-  const portfolioHealth = data?.portfolioHealth || {};
-  const financialHealth = data?.financialHealth || {};
-  return (
-    <Stack spacing={1}>
-      {/* Recommended Action Alert Blocks */}
-      <Stack alignSelf="flex-end" direction="row" spacing={0.5}>
-        {recommendedActionsArr?.map((item) => (
-          <RecommendedActionBlock key={item} blockColor="error.main" />
-        ))}
-      </Stack>
-      {/* Portfolio overall health blocks */}
-      <Stack
-        spacing={2}
-        justifyContent="center"
-        direction={{ sm: "row", xs: "column" }}
-      >
-        <PortfolioHealthBlock
-          data={portfolioHealth?.totalProperties || 0}
-          label={`Total ${pluralize(portfolioHealth?.totalProperties, "property")}`}
-        />
-        <PortfolioHealthBlock
-          data={portfolioHealth?.activeProperties || 0}
-          label={`Vacant ${pluralize(portfolioHealth?.vacantProperties, "property")}`}
-        />
-        <PortfolioHealthBlock
-          data={portfolioHealth?.vacantProperties || 0}
-          label={`Active ${pluralize(portfolioHealth?.activeProperties, "property")}`}
-        />
-      </Stack>
-      {/* Financial health block */}
-      <Stack
-        spacing={1}
-        justifyContent="center"
-        direction={{ sm: "row", xs: "column" }}
-      >
-        <FinancialHealthBlock
-          data={financialHealth?.totalMonthlyRentIncome || 0}
-          label="Total Monthly Rent Income"
-        />
-        <FinancialHealthBlock
-          data={financialHealth?.averageRentalYield || 0}
-          label="Average Rental Yield"
-        />
-        <FinancialHealthBlock
-          data={financialHealth?.securityDepositsCollected || 0}
-          label="Collected Security Deposits"
-        />
-      </Stack>
-      {/* Recommended Actions List View */}
-      <Stack>
-        <RecommendedActionList data={recommendedActions} />
-      </Stack>
-    </Stack>
-  );
-}
