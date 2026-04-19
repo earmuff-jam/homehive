@@ -87,9 +87,7 @@ describe("withDisclaimer tests", () => {
       render(<WrappedComponent />);
 
       expect(
-        screen.getByText(
-          "I have read and understood the privacy policy stated above.",
-        ),
+        screen.getByText("I have read and understood the policy stated above."),
       ).toBeInTheDocument();
       expect(
         screen.getByText("I agree with the privacy policy stated above"),
