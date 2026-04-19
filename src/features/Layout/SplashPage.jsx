@@ -120,10 +120,10 @@ export default function SplashPage() {
         <Stack direction={{ sm: "column", md: "row" }} flexWrap="wrap" gap={2}>
           <TitleCard
             title="Rent App"
-            subtitle="Manage tenants, leases, and payments"
+            showLoginRequired
+            subtitle="Manage tenants, notifications and automate payments"
             chipLabels={[
               "Tenant Management",
-              "Lease Agreements",
               "Auto Reminders",
               "Payment Processing",
             ]}
@@ -137,7 +137,7 @@ export default function SplashPage() {
           />
           <TitleCard
             title="Invoicer App"
-            subtitle="Create and track professional invoices"
+            subtitle="Create invoices, payments and use prepopulated templates"
             chipLabels={[
               "Invoice Creation",
               "Payment Tracking",
@@ -153,11 +153,12 @@ export default function SplashPage() {
           />
           <TitleCard
             title="Esign App"
-            subtitle="Upload documents to Esign"
+            showLoginRequired
+            subtitle="Sign documents digitally with audit trails"
             chipLabels={[
-              "Digital Signing",
-              "Real-time Tracking",
-              "Docusign Connected",
+              "Legally Binding Signatures",
+              "Secure Digital Signing",
+              "Instant Document Signing",
             ]}
             icon={
               <ArchitectureRounded

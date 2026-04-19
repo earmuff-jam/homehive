@@ -1,10 +1,23 @@
 import React, { useEffect, useState } from "react";
 
 import { useForm } from "react-hook-form";
+import SpeechRecognition, {
+  useSpeechRecognition,
+} from "react-speech-recognition";
 
 import dayjs from "dayjs";
 
-import { Button, Paper, Skeleton, Stack } from "@mui/material";
+import { MicRounded, WarningAmberRounded } from "@mui/icons-material";
+import {
+  Alert,
+  Box,
+  Button,
+  IconButton,
+  Paper,
+  Skeleton,
+  Stack,
+  Typography,
+} from "@mui/material";
 import CustomSnackbar from "common/CustomSnackbar";
 import EmptyComponent from "common/EmptyComponent";
 import TextFieldWithLabel from "common/TextFieldWithLabel";
@@ -44,12 +57,17 @@ export default function ChatForm() {
   const [decodeUserIntent, decodeUserIntentResult] = useDecodeIntentMutation();
 
   const [showSnackbar, setShowSnackbar] = useState(false);
+
   const [formattedRaspyResponseDetails, setFormattedRaspyResponseDetails] =
     useState(null);
+
+  const { transcript, listening, browserSupportsSpeechRecognition } =
+    useSpeechRecognition();
 
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm({
     mode: "onChange",
@@ -57,6 +75,13 @@ export default function ChatForm() {
       message: "",
     },
   });
+
+  const handleAudioRecording = (transcript) => {
+    setValue("message", transcript, {
+      shouldValidate: true,
+      shouldDirty: true,
+    });
+  };
 
   const submit = (formData) => {
     formData["email"] = user?.email;
@@ -71,6 +96,12 @@ export default function ChatForm() {
 
   const loading =
     handleRaspyMessageResult.isLoading || decodeUserIntentResult.isLoading;
+
+  useEffect(() => {
+    if (transcript?.length > 0) {
+      handleAudioRecording(transcript);
+    }
+  }, [listening]);
 
   useEffect(() => {
     if (!isPropertiesListLoading && isPropertiesListSuccess) {
@@ -131,9 +162,40 @@ export default function ChatForm() {
 
   return (
     <Stack spacing={1}>
+      {!browserSupportsSpeechRecognition && (
+        <Alert
+          variant="standard"
+          color="error"
+          icon={<WarningAmberRounded fontSize="small" />}
+        >
+          <Typography
+            color="textSecondary"
+            fontStyle="italic"
+            sx={{ fontSize: "0.875rem" }}
+          >
+            Unable to use speech recognition due to browser restrictions.
+          </Typography>
+        </Alert>
+      )}
+
       <TextFieldWithLabel
         id="raspy-question"
-        label="Ask something about your properties ..."
+        label={
+          <Stack direction="row" spacing={1} alignItems="center">
+            <Typography>Type or ask away.</Typography>
+            {listening ? (
+              <Box>
+                <Typography color="primary">Listening ....</Typography>
+              </Box>
+            ) : (
+              <Box>
+                <IconButton onClick={SpeechRecognition.startListening}>
+                  <MicRounded fontSize="small" />
+                </IconButton>
+              </Box>
+            )}
+          </Stack>
+        }
         placeholder="e.g. What's the rent situation?"
         errorMsg={errors.message?.message}
         multiline
@@ -152,13 +214,15 @@ export default function ChatForm() {
         }}
       />
 
-      <Button
-        variant="contained"
-        onClick={handleSubmit(submit)}
-        loading={loading}
-      >
-        {loading ? "Sending..." : "Send"}
-      </Button>
+      <Box alignSelf="flex-end">
+        <Button
+          variant="contained"
+          onClick={handleSubmit(submit)}
+          loading={loading}
+        >
+          {loading ? "Sending..." : "Send"}
+        </Button>
+      </Box>
 
       {handleRaspyMessageResult?.isSuccess ? (
         <Paper variant="outlined" sx={{ padding: 2 }}>
