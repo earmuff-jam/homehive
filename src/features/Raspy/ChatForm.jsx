@@ -355,12 +355,14 @@ const calculateTotalCollectedRents = (properties, rents) => {
     return [[], [], []];
   }
 
-  // 1. Only successful payments
-  const validRents = rents.filter(
-    (r) => r.status === "paid" || r.status === "complete",
+  const validRents = rents.filter((r) =>
+    [
+      ManualRentStatusEnumValue,
+      CompleteRentStatusEnumValue,
+      PaidRentStatusEnumValue,
+    ].includes(r.status),
   );
 
-  // 2. Group by propertyId
   const map = {};
 
   validRents.forEach((r) => {
@@ -372,7 +374,6 @@ const calculateTotalCollectedRents = (properties, rents) => {
     map[propertyId] = (map[propertyId] || 0) + amount;
   });
 
-  // 3. Build chart arrays
   const labels = [];
   const values = [];
   const backgroundColors = [];

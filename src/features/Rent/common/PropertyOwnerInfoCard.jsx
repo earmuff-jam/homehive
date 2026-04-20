@@ -24,6 +24,9 @@ import {
   Typography,
 } from "@mui/material";
 import AButton from "common/AButton";
+import ConfirmationBox, {
+  DefaultConfirmationBoxProps,
+} from "common/ConfirmationBox";
 import CustomSnackbar from "common/CustomSnackbar";
 import RowHeader from "common/RowHeader";
 import { fetchLoggedInUser } from "common/utils";
@@ -80,6 +83,9 @@ export default function PropertyOwnerInfoCard({
     useCreateRentRecordMutation();
 
   const [stripeValid, setStripeValid] = useState(false);
+  const [showConfirmationBox, setShowConfirmationBox] = useState(
+    DefaultConfirmationBoxProps,
+  );
 
   const tenant = data.find((item) => item);
   const currentMonthRentData = getRentByMonthResult?.data;
@@ -326,14 +332,6 @@ export default function PropertyOwnerInfoCard({
                   </Alert>
                 </Box>
 
-                {hasRecentPaymentAttemptBeenMade ? (
-                  <Alert variant="filled" severity="error">
-                    A rent payment was recently attempted. Some bank accounts
-                    may take upto 2-3 days for processing. Are you sure you want
-                    to proceed?
-                  </Alert>
-                ) : null}
-
                 <AButton
                   size="small"
                   variant="contained"
@@ -342,27 +340,31 @@ export default function PropertyOwnerInfoCard({
                   loading={isStripeStatusLoading}
                   disabled={!stripeValid || paymentCompleteForCurrentMonth}
                   onClick={() =>
-                    handleRentPayment({
-                      stripeOwnerAccountId: owner?.stripeAccountId,
-                      stripeAccountIsActive: owner?.stripeAccountIsActive,
-                      propertyId: property?.id,
-                      propertyOwnerId: property?.createdBy, // the owner of the property
-                      tenantId: user?.uid, // the current payee which is also a tenant
-                      tenantEmail: user?.email, // the current renter
-                      rentAmount: formatCurrency(Number(property?.rent)),
-                      additionalCharges: formatCurrency(
-                        Number(property?.additionalRent),
-                      ),
-                      initialLateFee: formatCurrency(
-                        Number(tenant?.initialLateFee),
-                      ),
-                      dailyLateFee: formatCurrency(
-                        Number(tenant?.dailyLateFee) *
-                          getNumberOfDaysPastDue(
-                            tenant?.startDate,
-                            tenant?.gracePeriod,
-                          ).count,
-                      ),
+                    setShowConfirmationBox({
+                      value: true,
+                      updateKey: "rentPayment",
+                      details: {
+                        stripeOwnerAccountId: owner?.stripeAccountId,
+                        stripeAccountIsActive: owner?.stripeAccountIsActive,
+                        propertyId: property?.id,
+                        propertyOwnerId: property?.createdBy, // the owner of the property
+                        tenantId: user?.uid, // the current payee which is also a tenant
+                        tenantEmail: user?.email, // the current renter
+                        rentAmount: formatCurrency(Number(property?.rent)),
+                        additionalCharges: formatCurrency(
+                          Number(property?.additionalRent),
+                        ),
+                        initialLateFee: formatCurrency(
+                          Number(tenant?.initialLateFee),
+                        ),
+                        dailyLateFee: formatCurrency(
+                          Number(tenant?.dailyLateFee) *
+                            getNumberOfDaysPastDue(
+                              tenant?.startDate,
+                              tenant?.gracePeriod,
+                            ).count,
+                        ),
+                      },
                     })
                   }
                 />
@@ -371,6 +373,17 @@ export default function PropertyOwnerInfoCard({
           </>
         )}
       </CardContent>
+      <ConfirmationBox
+        isOpen={showConfirmationBox.value}
+        title="Confirm rent payment"
+        captionText={
+          hasRecentPaymentAttemptBeenMade
+            ? "A recent attempt at rent payment was detected. Some bank accounts may take couple of days for processing. Are you sure you want to proceed?"
+            : "Confirm rent payment for the current month?"
+        }
+        handleConfirm={() => handleRentPayment(showConfirmationBox?.details)}
+        handleCancel={() => setShowConfirmationBox(DefaultConfirmationBoxProps)}
+      />
       <CustomSnackbar
         severity="warning"
         showSnackbar={createRentRecordResult.isError}

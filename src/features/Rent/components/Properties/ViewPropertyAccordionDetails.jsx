@@ -115,6 +115,7 @@ const ViewPropertyAccordionDetails = ({
   const { nextPaymentDueDate, totalRent } = useSelectedPropertyDetails(
     property,
     tenants,
+    currentMonthRent,
   );
 
   const {
