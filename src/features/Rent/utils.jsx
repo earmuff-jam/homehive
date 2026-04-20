@@ -181,16 +181,22 @@ Earmuffjam LLC
 // getNumberOfDaysPastDue ...
 // defines a function that returns an object { value: boolean, count: number }
 // if rent is pre-grace period, ignore first month
+// if tenant is created for a future date, ignore all calculations
 export const getNumberOfDaysPastDue = (startDate, gracePeriod = 3) => {
   const now = dayjs();
   const start = dayjs(startDate);
   const isFirstMonthRenting = start.isSame(now, "month");
 
+  // early exit if tenant is created for a future date
+  if (start.isAfter(now)) {
+    return { value: false, count: 0 };
+  }
+
   const formattedGracePeriodInDateTime = now
     .startOf("month")
     .add(gracePeriod, "day");
 
-  const unitOfMeasurement = isFirstMonthRenting ? "month" : "day";
+  const unitOfMeasurement = isFirstMonthRenting ? "day" : "day";
 
   const isPastGracePeriod = now.isAfter(
     formattedGracePeriodInDateTime,
@@ -215,15 +221,30 @@ export const getColorAndLabelForCurrentMonth = (
   rent,
   gracePeriod = 3,
 ) => {
+  // early exit if tenant is created for a future date
+  const now = dayjs();
+  const start = dayjs(startDate);
+
+  if (start.isAfter(now)) {
+    return {
+      color: "info",
+      label: "Proration period",
+      icon: <AssignmentLateRounded />,
+    };
+  }
+
   const { value: isPastGracePeriod } = getNumberOfDaysPastDue(
     startDate,
     gracePeriod,
   );
-  if (
-    [CompleteRentStatusEnumValue, ManualRentStatusEnumValue].includes(
-      rent?.status.toLowerCase(),
-    )
-  ) {
+
+  const isRentForCurrentMonthPaid = [
+    PaidRentStatusEnumValue,
+    CompleteRentStatusEnumValue,
+    ManualRentStatusEnumValue,
+  ].includes(rent?.status.toLowerCase());
+
+  if (isRentForCurrentMonthPaid) {
     return { color: "success", label: "Paid", icon: <PaidRounded /> };
   }
   if (isPastGracePeriod) {
@@ -232,12 +253,25 @@ export const getColorAndLabelForCurrentMonth = (
       label: "Past due",
       icon: <AssignmentLateRounded />,
     };
-  } else {
+  } else if (!isPastGracePeriod) {
     return {
       color: "secondary",
       label: "Grace Period",
       icon: <BubbleChartOutlined />,
     };
+    //   if (!isRentForCurrentMonthPaid) {
+    //     return {
+    //       color: "error",
+    //       label: "Past due",
+    //       icon: <AssignmentLateRounded />,
+    //     };
+    //   }
+    // } else {
+    //   return {
+    //     color: "secondary",
+    //     label: "Grace Period",
+    //     icon: <BubbleChartOutlined />,
+    //   };
   }
 };
 
