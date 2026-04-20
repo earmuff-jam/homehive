@@ -14,8 +14,10 @@ const ViewSigners = ({ tokenCount = 0, signers = [], signatureBoxes = [] }) => {
     acuteSignatureBoxes?.length !== signers?.length;
   const isDateBoxesMatchesSigners = acuteDateBoxes?.length !== signers?.length;
   const isRequiredFieldsMissing =
-    signers?.filter((signer) => signer?.email_address).filter(Boolean)
-      ?.length <= 0;
+    signers?.length !==
+      signers?.filter((signer) => signer?.email_address).length ||
+    signers?.length !== signers?.filter((signer) => signer?.name).length;
+
   return (
     <Stack paddingTop="1rem">
       <Stack spacing={1}>
