@@ -1,5 +1,16 @@
 [
   {
+    "version": "1.0.9",
+    "date": "2026-04-19",
+    "notes": [
+      {
+        "type": "maintenance",
+        "value": "Added support for dev env in groq by @earmuff-jam in #76",
+        "caption": "Added support for dev env in groq by @earmuff-jam in #76"
+      }
+    ]
+  },
+  {
     "version": "1.0.8",
     "date": "2026-04-19",
     "notes": [
