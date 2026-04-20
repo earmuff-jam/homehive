@@ -25,7 +25,30 @@ export const useSelectedPropertyDetails = (
     "month",
   );
 
+  let totalRent =
+    Number(property?.rent || 0) + Number(property?.additionalRent || 0);
+
+  if (isAnyPropertySoR) {
+    totalRent = tenants.reduce(
+      (total, tenant) =>
+        total + parseInt(tenant.rent || 0) + parseInt(property?.additionalRent),
+      0,
+    );
+  }
+
   let nextRentalPaymentDueDate = nextDueDate;
+
+  // tenant start date is due date if tenants are created for a
+  // future date
+  const primaryTenantStartDate = dayjs(primaryTenant?.startDate);
+  if (primaryTenantStartDate.isAfter(today)) {
+    return {
+      nextPaymentDueDate: dayjs(primaryTenantStartDate).format("MMM DD"),
+      totalRent: totalRent,
+      isSelectedPropertySoR: false,
+    };
+  }
+
   if (currentMonthRent) {
     const isCurrentMonthPaid =
       currentMonthRent?.rentMonth === today.month() &&
@@ -41,17 +64,6 @@ export const useSelectedPropertyDetails = (
         "month",
       );
     }
-  }
-
-  let totalRent =
-    Number(property?.rent || 0) + Number(property?.additionalRent || 0);
-
-  if (isAnyPropertySoR) {
-    totalRent = tenants.reduce(
-      (total, tenant) =>
-        total + parseInt(tenant.rent || 0) + parseInt(property?.additionalRent),
-      0,
-    );
   }
 
   return {

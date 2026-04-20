@@ -29,6 +29,7 @@ import ConfirmationBox, {
 import CustomSnackbar from "common/CustomSnackbar";
 import { fetchLoggedInUser } from "common/utils";
 import { useSendEmailMutation } from "features/Api/externalIntegrationsApi";
+import { useLazyGetRentsByPropertyIdWithFiltersQuery } from "features/Api/rentApi";
 import { useRemoveTenantAssociationMutation } from "features/Api/tenantsApi";
 import { useSelectedPropertyDetails } from "features/Rent/hooks/useGetSelectedPropertyDetails";
 import {
@@ -47,6 +48,9 @@ export default function Tenants({
   const theme = useTheme();
   const user = fetchLoggedInUser();
 
+  const [triggerGetRents, getRentsResult] =
+    useLazyGetRentsByPropertyIdWithFiltersQuery();
+
   const [sendEmail] = useSendEmailMutation();
   const [removeTenant, removeTenantResult] =
     useRemoveTenantAssociationMutation();
@@ -56,8 +60,18 @@ export default function Tenants({
     DefaultConfirmationBoxProps,
   );
 
+  const currentMonth = dayjs().format("MMMM");
+  const rentDetails = getRentsResult.data;
+  const currentMonthRent = rentDetails?.find(
+    (rentDetail) => rentDetail.rentMonth === currentMonth,
+  );
+
   const gtSmallFormFactor = useMediaQuery(theme.breakpoints.up("sm"));
-  const { nextPaymentDueDate } = useSelectedPropertyDetails(property, tenants);
+  const { nextPaymentDueDate } = useSelectedPropertyDetails(
+    property,
+    tenants,
+    currentMonthRent,
+  );
 
   const sortedByPrimaryStatus = (arr) => {
     return [...arr].sort((a, b) => b.isPrimary - a.isPrimary);
@@ -75,6 +89,16 @@ export default function Tenants({
     };
     removeTenant(updatedData);
   };
+
+  useEffect(() => {
+    if (property?.id) {
+      triggerGetRents({
+        propertyId: property?.id,
+        tenantEmails: property?.rentees,
+        rentMonth: dayjs().format("MMMM"),
+      });
+    }
+  }, [property?.id]);
 
   useEffect(() => {
     if (removeTenantResult.isSuccess) {
