@@ -1,5 +1,16 @@
 [
   {
+    "version": "1.0.11",
+    "date": "2026-04-21",
+    "notes": [
+      {
+        "type": "maintenance",
+        "value": "Added support for hovering effects by @mohit2530 in #330",
+        "caption": "Added support for hovering effects by @mohit2530 in #330"
+      }
+    ]
+  },
+  {
     "version": "1.0.9",
     "date": "2026-04-19",
     "notes": [
