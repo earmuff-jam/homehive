@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import {
   Box,
@@ -30,12 +30,17 @@ export default function TitleCard({
   const theme = useTheme();
   const smScreenSizeAndHigher = useMediaQuery(theme.breakpoints.up("md"));
 
+  const [isHovering, setIsHovering] = useState(false);
+
   return (
     <Card
       elevation={0}
       onClick={onClick}
+      onMouseEnter={() => setIsHovering(true)}
+      onMouseLeave={() => setIsHovering(false)}
       sx={{
         ...sx,
+        position: "relative",
         width: smScreenSizeAndHigher ? "30rem" : "inherit",
         cursor: "pointer",
         transition: "transform 0.2s",
@@ -44,8 +49,8 @@ export default function TitleCard({
         },
       }}
     >
-      {showLoginRequired && <AccessBadge />}
       <CardContent sx={{ p: 4, textAlign: "center" }}>
+        {showLoginRequired && isHovering && <AccessBadge />}
         <Box
           sx={{
             display: "flex",
