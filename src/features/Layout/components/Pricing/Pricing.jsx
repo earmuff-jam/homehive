@@ -3,7 +3,9 @@ import React, { useEffect } from "react";
 import { CheckCircleOutlineRounded } from "@mui/icons-material";
 import {
   Badge,
+  Button,
   Card,
+  CardActions,
   CardContent,
   Divider,
   Skeleton,
@@ -37,11 +39,19 @@ export default function Pricing({
     setSelectedSubscription(selectedSubscription);
   };
 
+  const sortedSubscriptionOptions = subscriptionOptions
+    ?.slice()
+    .sort((a, b) => a.amount - b.amount)
+    .map((option) => ({
+      ...option,
+      title: option?.productName?.replace(/Monthly/i, "").trim(),
+    }));
+
   useEffect(() => {
     if (readOnly) return;
     if (!isSubscriptionOptionsLoading && isSubscriptionOptionsSuccess) {
       // sets monthly plan as default
-      setSelectedSubscription(subscriptionOptions[1]);
+      setSelectedSubscription({ ...subscriptionOptions[1] });
     }
   }, [
     isSubscriptionOptionsLoading,
@@ -54,47 +64,83 @@ export default function Pricing({
 
   return (
     <Stack spacing={3}>
-      <Stack direction={{ md: "row", xs: "column" }} spacing={1} useFlexGap>
-        {subscriptionOptions.map((plan) => (
-          <Card
-            key={plan.productId}
-            sx={{
-              width: smScreenSizeAndHigher ? "30rem" : "inherit",
-              cursor: !readOnly ? "pointer" : "default",
-            }}
-          >
-            <CardContent
-              sx={{ padding: 3 }}
-              onClick={() => handleClick(plan.priceId)}
+      <Stack direction={{ md: "row", xs: "column" }} spacing={3} useFlexGap>
+        {sortedSubscriptionOptions.map((plan) => {
+          const isPopular = plan.productName === "Monthly Professional Plan";
+          return (
+            <Card
+              key={plan.productId}
+              sx={{
+                width: smScreenSizeAndHigher ? "30rem" : "inherit",
+                cursor: !readOnly ? "pointer" : "default",
+                height: "20rem",
+                display: "flex",
+                flexDirection: "column",
+                border: isPopular ? "0.1rem solid" : null,
+                borderColor: isPopular ? "primary.main" : null,
+                transition: "box-shadow 0.2s ease, transform 0.2s ease",
+                ...(isPopular && {
+                  border: "1px solid",
+                  borderColor: "primary.main",
+                  boxShadow: "0 4px 20px rgba(25, 118, 210, 0.25)",
+                }),
+                "&:hover": {
+                  transform: "translateY(-2px)",
+                  boxShadow: "0 8px 28px rgba(25, 118, 210, 0.35)",
+                },
+              }}
             >
-              <Badge
-                badgeContent={
-                  plan.productId === selectedSubscription?.productId && (
-                    <CheckCircleOutlineRounded color="success" />
-                  )
-                }
+              <CardContent
+                onClick={() => handleClick(plan.priceId)}
+                sx={{ flexGrow: 1 }}
               >
-                <Stack spacing={1}>
-                  <Typography variant="h6" fontWeight={600}>
-                    {plan?.productName}
-                  </Typography>
-                  <Stack direction="row" alignItems="baseline" spacing={0.5}>
-                    <Typography variant="h4" fontWeight={700}>
-                      ${formatCurrency(plan?.amount / 100)}
+                <Badge
+                  badgeContent={
+                    plan.productId === selectedSubscription?.productId && (
+                      <CheckCircleOutlineRounded color="success" />
+                    )
+                  }
+                >
+                  <Stack spacing={1} padding={1}>
+                    <Typography variant="h6" fontWeight={600}>
+                      {plan?.title}
                     </Typography>
+                    <Stack direction="row" alignItems="baseline" spacing={0.5}>
+                      <Typography variant="h1" fontWeight={300}>
+                        ${formatCurrency(plan?.amount / 100)}
+                      </Typography>
+                      <Typography variant="caption" color="primary.main">
+                        /{plan?.interval}
+                      </Typography>
+                    </Stack>
+                    <Divider />
                     <Typography variant="body2" color="text.secondary">
-                      /{plan?.interval}
+                      {plan?.description}
                     </Typography>
                   </Stack>
-                  <Divider />
-                  <Typography variant="body2" color="text.secondary">
-                    {plan?.description}
-                  </Typography>
-                </Stack>
-              </Badge>
-            </CardContent>
-          </Card>
-        ))}
+                </Badge>
+              </CardContent>
+              <CardActions
+                sx={{
+                  justifyContent: "center",
+                  alignItems: "center",
+                  marginTop: "auto",
+                }}
+              >
+                <Button
+                  variant={isPopular ? "contained" : "outlined"}
+                  sx={{
+                    padding: "0.8rem",
+                    borderRadius: "0.4rem",
+                    transition: "all .18s",
+                  }}
+                >
+                  Get Started
+                </Button>
+              </CardActions>
+            </Card>
+          );
+        })}
       </Stack>
     </Stack>
   );

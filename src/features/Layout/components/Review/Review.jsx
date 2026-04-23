@@ -55,7 +55,7 @@ export default function Review() {
           </Avatar>
           <CardContent>
             <Typography variant="body2" gutterBottom>
-              "{v.title}"
+              &quot;{v.title}&quot;
             </Typography>
           </CardContent>
           <CardActions>

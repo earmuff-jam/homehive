@@ -29,12 +29,15 @@ import { Role } from "features/Auth/AuthHelper";
 import Pricing from "features/Layout/components/Pricing/Pricing";
 import Review from "features/Layout/components/Review/Review";
 import TitleCard from "features/Layout/components/TitleCard/TitleCard";
+import { useReveal } from "features/Layout/useReveal";
 import { useAppTitle } from "hooks/useAppTitle";
 
 export default function SplashPage() {
   useAppTitle("Home");
   const navigate = useNavigate();
   const user = fetchLoggedInUser();
+
+  const { ref, visible } = useReveal();
 
   const [authenticate, authenticateResult] = useAuthenticateMutation();
 
@@ -80,7 +83,11 @@ export default function SplashPage() {
 
   return (
     <Box
+      ref={ref}
       sx={{
+        opacity: visible ? 1 : 0,
+        transform: visible ? "translateY(0px)" : "translateY(20px)",
+        transition: "opacity 0.6s ease, transform 0.6s ease",
         minHeight: "70vh",
         display: "flex",
         alignItems: "center",
@@ -97,6 +104,7 @@ export default function SplashPage() {
             overflow: "hidden",
           }}
         >
+          {/* adds a glowing feel */}
           <Box
             sx={{
               position: "absolute",
@@ -306,6 +314,7 @@ export default function SplashPage() {
         </Box>
         {/* Subscription Fees */}
         <Stack direction="column" gap={2} marginTop="5rem">
+          <Divider />
           <Typography
             textAlign="center"
             variant="h2"

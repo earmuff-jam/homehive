@@ -17,7 +17,7 @@ exports[`TitleCard renders correctly and matches snapshot 1`] = `
         />
       </div>
       <p
-        class="MuiTypography-root MuiTypography-body1 MuiTypography-gutterBottom css-91oxh-MuiTypography-root"
+        class="MuiTypography-root MuiTypography-body2 MuiTypography-gutterBottom css-ycd4o0-MuiTypography-root"
       />
       <div
         class="MuiBox-root css-ocwszi"

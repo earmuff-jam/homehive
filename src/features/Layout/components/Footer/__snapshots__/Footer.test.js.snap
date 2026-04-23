@@ -2,14 +2,54 @@
 
 exports[`Footer component renders correctly and matches snapshot 1`] = `
 <DocumentFragment>
-  <div
-    class="MuiStack-root no-print css-anfiki-MuiStack-root"
+  <footer
+    class="no-print MuiBox-root css-1284q0f"
   >
-    <p
-      class="MuiTypography-root MuiTypography-body1 css-rizt0-MuiTypography-root"
+    <div
+      class="MuiStack-root css-6rg9iv-MuiStack-root"
     >
-       Earmuffjam LLC. All rights reserved. @2024
-    </p>
-  </div>
+      <p
+        class="MuiTypography-root MuiTypography-body1 css-1ujqqab-MuiTypography-root"
+      >
+        Homehive
+      </p>
+      <div
+        class="MuiStack-root css-g0bj1h-MuiStack-root"
+      >
+        <a
+          class="MuiTypography-root MuiTypography-inherit MuiLink-root MuiLink-underlineNone css-1tvtxgh-MuiTypography-root-MuiLink-root"
+          href="#"
+        >
+          Privacy Policy
+        </a>
+        <a
+          class="MuiTypography-root MuiTypography-inherit MuiLink-root MuiLink-underlineNone css-1tvtxgh-MuiTypography-root-MuiLink-root"
+          href="#"
+        >
+          Terms of Service
+        </a>
+        <a
+          class="MuiTypography-root MuiTypography-inherit MuiLink-root MuiLink-underlineNone css-1tvtxgh-MuiTypography-root-MuiLink-root"
+          href="#"
+        >
+          Contact
+        </a>
+        <a
+          class="MuiTypography-root MuiTypography-inherit MuiLink-root MuiLink-underlineNone css-1tvtxgh-MuiTypography-root-MuiLink-root"
+          href="#"
+        >
+          Help Center
+        </a>
+      </div>
+      <div
+        class="MuiBox-root css-hydilc"
+      />
+      <p
+        class="MuiTypography-root MuiTypography-body1 css-wdmix0-MuiTypography-root"
+      >
+        ©2024 Earmuffjam LLC. All rights reserved.
+      </p>
+    </div>
+  </footer>
 </DocumentFragment>
 `;

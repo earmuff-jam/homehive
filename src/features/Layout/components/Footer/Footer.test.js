@@ -12,7 +12,7 @@ describe("Footer component", () => {
   it("renders footer text", () => {
     render(<Footer />);
     expect(
-      screen.getByText(/Earmuffjam LLC. All rights reserved. @2024/i),
+      screen.getByText('©2024 Earmuffjam LLC. All rights reserved.'),
     ).toBeInTheDocument();
   });
 });

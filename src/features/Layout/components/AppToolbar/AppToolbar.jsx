@@ -138,7 +138,15 @@ export default function AppToolbar({
           <IconButton onClick={handleDrawerOpen}>
             <MenuOutlined />
           </IconButton>
-          <Typography variant="h5">Homehive</Typography>
+          <Typography
+            sx={{
+              fontFamily: "'Instrument Serif', serif",
+              fontSize: "1.8rem",
+              letterSpacing: "-0.02em",
+            }}
+          >
+            Homehive
+          </Typography>
         </Stack>
         <Stack direction="row" spacing={1} alignItems="center">
           {user?.uid && (
