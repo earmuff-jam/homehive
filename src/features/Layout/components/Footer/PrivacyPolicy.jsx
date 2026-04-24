@@ -33,20 +33,20 @@ export default function PrivacyPolicy() {
       </Typography>
 
       <Typography>
-        Earmuffjam LLC, (hereinafter, $&quot;Homehive Solutions,$&quot;
-        $&quot;we,$&quot; $&quot;our,$&quot; or $&quot;us$&quot;) provides
-        property management software, invoice creation, and electronic signature
-        services (collectively, the $&quot;Services$&quot;) to landlords,
-        property managers, tenants, and other users (collectively,
-        $&quot;you$&quot; or $&quot;your$&quot;) through its website,
-        https://homehivesolutions.com/ (the $&quot;Site$&quot;).
+        Earmuffjam LLC, (hereinafter, &quot;Homehive Solutions,&quot;
+        &quot;we,&quot; &quot;our,&quot; or &quot;us&quot;) provides property
+        management software, invoice creation, and electronic signature services
+        (collectively, the &quot;Services&quot;) to landlords, property
+        managers, tenants, and other users (collectively, &quot;you&quot; or
+        &quot;your&quot;) through its website, https://homehivesolutions.com/
+        (the &quot;Site&quot;).
       </Typography>
 
       <Typography>
-        This privacy policy ($&quot;Privacy Policy$&quot;) explains the types of
+        This privacy policy (&quot;Privacy Policy&quot;) explains the types of
         information relating to an identified or identifiable natural person, or
-        as otherwise defined under applicable Privacy Laws, ($&quot;Personal
-        Data$&quot;) that we may collect from you when you use the Services or
+        as otherwise defined under applicable Privacy Laws, (&quot;Personal
+        Data&quot;) that we may collect from you when you use the Services or
         interact with the Site or any affiliated third-party website that may
         contain a link to this Privacy Policy. Unless explicitly stated
         otherwise, any current, updated and new software and products, including

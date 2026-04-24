@@ -3,6 +3,11 @@ import React from "react";
 import PropertyHeader from "./PropertyHeader";
 import { render, screen } from "@testing-library/react";
 
+jest.mock("common/AIconButton", () => ({
+  __esModule: true,
+  default: (props) => <button {...props} />,
+}));
+
 describe("PropertyHeader Jest tests", () => {
   describe("PropertyHeader snapshot tests", () => {
     it("renders correctly and matches snapshot", () => {

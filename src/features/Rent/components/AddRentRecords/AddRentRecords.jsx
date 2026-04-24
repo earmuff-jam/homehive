@@ -153,7 +153,6 @@ export default function AddRentRecords({
             id="ownerFirstName"
             placeholder="First Name of your property owner"
             errorMsg={errors.ownerFirstName?.message}
-            isDisabled
             inputProps={{
               ...register("ownerFirstName", {
                 required: "Owner First Name is required",
@@ -165,7 +164,6 @@ export default function AddRentRecords({
             id="ownerLastName"
             placeholder="Last Name of your property owner"
             errorMsg={errors.ownerLastName?.message}
-            isDisabled
             inputProps={{
               ...register("ownerLastName", {
                 required: "Owner Last Name is required",
