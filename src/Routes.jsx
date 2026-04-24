@@ -18,15 +18,21 @@ import {
 import { EsignAppRoutes } from "features/Esign/Routes";
 import { InvoiceAppRoutes } from "features/Invoice/Routes";
 import SplashPage from "features/Layout/SplashPage";
-import Contact from "features/Layout/components/Footer/Contact";
-import HelpCenter from "features/Layout/components/Footer/HelpCenter";
-import PrivacyPolicy from "features/Layout/components/Footer/PrivacyPolicy";
-import TermsOfService from "features/Layout/components/Footer/TermsOfService";
 import { RentalAppRoutes } from "features/Rent/Routes";
 import SubAppRouter from "src/SubRouter";
 
 const ReleaseNotes = lazy(
   () => import("features/Layout/components/HelpAndSupport/ReleaseNotes"),
+);
+const Contact = lazy(() => import("features/Layout/components/Footer/Contact"));
+const HelpCenter = lazy(
+  () => import("features/Layout/components/Footer/HelpCenter"),
+);
+const PrivacyPolicy = lazy(
+  () => import("features/Layout/components/Footer/PrivacyPolicy"),
+);
+const TermsOfService = lazy(
+  () => import("features/Layout/components/Footer/TermsOfService"),
 );
 
 // MainAppRoutes ...
