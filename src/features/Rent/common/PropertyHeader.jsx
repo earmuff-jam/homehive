@@ -1,78 +1,86 @@
-import React, { useState } from "react";
+import React from "react";
 
-import { CommentRounded, Home, HomeWorkOutlined } from "@mui/icons-material";
-import { Box, Chip, Stack, Tooltip, Typography } from "@mui/material";
-import AIconButton from "common/AIconButton";
+import { Home, HomeWorkOutlined } from "@mui/icons-material";
+import {
+  Box,
+  Chip,
+  Stack,
+  Tooltip,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
 
 export default function PropertyHeader({
   property,
   isRentee = false,
   isPrimaryRenter = false,
 }) {
-  const [showNote, setShowNote] = useState(false);
+  const theme = useTheme();
+  const isGtSmallFormFactor = useMediaQuery(theme.breakpoints.up("sm"));
 
   return (
     <Stack spacing={1}>
-      <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-        <Home color="primary" sx={{ fontSize: 40 }} />
-        <Stack>
-          <Typography variant="h4">{property?.name}</Typography>
-          <Stack
-            spacing={1}
-            direction={{ xs: "column", sm: "row" }}
-            alignItems={{ xs: "left", sm: "center" }}
-          >
-            {property?.isHoa && (
-              <Tooltip title={`${property?.hoaDetails}`}>
-                <HomeWorkOutlined fontSize="small" color="info" />
-              </Tooltip>
-            )}
-            {property?.sqFt && (
-              <Box>
-                <Tooltip title={`${property?.sqFt} sq.ft `}>
-                  <Chip
-                    size="small"
-                    label={`${property?.sqFt} sq.ft`}
-                    color="primary"
-                  />
-                </Tooltip>
-              </Box>
-            )}
-            <Typography
-              variant="subtitle2"
-              color="text.secondary"
-              sx={{ display: "flex", alignItems: "center", gap: 1 }}
+      <Stack>
+        <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+          <Home color="primary" sx={{ fontSize: 40 }} />
+          <Stack>
+            <Typography variant="h4">{property?.name}</Typography>
+            <Stack
+              spacing={1}
+              direction={{ xs: "column", sm: "row" }}
+              alignItems={{ xs: "left", sm: "flex-end" }}
             >
-              {property?.address}, {property?.city}, {property?.state}&nbsp;
-              {property?.zipcode}
-            </Typography>
-          </Stack>
-          <Stack direction="row" alignItems="center" spacing={1} padding={1}>
-            <Tooltip title={showNote ? "Hide notes" : "Show notes"}>
-              <AIconButton
-                size="small"
-                onClick={() => setShowNote(!showNote)}
-                label={<CommentRounded fontSize="small" color="info" />}
-              />
-            </Tooltip>
-            {showNote && (
+              <Stack direction="row" spacing={1}>
+                {property?.isHoa && (
+                  <Tooltip title={`${property?.hoaDetails}`}>
+                    <HomeWorkOutlined fontSize="small" color="info" />
+                  </Tooltip>
+                )}
+                {property?.sqFt && (
+                  <Box>
+                    <Tooltip title={`${property?.sqFt} sq.ft `}>
+                      <Chip
+                        size="small"
+                        label={`${property?.sqFt} sq.ft`}
+                        color="primary"
+                      />
+                    </Tooltip>
+                  </Box>
+                )}
+              </Stack>
               <Typography
                 variant="subtitle2"
                 color="text.secondary"
-                sx={{
-                  border: "1px solid",
-                  borderColor: "primary.main",
-                  paddingX: 2,
-                  paddingY: 0.1,
-                  borderRadius: 1,
-                }}
+                sx={{ display: "flex", alignItems: "center", gap: 1 }}
               >
-                {property?.note}
+                {property?.address}, {property?.city}, {property?.state}&nbsp;
+                {property?.zipcode}
               </Typography>
-            )}
+            </Stack>
           </Stack>
+        </Box>
+
+        <Stack direction="row" alignItems="center" spacing={1} paddingY={1}>
+          <Tooltip title={isGtSmallFormFactor ? "" : property?.note}>
+            <Typography
+              flexGrow={1}
+              variant="subtitle2"
+              color="text.secondary"
+              sx={{
+                overflow: "hidden",
+                alignContent: "center",
+                textOverflow: "ellipsis",
+                whiteSpace: isGtSmallFormFactor ? "none" : "nowrap",
+                maxWidth: isGtSmallFormFactor ? "inherit" : 250,
+              }}
+            >
+              {property?.note}
+            </Typography>
+          </Tooltip>
         </Stack>
-      </Box>
+      </Stack>
+
       {isRentee ? (
         <Box>
           {isPrimaryRenter ? (
