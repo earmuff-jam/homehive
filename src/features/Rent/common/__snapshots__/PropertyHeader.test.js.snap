@@ -36,6 +36,16 @@ exports[`PropertyHeader Jest tests PropertyHeader snapshot tests renders correct
             123 Main St, Austin, TX 78701
           </h6>
         </div>
+        <div
+          class="MuiStack-root css-9xnnam-MuiStack-root"
+        >
+          <button
+            aria-label="Show notes"
+            class=""
+            data-mui-internal-clone-element="true"
+            label="[object Object]"
+          />
+        </div>
       </div>
     </div>
   </div>

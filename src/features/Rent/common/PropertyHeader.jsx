@@ -1,13 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 
-import { Home, HomeWorkOutlined } from "@mui/icons-material";
+import { CommentRounded, Home, HomeWorkOutlined } from "@mui/icons-material";
 import { Box, Chip, Stack, Tooltip, Typography } from "@mui/material";
+import AIconButton from "common/AIconButton";
 
 export default function PropertyHeader({
   property,
   isRentee = false,
   isPrimaryRenter = false,
 }) {
+  const [showNote, setShowNote] = useState(false);
+
   return (
     <Stack spacing={1}>
       <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
@@ -27,7 +30,11 @@ export default function PropertyHeader({
             {property?.sqFt && (
               <Box>
                 <Tooltip title={`${property?.sqFt} sq.ft `}>
-                  <Chip size="small" label={`${property?.sqFt} sq.ft`} />
+                  <Chip
+                    size="small"
+                    label={`${property?.sqFt} sq.ft`}
+                    color="primary"
+                  />
                 </Tooltip>
               </Box>
             )}
@@ -39,6 +46,30 @@ export default function PropertyHeader({
               {property?.address}, {property?.city}, {property?.state}&nbsp;
               {property?.zipcode}
             </Typography>
+          </Stack>
+          <Stack direction="row" alignItems="center" spacing={1} padding={1}>
+            <Tooltip title={showNote ? "Hide notes" : "Show notes"}>
+              <AIconButton
+                size="small"
+                onClick={() => setShowNote(!showNote)}
+                label={<CommentRounded fontSize="small" color="info" />}
+              />
+            </Tooltip>
+            {showNote && (
+              <Typography
+                variant="subtitle2"
+                color="text.secondary"
+                sx={{
+                  border: "1px solid",
+                  borderColor: "primary.main",
+                  paddingX: 2,
+                  paddingY: 0.1,
+                  borderRadius: 1,
+                }}
+              >
+                {property?.note}
+              </Typography>
+            )}
           </Stack>
         </Stack>
       </Box>
