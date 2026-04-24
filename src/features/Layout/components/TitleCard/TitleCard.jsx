@@ -11,11 +11,27 @@ import {
 } from "@mui/material";
 import AccessBadge from "features/Layout/components/TitleCard/AccessBadge";
 
-const DefaultChipColors = [
-  "primary.light",
-  "info.light",
-  "warning.light",
-  "secondary.light",
+const DefaultChipStyles = (theme) => [
+  {
+    backgroundColor: theme.palette.primary.main + "15", // ~10% opacity
+    color: theme.palette.primary.dark,
+    border: `1px solid ${theme.palette.primary.main}25`,
+  },
+  {
+    backgroundColor: theme.palette.warning.main + "15",
+    color: theme.palette.warning.dark,
+    border: `1px solid ${theme.palette.warning.main}30`,
+  },
+  {
+    backgroundColor: theme.palette.secondary.main + "15",
+    color: theme.palette.secondary.dark,
+    border: `1px solid ${theme.palette.secondary.main}25`,
+  },
+  {
+    backgroundColor: theme.palette.info.main + "15",
+    color: theme.palette.info.dark,
+    border: `1px solid ${theme.palette.info.main}25`,
+  },
 ];
 
 export default function TitleCard({
@@ -28,6 +44,7 @@ export default function TitleCard({
   onClick = () => {},
 }) {
   const theme = useTheme();
+  const chipStyles = DefaultChipStyles(theme);
   const smScreenSizeAndHigher = useMediaQuery(theme.breakpoints.up("md"));
 
   const [isHovering, setIsHovering] = useState(false);
@@ -62,7 +79,7 @@ export default function TitleCard({
           {icon}
           <Typography variant="h4">{title}</Typography>
         </Box>
-        <Typography variant="body1" color="textSecondary" gutterBottom>
+        <Typography variant="body2" color="textSecondary" gutterBottom>
           {subtitle}
         </Typography>
         <Box
@@ -81,11 +98,11 @@ export default function TitleCard({
                   {label}
                 </Typography>
               }
-              size="small"
               sx={{
-                color: "black",
-                backgroundColor:
-                  DefaultChipColors[index % DefaultChipColors.length],
+                padding: "0.2rem 0.8rem",
+                fontSize: "0.75rem",
+                borderRadius: "0.3rem",
+                ...chipStyles[index % chipStyles.length],
               }}
             />
           ))}

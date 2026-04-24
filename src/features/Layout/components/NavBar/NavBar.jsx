@@ -90,7 +90,15 @@ export default function NavBar({
         >
           <Stack direction="row" spacing={2} alignItems="center">
             <img src="/logo-no-text.png" height="100%" width="50rem" />
-            <Typography variant="h5">Homehive</Typography>
+            <Typography
+              sx={{
+                fontFamily: "'Instrument Serif', serif",
+                fontSize: "1.8rem",
+                letterSpacing: "-0.02em",
+              }}
+            >
+              Homehive
+            </Typography>
           </Stack>
           <IconButton onClick={handleDrawerClose}>
             {theme.direction === "rtl" ? (
