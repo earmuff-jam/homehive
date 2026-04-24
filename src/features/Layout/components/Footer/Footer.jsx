@@ -2,6 +2,30 @@ import React from "react";
 
 import { Box, Link, Stack, Typography, useTheme } from "@mui/material";
 
+// DefaultLinks ...
+const DefaultLinks = [
+  {
+    id: 1,
+    title: "Privacy Policy",
+    link: "privacyPolicy",
+  },
+  {
+    id: 2,
+    title: "Terms of Service",
+    link: "termsOfService",
+  },
+  {
+    id: 3,
+    title: "Contact",
+    link: "contact",
+  },
+  {
+    id: 4,
+    title: "Help Center",
+    link: "helpCenter",
+  },
+];
+
 function Footer() {
   const theme = useTheme();
   return (
@@ -34,24 +58,22 @@ function Footer() {
           flexWrap="wrap"
           justifyContent="center"
         >
-          {["Privacy Policy", "Terms of Service", "Contact", "Help Center"].map(
-            (text) => (
-              <Link
-                key={text}
-                href="#"
-                underline="none"
-                sx={{
-                  fontSize: "0.85rem",
-                  transition: "0.2s",
-                  "&:hover": {
-                    color: theme.palette.text.primary,
-                  },
-                }}
-              >
-                {text}
-              </Link>
-            ),
-          )}
+          {DefaultLinks.map((link) => (
+            <Link
+              key={link.id}
+              href={link.link}
+              underline="none"
+              sx={{
+                fontSize: "0.85rem",
+                transition: "0.2s",
+                "&:hover": {
+                  color: theme.palette.text.primary,
+                },
+              }}
+            >
+              {link.title}
+            </Link>
+          ))}
         </Stack>
 
         <Box

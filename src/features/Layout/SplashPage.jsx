@@ -250,7 +250,7 @@ export default function SplashPage() {
               />
               <TitleCard
                 title="Invoicer App"
-                subtitle="Create invoices, payments and use prepopulated templates"
+                subtitle="Create and send invoices, payments or templates"
                 chipLabels={[
                   "Invoice Creation",
                   "Payment Tracking",
@@ -337,7 +337,10 @@ export default function SplashPage() {
           >
             Simple plans designed to fit your needs — subscribe to get started
           </Typography>
-          <Pricing readOnly />
+          <Pricing
+            handleRentClick={() => handleAuthenticate({ isEsign: false })}
+            readOnly
+          />
         </Stack>
       </Container>
     </Box>

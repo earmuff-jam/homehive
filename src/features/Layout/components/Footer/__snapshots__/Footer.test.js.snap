@@ -18,25 +18,25 @@ exports[`Footer component renders correctly and matches snapshot 1`] = `
       >
         <a
           class="MuiTypography-root MuiTypography-inherit MuiLink-root MuiLink-underlineNone css-1tvtxgh-MuiTypography-root-MuiLink-root"
-          href="#"
+          href="privacyPolicy"
         >
           Privacy Policy
         </a>
         <a
           class="MuiTypography-root MuiTypography-inherit MuiLink-root MuiLink-underlineNone css-1tvtxgh-MuiTypography-root-MuiLink-root"
-          href="#"
+          href="termsOfService"
         >
           Terms of Service
         </a>
         <a
           class="MuiTypography-root MuiTypography-inherit MuiLink-root MuiLink-underlineNone css-1tvtxgh-MuiTypography-root-MuiLink-root"
-          href="#"
+          href="contact"
         >
           Contact
         </a>
         <a
           class="MuiTypography-root MuiTypography-inherit MuiLink-root MuiLink-underlineNone css-1tvtxgh-MuiTypography-root-MuiLink-root"
-          href="#"
+          href="helpCenter"
         >
           Help Center
         </a>

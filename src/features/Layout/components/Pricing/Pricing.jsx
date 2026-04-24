@@ -18,6 +18,7 @@ import { useGetSubscriptionOptionsQuery } from "features/Api/externalIntegration
 import { formatCurrency } from "features/Rent/utils";
 
 export default function Pricing({
+  handleRentClick,
   selectedSubscription,
   setSelectedSubscription,
   readOnly = false,
@@ -128,6 +129,7 @@ export default function Pricing({
                 }}
               >
                 <Button
+                  onClick={handleRentClick}
                   variant={isPopular ? "contained" : "outlined"}
                   sx={{
                     padding: "0.8rem",
