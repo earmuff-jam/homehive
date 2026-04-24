@@ -156,12 +156,11 @@ export default function SplashPage() {
             >
               Manage your rentals&nbsp;
               <Box
-                component="em"
+                // component="em"
                 sx={{ color: "primary.main", fontStyle: "italic" }}
               >
                 effortlessly
               </Box>
-              ,<br />
               all in one place
             </Typography>
 
