@@ -15,6 +15,7 @@ import {
   useCreateSecureStripeLoginLinkMutation,
   useCreateStripeAccountLinkMutation,
   useCreateStripeAccountMutation,
+  useGetRecentTransactionsQuery,
 } from "features/Api/externalIntegrationsApi";
 import {
   useGetUserDataByIdQuery,
@@ -76,6 +77,19 @@ export default function StripeConnect() {
     useGetUserDataByIdQuery(user?.uid, {
       skip: !user?.uid,
     });
+
+  const {
+    data: recentTransactions = {},
+    isLoading: isRecentTransactionsLoading,
+  } = useGetRecentTransactionsQuery(
+    {
+      userId: userData?.uid,
+      stripeAccountId: userData?.stripeAccountId,
+    },
+    {
+      skip: !userData?.stripeAccountId,
+    },
+  );
 
   const [updateUser, updateUserResult] = useUpdateUserByUidMutation();
   const [createAccount, createAccountResult] = useCreateStripeAccountMutation();
@@ -284,7 +298,10 @@ export default function StripeConnect() {
 
       {/* Transaction History Preview */}
       <Grid item xs={12}>
-        <RecentTransactions />
+        <RecentTransactions
+          transactions={recentTransactions?.transactions?.data || []}
+          loading={isRecentTransactionsLoading}
+        />
       </Grid>
 
       {/* Help & Support */}
