@@ -30,6 +30,17 @@ export const AddRentPaymentNotificationEnumValue = "Notice of Rent Payment";
 export const EmailNotificationDisclaimer =
   "You are being notified either since you are the property owner, tenant or anyone tasked with such responsibility.";
 
+// MovementSpeedEnumValues ...
+// defines the movement speed estimates for various modes of transportation in km/hr
+const MovementSpeedEnumValues = {
+  walking: 5,
+  biking: 15,
+  cityDriving: 40, // different from highway driving
+};
+
+const noActionToPerformStr =
+  "<b>There is no action for you to take at this time. If this seems unfamiliar or suspicious please reach out to your administrator.</b>";
+
 // stripHTMLForEmailMessages ...
 // defines a fuction that returns email messages that are stripped from its html contents
 export const stripHTMLForEmailMessages = (htmlDocument) => {
@@ -122,9 +133,6 @@ export const formatAndSendNotification = ({
     }
   }
 };
-
-const noActionToPerformStr =
-  "<b>There is no action for you to take at this time. If this seems unfamiliar or suspicious please reach out to your administrator.</b>";
 
 // emailMessageBuilder ...
 // defines a function that appends email message with extra disclaimer
@@ -478,4 +486,55 @@ const validateFullName = (firstName, lastName, otherName) => {
   } else {
     return "N/A";
   }
+};
+
+// calculate distance between two co-ordinates
+export const calculateDistance = (lat1, lon1, lat2, lon2) => {
+  const RadiusOfEarthInMeters = 6371e3;
+  const deltaOfLattitudePointA = (lat1 * Math.PI) / 180;
+  const deltaOfLattitudePointB = (lat2 * Math.PI) / 180;
+  const actualDeltaForLattitude = ((lat2 - lat1) * Math.PI) / 180;
+  const actualDeltaForLongitude = ((lon2 - lon1) * Math.PI) / 180;
+
+  const combinedDifference =
+    Math.sin(actualDeltaForLattitude / 2) *
+      Math.sin(actualDeltaForLattitude / 2) +
+    Math.cos(deltaOfLattitudePointA) *
+      Math.cos(deltaOfLattitudePointB) *
+      Math.sin(actualDeltaForLongitude / 2) *
+      Math.sin(actualDeltaForLongitude / 2);
+  const updatedChange =
+    2 *
+    Math.atan2(
+      Math.sqrt(combinedDifference),
+      Math.sqrt(1 - combinedDifference),
+    );
+
+  const distance = RadiusOfEarthInMeters * updatedChange; // Distance in meters
+  return distance;
+};
+
+// estimateTravelTime ...
+// defines the estimated travel time
+export const estimateTravelTime = (distanceInMeters, mode = "walking") => {
+  const distanceInKm = distanceInMeters / 1000;
+  const timeInHours = distanceInKm / MovementSpeedEnumValues[mode];
+  const timeInMinutes = Math.round(timeInHours * 60);
+
+  return {
+    minutes: timeInMinutes,
+    formatted:
+      timeInMinutes < 60
+        ? `${timeInMinutes} min`
+        : `${Math.floor(timeInMinutes / 60)}h ${timeInMinutes % 60}m`,
+  };
+};
+
+// formatDistance ...
+// defines a function to visually enhance display of distance in map
+export const formatDistance = (distanceInMeters) => {
+  if (distanceInMeters < 1000) {
+    return `${Math.round(distanceInMeters)} m`;
+  }
+  return `${(distanceInMeters / 1000).toFixed(1)} km`;
 };

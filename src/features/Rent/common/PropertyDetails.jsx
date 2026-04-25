@@ -86,7 +86,9 @@ export default function PropertyDetails({
     <Card sx={{ marginBottom: 3 }} data-tour={dataTour}>
       <PropertyMap
         location={property?.location}
+        propertyName={property?.name}
         amenities={data?.propertyAmenities}
+        propertyLocation={property?.location}
         address={`${property?.address}, ${property?.city}, ${property?.state} ${property?.zipcode}`}
       />
       <CardContent data-tour="rental-5">
