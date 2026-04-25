@@ -5,6 +5,7 @@ import { externalIntegrationMultipart } from "features/Api/externalIntegrationMu
 import { externalIntegrationsApi } from "features/Api/externalIntegrationsApi";
 import { firebaseUserApi } from "features/Api/firebaseUserApi";
 import { invoiceApi } from "features/Api/invoiceApi";
+import { mapAmenitiesApi } from "features/Api/mapAmenitiesApi";
 import { mapServiceApi } from "features/Api/mapServiceApi";
 import { propertiesApi } from "features/Api/propertiesApi";
 import { raspyApi } from "features/Api/raspyApi";
@@ -25,6 +26,7 @@ export const store = configureStore({
     [etssTokenApi.reducerPath]: etssTokenApi.reducer,
     [externalIntegrationsApi.reducerPath]: externalIntegrationsApi.reducer,
     [raspyApi.reducerPath]: raspyApi.reducer,
+    [mapAmenitiesApi.reducerPath]: mapAmenitiesApi.reducer,
     [externalIntegrationMultipart.reducerPath]:
       externalIntegrationMultipart.reducer,
   },
@@ -42,5 +44,6 @@ export const store = configureStore({
       externalIntegrationsApi.middleware,
       raspyApi.middleware,
       externalIntegrationMultipart.middleware,
+      mapAmenitiesApi.middleware,
     ]),
 });

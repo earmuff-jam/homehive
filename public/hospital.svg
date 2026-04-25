@@ -1,0 +1,8 @@
+<svg width="64" height="64" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+  <!-- White circular button -->
+  <circle cx="12" cy="12" r="10" fill="#B72323" stroke="#e0e0e0" stroke-width="1.5"/>
+
+  <!-- Red cross -->
+  <rect x="11" y="7" width="2" height="10" fill="#ffffff"/>
+  <rect x="7" y="11" width="10" height="2" fill="#ffffff"/>
+</svg>
