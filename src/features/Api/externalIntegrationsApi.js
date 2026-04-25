@@ -150,12 +150,12 @@ export const externalIntegrationsApi = createApi({
     // getRecentTransactions ...
     // defines a query that retrieves recent transactions made under stripe
     getRecentTransactions: builder.query({
-      query: (connectedAccountId) => ({
+      query: ({ userId, stripeAccountId }) => ({
         method: "POST",
         body: JSON.stringify({
           fUrl: "0006_FetchRecentStripeTransactions",
           fMethod: "POST",
-          payload: { connectedAccountId },
+          payload: { userId, stripeAccountId },
         }),
       }),
       providesTags: [TagTypes.RecentStripeTransactions],
