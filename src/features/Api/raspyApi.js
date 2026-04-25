@@ -16,7 +16,7 @@ export const raspyApi = createApi({
       query: (data) => ({
         method: "POST",
         body: JSON.stringify({
-          fUrl: "0026_fetch_raspy_solution",
+          fUrl: "0026_FetchRaspyAISolution",
           fMethod: "POST",
           payload: data,
         }),
@@ -28,7 +28,7 @@ export const raspyApi = createApi({
       query: (data) => ({
         method: "POST",
         body: JSON.stringify({
-          fUrl: "0027_decode_user_intent",
+          fUrl: "0027_FetchRaspyAIUserIntent",
           fMethod: "POST",
           payload: data,
         }),

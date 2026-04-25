@@ -100,7 +100,6 @@ const PdfEditor = () => {
   const [file, setFile] = useState(null);
   const [fields, setFields] = useState([]);
   const [scrollTop, setScrollTop] = useState(0);
-  // const [tokenCount, setTokenCount] = useState(0);
   const [tokenAnchor, setTokenAnchor] = useState(null);
   const [activeSigner, setActiveSigner] = useState(null);
   const [signers, setSigners] = useState(InitialSignerEnumValues);
