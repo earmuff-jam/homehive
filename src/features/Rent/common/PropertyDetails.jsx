@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import dayjs from "dayjs";
 
@@ -11,7 +11,14 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
+import CustomSnackbar from "common/CustomSnackbar";
 import RowHeader from "common/RowHeader";
+import { fetchLoggedInUser } from "common/utils";
+import { useGetNearbyAmenitiesQuery } from "features/Api/mapAmenitiesApi";
+import {
+  useFetchAdditionalAmenitiesQuery,
+  useSaveAmenitiesForPropertyMutation,
+} from "features/Api/propertiesApi";
 import PropertyMap from "features/Rent/components/PropertyMap/PropertyMap";
 
 export default function PropertyDetails({
@@ -19,10 +26,67 @@ export default function PropertyDetails({
   property,
   isPropertyLoading,
 }) {
+  const user = fetchLoggedInUser();
+  const { data = {}, isLoading: isPropertiesAmenitiesLoading } =
+    useFetchAdditionalAmenitiesQuery(property?.id, {
+      skip: !property?.id,
+    });
+
+  const [saveAmenitiesForProperty, saveAmenitiesForPropertyResult] =
+    useSaveAmenitiesForPropertyMutation();
+
+  const [showSnackbar, setShowSnackbar] = useState(false);
+
+  const hasAmenities = data?.propertyAmenities?.length > 0;
+  const isStale = data?.updatedAt
+    ? dayjs(data?.updatedAt).isBefore(dayjs().subtract(3, "months"))
+    : false;
+
+  const shouldFetch =
+    !!property?.id &&
+    !isPropertiesAmenitiesLoading &&
+    (!hasAmenities || isStale);
+
+  const {
+    data: updatedPropertyAmenities,
+    isLoading: isAdditionalAmenitiesFetchLoading,
+    isSuccess: isAdditionalAmenitiesFetchSuccess,
+  } = useGetNearbyAmenitiesQuery(
+    {
+      lat: property?.location?.lat,
+      lon: property?.location?.lon,
+      // 3 limit
+      amenityTypes: ["school", "hospital", "police"],
+    },
+    { skip: !shouldFetch },
+  );
+
+  useEffect(() => {
+    if (!isPropertiesAmenitiesLoading && isAdditionalAmenitiesFetchSuccess) {
+      // update db with amenties
+      saveAmenitiesForProperty({
+        propertyId: property?.id,
+        updatedBy: user?.uid,
+        updatedAt: dayjs().toISOString(),
+        propertyAmenities: updatedPropertyAmenities,
+      });
+    }
+  }, [isAdditionalAmenitiesFetchLoading]);
+
+  useEffect(() => {
+    if (
+      !saveAmenitiesForPropertyResult?.isLoading &&
+      saveAmenitiesForPropertyResult.isSuccess
+    ) {
+      setShowSnackbar(true);
+    }
+  }, [saveAmenitiesForPropertyResult.isLoading]);
+
   return (
     <Card sx={{ marginBottom: 3 }} data-tour={dataTour}>
       <PropertyMap
         location={property?.location}
+        amenities={data?.propertyAmenities}
         address={`${property?.address}, ${property?.city}, ${property?.state} ${property?.zipcode}`}
       />
       <CardContent data-tour="rental-5">
@@ -93,6 +157,11 @@ export default function PropertyDetails({
           </Stack>
         )}
       </CardContent>
+      <CustomSnackbar
+        showSnackbar={showSnackbar}
+        setShowSnackbar={setShowSnackbar}
+        title="Updated amenities for selected property."
+      />
     </Card>
   );
 }

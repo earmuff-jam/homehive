@@ -15,6 +15,7 @@ import { Icon, Style } from "ol/style";
 
 const ZoomLevel = {
   xs: 15,
+  sm: 12,
   md: 10,
   lg: 5,
   xl: 1,
@@ -29,10 +30,12 @@ const PropertyMap = ({
   disabled = false,
   editMode = false,
   address = "",
+  amenities = [],
 }) => {
   const mapRef = useRef();
   const theme = useTheme();
   const markerRef = useRef();
+  const amenityLayerRef = useRef();
 
   useEffect(() => {
     const initialCenter = fromLonLat([location?.lon, location?.lat]);
@@ -69,7 +72,30 @@ const PropertyMap = ({
       source: new VectorSource(),
     });
 
+    const amenityLayer = new VectorLayer({
+      source: new VectorSource(),
+      minZoom: ZoomLevel.md,
+    });
+
+    amenityLayerRef.current = amenityLayer;
+
     map.addLayer(vectorLayer);
+    map.addLayer(amenityLayer);
+    // add amenities to amenity layer
+    amenities.forEach((amenity) => {
+      addMarkers(
+        map,
+        amenityLayer, // Use amenity layer instead
+        {
+          lon: amenity?.lon,
+          lat: amenity?.lat,
+        },
+        null, // Don't track amenity markers in markerRef
+        amenity?.type,
+      );
+    });
+
+    // add property to main vector layer
     addMarkers(map, vectorLayer, location, markerRef);
 
     if (editMode) {
@@ -77,16 +103,16 @@ const PropertyMap = ({
         const clickedCoordinate = toLonLat(event.coordinate);
         const [lon, lat] = clickedCoordinate;
         updateMarker(vectorLayer, lon, lat, markerRef);
-        // If onLocationChange callback is provided, call it with new location
         if (onLocationChange) {
           onLocationChange({ lon, lat });
         }
       });
     }
+
     return () => {
       map.setTarget(null);
     };
-  }, [location, onLocationChange]);
+  }, [location, onLocationChange, amenities]);
 
   if (disabled) {
     return null;
@@ -154,7 +180,13 @@ const PropertyMap = ({
  * @param {Object} vectorLayer The OpenLayers vector layer to add markers to
  * @param {Object} location The location to add a marker for
  */
-const addMarkers = (map, vectorLayer, location, markerRef) => {
+const addMarkers = (
+  map,
+  vectorLayer,
+  location,
+  markerRef,
+  type = "location",
+) => {
   if (!location) return;
   const { lon, lat } = location;
   if (lon && lat) {
@@ -166,7 +198,7 @@ const addMarkers = (map, vectorLayer, location, markerRef) => {
 
     const markerStyle = new Style({
       image: new Icon({
-        src: "/location.svg",
+        src: type === "location" ? "/location.svg" : `/${type}.svg`,
         scale: 0.4,
         anchor: [0.5, 0.5],
         anchorXUnits: "fraction",
@@ -178,8 +210,12 @@ const addMarkers = (map, vectorLayer, location, markerRef) => {
     feature.setStyle(markerStyle);
     vectorLayer.getSource().addFeature(feature);
     map.getView().setCenter(fromLonLat([lon, lat]));
-    map.getView().setZoom(ZoomLevel.xs);
-    markerRef.current = feature; // Save the feature to the markerRef for future updates
+    map.getView().setZoom(ZoomLevel.sm);
+
+    if (type === "location") {
+      // only save the location; so the ref stays current
+      markerRef.current = feature;
+    }
   }
 };
 
