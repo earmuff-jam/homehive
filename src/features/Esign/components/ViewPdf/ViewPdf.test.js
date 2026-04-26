@@ -9,7 +9,6 @@ describe("ViewPdf Tests", () => {
       const { container } = render(
         <ViewPdf
           containerRef={React.createRef()}
-          paddingTopPx={20}
           activeSigner={null}
           setScrollTop={jest.fn()}
         />,
@@ -24,7 +23,6 @@ describe("ViewPdf Tests", () => {
       const { container } = render(
         <ViewPdf
           containerRef={React.createRef()}
-          paddingTopPx={20}
           activeSigner={null}
           setScrollTop={jest.fn()}
         />,
@@ -39,7 +37,6 @@ describe("ViewPdf Tests", () => {
       const { container } = render(
         <ViewPdf
           containerRef={React.createRef()}
-          paddingTopPx={20}
           activeSigner={null}
           setScrollTop={mockSetScrollTop}
         />,

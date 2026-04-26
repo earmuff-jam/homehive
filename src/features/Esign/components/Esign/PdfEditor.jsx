@@ -43,7 +43,6 @@ import pdfWorker from "pdfjs-dist/build/pdf.worker.min?url";
 pdfjsLib.GlobalWorkerOptions.workerSrc = pdfWorker;
 
 const SCALE = 1.5;
-const CONTAINER_PADDING_TOP = 16; // 1rem
 
 // ColorEnumValues ...
 // used to color code the follow up signers
@@ -746,57 +745,71 @@ const PdfEditor = () => {
       )}
       <ViewTokenAlert tokenCount={validTokensForETSS} />
       <ViewFormTemplates handleUpload={handleUpload} />
-      {file && (
-        <AddSigner
-          signers={signers}
-          activeSigner={activeSigner}
-          setActiveSigner={setActiveSigner}
-          activeFieldType={activeFieldType}
-          setActiveFieldType={setActiveFieldType}
-          updateSignerDetails={updateSignerDetails}
-          addFollowUpSigners={addFollowUpSigners}
-          handleRemoveSigner={handleRemoveSigner}
-        />
-      )}
-
       {file ? (
-        <Box sx={{ position: "relative" }}>
-          <ViewPdf
-            containerRef={containerRef}
-            activeSigner={activeSigner}
-            setScrollTop={setScrollTop}
-            paddingTopPx={CONTAINER_PADDING_TOP}
-          />
+        <Stack
+          direction="row"
+          spacing={1}
+          sx={{
+            alignItems: "flex-start",
+            justifyContent: "flex-start",
+          }}
+        >
+          <Box sx={{ position: "relative" }}>
+            <ViewPdf
+              containerRef={containerRef}
+              activeSigner={activeSigner}
+              setScrollTop={setScrollTop}
+            />
 
+            <Box
+              sx={{
+                position: "absolute",
+                top: 0,
+                left: 0,
+                right: 0,
+                height: "800px",
+                pointerEvents: "none",
+                overflow: "hidden",
+              }}
+            >
+              {signatureBoxes.map((box) => (
+                <SigningBox
+                  key={box.id}
+                  createdBox={box}
+                  removeBox={removeBox}
+                  scrollTop={scrollTop}
+                  pageOffsets={pageOffsets}
+                />
+              ))}
+            </Box>
+
+            {signatureBoxes.length > 0 && (
+              <ViewSigningFields
+                removeBox={removeBox}
+                signatureBoxes={signatureBoxes}
+              />
+            )}
+          </Box>
           <Box
             sx={{
-              position: "absolute",
-              top: 0,
-              left: 0,
-              right: 0,
-              height: "800px",
-              pointerEvents: "none",
-              overflow: "hidden",
+              flex: 1,
+              padding: 1,
+              top: 16,
+              alignSelf: "flex-start",
             }}
           >
-            {signatureBoxes.map((box) => (
-              <SigningBox
-                key={box.id}
-                createdBox={box}
-                removeBox={removeBox}
-                scrollTop={scrollTop}
-                pageOffsets={pageOffsets}
-              />
-            ))}
-          </Box>
-
-          {signatureBoxes.length > 0 && (
-            <ViewSigningFields
-              removeBox={removeBox}
-              signatureBoxes={signatureBoxes}
+            <AddSigner
+              signers={signers}
+              activeSigner={activeSigner}
+              setActiveSigner={setActiveSigner}
+              activeFieldType={activeFieldType}
+              setActiveFieldType={setActiveFieldType}
+              updateSignerDetails={updateSignerDetails}
+              addFollowUpSigners={addFollowUpSigners}
+              handleRemoveSigner={handleRemoveSigner}
             />
-          )}
-        </Box>
+          </Box>
+        </Stack>
       ) : (
         <EmptyComponent caption="Upload pdf file to begin." />
       )}

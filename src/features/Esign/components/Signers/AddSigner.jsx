@@ -1,17 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 
 import { useForm } from "react-hook-form";
 
-import { CancelRounded, EditRounded } from "@mui/icons-material";
+import { CancelRounded } from "@mui/icons-material";
 import {
   Box,
   Button,
   Chip,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
   Divider,
+  Paper,
   Stack,
   Tooltip,
   Typography,
@@ -36,8 +33,6 @@ const AddSigner = ({
   addFollowUpSigners,
   handleRemoveSigner,
 }) => {
-  const [edit, setEdit] = useState(null);
-
   const {
     handleSubmit,
     control,
@@ -51,7 +46,6 @@ const AddSigner = ({
   const onSubmit = (data) => {
     updateSignerDetails({ ...data, role: activeSigner?.role });
     reset(DefaultSigners);
-    setEdit(null);
   };
 
   useEffect(() => {
@@ -69,25 +63,6 @@ const AddSigner = ({
 
   return (
     <Stack spacing={1} marginBottom="1rem" data-tour="esign-4">
-      <Box sx={{ marginBottom: 1 }}>
-        <Stack direction="row" spacing={1} data-tour="esign-5">
-          <Button
-            size="small"
-            variant={activeFieldType === "signature" ? "contained" : "outlined"}
-            onClick={() => setActiveFieldType("signature")}
-          >
-            Signature
-          </Button>
-
-          <Button
-            size="small"
-            variant={activeFieldType === "date" ? "contained" : "outlined"}
-            onClick={() => setActiveFieldType("date")}
-          >
-            Date
-          </Button>
-        </Stack>
-      </Box>
       <Stack
         direction="row"
         justifyContent="space-between"
@@ -96,17 +71,7 @@ const AddSigner = ({
       >
         <Stack direction="row" flexWrap="wrap" gap={1} alignItems="center">
           <Tooltip title={`Edit name and email for ${activeSigner?.role}`}>
-            <Box data-tour="esign-7">
-              <Button
-                size="small"
-                variant="contained"
-                disabled={!activeSigner}
-                onClick={() => setEdit(activeSigner?.role)}
-                startIcon={<EditRounded fontSize="small" />}
-              >
-                Edit {activeSigner?.role}
-              </Button>
-            </Box>
+            <Box data-tour="esign-7"></Box>
           </Tooltip>
           {signers.map((signer) => (
             <Chip
@@ -154,26 +119,62 @@ const AddSigner = ({
         </Box>
       </Stack>
 
-      <Dialog
-        open={Boolean(edit)}
-        keepMounted
-        fullWidth
-        maxWidth="sm"
-        onClose={() => setEdit(null)}
-        aria-describedby="update-signer-data-dialog-box"
-      >
-        <DialogTitle>
+      <Typography variant="caption" color="text.secondary">
+        <Box data-tour="esign-7">
+          {activeSigner ? (
+            <>
+              <Box paddingY={1}>
+                Placing {activeFieldType} for&nbsp;
+                <strong style={{ color: activeSigner.color }}>
+                  {activeSigner.role}
+                </strong>
+                &nbsp; — click and drag on the PDF below to place their&nbsp;
+                {activeFieldType}&nbsp;box. Select a different name above to
+                switch.
+              </Box>
+              <Box sx={{ marginBottom: 1 }}>
+                <Stack direction="row" spacing={1} data-tour="esign-5">
+                  <Button
+                    size="small"
+                    variant={
+                      activeFieldType === "signature" ? "contained" : "outlined"
+                    }
+                    onClick={() => setActiveFieldType("signature")}
+                  >
+                    Signature
+                  </Button>
+
+                  <Button
+                    size="small"
+                    variant={
+                      activeFieldType === "date" ? "contained" : "outlined"
+                    }
+                    onClick={() => setActiveFieldType("date")}
+                  >
+                    Date
+                  </Button>
+                </Stack>
+              </Box>
+            </>
+          ) : (
+            <>
+              Select a signer above, then click and drag on the PDF to place
+              their&nbsp;
+              {activeFieldType}&nbsp;box.
+            </>
+          )}
+        </Box>
+      </Typography>
+      <Divider />
+      {activeSigner && (
+        <Paper sx={{ padding: 2 }}>
           <RowHeader
             title={`Edit ${activeSigner?.role?.toLowerCase()} details`}
             caption={`Edit ${activeSigner?.role?.toLowerCase()} details for E-sign`}
             sxProps={{ textAlign: "left" }}
           />
-        </DialogTitle>
-        <DialogContent>
           <EditSigners control={control} errors={errors} />
-        </DialogContent>
-        <DialogActions>
-          <Box alignSelf="flex-end">
+          <Stack alignItems="flex-end" marginTop={1}>
             <Button
               variant="outlined"
               size="small"
@@ -182,29 +183,9 @@ const AddSigner = ({
             >
               Submit
             </Button>
-          </Box>
-        </DialogActions>
-      </Dialog>
-
-      <Typography variant="caption" color="text.secondary">
-        {activeSigner ? (
-          <>
-            Placing {activeFieldType} for&nbsp;
-            <strong style={{ color: activeSigner.color }}>
-              {activeSigner.role}
-            </strong>
-            &nbsp; — click and drag on the PDF below to place their&nbsp;
-            {activeFieldType}&nbsp;box. Select a different name above to switch.
-          </>
-        ) : (
-          <>
-            Select a signer above, then click and drag on the PDF to place
-            their&nbsp;
-            {activeFieldType}&nbsp;box.
-          </>
-        )}
-      </Typography>
-      <Divider />
+          </Stack>
+        </Paper>
+      )}
     </Stack>
   );
 };
