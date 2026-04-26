@@ -27,8 +27,13 @@ export const AddTenantNotificationEnumValue = "Notice of Addition";
 export const RemoveTenantNotificationEnumValue = "Notice of Removal";
 export const AddRentPaymentNotificationEnumValue = "Notice of Rent Payment";
 
+// EmailNotificationDisclaimer ...
 export const EmailNotificationDisclaimer =
   "You are being notified either since you are the property owner, tenant or anyone tasked with such responsibility.";
+
+// NoActionToPerformEnumValue ...
+const NoActionToPerformEnumValue =
+  "<b>There is no action for you to take at this time. If this seems unfamiliar or suspicious please reach out to your administrator.</b>";
 
 // MovementSpeedEnumValues ...
 // defines the movement speed estimates for various modes of transportation in km/hr
@@ -38,8 +43,14 @@ const MovementSpeedEnumValues = {
   cityDriving: 40, // different from highway driving
 };
 
-const noActionToPerformStr =
-  "<b>There is no action for you to take at this time. If this seems unfamiliar or suspicious please reach out to your administrator.</b>";
+// updateTooltipTitle ...
+// defines a function that updates tooltip title
+export const updateTooltipTitle = (values = []) => {
+  if (values.length > 0) {
+    return `Missing fields - ${values.join(", ")}`;
+  }
+  return `No missing fields in html body`;
+};
 
 // stripHTMLForEmailMessages ...
 // defines a fuction that returns email messages that are stripped from its html contents
@@ -144,7 +155,7 @@ Hello there,
   This notification is to alert you that you have been added to the property listed as ${propertyName}.
 
   ${EmailNotificationDisclaimer}
-  ${noActionToPerformStr}
+  ${NoActionToPerformEnumValue}
 
 With Regards,
 Earmuffjam LLC
@@ -155,7 +166,7 @@ Hello there,
   This notification is to alert you that you have been removed from the role of tenant from the property listed as ${propertyName}. 
 
   ${EmailNotificationDisclaimer}
-  ${noActionToPerformStr}
+  ${NoActionToPerformEnumValue}
 
 With Regards,
 Earmuffjam LLC
@@ -166,7 +177,7 @@ Hello there,
   This notification is to alert you that rental payment has been made manually for the property listed as ${propertyName}.
 
   ${EmailNotificationDisclaimer}
-  ${noActionToPerformStr}
+  ${NoActionToPerformEnumValue}
 
 With Regards,
 Earmuffjam LLC
@@ -178,7 +189,7 @@ Hello there,
   This notification is to alert you that changes have been made to an assigned property listed as ${propertyName}. 
 
   ${EmailNotificationDisclaimer}
-  ${noActionToPerformStr}
+  ${NoActionToPerformEnumValue}
 
 With Regards,
 Earmuffjam LLC
