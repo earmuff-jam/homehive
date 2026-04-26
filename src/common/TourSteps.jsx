@@ -295,7 +295,7 @@ const EsignHelpSteps = [
   },
   {
     element:
-      "Once a document is uploaded into the screen, you will be provided with options to add upto four signers along with a creator. Each signer MUST have their own email address and full name which is configured by the 'Edit' button next to the 'Creator' field.",
+      "Once a document is uploaded into the screen, you will be provided with options to add upto four signers along with a creator. Each signer MUST have their own email address and full name which can be edited or updated. For the purposes of this demonstration, please select creator to proceed. Press the next arrow when done.",
   },
   {
     element:
@@ -303,11 +303,7 @@ const EsignHelpSteps = [
   },
   {
     element:
-      "Toggle between creator and signers to create signature boxes or date signed boxes respectively. The system allows color codes to help you differentiate between various signers for ease of use.",
-  },
-  {
-    element:
-      "Edit details for each signer. Add a valid email address and valid names, to ensure document security and transparency.",
+      "Add / Remove / Toggle between creator and signers to create signature boxes or date signed boxes respectively. The system allows color codes to help you differentiate between various signers for ease of use.",
   },
   {
     element:

@@ -13,7 +13,7 @@ const VisuallyHiddenInput = styled("input")({
   whiteSpace: "nowrap",
 });
 
-export default function UploadEsignDocument({ handleUpload }) {
+export default function UploadEsignDocument({ handleUpload, isDisabled }) {
   return (
     <Box data-tour="esign-2">
       <Button
@@ -21,6 +21,7 @@ export default function UploadEsignDocument({ handleUpload }) {
         component="label"
         variant="outlined"
         size="small"
+        disabled={isDisabled}
       >
         Upload files
         <VisuallyHiddenInput type="file" onChange={handleUpload} />

@@ -13,7 +13,6 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
-import RowHeader from "common/RowHeader";
 import EditSigners from "features/Esign/components/Signers/EditSigners";
 
 // DefaultSigners ...
@@ -26,7 +25,7 @@ const DefaultSigners = {
 const AddSigner = ({
   signers = [],
   activeSigner,
-  setActiveSigner,
+  handleSelectSigner,
   activeFieldType,
   setActiveFieldType,
   updateSignerDetails,
@@ -70,16 +69,17 @@ const AddSigner = ({
         data-tour="esign-6"
       >
         <Stack direction="row" flexWrap="wrap" gap={1} alignItems="center">
-          <Tooltip title={`Edit name and email for ${activeSigner?.role}`}>
-            <Box data-tour="esign-7"></Box>
-          </Tooltip>
           {signers.map((signer) => (
             <Chip
               key={signer.id}
               size="small"
               label={signer.role}
-              onClick={() => setActiveSigner(signer)}
-              onDelete={() => handleRemoveSigner(signer.id)}
+              onClick={() => handleSelectSigner(signer)}
+              onDelete={
+                signer.id !== "creator"
+                  ? () => handleRemoveSigner(signer.id)
+                  : null
+              }
               deleteIcon={<CancelRounded fontSize="small" />}
               sx={{
                 fontWeight: 600,
@@ -97,41 +97,38 @@ const AddSigner = ({
             />
           ))}
         </Stack>
-        <Box>
-          <Tooltip
-            title={
-              signers?.length >= 5
-                ? "Only four subsequent signer are allowed"
-                : "Add a new signer as a tenant to sign the document"
-            }
-          >
-            <Box>
-              <Button
-                size="small"
-                variant="outlined"
-                onClick={addFollowUpSigners}
-                disabled={signers?.length >= 5}
-              >
-                Add new signer
-              </Button>
-            </Box>
-          </Tooltip>
-        </Box>
+        <Tooltip
+          title={
+            signers?.length >= 5
+              ? "Only four subsequent signer are allowed"
+              : "Add a new signer as a tenant to sign the document"
+          }
+        >
+          <Box paddingLeft="1rem">
+            <Button
+              size="small"
+              variant="outlined"
+              onClick={addFollowUpSigners}
+              disabled={signers?.length >= 5}
+            >
+              Add new signer
+            </Button>
+          </Box>
+        </Tooltip>
       </Stack>
 
       <Typography variant="caption" color="text.secondary">
-        <Box data-tour="esign-7">
+        <Box>
           {activeSigner ? (
             <>
-              <Box paddingY={1}>
-                Placing {activeFieldType} for&nbsp;
-                <strong style={{ color: activeSigner.color }}>
-                  {activeSigner.role}
-                </strong>
-                &nbsp; — click and drag on the PDF below to place their&nbsp;
-                {activeFieldType}&nbsp;box. Select a different name above to
-                switch.
-              </Box>
+              <Typography
+                variant="subtitle2"
+                fontWeight="bold"
+                paddingY={1}
+                gutterBottom
+              >
+                Select a different name above to switch or add new signer
+              </Typography>
               <Box sx={{ marginBottom: 1 }}>
                 <Stack direction="row" spacing={1} data-tour="esign-5">
                   <Button
@@ -154,25 +151,32 @@ const AddSigner = ({
                     Date
                   </Button>
                 </Stack>
+                <Box paddingY={1}>
+                  Placing {activeFieldType} for&nbsp;
+                  <strong style={{ color: activeSigner.color }}>
+                    {activeSigner.role}
+                  </strong>
+                  &nbsp; — click and drag on the PDF below to place their&nbsp;
+                  {activeFieldType}&nbsp;box. Select a different name above to
+                  switch.
+                </Box>
+                <Divider />
               </Box>
             </>
           ) : (
-            <>
+            <Typography variant="subtitle2" fontWeight="bold">
               Select a signer above, then click and drag on the PDF to place
               their&nbsp;
               {activeFieldType}&nbsp;box.
-            </>
+            </Typography>
           )}
         </Box>
       </Typography>
-      <Divider />
       {activeSigner && (
         <Paper sx={{ padding: 2 }}>
-          <RowHeader
-            title={`Edit ${activeSigner?.role?.toLowerCase()} details`}
-            caption={`Edit ${activeSigner?.role?.toLowerCase()} details for E-sign`}
-            sxProps={{ textAlign: "left" }}
-          />
+          <Typography variant="h5" fontWeight="bold">
+            {`Edit ${activeSigner?.role}`}
+          </Typography>
           <EditSigners control={control} errors={errors} />
           <Stack alignItems="flex-end" marginTop={1}>
             <Button
