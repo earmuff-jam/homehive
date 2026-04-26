@@ -19,20 +19,16 @@ import ConfirmationBox, {
   DefaultConfirmationBoxProps,
 } from "common/ConfirmationBox";
 import CustomSnackbar from "common/CustomSnackbar";
-import EmptyComponent from "common/EmptyComponent";
 import RowHeader from "common/RowHeader";
 import { fetchLoggedInUser } from "common/utils";
 import { useGetEtssTokensByEmailIdQuery } from "features/Api/etssTokenApi";
 import { useSendPreparedDocumentMutation } from "features/Api/externalIntegrationMultipart";
 import UploadEsignDocument from "features/Esign/components/Esign/UploadEsignDocument";
+import ViewFile from "features/Esign/components/Esign/ViewFile";
 import ViewTokenAlert from "features/Esign/components/Esign/ViewTokenAlert";
 import ViewFormTemplates from "features/Esign/components/FormTemplates/ViewFormTemplates";
-import AddSigner from "features/Esign/components/Signers/AddSigner";
 import ViewSigners from "features/Esign/components/Signers/ViewSigners";
 import ViewTokenMenu from "features/Esign/components/TokenMenu/ViewTokenMenu";
-import SigningBox from "features/Esign/components/ViewPdf/SigningBox";
-import ViewPdf from "features/Esign/components/ViewPdf/ViewPdf";
-import ViewSigningFields from "features/Esign/components/ViewPdf/ViewSigningFields";
 import withDisclaimer from "features/Esign/withDisclaimer";
 import { produce } from "immer";
 import { PDFDocument } from "pdf-lib";
@@ -43,7 +39,6 @@ import pdfWorker from "pdfjs-dist/build/pdf.worker.min?url";
 pdfjsLib.GlobalWorkerOptions.workerSrc = pdfWorker;
 
 const SCALE = 1.5;
-const CONTAINER_PADDING_TOP = 16; // 1rem
 
 // ColorEnumValues ...
 // used to color code the follow up signers
@@ -112,7 +107,7 @@ const PdfEditor = () => {
   );
 
   const isTokenAnchorOpen = Boolean(tokenAnchor);
-  const medFormFactor = useMediaQuery(theme.breakpoints.down("md"));
+  const ltMediumFormFactor = useMediaQuery(theme.breakpoints.down("md"));
 
   const handleCloseTokenAnchorMenu = () => setTokenAnchor(null);
   const handleClickTokenAnchorMenu = (event) => {
@@ -343,6 +338,21 @@ const PdfEditor = () => {
       setSignatureBoxes((prev) => prev.filter((b) => b.signerId !== signerId));
       if (activeSigner?.id === signerId) setActiveSigner(null);
     }
+  };
+
+  // handleSelectSigner ...
+  // defines a function that allows creators to select same active
+  // signer to turn off signing feature. Select the current active signer
+  // to get out of signing mode.
+  const handleSelectSigner = (signer) => {
+    if (activeSigner) {
+      const activeSignerId = activeSigner?.id;
+      if (signer?.id === activeSignerId) {
+        setActiveSigner(null);
+        return;
+      }
+    }
+    setActiveSigner(signer);
   };
 
   // removeBox ...
@@ -679,7 +689,11 @@ const PdfEditor = () => {
         <RowHeader
           title="Create E-signature"
           caption="Create or revise documents for Esign"
-          sxProps={{ textAlign: "left" }}
+          sxProps={{
+            textAlign: "left",
+            fontWeight: "bold",
+            color: "text.secondary",
+          }}
         />
         <Stack>
           <Tooltip
@@ -721,8 +735,11 @@ const PdfEditor = () => {
             handleClose={handleCloseTokenAnchorMenu}
           />
           <Stack direction="row" spacing={1}>
-            <UploadEsignDocument handleUpload={handleUpload} />
-            <Box data-tour="esign-8">
+            <UploadEsignDocument
+              handleUpload={handleUpload}
+              isDisabled={ltMediumFormFactor}
+            />
+            <Box data-tour="esign-7">
               <Button
                 size="small"
                 variant="contained"
@@ -735,70 +752,34 @@ const PdfEditor = () => {
           </Stack>
         </Stack>
       </Stack>
-      {medFormFactor && (
+      <ViewTokenAlert tokenCount={validTokensForETSS} />
+      {!ltMediumFormFactor && <ViewFormTemplates handleUpload={handleUpload} />}
+      {ltMediumFormFactor ? (
         <Alert severity="error">
-          <Typography variant="caption">
-            Electronic Signatures are best created on a larger screen. Tokens
-            are non-refundable and errors cannot be undone due to document
-            security.
+          <Typography variant="subtitle2">
+            Due to the nature of document security, electronic signatures are
+            prohibited from being created in smaller screen sizes. Please use
+            laptop or a tablet to proceed.
           </Typography>
         </Alert>
-      )}
-      <ViewTokenAlert tokenCount={validTokensForETSS} />
-      <ViewFormTemplates handleUpload={handleUpload} />
-      {file && (
-        <AddSigner
+      ) : (
+        <ViewFile
+          file={file}
+          containerRef={containerRef}
           signers={signers}
           activeSigner={activeSigner}
-          setActiveSigner={setActiveSigner}
+          handleSelectSigner={handleSelectSigner}
+          updateSignerDetails={updateSignerDetails}
+          setScrollTop={setScrollTop}
+          signatureBoxes={signatureBoxes}
+          removeBox={removeBox}
+          scrollTop={scrollTop}
+          pageOffsets={pageOffsets}
           activeFieldType={activeFieldType}
           setActiveFieldType={setActiveFieldType}
-          updateSignerDetails={updateSignerDetails}
           addFollowUpSigners={addFollowUpSigners}
           handleRemoveSigner={handleRemoveSigner}
         />
-      )}
-
-      {file ? (
-        <Box sx={{ position: "relative" }}>
-          <ViewPdf
-            containerRef={containerRef}
-            activeSigner={activeSigner}
-            setScrollTop={setScrollTop}
-            paddingTopPx={CONTAINER_PADDING_TOP}
-          />
-
-          <Box
-            sx={{
-              position: "absolute",
-              top: 0,
-              left: 0,
-              right: 0,
-              height: "800px",
-              pointerEvents: "none",
-              overflow: "hidden",
-            }}
-          >
-            {signatureBoxes.map((box) => (
-              <SigningBox
-                key={box.id}
-                createdBox={box}
-                removeBox={removeBox}
-                scrollTop={scrollTop}
-                pageOffsets={pageOffsets}
-              />
-            ))}
-          </Box>
-
-          {signatureBoxes.length > 0 && (
-            <ViewSigningFields
-              removeBox={removeBox}
-              signatureBoxes={signatureBoxes}
-            />
-          )}
-        </Box>
-      ) : (
-        <EmptyComponent caption="Upload pdf file to begin." />
       )}
 
       <ConfirmationBox

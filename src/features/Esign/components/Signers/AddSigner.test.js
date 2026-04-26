@@ -17,7 +17,7 @@ describe("AddSigner Tests", () => {
   const defaultProps = {
     signers,
     activeSigner: signers[0],
-    setActiveSigner: mockSetActiveSigner,
+    handleSelectSigner: mockSetActiveSigner,
     updateSignerDetails: mockUpdateSignerDetails,
     addFollowUpSigners: mockAddSigner,
     handleRemoveSigner: mockRemoveSigner,
@@ -47,7 +47,7 @@ describe("AddSigner Tests", () => {
   it("calls addFollowUpSigners when button clicked", () => {
     render(<AddSigner {...defaultProps} />);
 
-    fireEvent.click(screen.getByText(/add new signer/i));
+    fireEvent.click(screen.getByRole("button", { name: /Add new signer/i }));
 
     expect(mockAddSigner).toHaveBeenCalled();
   });
