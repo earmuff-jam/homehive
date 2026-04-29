@@ -9,6 +9,7 @@ import dayjs from "dayjs";
 import { Stack } from "@mui/material";
 import CustomSnackbar from "common/CustomSnackbar";
 import RowHeader from "common/RowHeader";
+import { ViewInvoiceRouteUri } from "common/utils";
 import {
   useGetReceiverInfoQuery,
   useUpsertReceiverInfoMutation,
@@ -59,7 +60,7 @@ export default function RecieverInfo() {
   });
 
   const submit = (formData) => {
-    formData["updatedOn"] = dayjs();
+    formData["updatedOn"] = dayjs().toISOString();
     upsertRecieverInfo(formData);
   };
 
@@ -106,7 +107,7 @@ export default function RecieverInfo() {
         setShowSnackbar={setShowSnackbar}
         title="Changes saved."
         caption="View Invoice"
-        onClick={() => navigate("/view")}
+        onClick={() => navigate(ViewInvoiceRouteUri)}
       />
     </Stack>
   );

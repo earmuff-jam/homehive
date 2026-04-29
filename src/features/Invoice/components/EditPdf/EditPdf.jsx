@@ -31,6 +31,7 @@ import ConfirmationBox, {
 } from "common/ConfirmationBox";
 import CustomSnackbar from "common/CustomSnackbar";
 import TextFieldWithLabel from "common/TextFieldWithLabel";
+import { ViewInvoiceRouteUri } from "common/utils";
 import {
   useGetPdfDetailsQuery,
   useUpsertPdfDetailsMutation,
@@ -277,6 +278,9 @@ export default function EditPdf({
                         "Start date for the selected bill",
                       size: "small",
                       sx: { flexGrow: 1 },
+                      inputProps: {
+                        "data-testid": "start-date-input",
+                      },
                     },
                   }}
                 />
@@ -304,6 +308,9 @@ export default function EditPdf({
                         "Due date for the selected bill",
                       size: "small",
                       sx: { flexGrow: 1 },
+                      inputProps: {
+                        "data-testid": "end-date-input",
+                      },
                     },
                   }}
                 />
@@ -436,7 +443,7 @@ export default function EditPdf({
         setShowSnackbar={setShowSnackbar}
         title="Changes saved."
         caption="View draft invoice."
-        onClick={() => navigate("/invoice/view")}
+        onClick={() => navigate(ViewInvoiceRouteUri)}
       />
     </Container>
   );

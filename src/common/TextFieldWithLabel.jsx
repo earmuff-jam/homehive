@@ -54,6 +54,13 @@ const TextFieldWithLabel = React.forwardRef(
           onBlur={onBlur}
           inputRef={ref}
           {...inputProps}
+          slotProps={{
+            htmlInput: {
+              // accesibility support
+              "aria-label": label,
+            },
+            ...inputProps,
+          }}
         />
       </Stack>
     );

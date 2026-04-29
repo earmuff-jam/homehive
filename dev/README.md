@@ -180,3 +180,16 @@ git push origin v1.3.0-rc2
 ```
 
 9. The pipeline should be built and everything should be good to go.
+
+### Playwright Tests
+
+Playwright tests are written with end to end coverage. Mainly, the goals are to test user workflow - considering the fact that we have couple of 
+role based behaviors in place.
+
+### Setting up Playwright tests
+
+1. Playwright installation version 3.22.5
+2. Run application on correct env. `npm run dev` for dev mode.
+3. Run playwright locally with - `npx playwright test`.
+4. Run playwirght on debug mode with - `npx playwright test --headed` to debug visually
+5. Run playwright on debug mode with - `npx playwright test --ui` to debug and run tests via the ui menu.

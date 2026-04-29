@@ -14,4 +14,8 @@ export default {
   testEnvironmentOptions: {
     timezone: "UTC",
   },
+  testPathIgnorePatterns: [
+    "/node_modules/",
+    "/tests/", // Add this - ignores the tests folder
+  ],
 };

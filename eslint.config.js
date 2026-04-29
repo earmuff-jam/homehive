@@ -8,6 +8,7 @@ export default [
   {
     ignores: [
       "vite.config.js",
+      "playwright.config.js",
       "**/dist/**",
       "**/dev/**",
       "**/dev-dist/**",
@@ -17,6 +18,8 @@ export default [
       "**/*.test.js",
       "**/*.setup.js",
       "**/coverage/**",
+      "**/test-results/**",
+      "**/playwright-report/**",
     ],
   },
   {
