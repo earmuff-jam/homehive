@@ -14,7 +14,7 @@ export default function TabPanel({ selected, options, updateSelected }) {
             variant={selected === key ? "contained" : "outlined"}
             color={selected === key ? "primary" : "secondary"}
             startIcon={!lteMedFormFactor ? template?.icon : null}
-            onClick={() => updateSelected(key)}
+            onClick={() => updateSelected(template.id)}
           >
             {!lteMedFormFactor ? (
               <span

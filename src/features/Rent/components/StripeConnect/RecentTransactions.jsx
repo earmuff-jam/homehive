@@ -56,11 +56,12 @@ export default function RecentTransactions({ transactions = [], loading }) {
       {
         accessorFn: (row) => {
           const typeOfPayment = row.payment_method?.type;
+          const formattedPayment = typeOfPayment.replaceAll("_", " ");
 
           if (!typeOfPayment) return "-";
           return (
             <Typography variant="caption" textTransform="capitalize">
-              {`${typeOfPayment || "Unknown"}`}
+              {`${formattedPayment || "Unknown"}`}
             </Typography>
           );
         },
@@ -105,7 +106,7 @@ export default function RecentTransactions({ transactions = [], loading }) {
     },
     initialState: {
       density: "compact",
-      sorting: [{ id: "updatedOn", desc: true }],
+      sorting: [{ id: "created", desc: true }],
     },
     renderEmptyRowsFallback: () => (
       <EmptyComponent caption="Create templates to begin." />

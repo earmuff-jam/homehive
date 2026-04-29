@@ -2,14 +2,17 @@ import React, { useEffect } from "react";
 
 import { useForm } from "react-hook-form";
 
-import { Stack, Tooltip } from "@mui/material";
+import { Box, Stack } from "@mui/material";
 import AButton from "common/AButton";
 import TextFieldWithLabel from "common/TextFieldWithLabel";
+import TemplateHtmlEditor from "features/Rent/components/Templates/TemplateHtmlEditor";
 
-export default function TemplateForm({ template, handleSave }) {
+const EditTemplate = ({ template, handleSave }) => {
   const {
     register,
     handleSubmit,
+    watch,
+    setValue,
     formState: { errors, isValid },
     reset,
   } = useForm({ mode: "onChange" });
@@ -23,8 +26,8 @@ export default function TemplateForm({ template, handleSave }) {
   }, [template]);
 
   return (
-    <form>
-      <Stack spacing={2}>
+    <Stack spacing={2} sx={{ flex: 3 }}>
+      <form>
         <TextFieldWithLabel
           label="Subject *"
           id="subject"
@@ -37,7 +40,6 @@ export default function TemplateForm({ template, handleSave }) {
             }),
           }}
         />
-
         <TextFieldWithLabel
           label="Message Body *"
           id="body"
@@ -51,35 +53,24 @@ export default function TemplateForm({ template, handleSave }) {
             }),
           }}
         />
-
-        <Tooltip title="Customize this template with text of your choice. You can even directly use html markup in the above template. Use the variables listed on the side to bring your templates to life.">
-          <span>
-            <TextFieldWithLabel
-              label="Message HTML *"
-              id="html"
-              fullWidth
-              multiline
-              maxRows={15}
-              size="small"
-              placeholder="The message to submit in HTML format"
-              errorMsg={errors.html?.message}
-              inputProps={{
-                ...register("html", {
-                  required: "Message HTML is required",
-                }),
-              }}
-            />
-          </span>
-        </Tooltip>
-        <AButton
-          type="submit"
-          label="Save"
-          variant="outlined"
-          size="small"
-          disabled={!isValid}
-          onClick={handleSubmit(handleSave)}
+        <TemplateHtmlEditor
+          label="Message HTML *"
+          content={watch("html")}
+          onChange={(html) => setValue("html", html, { shouldValidate: true })}
         />
-      </Stack>
-    </form>
+        <Box alignSelf="flex-end" marginTop={1}>
+          <AButton
+            type="submit"
+            label="Save"
+            variant="outlined"
+            size="small"
+            disabled={!isValid}
+            onClick={handleSubmit(handleSave)}
+          />
+        </Box>
+      </form>
+    </Stack>
   );
-}
+};
+
+export default EditTemplate;

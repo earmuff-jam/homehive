@@ -77,6 +77,7 @@ export const handleQuickConnectAction = (
         templateVariables,
         user?.email,
       );
+
       formatEmail(
         {
           to: primaryTenant.email,
