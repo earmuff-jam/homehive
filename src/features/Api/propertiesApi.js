@@ -14,8 +14,57 @@ import { authenticatorFirestore as db } from "src/config";
 export const propertiesApi = createApi({
   reducerPath: "propertiesApi",
   baseQuery: fakeBaseQuery(),
-  tagTypes: ["properties"],
+  tagTypes: ["properties", "property-amenities"],
   endpoints: (builder) => ({
+    // fetchAdditionalAmenities
+    // defines a function that retrieves additional amenities for property id
+    fetchAdditionalAmenities: builder.query({
+      async queryFn(propertyId) {
+        try {
+          const q = query(
+            collection(db, "propertyAmenities"),
+            where("propertyId", "==", propertyId),
+          );
+          const querySnapshot = await getDocs(q);
+
+          let propertyAmenities = null;
+          querySnapshot.forEach((doc) => {
+            propertyAmenities = { id: doc.id, ...doc.data() };
+          });
+
+          return { data: propertyAmenities };
+        } catch (error) {
+          return {
+            error: {
+              message: error.message,
+              code: error.code,
+            },
+          };
+        }
+      },
+      providesTags: ["property-amenities"],
+    }),
+    // saveAmenitiesForProperty ...
+    // defines a function that saves the property amenities for a selected property id
+    saveAmenitiesForProperty: builder.mutation({
+      async queryFn(data) {
+        try {
+          const propertyIdRef = doc(db, "propertyAmenities", data.propertyId);
+          await setDoc(propertyIdRef, data, { merge: true });
+          return { data: data };
+        } catch (error) {
+          return {
+            error: {
+              message: error.message,
+              code: error.code,
+            },
+          };
+        }
+      },
+      invalidatesTags: ["property-amenities"],
+    }),
+    // getPropertiesByPropertyId ...
+    // defines a function that retrieves properties by id
     getPropertiesByPropertyId: builder.query({
       async queryFn(propertyId) {
         try {
@@ -160,6 +209,8 @@ export const propertiesApi = createApi({
 });
 
 export const {
+  useFetchAdditionalAmenitiesQuery,
+  useSaveAmenitiesForPropertyMutation,
   useGetPropertiesByPropertyIdQuery,
   useGetPropertiesByUserIdQuery,
   useCreatePropertyMutation,

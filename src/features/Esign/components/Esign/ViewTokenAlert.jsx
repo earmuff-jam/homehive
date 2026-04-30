@@ -11,13 +11,13 @@ export const NO_TOKEN_TEXT =
 const ViewTokenAlert = ({ tokenCount = 0 }) => {
   if (tokenCount === 0) {
     return (
-      <Alert severity="warning" sx={{ mb: 3 }}>
+      <Alert severity="warning" sx={{ marginY: 1 }}>
         {NO_TOKEN_TEXT}
       </Alert>
     );
   } else if (tokenCount <= 2) {
     return (
-      <Alert severity="warning" sx={{ mb: 3 }}>
+      <Alert severity="warning" sx={{ marginY: 1 }}>
         {LOW_TOKEN_TEXT}
       </Alert>
     );

@@ -25,7 +25,7 @@ export const externalIntegrationsApi = createApi({
       query: ({ to, subject, text, html, ccEmailIds, bccEmailIds }) => ({
         method: "POST",
         body: JSON.stringify({
-          fUrl: "0001_send_email_fn",
+          fUrl: "0001_SendCustomEmail",
           fMethod: "POST",
           payload: { to, subject, text, html, ccEmailIds, bccEmailIds },
         }),
@@ -38,7 +38,7 @@ export const externalIntegrationsApi = createApi({
       query: () => ({
         method: "POST",
         body: JSON.stringify({
-          fUrl: "0013_fetch_esign_status",
+          fUrl: "0013_FetchEsignStatus",
           fMethod: "POST",
         }),
       }),
@@ -50,7 +50,7 @@ export const externalIntegrationsApi = createApi({
       query: (userId) => ({
         method: "POST",
         body: JSON.stringify({
-          fUrl: "0015_fetch_esign_templates",
+          fUrl: "0015_FetchEsignTemplates",
           fMethod: "POST",
           payload: userId,
         }),
@@ -63,7 +63,7 @@ export const externalIntegrationsApi = createApi({
       query: (data) => ({
         method: "POST",
         body: JSON.stringify({
-          fUrl: "0016_create_esign_template",
+          fUrl: "0016_CreateEsignTemplate",
           fMethod: "POST",
           payload: data,
         }),
@@ -76,7 +76,7 @@ export const externalIntegrationsApi = createApi({
       query: (data) => ({
         method: "POST",
         body: JSON.stringify({
-          fUrl: "0017_remove_esign_template",
+          fUrl: "0017_RemoveEsignTemplate",
           fMethod: "POST",
           payload: data,
         }),
@@ -89,7 +89,7 @@ export const externalIntegrationsApi = createApi({
       query: (data) => ({
         method: "POST",
         body: JSON.stringify({
-          fUrl: "0018_template_to_esign_document",
+          fUrl: "0018_ConvertTemplateToEsign",
           fMethod: "POST",
           payload: data,
         }),
@@ -101,7 +101,7 @@ export const externalIntegrationsApi = createApi({
       query: (accountId) => ({
         method: "POST",
         body: JSON.stringify({
-          fUrl: "0004_fetch_stripe_account_status",
+          fUrl: "0004_FetchStripeAccountStatus",
           fMethod: "POST",
           payload: { accountId },
         }),
@@ -114,7 +114,7 @@ export const externalIntegrationsApi = createApi({
       query: (email) => ({
         method: "POST",
         body: JSON.stringify({
-          fUrl: "0002_create_stripe_account",
+          fUrl: "0002_CreateStripeAccount",
           fMethod: "POST",
           payload: email,
         }),
@@ -127,7 +127,7 @@ export const externalIntegrationsApi = createApi({
       query: (data) => ({
         method: "POST",
         body: JSON.stringify({
-          fUrl: "0003_link_stripe_account",
+          fUrl: "0003_LinkStripeAccount",
           fMethod: "POST",
           payload: data,
         }),
@@ -140,7 +140,7 @@ export const externalIntegrationsApi = createApi({
       query: (accountId) => ({
         method: "POST",
         body: JSON.stringify({
-          fUrl: "0005_fetch_stripe_bank_login_link",
+          fUrl: "0005_FetchStripeBankLoginLink",
           fMethod: "POST",
           payload: { accountId },
         }),
@@ -150,12 +150,12 @@ export const externalIntegrationsApi = createApi({
     // getRecentTransactions ...
     // defines a query that retrieves recent transactions made under stripe
     getRecentTransactions: builder.query({
-      query: (connectedAccountId) => ({
+      query: ({ userId, stripeAccountId }) => ({
         method: "POST",
         body: JSON.stringify({
-          fUrl: "0006_fetch_stripe_recent_transactions",
+          fUrl: "0006_FetchRecentStripeTransactions",
           fMethod: "POST",
-          payload: { connectedAccountId },
+          payload: { userId, stripeAccountId },
         }),
       }),
       providesTags: [TagTypes.RecentStripeTransactions],
@@ -166,7 +166,7 @@ export const externalIntegrationsApi = createApi({
       query: (data) => ({
         method: "POST",
         body: JSON.stringify({
-          fUrl: "0021_create_stripe_customer_link",
+          fUrl: "0021_CreateStripeCustomerLink",
           fMethod: "POST",
           payload: data,
         }),
@@ -178,7 +178,7 @@ export const externalIntegrationsApi = createApi({
       query: () => ({
         method: "POST",
         body: JSON.stringify({
-          fUrl: "0022_retrieve_subscriptions_options",
+          fUrl: "0022_RetrieveSubscriptionOptions",
           fMethod: "POST",
         }),
       }),
@@ -190,7 +190,7 @@ export const externalIntegrationsApi = createApi({
       query: (data) => ({
         method: "POST",
         body: JSON.stringify({
-          fUrl: "0025_create_stripe_subs_manage_link",
+          fUrl: "0025_ManageStripeSubscriptionLink",
           fMethod: "POST",
           payload: data,
         }),

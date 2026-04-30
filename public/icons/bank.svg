@@ -1,0 +1,22 @@
+<svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+
+  <!-- Marker -->
+  <circle cx="24" cy="24" r="18" fill="#5F6368"/>
+
+  <!-- Building -->
+  <rect x="16" y="16" width="16" height="20" rx="2" fill="white"/>
+
+  <!-- Windows -->
+  <rect x="19" y="19" width="3" height="3" fill="#5F6368"/>
+  <rect x="26" y="19" width="3" height="3" fill="#5F6368"/>
+
+  <rect x="19" y="24" width="3" height="3" fill="#5F6368"/>
+  <rect x="26" y="24" width="3" height="3" fill="#5F6368"/>
+
+  <rect x="19" y="29" width="3" height="3" fill="#5F6368"/>
+  <rect x="26" y="29" width="3" height="3" fill="#5F6368"/>
+
+  <!-- Door -->
+  <rect x="22" y="30" width="4" height="6" fill="#5F6368"/>
+
+</svg>

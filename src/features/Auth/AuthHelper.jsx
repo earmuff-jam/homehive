@@ -42,7 +42,7 @@ export const setupStripe = async (email) => {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        fUrl: "0020_setup_stripe_for_customer",
+        fUrl: "0002_CreateStripeAccount",
         fMethod: "POST",
         payload: { email },
       }),

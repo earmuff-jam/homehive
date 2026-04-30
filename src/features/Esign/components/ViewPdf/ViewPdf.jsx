@@ -2,21 +2,16 @@ import React from "react";
 
 import { Stack } from "@mui/material";
 
-const ViewPdf = ({
-  containerRef,
-  paddingTopPx,
-  activeSigner,
-  setScrollTop,
-}) => {
+const ViewPdf = ({ containerRef, activeSigner, setScrollTop }) => {
   return (
     <Stack
       ref={containerRef}
       onScroll={(e) => setScrollTop(e.currentTarget.scrollTop)}
       sx={{
-        paddingTop: `${paddingTopPx}px`,
         height: "800px",
         overflow: "auto",
-        width: "fit-content",
+        // width: "50%",
+        borderRadius: 1,
         border: "1px solid #ccc",
         display: "flex",
         flexDirection: "column",

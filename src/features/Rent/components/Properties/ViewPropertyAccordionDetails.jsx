@@ -46,6 +46,7 @@ import { DefaultRentalAppEmailTemplates } from "features/Rent/components/Templat
 import { useSelectedPropertyDetails } from "features/Rent/hooks/useGetSelectedPropertyDetails";
 import {
   ManualRentStatusEnumValue,
+  RentIntentStatusEnumValue,
   getColorAndLabelForCurrentMonth,
 } from "features/Rent/utils";
 
@@ -98,8 +99,12 @@ const ViewPropertyAccordionDetails = ({
 
   const isOpen = Boolean(anchorEl);
   const currentMonth = dayjs().format("MMMM");
+
+  // PaymentIntent is not considered as currentMonthRent
   const currentMonthRent = rentDetails?.find(
-    (rentDetail) => rentDetail.rentMonth === currentMonth,
+    (rentDetail) =>
+      rentDetail?.status !== RentIntentStatusEnumValue &&
+      rentDetail.rentMonth === currentMonth,
   );
 
   const primaryTenant = tenants?.find((tenant) => tenant.isPrimary);

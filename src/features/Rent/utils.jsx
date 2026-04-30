@@ -11,9 +11,10 @@ import { authorizedServerLevelFeatureFlags } from "common/ApplicationConfig";
 import { DefaultLeaseTermOptions } from "features/Rent/common/constants";
 import { produce } from "immer";
 
+export const PaidRentStatusEnumValue = "paid";
+export const RentIntentStatusEnumValue = "intent";
 export const ManualRentStatusEnumValue = "manual";
 export const CompleteRentStatusEnumValue = "complete";
-export const PaidRentStatusEnumValue = "paid";
 
 export const CreateInvoiceEnumValue = "CreateInvoice";
 export const PaymentReminderEnumValue = "PaymentReminder";
@@ -27,8 +28,30 @@ export const AddTenantNotificationEnumValue = "Notice of Addition";
 export const RemoveTenantNotificationEnumValue = "Notice of Removal";
 export const AddRentPaymentNotificationEnumValue = "Notice of Rent Payment";
 
+// EmailNotificationDisclaimer ...
 export const EmailNotificationDisclaimer =
   "You are being notified either since you are the property owner, tenant or anyone tasked with such responsibility.";
+
+// NoActionToPerformEnumValue ...
+const NoActionToPerformEnumValue =
+  "<b>There is no action for you to take at this time. If this seems unfamiliar or suspicious please reach out to your administrator.</b>";
+
+// MovementSpeedEnumValues ...
+// defines the movement speed estimates for various modes of transportation in km/hr
+const MovementSpeedEnumValues = {
+  walking: 5,
+  biking: 15,
+  cityDriving: 40, // different from highway driving
+};
+
+// updateTooltipTitle ...
+// defines a function that updates tooltip title
+export const updateTooltipTitle = (values = []) => {
+  if (values.length > 0) {
+    return `Missing fields - ${values.join(", ")}`;
+  }
+  return `No missing fields in html body`;
+};
 
 // stripHTMLForEmailMessages ...
 // defines a fuction that returns email messages that are stripped from its html contents
@@ -123,9 +146,6 @@ export const formatAndSendNotification = ({
   }
 };
 
-const noActionToPerformStr =
-  "<b>There is no action for you to take at this time. If this seems unfamiliar or suspicious please reach out to your administrator.</b>";
-
 // emailMessageBuilder ...
 // defines a function that appends email message with extra disclaimer
 export const emailMessageBuilder = (msgType, propertyName) => {
@@ -136,7 +156,7 @@ Hello there,
   This notification is to alert you that you have been added to the property listed as ${propertyName}.
 
   ${EmailNotificationDisclaimer}
-  ${noActionToPerformStr}
+  ${NoActionToPerformEnumValue}
 
 With Regards,
 Earmuffjam LLC
@@ -147,7 +167,7 @@ Hello there,
   This notification is to alert you that you have been removed from the role of tenant from the property listed as ${propertyName}. 
 
   ${EmailNotificationDisclaimer}
-  ${noActionToPerformStr}
+  ${NoActionToPerformEnumValue}
 
 With Regards,
 Earmuffjam LLC
@@ -158,7 +178,7 @@ Hello there,
   This notification is to alert you that rental payment has been made manually for the property listed as ${propertyName}.
 
   ${EmailNotificationDisclaimer}
-  ${noActionToPerformStr}
+  ${NoActionToPerformEnumValue}
 
 With Regards,
 Earmuffjam LLC
@@ -170,7 +190,7 @@ Hello there,
   This notification is to alert you that changes have been made to an assigned property listed as ${propertyName}. 
 
   ${EmailNotificationDisclaimer}
-  ${noActionToPerformStr}
+  ${NoActionToPerformEnumValue}
 
 With Regards,
 Earmuffjam LLC
@@ -237,13 +257,11 @@ export const getColorAndLabelForCurrentMonth = (
     startDate,
     gracePeriod,
   );
-
   const isRentForCurrentMonthPaid = [
     PaidRentStatusEnumValue,
     CompleteRentStatusEnumValue,
     ManualRentStatusEnumValue,
   ].includes(rent?.status.toLowerCase());
-
   if (isRentForCurrentMonthPaid) {
     return { color: "success", label: "Paid", icon: <PaidRounded /> };
   }
@@ -259,19 +277,6 @@ export const getColorAndLabelForCurrentMonth = (
       label: "Grace Period",
       icon: <BubbleChartOutlined />,
     };
-    //   if (!isRentForCurrentMonthPaid) {
-    //     return {
-    //       color: "error",
-    //       label: "Past due",
-    //       icon: <AssignmentLateRounded />,
-    //     };
-    //   }
-    // } else {
-    //   return {
-    //     color: "secondary",
-    //     label: "Grace Period",
-    //     icon: <BubbleChartOutlined />,
-    //   };
   }
 };
 
@@ -478,4 +483,55 @@ const validateFullName = (firstName, lastName, otherName) => {
   } else {
     return "N/A";
   }
+};
+
+// calculate distance between two co-ordinates
+export const calculateDistance = (lat1, lon1, lat2, lon2) => {
+  const RadiusOfEarthInMeters = 6371e3;
+  const deltaOfLattitudePointA = (lat1 * Math.PI) / 180;
+  const deltaOfLattitudePointB = (lat2 * Math.PI) / 180;
+  const actualDeltaForLattitude = ((lat2 - lat1) * Math.PI) / 180;
+  const actualDeltaForLongitude = ((lon2 - lon1) * Math.PI) / 180;
+
+  const combinedDifference =
+    Math.sin(actualDeltaForLattitude / 2) *
+      Math.sin(actualDeltaForLattitude / 2) +
+    Math.cos(deltaOfLattitudePointA) *
+      Math.cos(deltaOfLattitudePointB) *
+      Math.sin(actualDeltaForLongitude / 2) *
+      Math.sin(actualDeltaForLongitude / 2);
+  const updatedChange =
+    2 *
+    Math.atan2(
+      Math.sqrt(combinedDifference),
+      Math.sqrt(1 - combinedDifference),
+    );
+
+  const distance = RadiusOfEarthInMeters * updatedChange; // Distance in meters
+  return distance;
+};
+
+// estimateTravelTime ...
+// defines the estimated travel time
+export const estimateTravelTime = (distanceInMeters, mode = "walking") => {
+  const distanceInKm = distanceInMeters / 1000;
+  const timeInHours = distanceInKm / MovementSpeedEnumValues[mode];
+  const timeInMinutes = Math.round(timeInHours * 60);
+
+  return {
+    minutes: timeInMinutes,
+    formatted:
+      timeInMinutes < 60
+        ? `${timeInMinutes} min`
+        : `${Math.floor(timeInMinutes / 60)}h ${timeInMinutes % 60}m`,
+  };
+};
+
+// formatDistance ...
+// defines a function to visually enhance display of distance in map
+export const formatDistance = (distanceInMeters) => {
+  if (distanceInMeters < 1000) {
+    return `${Math.round(distanceInMeters)} m`;
+  }
+  return `${(distanceInMeters / 1000).toFixed(1)} km`;
 };

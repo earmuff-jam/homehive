@@ -1,5 +1,61 @@
 [
   {
+    "version": "1.0.12",
+    "date": "2026-04-29",
+    "notes": [
+      {
+        "type": "maintenance",
+        "value": "Added improvements to the landing page by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/338",
+        "caption": "Added improvements to the landing page by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/338"
+      },
+      {
+        "type": "maintenance",
+        "value": "Updated Rent Records by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/339",
+        "caption": "Updated Rent Records by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/339"
+      },
+      {
+        "type": "maintenance",
+        "value": "Added fix for long property notes by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/340",
+        "caption": "Added fix for long property notes by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/340"
+      },
+      {
+        "type": "maintenance",
+        "value": "Updated property details by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/342",
+        "caption": "Updated property details by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/342"
+      },
+      {
+        "type": "maintenance",
+        "value": "Added visual enhancements to map layer by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/343",
+        "caption": "Added visual enhancements to map layer by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/343"
+      },
+      {
+        "type": "maintenance",
+        "value": "Updated Esign pricing by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/345",
+        "caption": "Updated Esign pricing by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/345"
+      },
+      {
+        "type": "maintenance",
+        "value": "Added recent transactions from Stripe by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/346",
+        "caption": "Added recent transactions from Stripe by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/346"
+      },
+      {
+        "type": "maintenance",
+        "value": "Improved Esign capabilities by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/349",
+        "caption": "Improved Esign capabilities by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/349"
+      },
+      {
+        "type": "maintenance",
+        "value": "Updated support for tiptap in Invoice templates by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/350",
+        "caption": "Updated support for tiptap in Invoice templates by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/350"
+      },
+      {
+        "type": "maintenance",
+        "value": "Updated property details by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/354",
+        "caption": "Updated property details by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/354"
+      }
+    ]
+  },
+  {
     "version": "1.0.11",
     "date": "2026-04-21",
     "notes": [

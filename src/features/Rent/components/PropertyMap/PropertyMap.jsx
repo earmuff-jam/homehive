@@ -1,6 +1,8 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import { Box, Stack, Typography, useTheme } from "@mui/material";
+import MapPopupDetails from "features/Rent/components/PropertyMap/MapPopup";
+import { Overlay } from "ol";
 import Feature from "ol/Feature";
 import Map from "ol/Map.js";
 import View from "ol/View.js";
@@ -15,6 +17,7 @@ import { Icon, Style } from "ol/style";
 
 const ZoomLevel = {
   xs: 15,
+  sm: 12,
   md: 10,
   lg: 5,
   xl: 1,
@@ -29,10 +32,19 @@ const PropertyMap = ({
   disabled = false,
   editMode = false,
   address = "",
+  propertyName = "",
+  propertyLocation = { lat: 0, lon: 0 },
+  amenities = [],
 }) => {
   const mapRef = useRef();
   const theme = useTheme();
   const markerRef = useRef();
+
+  // for popup and overlay
+  const popupRef = useRef();
+  const overlayRef = useRef();
+  const amenityLayerRef = useRef();
+  const [selectedAmenity, setSelectedAmenity] = useState(null);
 
   useEffect(() => {
     const initialCenter = fromLonLat([location?.lon, location?.lat]);
@@ -65,28 +77,87 @@ const PropertyMap = ({
       }),
     });
 
+    // Create OpenLayers Overlay for popup
+    const overlay = new Overlay({
+      element: popupRef.current,
+      autoPan: false,
+      autoPanAnimation: {
+        duration: 250,
+      },
+      positioning: "bottom-center", // Position popup above the marker
+      offset: [0, -10], // Small offset above the marker
+    });
+
+    map.addOverlay(overlay);
+    overlayRef.current = overlay;
+
     const vectorLayer = new VectorLayer({
       source: new VectorSource(),
     });
 
+    const amenityLayer = new VectorLayer({
+      source: new VectorSource(),
+      minZoom: ZoomLevel.md,
+    });
+
+    amenityLayerRef.current = amenityLayer;
+
     map.addLayer(vectorLayer);
+    map.addLayer(amenityLayer);
+    // add amenities to amenity layer
+    amenities.forEach((amenity) => {
+      addMarkers(
+        map,
+        amenityLayer, // use amenity layer
+        {
+          lon: amenity?.lon,
+          lat: amenity?.lat,
+        },
+        null, // Don't track amenity markers in markerRef
+        amenity,
+      );
+    });
+
+    // add property to main vector layer
     addMarkers(map, vectorLayer, location, markerRef);
+
+    // add ability to hover
+    map.on("click", function (event) {
+      const feature = map.forEachFeatureAtPixel(event.pixel, (feature) => {
+        return feature;
+      });
+
+      if (feature && feature.get("amenity")) {
+        const currentAmenity = feature.get("amenity");
+        setSelectedAmenity(currentAmenity);
+        map.getView().animate({
+          center: fromLonLat([currentAmenity.lon, currentAmenity.lat]),
+          zoom: ZoomLevel.sm + 2,
+          duration: 500,
+        });
+
+        overlay.setPosition(event.coordinate);
+      } else {
+        setSelectedAmenity(null);
+        overlay.setPosition(undefined);
+      }
+    });
 
     if (editMode) {
       map.on("click", function (event) {
         const clickedCoordinate = toLonLat(event.coordinate);
         const [lon, lat] = clickedCoordinate;
         updateMarker(vectorLayer, lon, lat, markerRef);
-        // If onLocationChange callback is provided, call it with new location
         if (onLocationChange) {
           onLocationChange({ lon, lat });
         }
       });
     }
+
     return () => {
       map.setTarget(null);
     };
-  }, [location, onLocationChange]);
+  }, [location, onLocationChange, amenities]);
 
   if (disabled) {
     return null;
@@ -142,6 +213,25 @@ const PropertyMap = ({
         >
           {address}
         </Box>
+        <Box
+          ref={popupRef}
+          sx={{
+            position: "absolute",
+            backgroundColor: theme.palette.background.paper,
+            boxShadow: theme.shadows[3],
+            borderRadius: 1,
+            padding: 1,
+            minWidth: "200px",
+            display: selectedAmenity ? "block" : "none",
+            pointerEvents: "none", // Allow clicking through
+          }}
+        >
+          <MapPopupDetails
+            propertyName={propertyName}
+            propertyLocation={propertyLocation}
+            selectedAmenity={selectedAmenity}
+          />
+        </Box>
       </Box>
     </Stack>
   );
@@ -154,19 +244,23 @@ const PropertyMap = ({
  * @param {Object} vectorLayer The OpenLayers vector layer to add markers to
  * @param {Object} location The location to add a marker for
  */
-const addMarkers = (map, vectorLayer, location, markerRef) => {
+const addMarkers = (map, vectorLayer, location, markerRef, amenity) => {
   if (!location) return;
+
+  const type = amenity?.type || "location";
+
   const { lon, lat } = location;
   if (lon && lat) {
     const geometry = new Point(fromLonLat([lon, lat]));
     const feature = new Feature({
       geometry,
       notesInfo: location,
+      amenity,
     });
 
     const markerStyle = new Style({
       image: new Icon({
-        src: "/location.svg",
+        src: type === "location" ? "/icons/location.svg" : `/icons/${type}.svg`,
         scale: 0.4,
         anchor: [0.5, 0.5],
         anchorXUnits: "fraction",
@@ -177,9 +271,13 @@ const addMarkers = (map, vectorLayer, location, markerRef) => {
 
     feature.setStyle(markerStyle);
     vectorLayer.getSource().addFeature(feature);
-    map.getView().setCenter(fromLonLat([lon, lat]));
-    map.getView().setZoom(ZoomLevel.xs);
-    markerRef.current = feature; // Save the feature to the markerRef for future updates
+
+    if (type === "location") {
+      // only zoom and save location for property; ref stays current
+      map.getView().setCenter(fromLonLat([lon, lat]));
+      map.getView().setZoom(ZoomLevel.sm);
+      markerRef.current = feature;
+    }
   }
 };
 

@@ -25,7 +25,7 @@ export const useGenerateStripeCheckoutSession = () => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          fUrl: "0007_create_stripe_checkout_session",
+          fUrl: "0007_CreateStripeCheckoutSession",
           fMethod: "POST",
           payload: {
             rentAmount,

@@ -24,6 +24,16 @@ import SubAppRouter from "src/SubRouter";
 const ReleaseNotes = lazy(
   () => import("features/Layout/components/HelpAndSupport/ReleaseNotes"),
 );
+const Contact = lazy(() => import("features/Layout/components/Footer/Contact"));
+const HelpCenter = lazy(
+  () => import("features/Layout/components/Footer/HelpCenter"),
+);
+const PrivacyPolicy = lazy(
+  () => import("features/Layout/components/Footer/PrivacyPolicy"),
+);
+const TermsOfService = lazy(
+  () => import("features/Layout/components/Footer/TermsOfService"),
+);
 
 // MainAppRoutes ...
 export const MainAppRoutes = [
@@ -122,6 +132,74 @@ export const MainAppRoutes = [
     config: {
       breadcrumb: {
         value: "Release Notes",
+        icon: <WhatshotRounded fontSize="small" />,
+      },
+      displayInNavBar: false,
+      displayHelpSelector: false,
+      displayPrintSelector: false,
+    },
+  },
+  {
+    id: 6,
+    label: "Privacy Policy",
+    path: "/privacyPolicy",
+    element: <PrivacyPolicy />,
+    icon: <WhatshotRounded fontSize="small" />,
+    requiredFlags: [],
+    config: {
+      breadcrumb: {
+        value: "Privacy Policy",
+        icon: <WhatshotRounded fontSize="small" />,
+      },
+      displayInNavBar: false,
+      displayHelpSelector: false,
+      displayPrintSelector: false,
+    },
+  },
+  {
+    id: 7,
+    label: "Terms of Service",
+    path: "/termsOfService",
+    element: <TermsOfService />,
+    icon: <WhatshotRounded fontSize="small" />,
+    requiredFlags: [],
+    config: {
+      breadcrumb: {
+        value: "Terms of Service",
+        icon: <WhatshotRounded fontSize="small" />,
+      },
+      displayInNavBar: false,
+      displayHelpSelector: false,
+      displayPrintSelector: false,
+    },
+  },
+  {
+    id: 8,
+    label: "Contact Us",
+    path: "/contact",
+    element: <Contact />,
+    icon: <WhatshotRounded fontSize="small" />,
+    requiredFlags: [],
+    config: {
+      breadcrumb: {
+        value: "Contact Us",
+        icon: <WhatshotRounded fontSize="small" />,
+      },
+      displayInNavBar: false,
+      displayHelpSelector: false,
+      displayPrintSelector: false,
+    },
+  },
+  {
+    id: 9,
+    label: "Help Center",
+    path: "/helpCenter",
+    element: <HelpCenter />,
+    icon: <WhatshotRounded fontSize="small" />,
+    requiredFlags: [],
+    config: {
+      breadcrumb: {
+        value: "Help Center",
         icon: <WhatshotRounded fontSize="small" />,
       },
       displayInNavBar: false,

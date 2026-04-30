@@ -1,0 +1,12 @@
+<svg width="64" height="64" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  
+  <!-- Badge circle -->
+  <circle cx="24" cy="24" r="18" fill="#E53935"/>
+  
+  <!-- Inner badge detail -->
+  <circle cx="24" cy="24" r="14" fill="none" stroke="#FFFFFF" stroke-width="1.5"/>
+  
+  <!-- Star badge points -->
+  <path d="M24 10 L26 20 L34 18 L28 26 L36 30 L26 28 L24 38 L22 28 L12 30 L20 26 L14 18 L22 20 Z" fill="#FFFFFF"/>
+  
+</svg>

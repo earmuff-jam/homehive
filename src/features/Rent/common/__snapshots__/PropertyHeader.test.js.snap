@@ -6,36 +6,51 @@ exports[`PropertyHeader Jest tests PropertyHeader snapshot tests renders correct
     class="MuiStack-root css-jfdv4h-MuiStack-root"
   >
     <div
-      class="MuiBox-root css-j0ozid"
+      class="MuiStack-root css-nen11g-MuiStack-root"
     >
-      <svg
-        aria-hidden="true"
-        class="MuiSvgIcon-root MuiSvgIcon-colorPrimary MuiSvgIcon-fontSizeMedium css-q6abum-MuiSvgIcon-root"
-        data-testid="HomeIcon"
-        focusable="false"
-        viewBox="0 0 24 24"
-      >
-        <path
-          d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"
-        />
-      </svg>
       <div
-        class="MuiStack-root css-nen11g-MuiStack-root"
+        class="MuiBox-root css-j0ozid"
       >
-        <h4
-          class="MuiTypography-root MuiTypography-h4 css-f84ov1-MuiTypography-root"
+        <svg
+          aria-hidden="true"
+          class="MuiSvgIcon-root MuiSvgIcon-colorPrimary MuiSvgIcon-fontSizeMedium css-q6abum-MuiSvgIcon-root"
+          data-testid="HomeIcon"
+          focusable="false"
+          viewBox="0 0 24 24"
         >
-          Sunset Villa
-        </h4>
+          <path
+            d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"
+          />
+        </svg>
         <div
-          class="MuiStack-root css-d6pvwr-MuiStack-root"
+          class="MuiStack-root css-nen11g-MuiStack-root"
         >
-          <h6
-            class="MuiTypography-root MuiTypography-subtitle2 css-sth6i1-MuiTypography-root"
+          <h4
+            class="MuiTypography-root MuiTypography-h4 css-f84ov1-MuiTypography-root"
           >
-            123 Main St, Austin, TX 78701
-          </h6>
+            Sunset Villa
+          </h4>
+          <div
+            class="MuiStack-root css-5hw9o0-MuiStack-root"
+          >
+            <div
+              class="MuiStack-root css-niqf4j-MuiStack-root"
+            />
+            <h6
+              class="MuiTypography-root MuiTypography-subtitle2 css-sth6i1-MuiTypography-root"
+            >
+              123 Main St, Austin, TX 78701
+            </h6>
+          </div>
         </div>
+      </div>
+      <div
+        class="MuiStack-root css-1o22yl8-MuiStack-root"
+      >
+        <h6
+          class="MuiTypography-root MuiTypography-subtitle2 css-1ljd6gn-MuiTypography-root"
+          data-mui-internal-clone-element="true"
+        />
       </div>
     </div>
   </div>

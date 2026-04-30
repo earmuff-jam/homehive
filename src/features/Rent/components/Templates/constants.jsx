@@ -7,12 +7,31 @@ import {
   ReceiptRounded,
 } from "@mui/icons-material";
 
+// InvoiceKeyEnumValue ...
+export const InvoiceKeyEnumValue = "invoice";
+// ReminderKeyEnumValue ...
+export const ReminderKeyEnumValue = "reminder";
+// RentKeyEnumValue ...
+export const RentKeyEnumValue = "rent";
+// NoticeOfLeaseRenewalEnumValue ...
+export const NoticeOfLeaseRenewalEnumValue = "noticeOfLeaseRenewal";
+
+// DefaultRentalAppEmailTemplatesIconMapper ...
+// used to define each icon for respective templates.
+// used to prevent serialization error in rtk query
+export const DefaultRentalAppEmailTemplatesIconMapper = {
+  InvoiceKeyEnumValue: <ReceiptRounded fontSize="small" />,
+  ReminderKeyEnumValue: <AssignmentLateRounded fontSize="small" />,
+  RentKeyEnumValue: <CircleNotificationsRounded fontSize="small" />,
+  NoticeOfLeaseRenewalEnumValue: <LoopRounded fontSize="small" />,
+};
+
 // DefaultRentalAppEmailTemplates ...
 // defines a function that returns the default email templates for rental app
 export const DefaultRentalAppEmailTemplates = {
   invoice: {
+    id: "invoice",
     label: "Invoice Template",
-    title: "invoice",
     icon: <ReceiptRounded fontSize="small" />,
     caption: "Customize professional rent invoices",
     subject: "Monthly Rent Invoice - {{propertyAddress}}",
@@ -56,8 +75,8 @@ export const DefaultRentalAppEmailTemplates = {
     `,
   },
   reminder: {
+    id: "reminder",
     label: "Rent Late Payment Reminder Template",
-    title: "reminder",
     icon: <AssignmentLateRounded fontSize="small" />,
     caption: "Customize friendly reminders for overdue rent payments",
     subject: "Rent Late Payment Reminder - {{propertyAddress}}",
@@ -104,6 +123,7 @@ export const DefaultRentalAppEmailTemplates = {
 `,
   },
   rent: {
+    id: "rent",
     label: "Rent Regular Payment Reminder Template",
     icon: <CircleNotificationsRounded fontSize="small" />,
     caption: "Customize payment reminder form",
@@ -151,8 +171,8 @@ export const DefaultRentalAppEmailTemplates = {
 `,
   },
   noticeOfLeaseRenewal: {
+    id: "noticeOfLeaseRenewal",
     label: "Notice of Lease Renewal Template",
-    title: "noticeOfLeaseRenewal",
     icon: <LoopRounded fontSize="small" />,
     caption: "Customize automatic lease renewal and expiration notices",
     subject: "Notice of Lease Expiration and Renewal - {{propertyAddress}}",

@@ -39,8 +39,8 @@ describe("TabPanel Jest tests", () => {
   });
   describe("TabPanel Component tests", () => {
     const options = {
-      tab1: { label: "Tab One", icon: <span>Icon1</span> },
-      tab2: { label: "Tab Two", icon: <span>Icon2</span> },
+      tab1: { id: "tab1", label: "Tab One", icon: <span>Icon1</span> },
+      tab2: { id: "tab2", label: "Tab Two", icon: <span>Icon2</span> },
     };
 
     it("renders all buttons with correct labels", () => {

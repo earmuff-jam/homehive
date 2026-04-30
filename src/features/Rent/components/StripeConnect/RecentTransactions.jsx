@@ -1,47 +1,147 @@
-import React from "react";
+import React, { useMemo } from "react";
 
-import {
-  Card,
-  Divider,
-  List,
-  ListItem,
-  ListItemText,
-  Skeleton,
-  Typography,
-} from "@mui/material";
+import dayjs from "dayjs";
+
+import { Skeleton, Stack, Typography } from "@mui/material";
 import EmptyComponent from "common/EmptyComponent";
+import RowHeader from "common/RowHeader";
+import relativeTime from "dayjs/plugin/relativeTime";
+import {
+  MaterialReactTable,
+  useMaterialReactTable,
+} from "material-react-table/dist";
+
+dayjs.extend(relativeTime);
 
 export default function RecentTransactions({ transactions = [], loading }) {
-  return (
-    <Card elevation={0} sx={{ p: 1 }}>
-      <Typography variant="h6" fontWeight={600} sx={{ mb: 2 }}>
-        Recent Transactions
-      </Typography>
+  const columns = useMemo(
+    () => [
+      {
+        accessorFn: (row) => {
+          const name = row.payment_method?.billing_details?.name;
+          const email = row.payment_method?.billing_details?.email;
 
-      {loading ? (
-        <Skeleton variant="rectangular" height={100} />
-      ) : transactions.length === 0 ? (
-        <EmptyComponent
-          caption="Perform transactions to begin."
-          sxProps={{ variant: "subtitle2" }}
-        />
-      ) : (
-        <List>
-          {transactions.map((tx) => (
-            <div key={tx.id}>
-              <ListItem disableGutters>
-                <ListItemText
-                  primary={`$${(tx.amount / 100).toFixed(2)} • ${
-                    tx.billing_details.name || "Unknown"
-                  }`}
-                  secondary={new Date(tx.created * 1000).toLocaleString()}
-                />
-              </ListItem>
-              <Divider />
-            </div>
-          ))}
-        </List>
-      )}
-    </Card>
+          if (!name && !email) return "-";
+          return (
+            <Typography variant="caption">{`${name || "Unknown"} (${email || "No email"})`}</Typography>
+          );
+        },
+        id: "customer",
+        header: "Customer",
+        size: 250,
+      },
+      {
+        accessorKey: "amount",
+        header: "Transaction Amount",
+        size: 200,
+        Cell: ({ cell }) => {
+          const cellValue = cell?.getValue();
+          return (
+            <Typography variant="caption">
+              {cellValue ? `$${(cellValue / 100)?.toFixed(2)}` : "-"}
+            </Typography>
+          );
+        },
+      },
+      {
+        accessorKey: "status",
+        header: "Payment Status",
+        size: 200,
+        Cell: ({ cell }) => (
+          <Typography variant="caption" textTransform="capitalize">
+            {cell.getValue() ? cell.getValue() : "-"}
+          </Typography>
+        ),
+      },
+      {
+        accessorFn: (row) => {
+          const typeOfPayment = row.payment_method?.type;
+          const formattedPayment = typeOfPayment.replaceAll("_", " ");
+
+          if (!typeOfPayment) return "-";
+          return (
+            <Typography variant="caption" textTransform="capitalize">
+              {`${formattedPayment || "Unknown"}`}
+            </Typography>
+          );
+        },
+        header: "Payment Method",
+        size: 200,
+        Cell: ({ cell }) => (
+          <Typography variant="caption" textTransform="capitalize">
+            {cell?.getValue() ? cell?.getValue() : "-"}
+          </Typography>
+        ),
+      },
+      {
+        accessorKey: "created",
+        header: "Last updated at",
+        size: 200,
+        Cell: ({ cell }) => {
+          const cellValue = cell?.getValue();
+          return (
+            <Typography variant="caption" textTransform="capitalize">
+              {cellValue
+                ? `${dayjs(cellValue * 1000).format("hh:mm MM-DD-YYYY")}`
+                : "-"}
+            </Typography>
+          );
+        },
+      },
+    ],
+    [],
+  );
+
+  const table = useMaterialReactTable({
+    columns,
+    data: transactions,
+    enableColumnActions: false,
+    enableTopToolbar: false,
+    enableExpandAll: false,
+    // hides header for expand column
+    displayColumnDefOptions: {
+      "mrt-row-expand": {
+        header: "",
+      },
+    },
+    initialState: {
+      density: "compact",
+      sorting: [{ id: "created", desc: true }],
+    },
+    renderEmptyRowsFallback: () => (
+      <EmptyComponent caption="Create templates to begin." />
+    ),
+    mrtTheme: (theme) => ({
+      baseBackgroundColor: theme.palette.transparent.main,
+    }),
+    muiTableContainerProps: {
+      sx: {
+        maxHeight: "16rem",
+        boxShadow: "none",
+      },
+    },
+    muiTablePaperProps: {
+      elevation: 0,
+      sx: {
+        boxShadow: "none",
+      },
+    },
+  });
+
+  if (loading) return <Skeleton height="10rem" />;
+
+  return (
+    <Stack spacing={2}>
+      <RowHeader
+        title="Recent Transactions"
+        caption="View recent transactions"
+        sxProps={{
+          textAlign: "left",
+          fontWeight: "bold",
+          color: "text.secondary",
+        }}
+      />
+      <MaterialReactTable table={table} />
+    </Stack>
   );
 }
