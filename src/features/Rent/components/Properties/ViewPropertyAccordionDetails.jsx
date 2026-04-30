@@ -45,6 +45,7 @@ import { handleQuickConnectAction } from "features/Rent/components/Settings/Temp
 import { DefaultRentalAppEmailTemplates } from "features/Rent/components/Templates/constants";
 import { useSelectedPropertyDetails } from "features/Rent/hooks/useGetSelectedPropertyDetails";
 import {
+  ManualRentStatusEnumValue,
   RentIntentStatusEnumValue,
   getColorAndLabelForCurrentMonth,
 } from "features/Rent/utils";

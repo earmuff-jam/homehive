@@ -257,13 +257,11 @@ export const getColorAndLabelForCurrentMonth = (
     startDate,
     gracePeriod,
   );
-
   const isRentForCurrentMonthPaid = [
     PaidRentStatusEnumValue,
     CompleteRentStatusEnumValue,
     ManualRentStatusEnumValue,
   ].includes(rent?.status.toLowerCase());
-
   if (isRentForCurrentMonthPaid) {
     return { color: "success", label: "Paid", icon: <PaidRounded /> };
   }
@@ -274,14 +272,6 @@ export const getColorAndLabelForCurrentMonth = (
       icon: <AssignmentLateRounded />,
     };
   } else if (!isPastGracePeriod) {
-    if (!isRentForCurrentMonthPaid) {
-      return {
-        color: "error",
-        label: "Past due",
-        icon: <AssignmentLateRounded />,
-      };
-    }
-  } else {
     return {
       color: "secondary",
       label: "Grace Period",
