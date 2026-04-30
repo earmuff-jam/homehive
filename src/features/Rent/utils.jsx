@@ -11,9 +11,10 @@ import { authorizedServerLevelFeatureFlags } from "common/ApplicationConfig";
 import { DefaultLeaseTermOptions } from "features/Rent/common/constants";
 import { produce } from "immer";
 
+export const PaidRentStatusEnumValue = "paid";
+export const RentIntentStatusEnumValue = "intent";
 export const ManualRentStatusEnumValue = "manual";
 export const CompleteRentStatusEnumValue = "complete";
-export const PaidRentStatusEnumValue = "paid";
 
 export const CreateInvoiceEnumValue = "CreateInvoice";
 export const PaymentReminderEnumValue = "PaymentReminder";
@@ -273,24 +274,19 @@ export const getColorAndLabelForCurrentMonth = (
       icon: <AssignmentLateRounded />,
     };
   } else if (!isPastGracePeriod) {
+    if (!isRentForCurrentMonthPaid) {
+      return {
+        color: "error",
+        label: "Past due",
+        icon: <AssignmentLateRounded />,
+      };
+    }
+  } else {
     return {
       color: "secondary",
       label: "Grace Period",
       icon: <BubbleChartOutlined />,
     };
-    //   if (!isRentForCurrentMonthPaid) {
-    //     return {
-    //       color: "error",
-    //       label: "Past due",
-    //       icon: <AssignmentLateRounded />,
-    //     };
-    //   }
-    // } else {
-    //   return {
-    //     color: "secondary",
-    //     label: "Grace Period",
-    //     icon: <BubbleChartOutlined />,
-    //   };
   }
 };
 
