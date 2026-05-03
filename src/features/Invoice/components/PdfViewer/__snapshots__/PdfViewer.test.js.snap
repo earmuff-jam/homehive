@@ -10,7 +10,7 @@ exports[`PdfViewer snapshot 1`] = `
       class="MuiStack-root css-1ug9gnt-MuiStack-root"
     >
       <p
-        class="MuiTypography-root MuiTypography-body1 css-rizt0-MuiTypography-root"
+        class="MuiTypography-root MuiTypography-body1 css-m4t3jl-MuiTypography-root"
       >
         Sorry, no invoice found to display
       </p>

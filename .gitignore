@@ -54,9 +54,6 @@ web_modules/
 # Optional npm cache directory
 .npm
 
-# package-lock.json file to prevent local dev build issues.
-package-lock.json
-
 # Optional eslint cache
 .eslintcache
 
