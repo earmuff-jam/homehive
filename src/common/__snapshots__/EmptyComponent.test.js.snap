@@ -6,7 +6,7 @@ exports[`EmptyComponent Jest Tests EmptyComponent Snapshot tests should render t
     class="MuiStack-root css-1ug9gnt-MuiStack-root"
   >
     <p
-      class="MuiTypography-root MuiTypography-body1 css-rizt0-MuiTypography-root"
+      class="MuiTypography-root MuiTypography-body1 css-m4t3jl-MuiTypography-root"
     >
       Sorry, no matching records found.
     </p>

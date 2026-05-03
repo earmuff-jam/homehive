@@ -26,7 +26,9 @@ export default function EmptyComponent({
       padding="2rem 0rem"
       {...sxProps}
     >
-      <Typography {...sxProps}>{title}</Typography>
+      <Typography fontStyle="italic" {...sxProps}>
+        {title}
+      </Typography>
       <Stack>
         <Typography variant="caption">
           {caption}

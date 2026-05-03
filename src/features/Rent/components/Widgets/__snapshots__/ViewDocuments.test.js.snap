@@ -220,7 +220,7 @@ exports[`ViewDocuments Jest Tests ViewDocuments Snapshot Tests renders correctly
                   class="MuiStack-root css-1ug9gnt-MuiStack-root"
                 >
                   <p
-                    class="MuiTypography-root MuiTypography-body1 css-onvsl-MuiTypography-root"
+                    class="MuiTypography-root MuiTypography-body1 css-1y98lh-MuiTypography-root"
                   >
                     Sorry, no matching records found.
                   </p>

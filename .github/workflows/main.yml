@@ -9,31 +9,28 @@ env:
 jobs:
   build-frontend:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Set up Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: "24.10.0"
+          node-version: 24.10.0
+          cache: npm
 
       - name: Install dependencies
-        run: |
-          npm install
+        run: npm ci
 
       - name: Run linter
-        run: |
-          npm run lint
+        run: npm run lint
 
       - name: Run prettier checks
-        run: |
-          npm run prettierc
+        run: npm run prettierc
 
       - name: Run jest tests
-        run: |
-          npm run test
+        run: npm test
 
       - name: Build frontend
-        run: |
-          CI=true npm run build
+        run: CI=true npm run build
