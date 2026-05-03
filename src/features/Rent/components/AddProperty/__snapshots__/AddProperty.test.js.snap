@@ -45,6 +45,7 @@ exports[`AddProperty Component Tests AddProperty Snapshot Tests matches AddPrope
             >
               <input
                 aria-invalid="false"
+                aria-label="Property Name *"
                 class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputSizeSmall css-1pzfmz2-MuiInputBase-input-MuiOutlinedInput-input"
                 id="name"
                 name="name"
@@ -94,6 +95,7 @@ exports[`AddProperty Component Tests AddProperty Snapshot Tests matches AddPrope
               >
                 <input
                   aria-invalid="false"
+                  aria-label="Address *"
                   class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputSizeSmall css-1pzfmz2-MuiInputBase-input-MuiOutlinedInput-input"
                   id="address"
                   name="address"
@@ -140,6 +142,7 @@ exports[`AddProperty Component Tests AddProperty Snapshot Tests matches AddPrope
               >
                 <input
                   aria-invalid="false"
+                  aria-label="County"
                   class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputSizeSmall css-1pzfmz2-MuiInputBase-input-MuiOutlinedInput-input"
                   id="county"
                   name="county"
@@ -191,6 +194,7 @@ exports[`AddProperty Component Tests AddProperty Snapshot Tests matches AddPrope
             >
               <input
                 aria-invalid="false"
+                aria-label="City *"
                 class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputSizeSmall css-1pzfmz2-MuiInputBase-input-MuiOutlinedInput-input"
                 id="city"
                 name="city"
@@ -237,6 +241,7 @@ exports[`AddProperty Component Tests AddProperty Snapshot Tests matches AddPrope
             >
               <input
                 aria-invalid="false"
+                aria-label="State *"
                 class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputSizeSmall css-1pzfmz2-MuiInputBase-input-MuiOutlinedInput-input"
                 id="state"
                 name="state"
@@ -283,6 +288,7 @@ exports[`AddProperty Component Tests AddProperty Snapshot Tests matches AddPrope
             >
               <input
                 aria-invalid="false"
+                aria-label="ZIP Code *"
                 class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputSizeSmall css-1pzfmz2-MuiInputBase-input-MuiOutlinedInput-input"
                 id="zipcode"
                 name="zipcode"
@@ -333,6 +339,7 @@ exports[`AddProperty Component Tests AddProperty Snapshot Tests matches AddPrope
             >
               <input
                 aria-invalid="false"
+                aria-label="Number of Units / Bedroom *"
                 class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputSizeSmall css-1pzfmz2-MuiInputBase-input-MuiOutlinedInput-input"
                 id="units"
                 name="units"
@@ -379,6 +386,7 @@ exports[`AddProperty Component Tests AddProperty Snapshot Tests matches AddPrope
             >
               <input
                 aria-invalid="false"
+                aria-label="Number of Bathrooms *"
                 class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputSizeSmall css-1pzfmz2-MuiInputBase-input-MuiOutlinedInput-input"
                 id="bathrooms"
                 name="bathrooms"
@@ -429,6 +437,7 @@ exports[`AddProperty Component Tests AddProperty Snapshot Tests matches AddPrope
             >
               <input
                 aria-invalid="false"
+                aria-label="Area of the home in sq ft. *"
                 class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputSizeSmall css-1pzfmz2-MuiInputBase-input-MuiOutlinedInput-input"
                 id="sqFt"
                 name="sqFt"
@@ -476,6 +485,7 @@ exports[`AddProperty Component Tests AddProperty Snapshot Tests matches AddPrope
           >
             <textarea
               aria-invalid="false"
+              aria-label="Additional Notes"
               class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputMultiline MuiInputBase-inputSizeSmall css-msbelq-MuiInputBase-input-MuiOutlinedInput-input"
               id="note"
               name="note"
@@ -547,6 +557,7 @@ exports[`AddProperty Component Tests AddProperty Snapshot Tests matches AddPrope
             >
               <input
                 aria-invalid="false"
+                aria-label="Emergency Contact *"
                 class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputSizeSmall css-1pzfmz2-MuiInputBase-input-MuiOutlinedInput-input"
                 id="emergencyContactNumber"
                 name="emergencyContactNumber"
@@ -699,6 +710,7 @@ exports[`AddProperty Component Tests AddProperty Snapshot Tests matches AddPrope
             >
               <input
                 aria-invalid="false"
+                aria-label="Monthly Rent *"
                 class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputSizeSmall css-1pzfmz2-MuiInputBase-input-MuiOutlinedInput-input"
                 id="rent"
                 name="rent"
@@ -766,6 +778,7 @@ exports[`AddProperty Component Tests AddProperty Snapshot Tests matches AddPrope
             >
               <input
                 aria-invalid="false"
+                aria-label="[object Object]"
                 class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputSizeSmall css-1pzfmz2-MuiInputBase-input-MuiOutlinedInput-input"
                 id="additionalRent"
                 name="additionalRent"
@@ -837,6 +850,7 @@ exports[`AddProperty Component Tests AddProperty Snapshot Tests matches AddPrope
             >
               <input
                 aria-invalid="false"
+                aria-label="[object Object]"
                 class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputSizeSmall css-1pzfmz2-MuiInputBase-input-MuiOutlinedInput-input"
                 id="rentIncrement"
                 name="rentIncrement"
@@ -904,6 +918,7 @@ exports[`AddProperty Component Tests AddProperty Snapshot Tests matches AddPrope
             >
               <input
                 aria-invalid="false"
+                aria-label="[object Object]"
                 class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputSizeSmall css-1pzfmz2-MuiInputBase-input-MuiOutlinedInput-input"
                 id="securityDeposit"
                 name="securityDeposit"
@@ -975,6 +990,7 @@ exports[`AddProperty Component Tests AddProperty Snapshot Tests matches AddPrope
             >
               <input
                 aria-invalid="false"
+                aria-label="[object Object]"
                 class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputSizeSmall css-1pzfmz2-MuiInputBase-input-MuiOutlinedInput-input"
                 id="allowedVehicleCounts"
                 name="allowedVehicleCounts"
@@ -1042,6 +1058,7 @@ exports[`AddProperty Component Tests AddProperty Snapshot Tests matches AddPrope
             >
               <input
                 aria-invalid="false"
+                aria-label="[object Object]"
                 class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputSizeSmall css-1pzfmz2-MuiInputBase-input-MuiOutlinedInput-input"
                 id="paymentID"
                 name="paymentID"
@@ -1092,6 +1109,7 @@ exports[`AddProperty Component Tests AddProperty Snapshot Tests matches AddPrope
             >
               <textarea
                 aria-invalid="false"
+                aria-label="Special Provisions"
                 class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputMultiline MuiInputBase-inputSizeSmall css-msbelq-MuiInputBase-input-MuiOutlinedInput-input"
                 id="specialProvisions"
                 name="specialProvisions"

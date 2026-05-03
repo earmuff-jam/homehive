@@ -80,6 +80,7 @@ exports[`OnetimeChargeForm Unit Tests Snapshot tests matches snapshot 1`] = `
           >
             <input
               aria-invalid="false"
+              aria-label="Charge Amount *"
               class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputSizeSmall css-1pzfmz2-MuiInputBase-input-MuiOutlinedInput-input"
               id="amount"
               name="amount"
@@ -126,6 +127,7 @@ exports[`OnetimeChargeForm Unit Tests Snapshot tests matches snapshot 1`] = `
           >
             <textarea
               aria-invalid="false"
+              aria-label="Note *"
               class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputMultiline MuiInputBase-inputSizeSmall css-msbelq-MuiInputBase-input-MuiOutlinedInput-input"
               id="note"
               name="note"

@@ -26,6 +26,7 @@ exports[`EditSigners Tests Snapshot Tests matches snapshot 1`] = `
         >
           <input
             aria-invalid="false"
+            aria-label="Name"
             class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputSizeSmall css-1pzfmz2-MuiInputBase-input-MuiOutlinedInput-input"
             id=":r0:"
             name="name"
@@ -72,6 +73,7 @@ exports[`EditSigners Tests Snapshot Tests matches snapshot 1`] = `
         >
           <input
             aria-invalid="false"
+            aria-label="Email"
             class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputSizeSmall css-1pzfmz2-MuiInputBase-input-MuiOutlinedInput-input"
             id=":r1:"
             name="email_address"

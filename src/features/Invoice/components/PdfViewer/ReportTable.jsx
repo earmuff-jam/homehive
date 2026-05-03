@@ -73,23 +73,28 @@ export default function ReportTable({
                 </Typography>
               </TableCell>
               <TableCell>
-                <Stack direction="row" spacing={1} alignItems="flex-end">
+                <Stack direction="column" spacing={1}>
                   <Typography variant="subtitle">
                     {row.description || ""}
                   </Typography>
-                  <Typography variant="caption">
-                    <sub>{row.caption || ""}</sub>
+                  <Typography
+                    variant="caption"
+                    fontSize="0.675rem"
+                    fontStyle="italic"
+                  >
+                    {row.caption || ""}
                   </Typography>
                 </Stack>
               </TableCell>
               <TableCell align="right">{row.quantity}</TableCell>
               <TableCell align="right">{numberFormatter(row.price)}</TableCell>
               <TableCell align="right">
-                {numberFormatter(row.payment)}
+                {numberFormatter(row?.payment)}
               </TableCell>
               <TableCell align="right">
                 {numberFormatter(
-                  (parseFloat(row.price) || 0) - (parseFloat(row.payment) || 0),
+                  (parseFloat(row?.price) || 0) -
+                    (parseFloat(row?.payment) || 0),
                 )}
               </TableCell>
             </TableRow>
