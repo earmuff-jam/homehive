@@ -54,12 +54,12 @@ const manifestForPlugIn = {
 export default defineConfig({
   plugins: [
     react(),
-    VitePWA({
-      ...manifestForPlugIn,
-      devOptions: {
-        enabled: true,
-      },
-    }),
+    // VitePWA({
+    //   ...manifestForPlugIn,
+    //   devOptions: {
+    //     enabled: false,
+    //   },
+    // }),
 
     visualizer({ open: true }),
   ],

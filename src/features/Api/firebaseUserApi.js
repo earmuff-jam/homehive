@@ -7,7 +7,7 @@ import {
   generateUserWithRoleShape,
   setupStripe,
 } from "features/Auth/AuthHelper";
-import { getAuth, signOut } from "firebase/auth";
+import { signOut } from "firebase/auth";
 import {
   collection,
   deleteDoc,
@@ -18,7 +18,7 @@ import {
   setDoc,
   where,
 } from "firebase/firestore";
-import { authenticatorConfig, authenticatorFirestore as db } from "src/config";
+import { authenticatorApp, authenticatorFirestore as db } from "src/config";
 
 export const firebaseUserApi = createApi({
   reducerPath: "firebaseUserApi",
@@ -79,6 +79,7 @@ export const firebaseUserApi = createApi({
     authenticate: builder.mutation({
       async queryFn(isEsign = false) {
         try {
+          console.debug("Initializing configuration. Please wait ...");
           const userDetails = await authenticateViaGoogle();
           const userRef = doc(db, "users", userDetails?.uid);
           await setDoc(userRef, { ...userDetails }, { merge: true });
@@ -152,8 +153,7 @@ export const firebaseUserApi = createApi({
     logout: builder.mutation({
       async queryFn() {
         try {
-          const auth = getAuth(authenticatorConfig);
-          await signOut(auth);
+          await signOut(authenticatorApp);
           secureLocalStorage.removeItem("user");
           return { data: { success: true } };
         } catch (error) {

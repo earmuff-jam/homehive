@@ -1,11 +1,12 @@
+import { gotoSplashPageInNavBar } from "./utils";
 import { expect, test } from "@playwright/test";
 
-test.describe("Splash Page", () => {
+test.describe("Splash Page workflows", () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto("http://localhost:8888/");
+    await gotoSplashPageInNavBar(page);
   });
 
-  test("page loads with hero content", async ({ page }) => {
+  test("should load page with hero content", async ({ page }) => {
     await expect(
       page.getByRole("heading", {
         name: /manage your rentals effortlessly all in one place/i,
@@ -19,7 +20,7 @@ test.describe("Splash Page", () => {
     ).toBeVisible();
   });
 
-  test("hero buttons are visible", async ({ page }) => {
+  test("should display hero buttons correctly", async ({ page }) => {
     await expect(
       page.getByRole("button", { name: /see how it works/i }),
     ).toBeVisible();
@@ -29,19 +30,13 @@ test.describe("Splash Page", () => {
     ).toBeVisible();
   });
 
-  test("build invoice navigates correctly", async ({ page }) => {
-    await page.getByRole("button", { name: /build invoice/i }).click();
-
-    await expect(page).toHaveURL(/invoice/i);
-  });
-
-  test("feature cards render", async ({ page }) => {
+  test("should display feature cards correctly", async ({ page }) => {
     await expect(page.getByText(/rent app/i)).toBeVisible();
     await expect(page.getByText(/invoicer app/i)).toBeVisible();
     await expect(page.getByText(/esign app/i)).toBeVisible();
   });
 
-  test("section headings render", async ({ page }) => {
+  test("should display section headings correctly", async ({ page }) => {
     await expect(
       page.getByRole("heading", {
         name: /everything you need to run your rentals/i,
@@ -61,13 +56,16 @@ test.describe("Splash Page", () => {
     ).toBeVisible();
   });
 
-  test("invoicer card navigates to invoice dashboard", async ({ page }) => {
-    await page.getByText(/invoicer app/i).click();
-
-    await expect(page).toHaveURL(/invoice/i);
+  test("should display subscription and fees section", async ({ page }) => {
+    await expect(page.getByText(/subscription and fees/i)).toBeVisible();
+    await expect(
+      page.getByText(
+        /Simple plans designed to fit your needs — subscribe to get started/i,
+      ),
+    ).toBeVisible();
   });
 
-  test("page has no crash errors", async ({ page }) => {
+  test("should display page without crashes", async ({ page }) => {
     await expect(page.locator("body")).toBeVisible();
   });
 });

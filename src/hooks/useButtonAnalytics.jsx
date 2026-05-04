@@ -3,7 +3,8 @@ import { useLocation } from "react-router-dom";
 import dayjs from "dayjs";
 
 import { addDoc, collection } from "firebase/firestore";
-import { analyticsFirestore } from "src/config";
+
+// import { analyticsFirestore } from "src/config";
 
 /**
  * useButtonAnalytics ...
@@ -18,7 +19,7 @@ export const useButtonAnalytics = () => {
   const logClick = async (label) => {
     if (!label) return;
     try {
-      const analyticsCollection = collection(analyticsFirestore, "analytics");
+      const analyticsCollection = collection("analyticsFirestore", "analytics");
       await addDoc(analyticsCollection, {
         ipAddress: ipAddress?.ipAddress || "",
         label,

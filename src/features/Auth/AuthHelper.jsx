@@ -1,5 +1,10 @@
 import dayjs from "dayjs";
 
+import {
+  PropertiesRouteUri,
+  RentalRouteUri,
+  ViewEsignRouteUri,
+} from "common/utils";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { authenticatorApp } from "src/config";
 
@@ -71,4 +76,19 @@ export const generateUserWithRoleShape = (userData) => {
     role: userData?.role,
     email: userData?.email,
   };
+};
+
+// adaptiveRouteAuthentication ...
+// used only for Playwright tests; must be authenticated prior
+export const adaptiveRouteAuthentication = (user) => {
+  const emulatedUser = JSON.parse(user);
+  const isEsign = emulatedUser?.isEsign;
+  if (isEsign) {
+    window.location.replace(ViewEsignRouteUri);
+  } else {
+    const currentUserRole = emulatedUser?.data.role;
+    currentUserRole === Role.Tenant
+      ? window.location.replace(RentalRouteUri)
+      : window.location.replace(PropertiesRouteUri);
+  }
 };

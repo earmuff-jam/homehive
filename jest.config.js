@@ -16,6 +16,6 @@ export default {
   },
   testPathIgnorePatterns: [
     "/node_modules/",
-    "/tests/", // Add this - ignores the tests folder
+    "/tests/",
   ],
 };

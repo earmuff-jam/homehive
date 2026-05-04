@@ -25,12 +25,13 @@ import {
   fetchLoggedInUser,
 } from "common/utils";
 import { useAuthenticateMutation } from "features/Api/firebaseUserApi";
-import { Role } from "features/Auth/AuthHelper";
+import { Role, adaptiveRouteAuthentication } from "features/Auth/AuthHelper";
 import Pricing from "features/Layout/components/Pricing/Pricing";
 import Review from "features/Layout/components/Review/Review";
 import TitleCard from "features/Layout/components/TitleCard/TitleCard";
 import { useReveal } from "features/Layout/useReveal";
 import { useAppTitle } from "hooks/useAppTitle";
+import { shouldUseEmulatorForTesting } from "src/config";
 
 export default function SplashPage() {
   useAppTitle("Home");
@@ -42,6 +43,11 @@ export default function SplashPage() {
   const [authenticate, authenticateResult] = useAuthenticateMutation();
 
   const handleAuthenticate = ({ isEsign = false }) => {
+    // emulated users should already be authenticated
+    if (shouldUseEmulatorForTesting) {
+      adaptiveRouteAuthentication(user);
+    }
+
     if (!user?.uid) {
       authenticate(isEsign);
     } else if (isEsign) {

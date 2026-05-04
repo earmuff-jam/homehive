@@ -7,7 +7,7 @@ import dayjs from "dayjs";
 
 import { useGetCurrentIPAddressQuery } from "features/Api/analyticsApi";
 import { addDoc, collection } from "firebase/firestore";
-import { analyticsFirestore } from "src/config";
+// import { analyticsFirestore } from "src/config";
 
 /**
  * NavigationProvider ...
@@ -34,7 +34,7 @@ export const NavigationProvider = ({ children }) => {
       const logUserAnalyticsToFirestore = async () => {
         try {
           if (pathname) {
-            const analytics = collection(analyticsFirestore, "analytics");
+            const analytics = collection("analyticsFirestore", "analytics");
             await addDoc(analytics, {
               ipAddress: userIPAddress,
               url: pathname,
