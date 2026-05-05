@@ -373,7 +373,7 @@ const PdfEditor = () => {
     return signatureBoxes?.map((signatureBox, index) => ({
       document_index: 0,
       api_id: `sig_${index}`,
-      type: signatureBox.fieldType === "date" ? "text" : "signature",
+      type: signatureBox.fieldType === "date" ? "date" : "signature",
       signer:
         signatureBox?.signerId === "creator"
           ? 0
