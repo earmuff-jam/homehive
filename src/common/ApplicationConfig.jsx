@@ -2,9 +2,8 @@ import React from "react";
 
 import { Route } from "react-router-dom";
 
-import AuthenticationProvider from "features/Auth/FirebaseAuthProvider";
+import AuthenticationProvider from "features/Auth/AuthenticationProvider";
 import SubscriptionGuard from "features/Subscription/SubscriptionGuard";
-import ProtectedRoute from "features/Auth/ProtectedRoute";
 
 // authorizedServerLevelFeatureFlags ...
 // defines a function that returns a map of all valid feature flags in the app
@@ -63,13 +62,13 @@ export function buildAppRoutes(draftRoutes = []) {
       );
 
       const wrappedEl = requiresLogin ? (
-        <ProtectedRoute>
+        <AuthenticationProvider>
           {requiresSubscription ? (
             <SubscriptionGuard>{element}</SubscriptionGuard>
           ) : (
             element
           )}
-        </ProtectedRoute>
+        </AuthenticationProvider>
       ) : (
         element
       );
