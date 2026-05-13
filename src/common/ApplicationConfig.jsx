@@ -2,7 +2,7 @@ import React from "react";
 
 import { Route } from "react-router-dom";
 
-import AuthenticationProvider from "features/Auth/AuthenticationProvider";
+import AuthenticationGuard from "features/Auth/AuthenticationGuard";
 import SubscriptionGuard from "features/Subscription/SubscriptionGuard";
 
 // authorizedServerLevelFeatureFlags ...
@@ -62,13 +62,13 @@ export function buildAppRoutes(draftRoutes = []) {
       );
 
       const wrappedEl = requiresLogin ? (
-        <AuthenticationProvider>
+        <AuthenticationGuard>
           {requiresSubscription ? (
             <SubscriptionGuard>{element}</SubscriptionGuard>
           ) : (
             element
           )}
-        </AuthenticationProvider>
+        </AuthenticationGuard>
       ) : (
         element
       );
