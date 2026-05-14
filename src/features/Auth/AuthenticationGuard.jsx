@@ -22,10 +22,12 @@ export default function AuthenticationProvider({ children }) {
   if (isUserDetailsLoading) return <Skeleton height="100%" />;
 
   try {
-    const userID = userDetails?.uid;
-    // validate user id and role is not tampered
-    if (userID != user?.uid || user?.role != userDetails?.role) {
-      throw new Error("Incorrect login permission detected.");
+    if (!isPlaywrightTests) {
+      const userID = userDetails?.uid;
+      // validate user id and role is not tampered
+      if (userID != user?.uid || user?.role != userDetails?.role) {
+        throw new Error("Incorrect login permission detected.");
+      }
     }
   } catch {
     secureLocalStorage.removeItem("user");

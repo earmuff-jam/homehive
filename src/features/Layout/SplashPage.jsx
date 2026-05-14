@@ -36,12 +36,16 @@ export default function SplashPage() {
   useAppTitle("Home");
   const navigate = useNavigate();
   const user = fetchLoggedInUser();
-
   const { ref, visible } = useReveal();
 
   const [authenticate, authenticateResult] = useAuthenticateMutation();
 
   const handleAuthenticate = ({ isEsign = false }) => {
+    console.log({
+  user,
+  uid: user?.uid,
+  type: typeof user,
+});
     if (!user?.uid) {
       authenticate(isEsign);
     } else if (isEsign) {

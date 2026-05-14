@@ -74,9 +74,8 @@ export function createHelperSentences(verbStr, extraClauseStr) {
 export const fetchLoggedInUser = () => {
   const isPlaywrightEnvEnabled =
     typeof window !== "undefined" && window.PLAYWRIGHT_ENV_ENABLED == "true";
-
   return isPlaywrightEnvEnabled
-    ? localStorage.getItem("user")
+    ? JSON.parse(localStorage.getItem("user"))
     : secureLocalStorage.getItem("user");
 };
 

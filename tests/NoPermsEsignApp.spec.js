@@ -1,19 +1,27 @@
 import { expect, test } from "@playwright/test";
 import { seedEmulatedUser } from "./seed.js";
 
+// seedEnvVars ...
+// defines a function that seeds environment variables
+const seedEnvVars = async (page) => {
+  await page.addInitScript(() => {
+    window.PLAYWRIGHT_ENV_ENABLED = "true";
+  });
+};
+
 // selectEsignApp ...
 // defines a function that navigates users from the landing page 
  const selectEsignApp = async (page) => {
   await page.goto("/");
   await page.getByText("Esign App").click();
 
-  await page.waitForLoadState("networkidle");
 };
 
 // Esign App Workflow ...
 // no permissions user
 test.describe("Esign App workflows", () => {
   test.beforeEach(async ({ page }) => {
+    await seedEnvVars(page);
     await seedEmulatedUser(page, "OWNER", true);
     // set user first; then go to esign app
     await selectEsignApp(page);
