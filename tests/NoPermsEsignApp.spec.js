@@ -1,7 +1,4 @@
-import { authenticatorApp } from "../src/config";
-import { Role } from "../src/features/Auth/AuthHelper.jsx";
 import { expect, test } from "@playwright/test";
-import { signOut } from "firebase/auth";
 import { seedEmulatedUser } from "./seed.js";
 
 // selectEsignApp ...
@@ -17,13 +14,9 @@ import { seedEmulatedUser } from "./seed.js";
 // no permissions user
 test.describe("Esign App workflows", () => {
   test.beforeEach(async ({ page }) => {
-    await seedEmulatedUser(page, Role.Owner, true);
+    await seedEmulatedUser(page, "OWNER", true);
     // set user first; then go to esign app
     await selectEsignApp(page);
-  });
-
-  test.afterEach(async () => {
-    await signOut(authenticatorApp);
   });
 
   test("should load disclaimer on page init", async ({ page }) => {

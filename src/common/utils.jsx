@@ -1,6 +1,7 @@
 import React from "react";
 
 import secureLocalStorage from "react-secure-storage";
+
 import { Typography } from "@mui/material";
 
 export const HomeRouteUri = "/";
@@ -71,14 +72,13 @@ export function createHelperSentences(verbStr, extraClauseStr) {
 // defines a function where we return the user logged in values
 // in emulation mode; secureLocalStorage is unavailable due to node.js env
 export const fetchLoggedInUser = () => {
-
   const isPlaywrightEnvEnabled =
     typeof window !== "undefined" && window.PLAYWRIGHT_ENV_ENABLED == "true";
 
-    return isPlaywrightEnvEnabled ? localStorage.getItem("user")
+  return isPlaywrightEnvEnabled
+    ? localStorage.getItem("user")
     : secureLocalStorage.getItem("user");
 };
-
 
 // isBasePlanUser ...
 // defines a function to determine if a user is without a role
