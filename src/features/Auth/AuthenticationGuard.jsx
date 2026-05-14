@@ -11,7 +11,7 @@ import { useGetUserDataByIdQuery } from "features/Api/firebaseUserApi";
 export default function AuthenticationProvider({ children }) {
   const user = fetchLoggedInUser();
   const isPlaywrightTests =
-    typeof window !== "undefined" && window.BYEPASS_AUTH == "true";
+    typeof window !== "undefined" && window.PLAYWRIGHT_ENV_ENABLED == "true";
 
   const shouldSkip = isPlaywrightTests || !user?.uid;
   const { data: userDetails, isLoading: isUserDetailsLoading } =
