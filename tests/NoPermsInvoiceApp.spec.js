@@ -5,14 +5,16 @@ import { expect, test } from "@playwright/test";
 // defines a function that navigates users from the landing page 
  const selectInvoiceApp = async (page, linkName) => {
   await page.goto("/");
-  await page.getByText("Build Invoice").click();
+  const buildInvoiceBtn = page.getByText("Build Invoice");
+   await expect(buildInvoiceBtn).toBeVisible({ timeout: 10000 });
+ await buildInvoiceBtn.click();
   await expect(page.getByRole("heading", { name: /edit pdf/i })).toBeVisible();
   
   // traverse the nav bar after loading invoice app
   const button = page.getByRole("button", { name: linkName });
   await expect(button).toBeVisible({ timeout: 10000 });
   await button.click();
-
+  await page.waitForLoadState("networkidle");
 };
 
 // seedInvoiceStorage ...
@@ -478,6 +480,8 @@ test.describe("Invoice App workflows", () => {
     });
 
     test("can collapse and expand accordion", async ({ page }) => {
+      await page.waitForLoadState("networkidle");
+
       const firstQuestion = page.getByText("How do I create a new invoice?");
       const firstAnswer = page.getByText(
         /click on "edit invoice" from the left navigation bar/i,

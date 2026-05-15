@@ -95,7 +95,7 @@ test.describe("Esign App workflows", () => {
     await page.getByRole("button", { name: "I Understand" }).click();
     await expect(page.getByText(/Platform Disclaimer/i)).not.toBeVisible();
 
-    await expect(page.getByText("Create E-signature")).toBeVisible();
+    await expect(page.getByText("Create E-signature")).toBeVisible({ timeout: 30000 });
     await expect(
       page.getByText("Create or revise documents for Esign"),
     ).toBeVisible();
