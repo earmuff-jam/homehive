@@ -57,7 +57,7 @@ export default function Layout({
   const smScreenSizeAndHigher = useMediaQuery(theme.breakpoints.up("sm"));
   const lgScreenSizeAndHigher = useMediaQuery(theme.breakpoints.up("lg"));
 
-    const isSplashPage = currentUri === HomeRouteUri;
+  const isSplashPage = currentUri === HomeRouteUri;
   const defaultOpenDrawerState = smScreenSizeAndHigher ? true : false;
 
   const [dialog, setDialog] = useState(defaultDialog);
@@ -102,8 +102,8 @@ export default function Layout({
           py: 2,
           flexGrow: 1,
         }}
-      >       
-    {!isSplashPage && (
+      >
+        {!isSplashPage && (
           <NavBar
             openDrawer={openDrawer}
             handleDrawerClose={() => setOpenDrawer(false)}
@@ -114,10 +114,13 @@ export default function Layout({
         <Box
           sx={{
             transition: "margin-left 0.3s ease",
-            marginLeft: !isSplashPage ? openDrawer && lgScreenSizeAndHigher ? "300px" : "0px": "0px",
-            width:
-            !isSplashPage ?
-              openDrawer && lgScreenSizeAndHigher
+            marginLeft: !isSplashPage
+              ? openDrawer && lgScreenSizeAndHigher
+                ? "300px"
+                : "0px"
+              : "0px",
+            width: !isSplashPage
+              ? openDrawer && lgScreenSizeAndHigher
                 ? "calc(100% - 300px)"
                 : "100%"
               : "100%",
@@ -126,7 +129,7 @@ export default function Layout({
         >
           <Box sx={{ minHeight: "90vh" }}>
             {/* no breadcrumbs on splash page */}
-   { !isSplashPage && (
+            {!isSplashPage && (
               <>
                 <Banner />
                 <BreadCrumbs currentRoute={currentRoute} />
