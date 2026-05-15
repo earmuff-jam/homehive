@@ -1,5 +1,5 @@
-import { expect, test } from "@playwright/test";
 import { seedEmulatedUser } from "./seed.js";
+import { expect, test } from "@playwright/test";
 
 // seedEnvVars ...
 // defines a function that seeds environment variables
@@ -10,11 +10,10 @@ const seedEnvVars = async (page) => {
 };
 
 // selectEsignApp ...
-// defines a function that navigates users from the landing page 
- const selectEsignApp = async (page) => {
+// defines a function that navigates users from the landing page
+const selectEsignApp = async (page) => {
   await page.goto("/");
   await page.getByText("Esign App").click();
-
 };
 
 // Esign App Workflow ...
@@ -95,7 +94,14 @@ test.describe("Esign App workflows", () => {
     await page.getByRole("button", { name: "I Understand" }).click();
     await expect(page.getByText(/Platform Disclaimer/i)).not.toBeVisible();
 
-    await expect(page.getByText("Create E-signature")).toBeVisible({ timeout: 30000 });
+    // wait for the skeleton in CI
+    await expect(page.locator(".MuiSkeleton-root")).toHaveCount(0, {
+      timeout: 30000,
+    });
+
+    await expect(page.getByText("Create E-signature")).toBeVisible({
+      timeout: 30000,
+    });
     await expect(
       page.getByText("Create or revise documents for Esign"),
     ).toBeVisible();

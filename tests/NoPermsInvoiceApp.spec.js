@@ -2,14 +2,14 @@ import e2eMockData from "./mockConstants";
 import { expect, test } from "@playwright/test";
 
 // selectInvoiceApp ...
-// defines a function that navigates users from the landing page 
- const selectInvoiceApp = async (page, linkName) => {
+// defines a function that navigates users from the landing page
+const selectInvoiceApp = async (page, linkName) => {
   await page.goto("/");
   const buildInvoiceBtn = page.getByText("Build Invoice");
-   await expect(buildInvoiceBtn).toBeVisible({ timeout: 10000 });
- await buildInvoiceBtn.click();
+  await expect(buildInvoiceBtn).toBeVisible({ timeout: 10000 });
+  await buildInvoiceBtn.click();
   await expect(page.getByRole("heading", { name: /edit pdf/i })).toBeVisible();
-  
+
   // traverse the nav bar after loading invoice app
   const button = page.getByRole("button", { name: linkName });
   await expect(button).toBeVisible({ timeout: 10000 });
