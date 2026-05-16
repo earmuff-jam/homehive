@@ -36,7 +36,6 @@ export default function SplashPage() {
   useAppTitle("Home");
   const navigate = useNavigate();
   const user = fetchLoggedInUser();
-
   const { ref, visible } = useReveal();
 
   const [authenticate, authenticateResult] = useAuthenticateMutation();

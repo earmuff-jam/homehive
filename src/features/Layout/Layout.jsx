@@ -47,7 +47,6 @@ export default function Layout({
 }) {
   const theme = useTheme();
   const location = useLocation();
-
   const currentUri = location?.pathname || "";
   const currentRoute = routes.find((route) =>
     matchPath(route.path, currentUri),
@@ -58,6 +57,7 @@ export default function Layout({
   const smScreenSizeAndHigher = useMediaQuery(theme.breakpoints.up("sm"));
   const lgScreenSizeAndHigher = useMediaQuery(theme.breakpoints.up("lg"));
 
+  const isSplashPage = currentUri === HomeRouteUri;
   const defaultOpenDrawerState = smScreenSizeAndHigher ? true : false;
 
   const [dialog, setDialog] = useState(defaultDialog);
@@ -103,26 +103,33 @@ export default function Layout({
           flexGrow: 1,
         }}
       >
-        <NavBar
-          openDrawer={openDrawer}
-          handleDrawerClose={() => setOpenDrawer(false)}
-          smScreenSizeAndHigher={smScreenSizeAndHigher}
-          lgScreenSizeAndHigher={lgScreenSizeAndHigher}
-        />
+        {!isSplashPage && (
+          <NavBar
+            openDrawer={openDrawer}
+            handleDrawerClose={() => setOpenDrawer(false)}
+            smScreenSizeAndHigher={smScreenSizeAndHigher}
+            lgScreenSizeAndHigher={lgScreenSizeAndHigher}
+          />
+        )}
         <Box
           sx={{
             transition: "margin-left 0.3s ease",
-            marginLeft: openDrawer && lgScreenSizeAndHigher ? "300px" : "0px",
-            width:
-              openDrawer && lgScreenSizeAndHigher
+            marginLeft: !isSplashPage
+              ? openDrawer && lgScreenSizeAndHigher
+                ? "300px"
+                : "0px"
+              : "0px",
+            width: !isSplashPage
+              ? openDrawer && lgScreenSizeAndHigher
                 ? "calc(100% - 300px)"
-                : "100%",
+                : "100%"
+              : "100%",
             padding: "0rem 1rem",
           }}
         >
           <Box sx={{ minHeight: "90vh" }}>
             {/* no breadcrumbs on splash page */}
-            {currentUri !== HomeRouteUri && (
+            {!isSplashPage && (
               <>
                 <Banner />
                 <BreadCrumbs currentRoute={currentRoute} />

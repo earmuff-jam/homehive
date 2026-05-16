@@ -1,33 +1,21 @@
 import e2eMockData from "./mockConstants";
 import { expect, test } from "@playwright/test";
 
-// Roles and permissions that need to be worked out
-// 1. Admin can read everything. Admin roles are the highest priv.
-// There is no automatic way to do this, the only know way is by manual manipulation on the db.
-// 2. Property owners can only do stuffs that property owners are allowed to do.
-// Property owners are limited to subscriptions and must be managed by subscription. However, there might be a catch to
-// do this because the whole workflow is deterministic and requires backend support. We also need to have some support
-// for users with 3 different subscription model, maybe we can just mock it out like how we do it for others.
-// 3. Tenants are not limited to subscription, however they lack a lot of priv that property owners have. They are also
-// only limited to the selected property as well. If the tenant is removed from the property they can no longer view the property.
-// We also probably need a e2e test for that specific scenario.
-// 4. The subscription model is currently protective of only property owners and have no implications for Admins or Tenants. We have
-// a subscription guard that is responsible for managing that.
-// 5. Out of the three apps, only Rent app requies subscription. Others are not behind any sort of paywall. Invoice app is free to use,
-// whereas the Esign is pay per use. Rent app however requires subscription.
-
-// goToNavBarItem ...
-// defines a function that allows the application to start and redirects
-// the user to the Edit Invoice Page
-async function goToNavBarItem(page, linkName) {
+// selectInvoiceApp ...
+// defines a function that navigates users from the landing page
+const selectInvoiceApp = async (page, linkName) => {
   await page.goto("/");
-  await page.getByText("Invoice App").click();
+  const buildInvoiceBtn = page.getByText("Build Invoice");
+  await expect(buildInvoiceBtn).toBeVisible({ timeout: 10000 });
+  await buildInvoiceBtn.click();
+  await expect(page.getByRole("heading", { name: /edit pdf/i })).toBeVisible();
+
+  // traverse the nav bar after loading invoice app
   const button = page.getByRole("button", { name: linkName });
   await expect(button).toBeVisible({ timeout: 10000 });
   await button.click();
-
   await page.waitForLoadState("networkidle");
-}
+};
 
 // seedInvoiceStorage ...
 // defines a function that allows the app to seed some invoice data
@@ -48,7 +36,7 @@ test.describe("Invoice App workflows", () => {
   // edit an invoice
   test.describe("should be able to edit an invoice", () => {
     test.beforeEach(async ({ page }) => {
-      await goToNavBarItem(page, "Edit Invoice");
+      await selectInvoiceApp(page, "Edit Invoice");
     });
     test("select from dropdown", async ({ page }) => {
       await expect(page).toHaveURL(/edit/i);
@@ -129,7 +117,7 @@ test.describe("Invoice App workflows", () => {
   test.describe("should be able to view invoice app", () => {
     test.beforeEach(async ({ page }) => {
       await seedInvoiceStorage(page);
-      await goToNavBarItem(page, "View Invoice");
+      await selectInvoiceApp(page, "View Invoice");
     });
     test("with localStorage data", async ({ page }) => {
       await expect(page.getByText("Month of April")).toBeVisible();
@@ -177,7 +165,7 @@ test.describe("Invoice App workflows", () => {
   test.describe("should be able to attempt to print invoice", () => {
     test.beforeEach(async ({ page }) => {
       await seedInvoiceStorage(page);
-      await goToNavBarItem(page, "View Invoice");
+      await selectInvoiceApp(page, "View Invoice");
     });
 
     test("display menu options", async ({ page }) => {
@@ -242,7 +230,7 @@ test.describe("Invoice App workflows", () => {
   test.describe("should be able to view sender information", () => {
     test.beforeEach(async ({ page }) => {
       await seedInvoiceStorage(page);
-      await goToNavBarItem(page, "Sender");
+      await selectInvoiceApp(page, "Sender");
     });
     test("visible form fields", async ({ page }) => {
       await expect(
@@ -285,7 +273,7 @@ test.describe("Invoice App workflows", () => {
   test.describe("should be able to view reciever information", () => {
     test.beforeEach(async ({ page }) => {
       await seedInvoiceStorage(page);
-      await goToNavBarItem(page, "Reciever");
+      await selectInvoiceApp(page, "Reciever");
     });
     test("visible form fields", async ({ page }) => {
       await expect(
@@ -320,7 +308,7 @@ test.describe("Invoice App workflows", () => {
   // edit sender information
   test.describe("should be able to edit sender information", () => {
     test.beforeEach(async ({ page }) => {
-      await goToNavBarItem(page, "Sender");
+      await selectInvoiceApp(page, "Sender");
     });
     // catch all errors in form
     test("edit form fields", async ({ page }) => {
@@ -381,7 +369,7 @@ test.describe("Invoice App workflows", () => {
   // edit receiver information
   test.describe("should be able to edit reciever information", () => {
     test.beforeEach(async ({ page }) => {
-      await goToNavBarItem(page, "Reciever");
+      await selectInvoiceApp(page, "Reciever");
     });
     // catch all errors in form
     test("edit form fields", async ({ page }) => {
@@ -442,7 +430,7 @@ test.describe("Invoice App workflows", () => {
   // view help information
   test.describe("should be able to view help center", () => {
     test.beforeEach(async ({ page }) => {
-      await goToNavBarItem(page, "Help Center");
+      await selectInvoiceApp(page, "Help Center");
     });
 
     test("renders FAQ header content", async ({ page }) => {
@@ -492,6 +480,8 @@ test.describe("Invoice App workflows", () => {
     });
 
     test("can collapse and expand accordion", async ({ page }) => {
+      await page.waitForLoadState("networkidle");
+
       const firstQuestion = page.getByText("How do I create a new invoice?");
       const firstAnswer = page.getByText(
         /click on "edit invoice" from the left navigation bar/i,

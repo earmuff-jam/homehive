@@ -39,16 +39,6 @@ const authenticatorFirebaseConfig = {
   measurementId: import.meta.env.VITE_AUTH_FIREBASE_MEASUREMENTID,
 };
 
-// GeneralUserConfigValues ...
-export const GeneralUserConfigValues = {
-  StripeConnectionInstructionsLink: import.meta.env
-    .VITE_AUTH_STRIPE_CONNECTION_INSTRUCTIONS,
-  StripeConnectionIssuesInstructionLink: import.meta.env
-    .VITE_AUTH_STRIPE_CONNECTION_ISSUES_INSTRUCTIONS,
-  StripSecurityAndComplianceInstructionLink: import.meta.env
-    .VITE_AUTH_STRIPE_SECURITY_AND_COMPLIANCE,
-};
-
 // authenticatorConfig ...
 export const authenticatorConfig =
   getApps().find((app) => app.name === "AUTHENTICATOR") ||
