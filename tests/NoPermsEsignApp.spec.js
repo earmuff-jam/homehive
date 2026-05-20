@@ -16,6 +16,24 @@ const selectEsignApp = async (page) => {
   await page.getByText("Esign App").click();
 };
 
+// traverseNavBar ...
+// traverse the navigation bar with specific link
+const traverseNavBar = async (page, linkName) => {
+  const button = page.getByRole("button", { name: linkName });
+  await expect(button).toBeVisible({ timeout: 10000 });
+  await button.click();
+};
+
+// selectDisclaimerForEsignApp ...
+// defines a function that selects the disclaimer for the Esign App
+const selectDisclaimerForEsignApp = async (page) => {
+  await expect(page).toHaveURL(/documents/i);
+  await expect(page.getByText(/Platform Disclaimer/i)).toBeVisible();
+  await page.getByRole("checkbox").check();
+  await page.getByRole("button", { name: "I Understand" }).click();
+  await expect(page.getByText(/Platform Disclaimer/i)).not.toBeVisible();
+};
+
 // Esign App Workflow ...
 // no permissions user
 test.describe("Esign App workflows", () => {
@@ -88,12 +106,7 @@ test.describe("Esign App workflows", () => {
   test("should have proper details after accepting disclaimer", async ({
     page,
   }) => {
-    await expect(page).toHaveURL(/documents/i);
-    await expect(page.getByText(/Platform Disclaimer/i)).toBeVisible();
-    await page.getByRole("checkbox").check();
-    await page.getByRole("button", { name: "I Understand" }).click();
-    await expect(page.getByText(/Platform Disclaimer/i)).not.toBeVisible();
-
+    await selectDisclaimerForEsignApp(page);
     // wait for the skeleton in CI
     await expect(page.locator(".MuiSkeleton-root")).toHaveCount(0, {
       timeout: 30000,
@@ -102,6 +115,7 @@ test.describe("Esign App workflows", () => {
     await expect(page.getByText("Create E-signature")).toBeVisible({
       timeout: 30000,
     });
+
     await expect(
       page.getByText("Create or revise documents for Esign"),
     ).toBeVisible();
@@ -119,5 +133,77 @@ test.describe("Esign App workflows", () => {
     await expect(
       page.getByRole("button", { name: "Prepare Esign" }),
     ).toBeDisabled();
+  });
+
+  test("should be able to view the help center", async ({ page }) => {
+    await selectDisclaimerForEsignApp(page);
+    await traverseNavBar(page, "Help Center");
+
+    // test headings
+    await expect(
+      page.getByRole("heading", { name: /frequently asked questions/i }),
+    ).toBeVisible({ timeout: 10000 });
+
+    await expect(
+      page.getByText(/answers to common questions you may have/i),
+    ).toBeVisible();
+  });
+
+  test("should be able to view the questions under help center", async ({
+    page,
+  }) => {
+    await selectDisclaimerForEsignApp(page);
+    await traverseNavBar(page, "Help Center");
+
+    const questions = [
+      "How can I create a new Electronic Signature",
+      "Do I have to purchase tokens to send electronic signatures",
+      "How to add signers to the selected document",
+      "Can we use the default provided templates?",
+      "What is the difference between creator and other signers?",
+      "Do you send reminders if the document is not signed?",
+      "Is there a guide that I can follow?",
+      "How can I create a new Electronic Signature?",
+      "Do I have to purchase tokens to send electronic signatures?",
+      "How to add signers to the selected document?",
+      "Can we use the default provided templates?",
+      "What is the difference between creator and other signers?",
+      "Do you send reminders if the document is not signed?",
+      "Is there a guide that I can follow?",
+      "How can I create a new Electronic Signature?",
+      "Do I have to purchase tokens to send electronic signatures?",
+      "How to add signers to the selected document?",
+      "Can we use the default provided templates?",
+      "What is the difference between creator and other signers?",
+      "Do you send reminders if the document is not signed?",
+      "Is there a guide that I can follow?",
+      "How can I create a new Electronic Signature?",
+      "Do I have to purchase tokens to send electronic signatures?",
+      "How to add signers to the selected document?",
+      "Can we use the default provided templates?",
+      "What is the difference between creator and other signers?",
+      "Do you send reminders if the document is not signed?",
+      "Is there a guide that I can follow?",
+      "How can I create a new Electronic Signature?",
+      "Do I have to purchase tokens to send electronic signatures?",
+      "How to add signers to the selected document?",
+      "Can we use the default provided templates?",
+      "What is the difference between creator and other signers?",
+      "Do you send reminders if the document is not signed?",
+      "Is there a guide that I can follow?",
+    ];
+
+    for (const question of questions) {
+      await expect(page.getByText(question)).toBeVisible();
+    }
+  });
+
+  test("should have all accordions expanded by default", async ({ page }) => {
+    await selectDisclaimerForEsignApp(page);
+    await traverseNavBar(page, "Help Center");
+  });
+
+  test("should be able to select system provided pdfs", async ({ page }) => {
+    await selectDisclaimerForEsignApp(page);
   });
 });
