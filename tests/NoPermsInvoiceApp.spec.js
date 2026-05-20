@@ -3,18 +3,20 @@ import { expect, test } from "@playwright/test";
 
 // selectInvoiceApp ...
 // defines a function that navigates users from the landing page
-const selectInvoiceApp = async (page, linkName) => {
+const selectInvoiceApp = async (page) => {
   await page.goto("/");
   const buildInvoiceBtn = page.getByText("Build Invoice");
   await expect(buildInvoiceBtn).toBeVisible({ timeout: 10000 });
   await buildInvoiceBtn.click();
   await expect(page.getByRole("heading", { name: /edit pdf/i })).toBeVisible();
+};
 
-  // traverse the nav bar after loading invoice app
+// traverseNavBar ...
+// traverse the navigation bar for invoice app
+const traverseNavBar = async (page, linkName) => {
   const button = page.getByRole("button", { name: linkName });
   await expect(button).toBeVisible({ timeout: 10000 });
   await button.click();
-  await page.waitForLoadState("networkidle");
 };
 
 // seedInvoiceStorage ...
@@ -36,7 +38,8 @@ test.describe("Invoice App workflows", () => {
   // edit an invoice
   test.describe("should be able to edit an invoice", () => {
     test.beforeEach(async ({ page }) => {
-      await selectInvoiceApp(page, "Edit Invoice");
+      await selectInvoiceApp(page);
+      await traverseNavBar(page, "Edit Invoice");
     });
     test("select from dropdown", async ({ page }) => {
       await expect(page).toHaveURL(/edit/i);
@@ -117,9 +120,10 @@ test.describe("Invoice App workflows", () => {
   test.describe("should be able to view invoice app", () => {
     test.beforeEach(async ({ page }) => {
       await seedInvoiceStorage(page);
-      await selectInvoiceApp(page, "View Invoice");
+      await selectInvoiceApp(page);
     });
     test("with localStorage data", async ({ page }) => {
+      await traverseNavBar(page, "View Invoice");
       await expect(page.getByText("Month of April")).toBeVisible();
       await expect(
         page.getByText("Itemized bill for completed tasks"),
@@ -165,7 +169,8 @@ test.describe("Invoice App workflows", () => {
   test.describe("should be able to attempt to print invoice", () => {
     test.beforeEach(async ({ page }) => {
       await seedInvoiceStorage(page);
-      await selectInvoiceApp(page, "View Invoice");
+      await selectInvoiceApp(page);
+      await traverseNavBar(page, "View Invoice");
     });
 
     test("display menu options", async ({ page }) => {
@@ -230,7 +235,8 @@ test.describe("Invoice App workflows", () => {
   test.describe("should be able to view sender information", () => {
     test.beforeEach(async ({ page }) => {
       await seedInvoiceStorage(page);
-      await selectInvoiceApp(page, "Sender");
+      await selectInvoiceApp(page);
+      await traverseNavBar(page, "Sender");
     });
     test("visible form fields", async ({ page }) => {
       await expect(
@@ -273,7 +279,8 @@ test.describe("Invoice App workflows", () => {
   test.describe("should be able to view reciever information", () => {
     test.beforeEach(async ({ page }) => {
       await seedInvoiceStorage(page);
-      await selectInvoiceApp(page, "Reciever");
+      await selectInvoiceApp(page);
+      await traverseNavBar(page, "Reciever");
     });
     test("visible form fields", async ({ page }) => {
       await expect(
@@ -308,7 +315,9 @@ test.describe("Invoice App workflows", () => {
   // edit sender information
   test.describe("should be able to edit sender information", () => {
     test.beforeEach(async ({ page }) => {
-      await selectInvoiceApp(page, "Sender");
+      await selectInvoiceApp(page);
+      await traverseNavBar(page, "Sender");
+      await page.waitForLoadState("networkidle");
     });
     // catch all errors in form
     test("edit form fields", async ({ page }) => {
@@ -369,8 +378,10 @@ test.describe("Invoice App workflows", () => {
   // edit receiver information
   test.describe("should be able to edit reciever information", () => {
     test.beforeEach(async ({ page }) => {
-      await selectInvoiceApp(page, "Reciever");
+      await selectInvoiceApp(page);
+      await traverseNavBar(page, "Reciever");
     });
+
     // catch all errors in form
     test("edit form fields", async ({ page }) => {
       await page.getByRole("textbox", { name: /first name/i }).fill("Te");
@@ -430,7 +441,8 @@ test.describe("Invoice App workflows", () => {
   // view help information
   test.describe("should be able to view help center", () => {
     test.beforeEach(async ({ page }) => {
-      await selectInvoiceApp(page, "Help Center");
+      await selectInvoiceApp(page);
+      await traverseNavBar(page, "Help Center");
     });
 
     test("renders FAQ header content", async ({ page }) => {
