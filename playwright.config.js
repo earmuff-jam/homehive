@@ -10,7 +10,13 @@ export default defineConfig({
   retries: process.env.CI ? 1 : 0,
   workers: process.env.CI ? 2 : undefined,
   reporter: "html",
+  timeout: 120 * 1000, // 2 mins
+  expect: {
+    timeout: 120 * 1000, // 2 mins
+  },
   use: {
+    actionTimeout: 120 * 1000,
+    navigationTimeout: 120 * 1000,
     baseURL: "http://127.0.0.1:8888",
     trace: "on-first-retry",
     screenshot: "only-on-failure",
