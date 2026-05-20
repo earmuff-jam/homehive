@@ -13,14 +13,16 @@ const seedEnvVars = async (page) => {
 // defines a function that navigates users from the landing page
 const selectEsignApp = async (page) => {
   await page.goto("/");
+
+  await expect(page.getByText("Esign App")).toBeVisible();
   await page.getByText("Esign App").click();
 };
 
 // traverseNavBar ...
 // traverse the navigation bar with specific link
 const traverseNavBar = async (page, linkName) => {
-  const button = page.getByRole("button", { name: linkName });
-  await expect(button).toBeVisible({ timeout: 10000 });
+  const button = page.getByRole("button", { name: linkName, exact: true });
+  await expect(button).toBeVisible();
   await button.click();
 };
 
@@ -107,14 +109,7 @@ test.describe("Esign App workflows", () => {
     page,
   }) => {
     await selectDisclaimerForEsignApp(page);
-    // wait for the skeleton in CI
-    await expect(page.locator(".MuiSkeleton-root")).toHaveCount(0, {
-      timeout: 30000,
-    });
-
-    await expect(page.getByText("Create E-signature")).toBeVisible({
-      timeout: 30000,
-    });
+    await expect(page.getByText("Create E-signature")).toBeVisible();
 
     await expect(
       page.getByText("Create or revise documents for Esign"),
@@ -142,7 +137,7 @@ test.describe("Esign App workflows", () => {
     // test headings
     await expect(
       page.getByRole("heading", { name: /frequently asked questions/i }),
-    ).toBeVisible({ timeout: 10000 });
+    ).toBeVisible();
 
     await expect(
       page.getByText(/answers to common questions you may have/i),
@@ -163,34 +158,6 @@ test.describe("Esign App workflows", () => {
       "What is the difference between creator and other signers?",
       "Do you send reminders if the document is not signed?",
       "Is there a guide that I can follow?",
-      "How can I create a new Electronic Signature?",
-      "Do I have to purchase tokens to send electronic signatures?",
-      "How to add signers to the selected document?",
-      "Can we use the default provided templates?",
-      "What is the difference between creator and other signers?",
-      "Do you send reminders if the document is not signed?",
-      "Is there a guide that I can follow?",
-      "How can I create a new Electronic Signature?",
-      "Do I have to purchase tokens to send electronic signatures?",
-      "How to add signers to the selected document?",
-      "Can we use the default provided templates?",
-      "What is the difference between creator and other signers?",
-      "Do you send reminders if the document is not signed?",
-      "Is there a guide that I can follow?",
-      "How can I create a new Electronic Signature?",
-      "Do I have to purchase tokens to send electronic signatures?",
-      "How to add signers to the selected document?",
-      "Can we use the default provided templates?",
-      "What is the difference between creator and other signers?",
-      "Do you send reminders if the document is not signed?",
-      "Is there a guide that I can follow?",
-      "How can I create a new Electronic Signature?",
-      "Do I have to purchase tokens to send electronic signatures?",
-      "How to add signers to the selected document?",
-      "Can we use the default provided templates?",
-      "What is the difference between creator and other signers?",
-      "Do you send reminders if the document is not signed?",
-      "Is there a guide that I can follow?",
     ];
 
     for (const question of questions) {
@@ -201,9 +168,46 @@ test.describe("Esign App workflows", () => {
   test("should have all accordions expanded by default", async ({ page }) => {
     await selectDisclaimerForEsignApp(page);
     await traverseNavBar(page, "Help Center");
+
+    await expect(
+      page.getByRole("heading", { name: /frequently asked questions/i }),
+    ).toBeVisible();
+
+    const firstQuestion = page.getByText(
+      "How can I create a new Electronic Signature",
+    );
+    const firstAnswer = page.getByText(
+      'Click on "Upload Files" button and ensure all fields are filled out. Place respective signature fields and date fields. Once done, press "Prepare Esign" to send the documents for electronic signatures.',
+    );
+
+    await expect(firstAnswer).toBeVisible();
+
+    await firstQuestion.click();
+    await expect(firstAnswer).not.toBeVisible();
+
+    await firstQuestion.click();
+    await expect(firstAnswer).toBeVisible();
+
+    await expect(
+      page.getByRole("button").filter({ hasText: /\?/ }),
+    ).toHaveCount(7);
   });
 
   test("should be able to select system provided pdfs", async ({ page }) => {
     await selectDisclaimerForEsignApp(page);
+    await traverseNavBar(page, "Esign");
+
+    const systemProvidedPdfButtonsFields = [
+      "Lease Agreement",
+      "Lease Extension",
+      "Early Termination",
+      "Lease Renewal",
+    ];
+
+    for (const question of systemProvidedPdfButtonsFields) {
+      const button = page.getByRole("button", { name: question, exact: true });
+      await expect(button).toBeVisible();
+      await expect(button).not.toBeDisabled();
+    }
   });
 });

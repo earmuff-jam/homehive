@@ -26,9 +26,7 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: process.env.CI
-      ? "npm run build && npm run preview"
-      : "netlify dev",
+    command: "npm run build && npm run preview",
     url: "http://127.0.0.1:8888",
     timeout: 120000,
     reuseExistingServer: !process.env.CI,
