@@ -408,11 +408,12 @@ test.describe("Esign App workflows", () => {
           .click();
       }
 
-      const creatorChipSelector = await page.getByRole("button", {
+      const creatorButton = page.getByRole("button", {
         name: "Creator",
+        exact: true,
       });
 
-      await expect(creatorChipSelector).click();
+      await creatorButton.click();
 
       const addNewSignerButton = page.getByRole("button", {
         name: "Add new signer",
