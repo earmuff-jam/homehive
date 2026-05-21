@@ -30,6 +30,56 @@ const traverseNavBar = async (page, linkName) => {
   await button.click();
 };
 
+// toggleSelectedBtnEl ...
+// defines a function that allows the testing env to toggle betn signature and date
+const toggleSelectedBtnEl = async (page, selectedBtnEl) => {
+  const selectedButtonEl = page.getByRole("button", {
+    name: selectedBtnEl,
+    exact: true,
+  });
+
+  await selectedButtonEl.click();
+};
+
+// validateSelectedSignerDetails ...
+// defines a function that allows to test the input of selected signer details
+const validateSelectedSignerDetails = async (page, headerText) => {
+  await expect(
+    page.getByRole("heading", {
+      name: headerText,
+      level: 5,
+    }),
+  ).toBeVisible();
+
+  await expect(page.getByText("Name", { exact: true })).toBeVisible();
+  await expect(page.getByText("Email", { exact: true })).toBeVisible();
+
+  await page.getByRole("textbox", { name: /name/i }).fill("Te");
+  await page.getByRole("textbox", { name: /email/i }).fill("Te");
+
+  // ensure errors are captured
+  await expect(
+    page.getByText(/Full name must be more than 3 characters/i),
+  ).toBeVisible();
+
+  await expect(page.getByText(/Enter a valid email address/i)).toBeVisible();
+
+  const submitButton = page.getByRole("button", {
+    name: "Submit",
+    exact: true,
+  });
+
+  await expect(submitButton).toBeDisabled();
+
+  await page.getByRole("textbox", { name: /name/i }).fill("Test User");
+  await page
+    .getByRole("textbox", { name: /email/i })
+    .fill("TestUser@gmail.com");
+
+  await expect(submitButton).not.toBeDisabled();
+  await submitButton.click();
+};
+
 // selectDisclaimerForEsignApp ...
 // defines a function that selects the disclaimer for the Esign App
 const selectDisclaimerForEsignApp = async (page) => {
@@ -91,7 +141,7 @@ test.describe("Esign App workflows", () => {
       ).toBeVisible();
     });
 
-    await test.step("verify accordions", async () => {
+    await test.step("should be able to verify help and support", async () => {
       const firstQuestion = page.getByText(
         "How can I create a new Electronic Signature",
       );
@@ -105,7 +155,7 @@ test.describe("Esign App workflows", () => {
       await expect(firstAnswer).not.toBeVisible();
     });
 
-    await test.step("go back to esign", async () => {
+    await test.step("should be able to verify system provided pdf", async () => {
       await traverseNavBar(page, "Esign");
       await selectDisclaimerForEsignApp(page);
 
@@ -125,197 +175,151 @@ test.describe("Esign App workflows", () => {
         ).toBeVisible();
       }
     });
-    // test headings
-    await expect(
-      page.getByRole("heading", { name: /frequently asked questions/i }),
-    ).toBeVisible();
 
-    await expect(
-      page.getByText(/answers to common questions you may have/i),
-    ).toBeVisible();
+    await test.step("should be able to view and interact with frequently asked questions", async () => {
+      await traverseNavBar(page, "Help Center");
 
-    test.afterAll(async () => {
-      await page.close();
+      // test headings
+      await expect(
+        page.getByRole("heading", { name: /frequently asked questions/i }),
+      ).toBeVisible();
+
+      await expect(
+        page.getByText(/answers to common questions you may have/i),
+      ).toBeVisible();
+
+      const firstQuestion = page.getByText(
+        "How can I create a new Electronic Signature",
+      );
+
+      const firstAnswer = page.getByText(/Click on "Upload Files" button/i);
+
+      await expect(firstAnswer).toBeVisible();
+
+      await firstQuestion.click();
+
+      await expect(firstAnswer).not.toBeVisible();
     });
 
-    test("should be able to render esign correctly", async () => {
-      await test.step("verify dashboard", async () => {
-        await expect(page.getByText("Create E-signature")).toBeVisible();
+    await test.step("should be able to interact with system provided pdf buttons", async () => {
+      await traverseNavBar(page, "Esign");
 
-        await expect(
-          page.getByRole("button", { name: "Upload files" }),
-        ).toBeEnabled();
-      });
+      await selectDisclaimerForEsignApp(page);
 
-      await test.step("open help center", async () => {
-        await traverseNavBar(page, "Help Center");
+      const buttons = [
+        "Lease Agreement",
+        "Lease Extension",
+        "Early Termination",
+        "Lease Renewal",
+      ];
 
-        await expect(
-          page.getByRole("heading", {
-            name: /frequently asked questions/i,
-          }),
-        ).toBeVisible();
-      });
-
-      await test.step("should be able to view and interact with frequently asked questions", async () => {
-        const firstQuestion = page.getByText(
-          "How can I create a new Electronic Signature",
-        );
-
-        const firstAnswer = page.getByText(/Click on "Upload Files" button/i);
-
-        await expect(firstAnswer).toBeVisible();
-
-        await firstQuestion.click();
-
-        await expect(firstAnswer).not.toBeVisible();
-      });
-
-      await test.step("should be able to interact with system provided pdf buttons", async () => {
-        await traverseNavBar(page, "Esign");
-
-        await selectDisclaimerForEsignApp(page);
-
-        const buttons = [
-          "Lease Agreement",
-          "Lease Extension",
-          "Early Termination",
-          "Lease Renewal",
-        ];
-
-        for (const name of buttons) {
-          await expect(
-            page.getByRole("button", {
-              name,
-              exact: true,
-            }),
-          ).toBeVisible();
-        }
-      });
-
-      await test.step("should be able to interact with signers for a selected pdf", async () => {
-        await page
-          .getByRole("button", {
-            name: "Lease Agreement",
-          })
-          .click();
-
+      for (const name of buttons) {
         await expect(
           page.getByRole("button", {
-            name: "Creator",
+            name,
             exact: true,
           }),
         ).toBeVisible();
+      }
+    });
 
-        const addNewSignerButton = page.getByRole("button", {
-          name: "Add new signer",
-          exact: true,
-        });
+    await test.step("should be able to interact with signers for a selected pdf", async () => {
+      await page
+        .getByRole("button", {
+          name: "Lease Agreement",
+        })
+        .click();
 
-        await expect(addNewSignerButton).toBeVisible();
-
-        await expect(
-          page.getByText(
-            "Select a signer above, then click and drag on the PDF to place their signature box.",
-          ),
-        ).toBeVisible();
-
-        const creatorButton = page.getByRole("button", {
+      await expect(
+        page.getByRole("button", {
           name: "Creator",
           exact: true,
-        });
+        }),
+      ).toBeVisible();
 
-        await creatorButton.click();
-
-        await expect(
-          page.getByText(
-            "Select a different name above to switch or add new signer",
-          ),
-        ).toBeVisible();
-
-        const signatureButton = page.getByRole("button", {
-          name: "Signature",
-          exact: true,
-        });
-
-        await signatureButton.click();
-
-        await expect(
-          page.getByText(
-            "Placing signature for Creator — click and drag on the PDF below to place their signature box. Select a different name above to switch.",
-          ),
-        ).toBeVisible();
-
-        const dateButton = page.getByRole("button", {
-          name: "Date",
-          exact: true,
-        });
-
-        await dateButton.click();
-
-        await expect(
-          page.getByText(
-            "Placing date for Creator  — click and drag on the PDF below to place their date box. Select a different name above to switch.",
-          ),
-        ).toBeVisible();
-
-        await expect(
-          page.getByRole("heading", {
-            name: "Edit Creator",
-            level: 5,
-          }),
-        ).toBeVisible();
-
-        await expect(page.getByText("Name", { exact: true })).toBeVisible();
-        await expect(page.getByText("Email", { exact: true })).toBeVisible();
-
-        await page.getByRole("textbox", { name: /name/i }).fill("Te");
-        await page.getByRole("textbox", { name: /email/i }).fill("Te");
-
-        // ensure errors are captured
-        await expect(
-          page.getByText(/Full name must be more than 3 characters/i),
-        ).toBeVisible();
-
-        await expect(
-          page.getByText(/Enter a valid email address/i),
-        ).toBeVisible();
-
-        const submitButton = page.getByRole("button", {
-          name: "Submit",
-          exact: true,
-        });
-
-        await expect(submitButton).toBeDisabled();
-
-        await page.getByRole("textbox", { name: /name/i }).fill("Test User");
-        await page
-          .getByRole("textbox", { name: /email/i })
-          .fill("TestUser@gmail.com");
-
-        await expect(submitButton).not.toBeDisabled();
-        await submitButton.click();
-
-        await addNewSignerButton.click();
-
-        const signerOneButton = page.getByRole("button", {
-          name: "Signer 1",
-          exact: true,
-        });
-
-        await signerOneButton.click();
-
-        await expect(page.getByText("Name", { exact: true })).toBeVisible();
-        await expect(page.getByText("Email", { exact: true })).toBeVisible();
-
-        await expect(
-          page.getByPlaceholder("The name of the signer. Eg, Jane Smith"),
-        ).toHaveValue("");
-
-        await expect(
-          page.getByPlaceholder("The email address of the signer"),
-        ).toHaveValue("");
+      const addNewSignerButton = page.getByRole("button", {
+        name: "Add new signer",
+        exact: true,
       });
+
+      await expect(addNewSignerButton).toBeVisible();
+
+      await expect(
+        page.getByText(
+          "Select a signer above, then click and drag on the PDF to place their signature box.",
+        ),
+      ).toBeVisible();
+
+      const creatorButton = page.getByRole("button", {
+        name: "Creator",
+        exact: true,
+      });
+
+      await creatorButton.click();
+
+      await expect(
+        page.getByText(
+          "Select a different name above to switch or add new signer",
+        ),
+      ).toBeVisible();
+
+      await toggleSelectedBtnEl(page, "Signature");
+
+      await expect(
+        page.getByText(
+          "Placing signature for Creator — click and drag on the PDF below to place their signature box. Select a different name above to switch.",
+        ),
+      ).toBeVisible();
+
+      await toggleSelectedBtnEl(page, "Date");
+
+      await expect(
+        page.getByText(
+          "Placing date for Creator  — click and drag on the PDF below to place their date box. Select a different name above to switch.",
+        ),
+      ).toBeVisible();
+
+      await validateSelectedSignerDetails(page, "Edit Creator");
+
+      await addNewSignerButton.click();
+
+      const signerOneButton = page.getByRole("button", {
+        name: "Signer 1",
+        exact: true,
+      });
+
+      await signerOneButton.click();
+
+      await expect(page.getByText("Name", { exact: true })).toBeVisible();
+      await expect(page.getByText("Email", { exact: true })).toBeVisible();
+
+      await expect(
+        page.getByPlaceholder("The name of the signer. Eg, Jane Smith"),
+      ).toHaveValue("");
+
+      await expect(
+        page.getByPlaceholder("The email address of the signer"),
+      ).toHaveValue("");
+
+      await toggleSelectedBtnEl(page, "Signature");
+
+      await expect(
+        page.getByText(
+          "Placing signature for Signer 1  — click and drag on the PDF below to place their signature box. Select a different name above to switch.",
+        ),
+      ).toBeVisible();
+
+      await toggleSelectedBtnEl(page, "Date");
+
+      await expect(
+        page.getByText(
+          "Placing date for Signer 1  — click and drag on the PDF below to place their date box. Select a different name above to switch.",
+        ),
+      ).toBeVisible();
+
+      await validateSelectedSignerDetails(page, "Edit Signer 1");
+
+      await addNewSignerButton.click();
     });
   });
 });
