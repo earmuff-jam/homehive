@@ -54,6 +54,17 @@ const validateSelectedSignerDetails = async (page, headerText) => {
   await expect(page.getByText("Name", { exact: true })).toBeVisible();
   await expect(page.getByText("Email", { exact: true })).toBeVisible();
 
+  await expect(
+    page.getByPlaceholder("The name of the signer. Eg, Jane Smith"),
+  ).toHaveValue("");
+
+  await expect(
+    page.getByPlaceholder("The email address of the signer"),
+  ).toHaveValue("");
+
+  await expect(page.getByText("Name", { exact: true })).toBeVisible();
+  await expect(page.getByText("Email", { exact: true })).toBeVisible();
+
   await page.getByRole("textbox", { name: /name/i }).fill("Te");
   await page.getByRole("textbox", { name: /email/i }).fill("Te");
 
@@ -98,6 +109,24 @@ const selectDisclaimerForEsignApp = async (page) => {
   await expect(page.getByText(/Platform Disclaimer/i)).not.toBeVisible();
 };
 
+// validateSignatureSelectorDetails ...
+// defines a function that validates text and other selectors based on signer
+const validateSignatureSelectorDetails = async (page, signer) => {
+  await expect(
+    page.getByText("Select a different name above to switch or add new signer"),
+  ).toBeVisible();
+
+  await toggleSelectedBtnEl(page, "Signature");
+
+  const formattedSignaturePlacementText = `Placing signature for ${signer} — click and drag on the PDF below to place their signature box. Select a different name above to switch.`;
+  await expect(page.getByText(formattedSignaturePlacementText)).toBeVisible();
+
+  await toggleSelectedBtnEl(page, "Date");
+
+  const formattedDatePlacementText = `Placing date for ${signer} — click and drag on the PDF below to place their date box. Select a different name above to switch.`;
+  await expect(page.getByText(formattedDatePlacementText)).toBeVisible();
+};
+
 // Esign App Workflow ...
 // no permissions user
 test.describe("Esign App workflows", () => {
@@ -129,6 +158,12 @@ test.describe("Esign App workflows", () => {
           name: "Upload files",
         }),
       ).toBeEnabled();
+
+      await expect(
+        page.getByRole("button", {
+          name: "Prepare Esign",
+        }),
+      ).not.toBeEnabled();
     });
 
     await test.step("should be able to view esign help center", async () => {
@@ -257,28 +292,7 @@ test.describe("Esign App workflows", () => {
 
       await creatorButton.click();
 
-      await expect(
-        page.getByText(
-          "Select a different name above to switch or add new signer",
-        ),
-      ).toBeVisible();
-
-      await toggleSelectedBtnEl(page, "Signature");
-
-      await expect(
-        page.getByText(
-          "Placing signature for Creator — click and drag on the PDF below to place their signature box. Select a different name above to switch.",
-        ),
-      ).toBeVisible();
-
-      await toggleSelectedBtnEl(page, "Date");
-
-      await expect(
-        page.getByText(
-          "Placing date for Creator  — click and drag on the PDF below to place their date box. Select a different name above to switch.",
-        ),
-      ).toBeVisible();
-
+      await validateSignatureSelectorDetails(page, "Creator");
       await validateSelectedSignerDetails(page, "Edit Creator");
 
       await addNewSignerButton.click();
@@ -290,36 +304,136 @@ test.describe("Esign App workflows", () => {
 
       await signerOneButton.click();
 
-      await expect(page.getByText("Name", { exact: true })).toBeVisible();
-      await expect(page.getByText("Email", { exact: true })).toBeVisible();
-
-      await expect(
-        page.getByPlaceholder("The name of the signer. Eg, Jane Smith"),
-      ).toHaveValue("");
-
-      await expect(
-        page.getByPlaceholder("The email address of the signer"),
-      ).toHaveValue("");
-
       await toggleSelectedBtnEl(page, "Signature");
 
-      await expect(
-        page.getByText(
-          "Placing signature for Signer 1  — click and drag on the PDF below to place their signature box. Select a different name above to switch.",
-        ),
-      ).toBeVisible();
-
-      await toggleSelectedBtnEl(page, "Date");
-
-      await expect(
-        page.getByText(
-          "Placing date for Signer 1  — click and drag on the PDF below to place their date box. Select a different name above to switch.",
-        ),
-      ).toBeVisible();
-
+      await validateSignatureSelectorDetails(page, "Signer 1");
       await validateSelectedSignerDetails(page, "Edit Signer 1");
 
       await addNewSignerButton.click();
+
+      const signerTwoButton = page.getByRole("button", {
+        name: "Signer 2",
+        exact: true,
+      });
+
+      await signerTwoButton.click();
+
+      await toggleSelectedBtnEl(page, "Signature");
+
+      await validateSignatureSelectorDetails(page, "Signer 2");
+      await validateSelectedSignerDetails(page, "Edit Signer 2");
+
+      await addNewSignerButton.click();
+
+      const signerThreeButton = page.getByRole("button", {
+        name: "Signer 3",
+        exact: true,
+      });
+
+      await signerThreeButton.click();
+
+      await toggleSelectedBtnEl(page, "Signature");
+
+      await validateSignatureSelectorDetails(page, "Signer 3");
+      await validateSelectedSignerDetails(page, "Edit Signer 3");
+
+      await addNewSignerButton.click();
+
+      const signerFourButton = page.getByRole("button", {
+        name: "Signer 4",
+        exact: true,
+      });
+
+      await signerFourButton.click();
+
+      await toggleSelectedBtnEl(page, "Signature");
+
+      await validateSignatureSelectorDetails(page, "Signer 4");
+      await validateSelectedSignerDetails(page, "Edit Signer 4");
+
+      // disable add new signer after 4 subsequent signers
+      await expect(addNewSignerButton).not.toBeEnabled();
+    });
+
+    // test dialog box for prepare esign
+    await test.step("should be able to verify signer and selected box fields", async () => {
+      const prepareEsignBtn = page.getByRole("button", {
+        name: "Prepare Esign",
+      });
+
+      await expect(prepareEsignBtn).toBeEnabled();
+
+      await prepareEsignBtn.click();
+
+      await expect(
+        page.getByRole("heading", {
+          name: "Send document to signers?",
+          level: 2,
+        }),
+      ).toBeVisible();
+
+      await expect(
+        page.getByText(
+          "You have 5 signers but 0 signature boxes. Is this correct?",
+        ),
+      ).toBeVisible();
+
+      await expect(
+        page.getByText("You have 5 signers but 0 date boxes. Is this correct?"),
+      ).toBeVisible();
+
+      await expect(
+        page.getByText(
+          "Missing required fields. Please ensure full name and email is filled out for each signer including the Creator.",
+        ),
+      ).not.toBeVisible();
+
+      const cancelButton = page.getByRole("button", { name: "Cancel" });
+      await expect(cancelButton).toBeEnabled();
+
+      const confirmButton = page.getByRole("button", { name: "Confirm" });
+      await expect(confirmButton).not.toBeEnabled();
+
+      await cancelButton.click();
+
+      const secondarySigners = ["Signer 1", "Signer 2", "Signer 3", "Signer 4"];
+
+      for (const chipSelector of secondarySigners) {
+        await page
+          .getByRole("button", {
+            name: chipSelector,
+            exact: true,
+          })
+          .locator(".MuiChip-deleteIcon")
+          .click();
+      }
+
+      const creatorChipSelector = await page.getByRole("button", {
+        name: "Creator",
+      });
+
+      await expect(creatorChipSelector).click();
+
+      const addNewSignerButton = page.getByRole("button", {
+        name: "Add new signer",
+      });
+
+      await expect(addNewSignerButton).toBeEnabled();
+
+      // remove some signer details so we can catch the error
+      await page.getByRole("textbox", { name: /name/i }).fill("");
+      await page.getByRole("textbox", { name: /email/i }).fill("");
+
+      await expect(prepareEsignBtn).toBeEnabled();
+      await prepareEsignBtn.click();
+
+      await expect(
+        page.getByText("Action consumes 1 non-refundable token. Proceed?"),
+      ).toBeVisible();
+
+      await expect(
+        page.getByText("Not enough tokens to send electronic signature."),
+      ).toBeVisible();
     });
   });
 });
