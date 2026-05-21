@@ -71,6 +71,7 @@ test.describe("Esign App workflows", () => {
 
   test("should be able to render esign correctly", async () => {
     await test.step("should be able to display esign landing page", async () => {
+      await traverseNavBar(page, "Esign");
       await expect(page.getByText("Create E-signature")).toBeVisible();
 
       await expect(
@@ -89,7 +90,6 @@ test.describe("Esign App workflows", () => {
         }),
       ).toBeVisible();
     });
-    await expect(page.getByText("Create E-signature")).toBeVisible();
 
     await test.step("verify accordions", async () => {
       const firstQuestion = page.getByText(
