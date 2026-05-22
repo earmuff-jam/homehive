@@ -41,6 +41,24 @@ const toggleSelectedBtnEl = async (page, selectedBtnEl) => {
   await selectedButtonEl.click();
 };
 
+// selectDisclaimerForEsignApp ...
+// defines a function that selects the disclaimer for the Esign App
+const selectDisclaimerForEsignApp = async (page) => {
+  await expect(page).toHaveURL(/documents/i);
+
+  await expect(page.getByText(/Platform Disclaimer/i)).toBeVisible();
+
+  await page.getByRole("checkbox").check();
+
+  await page
+    .getByRole("button", {
+      name: "I Understand",
+    })
+    .click();
+
+  await expect(page.getByText(/Platform Disclaimer/i)).not.toBeVisible();
+};
+
 // validateSelectedSignerDetails ...
 // defines a function that allows to test the input of selected signer details
 const validateSelectedSignerDetails = async (page, headerText) => {
@@ -89,24 +107,6 @@ const validateSelectedSignerDetails = async (page, headerText) => {
 
   await expect(submitButton).not.toBeDisabled();
   await submitButton.click();
-};
-
-// selectDisclaimerForEsignApp ...
-// defines a function that selects the disclaimer for the Esign App
-const selectDisclaimerForEsignApp = async (page) => {
-  await expect(page).toHaveURL(/documents/i);
-
-  await expect(page.getByText(/Platform Disclaimer/i)).toBeVisible();
-
-  await page.getByRole("checkbox").check();
-
-  await page
-    .getByRole("button", {
-      name: "I Understand",
-    })
-    .click();
-
-  await expect(page.getByText(/Platform Disclaimer/i)).not.toBeVisible();
 };
 
 // validateSignatureSelectorDetails ...
@@ -259,6 +259,12 @@ test.describe("Esign App workflows", () => {
     });
 
     await test.step("should be able to interact with signers for a selected pdf", async () => {
+      const prepareEsignBtn = page.getByRole("button", {
+        name: "Prepare Esign",
+      });
+
+      await expect(prepareEsignBtn).toBeDisabled();
+
       await page
         .getByRole("button", {
           name: "Lease Agreement",
@@ -272,12 +278,40 @@ test.describe("Esign App workflows", () => {
         }),
       ).toBeVisible();
 
-      const addNewSignerButton = page.getByRole("button", {
-        name: "Add new signer",
-        exact: true,
-      });
+      await expect(prepareEsignBtn).toBeEnabled();
+      await prepareEsignBtn.click();
 
-      await expect(addNewSignerButton).toBeVisible();
+      await expect(
+        page.getByText("Action consumes 1 non-refundable token. Proceed?"),
+      ).toBeVisible();
+
+      await expect(
+        page.getByText(
+          "You have 1 signers but 0 signature boxes. Is this correct?",
+        ),
+      ).toBeVisible();
+
+      await expect(
+        page.getByText("You have 1 signers but 0 date boxes. Is this correct?"),
+      ).toBeVisible();
+
+      await expect(
+        page.getByText(
+          "Missing required fields. Please ensure full name and email is filled out for each signer including the Creator.",
+        ),
+      ).toBeVisible();
+
+      await expect(
+        page.getByText("Not enough tokens to send electronic signature."),
+      ).toBeVisible();
+
+      const cancelButton = page.getByRole("button", { name: "Cancel" });
+      await expect(cancelButton).toBeEnabled();
+
+      const confirmButton = page.getByRole("button", { name: "Confirm" });
+      await expect(confirmButton).not.toBeEnabled();
+
+      await cancelButton.click();
 
       await expect(
         page.getByText(
@@ -294,6 +328,13 @@ test.describe("Esign App workflows", () => {
 
       await validateSignatureSelectorDetails(page, "Creator");
       await validateSelectedSignerDetails(page, "Edit Creator");
+
+      const addNewSignerButton = page.getByRole("button", {
+        name: "Add new signer",
+        exact: true,
+      });
+
+      await expect(addNewSignerButton).toBeVisible();
 
       await addNewSignerButton.click();
 
