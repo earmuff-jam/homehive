@@ -168,7 +168,14 @@ export default function NavBar({
                     >
                       {icon}
                     </ListItemIcon>
-                    <ListItemText primary={label} />
+                    <ListItemText
+                      primary={label}
+                      slotProps={{
+                        primary: {
+                          variant: "caption",
+                        },
+                      }}
+                    />
                   </ListItemButton>
                 )
               );

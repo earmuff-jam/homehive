@@ -18,7 +18,6 @@ import {
   AccordionSummary,
   Alert,
   Box,
-  Chip,
   Dialog,
   DialogActions,
   DialogContent,
@@ -28,7 +27,6 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
-import { keyframes } from "@mui/system";
 import AButton from "common/AButton";
 import ConfirmationBox, {
   DefaultConfirmationBoxProps,
@@ -46,7 +44,6 @@ import {
 } from "features/Api/propertiesApi";
 import { useLazyGetRentsByPropertyIdWithFiltersQuery } from "features/Api/rentApi";
 import { useGetLatestSubscriptionByEmailQuery } from "features/Api/subscriptionApi";
-import RaspyDialog from "features/Raspy/RaspyDialog";
 import { AddPropertyTextString } from "features/Rent/common/constants";
 import AddProperty from "features/Rent/components/AddProperty/AddProperty";
 import ViewPropertyAccordionDetails from "features/Rent/components/Properties/ViewPropertyAccordionDetails";
@@ -54,28 +51,13 @@ import { useVerifySubscriptionForProperties } from "features/Rent/hooks/useVerif
 import { sanitizeApiFields } from "features/Rent/utils";
 import { useAppTitle } from "hooks/useAppTitle";
 
-const glitter = keyframes`
-  0% {
-    transform: scale(1);
-    filter: drop-shadow(0 0 0px rgba(255,255,255,0));
-  }
-  50% {
-    transform: scale(1.08);
-    filter: drop-shadow(0 0 6px rgba(255,215,0,0.8));
-  }
-  100% {
-    transform: scale(1);
-    filter: drop-shadow(0 0 0px rgba(255,255,255,0));
-  }
-`;
-
 const defaultDialog = {
   title: "",
   type: "",
   display: false,
 };
 
-export default function Properties() {
+const Properties = () => {
   useAppTitle("View Properties");
 
   const navigate = useNavigate();
@@ -93,7 +75,7 @@ export default function Properties() {
   });
 
   const { data: latestSubscription = {} } =
-    useGetLatestSubscriptionByEmailQuery(user.email, {
+    useGetLatestSubscriptionByEmailQuery(user?.email, {
       skip: !user?.email,
     });
 
@@ -160,7 +142,6 @@ export default function Properties() {
   });
 
   const [expanded, setExpanded] = useState(null);
-  const [raspyOpen, setRaspyOpen] = useState(false);
   const [dialog, setDialog] = useState(defaultDialog);
   const [showSnackbar, setShowSnackbar] = useState(false);
   const [showConfirmationBox, setShowConfirmationBox] = useState(
@@ -227,32 +208,7 @@ export default function Properties() {
     <Stack data-tour="properties-0">
       <Stack direction="row" justifyContent="space-between">
         <RowHeader
-          title={
-            <Stack direction="row" spacing={1} alignItems="center">
-              <Typography variant="h5" fontWeight="medium">
-                Properties
-              </Typography>
-              <Box
-                color="primary.main"
-                onClick={(ev) => {
-                  ev.stopPropagation();
-                  setRaspyOpen(!raspyOpen);
-                }}
-                sx={{
-                  cursor: "pointer",
-                  display: "inline-flex",
-                  animation: `${glitter} 1s ease-in-out 10`,
-                }}
-              >
-                <Chip
-                  label="Raspy AI"
-                  color="success"
-                  size="small"
-                  sx={{ borderRadius: 0.5, fontSize: 12 }}
-                />
-              </Box>
-            </Stack>
-          }
+          title="Properties"
           sxProps={{ fontWeight: "bold", color: "text.secondary" }}
         />
         <Tooltip
@@ -435,7 +391,6 @@ export default function Properties() {
         handleConfirm={() => handleDelete(showConfirmationBox.updateKey)}
         handleCancel={() => setShowConfirmationBox(DefaultConfirmationBoxProps)}
       />
-      <RaspyDialog raspyOpen={raspyOpen} setRaspyOpen={setRaspyOpen} />
       <CustomSnackbar
         showSnackbar={showSnackbar}
         setShowSnackbar={setShowSnackbar}
@@ -443,4 +398,6 @@ export default function Properties() {
       />
     </Stack>
   );
-}
+};
+
+export default Properties;

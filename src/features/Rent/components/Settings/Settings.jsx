@@ -51,7 +51,7 @@ export default function Settings() {
   const {
     data: latestSubscription = {},
     isLoading: isSubscriptionDetailsLoading,
-  } = useGetLatestSubscriptionByEmailQuery(user.email, {
+  } = useGetLatestSubscriptionByEmailQuery(user?.email, {
     skip: !user?.email,
   });
 

@@ -3,11 +3,14 @@ import React from "react";
 import {
   ApartmentRounded,
   CottageRounded,
+  FlagCircleRounded,
   QuestionAnswerRounded,
   SettingsRounded,
 } from "@mui/icons-material";
 import {
   FaqRoutePath,
+  PropertiesReportingPath,
+  PropertiesReportingRouteUri,
   PropertiesRoutePath,
   PropertiesRouteUri,
   PropertyRoutePath,
@@ -32,6 +35,11 @@ const Property = React.lazy(
 const Settings = React.lazy(
   () => import("features/Rent/components/Settings/Settings"),
 );
+
+const Reporting = React.lazy(
+  () => import("features/Rent/components/Reporting/Reporting"),
+);
+
 const Faq = React.lazy(() => import("features/Rent/components/Faq/Faq"));
 
 // RentalAppRoutes ...
@@ -43,7 +51,6 @@ export const RentalAppRoutes = [
     routeUri: PropertiesRouteUri,
     element: <Properties />,
     icon: <CottageRounded fontSize="small" />,
-    requiredFlags: ["invoicer", "invoicerPro"],
     config: {
       breadcrumb: {
         value: "My properties",
@@ -64,7 +71,6 @@ export const RentalAppRoutes = [
     routeUri: RentalRouteUri,
     element: <MyRental />,
     icon: <ApartmentRounded fontSize="small" />,
-    requiredFlags: ["invoicer", "invoicerPro"],
     config: {
       breadcrumb: {
         value: "My rental unit",
@@ -80,12 +86,31 @@ export const RentalAppRoutes = [
   },
   {
     id: 3,
+    label: "Reporting and Statistics",
+    path: PropertiesReportingPath,
+    routeUri: PropertiesReportingRouteUri,
+    element: <Reporting />,
+    icon: <FlagCircleRounded fontSize="small" />,
+    config: {
+      breadcrumb: {
+        value: "Reporting and Statistics",
+        icon: <FlagCircleRounded fontSize="small" />,
+      },
+      invalidRoles: [Role.Tenant],
+      isLoggedInFeature: true,
+      isProtectedBySubscriptionGuard: true,
+      displayInNavBar: true,
+      displayHelpSelector: false,
+      displayPrintSelector: false,
+    },
+  },
+  {
+    id: 4,
     label: "Settings",
     path: SettingsRoutePath,
     routeUri: SettingsRouteUri,
     element: <Settings />,
     icon: <SettingsRounded fontSize="small" />,
-    requiredFlags: ["invoicer", "invoicerPro"],
     config: {
       breadcrumb: {
         value: "My settings",
@@ -100,13 +125,12 @@ export const RentalAppRoutes = [
     },
   },
   {
-    id: 4,
+    id: 5,
     label: "My Property",
     path: PropertyRoutePath,
     routeUri: PropertyRouteUri,
     element: <Property />,
     icon: <CottageRounded fontSize="small" />,
-    requiredFlags: ["invoicer", "invoicerPro"],
     config: {
       breadcrumb: {
         value: "My property",
@@ -121,13 +145,12 @@ export const RentalAppRoutes = [
     },
   },
   {
-    id: 5,
+    id: 6,
     label: "Help Center",
     path: FaqRoutePath,
     routeUri: RentAppFaqRouteUri,
     element: <Faq />,
     icon: <QuestionAnswerRounded fontSize="small" />,
-    requiredFlags: ["invoicer"],
     config: {
       breadcrumb: {
         value: "Invoice App Help Center",

@@ -1,399 +1,310 @@
-import React, { useEffect, useState } from "react";
+export default function ChatForm() {}
+//   const user = fetchLoggedInUser();
 
-import { useForm } from "react-hook-form";
-import SpeechRecognition, {
-  useSpeechRecognition,
-} from "react-speech-recognition";
+//   const {
+//     data: properties = [],
+//     isLoading: isPropertiesListLoading,
+//     isSuccess: isPropertiesListSuccess,
+//   } = useGetPropertiesByUserIdQuery(user.uid, {
+//     skip: !user?.uid,
+//   });
 
-import dayjs from "dayjs";
+//   const [getExistingTenants, getExistingTenantsResult] =
+//     useLazyGetTenantsByPropertiesArrQuery();
 
-import { MicRounded, WarningAmberRounded } from "@mui/icons-material";
-import {
-  Alert,
-  Box,
-  Button,
-  IconButton,
-  Paper,
-  Skeleton,
-  Stack,
-  Typography,
-} from "@mui/material";
-import CustomSnackbar from "common/CustomSnackbar";
-import EmptyComponent from "common/EmptyComponent";
-import TextFieldWithLabel from "common/TextFieldWithLabel";
-import { fetchLoggedInUser } from "common/utils";
-import { useGetPropertiesByUserIdQuery } from "features/Api/propertiesApi";
-import {
-  useDecodeIntentMutation,
-  useGetAnswerMutation,
-} from "features/Api/raspyApi";
-import { useLazyGetRentsByPropertiesQuery } from "features/Api/rentApi";
-import { useLazyGetTenantsByPropertiesArrQuery } from "features/Api/tenantsApi";
-import ResponseDetails from "features/Raspy/ResponseDetails";
-import {
-  CompleteRentStatusEnumValue,
-  ManualRentStatusEnumValue,
-  PaidRentStatusEnumValue,
-} from "features/Rent/utils";
+//   const [getExistingRents, getExistingRentsResult] =
+//     useLazyGetRentsByPropertiesQuery();
 
-export default function ChatForm() {
-  const user = fetchLoggedInUser();
+//   const [handleRaspyMessage, handleRaspyMessageResult] = useGetAnswerMutation();
+//   const [decodeUserIntent, decodeUserIntentResult] = useDecodeIntentMutation();
 
-  const {
-    data: properties = [],
-    isLoading: isPropertiesListLoading,
-    isSuccess: isPropertiesListSuccess,
-  } = useGetPropertiesByUserIdQuery(user.uid, {
-    skip: !user?.uid,
-  });
+//   const [showSnackbar, setShowSnackbar] = useState(false);
 
-  const [getExistingTenants, getExistingTenantsResult] =
-    useLazyGetTenantsByPropertiesArrQuery();
+//   const commonChipLabels = [
+//     "Property Stats",
+//     "Rental Stats",
+//     "Recommended Actions",
+//   ];
 
-  const [getExistingRents, getExistingRentsResult] =
-    useLazyGetRentsByPropertiesQuery();
+//   const [formattedRaspyResponseDetails, setFormattedRaspyResponseDetails] =
+//     useState(null);
 
-  const [handleRaspyMessage, handleRaspyMessageResult] = useGetAnswerMutation();
-  const [decodeUserIntent, decodeUserIntentResult] = useDecodeIntentMutation();
+//   const handleChipSelection = (value) => {
+//     const requestObj = {
+//       email: user?.email,
+//       properties: properties || [],
+//       rents: getExistingRentsResult?.data || [],
+//       tenants: getExistingTenantsResult?.data || [],
+//       message: value,
+//       updatedOn: dayjs().toISOString(),
+//     };
 
-  const [showSnackbar, setShowSnackbar] = useState(false);
+//     decodeUserIntent(requestObj);
+//   };
 
-  const [formattedRaspyResponseDetails, setFormattedRaspyResponseDetails] =
-    useState(null);
+//   // const { transcript, listening, browserSupportsSpeechRecognition } =
+//   //   useSpeechRecognition();
 
-  const { transcript, listening, browserSupportsSpeechRecognition } =
-    useSpeechRecognition();
+//   // const {
+//   //   register,
+//   //   handleSubmit,
+//   //   setValue,
+//   //   formState: { errors },
+//   // } = useForm({
+//   //   mode: "onChange",
+//   //   defaultValues: {
+//   //     message: "",
+//   //   },
+//   // });
 
-  const {
-    register,
-    handleSubmit,
-    setValue,
-    formState: { errors },
-  } = useForm({
-    mode: "onChange",
-    defaultValues: {
-      message: "",
-    },
-  });
+//   // const handleAudioRecording = (transcript) => {
+//   //   setValue("message", transcript, {
+//   //     shouldValidate: true,
+//   //     shouldDirty: true,
+//   //   });
+//   // };
 
-  const handleAudioRecording = (transcript) => {
-    setValue("message", transcript, {
-      shouldValidate: true,
-      shouldDirty: true,
-    });
-  };
+//   // const submit = (formData) => {
+//   //   formData["email"] = user?.email;
+//   //   formData["properties"] = properties || [];
+//   //   formData["rents"] = getExistingRentsResult?.data || [];
+//   //   formData["tenants"] = getExistingTenantsResult?.data || [];
+//   //   formData["message"] = formData?.message.trim();
+//   //   formData["updatedOn"] = dayjs().toISOString();
 
-  const submit = (formData) => {
-    formData["email"] = user?.email;
-    formData["properties"] = properties || [];
-    formData["rents"] = getExistingRentsResult?.data || [];
-    formData["tenants"] = getExistingTenantsResult?.data || [];
-    formData["message"] = formData?.message.trim();
-    formData["updatedOn"] = dayjs().toISOString();
+//   //   decodeUserIntent(formData);
+//   // };
 
-    decodeUserIntent(formData);
-  };
+//   // const loading =
+//   //   handleRaspyMessageResult.isLoading || decodeUserIntentResult.isLoading;
 
-  const loading =
-    handleRaspyMessageResult.isLoading || decodeUserIntentResult.isLoading;
+//   // useEffect(() => {
+//   //   if (transcript?.length > 0) {
+//   //     handleAudioRecording(transcript);
+//   //   }
+//   // }, [listening]);
 
-  useEffect(() => {
-    if (transcript?.length > 0) {
-      handleAudioRecording(transcript);
-    }
-  }, [listening]);
+//   useEffect(() => {
+//     if (!isPropertiesListLoading && isPropertiesListSuccess) {
+//       const propertiesIds = properties?.map((property) => property.id);
+//       getExistingTenants({ propertyIds: propertiesIds, isActive: true });
+//       getExistingRents({ propertyIds: propertiesIds, isActive: true });
+//     }
+//   }, [isPropertiesListLoading]);
 
-  useEffect(() => {
-    if (!isPropertiesListLoading && isPropertiesListSuccess) {
-      const propertiesIds = properties?.map((property) => property.id);
-      getExistingTenants({ propertyIds: propertiesIds, isActive: true });
-      getExistingRents({ propertyIds: propertiesIds, isActive: true });
-    }
-  }, [isPropertiesListLoading]);
+//   useEffect(() => {
+//     if (decodeUserIntentResult.isSuccess) {
+//       const responseData = decodeUserIntentResult.data;
+//       const originalArgs = decodeUserIntentResult.originalArgs;
 
-  useEffect(() => {
-    if (handleRaspyMessageResult.isSuccess) {
-      const raspyRecomendedActions =
-        handleRaspyMessageResult?.data?.recommendedActions || [];
+//       handleRaspyMessage({
+//         ...originalArgs,
+//         intent: responseData?.intent || "Other",
+//       });
+//     }
+//   }, [decodeUserIntentResult.isLoading]);
 
-      const avgProjectedIncrease = properties?.reduce(
-        (acc, el) => (acc += Number(el?.rentIncrement)),
-        0,
-      );
+//   if (
+//     isPropertiesListLoading ||
+//     getExistingTenantsResult.isLoading ||
+//     getExistingRentsResult.isLoading
+//   ) {
+//     return <Skeleton height="10rem" />;
+//   }
 
-      setFormattedRaspyResponseDetails({
-        recommendedActions: raspyRecomendedActions,
-        portfolioHealth: calculatePropertyHealth(properties),
-        financialHealth: calculateFinancialHealth(properties),
-        projectedRentalChange: calculateProjectedRentalChange(
-          getExistingRentsResult?.data || [],
-          avgProjectedIncrease,
-          3,
-        ),
-        totalCollectedRentsByProperties: calculateTotalCollectedRents(
-          properties,
-          getExistingRentsResult?.data || [],
-        ),
-      });
+//   return (
+//     <Stack spacing={1}>
+//       <Stack spacing={1}>
+//         {commonChipLabels.map((item) => {
+//           return (
+//             <Box>
+//               <Chip
+//                 key={item}
+//                 label={item}
+//                 clickable
+//                 size="small"
+//                 variant="outlined"
+//                 onClick={(el) => handleChipSelection(item)}
+//                 sx={{
+//                   fontWeight: 600,
+//                   borderStyle: "solid",
+//                   borderWidth: 2,
+//                   transition: "all 0.15s ease",
+//                 }}
+//               />
+//             </Box>
+//           );
+//         })}
+//       </Stack>
 
-      setShowSnackbar(true);
-    }
-  }, [handleRaspyMessageResult.isLoading]);
+//       {handleRaspyMessageResult?.isSuccess ? (
+//         <Paper variant="outlined" sx={{ padding: 2 }}>
+//           <ResponseDetails data={formattedRaspyResponseDetails} />
+//         </Paper>
+//       ) : null}
+//       <CustomSnackbar
+//         showSnackbar={showSnackbar}
+//         setShowSnackbar={setShowSnackbar}
+//         title="Changes saved."
+//       />
+//     </Stack>
+//   );
+// }
 
-  useEffect(() => {
-    if (decodeUserIntentResult.isSuccess) {
-      const responseData = decodeUserIntentResult.data;
-      const originalArgs = decodeUserIntentResult.originalArgs;
+// // calculatePropertyHealth ...
+// // defines a function that is used to calculate the health of your property
+// const calculatePropertyHealth = (properties = []) => {
+//   const totalProperties = properties?.length;
+//   const vacantProperties = properties?.filter(
+//     (property) => property.rentee?.length === 0,
+//   )?.length;
 
-      handleRaspyMessage({
-        ...originalArgs,
-        intent: responseData?.intent || "Other",
-      });
-    }
-  }, [decodeUserIntentResult.isLoading]);
+//   return {
+//     totalProperties: totalProperties,
+//     vacantProperties: vacantProperties,
+//   };
+// };
 
-  if (
-    isPropertiesListLoading ||
-    getExistingTenantsResult.isLoading ||
-    getExistingRentsResult.isLoading
-  ) {
-    return <Skeleton height="10rem" />;
-  }
+// // calculateFinancialHealth ...
+// // defines a function that is used to calculate the financial health of your property.
+// const calculateFinancialHealth = (properties) => {
+//   const totalMonthlyRentalIncome = properties?.reduce((acc, el) => {
+//     acc += Number(el?.rent || 0);
+//     acc += Number(el?.additionalRent || 0);
+//     return acc;
+//   }, 0);
 
-  return (
-    <Stack spacing={1}>
-      {!browserSupportsSpeechRecognition && (
-        <Alert
-          variant="standard"
-          color="error"
-          icon={<WarningAmberRounded fontSize="small" />}
-        >
-          <Typography
-            color="textSecondary"
-            fontStyle="italic"
-            sx={{ fontSize: "0.875rem" }}
-          >
-            Unable to use speech recognition due to browser restrictions.
-          </Typography>
-        </Alert>
-      )}
+//   const securityDepositsCollected = properties?.reduce((acc, el) => {
+//     acc += Number(el?.securityDeposit || 0);
+//     return acc;
+//   }, 0);
 
-      <TextFieldWithLabel
-        id="raspy-question"
-        label={
-          <Stack direction="row" spacing={1} alignItems="center">
-            <Typography>Type or ask away.</Typography>
-            {listening ? (
-              <Box>
-                <Typography color="primary">Listening ....</Typography>
-              </Box>
-            ) : (
-              <Box>
-                <IconButton onClick={SpeechRecognition.startListening}>
-                  <MicRounded fontSize="small" />
-                </IconButton>
-              </Box>
-            )}
-          </Stack>
-        }
-        placeholder="e.g. What's the rent situation?"
-        errorMsg={errors.message?.message}
-        multiline
-        inputProps={{
-          ...register("message", {
-            required: "Message is required",
-            minLength: {
-              value: 5,
-              message: "Message is too short. Please rephrase the question.",
-            },
-            maxLength: {
-              value: 1500,
-              message: "Message is too long. Please rephrase the question.",
-            },
-          }),
-        }}
-      />
+//   const totalSqFt = properties?.reduce((acc, el) => {
+//     acc += Number(el?.sqFt || 0);
+//     return acc;
+//   }, 0);
 
-      <Box alignSelf="flex-end">
-        <Button
-          variant="contained"
-          onClick={handleSubmit(submit)}
-          loading={loading}
-        >
-          {loading ? "Sending..." : "Send"}
-        </Button>
-      </Box>
+//   const averageRentPerSqFt =
+//     totalSqFt > 0 ? totalMonthlyRentalIncome / totalSqFt : 0;
 
-      {handleRaspyMessageResult?.isSuccess ? (
-        <Paper variant="outlined" sx={{ padding: 2 }}>
-          <ResponseDetails data={formattedRaspyResponseDetails} />
-        </Paper>
-      ) : (
-        <EmptyComponent caption="Dive in with Raspy ..." />
-      )}
-      <CustomSnackbar
-        showSnackbar={showSnackbar}
-        setShowSnackbar={setShowSnackbar}
-        title="Changes saved."
-      />
-    </Stack>
-  );
-}
+//   return {
+//     totalMonthlyRentalIncome,
+//     averageRentPerSqFt,
+//     securityDepositsCollected,
+//   };
+// };
 
-// calculatePropertyHealth ...
-// defines a function that is used to calculate the health of your property
-const calculatePropertyHealth = (properties = []) => {
-  const totalProperties = properties?.length;
-  const vacantProperties = properties?.filter(
-    (property) => property.rentee?.length === 0,
-  )?.length;
+// // calculateProjectedRentalChange ...
+// // defines a function that calculates projected rental change
+// const calculateProjectedRentalChange = (
+//   rents = [],
+//   projectRentIncrease = 0,
+//   yearsAhead = 3,
+// ) => {
+//   const sortedRentalPayments = rents
+//     ?.filter((rent) =>
+//       [
+//         ManualRentStatusEnumValue,
+//         CompleteRentStatusEnumValue,
+//         PaidRentStatusEnumValue,
+//       ].includes(rent.status),
+//     )
+//     .sort((a, b) => dayjs(a?.createdOn) - dayjs(b.createdOn));
 
-  return {
-    totalProperties: totalProperties,
-    vacantProperties: vacantProperties,
-  };
-};
+//   if (sortedRentalPayments?.length <= 0) {
+//     return { labels: [], historical: [], forecast: [] };
+//   }
 
-// calculateFinancialHealth ...
-// defines a function that is used to calculate the financial health of your property.
-const calculateFinancialHealth = (properties) => {
-  const totalMonthlyRentalIncome = properties?.reduce((acc, el) => {
-    acc += Number(el?.rent || 0);
-    acc += Number(el?.additionalRent || 0);
-    return acc;
-  }, 0);
+//   const yearlyMap = new Map();
+//   sortedRentalPayments.forEach((rent) => {
+//     const year = dayjs(rent?.createdOn).year();
 
-  const securityDepositsCollected = properties?.reduce((acc, el) => {
-    acc += Number(el?.securityDeposit || 0);
-    return acc;
-  }, 0);
+//     yearlyMap.set(
+//       year,
+//       (yearlyMap.get(year) || 0) + Number(rent.rentAmount || 0),
+//     );
+//   });
 
-  const totalSqFt = properties?.reduce((acc, el) => {
-    acc += Number(el?.sqFt || 0);
-    return acc;
-  }, 0);
+//   const years = Array.from(yearlyMap.keys()).sort();
+//   const rentArr = years.map((y) => yearlyMap.get(y));
 
-  const averageRentPerSqFt =
-    totalSqFt > 0 ? totalMonthlyRentalIncome / totalSqFt : 0;
+//   const avgRateOfRentalPropertyChange =
+//     rentArr.length > 1
+//       ? (rentArr[rentArr.length - 1] - rentArr[0]) / (rentArr.length - 1)
+//       : 0;
 
-  return {
-    totalMonthlyRentalIncome,
-    averageRentPerSqFt,
-    securityDepositsCollected,
-  };
-};
+//   const forecast = [];
+//   let current = rentArr[rentArr.length - 1];
 
-// calculateProjectedRentalChange ...
-// defines a function that calculates projected rental change
-const calculateProjectedRentalChange = (
-  rents = [],
-  projectRentIncrease = 0,
-  yearsAhead = 3,
-) => {
-  const sortedRentalPayments = rents
-    ?.filter((rent) =>
-      [
-        ManualRentStatusEnumValue,
-        CompleteRentStatusEnumValue,
-        PaidRentStatusEnumValue,
-      ].includes(rent.status),
-    )
-    .sort((a, b) => dayjs(a?.createdOn) - dayjs(b.createdOn));
+//   for (let i = 0; i < yearsAhead; i++) {
+//     current =
+//       current +
+//       avgRateOfRentalPropertyChange * 0.5 + // add market smoothing
+//       projectRentIncrease;
 
-  if (sortedRentalPayments?.length <= 0) {
-    return { labels: [], historical: [], forecast: [] };
-  }
+//     forecast.push(Number(current.toFixed(2)));
+//   }
 
-  const yearlyMap = new Map();
-  sortedRentalPayments.forEach((rent) => {
-    const year = dayjs(rent?.createdOn).year();
+//   const lastYear = years[years.length - 1];
 
-    yearlyMap.set(
-      year,
-      (yearlyMap.get(year) || 0) + Number(rent.rentAmount || 0),
-    );
-  });
+//   const forecastYears = Array.from(
+//     { length: yearsAhead },
+//     (_, idx) => lastYear + idx + 1,
+//   );
 
-  const years = Array.from(yearlyMap.keys()).sort();
-  const rentArr = years.map((y) => yearlyMap.get(y));
+//   return {
+//     labels: [...years, ...forecastYears],
+//     historical: [...rentArr, ...Array(yearsAhead).fill(null)],
+//     forecast: [...Array(rentArr.length).fill(null), ...forecast],
+//   };
+// };
 
-  const avgRateOfRentalPropertyChange =
-    rentArr.length > 1
-      ? (rentArr[rentArr.length - 1] - rentArr[0]) / (rentArr.length - 1)
-      : 0;
+// // calculateTotalCollectedRents ...
+// // defines a function that calculates the projected yearly rent
+// const calculateTotalCollectedRents = (properties, rents) => {
+//   if (!properties?.length || !rents?.length) {
+//     return [[], [], []];
+//   }
 
-  const forecast = [];
-  let current = rentArr[rentArr.length - 1];
+//   const validRents = rents.filter((r) =>
+//     [
+//       ManualRentStatusEnumValue,
+//       CompleteRentStatusEnumValue,
+//       PaidRentStatusEnumValue,
+//     ].includes(r.status),
+//   );
 
-  for (let i = 0; i < yearsAhead; i++) {
-    current =
-      current +
-      avgRateOfRentalPropertyChange * 0.5 + // add market smoothing
-      projectRentIncrease;
+//   const map = {};
 
-    forecast.push(Number(current.toFixed(2)));
-  }
+//   validRents.forEach((r) => {
+//     const propertyId = r.propertyId;
+//     const amount = Number(r.rentAmount || 0);
 
-  const lastYear = years[years.length - 1];
+//     if (!propertyId) return;
 
-  const forecastYears = Array.from(
-    { length: yearsAhead },
-    (_, idx) => lastYear + idx + 1,
-  );
+//     map[propertyId] = (map[propertyId] || 0) + amount;
+//   });
 
-  return {
-    labels: [...years, ...forecastYears],
-    historical: [...rentArr, ...Array(yearsAhead).fill(null)],
-    forecast: [...Array(rentArr.length).fill(null), ...forecast],
-  };
-};
+//   const labels = [];
+//   const values = [];
+//   const backgroundColors = [];
 
-// calculateTotalCollectedRents ...
-// defines a function that calculates the projected yearly rent
-const calculateTotalCollectedRents = (properties, rents) => {
-  if (!properties?.length || !rents?.length) {
-    return [[], [], []];
-  }
+//   const palette = [
+//     "rgba(153, 102, 255, 0.7)",
+//     "rgba(255, 99, 132, 0.7)",
+//     "rgba(54, 162, 235, 0.7)",
+//     "rgba(255, 206, 86, 0.7)",
+//     "rgba(75, 192, 192, 0.7)",
+//     "rgba(255, 159, 64, 0.7)",
+//   ];
 
-  const validRents = rents.filter((r) =>
-    [
-      ManualRentStatusEnumValue,
-      CompleteRentStatusEnumValue,
-      PaidRentStatusEnumValue,
-    ].includes(r.status),
-  );
+//   properties.forEach((p, i) => {
+//     const value = map[p.id] || 0;
 
-  const map = {};
+//     labels.push(p.name);
+//     values.push(value);
+//     backgroundColors.push(palette[i % palette.length]);
+//   });
 
-  validRents.forEach((r) => {
-    const propertyId = r.propertyId;
-    const amount = Number(r.rentAmount || 0);
-
-    if (!propertyId) return;
-
-    map[propertyId] = (map[propertyId] || 0) + amount;
-  });
-
-  const labels = [];
-  const values = [];
-  const backgroundColors = [];
-
-  const palette = [
-    "rgba(153, 102, 255, 0.7)",
-    "rgba(255, 99, 132, 0.7)",
-    "rgba(54, 162, 235, 0.7)",
-    "rgba(255, 206, 86, 0.7)",
-    "rgba(75, 192, 192, 0.7)",
-    "rgba(255, 159, 64, 0.7)",
-  ];
-
-  properties.forEach((p, i) => {
-    const value = map[p.id] || 0;
-
-    labels.push(p.name);
-    values.push(value);
-    backgroundColors.push(palette[i % palette.length]);
-  });
-
-  return [labels, values, backgroundColors];
-};
+//   return [labels, values, backgroundColors];
+// };
