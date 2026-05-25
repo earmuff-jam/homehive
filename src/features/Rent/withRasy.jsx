@@ -16,10 +16,7 @@ const withRaspy = (WrappedComponent) => {
           setRaspyOpen={setRaspyOpen}
         />
 
-        <RaspyDialog
-          raspyOpen={raspyOpen}
-          setRaspyOpen={setRaspyOpen}
-        />
+        <RaspyDialog raspyOpen={raspyOpen} setRaspyOpen={setRaspyOpen} />
       </>
     );
   };

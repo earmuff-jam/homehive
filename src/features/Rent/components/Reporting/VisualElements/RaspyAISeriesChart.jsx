@@ -2,8 +2,7 @@ import React, { useEffect, useState } from "react";
 
 import { Line } from "react-chartjs-2";
 
-import { alpha, Box, useMediaQuery, useTheme } from "@mui/material";
-
+import { Box, alpha, useMediaQuery, useTheme } from "@mui/material";
 import {
   CategoryScale,
   Chart as ChartJS,

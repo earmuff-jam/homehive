@@ -10,10 +10,10 @@ import { fetchLoggedInUser } from "common/utils";
 import { useGetPropertiesByUserIdQuery } from "features/Api/propertiesApi";
 import { useLazyGetRentsByPropertiesQuery } from "features/Api/rentApi";
 import { useLazyGetTenantsByPropertiesArrQuery } from "features/Api/tenantsApi";
-import RaspyAIPieChart from "features/Rent/components/Reporting/VisualElements/RaspyAIPieChart";
-import RaspyAISeriesChart from "features/Rent/components/Reporting/VisualElements/RaspyAISeriesChart";
 import FinancialHealth from "features/Rent/components/Reporting/FinancialHealth";
 import PortfolioHealth from "features/Rent/components/Reporting/PortfolioHealth";
+import RaspyAIPieChart from "features/Rent/components/Reporting/VisualElements/RaspyAIPieChart";
+import RaspyAISeriesChart from "features/Rent/components/Reporting/VisualElements/RaspyAISeriesChart";
 import {
   CompleteRentStatusEnumValue,
   ManualRentStatusEnumValue,

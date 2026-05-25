@@ -2,8 +2,7 @@ import React, { useEffect, useState } from "react";
 
 import { PolarArea } from "react-chartjs-2";
 
-import { alpha, Box, useMediaQuery, useTheme } from "@mui/material";
-
+import { Box, alpha, useMediaQuery, useTheme } from "@mui/material";
 import {
   ArcElement,
   Chart as ChartJS,
@@ -12,7 +11,6 @@ import {
   Title,
   Tooltip,
 } from "chart.js";
-
 import EmptyComponent from "common/EmptyComponent";
 
 ChartJS.register(RadialLinearScale, ArcElement, Tooltip, Legend, Title);
