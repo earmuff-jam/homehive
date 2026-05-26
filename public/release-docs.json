@@ -1,5 +1,61 @@
 [
   {
+    "version": "1.0.13",
+    "date": "2026-05-26",
+    "notes": [
+      {
+        "type": "maintenance",
+        "value": "Updated Empty Component by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/359",
+        "caption": "Updated Empty Component by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/359"
+      },
+      {
+        "type": "maintenance",
+        "value": "Introduced Playwright for E2E testing by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/357",
+        "caption": "Introduced Playwright for E2E testing by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/357"
+      },
+      {
+        "type": "maintenance",
+        "value": "Updated README.md by @earmuff-jam in https://github.com/earmuff-jam/homehive/pull/368",
+        "caption": "Updated README.md by @earmuff-jam in https://github.com/earmuff-jam/homehive/pull/368"
+      },
+      {
+        "type": "maintenance",
+        "value": "Changed signature fields to date by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/371",
+        "caption": "Changed signature fields to date by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/371"
+      },
+      {
+        "type": "maintenance",
+        "value": "Added support for Playwright tests for Esign App by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/373",
+        "caption": "Added support for Playwright tests for Esign App by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/373"
+      },
+      {
+        "type": "maintenance",
+        "value": "Added support for e2e tests by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/376",
+        "caption": "Added support for e2e tests by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/376"
+      },
+      {
+        "type": "maintenance",
+        "value": "Added esign app e2e tests by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/377",
+        "caption": "Added esign app e2e tests by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/377"
+      },
+      {
+        "type": "maintenance",
+        "value": "Added esign app e2e tests by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/378",
+        "caption": "Added esign app e2e tests by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/378"
+      },
+      {
+        "type": "maintenance",
+        "value": "Removed Raspy AI by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/381",
+        "caption": "Removed Raspy AI by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/381"
+      },
+      {
+        "type": "maintenance",
+        "value": "Updated muiv6 to muiv7 by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/382",
+        "caption": "Updated muiv6 to muiv7 by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/382"
+      }
+    ]
+  },
+  {
     "version": "1.0.12",
     "date": "2026-04-29",
     "notes": [
