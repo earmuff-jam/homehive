@@ -19,7 +19,7 @@ exports[`AddWidget Component AddWidget Component snapshot tests Footer matches s
       tabindex="-1"
     >
       <li
-        class="MuiButtonBase-root MuiMenuItem-root MuiMenuItem-gutters MuiMenuItem-root MuiMenuItem-gutters css-1ugarj1-MuiButtonBase-root-MuiMenuItem-root"
+        class="MuiButtonBase-root MuiMenuItem-root MuiMenuItem-gutters css-1ugarj1-MuiButtonBase-root-MuiMenuItem-root"
         role="menuitem"
         tabindex="0"
       >
@@ -49,7 +49,7 @@ exports[`AddWidget Component AddWidget Component snapshot tests Footer matches s
         </div>
       </li>
       <li
-        class="MuiButtonBase-root MuiMenuItem-root MuiMenuItem-gutters MuiMenuItem-root MuiMenuItem-gutters css-1ugarj1-MuiButtonBase-root-MuiMenuItem-root"
+        class="MuiButtonBase-root MuiMenuItem-root MuiMenuItem-gutters css-1ugarj1-MuiButtonBase-root-MuiMenuItem-root"
         role="menuitem"
         tabindex="-1"
       >

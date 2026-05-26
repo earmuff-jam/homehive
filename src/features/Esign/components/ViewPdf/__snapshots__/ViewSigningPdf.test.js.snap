@@ -14,7 +14,7 @@ exports[`ViewSigningFields Tests Snapshot Tests matches snapshot 1`] = `
       class="MuiStack-root css-10k1dl5-MuiStack-root"
     >
       <div
-        class="MuiButtonBase-root MuiChip-root MuiChip-filled MuiChip-sizeSmall MuiChip-colorDefault MuiChip-deletable MuiChip-deletableColorDefault MuiChip-filledDefault css-1563lcx-MuiButtonBase-root-MuiChip-root"
+        class="MuiButtonBase-root MuiChip-root MuiChip-filled MuiChip-sizeSmall MuiChip-colorDefault MuiChip-deletable MuiChip-deletableColorDefault MuiChip-filledDefault css-b3y15p-MuiButtonBase-root-MuiChip-root"
         role="button"
         tabindex="0"
       >

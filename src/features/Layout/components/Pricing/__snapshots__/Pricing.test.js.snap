@@ -50,7 +50,7 @@ exports[`Pricing tests snapshot tests matches snapshot 1`] = `
               </p>
             </div>
             <span
-              class="MuiBadge-badge MuiBadge-standard MuiBadge-anchorOriginTopRight MuiBadge-anchorOriginTopRightRectangular MuiBadge-overlapRectangular css-2ao5rv-MuiBadge-badge"
+              class="MuiBadge-badge MuiBadge-standard MuiBadge-anchorOriginTopRight MuiBadge-anchorOriginTopRightRectangular MuiBadge-overlapRectangular css-1kfrdgn-MuiBadge-badge"
             />
           </span>
         </div>
@@ -58,7 +58,7 @@ exports[`Pricing tests snapshot tests matches snapshot 1`] = `
           class="MuiCardActions-root MuiCardActions-spacing css-mhm1d2-MuiCardActions-root"
         >
           <button
-            class="MuiButtonBase-root MuiButton-root MuiButton-outlined MuiButton-outlinedPrimary MuiButton-sizeMedium MuiButton-outlinedSizeMedium MuiButton-colorPrimary MuiButton-root MuiButton-outlined MuiButton-outlinedPrimary MuiButton-sizeMedium MuiButton-outlinedSizeMedium MuiButton-colorPrimary css-10nxow3-MuiButtonBase-root-MuiButton-root"
+            class="MuiButtonBase-root MuiButton-root MuiButton-outlined MuiButton-outlinedPrimary MuiButton-sizeMedium MuiButton-outlinedSizeMedium MuiButton-colorPrimary css-10nxow3-MuiButtonBase-root-MuiButton-root"
             tabindex="0"
             type="button"
           >
@@ -108,7 +108,7 @@ exports[`Pricing tests snapshot tests matches snapshot 1`] = `
               </p>
             </div>
             <span
-              class="MuiBadge-badge MuiBadge-standard MuiBadge-anchorOriginTopRight MuiBadge-anchorOriginTopRightRectangular MuiBadge-overlapRectangular css-2ao5rv-MuiBadge-badge"
+              class="MuiBadge-badge MuiBadge-standard MuiBadge-anchorOriginTopRight MuiBadge-anchorOriginTopRightRectangular MuiBadge-overlapRectangular css-1kfrdgn-MuiBadge-badge"
             />
           </span>
         </div>
@@ -116,7 +116,7 @@ exports[`Pricing tests snapshot tests matches snapshot 1`] = `
           class="MuiCardActions-root MuiCardActions-spacing css-mhm1d2-MuiCardActions-root"
         >
           <button
-            class="MuiButtonBase-root MuiButton-root MuiButton-outlined MuiButton-outlinedPrimary MuiButton-sizeMedium MuiButton-outlinedSizeMedium MuiButton-colorPrimary MuiButton-root MuiButton-outlined MuiButton-outlinedPrimary MuiButton-sizeMedium MuiButton-outlinedSizeMedium MuiButton-colorPrimary css-10nxow3-MuiButtonBase-root-MuiButton-root"
+            class="MuiButtonBase-root MuiButton-root MuiButton-outlined MuiButton-outlinedPrimary MuiButton-sizeMedium MuiButton-outlinedSizeMedium MuiButton-colorPrimary css-10nxow3-MuiButtonBase-root-MuiButton-root"
             tabindex="0"
             type="button"
           >
