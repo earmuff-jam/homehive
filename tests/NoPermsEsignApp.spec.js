@@ -153,6 +153,13 @@ test.describe("Esign App workflows", () => {
       await traverseNavBar(page, "Esign");
       await expect(page.getByText("Create E-signature")).toBeVisible();
 
+      await expect(page.getByText("Non-Refundable Tokens: 0")).toBeVisible();
+      await expect(
+        page.getByText(
+          "You do not have enough tokens to send Electronic Signature. Purchase Tokens to send Electronic Signature.",
+        ),
+      ).toBeVisible();
+
       await expect(
         page.getByRole("button", {
           name: "Upload files",
@@ -396,7 +403,6 @@ test.describe("Esign App workflows", () => {
       await expect(addNewSignerButton).not.toBeEnabled();
     });
 
-    // test dialog box for prepare esign
     await test.step("should be able to verify signer and selected box fields", async () => {
       const prepareEsignBtn = page.getByRole("button", {
         name: "Prepare Esign",
