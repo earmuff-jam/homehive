@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 
 import { Line } from "react-chartjs-2";
 
-import { Box } from "@mui/material";
+import { Box, alpha, useMediaQuery, useTheme } from "@mui/material";
 import {
   CategoryScale,
   Chart as ChartJS,
@@ -25,7 +25,11 @@ ChartJS.register(
 );
 
 const RaspyAISeriesChart = ({ label, data = {} }) => {
+  const theme = useTheme();
+
   const [chartData, setChartData] = useState(null);
+
+  const ltMediumFormFactor = useMediaQuery(theme.breakpoints.down("md"));
 
   const options = {
     responsive: true,
@@ -35,21 +39,37 @@ const RaspyAISeriesChart = ({ label, data = {} }) => {
       title: {
         display: true,
         text: label,
+        color: theme.palette.text.primary,
       },
       legend: {
         display: true,
+        labels: {
+          color: theme.palette.text.primary,
+        },
       },
     },
     scales: {
+      x: {
+        ticks: {
+          color: theme.palette.text.secondary,
+        },
+        grid: {
+          color: theme.palette.divider,
+        },
+      },
       y: {
         beginAtZero: false,
         ticks: {
+          color: theme.palette.text.secondary,
           maxTicksLimit: 5,
           callback: (value) => {
             return value >= 1000
               ? `$${(value / 1000).toFixed(1)}k`
               : `$${value}`;
           },
+        },
+        grid: {
+          color: theme.palette.divider,
         },
       },
     },
@@ -81,24 +101,24 @@ const RaspyAISeriesChart = ({ label, data = {} }) => {
           data: historicalDataset,
           borderWidth: 2,
           tension: 0.4,
-          borderColor: "rgba(153, 102, 255, 1)",
-          backgroundColor: "rgba(153, 102, 255, 0.3)",
+          borderColor: theme.palette.primary.main,
+          backgroundColor: alpha(theme.palette.primary.main, 0.3),
         },
         {
           label: "Rent Forecast",
           data: forecastDataset,
           borderWidth: 2,
           tension: 0.4,
-          borderColor: "rgba(255, 99, 132, 1)",
-          backgroundColor: "rgba(255, 99, 132, 0.3)",
+          borderColor: theme.palette.error.main,
+          backgroundColor: alpha(theme.palette.error.main, 0.3),
           borderDash: [6, 4],
         },
       ],
     });
-  }, [data, label]);
+  }, [data, label, theme]);
 
   return (
-    <Box sx={{ height: "15rem", width: "50%" }}>
+    <Box sx={{ height: "15rem", width: ltMediumFormFactor ? "100%" : "50%" }}>
       {chartData ? <Line data={chartData} options={options} /> : null}
     </Box>
   );

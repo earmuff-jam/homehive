@@ -28,7 +28,7 @@ export default function SubscriptionGuard({ children }) {
   const {
     data: latestSubscription = {},
     isLoading: isSubscriptionDetailsLoading,
-  } = useGetLatestSubscriptionByEmailQuery(user.email, {
+  } = useGetLatestSubscriptionByEmailQuery(user?.email, {
     skip: !user?.email,
   });
 

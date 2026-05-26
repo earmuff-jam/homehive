@@ -42,8 +42,19 @@ const NavigationGroup = ({
     <>
       <ListItemButton onClick={handleToggle}>
         <ListItemIcon>{icon}</ListItemIcon>
-        <ListItemText primary={label} />
-        {open ? <ExpandLess /> : <ExpandMore />}
+        <ListItemText
+          primary={label}
+          slotProps={{
+            primary: {
+              variant: "caption",
+            },
+          }}
+        />
+        {open ? (
+          <ExpandLess fontSize="small" />
+        ) : (
+          <ExpandMore fontSize="small" />
+        )}
       </ListItemButton>
       <Collapse in={open} timeout="auto" unmountOnExit>
         <List component="div" disablePadding sx={{ paddingLeft: 4 }}>
@@ -67,7 +78,14 @@ const NavigationGroup = ({
                 >
                   {icon}
                 </ListItemIcon>
-                <ListItemText primary={label} />
+                <ListItemText
+                  primary={label}
+                  slotProps={{
+                    primary: {
+                      variant: "caption",
+                    },
+                  }}
+                />
               </ListItemButton>
             );
           })}

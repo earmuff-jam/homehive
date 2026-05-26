@@ -3,25 +3,33 @@ import React from "react";
 import { AutoAwesomeRounded, CloseRounded } from "@mui/icons-material";
 import {
   Box,
-  Dialog,
-  DialogActions,
   DialogContent,
   DialogTitle,
+  Drawer,
   IconButton,
   Stack,
-  Typography,
+  useMediaQuery,
+  useTheme,
 } from "@mui/material";
-import AButton from "common/AButton";
+import RowHeader from "common/RowHeader";
 import ChatForm from "features/Raspy/ChatForm";
 
 export default function RaspyDialog({ raspyOpen, setRaspyOpen }) {
+  const theme = useTheme();
+  const ltMedFormFactor = useMediaQuery(theme.breakpoints.down("md"));
+
   return (
-    <Dialog
+    <Drawer
       open={raspyOpen}
-      keepMounted
-      fullWidth
-      maxWidth="md"
-      aria-describedby="ai-property-recap-dialog"
+      anchor="right"
+      sx={{
+        width: ltMedFormFactor ? "100%" : 440,
+        flexShrink: 0,
+        [`& .MuiDrawer-paper`]: {
+          width: ltMedFormFactor ? "100%" : 440,
+          boxSizing: "border-box",
+        },
+      }}
     >
       <DialogTitle>
         <Stack
@@ -29,19 +37,12 @@ export default function RaspyDialog({ raspyOpen, setRaspyOpen }) {
           alignItems="center"
           justifyContent="space-between"
         >
-          <Stack direction="row" spacing={1}>
+          <Stack direction="row" spacing={1} alignItems="center">
             <AutoAwesomeRounded color="primary" />
-            <Typography
-              textAlign="center"
-              variant="body1"
-              sx={{
-                color: "#999",
-                fontWeight: 300,
-              }}
-              color="text.primary"
-            >
-              Raspy Assistant ...
-            </Typography>
+            <RowHeader
+              title="Raspy Assistant ..."
+              caption="How can I help you today?"
+            />
           </Stack>
           <Box alignSelf="flex-end">
             <IconButton size="small" onClick={() => setRaspyOpen(false)}>
@@ -53,14 +54,6 @@ export default function RaspyDialog({ raspyOpen, setRaspyOpen }) {
       <DialogContent>
         <ChatForm />
       </DialogContent>
-      <DialogActions>
-        <AButton
-          label="Later"
-          variant="outlined"
-          size="small"
-          onClick={() => setRaspyOpen(false)}
-        />
-      </DialogActions>
-    </Dialog>
+    </Drawer>
   );
 }
