@@ -38,8 +38,6 @@ export default function SplashPage() {
   const user = fetchLoggedInUser();
   const { ref, visible } = useReveal();
 
-  const { ref, visible } = useReveal();
-
   const [authenticate, authenticateResult] = useAuthenticateMutation();
 
   const handleAuthenticate = ({ isEsign = false }) => {
