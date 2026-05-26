@@ -36,9 +36,9 @@ test.describe("Splash Page", () => {
   });
 
   test("feature cards render", async ({ page }) => {
-    await expect(page.getByText(/rent app/i)).toBeVisible();
-    await expect(page.getByText(/invoicer app/i)).toBeVisible();
-    await expect(page.getByText(/esign app/i)).toBeVisible();
+    await expect(page.getByText(/rentx/i)).toBeVisible();
+    await expect(page.getByText(/invoicex/i)).toBeVisible();
+    await expect(page.getByText(/esignx/i)).toBeVisible();
   });
 
   test("section headings render", async ({ page }) => {
@@ -62,7 +62,7 @@ test.describe("Splash Page", () => {
   });
 
   test("invoicer card navigates to invoice dashboard", async ({ page }) => {
-    await page.getByText(/invoicer app/i).click();
+    await page.getByText(/invoicex/i).click();
 
     await expect(page).toHaveURL(/invoice/i);
   });

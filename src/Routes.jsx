@@ -56,7 +56,7 @@ export const MainAppRoutes = [
   },
   {
     id: 2,
-    label: "Rent App",
+    label: "RentX",
     path: "/rent/*",
     element: (
       <SubAppRouter
@@ -68,7 +68,7 @@ export const MainAppRoutes = [
     requiredFlags: [],
     config: {
       breadcrumb: {
-        value: "Rent App",
+        value: "RentX",
         icon: <CottageRounded fontSize="small" />,
       },
       isLoggedInFeature: true,
@@ -79,7 +79,7 @@ export const MainAppRoutes = [
   },
   {
     id: 3,
-    label: "Invoice App",
+    label: "InvoiceX",
     path: "/invoice/*",
     element: (
       <SubAppRouter
@@ -91,7 +91,7 @@ export const MainAppRoutes = [
     requiredFlags: [],
     config: {
       breadcrumb: {
-        value: "Invoice App",
+        value: "InvoiceX",
         icon: <ReceiptRounded fontSize="small" />,
       },
       displayInNavBar: true,
@@ -101,7 +101,7 @@ export const MainAppRoutes = [
   },
   {
     id: 4,
-    label: "Esign App",
+    label: "EsignX",
     path: "/esign/*",
     element: (
       <SubAppRouter
@@ -113,7 +113,7 @@ export const MainAppRoutes = [
     requiredFlags: [],
     config: {
       breadcrumb: {
-        value: "Esign App",
+        value: "EsignX",
         icon: <ArchitectureRounded fontSize="small" />,
       },
       displayInNavBar: true,

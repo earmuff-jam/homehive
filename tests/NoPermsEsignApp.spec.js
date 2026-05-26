@@ -14,8 +14,8 @@ const seedEnvVars = async (page) => {
 const selectEsignApp = async (page) => {
   await page.goto("/");
 
-  await expect(page.getByText("Esign App")).toBeVisible();
-  await page.getByText("Esign App").click();
+  await expect(page.getByText("EsignX")).toBeVisible();
+  await page.getByText("EsignX").click();
 };
 
 // traverseNavBar ...
@@ -41,9 +41,9 @@ const toggleSelectedBtnEl = async (page, selectedBtnEl) => {
   await selectedButtonEl.click();
 };
 
-// selectDisclaimerForEsignApp ...
+// selectDisclaimer ...
 // defines a function that selects the disclaimer for the Esign App
-const selectDisclaimerForEsignApp = async (page) => {
+const selectDisclaimer = async (page) => {
   await expect(page).toHaveURL(/documents/i);
 
   await expect(page.getByText(/Platform Disclaimer/i)).toBeVisible();
@@ -141,7 +141,7 @@ test.describe("Esign App workflows", () => {
     await seedEmulatedUser(page, "OWNER", true);
 
     await selectEsignApp(page);
-    await selectDisclaimerForEsignApp(page);
+    await selectDisclaimer(page);
   });
 
   test.afterAll(async () => {
@@ -199,7 +199,7 @@ test.describe("Esign App workflows", () => {
 
     await test.step("should be able to verify system provided pdf", async () => {
       await traverseNavBar(page, "Esign");
-      await selectDisclaimerForEsignApp(page);
+      await selectDisclaimer(page);
 
       const buttons = [
         "Lease Agreement",
@@ -246,7 +246,7 @@ test.describe("Esign App workflows", () => {
     await test.step("should be able to interact with system provided pdf buttons", async () => {
       await traverseNavBar(page, "Esign");
 
-      await selectDisclaimerForEsignApp(page);
+      await selectDisclaimer(page);
 
       const buttons = [
         "Lease Agreement",

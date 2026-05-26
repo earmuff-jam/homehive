@@ -28,13 +28,13 @@ const faqItems = [
   },
   {
     icon: <ReceiptRounded fontSize="small" />,
-    q: "What features are included in the Invoicer application?",
-    ans: "Invoicer helps you create, customize, and send invoices with ease. It supports recurring invoices, payment tracking, template management, and integration with online payment systems like Stripe for seamless transactions.",
+    q: "What features are included in the Invoice application?",
+    ans: "The Invoice application helps you create, customize, and send invoices with ease. It supports recurring invoices, payment tracking, template management, and integration with online payment systems like Stripe for seamless transactions.",
   },
   {
     icon: <ArchitectureRounded fontSize="small" />,
     q: "What features are included in the Esign application?",
-    ans: "Esign allows you to securely send and sign documents digitally. It includes signature fields, document tracking, audit history, and secure verification to ensure legally compliant signing workflows.",
+    ans: "The Esign application allows you to securely send and sign documents digitally. It includes signature fields, document tracking, audit history, and secure verification to ensure legally compliant signing workflows.",
   },
   {
     icon: <EmailRounded fontSize="small" />,
