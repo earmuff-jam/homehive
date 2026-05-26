@@ -42,7 +42,7 @@ exports[`DndGridLayout renders widget layout when widgets exist 1`] = `
             />
           </div>
           <span
-            class="MuiBadge-badge MuiBadge-standard MuiBadge-anchorOriginTopRight MuiBadge-anchorOriginTopRightRectangular MuiBadge-overlapRectangular css-2ao5rv-MuiBadge-badge"
+            class="MuiBadge-badge MuiBadge-standard MuiBadge-anchorOriginTopRight MuiBadge-anchorOriginTopRightRectangular MuiBadge-overlapRectangular css-1kfrdgn-MuiBadge-badge"
           />
         </span>
       </div>

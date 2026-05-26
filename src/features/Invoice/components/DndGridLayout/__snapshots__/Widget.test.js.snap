@@ -21,7 +21,7 @@ exports[`Widget renders correctly and matches snapshot 1`] = `
         </div>
       </div>
       <span
-        class="MuiBadge-badge MuiBadge-standard MuiBadge-anchorOriginTopRight MuiBadge-anchorOriginTopRightRectangular MuiBadge-overlapRectangular css-2ao5rv-MuiBadge-badge"
+        class="MuiBadge-badge MuiBadge-standard MuiBadge-anchorOriginTopRight MuiBadge-anchorOriginTopRightRectangular MuiBadge-overlapRectangular css-1kfrdgn-MuiBadge-badge"
       />
     </span>
   </div>
@@ -72,7 +72,7 @@ exports[`Widget shows edit icons when in edit mode 1`] = `
         </div>
       </div>
       <span
-        class="MuiBadge-badge MuiBadge-standard MuiBadge-anchorOriginTopRight MuiBadge-anchorOriginTopRightRectangular MuiBadge-overlapRectangular css-2ao5rv-MuiBadge-badge"
+        class="MuiBadge-badge MuiBadge-standard MuiBadge-anchorOriginTopRight MuiBadge-anchorOriginTopRightRectangular MuiBadge-overlapRectangular css-1kfrdgn-MuiBadge-badge"
       >
         <button
           class="MuiButtonBase-root MuiIconButton-root MuiIconButton-colorError MuiIconButton-sizeSmall css-ugcj28-MuiButtonBase-root-MuiIconButton-root"
