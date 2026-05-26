@@ -85,7 +85,7 @@ const Property = () => {
 
       <Grid container spacing={3}>
         {/* Main Content */}
-        <Grid item xs={12} md={8}>
+        <Grid size={{ xs: 12, md: 8 }}>
           <FinancialOverview
             isTenantsLoading={isTenantsLoading}
             property={property}
@@ -109,7 +109,7 @@ const Property = () => {
         </Grid>
 
         {/* Sidebar */}
-        <Grid item xs={12} md={4}>
+        <Grid size={{ xs: 12, md: 4 }}>
           <PropertyOwnerInfoCard
             dataTour="property-3"
             property={property}

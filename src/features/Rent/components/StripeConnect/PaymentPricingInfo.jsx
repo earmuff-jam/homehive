@@ -30,7 +30,7 @@ const paymentPlans = [
 
 const PaymentPricingInfo = () => {
   return (
-    <Grid item xs={12}>
+    <Grid size={{ xs: 12 }}>
       <Card
         variant="outlined"
         sx={(theme) => ({

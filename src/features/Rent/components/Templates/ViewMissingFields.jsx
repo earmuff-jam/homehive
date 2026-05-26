@@ -60,7 +60,7 @@ const ViewMissingFields = ({ fields = [], templateHtml }) => {
             >
               <ListItemText
                 primary={mf}
-                secondary={`Use as {{${mf}}`}
+                secondary={`Use as {{${mf}}}`}
                 slotProps={{
                   primary: {
                     variant: "caption",

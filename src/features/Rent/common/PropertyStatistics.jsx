@@ -14,7 +14,7 @@ export default function PropertyStatistics({
   const { totalRent } = useSelectedPropertyDetails(property, tenants);
   return (
     <Grid container spacing={3} sx={{ mt: 2 }} data-tour={dataTour}>
-      <Grid item xs={12} sm={6} md={3}>
+      <Grid size={{ xs: 12, md: 3, sm: 6 }}>
         {isPropertyLoading ? (
           <Skeleton height="5rem" />
         ) : (
@@ -30,7 +30,7 @@ export default function PropertyStatistics({
           </Card>
         )}
       </Grid>
-      <Grid item xs={12} sm={6} md={3}>
+      <Grid size={{ xs: 12, md: 3, sm: 6 }}>
         {isPropertyLoading ? (
           <Skeleton height="5rem" />
         ) : (
@@ -47,7 +47,7 @@ export default function PropertyStatistics({
           </Card>
         )}
       </Grid>
-      <Grid item xs={12} sm={6} md={3}>
+      <Grid size={{ xs: 12, md: 3, sm: 6 }}>
         {isPropertyLoading ? (
           <Skeleton height="5rem" />
         ) : (
@@ -63,7 +63,7 @@ export default function PropertyStatistics({
           </Card>
         )}
       </Grid>
-      <Grid item xs={12} sm={6} md={3}>
+      <Grid size={{ xs: 12, md: 3, sm: 6 }}>
         {isPropertyLoading ? (
           <Skeleton height="5rem" />
         ) : (

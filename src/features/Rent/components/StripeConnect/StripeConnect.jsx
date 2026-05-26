@@ -239,7 +239,7 @@ export default function StripeConnect() {
   return (
     <Grid container spacing={1}>
       {/* Connection Status Card */}
-      <Grid item xs={12}>
+      <Grid size={{ xs: 12 }}>
         <Card elevation={0} sx={{ p: 1 }}>
           <Box sx={{ display: "flex", alignItems: "center" }}>
             <RowHeader
@@ -283,7 +283,7 @@ export default function StripeConnect() {
       </Grid>
 
       {/* Bank Account Information */}
-      <Grid item xs={12} md={6}>
+      <Grid size={{ xs: 12, md: 6 }}>
         <BankAccountInformation
           stripeAlert={stripeAlert}
           stripeAccountData={stripeAccountData}
@@ -292,12 +292,12 @@ export default function StripeConnect() {
         />
       </Grid>
       {/* Bank Account Information */}
-      <Grid item xs={12} md={6}>
+      <Grid size={{ xs: 12, md: 6 }}>
         <PaymentPricingInfo />
       </Grid>
 
       {/* Transaction History Preview */}
-      <Grid item xs={12}>
+      <Grid size={{ xs: 12 }}>
         <RecentTransactions
           transactions={recentTransactions?.transactions?.data || []}
           loading={isRecentTransactionsLoading}
@@ -305,7 +305,7 @@ export default function StripeConnect() {
       </Grid>
 
       {/* Help & Support */}
-      <Grid item xs={12}>
+      <Grid size={{ xs: 12 }}>
         <HelpAndSupport options={stripeConnectOptions} />
       </Grid>
     </Grid>
