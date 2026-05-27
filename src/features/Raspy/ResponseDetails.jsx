@@ -15,8 +15,8 @@ import {
 } from "@mui/material";
 import EmptyComponent from "common/EmptyComponent";
 import { pluralize } from "common/utils";
-import RaspyAIPieChart from "features/Rent/components/Reporting/VisualElements/RaspyAIPieChart";
-import RaspyAISeriesChart from "features/Rent/components/Reporting/VisualElements/RaspyAISeriesChart";
+import RaspyAIPieChart from "features/Rent/components/Reporting/ PieChart";
+import RaspyAISeriesChart from "features/Rent/components/Reporting/SeriesChart";
 
 export default function ResponseDetails({ data = {} }) {
   const recommendedActions = data?.recommendedActions || [];

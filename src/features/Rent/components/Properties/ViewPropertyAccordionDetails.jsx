@@ -232,11 +232,7 @@ const ViewPropertyAccordionDetails = ({
               textAlign="center"
             >
               <Stack>
-                <Typography
-                  variant="subtitle2"
-                  fontSize="1.875rem"
-                  color="primary"
-                >
+                <Typography fontSize="2rem" color="primary" fontWeight="light">
                   ${totalRent}
                 </Typography>
                 <Typography variant="subtitle2" color="textSecondary">
@@ -244,7 +240,7 @@ const ViewPropertyAccordionDetails = ({
                 </Typography>
               </Stack>
               <Stack>
-                <Typography variant="subtitle2" fontSize="2rem" color="primary">
+                <Typography fontSize="2rem" color="primary" fontWeight="light">
                   {nextPaymentDueDate}
                 </Typography>
                 <Typography variant="subtitle2" color="textSecondary">

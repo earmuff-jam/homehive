@@ -15,7 +15,7 @@ import EmptyComponent from "common/EmptyComponent";
 
 ChartJS.register(RadialLinearScale, ArcElement, Tooltip, Legend, Title);
 
-const RaspyAIPieChart = ({ label, data = [] }) => {
+const PieChart = ({ label, data = [] }) => {
   const theme = useTheme();
 
   const [chartData, setChartData] = useState(null);
@@ -93,7 +93,7 @@ const RaspyAIPieChart = ({ label, data = [] }) => {
   }, [data, theme]);
 
   return (
-    <Box sx={{ height: "15rem", width: ltMediumFormFactor ? "100%" : "50%" }}>
+    <Box sx={{ height: "25rem", width: ltMediumFormFactor ? "100%" : "50%" }}>
       {!chartData ? (
         <EmptyComponent caption="Sorry, no matching records found." />
       ) : (
@@ -103,4 +103,4 @@ const RaspyAIPieChart = ({ label, data = [] }) => {
   );
 };
 
-export default RaspyAIPieChart;
+export default PieChart;
