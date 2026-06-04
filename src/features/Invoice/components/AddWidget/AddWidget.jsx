@@ -26,8 +26,7 @@ export default function AddWidget({ handleAddWidget }) {
             <ListItemIcon>
               <AddRounded fontSize="small" />
             </ListItemIcon>
-            <ListItemText inset={widgetType.config.inset}
-            >
+            <ListItemText inset={widgetType.config.inset}>
               {widgetType.label}
             </ListItemText>
           </MenuItem>

@@ -82,8 +82,7 @@ const NavigationGroup = ({
                   primary={label}
                   slotProps={{
                     primary: {
-                                                variant: "subtitle2",
-
+                      variant: "subtitle2",
                     },
                   }}
                 />
