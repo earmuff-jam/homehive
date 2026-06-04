@@ -94,6 +94,7 @@ export default function MenuOptions({
                   primary: {
                     fontSize: 14,
                     fontWeight: 500,
+                    variant: "subtitle2",
                   },
                 }}
               />
@@ -121,6 +122,7 @@ export default function MenuOptions({
                     primary: {
                       fontSize: 14,
                       fontWeight: 500,
+                      variant: "subtitle2",
                     },
                   }}
                 />
@@ -152,6 +154,7 @@ export default function MenuOptions({
               primary: {
                 fontSize: 14,
                 fontWeight: 500,
+                variant: "subtitle2",
               },
             }}
           />
@@ -174,6 +177,7 @@ export default function MenuOptions({
                 primary: {
                   fontSize: 14,
                   fontWeight: 500,
+                  variant: "subtitle2",
                 },
               }}
             />
