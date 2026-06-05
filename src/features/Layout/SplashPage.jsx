@@ -230,7 +230,7 @@ export default function SplashPage() {
               gap={2}
             >
               <TitleCard
-                title="Rent App"
+                title="RentX"
                 showLoginRequired
                 subtitle="Manage tenants, notifications and automate payments"
                 chipLabels={[
@@ -247,7 +247,7 @@ export default function SplashPage() {
                 onClick={() => handleAuthenticate({ isEsign: false })}
               />
               <TitleCard
-                title="Invoicer App"
+                title="InvoiceX"
                 subtitle="Create and send invoices, payments or templates"
                 chipLabels={[
                   "Invoice Creation",
@@ -263,7 +263,7 @@ export default function SplashPage() {
                 onClick={() => navigate(InvoiceDashboardRouteUri)}
               />
               <TitleCard
-                title="Esign App"
+                title="EsignX"
                 showLoginRequired
                 subtitle="Sign documents digitally with audit trails. All legally binding, secure, and instant."
                 chipLabels={[
