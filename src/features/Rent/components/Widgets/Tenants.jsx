@@ -5,9 +5,10 @@ import dayjs from "dayjs";
 import {
   AutorenewOutlined,
   CalendarTodayRounded,
+  DeleteRounded,
   LockRounded,
   PersonRounded,
-  RemoveCircleOutlineRounded,
+  RestartAltRounded,
 } from "@mui/icons-material";
 import {
   Avatar,
@@ -76,6 +77,10 @@ export default function Tenants({
   const sortedByPrimaryStatus = (arr) => {
     return [...arr].sort((a, b) => b.isPrimary - a.isPrimary);
   };
+
+  // TODO: handle auto renew in JIRA -  #394
+  const isAutoRenewDue = false;
+  const handleAutoRenew = () => {};
 
   const handleRemoveAssociatedTenant = (tenant) => {
     const updatedData = {
@@ -198,6 +203,16 @@ export default function Tenants({
                     </Box>
                   </Stack>
                 </Stack>
+                {isAutoRenewDue ? (
+                  <Tooltip
+                    title="Send auto
+                renew lease extension"
+                  >
+                    <IconButton size="small" onClick={() => handleAutoRenew()}>
+                      <RestartAltRounded fontSize="small" color="info" />
+                    </IconButton>
+                  </Tooltip>
+                ) : null}
                 <Tooltip title="Remove tenant from property">
                   <IconButton
                     size="small"
@@ -205,10 +220,7 @@ export default function Tenants({
                       setShowConfirmationBox({ value: true, updateKey: tenant })
                     }
                   >
-                    <RemoveCircleOutlineRounded
-                      fontSize="small"
-                      color="error"
-                    />
+                    <DeleteRounded fontSize="small" color="error" />
                   </IconButton>
                 </Tooltip>
               </Box>
