@@ -219,6 +219,7 @@ export const propertiesApi = createApi({
                 tenantRef,
                 {
                   isActive: false,
+                  moveOutDate: property?.updatedOn, // same as when the property was marked removed
                   updatedBy: property?.updatedBy,
                   updatedOn: property?.updatedOn,
                 },

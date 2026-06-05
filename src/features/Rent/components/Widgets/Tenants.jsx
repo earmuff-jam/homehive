@@ -85,6 +85,7 @@ export default function Tenants({
       removedTenantEmail: tenant?.email, // used only for RTK query
       rentees: property?.rentees.filter((rentee) => rentee !== tenant.email),
       updatedBy: user?.uid,
+      moveOutDate: dayjs().toISOString(),
       updatedOn: dayjs().toISOString(),
     };
     removeTenant(updatedData);

@@ -2,7 +2,6 @@ import { createApi, fakeBaseQuery } from "@reduxjs/toolkit/query/react";
 import { Role } from "features/Auth/AuthHelper";
 import {
   collection,
-  deleteDoc,
   doc,
   getDocs,
   query,
@@ -213,24 +212,6 @@ export const tenantsApi = createApi({
       },
       invalidatesTags: ["tenants"],
     }),
-    // deletes tenants where tenantId matches the passed in tenantId from tenants db
-    deleteTenantById: builder.mutation({
-      async queryFn(id) {
-        try {
-          const tenantRef = doc(db, "tenants", id);
-          await deleteDoc(tenantRef);
-          return { data: { id } };
-        } catch (error) {
-          return {
-            error: {
-              message: error.message,
-              code: error.code,
-            },
-          };
-        }
-      },
-      invalidatesTags: ["tenants"],
-    }),
     // associate tenant workflow
     // populates tenants, updates property && updates tenant role
     associateTenant: builder.mutation({
@@ -326,7 +307,6 @@ export const {
   useGetTenantByPropertyIdQuery,
   useCreateTenantMutation,
   useUpdateTenantByIdMutation,
-  useDeleteTenantByIdMutation,
   useAssociateTenantMutation,
   useRemoveTenantAssociationMutation,
 } = tenantsApi;
