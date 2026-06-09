@@ -157,8 +157,13 @@ const Properties = () => {
 
   const handleDelete = (propertyId) => {
     if (!propertyId) return;
+    const property = properties?.find(
+      (property) => property?.id === propertyId,
+    );
+
     deleteProperty({
       id: propertyId,
+      rentees: property?.rentees,
       isDeleted: true,
       updatedBy: user?.uid,
       updatedOn: dayjs().toISOString(),

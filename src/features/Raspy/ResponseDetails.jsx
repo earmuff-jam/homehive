@@ -140,7 +140,8 @@ const RecommendedActionList = ({ data = [] }) => {
                   primary={action}
                   slotProps={{
                     primary: {
-                      variant: "body2",
+                      variant: "subtitle2",
+
                       sx: {
                         color: "text.secondary",
                       },

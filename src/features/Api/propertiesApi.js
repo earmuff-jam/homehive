@@ -186,14 +186,49 @@ export const propertiesApi = createApi({
     }),
     // deletePropertyById ...
     // defines a function that marks a property as deleted
+    // also marks all associated tenants are inactive
     deletePropertyById: builder.mutation({
-      async queryFn(data) {
+      async queryFn(property) {
         try {
-          const propertyRef = doc(db, "properties", data?.id);
-          await setDoc(propertyRef, data, {
-            merge: true,
-          });
-          return { data };
+          const propertyRef = doc(db, "properties", property?.id);
+          await setDoc(
+            propertyRef,
+            {
+              ...property,
+              rentees: [], // remove tenant association
+            },
+            {
+              merge: true,
+            },
+          );
+
+          const associatedTenants = property?.rentees;
+          const draftQuery = query(
+            collection(db, "tenants"),
+            where("propertyId", "==", property?.id),
+            where("email", "in", associatedTenants),
+          );
+
+          const associatedTenantsDetailsSnapshot = await getDocs(draftQuery);
+
+          // set all tenants to inactive
+          associatedTenantsDetailsSnapshot?.forEach(
+            async (associatedTenant) => {
+              const tenantRef = doc(db, "tenants", associatedTenant.id);
+              await setDoc(
+                tenantRef,
+                {
+                  isActive: false,
+                  moveOutDate: property?.updatedOn, // same as when the property was marked removed
+                  updatedBy: property?.updatedBy,
+                  updatedOn: property?.updatedOn,
+                },
+                { merge: true },
+              );
+            },
+          );
+
+          return { property };
         } catch (error) {
           return {
             error: {

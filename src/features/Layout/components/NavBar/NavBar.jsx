@@ -172,7 +172,7 @@ export default function NavBar({
                       primary={label}
                       slotProps={{
                         primary: {
-                          variant: "caption",
+                          variant: "subtitle2",
                         },
                       }}
                     />

@@ -130,6 +130,7 @@ export default function QuickConnectMenu({
                 primary: {
                   fontSize: 14,
                   fontWeight: 500,
+                  variant: "subtitle2",
                 },
               }}
             />
