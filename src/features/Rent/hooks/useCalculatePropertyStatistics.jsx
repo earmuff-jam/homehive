@@ -139,8 +139,8 @@ export const useCalculatePropertyStatistics = (
   const propertyVacantDaysCount =
     selectedProperty?.rentee?.length <= 0
       ? Math.max(
-          dayjs(primaryTenant?.startDate).diff(
-            dayjs(selectedProperty?.moveOutDate),
+          dayjs(selectedProperty?.moveOutDate).diff(
+            dayjs(primaryTenant?.startDate),
           ),
           0,
         )

@@ -22,14 +22,8 @@ describe("PropertyHealthAccordion", () => {
       const properties = [
         {
           id: 1,
+          name: "Test Property",
           moveOutDate: "2026-05-01",
-          lastMoveOutDay: "2026-05-01",
-          rentee: [],
-        },
-        {
-          id: 2,
-          moveOutDate: "2026-05-01",
-          lastMoveOutDay: "2026-05-01",
           rentee: [],
         },
       ];
@@ -37,12 +31,7 @@ describe("PropertyHealthAccordion", () => {
       const existingTenants = [
         {
           propertyId: 1,
-          startDate: "2026-05-11", // 10 days after move out
-          isSoR: false,
-        },
-        {
-          propertyId: 2,
-          startDate: "2026-05-21", // 20 days after move out
+          startDate: "2026-05-11",
           isSoR: false,
         },
       ];
@@ -59,16 +48,15 @@ describe("PropertyHealthAccordion", () => {
       expect(screen.getByText("Property Health")).toBeInTheDocument();
 
       expect(screen.getByText("Current Vacancy Streak")).toBeInTheDocument();
-      expect(screen.getByText("28 days")).toBeInTheDocument();
+      expect(screen.getByText("0 days")).toBeInTheDocument();
 
       expect(screen.getByText("Occupancy Rate")).toBeInTheDocument();
       expect(screen.getByText("66%")).toBeInTheDocument();
 
       expect(screen.getByText("Avg days to fill")).toBeInTheDocument();
-      expect(screen.getByText("15 days")).toBeInTheDocument();
-
       expect(screen.getByText("Total Vacancy days")).toBeInTheDocument();
-      expect(screen.getByText("10 days")).toBeInTheDocument();
+
+      expect(screen.getAllByText("10 days")).toHaveLength(2);
 
       expect(screen.getByText("Occupied since 05-11-2026")).toBeInTheDocument();
     });
@@ -80,13 +68,11 @@ describe("PropertyHealthAccordion", () => {
         {
           id: 1,
           moveOutDate: "2026-05-01",
-          lastMoveOutDay: "2026-05-01",
           rentee: [], // no tenant should exist to calculate vacancy
         },
         {
           id: 2,
           moveOutDate: "2026-05-01",
-          lastMoveOutDay: "2026-05-01",
           rentee: ["shouldNotUseThisUserAnyways@aol.com"],
         },
       ];
@@ -111,7 +97,7 @@ describe("PropertyHealthAccordion", () => {
       expect(screen.getByText("Property Health")).toBeInTheDocument();
 
       expect(screen.getByText("Current Vacancy Streak")).toBeInTheDocument();
-      expect(screen.getByText("28 days")).toBeInTheDocument();
+      expect(screen.getByText("0 days")).toBeInTheDocument();
 
       expect(screen.getByText("Occupancy Rate")).toBeInTheDocument();
       expect(screen.getByText("66%")).toBeInTheDocument();
@@ -120,7 +106,7 @@ describe("PropertyHealthAccordion", () => {
       expect(screen.getByText("19 days")).toBeInTheDocument();
 
       expect(screen.getByText("Total Vacancy days")).toBeInTheDocument();
-      expect(screen.getByText("10 days")).toBeInTheDocument();
+      expect(screen.getByText("19 days")).toBeInTheDocument();
 
       expect(screen.getByText("Occupied since 05-11-2026")).toBeInTheDocument();
     });

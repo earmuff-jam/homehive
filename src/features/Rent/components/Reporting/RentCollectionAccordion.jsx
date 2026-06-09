@@ -91,8 +91,7 @@ const RentCollectionAccordion = ({
           />
           <StatsAccordionDetailsBlock
             label="Outstanding balance"
-            // rounding support with tilda
-            value={`${outstandingBalance}$`}
+            value={`$${outstandingBalance}`}
             caption={
               <Stack
                 direction="row"

@@ -18,11 +18,13 @@ describe("LeaseHealthAccordion", () => {
       {
         propertyId: 1,
         startDate: "2026-01-01T00:00:00.000Z",
+        gracePeriod: 4,
         term: "1y",
       },
       {
         propertyId: 2,
         startDate: "2026-06-01T00:00:00.000Z",
+        gracePeriod: 4,
         term: "6m",
       },
     ];
