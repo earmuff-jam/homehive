@@ -10,10 +10,11 @@ import { fetchLoggedInUser } from "common/utils";
 import { useGetPropertiesByUserIdQuery } from "features/Api/propertiesApi";
 import { useLazyGetRentsByPropertiesQuery } from "features/Api/rentApi";
 import { useLazyGetTenantsByPropertiesArrQuery } from "features/Api/tenantsApi";
-import FinancialHealth from "features/Rent/components/Reporting/FinancialHealth";
+import PieChart from "features/Rent/components/Reporting/ PieChart";
+import FinancialHealth from "features/Rent/components/Reporting/FinancialHealthAccordion";
 import PortfolioHealth from "features/Rent/components/Reporting/PortfolioHealth";
-import RaspyAIPieChart from "features/Rent/components/Reporting/VisualElements/RaspyAIPieChart";
-import RaspyAISeriesChart from "features/Rent/components/Reporting/VisualElements/RaspyAISeriesChart";
+import SeriesChart from "features/Rent/components/Reporting/SeriesChart";
+import Statistics from "features/Rent/components/Reporting/Statistics";
 import {
   CompleteRentStatusEnumValue,
   ManualRentStatusEnumValue,
@@ -101,25 +102,55 @@ const Reporting = () => {
         </Stack>
       </Paper>
 
+      {/* Property statistics */}
       <Paper variant="outlined" sx={{ padding: 2 }}>
+        <RowHeader
+          title="Property statistics"
+          caption="View statistics about your registered properties"
+          sxProps={{
+            fontWeight: "bold",
+            color: "text.secondary",
+            textAlign: "left",
+          }}
+        />
+        <Statistics
+          properties={properties}
+          existingTenants={getExistingTenantsResult?.data || []}
+          existingRents={getExistingRentsResult?.data || []}
+        />
+      </Paper>
+
+      {/* Income projection */}
+      <Paper variant="outlined" sx={{ padding: 2 }}>
+        <RowHeader
+          title="Rental Income Projection"
+          caption="View rental income projection and collected rents"
+          sxProps={{
+            fontWeight: "bold",
+            color: "text.secondary",
+            textAlign: "left",
+          }}
+        />
         <Stack
           spacing={1}
+          marginTop={2}
           justifyContent="space-between"
           direction={{ md: "row", xs: "column" }}
           width="auto"
           height="auto"
           alignSelf="inherit"
         >
-          <RaspyAISeriesChart
+          <SeriesChart
             label="Average Rental Income Projection"
             data={projectedRentalChange}
           />
-          <RaspyAIPieChart
+          <PieChart
             label="Total Collected Rents"
             data={totalCollectedRentsByProperties}
           />
         </Stack>
       </Paper>
+
       <CustomSnackbar
         showSnackbar={showSnackbar}
         setShowSnackbar={setShowSnackbar}

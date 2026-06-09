@@ -24,7 +24,7 @@ ChartJS.register(
   Legend,
 );
 
-const RaspyAISeriesChart = ({ label, data = {} }) => {
+const SeriesChart = ({ label, data = {} }) => {
   const theme = useTheme();
 
   const [chartData, setChartData] = useState(null);
@@ -118,10 +118,10 @@ const RaspyAISeriesChart = ({ label, data = {} }) => {
   }, [data, label, theme]);
 
   return (
-    <Box sx={{ height: "15rem", width: ltMediumFormFactor ? "100%" : "50%" }}>
+    <Box sx={{ height: "25rem", width: ltMediumFormFactor ? "100%" : "50%" }}>
       {chartData ? <Line data={chartData} options={options} /> : null}
     </Box>
   );
 };
 
-export default RaspyAISeriesChart;
+export default SeriesChart;

@@ -1,0 +1,49 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`StatsAccordionDetailsBlock tests StatsAccordionDetailsBlock snapshot tests renders correctly and matches snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="MuiBox-root css-3ud2b4"
+  >
+    <h6
+      class="MuiTypography-root MuiTypography-subtitle2 css-xxjgck-MuiTypography-root"
+    >
+      test label
+    </h6>
+    <p
+      class="MuiTypography-root MuiTypography-body1 css-6qr8c6-MuiTypography-root"
+    >
+      Some value
+    </p>
+    <span
+      class="MuiTypography-root MuiTypography-caption css-mpaqru-MuiTypography-root"
+    >
+      Some caption
+    </span>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`StatsAccordionDetailsBlock tests StatsAccordionDetailsBlock snapshot tests renders correctly and matches snapshot 2`] = `
+<DocumentFragment>
+  <div
+    class="MuiBox-root css-3ud2b4"
+  >
+    <h6
+      class="MuiTypography-root MuiTypography-subtitle2 css-t5dvla-MuiTypography-root"
+    >
+      test label
+    </h6>
+    <p
+      class="MuiTypography-root MuiTypography-body1 css-1cj4ygb-MuiTypography-root"
+    >
+      Some value
+    </p>
+    <span
+      class="MuiTypography-root MuiTypography-caption css-1w5mft4-MuiTypography-root"
+    >
+      Some caption
+    </span>
+  </div>
+</DocumentFragment>
+`;

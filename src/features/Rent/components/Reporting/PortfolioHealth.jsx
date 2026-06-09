@@ -16,7 +16,9 @@ const PortfolioHealthBlock = ({ data, label = "" }) => {
         borderRadius: 0.8,
       }}
     >
-      <Typography>{data}</Typography>
+      <Typography fontSize="2rem" color="primary" fontWeight="light">
+        {data}
+      </Typography>
       <Typography variant="caption">{label}</Typography>
     </Box>
   );

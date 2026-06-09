@@ -16,13 +16,15 @@ const FinancialHealthBlock = ({ data, label = "" }) => {
         borderRadius: 0.8,
       }}
     >
-      <Typography>${data?.toFixed(2)}</Typography>
+      <Typography fontSize="2rem" color="primary" fontWeight="light">
+        ${data?.toFixed(2)}
+      </Typography>
       <Typography variant="caption">{label}</Typography>
     </Box>
   );
 };
 
-const FinancialHealth = ({ financialHealth }) => {
+const FinancialHealthAccordion = ({ financialHealth }) => {
   return (
     <>
       <Stack
@@ -47,4 +49,4 @@ const FinancialHealth = ({ financialHealth }) => {
   );
 };
 
-export default FinancialHealth;
+export default FinancialHealthAccordion;
