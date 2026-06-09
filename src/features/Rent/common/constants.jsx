@@ -3,6 +3,7 @@
  */
 export const AddPropertyTextString = "ADD_PROPERTY";
 export const AddRentRecordsTextString = "ADD_RENT_RECORDS";
+export const AddMaintenanceRecordTextString = "ADD_MAINTENANCE_RECORD";
 
 // DefaultLeaseTermOptions ...
 export const DefaultLeaseTermOptions = [

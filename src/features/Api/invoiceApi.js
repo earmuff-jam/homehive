@@ -21,8 +21,7 @@ const InvoiceApiTagTypes = {
 export const invoiceApi = createApi({
   reducerPath: "invoiceApi",
   baseQuery: fakeBaseQuery(),
-  tagTypes: [LocalStorageKeys.receiver, LocalStorageKeys.sender],
-
+  tagTypes: Object.values(InvoiceApiTagTypes),
   endpoints: (builder) => ({
     // getPdfDetails ...
     // defines a function that returns pdf details

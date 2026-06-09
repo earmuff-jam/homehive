@@ -27,6 +27,7 @@ export const RemoveNotificationEnumType = "RemoveNotification";
 export const AddTenantNotificationEnumValue = "Notice of Addition";
 export const RemoveTenantNotificationEnumValue = "Notice of Removal";
 export const AddRentPaymentNotificationEnumValue = "Notice of Rent Payment";
+export const AddMaintenanceRecordEnumValue = "Notice of Maintenance Request";
 
 // EmailNotificationDisclaimer ...
 export const EmailNotificationDisclaimer =
@@ -176,6 +177,17 @@ Earmuffjam LLC
       return `
 Hello there,
   This notification is to alert you that rental payment has been made manually for the property listed as ${propertyName}.
+
+  ${EmailNotificationDisclaimer}
+  ${NoActionToPerformEnumValue}
+
+With Regards,
+Earmuffjam LLC
+`;
+    case AddMaintenanceRecordEnumValue:
+      return `
+Hello there,
+  This notification is to alert you that a maintenance request has been made or updated for the property listed as ${propertyName}.
 
   ${EmailNotificationDisclaimer}
   ${NoActionToPerformEnumValue}

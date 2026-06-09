@@ -15,7 +15,6 @@ const MaintenanceHealthAccordion = ({ label }) => {
     <Accordion
       elevation={0}
       key={label}
-      defaultExpanded
       sx={{
         cursor: "default",
       }}

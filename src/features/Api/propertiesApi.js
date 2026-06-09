@@ -11,10 +11,17 @@ import {
 } from "firebase/firestore";
 import { authenticatorFirestore as db } from "src/config";
 
+// PropertiesApiTagTypes ...
+// used to define the tag types for maintenance api
+const PropertiesApiTagTypes = {
+  getProperties: "rent/getProperties",
+  getPropertyAmenities: "rent/getPropertyAmenities",
+};
+
 export const propertiesApi = createApi({
   reducerPath: "propertiesApi",
   baseQuery: fakeBaseQuery(),
-  tagTypes: ["properties", "property-amenities"],
+  tagTypes: Object.values(PropertiesApiTagTypes),
   endpoints: (builder) => ({
     // fetchAdditionalAmenities
     // defines a function that retrieves additional amenities for property id
@@ -42,7 +49,7 @@ export const propertiesApi = createApi({
           };
         }
       },
-      providesTags: ["property-amenities"],
+      providesTags: [PropertiesApiTagTypes.getProperties],
     }),
     // saveAmenitiesForProperty ...
     // defines a function that saves the property amenities for a selected property id
@@ -61,7 +68,7 @@ export const propertiesApi = createApi({
           };
         }
       },
-      invalidatesTags: ["property-amenities"],
+      invalidatesTags: [PropertiesApiTagTypes.getPropertyAmenities],
     }),
     // getPropertiesByPropertyId ...
     // defines a function that retrieves properties by id
@@ -82,7 +89,7 @@ export const propertiesApi = createApi({
           };
         }
       },
-      providesTags: ["properties"],
+      providesTags: [PropertiesApiTagTypes.getProperties],
     }),
     // retrieves a list of properties created by the
     // passed in userId; filters deleted properties
@@ -109,7 +116,7 @@ export const propertiesApi = createApi({
           };
         }
       },
-      providesTags: ["properties"],
+      providesTags: [PropertiesApiTagTypes.getProperties],
     }),
     // creates a new property in the system
     // uses mapServiceApi to retrieve property location
@@ -143,7 +150,7 @@ export const propertiesApi = createApi({
           };
         }
       },
-      invalidatesTags: ["properties"],
+      invalidatesTags: [PropertiesApiTagTypes.getProperties],
     }),
     // updates a selected property by data
     // uses mapServiceApi to retrieve property location
@@ -182,7 +189,7 @@ export const propertiesApi = createApi({
           };
         }
       },
-      invalidatesTags: ["properties"],
+      invalidatesTags: [PropertiesApiTagTypes.getProperties],
     }),
     // deletePropertyById ...
     // defines a function that marks a property as deleted
@@ -238,7 +245,10 @@ export const propertiesApi = createApi({
           };
         }
       },
-      invalidatesTags: ["properties"],
+      invalidatesTags: [
+        PropertiesApiTagTypes.getProperties,
+        PropertiesApiTagTypes.getPropertyAmenities,
+      ],
     }),
   }),
 });
