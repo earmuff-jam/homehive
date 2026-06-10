@@ -3,7 +3,7 @@ import React, { useMemo } from "react";
 import dayjs from "dayjs";
 
 import { CommentRounded, Remove } from "@mui/icons-material";
-import { Stack, Typography } from "@mui/material";
+import { Stack, Tooltip, Typography } from "@mui/material";
 import EmptyComponent from "common/EmptyComponent";
 import relativeTime from "dayjs/plugin/relativeTime";
 import {
@@ -31,12 +31,25 @@ const ViewMaintenanceRecord = ({ data = [] }) => {
       {
         accessorKey: "status",
         header: "Status",
-        size: 100,
         Cell: ({ cell }) =>
           (
             <Typography textTransform="capitalize">
               {cell.getValue()}
             </Typography>
+          ) || "-",
+      },
+      {
+        header: "Description",
+        size: 200,
+        accessorKey: "description",
+        id: "description",
+        Cell: ({ cell }) =>
+          (
+            <Tooltip title={cell?.getValue()}>
+              <Typography noWrap sx={{ width: 200 }}>
+                {cell.getValue()}
+              </Typography>
+            </Tooltip>
           ) || "-",
       },
       {

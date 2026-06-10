@@ -237,7 +237,7 @@ export default function QuickActions({ property }) {
           <AButton
             variant="outlined"
             fullWidth
-            label="Pay rent manually"
+            label="Record Rent Payment"
             onClick={() =>
               setDialog({
                 title: "Update rent records manually",

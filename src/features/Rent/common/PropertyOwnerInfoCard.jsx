@@ -7,6 +7,7 @@ import dayjs from "dayjs";
 import {
   BusinessRounded,
   EmailRounded,
+  HighlightOff,
   LocationOnRounded,
   PhoneRounded,
   WarningAmberRounded,
@@ -17,6 +18,9 @@ import {
   Box,
   Card,
   CardContent,
+  Dialog,
+  DialogContent,
+  DialogTitle,
   IconButton,
   Skeleton,
   Stack,
@@ -24,6 +28,7 @@ import {
   Typography,
 } from "@mui/material";
 import AButton from "common/AButton";
+import AIconButton from "common/AIconButton";
 import ConfirmationBox, {
   DefaultConfirmationBoxProps,
 } from "common/ConfirmationBox";
@@ -37,6 +42,8 @@ import {
   useLazyGetRentByMonthQuery,
 } from "features/Api/rentApi";
 import { useGetTenantByPropertyIdQuery } from "features/Api/tenantsApi";
+import { AddMaintenanceRecordTextString } from "features/Rent/common/constants";
+import AddMaintenanceRecord from "features/Rent/components/AddMaintenanceRecord/AddMaintenanceRecord";
 import { getStripeFailureReasons } from "features/Rent/components/Settings/common";
 import { useGenerateStripeCheckoutSession } from "features/Rent/hooks/useGenerateStripeCheckoutSession";
 import {
@@ -46,6 +53,14 @@ import {
   formatCurrency,
   getNumberOfDaysPastDue,
 } from "features/Rent/utils";
+
+// DefaultDialogProps ...
+// defines the default props for dialog component
+const DefaultDialogProps = {
+  title: "",
+  type: "",
+  display: false,
+};
 
 export default function PropertyOwnerInfoCard({
   isViewingRental = false,
@@ -83,11 +98,15 @@ export default function PropertyOwnerInfoCard({
     useCreateRentRecordMutation();
 
   const [stripeValid, setStripeValid] = useState(false);
+  const [dialog, setDialog] = useState(DefaultDialogProps);
+  const [showSnackbar, setShowSnackbar] = useState(false);
+
   const [showConfirmationBox, setShowConfirmationBox] = useState(
     DefaultConfirmationBoxProps,
   );
 
   const tenant = data.find((item) => item);
+  const hadRecentMaintenanceRequestBeenMade = true;
   const currentMonthRentData = getRentByMonthResult?.data;
 
   // used to confirm if payee understands that bank transactions sometimes takes > 3 days to complete.
@@ -100,6 +119,10 @@ export default function PropertyOwnerInfoCard({
         item.status === ManualRentStatusEnumValue,
     ),
   );
+
+  const closeDialog = () => {
+    setDialog(DefaultDialogProps);
+  };
 
   const handleRentPayment = async ({
     rentAmount,
@@ -333,6 +356,19 @@ export default function PropertyOwnerInfoCard({
                 </Box>
 
                 <AButton
+                  variant="outlined"
+                  fullWidth
+                  label="Create maintenance issue"
+                  onClick={() =>
+                    setDialog({
+                      title: "Create maintenance issue",
+                      type: AddMaintenanceRecordTextString,
+                      display: true,
+                    })
+                  }
+                />
+
+                <AButton
                   size="small"
                   variant="contained"
                   label="Pay Rent"
@@ -373,6 +409,57 @@ export default function PropertyOwnerInfoCard({
           </>
         )}
       </CardContent>
+
+      <Dialog
+        open={dialog.display}
+        keepMounted
+        fullWidth
+        maxWidth="lg"
+        aria-describedby="alert-dialog-slide-description"
+      >
+        <DialogTitle>
+          {dialog.type === AddMaintenanceRecordTextString && (
+            <Stack spacing={1}>
+              <Stack
+                direction="row"
+                alignItems="center"
+                justifyContent="space-between"
+              >
+                <RowHeader
+                  title="Add maintenance request"
+                  caption={`Add maintenance request for ${property?.name}`}
+                  sxProps={{
+                    textAlign: "left",
+                  }}
+                />
+                <AIconButton
+                  size="small"
+                  color="error"
+                  variant="outlined"
+                  onClick={closeDialog}
+                  label={<HighlightOff />}
+                />
+              </Stack>
+              {hadRecentMaintenanceRequestBeenMade ? (
+                <Alert variant="filled" severity="error">
+                  A maintenance request was recently submitted. Are you sure you
+                  want to proceed?
+                </Alert>
+              ) : null}
+            </Stack>
+          )}
+        </DialogTitle>
+        <DialogContent>
+          {dialog.type === AddMaintenanceRecordTextString && (
+            <AddMaintenanceRecord
+              property={property}
+              closeDialog={closeDialog}
+              setShowSnackbar={setShowSnackbar}
+            />
+          )}
+        </DialogContent>
+      </Dialog>
+
       <ConfirmationBox
         isOpen={showConfirmationBox.value}
         title="Confirm rent payment"
@@ -384,6 +471,13 @@ export default function PropertyOwnerInfoCard({
         handleConfirm={() => handleRentPayment(showConfirmationBox?.details)}
         handleCancel={() => setShowConfirmationBox(DefaultConfirmationBoxProps)}
       />
+
+      <CustomSnackbar
+        showSnackbar={showSnackbar}
+        setShowSnackbar={setShowSnackbar}
+        title="Changes saved."
+      />
+
       <CustomSnackbar
         severity="warning"
         showSnackbar={createRentRecordResult.isError}

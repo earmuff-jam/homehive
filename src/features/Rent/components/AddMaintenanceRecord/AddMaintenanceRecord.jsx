@@ -26,6 +26,7 @@ import { useSendEmailMutation } from "features/Api/externalIntegrationsApi";
 import { useGetUserByEmailAddressQuery } from "features/Api/firebaseUserApi";
 import { useCreateMaintenanceRecordMutation } from "features/Api/maintenanceApi";
 import { useGetTenantByPropertyIdQuery } from "features/Api/tenantsApi";
+import { MaintenanceRecordEnumValues } from "features/Rent/constants";
 import {
   AddMaintenanceRecordEnumValue,
   appendDisclaimer,
@@ -126,18 +127,15 @@ export default function AddMaintenanceRecord({
   const handleChange = (event) => setMaintenanceCategory(event.target.value);
 
   const onSubmit = (data) => {
-    const draftData = {
-      id: uuidv4(),
+    createMaintenanceRecord({
       ...data,
+      id: uuidv4(),
       tenantEmail: primaryTenant?.email,
       propertyId: property?.id,
       propertyOwnerId: property?.createdBy,
       tenantId: primaryTenant?.id,
       maintenanceCategory: maintenanceCategory,
-    };
-
-    createMaintenanceRecord({
-      ...draftData,
+      status: MaintenanceRecordEnumValues?.Created,
       createdBy: user?.uid,
       createdOn: dayjs().toISOString(),
       updatedBy: user?.uid,
@@ -173,7 +171,7 @@ export default function AddMaintenanceRecord({
 
   useEffect(() => {
     if (primaryTenantDetails) {
-      setValue("tenantFirstName", primaryTenantDetails?.firstName);
+      setValue("firstName", primaryTenantDetails?.firstName);
       setValue("tenantLastName", primaryTenantDetails?.lastName);
     }
   }, [isPrimaryTenantDetailsLoading]);
@@ -188,20 +186,20 @@ export default function AddMaintenanceRecord({
         </Divider>
         <Stack direction={{ xs: "column", md: "row" }} spacing={1}>
           <TextFieldWithLabel
-            label="Tenant First Name *"
-            id="tenantFirstName"
-            placeholder="First Name of your primary tenant"
-            errorMsg={errors.tenantFirstName?.message}
+            label="First Name *"
+            id="firstName"
+            placeholder="First Name"
+            errorMsg={errors.firstName?.message}
             inputProps={{
-              ...register("tenantFirstName", {
-                required: "Tenant First Name is required",
+              ...register("firstName", {
+                required: "First Name is required",
               }),
             }}
           />
           <TextFieldWithLabel
             label="Tenant Last Name *"
             id="tenantLastName"
-            placeholder="Last Name of your primary tenant"
+            placeholder="Last Name"
             errorMsg={errors.tenantLastName?.message}
             inputProps={{
               ...register("tenantLastName", {
