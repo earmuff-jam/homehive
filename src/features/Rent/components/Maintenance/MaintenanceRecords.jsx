@@ -8,6 +8,7 @@ export default function MaintenanceRecords({
   isMaintenanceRecordsLoading,
   maintenanceRecords,
   propertyName,
+  primaryTenantEmail,
   dataTour,
 }) {
   return (
@@ -22,7 +23,11 @@ export default function MaintenanceRecords({
           {isMaintenanceRecordsLoading ? (
             <Skeleton height="5rem" />
           ) : (
-            <ViewMaintenanceRecord data={maintenanceRecords} />
+            <ViewMaintenanceRecord
+              data={maintenanceRecords}
+              propertyName={propertyName}
+              primaryTenantEmail={primaryTenantEmail}
+            />
           )}
         </Stack>
       </CardContent>

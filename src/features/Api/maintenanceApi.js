@@ -67,10 +67,31 @@ export const maintenanceApi = createApi({
       },
       invalidatesTags: [MaintenanceApiTagTypes.getMaintenanceRecords],
     }),
+    // update maintenance record
+    updateMaintenanceData: builder.mutation({
+      async queryFn(maintenanceData) {
+        try {
+          const docRef = doc(db, "maintenance", maintenanceData?.id);
+          await setDoc(docRef, maintenanceData, { merge: true });
+
+          return { data: maintenanceData };
+        } catch (error) {
+          return {
+            error: {
+              message: error.message,
+              code: error.code,
+            },
+          };
+        }
+      },
+      invalidatesTags: [MaintenanceApiTagTypes.getMaintenanceRecords],
+    }),
   }),
 });
 
 export const {
   useGetMaintenanceRecordsQuery,
+  useLazyGetMaintenanceRecordsQuery,
   useCreateMaintenanceRecordMutation,
+  useUpdateMaintenanceDataMutation,
 } = maintenanceApi;

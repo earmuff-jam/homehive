@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 
 import { useParams } from "react-router-dom";
 
@@ -74,6 +74,10 @@ const Property = () => {
 
   // if home is SoR, then only each bedroom is counted as a unit
   const isAnyTenantSoR = tenants?.some((tenant) => tenant.isSoR);
+  const primaryTenant = useMemo(
+    () => tenants?.find((tenant) => tenant.isPrimary),
+    [isTenantsLoading],
+  );
 
   return (
     <Stack data-tour="property-0">
@@ -122,6 +126,7 @@ const Property = () => {
             maintenanceRecords={maintenanceRecords}
             isMaintenanceRecordsLoading={isMaintenanceRecordsLoading}
             propertyName={property?.name || "Unknown"}
+            primaryTenantEmail={primaryTenant?.email}
           />
         </Grid>
 

@@ -49,6 +49,10 @@ jest.mock("features/Api/rentApi", () => ({
   useLazyGetRentByMonthQuery: () => [jest.fn(), { data: [] }],
 }));
 
+jest.mock("features/Api/maintenanceApi", () => ({
+  useLazyGetMaintenanceRecordsQuery: () => [jest.fn(), { data: [] }],
+}));
+
 jest.mock("features/Api/externalIntegrationsApi", () => ({
   useCheckStripeAccountStatusQuery: () => ({
     data: [],

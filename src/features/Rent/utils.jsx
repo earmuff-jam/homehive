@@ -28,6 +28,8 @@ export const AddTenantNotificationEnumValue = "Notice of Addition";
 export const RemoveTenantNotificationEnumValue = "Notice of Removal";
 export const AddRentPaymentNotificationEnumValue = "Notice of Rent Payment";
 export const AddMaintenanceRecordEnumValue = "Notice of Maintenance Request";
+export const UpdateMaintenanceRecordEnumValue =
+  "Notice of Update to Maintenance Request";
 
 // EmailNotificationDisclaimer ...
 export const EmailNotificationDisclaimer =

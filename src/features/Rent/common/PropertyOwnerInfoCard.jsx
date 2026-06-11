@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 
 import { v4 as uuidv4 } from "uuid";
 
@@ -37,6 +37,7 @@ import RowHeader from "common/RowHeader";
 import { fetchLoggedInUser } from "common/utils";
 import { useCheckStripeAccountStatusQuery } from "features/Api/externalIntegrationsApi";
 import { useGetUserDataByIdQuery } from "features/Api/firebaseUserApi";
+import { useLazyGetMaintenanceRecordsQuery } from "features/Api/maintenanceApi";
 import {
   useCreateRentRecordMutation,
   useLazyGetRentByMonthQuery,
@@ -83,6 +84,11 @@ export default function PropertyOwnerInfoCard({
 
   const [getRentByMonth, getRentByMonthResult] = useLazyGetRentByMonthQuery();
 
+  const [
+    getMaintenanceRecord,
+    { data: maintenanceRecordData, isFetching: isMaintenanceRecordsFetching },
+  ] = useLazyGetMaintenanceRecordsQuery();
+
   const { generateStripeCheckoutSession } = useGenerateStripeCheckoutSession();
 
   const {
@@ -106,8 +112,13 @@ export default function PropertyOwnerInfoCard({
   );
 
   const tenant = data.find((item) => item);
-  const hadRecentMaintenanceRequestBeenMade = true;
   const currentMonthRentData = getRentByMonthResult?.data;
+
+  const hasRecentMaintenanceRequestBeenMade = useMemo(() => {
+    return maintenanceRecordData?.some(
+      (record) => dayjs().diff(dayjs(record.updatedOn), "day") <= 7,
+    );
+  }, [isMaintenanceRecordsFetching]);
 
   // used to confirm if payee understands that bank transactions sometimes takes > 3 days to complete.
   const hasRecentPaymentAttemptBeenMade = currentMonthRentData?.length > 0;
@@ -185,6 +196,8 @@ export default function PropertyOwnerInfoCard({
         propertyId: property?.id,
         rentMonth: dayjs().format("MMMM"),
       });
+
+      getMaintenanceRecord({ propertyId: property?.id });
     }
   }, [property?.id]);
 
@@ -440,7 +453,7 @@ export default function PropertyOwnerInfoCard({
                   label={<HighlightOff />}
                 />
               </Stack>
-              {hadRecentMaintenanceRequestBeenMade ? (
+              {hasRecentMaintenanceRequestBeenMade ? (
                 <Alert variant="filled" severity="error">
                   A maintenance request was recently submitted. Are you sure you
                   want to proceed?

@@ -1,9 +1,14 @@
-/**
- * Enum Constants ...
- */
+// Enum Constants ...
 export const AddPropertyTextString = "ADD_PROPERTY";
 export const AddRentRecordsTextString = "ADD_RENT_RECORDS";
 export const AddMaintenanceRecordTextString = "ADD_MAINTENANCE_RECORD";
+
+export const AddMaintenanceRecordCompletedResolutionString =
+  "ADD_MAINTENANCE_COMPLETED_RECORD_RESOLUTION";
+export const AddMaintenanceRecordPendingResolutionString =
+  "ADD_MAINTENANCE_PENDING_RECORD_RESOLUTION";
+export const AddMaintenanceRecordRemovedResolutionString =
+  "ADD_MAINTENANCE_REMOVED_RECORD_RESOLUTION";
 
 // DefaultLeaseTermOptions ...
 export const DefaultLeaseTermOptions = [

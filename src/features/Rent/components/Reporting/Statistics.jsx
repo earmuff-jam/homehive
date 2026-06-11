@@ -33,7 +33,7 @@ const Statistics = ({
 
   const handleChange = (event) => setSelected(event.target.value);
 
-  const { data: maintenanceRecords, isLoading: isMaintenanceRecordLoading } =
+  const { data: maintenanceRecords, isFetching: isMaintenanceRecordsFetching } =
     useGetMaintenanceRecordsQuery(
       { propertyId: selected },
       { skip: !selected },
@@ -55,7 +55,7 @@ const Statistics = ({
       ...category,
       value: categoryCounts[category.label] || 0,
     }));
-  }, [isMaintenanceRecordLoading, selected]);
+  }, [isMaintenanceRecordsFetching, selected]);
 
   if (properties?.length <= 0)
     return <EmptyComponent caption="Add properties to view statistics" />;
@@ -109,10 +109,7 @@ const Statistics = ({
           />
           <MaintenanceHealthAccordion
             label={DefaultAccordionOptions[3].label}
-            selected={selected}
-            properties={properties}
-            existingRents={existingRents}
-            existingTenants={existingTenants}
+            maintenanceRecords={maintenanceRecords}
           />
           <Stack spacing={1} flexGrow={1}>
             <Typography textTransform="uppercase">
@@ -125,7 +122,7 @@ const Statistics = ({
                     <Typography minWidth="8rem">{option?.label}</Typography>
                     <Slider
                       color="info"
-                      defaultValue={option?.value}
+                      value={option?.value ?? 0}
                       step={2}
                       min={option?.value === 0 ? 0 : option?.value - 2} // min is 0 or lowest number
                       max={option?.value + 10}

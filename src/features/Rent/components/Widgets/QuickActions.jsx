@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
@@ -23,6 +23,7 @@ import AIconButton from "common/AIconButton";
 import CustomSnackbar from "common/CustomSnackbar";
 import RowHeader from "common/RowHeader";
 import { SettingsRouteUri, fetchLoggedInUser } from "common/utils";
+import { useGetMaintenanceRecordsQuery } from "features/Api/maintenanceApi";
 import { useUpdatePropertyByIdMutation } from "features/Api/propertiesApi";
 import { useGetRentsByPropertyIdQuery } from "features/Api/rentApi";
 import AddMaintenanceRecord from "features/Rent/components/AddMaintenanceRecord/AddMaintenanceRecord";
@@ -52,6 +53,13 @@ export default function QuickActions({ property }) {
     },
   );
 
+  const {
+    data: maintenanceRecords = [],
+    isFetching: isMaintenanceRecordsFetching,
+  } = useGetMaintenanceRecordsQuery(
+    { propertyId: property?.id },
+    { skip: !property?.id },
+  );
   const [
     updateProperty,
     { isSuccess: isUpdatePropertySuccess, isLoading: isUpdatePropertyLoading },
@@ -134,7 +142,11 @@ export default function QuickActions({ property }) {
       !rent.customEventType && dayjs(rent.updatedOn).isAfter(sevenDaysAgo),
   );
 
-  const hadRecentMaintenanceRequestBeenMade = true;
+  const hasRecentMaintenanceRequestBeenMade = useMemo(() => {
+    return maintenanceRecords?.some(
+      (record) => dayjs().diff(dayjs(record.updatedOn), "day") <= 7,
+    );
+  }, [isMaintenanceRecordsFetching]);
 
   useEffect(() => {
     if (isUpdatePropertySuccess) {
@@ -327,7 +339,7 @@ export default function QuickActions({ property }) {
                       label={<HighlightOff />}
                     />
                   </Stack>
-                  {hadRecentMaintenanceRequestBeenMade ? (
+                  {hasRecentMaintenanceRequestBeenMade ? (
                     <Alert variant="filled" severity="error">
                       A maintenance request was recently submitted. Are you sure
                       you want to proceed?
