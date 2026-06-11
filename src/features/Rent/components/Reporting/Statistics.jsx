@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 
 import {
   Box,
@@ -14,56 +14,15 @@ import {
   Typography,
 } from "@mui/material";
 import EmptyComponent from "common/EmptyComponent";
+import { useGetMaintenanceRecordsQuery } from "features/Api/maintenanceApi";
 import LeaseHealthAccordion from "features/Rent/components/Reporting/LeaseHealthAccordion";
 import MaintenanceHealthAccordion from "features/Rent/components/Reporting/MaintenanceHealthAccordion";
 import PropertyHealthAccordion from "features/Rent/components/Reporting/PropertyHealthAccordion";
 import RentCollectionAccordion from "features/Rent/components/Reporting/RentCollectionAccordion";
-
-// DefaultMaintenanceOptions ...
-// defines the default maintenance options
-const DefaultMaintenanceOptions = [
-  {
-    id: 1,
-    label: "HVAC",
-    value: 0,
-  },
-  {
-    id: 2,
-    label: "Plumbing",
-    value: 0,
-  },
-  {
-    id: 3,
-    label: "Appliances",
-    value: 0,
-  },
-  {
-    id: 4,
-    label: "Electrical",
-    value: 0,
-  },
-];
-
-// DefaultAccordionOptions ...
-// defines the default accordion options
-const DefaultAccordionOptions = [
-  {
-    id: 1,
-    label: "Vacancy & Occupancy",
-  },
-  {
-    id: 2,
-    label: "Lease Health",
-  },
-  {
-    id: 3,
-    label: "Rent Collection",
-  },
-  {
-    id: 4,
-    label: "Maintenance",
-  },
-];
+import {
+  DefaultAccordionOptions,
+  DefaultMaintenanceCategoryTypes,
+} from "features/Rent/constants";
 
 const Statistics = ({
   properties = [],
@@ -73,6 +32,30 @@ const Statistics = ({
   const [selected, setSelected] = useState("");
 
   const handleChange = (event) => setSelected(event.target.value);
+
+  const { data: maintenanceRecords, isLoading: isMaintenanceRecordLoading } =
+    useGetMaintenanceRecordsQuery(
+      { propertyId: selected },
+      { skip: !selected },
+    );
+
+  const formattedMaintenanceCategoryOptions = useMemo(() => {
+    const selectedPropertyRecords =
+      maintenanceRecords?.filter((rc) => rc.propertyId === selected) || [];
+
+    const categoryCounts = selectedPropertyRecords.reduce((acc, record) => {
+      const category = record.maintenanceCategory;
+
+      acc[category] = (acc[category] || 0) + 1;
+
+      return acc;
+    }, {});
+
+    return DefaultMaintenanceCategoryTypes.map((category) => ({
+      ...category,
+      value: categoryCounts[category.label] || 0,
+    }));
+  }, [isMaintenanceRecordLoading, selected]);
 
   if (properties?.length <= 0)
     return <EmptyComponent caption="Add properties to view statistics" />;
@@ -137,7 +120,7 @@ const Statistics = ({
             </Typography>
             <Paper sx={{ padding: 1, bgcolor: "background.default" }}>
               <List>
-                {DefaultMaintenanceOptions?.map((option) => (
+                {formattedMaintenanceCategoryOptions?.map((option) => (
                   <ListItem key={option?.id} sx={{ padding: 1, gap: 1 }}>
                     <Typography minWidth="8rem">{option?.label}</Typography>
                     <Slider

@@ -26,7 +26,10 @@ import { useSendEmailMutation } from "features/Api/externalIntegrationsApi";
 import { useGetUserByEmailAddressQuery } from "features/Api/firebaseUserApi";
 import { useCreateMaintenanceRecordMutation } from "features/Api/maintenanceApi";
 import { useGetTenantByPropertyIdQuery } from "features/Api/tenantsApi";
-import { MaintenanceRecordEnumValues } from "features/Rent/constants";
+import {
+  DefaultMaintenanceCategoryTypes,
+  MaintenanceRecordEnumValues,
+} from "features/Rent/constants";
 import {
   AddMaintenanceRecordEnumValue,
   appendDisclaimer,
@@ -44,39 +47,6 @@ const VisuallyHiddenInput = styled("input")({
   left: 0,
   whiteSpace: "nowrap",
 });
-
-// DefaultMaintenanceCategoryTypes ...
-// defines a function that populates the default maintenance categories
-const DefaultMaintenanceCategoryTypes = [
-  {
-    id: 1,
-    label: "Plumbing",
-  },
-  {
-    id: 2,
-    label: "HVAC",
-  },
-  {
-    id: 3,
-    label: "Electrical",
-  },
-  {
-    id: 4,
-    label: "Appliances",
-  },
-  {
-    id: 5,
-    label: "Exterior",
-  },
-  {
-    id: 6,
-    label: "Pest Control",
-  },
-  {
-    id: 7,
-    label: "General Repair",
-  },
-];
 
 export default function AddMaintenanceRecord({
   property,

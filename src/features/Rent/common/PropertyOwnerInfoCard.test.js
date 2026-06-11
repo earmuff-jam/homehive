@@ -12,6 +12,11 @@ jest.mock("common/AButton", () => ({
   ),
 }));
 
+jest.mock("common/AIconButton", () => ({
+  __esModule: true,
+  default: (props) => <button {...props} />,
+}));
+
 jest.mock("features/Rent/utils", () => ({
   fetchLoggedInUser: () => ({
     uid: "user-1",

@@ -25,14 +25,14 @@ import RowHeader from "common/RowHeader";
 import { SettingsRouteUri, fetchLoggedInUser } from "common/utils";
 import { useUpdatePropertyByIdMutation } from "features/Api/propertiesApi";
 import { useGetRentsByPropertyIdQuery } from "features/Api/rentApi";
+import AddMaintenanceRecord from "features/Rent/components/AddMaintenanceRecord/AddMaintenanceRecord";
+import AddProperty from "features/Rent/components/AddProperty/AddProperty";
+import AddRentRecords from "features/Rent/components/AddRentRecords/AddRentRecords";
 import {
   AddMaintenanceRecordTextString,
   AddPropertyTextString,
   AddRentRecordsTextString,
-} from "features/Rent/common/constants";
-import AddMaintenanceRecord from "features/Rent/components/AddMaintenanceRecord/AddMaintenanceRecord";
-import AddProperty from "features/Rent/components/AddProperty/AddProperty";
-import AddRentRecords from "features/Rent/components/AddRentRecords/AddRentRecords";
+} from "features/Rent/constants";
 import { sanitizeApiFields } from "features/Rent/utils";
 
 const defaultDialog = {

@@ -49,7 +49,7 @@ export const propertiesApi = createApi({
           };
         }
       },
-      providesTags: [PropertiesApiTagTypes.getProperties],
+      providesTags: [PropertiesApiTagTypes.getPropertyAmenities],
     }),
     // saveAmenitiesForProperty ...
     // defines a function that saves the property amenities for a selected property id

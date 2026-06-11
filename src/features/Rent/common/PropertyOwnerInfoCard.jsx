@@ -42,9 +42,9 @@ import {
   useLazyGetRentByMonthQuery,
 } from "features/Api/rentApi";
 import { useGetTenantByPropertyIdQuery } from "features/Api/tenantsApi";
-import { AddMaintenanceRecordTextString } from "features/Rent/common/constants";
 import AddMaintenanceRecord from "features/Rent/components/AddMaintenanceRecord/AddMaintenanceRecord";
 import { getStripeFailureReasons } from "features/Rent/components/Settings/common";
+import { AddMaintenanceRecordTextString } from "features/Rent/constants";
 import { useGenerateStripeCheckoutSession } from "features/Rent/hooks/useGenerateStripeCheckoutSession";
 import {
   CompleteRentStatusEnumValue,

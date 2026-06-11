@@ -8,7 +8,7 @@ import {
   PaidRounded,
 } from "@mui/icons-material";
 import { authorizedServerLevelFeatureFlags } from "common/ApplicationConfig";
-import { DefaultLeaseTermOptions } from "features/Rent/common/constants";
+import { DefaultLeaseTermOptions } from "features/Rent/constants";
 import { produce } from "immer";
 
 export const PaidRentStatusEnumValue = "paid";
