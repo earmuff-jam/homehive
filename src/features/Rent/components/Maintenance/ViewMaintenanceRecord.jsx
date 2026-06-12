@@ -70,6 +70,9 @@ const ViewMaintenanceRecord = ({
     });
   };
 
+  const isSelectionDisabled = (actualStatus, rowStatus) =>
+    actualStatus === rowStatus;
+
   const columns = useMemo(
     () => [
       {
@@ -157,9 +160,10 @@ const ViewMaintenanceRecord = ({
         <Tooltip title="Mark pending">
           <IconButton
             size="small"
-            disabled={
-              row?.original?.status === MaintenanceRecordEnumValues.Pending
-            }
+            disabled={isSelectionDisabled(
+              MaintenanceRecordEnumValues.Pending,
+              row?.original?.status,
+            )}
             onClick={() =>
               toggleDialog(
                 AddMaintenanceRecordPendingResolutionString,
@@ -175,9 +179,10 @@ const ViewMaintenanceRecord = ({
         <Tooltip title="Mark In Progress">
           <IconButton
             size="small"
-            disabled={
-              row?.original?.status === MaintenanceRecordEnumValues.Inprogress
-            }
+            disabled={isSelectionDisabled(
+              MaintenanceRecordEnumValues.Inprogress,
+              row?.original?.status,
+            )}
             onClick={() =>
               toggleDialog(
                 AddMaintenanceRecordCompletedResolutionString,
@@ -192,9 +197,10 @@ const ViewMaintenanceRecord = ({
         <Tooltip title="Mark completed">
           <IconButton
             size="small"
-            disabled={
-              row?.original?.status === MaintenanceRecordEnumValues.Completed
-            }
+            disabled={isSelectionDisabled(
+              MaintenanceRecordEnumValues.Completed,
+              row?.original?.status,
+            )}
             onClick={() =>
               toggleDialog(
                 AddMaintenanceRecordRemovedResolutionString,
