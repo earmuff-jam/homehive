@@ -1,0 +1,152 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ProfileDetails matches snapshot 1`] = `
+<div>
+  <div
+    class="MuiGrid-root MuiGrid-container MuiGrid-direction-xs-row MuiGrid-spacing-xs-3 css-1u8xl8z-MuiGrid-root"
+  >
+    <div
+      class="MuiGrid-root MuiGrid-direction-xs-row MuiGrid-grid-xs-12 MuiGrid-grid-md-4 css-xur2zb-MuiGrid-root"
+    >
+      <div
+        class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation0 MuiCard-root css-15tnh0w-MuiPaper-root-MuiCard-root"
+        style="--Paper-shadow: none;"
+      >
+        <div
+          class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ofhj4p-MuiAvatar-root"
+        >
+          <svg
+            aria-hidden="true"
+            class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium MuiAvatar-fallback css-1mo2pzk-MuiSvgIcon-root-MuiAvatar-fallback"
+            data-testid="PersonIcon"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"
+            />
+          </svg>
+        </div>
+        <h6
+          class="MuiTypography-root MuiTypography-h6 css-3zp90o-MuiTypography-root"
+        >
+          John Doe
+        </h6>
+        <h6
+          class="MuiTypography-root MuiTypography-h6 css-3zp90o-MuiTypography-root"
+        >
+          test@test.com
+        </h6>
+        <p
+          class="MuiTypography-root MuiTypography-body2 css-1wle3ir-MuiTypography-root"
+        >
+          tenant
+        </p>
+      </div>
+    </div>
+    <div
+      class="MuiGrid-root MuiGrid-direction-xs-row MuiGrid-grid-xs-12 MuiGrid-grid-md-8 css-q5srq4-MuiGrid-root"
+    >
+      <form>
+        <div
+          class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation0 MuiCard-root css-o3b9az-MuiPaper-root-MuiCard-root"
+          style="--Paper-shadow: none;"
+        >
+          <div
+            data-testid="row-header"
+          />
+          <div
+            class="MuiStack-root css-1wi0p3l-MuiStack-root"
+          >
+            <input
+              id="firstName"
+              label="First Name *"
+              name="firstName"
+              placeholder="Enter your first name"
+              value=""
+            />
+            <input
+              id="lastName"
+              label="Last Name *"
+              name="lastName"
+              placeholder="Enter your Last Name"
+              value=""
+            />
+          </div>
+          <div
+            class="MuiStack-root css-1wi0p3l-MuiStack-root"
+          >
+            <input
+              errormsg=""
+              id="email"
+              label="Email address *"
+              labelicon="[object Object]"
+              labeliconhelper="Editing an email address is prevented by default."
+              name="email"
+              placeholder="Email Address"
+              value="test@test.com"
+            />
+            <input
+              id="phone"
+              label="Phone Number *"
+              name="phone"
+              placeholder="Enter your phone number"
+              value=""
+            />
+          </div>
+          <input
+            id="streetAddress"
+            label="Street Address *"
+            name="streetAddress"
+            placeholder="Enter your primary street address"
+            value=""
+          />
+          <div
+            class="MuiStack-root css-1wi0p3l-MuiStack-root"
+          >
+            <input
+              id="city"
+              label="City *"
+              name="city"
+              placeholder="City"
+              value=""
+            />
+            <input
+              id="state"
+              label="State *"
+              name="state"
+              placeholder="State"
+              value=""
+            />
+            <input
+              id="zipcode"
+              label="Zip Code *"
+              name="zipcode"
+              placeholder="Zip Code"
+              value=""
+            />
+          </div>
+          <div
+            class="MuiBox-root css-0"
+          >
+            <button
+              disabled=""
+              label="Save"
+              type="submit"
+              variant="contained"
+            >
+              Save
+            </button>
+          </div>
+          <span
+            class="MuiTypography-root MuiTypography-caption css-c289yo-MuiTypography-root"
+          >
+            Last login around 
+            a few seconds ago
+          </span>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+`;

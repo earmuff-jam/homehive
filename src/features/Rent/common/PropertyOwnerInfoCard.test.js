@@ -12,6 +12,11 @@ jest.mock("common/AButton", () => ({
   ),
 }));
 
+jest.mock("common/AIconButton", () => ({
+  __esModule: true,
+  default: (props) => <button {...props} />,
+}));
+
 jest.mock("features/Rent/utils", () => ({
   fetchLoggedInUser: () => ({
     uid: "user-1",
@@ -42,6 +47,10 @@ jest.mock("features/Api/tenantsApi", () => ({
 jest.mock("features/Api/rentApi", () => ({
   useCreateRentRecordMutation: () => [jest.fn(), {}],
   useLazyGetRentByMonthQuery: () => [jest.fn(), { data: [] }],
+}));
+
+jest.mock("features/Api/maintenanceApi", () => ({
+  useLazyGetMaintenanceRecordsQuery: () => [jest.fn(), { data: [] }],
 }));
 
 jest.mock("features/Api/externalIntegrationsApi", () => ({

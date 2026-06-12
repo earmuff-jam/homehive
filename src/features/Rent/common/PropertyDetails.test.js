@@ -37,10 +37,13 @@ describe("PropertyDetails Jest Tests", () => {
   };
 
   it("renders loading skeleton when property is loading", () => {
-    render(<PropertyDetails isPropertyLoading={true} property={null} />);
+    const { container } = render(
+      <PropertyDetails isPropertyLoading={true} property={null} />,
+    );
 
     expect(screen.getByTestId("property-map")).toBeInTheDocument();
     expect(screen.getByText("Property Details")).toBeInTheDocument();
+    expect(container.querySelector(".MuiSkeleton-root")).toBeInTheDocument();
   });
 
   it("renders property details when loading is false", () => {

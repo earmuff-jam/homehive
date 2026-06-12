@@ -1,0 +1,40 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`HelpAndSupport matches snapshot 1`] = `
+<div>
+  <div
+    class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation0 MuiCard-root css-1utqj7i-MuiPaper-root-MuiCard-root"
+    style="--Paper-shadow: none;"
+  >
+    <div
+      data-testid="row-header"
+    >
+      Need Help?
+    </div>
+    <div
+      class="MuiStack-root css-1qok0dj-MuiStack-root"
+    >
+      <div
+        class="MuiBox-root css-xi606m"
+      >
+        <span
+          data-testid="icon"
+        />
+        <h6
+          class="MuiTypography-root MuiTypography-subtitle2 css-4nr59u-MuiTypography-root"
+        >
+          Support
+        </h6>
+        <p
+          class="MuiTypography-root MuiTypography-body2 css-kj4ytl-MuiTypography-root"
+        >
+          Get help
+        </p>
+        <button>
+          Open
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+`;

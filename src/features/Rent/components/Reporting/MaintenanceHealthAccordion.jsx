@@ -1,5 +1,7 @@
 import React from "react";
 
+import dayjs from "dayjs";
+
 import { ExpandMoreRounded } from "@mui/icons-material";
 import {
   Accordion,
@@ -10,12 +12,21 @@ import {
 } from "@mui/material";
 import StatsAccordionDetailsBlock from "features/Rent/components/Reporting/StatsAccordionDetailsBlock";
 
-const MaintenanceHealthAccordion = ({ label }) => {
+const MaintenanceHealthAccordion = ({ label, maintenanceRecords = [] }) => {
+  const oldestMaintenanceRecord =
+    maintenanceRecords?.length > 0
+      ? maintenanceRecords.reduce((oldest, current) =>
+          dayjs(current.updatedOn).isBefore(oldest.updatedOn)
+            ? current
+            : oldest,
+        )
+      : null;
+
   return (
     <Accordion
       elevation={0}
-      key={label}
       defaultExpanded
+      key={label}
       sx={{
         cursor: "default",
       }}
@@ -55,8 +66,8 @@ const MaintenanceHealthAccordion = ({ label }) => {
         >
           <StatsAccordionDetailsBlock
             label="Open requests"
-            value={0}
-            caption={`Oldest: 0 days ago`}
+            value={maintenanceRecords?.length}
+            caption={`Oldest: ${dayjs(oldestMaintenanceRecord?.updatedOn).fromNow()}`}
           />
           <StatsAccordionDetailsBlock
             label="Avg. Resolution time"

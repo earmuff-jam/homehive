@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 
 import { useParams } from "react-router-dom";
 
+import { HighlightOff } from "@mui/icons-material";
 import {
   Dialog,
   DialogActions,
@@ -13,8 +14,10 @@ import {
   Stack,
 } from "@mui/material";
 import AButton from "common/AButton";
+import AIconButton from "common/AIconButton";
 import RowHeader from "common/RowHeader";
 import { fetchLoggedInUser } from "common/utils";
+import { useGetMaintenanceRecordsQuery } from "features/Api/maintenanceApi";
 import { useGetPropertiesByPropertyIdQuery } from "features/Api/propertiesApi";
 import { useGetRentsByPropertyIdQuery } from "features/Api/rentApi";
 import { useGetTenantByPropertyIdQuery } from "features/Api/tenantsApi";
@@ -23,6 +26,7 @@ import PropertyHeader from "features/Rent/common/PropertyHeader";
 import PropertyOwnerInfoCard from "features/Rent/common/PropertyOwnerInfoCard";
 import PropertyStatistics from "features/Rent/common/PropertyStatistics";
 import AssociateTenantPopup from "features/Rent/components/AssociateTenantPopup/AssociateTenantPopup";
+import MaintenanceRecords from "features/Rent/components/Maintenance/MaintenanceRecords";
 import FinancialOverview from "features/Rent/components/Widgets/FinancialOverview";
 import QuickActions from "features/Rent/components/Widgets/QuickActions";
 import RentalPaymentOverview from "features/Rent/components/Widgets/RentalPaymentOverview";
@@ -54,6 +58,14 @@ const Property = () => {
       },
     );
 
+  const {
+    data: maintenanceRecords = [],
+    isLoading: isMaintenanceRecordsLoading,
+  } = useGetMaintenanceRecordsQuery(
+    { propertyId: params?.id },
+    { skip: !params.id },
+  );
+
   useAppTitle(property?.name || "Selected Property");
 
   const [dialog, setDialog] = useState(false);
@@ -62,6 +74,10 @@ const Property = () => {
 
   // if home is SoR, then only each bedroom is counted as a unit
   const isAnyTenantSoR = tenants?.some((tenant) => tenant.isSoR);
+  const primaryTenant = useMemo(
+    () => tenants?.find((tenant) => tenant.isPrimary),
+    [isTenantsLoading],
+  );
 
   return (
     <Stack data-tour="property-0">
@@ -106,6 +122,12 @@ const Property = () => {
             isRentListForPropertyLoading={isRentListForPropertyLoading}
             propertyName={property?.name || "Unknown"}
           />
+          <MaintenanceRecords
+            maintenanceRecords={maintenanceRecords}
+            isMaintenanceRecordsLoading={isMaintenanceRecordsLoading}
+            propertyName={property?.name || "Unknown"}
+            primaryTenantEmail={primaryTenant?.email}
+          />
         </Grid>
 
         {/* Sidebar */}
@@ -132,15 +154,28 @@ const Property = () => {
         aria-describedby="alert-dialog-slide-description"
       >
         <DialogTitle>
-          <RowHeader
-            title="Associate Tenants"
-            caption={`Associate tenant for ${property?.name}`}
-            sxProps={{
-              textAlign: "left",
-              fontWeight: "bold",
-              color: "text.secondary",
-            }}
-          />
+          <Stack
+            direction="row"
+            alignItems="center"
+            justifyContent="space-between"
+          >
+            <RowHeader
+              title="Associate Tenants"
+              caption={`Associate tenant for ${property?.name}`}
+              sxProps={{
+                textAlign: "left",
+                fontWeight: "bold",
+                color: "text.secondary",
+              }}
+            />
+            <AIconButton
+              size="small"
+              color="error"
+              variant="outlined"
+              onClick={toggleAssociateTenantsPopup}
+              label={<HighlightOff />}
+            />
+          </Stack>
         </DialogTitle>
         <DialogContent>
           <AssociateTenantPopup

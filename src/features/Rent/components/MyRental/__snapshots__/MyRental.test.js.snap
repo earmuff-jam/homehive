@@ -1,0 +1,46 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MyRental matches snapshot (full loaded state) 1`] = `
+<div>
+  <div
+    class="MuiStack-root css-nen11g-MuiStack-root"
+    data-tour="rental-0"
+  >
+    <div
+      class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation0 css-1x76qw7-MuiPaper-root"
+      style="--Paper-shadow: none;"
+    >
+      <div
+        data-testid="property-header"
+      />
+      <div
+        data-testid="property-stats"
+      />
+    </div>
+    <div
+      class="MuiGrid-root MuiGrid-container MuiGrid-direction-xs-row MuiGrid-spacing-xs-3 css-1u8xl8z-MuiGrid-root"
+    >
+      <div
+        class="MuiGrid-root MuiGrid-direction-xs-row MuiGrid-grid-xs-12 MuiGrid-grid-md-8 css-q5srq4-MuiGrid-root"
+      >
+        <div
+          data-testid="financial-overview"
+        />
+        <div
+          data-testid="payment-overview"
+        />
+      </div>
+      <div
+        class="MuiGrid-root MuiGrid-direction-xs-row MuiGrid-grid-xs-12 MuiGrid-grid-md-4 css-xur2zb-MuiGrid-root"
+      >
+        <div
+          data-testid="owner-card"
+        />
+        <div
+          data-testid="property-details"
+        />
+      </div>
+    </div>
+  </div>
+</div>
+`;

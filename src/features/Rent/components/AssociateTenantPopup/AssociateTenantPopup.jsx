@@ -32,8 +32,8 @@ import TextFieldWithLabel from "common/TextFieldWithLabel";
 import { fetchLoggedInUser } from "common/utils";
 import { useSendEmailMutation } from "features/Api/externalIntegrationsApi";
 import { useAssociateTenantMutation } from "features/Api/tenantsApi";
-import { DefaultLeaseTermOptions } from "features/Rent/common/constants";
 import TenantEmailAutocomplete from "features/Rent/components/AssociateTenantPopup/TenantEmailAutocomplete";
+import { DefaultLeaseTermOptions } from "features/Rent/constants";
 import {
   AddNotificationEnumType,
   AddTenantNotificationEnumValue,

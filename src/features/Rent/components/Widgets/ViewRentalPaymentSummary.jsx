@@ -21,7 +21,8 @@ const ViewRentalPaymentSummary = ({ rentData = [] }) => {
         accessorKey: "tenantEmail",
         header: "Tenant Email",
         size: 200,
-        Cell: ({ cell }) => <Typography>{cell.getValue()}</Typography> || "-",
+        Cell: ({ cell }) =>
+          <Typography variant="subtitle2">{cell.getValue()}</Typography> || "-",
       },
       {
         header: "Amount Paid ($)",
@@ -38,7 +39,11 @@ const ViewRentalPaymentSummary = ({ rentData = [] }) => {
           return total;
         },
         id: "amountPaid",
-        Cell: ({ cell }) => formatCurrency(cell.getValue()),
+        Cell: ({ cell }) => (
+          <Typography variant="subtitle2">
+            {formatCurrency(cell.getValue())}
+          </Typography>
+        ),
       },
       {
         accessorKey: "status",
@@ -46,7 +51,7 @@ const ViewRentalPaymentSummary = ({ rentData = [] }) => {
         size: 100,
         Cell: ({ cell }) =>
           (
-            <Typography textTransform="capitalize">
+            <Typography textTransform="capitalize" variant="subtitle2">
               {cell.getValue()}
             </Typography>
           ) || "-",
@@ -55,16 +60,21 @@ const ViewRentalPaymentSummary = ({ rentData = [] }) => {
         accessorKey: "rentMonth",
         header: "Rent Month",
         size: 100,
-        Cell: ({ cell }) => cell.getValue() || "-",
+        Cell: ({ cell }) => (
+          <Typography variant="subtitle2">{cell.getValue() || "-"}</Typography>
+        ),
       },
       {
         accessorKey: "updatedOn",
         header: "Updated on",
         size: 150,
-        Cell: ({ cell }) =>
-          cell.getValue()
-            ? dayjs(cell.getValue()).format("YYYY-MM-DD HH:mm:ss")
-            : "-",
+        Cell: ({ cell }) => (
+          <Typography variant="subtitle2">
+            {cell.getValue()
+              ? dayjs(cell.getValue()).format("YYYY-MM-DD HH:mm:ss")
+              : "-"}
+          </Typography>
+        ),
       },
     ],
     [],

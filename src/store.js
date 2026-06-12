@@ -5,6 +5,7 @@ import { externalIntegrationMultipart } from "features/Api/externalIntegrationMu
 import { externalIntegrationsApi } from "features/Api/externalIntegrationsApi";
 import { firebaseUserApi } from "features/Api/firebaseUserApi";
 import { invoiceApi } from "features/Api/invoiceApi";
+import { maintenanceApi } from "features/Api/maintenanceApi";
 import { mapAmenitiesApi } from "features/Api/mapAmenitiesApi";
 import { mapServiceApi } from "features/Api/mapServiceApi";
 import { propertiesApi } from "features/Api/propertiesApi";
@@ -19,6 +20,7 @@ export const store = configureStore({
     [propertiesApi.reducerPath]: propertiesApi.reducer,
     [tenantsApi.reducerPath]: tenantsApi.reducer,
     [rentApi.reducerPath]: rentApi.reducer,
+    [maintenanceApi.reducerPath]: maintenanceApi.reducer,
     [invoiceApi.reducerPath]: invoiceApi.reducer,
     [mapServiceApi.reducerPath]: mapServiceApi.reducer,
     [analyticsApi.reducerPath]: analyticsApi.reducer,
@@ -36,6 +38,7 @@ export const store = configureStore({
       propertiesApi.middleware,
       tenantsApi.middleware,
       rentApi.middleware,
+      maintenanceApi.middleware,
       invoiceApi.middleware,
       mapServiceApi.middleware,
       analyticsApi.middleware,

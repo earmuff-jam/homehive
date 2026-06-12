@@ -7,6 +7,11 @@ jest.mock("features/Rent/utils", () => ({
   getOccupancyRate: jest.fn(() => 66),
 }));
 
+jest.mock("common/AIconButton", () => ({
+  __esModule: true,
+  default: (props) => <button {...props} />,
+}));
+
 describe("PropertyHealthAccordion", () => {
   beforeAll(() => {
     jest.useFakeTimers();
@@ -33,6 +38,7 @@ describe("PropertyHealthAccordion", () => {
           propertyId: 1,
           startDate: "2026-05-11",
           isSoR: false,
+          gracePeriod: 4,
         },
       ];
 
@@ -81,6 +87,7 @@ describe("PropertyHealthAccordion", () => {
         {
           propertyId: 1,
           startDate: "2026-05-11", // 10 days after move out
+          gracePeriod: 4,
           isSoR: false,
         },
       ];

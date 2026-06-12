@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
 import dayjs from "dayjs";
 
+import { HighlightOff } from "@mui/icons-material";
 import {
   Alert,
   Box,
@@ -18,17 +19,21 @@ import {
   Tooltip,
 } from "@mui/material";
 import AButton from "common/AButton";
+import AIconButton from "common/AIconButton";
 import CustomSnackbar from "common/CustomSnackbar";
 import RowHeader from "common/RowHeader";
 import { SettingsRouteUri, fetchLoggedInUser } from "common/utils";
+import { useGetMaintenanceRecordsQuery } from "features/Api/maintenanceApi";
 import { useUpdatePropertyByIdMutation } from "features/Api/propertiesApi";
 import { useGetRentsByPropertyIdQuery } from "features/Api/rentApi";
-import {
-  AddPropertyTextString,
-  AddRentRecordsTextString,
-} from "features/Rent/common/constants";
+import AddMaintenanceRecord from "features/Rent/components/AddMaintenanceRecord/AddMaintenanceRecord";
 import AddProperty from "features/Rent/components/AddProperty/AddProperty";
 import AddRentRecords from "features/Rent/components/AddRentRecords/AddRentRecords";
+import {
+  AddMaintenanceRecordTextString,
+  AddPropertyTextString,
+  AddRentRecordsTextString,
+} from "features/Rent/constants";
 import { sanitizeApiFields } from "features/Rent/utils";
 
 const defaultDialog = {
@@ -48,6 +53,13 @@ export default function QuickActions({ property }) {
     },
   );
 
+  const {
+    data: maintenanceRecords = [],
+    isFetching: isMaintenanceRecordsFetching,
+  } = useGetMaintenanceRecordsQuery(
+    { propertyId: property?.id },
+    { skip: !property?.id },
+  );
   const [
     updateProperty,
     { isSuccess: isUpdatePropertySuccess, isLoading: isUpdatePropertyLoading },
@@ -129,6 +141,12 @@ export default function QuickActions({ property }) {
     (rent) =>
       !rent.customEventType && dayjs(rent.updatedOn).isAfter(sevenDaysAgo),
   );
+
+  const hasRecentMaintenanceRequestBeenMade = useMemo(() => {
+    return maintenanceRecords?.some(
+      (record) => dayjs().diff(dayjs(record.updatedOn), "day") <= 7,
+    );
+  }, [isMaintenanceRecordsFetching]);
 
   useEffect(() => {
     if (isUpdatePropertySuccess) {
@@ -219,13 +237,19 @@ export default function QuickActions({ property }) {
           <AButton
             variant="outlined"
             fullWidth
-            disabled
             label="Add Maintenance Request"
+            onClick={() =>
+              setDialog({
+                title: "Add maintenance record",
+                type: AddMaintenanceRecordTextString,
+                display: true,
+              })
+            }
           />
           <AButton
             variant="outlined"
             fullWidth
-            label="Pay rent manually"
+            label="Record Rent Payment"
             onClick={() =>
               setDialog({
                 title: "Update rent records manually",
@@ -263,19 +287,62 @@ export default function QuickActions({ property }) {
                 </Stack>
               )}
               {dialog.type === AddRentRecordsTextString && (
-                <Stack>
-                  <RowHeader
-                    title="Add rent records"
-                    caption="Editing an existing row is prohibited. Confirm rent validity before submission."
-                    sxProps={{
-                      textAlign: "left",
-                    }}
-                  />
+                <Stack spacing={1}>
+                  <Stack
+                    direction="row"
+                    alignItems="center"
+                    justifyContent="space-between"
+                  >
+                    <RowHeader
+                      title="Add rent records"
+                      caption="Editing an existing row is prohibited. Confirm rent validity before submission."
+                      sxProps={{
+                        textAlign: "left",
+                      }}
+                    />
+                    <AIconButton
+                      size="small"
+                      color="error"
+                      variant="outlined"
+                      onClick={closeDialog}
+                      label={<HighlightOff />}
+                    />
+                  </Stack>
                   {hasRecentPaymentAttemptBeenMade ? (
                     <Alert variant="filled" severity="error">
                       A recent attempt at rent payment was detected. Some bank
                       accounts may take couple of days for processing. Are you
                       sure you want to proceed?
+                    </Alert>
+                  ) : null}
+                </Stack>
+              )}
+              {dialog.type === AddMaintenanceRecordTextString && (
+                <Stack spacing={1}>
+                  <Stack
+                    direction="row"
+                    alignItems="center"
+                    justifyContent="space-between"
+                  >
+                    <RowHeader
+                      title="Add maintenance request"
+                      caption={`Add maintenance request for ${property?.name}`}
+                      sxProps={{
+                        textAlign: "left",
+                      }}
+                    />
+                    <AIconButton
+                      size="small"
+                      color="error"
+                      variant="outlined"
+                      onClick={closeDialog}
+                      label={<HighlightOff />}
+                    />
+                  </Stack>
+                  {hasRecentMaintenanceRequestBeenMade ? (
+                    <Alert variant="filled" severity="error">
+                      A maintenance request was recently submitted. Are you sure
+                      you want to proceed?
                     </Alert>
                   ) : null}
                 </Stack>
@@ -298,6 +365,13 @@ export default function QuickActions({ property }) {
               )}
               {dialog.type === AddRentRecordsTextString && (
                 <AddRentRecords
+                  property={property}
+                  closeDialog={closeDialog}
+                  setShowSnackbar={setShowSnackbar}
+                />
+              )}
+              {dialog.type === AddMaintenanceRecordTextString && (
+                <AddMaintenanceRecord
                   property={property}
                   closeDialog={closeDialog}
                   setShowSnackbar={setShowSnackbar}

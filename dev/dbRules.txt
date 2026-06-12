@@ -26,12 +26,26 @@ service cloud.firestore {
       allow update, delete: if request.auth != null &&
         request.auth.uid == resource.data.createdBy;
     }
+    
     // match rent collection for users
     match /rents/{rentId} {
       allow create: if request.auth != null &&
         request.resource.data.createdBy == request.auth.uid;
       allow read: if request.auth != null;
     }
+    
+		// match maintenance collection for users
+    match /maintenance/{maintenanceId} {
+      allow create: if request.auth != null &&
+        request.resource.data.createdBy == request.auth.uid;
+
+      allow read: if request.auth != null;
+
+      allow update, delete: if request.auth != null &&
+        exists(/databases/$(database)/documents/properties/$(resource.data.propertyId)) &&
+        get(/databases/$(database)/documents/properties/$(resource.data.propertyId)).data.createdBy == request.auth.uid;
+    }
+
     // match invites collection for users
     match /invites/{inviteId} {
       allow read, write, delete: if true;
@@ -48,6 +62,13 @@ service cloud.firestore {
     match /etssPayments/{paymentId} {
   		allow read: if request.auth != null;
       allow write: if false;
+    }
+    
+    // match propertyAmenities for valid property
+    // only read is allowed; no write; no delete
+    match /propertyAmenities/{propertyId} {
+  		allow read: if request.auth != null;
+      allow write: if request.auth != null;
     }
   }
 }

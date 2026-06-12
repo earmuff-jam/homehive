@@ -1,0 +1,29 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Maintenance Records matches snapshot 1`] = `
+<div
+  class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 MuiCard-root css-8ls9v2-MuiPaper-root-MuiCard-root"
+  data-tour="maintenance-tour"
+  style="--Paper-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12);"
+>
+  <div
+    class="MuiCardContent-root css-1lt5qva-MuiCardContent-root"
+  >
+    <div
+      data-testid="row-header"
+    >
+      Maintenance Overview
+      View maintenance requests for Test Property
+    </div>
+    <div
+      class="MuiStack-root css-1sazv7p-MuiStack-root"
+    >
+      <div
+        data-testid="view-maintenance-record"
+      >
+        {"data":[{"id":"1","description":"Leaky faucet"}],"propertyName":"Test Property","primaryTenantEmail":"tenant@test.com"}
+      </div>
+    </div>
+  </div>
+</div>
+`;

@@ -369,43 +369,55 @@ exports[`ViewRentalPaymentSummary Jest Tests ViewRentalPaymentSummary Snapshot T
                 data-index="1"
                 tabindex="0"
               >
-                <p
-                  class="MuiTypography-root MuiTypography-body1 css-onvsl-MuiTypography-root"
+                <h6
+                  class="MuiTypography-root MuiTypography-subtitle2 css-1tspyaz-MuiTypography-root"
                 >
                   maria-nicole23@gmail.com
-                </p>
+                </h6>
               </td>
               <td
                 class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignLeft MuiTableCell-sizeMedium css-errt7o-MuiTableCell-root"
                 data-index="2"
                 tabindex="0"
               >
-                39.99
+                <h6
+                  class="MuiTypography-root MuiTypography-subtitle2 css-1tspyaz-MuiTypography-root"
+                >
+                  39.99
+                </h6>
               </td>
               <td
                 class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignLeft MuiTableCell-sizeMedium css-xrq0e5-MuiTableCell-root"
                 data-index="3"
                 tabindex="0"
               >
-                <p
-                  class="MuiTypography-root MuiTypography-body1 css-42qjv4-MuiTypography-root"
+                <h6
+                  class="MuiTypography-root MuiTypography-subtitle2 css-1gifey5-MuiTypography-root"
                 >
                   Manual
-                </p>
+                </h6>
               </td>
               <td
                 class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignLeft MuiTableCell-sizeMedium css-tbu1et-MuiTableCell-root"
                 data-index="4"
                 tabindex="0"
               >
-                March
+                <h6
+                  class="MuiTypography-root MuiTypography-subtitle2 css-1tspyaz-MuiTypography-root"
+                >
+                  March
+                </h6>
               </td>
               <td
                 class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignLeft MuiTableCell-sizeMedium css-776lfi-MuiTableCell-root"
                 data-index="5"
                 tabindex="0"
               >
-                2026-03-10 10:00:00
+                <h6
+                  class="MuiTypography-root MuiTypography-subtitle2 css-1tspyaz-MuiTypography-root"
+                >
+                  2026-03-10 10:00:00
+                </h6>
               </td>
             </tr>
             <tr
@@ -456,43 +468,55 @@ exports[`ViewRentalPaymentSummary Jest Tests ViewRentalPaymentSummary Snapshot T
                 data-index="1"
                 tabindex="0"
               >
-                <p
-                  class="MuiTypography-root MuiTypography-body1 css-onvsl-MuiTypography-root"
+                <h6
+                  class="MuiTypography-root MuiTypography-subtitle2 css-1tspyaz-MuiTypography-root"
                 >
                   charlieWilliam@gmail.com
-                </p>
+                </h6>
               </td>
               <td
                 class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignLeft MuiTableCell-sizeMedium css-errt7o-MuiTableCell-root"
                 data-index="2"
                 tabindex="0"
               >
-                1065.00
+                <h6
+                  class="MuiTypography-root MuiTypography-subtitle2 css-1tspyaz-MuiTypography-root"
+                >
+                  1065.00
+                </h6>
               </td>
               <td
                 class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignLeft MuiTableCell-sizeMedium css-xrq0e5-MuiTableCell-root"
                 data-index="3"
                 tabindex="0"
               >
-                <p
-                  class="MuiTypography-root MuiTypography-body1 css-42qjv4-MuiTypography-root"
+                <h6
+                  class="MuiTypography-root MuiTypography-subtitle2 css-1gifey5-MuiTypography-root"
                 >
                   complete
-                </p>
+                </h6>
               </td>
               <td
                 class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignLeft MuiTableCell-sizeMedium css-tbu1et-MuiTableCell-root"
                 data-index="4"
                 tabindex="0"
               >
-                Feb
+                <h6
+                  class="MuiTypography-root MuiTypography-subtitle2 css-1tspyaz-MuiTypography-root"
+                >
+                  Feb
+                </h6>
               </td>
               <td
                 class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignLeft MuiTableCell-sizeMedium css-776lfi-MuiTableCell-root"
                 data-index="5"
                 tabindex="0"
               >
-                2026-02-28 10:00:00
+                <h6
+                  class="MuiTypography-root MuiTypography-subtitle2 css-1tspyaz-MuiTypography-root"
+                >
+                  2026-02-28 10:00:00
+                </h6>
               </td>
             </tr>
             <tr
