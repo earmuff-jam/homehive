@@ -4,7 +4,7 @@ import dayjs from "dayjs";
 
 import {
   CommentRounded,
-  DeleteOutlineRounded,
+  EditAttributesOutlined,
   PendingActionsOutlined,
   Remove,
   TaskAltOutlined,
@@ -157,6 +157,9 @@ const ViewMaintenanceRecord = ({
         <Tooltip title="Mark pending">
           <IconButton
             size="small"
+            disabled={
+              row?.original?.status === MaintenanceRecordEnumValues.Pending
+            }
             onClick={() =>
               toggleDialog(
                 AddMaintenanceRecordPendingResolutionString,
@@ -169,23 +172,29 @@ const ViewMaintenanceRecord = ({
           </IconButton>
         </Tooltip>
 
-        <Tooltip title="Mark completed">
+        <Tooltip title="Mark In Progress">
           <IconButton
             size="small"
+            disabled={
+              row?.original?.status === MaintenanceRecordEnumValues.Inprogress
+            }
             onClick={() =>
               toggleDialog(
                 AddMaintenanceRecordCompletedResolutionString,
                 row?.original?.id,
-                MaintenanceRecordEnumValues.Completed,
+                MaintenanceRecordEnumValues.Inprogress,
               )
             }
           >
-            <TaskAltOutlined fontSize="small" color="primary" />
+            <EditAttributesOutlined fontSize="small" color="secondary" />
           </IconButton>
         </Tooltip>
-        <Tooltip title="Mark removed">
+        <Tooltip title="Mark completed">
           <IconButton
             size="small"
+            disabled={
+              row?.original?.status === MaintenanceRecordEnumValues.Completed
+            }
             onClick={() =>
               toggleDialog(
                 AddMaintenanceRecordRemovedResolutionString,
@@ -194,7 +203,7 @@ const ViewMaintenanceRecord = ({
               )
             }
           >
-            <DeleteOutlineRounded fontSize="small" color="error" />
+            <TaskAltOutlined fontSize="small" color="success" />
           </IconButton>
         </Tooltip>
       </Box>

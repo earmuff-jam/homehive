@@ -38,7 +38,7 @@ describe("PropertyStatistics Jest tests", () => {
   });
   describe("PropertyStatistics Component Tests", () => {
     it("renders skeletons when property is loading", () => {
-      render(
+      const { container } = render(
         <PropertyStatistics
           isPropertyLoading
           property={mockProperty}
@@ -48,6 +48,8 @@ describe("PropertyStatistics Jest tests", () => {
 
       expect(screen.queryByText("Total Units")).not.toBeInTheDocument();
       expect(screen.queryByText("Monthly Revenue")).not.toBeInTheDocument();
+
+      expect(container.querySelector(".MuiSkeleton-root")).toBeInTheDocument();
     });
 
     it("renders property statistics when loaded", () => {

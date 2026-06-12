@@ -1,0 +1,718 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AssociateTenantPopup test AssociateTenantPopup matches snapshot 1`] = `
+<form>
+  <div
+    aria-orientation="horizontal"
+    class="MuiDivider-root MuiDivider-fullWidth MuiDivider-withChildren css-1oljykh-MuiDivider-root"
+    role="separator"
+  >
+    <span
+      class="MuiDivider-wrapper css-1134oje-MuiDivider-wrapper"
+    >
+      <span
+        class="MuiTypography-root MuiTypography-caption css-mpaqru-MuiTypography-root"
+      >
+         Lease Information 
+      </span>
+    </span>
+  </div>
+  <div
+    class="MuiStack-root css-1sazv7p-MuiStack-root"
+  >
+    <div
+      class="MuiBox-root css-1rr4qq7"
+    >
+      <div
+        class="MuiBox-root css-8atqhb"
+      >
+        <p
+          class="MuiTypography-root MuiTypography-body2 css-fzryi2-MuiTypography-root"
+        >
+          Lease start date *
+        </p>
+        <div
+          class="MuiFormControl-root MuiFormControl-fullWidth MuiTextField-root css-xwn1oi-MuiFormControl-root-MuiTextField-root"
+        >
+          <div
+            class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-colorPrimary MuiInputBase-fullWidth MuiInputBase-formControl MuiInputBase-sizeSmall MuiInputBase-adornedEnd Mui-readOnly MuiInputBase-readOnly css-1n04w30-MuiInputBase-root-MuiOutlinedInput-root"
+          >
+            <input
+              aria-invalid="false"
+              aria-label="Choose date, selected date is Jun 12, 2026"
+              autocomplete="off"
+              class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputSizeSmall MuiInputBase-inputAdornedEnd Mui-readOnly MuiInputBase-readOnly css-13meb6w-MuiInputBase-input-MuiOutlinedInput-input"
+              id=":r1:"
+              inputmode="text"
+              placeholder="MM/DD/YYYY"
+              readonly=""
+              type="text"
+              value="06/12/2026"
+            />
+            <fieldset
+              aria-hidden="true"
+              class="MuiOutlinedInput-notchedOutline css-18p5xg2-MuiNotchedOutlined-root-MuiOutlinedInput-notchedOutline"
+            >
+              <legend
+                class="css-1nf2c5d-MuiNotchedOutlined-root"
+              >
+                <span
+                  aria-hidden="true"
+                  class="notranslate"
+                >
+                  ​
+                </span>
+              </legend>
+            </fieldset>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="MuiFormControl-root MuiFormControl-fullWidth css-ytlejw-MuiFormControl-root"
+    >
+      <span
+        class="MuiTypography-root MuiTypography-caption MuiTypography-gutterBottom css-4isn06-MuiTypography-root"
+      >
+        Select lease term length *
+      </span>
+      <div
+        class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-colorPrimary MuiInputBase-formControl MuiInputBase-sizeSmall MuiSelect-root css-sc8y68-MuiInputBase-root-MuiOutlinedInput-root-MuiSelect-root"
+      >
+        <div
+          aria-expanded="false"
+          aria-haspopup="listbox"
+          aria-labelledby="lease-term-label mui-component-select-term"
+          class="MuiSelect-select MuiSelect-outlined MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputSizeSmall css-trm6af-MuiNativeSelect-root-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input"
+          id="mui-component-select-term"
+          role="combobox"
+          tabindex="0"
+        >
+          1 year
+        </div>
+        <input
+          aria-hidden="true"
+          aria-invalid="false"
+          class="MuiSelect-nativeInput css-j0riat-MuiSelect-nativeInput"
+          name="term"
+          tabindex="-1"
+          value="1y"
+        />
+        <svg
+          aria-hidden="true"
+          class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium MuiSelect-icon MuiSelect-iconOutlined css-1rfqz7c-MuiSvgIcon-root-MuiNativeSelect-root-MuiSelect-icon"
+          data-testid="ArrowDropDownIcon"
+          focusable="false"
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="M7 10l5 5 5-5z"
+          />
+        </svg>
+        <fieldset
+          aria-hidden="true"
+          class="MuiOutlinedInput-notchedOutline css-18p5xg2-MuiNotchedOutlined-root-MuiOutlinedInput-notchedOutline"
+        >
+          <legend
+            class="css-1nf2c5d-MuiNotchedOutlined-root"
+          >
+            <span
+              aria-hidden="true"
+              class="notranslate"
+            >
+              ​
+            </span>
+          </legend>
+        </fieldset>
+      </div>
+    </div>
+    <div
+      class="MuiStack-root css-1wi0p3l-MuiStack-root"
+    >
+      <div>
+        <div
+          class="MuiStack-root css-1d9cypr-MuiStack-root"
+        >
+          <svg
+            aria-hidden="true"
+            aria-label="The tax rate applied in percentage. Set 1 for default value."
+            class="MuiSvgIcon-root MuiSvgIcon-colorSecondary MuiSvgIcon-fontSizeSmall css-1s79gy0-MuiSvgIcon-root"
+            data-mui-internal-clone-element="true"
+            data-testid="InfoRoundedIcon"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m0 15c-.55 0-1-.45-1-1v-4c0-.55.45-1 1-1s1 .45 1 1v4c0 .55-.45 1-1 1m1-8h-2V7h2z"
+            />
+          </svg>
+          <h6
+            class="MuiTypography-root MuiTypography-subtitle2 css-1ypmsg6-MuiTypography-root"
+          >
+            Standard Tax rate *
+          </h6>
+        </div>
+      </div>
+      <div>
+        <div
+          class="MuiStack-root css-1d9cypr-MuiStack-root"
+        >
+          <svg
+            aria-hidden="true"
+            aria-label="Monthly rent amount is the populated from the property details"
+            class="MuiSvgIcon-root MuiSvgIcon-colorSecondary MuiSvgIcon-fontSizeSmall css-1s79gy0-MuiSvgIcon-root"
+            data-mui-internal-clone-element="true"
+            data-testid="InfoRoundedIcon"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m0 15c-.55 0-1-.45-1-1v-4c0-.55.45-1 1-1s1 .45 1 1v4c0 .55-.45 1-1 1m1-8h-2V7h2z"
+            />
+          </svg>
+          <h6
+            class="MuiTypography-root MuiTypography-subtitle2 css-1ypmsg6-MuiTypography-root"
+            disabled=""
+          >
+            Monthly Rent Amount
+          </h6>
+        </div>
+      </div>
+    </div>
+    <div
+      aria-orientation="horizontal"
+      class="MuiDivider-root MuiDivider-fullWidth MuiDivider-withChildren css-1oljykh-MuiDivider-root"
+      role="separator"
+    >
+      <span
+        class="MuiDivider-wrapper css-1134oje-MuiDivider-wrapper"
+      >
+        <span
+          class="MuiTypography-root MuiTypography-caption css-mpaqru-MuiTypography-root"
+        >
+           Charges and Fees 
+        </span>
+      </span>
+    </div>
+    <div
+      class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation0 MuiAlert-root MuiAlert-colorError MuiAlert-standardError MuiAlert-standard css-3lhuho-MuiPaper-root-MuiAlert-root"
+      role="alert"
+      style="--Paper-shadow: none;"
+    >
+      <div
+        class="MuiAlert-icon css-vab54s-MuiAlert-icon"
+      >
+        <svg
+          aria-hidden="true"
+          class="MuiSvgIcon-root MuiSvgIcon-fontSizeInherit css-1ckov0h-MuiSvgIcon-root"
+          data-testid="ErrorOutlineIcon"
+          focusable="false"
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="M11 15h2v2h-2zm0-8h2v6h-2zm.99-5C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"
+          />
+        </svg>
+      </div>
+      <div
+        class="MuiAlert-message css-zioonp-MuiAlert-message"
+      >
+        <h6
+          class="MuiTypography-root MuiTypography-subtitle2 css-1ypmsg6-MuiTypography-root"
+        >
+          Late fee should not be greater than 12% of total property cost.
+        </h6>
+      </div>
+    </div>
+    <div
+      class="MuiStack-root css-1i67jkc-MuiStack-root"
+    >
+      <div>
+        <div
+          class="MuiStack-root css-1d9cypr-MuiStack-root"
+        >
+          <svg
+            aria-hidden="true"
+            aria-label="Initial Late fee is the late fee applied the first day after the grace period is over. Eg, an initial late fee would be eg, $75.00"
+            class="MuiSvgIcon-root MuiSvgIcon-colorSecondary MuiSvgIcon-fontSizeSmall css-421z1z-MuiSvgIcon-root"
+            data-mui-internal-clone-element="true"
+            data-testid="InfoRoundedIcon"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m0 15c-.55 0-1-.45-1-1v-4c0-.55.45-1 1-1s1 .45 1 1v4c0 .55-.45 1-1 1m1-8h-2V7h2z"
+            />
+          </svg>
+          <h6
+            class="MuiTypography-root MuiTypography-subtitle2 css-1ypmsg6-MuiTypography-root"
+          >
+            Initial Late fee *
+          </h6>
+        </div>
+      </div>
+      <div>
+        <div
+          class="MuiStack-root css-1d9cypr-MuiStack-root"
+        >
+          <svg
+            aria-hidden="true"
+            aria-label="Daily Late fee is the late fee applied after the grace period is over. Eg, 10$ per day daily rental fee should be 10.00"
+            class="MuiSvgIcon-root MuiSvgIcon-colorSecondary MuiSvgIcon-fontSizeSmall css-421z1z-MuiSvgIcon-root"
+            data-mui-internal-clone-element="true"
+            data-testid="InfoRoundedIcon"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m0 15c-.55 0-1-.45-1-1v-4c0-.55.45-1 1-1s1 .45 1 1v4c0 .55-.45 1-1 1m1-8h-2V7h2z"
+            />
+          </svg>
+          <h6
+            class="MuiTypography-root MuiTypography-subtitle2 css-1ypmsg6-MuiTypography-root"
+          >
+            Late fee / day *
+          </h6>
+        </div>
+      </div>
+    </div>
+    <div
+      class="MuiStack-root css-1i67jkc-MuiStack-root"
+    >
+      <div>
+        <div
+          class="MuiStack-root css-1d9cypr-MuiStack-root"
+        >
+          <svg
+            aria-hidden="true"
+            aria-label="Initial Animal Voilation Fee is the voilation fee applied the first day after the voilation was noted. Eg, an initial animal voilation fee would be eg, $300.00"
+            class="MuiSvgIcon-root MuiSvgIcon-colorSecondary MuiSvgIcon-fontSizeSmall css-421z1z-MuiSvgIcon-root"
+            data-mui-internal-clone-element="true"
+            data-testid="InfoRoundedIcon"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m0 15c-.55 0-1-.45-1-1v-4c0-.55.45-1 1-1s1 .45 1 1v4c0 .55-.45 1-1 1m1-8h-2V7h2z"
+            />
+          </svg>
+          <h6
+            class="MuiTypography-root MuiTypography-subtitle2 css-1ypmsg6-MuiTypography-root"
+          >
+            Initial Animal Voilation Fee *
+          </h6>
+        </div>
+      </div>
+      <div>
+        <div
+          class="MuiStack-root css-1d9cypr-MuiStack-root"
+        >
+          <svg
+            aria-hidden="true"
+            aria-label="Animal voilation fee is the fee applied after the grace period is over. Eg, 10$ per day daily fee should be 10.00"
+            class="MuiSvgIcon-root MuiSvgIcon-colorSecondary MuiSvgIcon-fontSizeSmall css-421z1z-MuiSvgIcon-root"
+            data-mui-internal-clone-element="true"
+            data-testid="InfoRoundedIcon"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m0 15c-.55 0-1-.45-1-1v-4c0-.55.45-1 1-1s1 .45 1 1v4c0 .55-.45 1-1 1m1-8h-2V7h2z"
+            />
+          </svg>
+          <h6
+            class="MuiTypography-root MuiTypography-subtitle2 css-1ypmsg6-MuiTypography-root"
+          >
+            Animal voilation fee / day *
+          </h6>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div
+        class="MuiStack-root css-1d9cypr-MuiStack-root"
+      >
+        <svg
+          aria-hidden="true"
+          aria-label="Fee amount when payment is incomplete or not processed properly."
+          class="MuiSvgIcon-root MuiSvgIcon-colorSecondary MuiSvgIcon-fontSizeSmall css-1s79gy0-MuiSvgIcon-root"
+          data-mui-internal-clone-element="true"
+          data-testid="InfoRoundedIcon"
+          focusable="false"
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m0 15c-.55 0-1-.45-1-1v-4c0-.55.45-1 1-1s1 .45 1 1v4c0 .55-.45 1-1 1m1-8h-2V7h2z"
+          />
+        </svg>
+        <h6
+          class="MuiTypography-root MuiTypography-subtitle2 css-1ypmsg6-MuiTypography-root"
+        >
+          Fee associated with each return *
+        </h6>
+      </div>
+    </div>
+    <div
+      class="MuiStack-root css-1i67jkc-MuiStack-root"
+    >
+      <div>
+        <div
+          class="MuiStack-root css-1d9cypr-MuiStack-root"
+        >
+          <svg
+            aria-hidden="true"
+            aria-label="The number of days of grace period provided to the tenant. A default value of 3 is provided to the user by default. Property owners are encouraged to keep the default days as is for tenant feasibility."
+            class="MuiSvgIcon-root MuiSvgIcon-colorSecondary MuiSvgIcon-fontSizeSmall css-1s79gy0-MuiSvgIcon-root"
+            data-mui-internal-clone-element="true"
+            data-testid="InfoRoundedIcon"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m0 15c-.55 0-1-.45-1-1v-4c0-.55.45-1 1-1s1 .45 1 1v4c0 .55-.45 1-1 1m1-8h-2V7h2z"
+            />
+          </svg>
+          <h6
+            class="MuiTypography-root MuiTypography-subtitle2 css-1ypmsg6-MuiTypography-root"
+          >
+             Grace period *
+          </h6>
+        </div>
+      </div>
+    </div>
+    <div
+      aria-orientation="horizontal"
+      class="MuiDivider-root MuiDivider-fullWidth MuiDivider-withChildren css-1oljykh-MuiDivider-root"
+      role="separator"
+    >
+      <span
+        class="MuiDivider-wrapper css-1134oje-MuiDivider-wrapper"
+      >
+        <span
+          class="MuiTypography-root MuiTypography-caption css-mpaqru-MuiTypography-root"
+        >
+           Tenant Information 
+        </span>
+      </span>
+    </div>
+    <div
+      data-testid="tenant-email-autocomplete"
+    />
+    <div
+      class="MuiStack-root css-nen11g-MuiStack-root"
+    >
+      <label
+        class="MuiFormControlLabel-root MuiFormControlLabel-labelPlacementEnd css-19opgx6-MuiFormControlLabel-root"
+      >
+        <span
+          class="MuiButtonBase-root MuiCheckbox-root MuiCheckbox-colorPrimary MuiCheckbox-sizeMedium PrivateSwitchBase-root MuiCheckbox-root MuiCheckbox-colorPrimary MuiCheckbox-sizeMedium MuiCheckbox-root MuiCheckbox-colorPrimary MuiCheckbox-sizeMedium css-vuhw6e-MuiButtonBase-root-MuiSwitchBase-root-MuiCheckbox-root"
+        >
+          <input
+            class="PrivateSwitchBase-input css-12xagqm-MuiSwitchBase-root"
+            data-indeterminate="false"
+            name="isAutoRenewPolicySet"
+            type="checkbox"
+            value="false"
+          />
+          <svg
+            aria-hidden="true"
+            class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1umw9bq-MuiSvgIcon-root"
+            data-testid="CheckBoxOutlineBlankIcon"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M19 5v14H5V5h14m0-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"
+            />
+          </svg>
+        </span>
+        <span
+          class="MuiTypography-root MuiTypography-body1 MuiFormControlLabel-label css-rizt0-MuiTypography-root"
+        >
+          <div
+            class="MuiStack-root css-kdc3n8-MuiStack-root"
+          >
+            <svg
+              aria-hidden="true"
+              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1umw9bq-MuiSvgIcon-root"
+              data-testid="AutorenewOutlinedIcon"
+              focusable="false"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M12 6v3l4-4-4-4v3c-4.42 0-8 3.58-8 8 0 1.57.46 3.03 1.24 4.26L6.7 14.8c-.45-.83-.7-1.79-.7-2.8 0-3.31 2.69-6 6-6m6.76 1.74L17.3 9.2c.44.84.7 1.79.7 2.8 0 3.31-2.69 6-6 6v-3l-4 4 4 4v-3c4.42 0 8-3.58 8-8 0-1.57-.46-3.03-1.24-4.26"
+              />
+            </svg>
+            <h6
+              class="MuiTypography-root MuiTypography-subtitle2 css-1ypmsg6-MuiTypography-root"
+            >
+              Setup auto renewal for Test Property
+            </h6>
+            <svg
+              aria-hidden="true"
+              aria-label="Auto renewal support includes the ability to auto renew lease as the rental time comes closer to an end. For auto renewal process to work smoothly please ensure that all required values are entered correctly to the best of your knowledge."
+              class="MuiSvgIcon-root MuiSvgIcon-colorSecondary MuiSvgIcon-fontSizeSmall css-1s79gy0-MuiSvgIcon-root"
+              data-mui-internal-clone-element="true"
+              data-testid="InfoRoundedIcon"
+              focusable="false"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m0 15c-.55 0-1-.45-1-1v-4c0-.55.45-1 1-1s1 .45 1 1v4c0 .55-.45 1-1 1m1-8h-2V7h2z"
+              />
+            </svg>
+          </div>
+        </span>
+      </label>
+    </div>
+    <div
+      class="MuiStack-root css-nen11g-MuiStack-root"
+    >
+      <label
+        class="MuiFormControlLabel-root Mui-disabled MuiFormControlLabel-labelPlacementEnd css-19opgx6-MuiFormControlLabel-root"
+      >
+        <span
+          class="MuiButtonBase-root MuiCheckbox-root MuiCheckbox-colorPrimary MuiCheckbox-sizeMedium PrivateSwitchBase-root MuiCheckbox-root MuiCheckbox-colorPrimary MuiCheckbox-sizeMedium Mui-checked Mui-disabled MuiCheckbox-root MuiCheckbox-colorPrimary MuiCheckbox-sizeMedium css-vuhw6e-MuiButtonBase-root-MuiSwitchBase-root-MuiCheckbox-root"
+        >
+          <input
+            checked=""
+            class="PrivateSwitchBase-input css-12xagqm-MuiSwitchBase-root"
+            data-indeterminate="false"
+            disabled=""
+            name="isPrimary"
+            type="checkbox"
+            value="true"
+          />
+          <svg
+            aria-hidden="true"
+            class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1umw9bq-MuiSvgIcon-root"
+            data-testid="CheckBoxIcon"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M19 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.11 0 2-.9 2-2V5c0-1.1-.89-2-2-2zm-9 14l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"
+            />
+          </svg>
+        </span>
+        <span
+          class="MuiTypography-root MuiTypography-body1 MuiFormControlLabel-label Mui-disabled css-rizt0-MuiTypography-root"
+        >
+          Primary point of contact (PoC)
+        </span>
+      </label>
+    </div>
+    <div
+      class="MuiStack-root css-nen11g-MuiStack-root"
+    >
+      <label
+        class="MuiFormControlLabel-root MuiFormControlLabel-labelPlacementEnd css-19opgx6-MuiFormControlLabel-root"
+      >
+        <span
+          class="MuiButtonBase-root MuiCheckbox-root MuiCheckbox-colorPrimary MuiCheckbox-sizeMedium PrivateSwitchBase-root MuiCheckbox-root MuiCheckbox-colorPrimary MuiCheckbox-sizeMedium MuiCheckbox-root MuiCheckbox-colorPrimary MuiCheckbox-sizeMedium css-vuhw6e-MuiButtonBase-root-MuiSwitchBase-root-MuiCheckbox-root"
+        >
+          <input
+            class="PrivateSwitchBase-input css-12xagqm-MuiSwitchBase-root"
+            data-indeterminate="false"
+            name="isSoR"
+            type="checkbox"
+            value="false"
+          />
+          <svg
+            aria-hidden="true"
+            class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1umw9bq-MuiSvgIcon-root"
+            data-testid="CheckBoxOutlineBlankIcon"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M19 5v14H5V5h14m0-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"
+            />
+          </svg>
+        </span>
+        <span
+          class="MuiTypography-root MuiTypography-body1 MuiFormControlLabel-label css-rizt0-MuiTypography-root"
+        >
+          Single Occupancy Room (SoR)?
+        </span>
+      </label>
+    </div>
+    <div
+      aria-orientation="horizontal"
+      class="MuiDivider-root MuiDivider-fullWidth MuiDivider-withChildren css-1oljykh-MuiDivider-root"
+      role="separator"
+    >
+      <span
+        class="MuiDivider-wrapper css-1134oje-MuiDivider-wrapper"
+      >
+        <span
+          class="MuiTypography-root MuiTypography-caption css-mpaqru-MuiTypography-root"
+        >
+          Permits and Responsibilites
+        </span>
+      </span>
+    </div>
+    <div
+      class="MuiStack-root css-1i67jkc-MuiStack-root"
+    >
+      <div>
+        <div
+          class="MuiStack-root css-1d9cypr-MuiStack-root"
+        >
+          <svg
+            aria-hidden="true"
+            aria-label="Enter the amount of days the tenant can have guests in the property without informing the owner."
+            class="MuiSvgIcon-root MuiSvgIcon-colorSecondary MuiSvgIcon-fontSizeSmall css-1s79gy0-MuiSvgIcon-root"
+            data-mui-internal-clone-element="true"
+            data-testid="InfoRoundedIcon"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m0 15c-.55 0-1-.45-1-1v-4c0-.55.45-1 1-1s1 .45 1 1v4c0 .55-.45 1-1 1m1-8h-2V7h2z"
+            />
+          </svg>
+          <h6
+            class="MuiTypography-root MuiTypography-subtitle2 css-1ypmsg6-MuiTypography-root"
+          >
+            Guests permitted stay days
+          </h6>
+        </div>
+      </div>
+      <div>
+        <div
+          class="MuiStack-root css-1d9cypr-MuiStack-root"
+        >
+          <svg
+            aria-hidden="true"
+            aria-label="Enter the charge amount tenants would incur when they request assistance."
+            class="MuiSvgIcon-root MuiSvgIcon-colorSecondary MuiSvgIcon-fontSizeSmall css-1s79gy0-MuiSvgIcon-root"
+            data-mui-internal-clone-element="true"
+            data-testid="InfoRoundedIcon"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m0 15c-.55 0-1-.45-1-1v-4c0-.55.45-1 1-1s1 .45 1 1v4c0 .55-.45 1-1 1m1-8h-2V7h2z"
+            />
+          </svg>
+          <h6
+            class="MuiTypography-root MuiTypography-subtitle2 css-1ypmsg6-MuiTypography-root"
+          >
+            Owner trip charge
+          </h6>
+        </div>
+      </div>
+    </div>
+    <div
+      class="MuiStack-root css-1i67jkc-MuiStack-root"
+    >
+      <div>
+        <div
+          class="MuiStack-root css-1d9cypr-MuiStack-root"
+        >
+          <svg
+            aria-hidden="true"
+            aria-label="Enter the amount of days allowed for the owner to setup a keybox for the property for new prospective tenants."
+            class="MuiSvgIcon-root MuiSvgIcon-colorSecondary MuiSvgIcon-fontSizeSmall css-1s79gy0-MuiSvgIcon-root"
+            data-mui-internal-clone-element="true"
+            data-testid="InfoRoundedIcon"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m0 15c-.55 0-1-.45-1-1v-4c0-.55.45-1 1-1s1 .45 1 1v4c0 .55-.45 1-1 1m1-8h-2V7h2z"
+            />
+          </svg>
+          <h6
+            class="MuiTypography-root MuiTypography-subtitle2 css-1ypmsg6-MuiTypography-root"
+          >
+            Allow keybox since *
+          </h6>
+        </div>
+      </div>
+      <div>
+        <div
+          class="MuiStack-root css-1d9cypr-MuiStack-root"
+        >
+          <svg
+            aria-hidden="true"
+            aria-label="The cost tenant can pay to remove the keybox. Eg, 45.00."
+            class="MuiSvgIcon-root MuiSvgIcon-colorSecondary MuiSvgIcon-fontSizeSmall css-1s79gy0-MuiSvgIcon-root"
+            data-mui-internal-clone-element="true"
+            data-testid="InfoRoundedIcon"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m0 15c-.55 0-1-.45-1-1v-4c0-.55.45-1 1-1s1 .45 1 1v4c0 .55-.45 1-1 1m1-8h-2V7h2z"
+            />
+          </svg>
+          <h6
+            class="MuiTypography-root MuiTypography-subtitle2 css-1ypmsg6-MuiTypography-root"
+          >
+            Remove keybox fee *
+          </h6>
+        </div>
+      </div>
+      <div>
+        <div
+          class="MuiStack-root css-1d9cypr-MuiStack-root"
+        >
+          <svg
+            aria-hidden="true"
+            aria-label="The number of late days payment can be accepted on from the due date. Eg, 4."
+            class="MuiSvgIcon-root MuiSvgIcon-colorSecondary MuiSvgIcon-fontSizeSmall css-1s79gy0-MuiSvgIcon-root"
+            data-mui-internal-clone-element="true"
+            data-testid="InfoRoundedIcon"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m0 15c-.55 0-1-.45-1-1v-4c0-.55.45-1 1-1s1 .45 1 1v4c0 .55-.45 1-1 1m1-8h-2V7h2z"
+            />
+          </svg>
+          <h6
+            class="MuiTypography-root MuiTypography-subtitle2 css-1ypmsg6-MuiTypography-root"
+          >
+            Rent due date *
+          </h6>
+        </div>
+      </div>
+    </div>
+    <div
+      class="MuiStack-root css-nen11g-MuiStack-root"
+    >
+      <div>
+        <div
+          class="MuiStack-root css-1d9cypr-MuiStack-root"
+        >
+          <svg
+            aria-hidden="true"
+            aria-label="The timeframe allocated to complete the initial home inventory"
+            class="MuiSvgIcon-root MuiSvgIcon-colorSecondary MuiSvgIcon-fontSizeSmall css-1s79gy0-MuiSvgIcon-root"
+            data-mui-internal-clone-element="true"
+            data-testid="InfoRoundedIcon"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m0 15c-.55 0-1-.45-1-1v-4c0-.55.45-1 1-1s1 .45 1 1v4c0 .55-.45 1-1 1m1-8h-2V7h2z"
+            />
+          </svg>
+          <h6
+            class="MuiTypography-root MuiTypography-subtitle2 css-1ypmsg6-MuiTypography-root"
+          >
+            Complete inventory within days mentioned below
+          </h6>
+        </div>
+      </div>
+    </div>
+    <button
+      disabled=""
+    >
+      Associate
+    </button>
+  </div>
+</form>
+`;

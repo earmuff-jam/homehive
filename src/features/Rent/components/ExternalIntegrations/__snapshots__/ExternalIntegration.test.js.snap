@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ExternalIntegrations matches snapshot 1`] = `
+<div>
+  <div
+    class="MuiStack-root css-aha7cr-MuiStack-root"
+  >
+    <div
+      class="MuiStack-root css-16ml5pn-MuiStack-root"
+    >
+      <div
+        data-testid="stripe-connect"
+      />
+    </div>
+  </div>
+</div>
+`;
