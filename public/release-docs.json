@@ -1,5 +1,36 @@
 [
   {
+    "version": "1.0.14",
+    "date": "2026-06-15",
+    "notes": [
+      {
+        "type": "maintenance",
+        "value": "Updated minor test for Esign App by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/384",
+        "caption": "Updated minor test for Esign App by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/384"
+      },
+      {
+        "type": "maintenance",
+        "value": "Updated landing page text for sub apps by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/389",
+        "caption": "Updated landing page text for sub apps by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/389"
+      },
+      {
+        "type": "maintenance",
+        "value": "Support tenant improvements by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/393",
+        "caption": "Support tenant improvements by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/393"
+      },
+      {
+        "type": "maintenance",
+        "value": "Added statistics workflow by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/392",
+        "caption": "Added statistics workflow by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/392"
+      },
+      {
+        "type": "maintenance",
+        "value": "Added support for maintenance forms by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/397",
+        "caption": "Added support for maintenance forms by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/397"
+      }
+    ]
+  },
+  {
     "version": "1.0.13",
     "date": "2026-05-26",
     "notes": [
