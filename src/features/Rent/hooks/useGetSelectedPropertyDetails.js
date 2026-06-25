@@ -59,8 +59,7 @@ export const useSelectedPropertyDetails = (
       ].includes(currentMonthRent?.status);
 
     if (!isCurrentMonthPaid) {
-      // if current month is not paid, show the next month after
-      // last payment was made
+      // if current month is not paid, show the next month after last payment was made
       const rentPaidMonth = currentMonthRent?.rentMonth;
       nextRentalPaymentDueDate = dayjs(
         `${rentPaidMonth} ${today.year()}`,

@@ -1,7 +1,7 @@
 import { useSelectedPropertyDetails } from "features/Rent/hooks/useGetSelectedPropertyDetails";
 import { ManualRentStatusEnumValue } from "features/Rent/utils";
 
-describe("useGetSelectedPropertyDetailsHook tests", () => {
+describe("for useGetSelectedPropertyDetailsHook tests", () => {
   beforeEach(() => {
     jest.useFakeTimers();
     jest.setSystemTime(new Date("2026-04-15T12:00:00Z"));

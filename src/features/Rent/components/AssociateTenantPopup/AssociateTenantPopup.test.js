@@ -73,6 +73,15 @@ jest.mock("common/AButton", () => ({
 }));
 
 describe("AssociateTenantPopup test", () => {
+  beforeAll(() => {
+    jest.useFakeTimers();
+    jest.setSystemTime(new Date("2026-06-12T12:00:00.000Z"));
+  });
+
+  afterAll(() => {
+    jest.useRealTimers();
+  });
+
   describe("AssociateTenantPopup", () => {
     const props = {
       closeDialog: jest.fn(),

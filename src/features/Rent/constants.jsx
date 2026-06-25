@@ -113,3 +113,18 @@ export const DefaultMaintenanceCategoryTypes = [
     label: "General Repair",
   },
 ];
+
+// STARTER_PLAN_PRODUCT_NAME
+export const STARTER_PLAN_PRODUCT_NAME = "Monthly Starter Plan";
+// PROFESSIONAL_PLAN_PRODUCT_NAME
+export const PROFESSIONAL_PLAN_PRODUCT_NAME = "Monthly Professional Plan";
+// ENTERPRISE_PLAN_PRODUCT_NAME
+export const ENTERPRISE_PLAN_PRODUCT_NAME = "Monthly Enterprise Plan";
+
+// DefaultRentXPropertiesLimit ...
+// defines the max amount of authorized properties for each plan
+export const DefaultRentXPropertiesLimit = {
+  [STARTER_PLAN_PRODUCT_NAME]: 2,
+  [PROFESSIONAL_PLAN_PRODUCT_NAME]: 10,
+  [ENTERPRISE_PLAN_PRODUCT_NAME]: 20,
+};
