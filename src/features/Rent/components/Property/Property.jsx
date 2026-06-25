@@ -123,6 +123,7 @@ const Property = () => {
             propertyName={property?.name || "Unknown"}
           />
           <MaintenanceRecords
+            isPropertyOwner
             maintenanceRecords={maintenanceRecords}
             isMaintenanceRecordsLoading={isMaintenanceRecordsLoading}
             propertyName={property?.name || "Unknown"}

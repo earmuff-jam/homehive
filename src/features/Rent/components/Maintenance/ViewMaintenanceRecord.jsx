@@ -51,6 +51,7 @@ const DefaultDialogProps = {
 const ViewMaintenanceRecord = ({
   data = [],
   propertyName,
+  isPropertyOwner,
   primaryTenantEmail,
 }) => {
   const [showSnackbar, setShowSnackbar] = useState(false);
@@ -134,7 +135,7 @@ const ViewMaintenanceRecord = ({
     data: data,
     enableColumnActions: false,
     enableTopToolbar: false,
-    enableRowActions: true,
+    enableRowActions: isPropertyOwner ? true : false,
     enableExpandAll: false,
     // hides header for expand column
     displayColumnDefOptions: {

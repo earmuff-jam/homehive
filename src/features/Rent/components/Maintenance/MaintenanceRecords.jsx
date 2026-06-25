@@ -5,6 +5,7 @@ import RowHeader from "common/RowHeader";
 import ViewMaintenanceRecord from "features/Rent/components/Maintenance/ViewMaintenanceRecord";
 
 export default function MaintenanceRecords({
+  isPropertyOwner = false,
   isMaintenanceRecordsLoading,
   maintenanceRecords,
   propertyName,
@@ -24,6 +25,7 @@ export default function MaintenanceRecords({
             <Skeleton height="5rem" />
           ) : (
             <ViewMaintenanceRecord
+              isPropertyOwner={isPropertyOwner}
               data={maintenanceRecords}
               propertyName={propertyName}
               primaryTenantEmail={primaryTenantEmail}

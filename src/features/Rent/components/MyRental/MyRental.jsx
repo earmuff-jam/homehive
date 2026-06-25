@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 
 import { useLocation, useNavigate } from "react-router-dom";
 
@@ -7,6 +7,7 @@ import AButton from "common/AButton";
 import EmptyComponent from "common/EmptyComponent";
 import { fetchLoggedInUser } from "common/utils";
 import { useGetUserDataByIdQuery } from "features/Api/firebaseUserApi";
+import { useGetMaintenanceRecordsQuery } from "features/Api/maintenanceApi";
 import { useGetPropertiesByPropertyIdQuery } from "features/Api/propertiesApi";
 import { useGetRentsByPropertyIdQuery } from "features/Api/rentApi";
 import {
@@ -17,6 +18,7 @@ import PropertyDetails from "features/Rent/common/PropertyDetails";
 import PropertyHeader from "features/Rent/common/PropertyHeader";
 import PropertyOwnerInfoCard from "features/Rent/common/PropertyOwnerInfoCard";
 import PropertyStatistics from "features/Rent/common/PropertyStatistics";
+import MaintenanceRecords from "features/Rent/components/Maintenance/MaintenanceRecords";
 import FinancialOverview from "features/Rent/components/Widgets/FinancialOverview";
 import RentalPaymentOverview from "features/Rent/components/Widgets/RentalPaymentOverview";
 import { useAppTitle } from "hooks/useAppTitle";
@@ -56,6 +58,14 @@ const MyRental = () => {
       },
     );
 
+  const {
+    data: maintenanceRecords = [],
+    isLoading: isMaintenanceRecordsLoading,
+  } = useGetMaintenanceRecordsQuery(
+    { propertyId: renter?.propertyId },
+    { skip: !renter?.propertyId },
+  );
+
   useAppTitle(property?.name || "My Rental Unit");
 
   const [alert, setAlert] = useState({
@@ -67,6 +77,10 @@ const MyRental = () => {
 
   // if home is SoR, then only each bedroom is counted as a unit
   const isAnyTenantSoR = tenants?.some((tenant) => tenant.isSoR);
+  const primaryTenant = useMemo(
+    () => tenants?.find((tenant) => tenant.isPrimary),
+    [isTenantsLoading],
+  );
 
   useEffect(() => {
     const params = new URLSearchParams(location?.search);
@@ -142,6 +156,12 @@ const MyRental = () => {
             rentList={rentList}
             isRentListForPropertyLoading={isRentListForPropertyLoading}
             propertyName={property?.name || "Unknown"}
+          />
+          <MaintenanceRecords
+            maintenanceRecords={maintenanceRecords}
+            isMaintenanceRecordsLoading={isMaintenanceRecordsLoading}
+            propertyName={property?.name || "Unknown"}
+            primaryTenantEmail={primaryTenant?.email}
           />
         </Grid>
 

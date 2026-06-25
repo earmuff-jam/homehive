@@ -1,14 +1,17 @@
 import React from "react";
 
 import MyRental from "./MyRental";
+import { ThemeProvider } from "@mui/material";
 import { render, screen } from "@testing-library/react";
 import { useGetUserDataByIdQuery } from "features/Api/firebaseUserApi";
+import { useGetMaintenanceRecordsQuery } from "features/Api/maintenanceApi";
 import { useGetPropertiesByPropertyIdQuery } from "features/Api/propertiesApi";
 import { useGetRentsByPropertyIdQuery } from "features/Api/rentApi";
 import {
   useGetActiveTenantsByEmailAddressQuery,
   useGetTenantByPropertyIdQuery,
 } from "features/Api/tenantsApi";
+import { lightTheme } from "src/Theme";
 
 jest.mock("common/utils", () => ({
   fetchLoggedInUser: () => ({ email: "test@test.com" }),
@@ -49,6 +52,25 @@ jest.mock("features/Api/rentApi", () => ({
   useGetRentsByPropertyIdQuery: jest.fn(),
 }));
 
+jest.mock("features/Api/maintenanceApi", () => ({
+  useGetMaintenanceRecordsQuery: jest.fn(),
+  useUpdateMaintenanceDataMutation: jest.fn(() => [
+    jest.fn(),
+    { isLoading: false },
+  ]),
+}));
+
+jest.mock("features/Api/externalIntegrationsApi", () => ({
+  useSendEmailMutation: () => [jest.fn()],
+}));
+
+jest.mock("features/Rent/utils", () => ({
+  AddMaintenanceRecordEnumValue: "Create Maintenance",
+  appendDisclaimer: (msg) => msg,
+  emailMessageBuilder: () => "email-body",
+  formatAndSendNotification: jest.fn(),
+}));
+
 jest.mock("features/Rent/common/PropertyHeader", () => () => (
   <div data-testid="property-header" />
 ));
@@ -77,6 +99,9 @@ const resetMocks = () => {
   useGetRentsByPropertyIdQuery.mockReset();
 };
 
+const renderWithTheme = (item) =>
+  render(<ThemeProvider theme={lightTheme}>{item}</ThemeProvider>);
+
 describe("MyRental", () => {
   afterEach(() => resetMocks());
 
@@ -102,6 +127,11 @@ describe("MyRental", () => {
     });
 
     useGetRentsByPropertyIdQuery.mockReturnValue({
+      data: [{}],
+      isLoading: false,
+    });
+
+    useGetMaintenanceRecordsQuery.mockReturnValue({
       data: [],
       isLoading: false,
     });
@@ -148,7 +178,29 @@ describe("MyRental", () => {
       isLoading: false,
     });
 
-    const { container } = render(<MyRental />);
+    useGetMaintenanceRecordsQuery.mockReturnValue({
+      data: [
+        {
+          id: "test-id",
+          updatedBy: "testUserId",
+          description: "The fridge broke and does not work anymore.",
+          tenantEmailAddress: "testUserEmail@gmail.com",
+          propertyOwnerId: "ownerId",
+          propertyId: "testPropertyId",
+          firstName: "John",
+          tenantLastName: "Doe",
+          createdOn: "2026-06-10T21:18:30.853Z",
+          tenantEmail: "testUserEmail@gmail.com",
+          tenantId: "testTenantId",
+          updatedOn: "2026-06-10T21:18:30.853Z",
+          createdBy: "testUserId",
+          maintenanceCategory: "Appliances",
+        },
+      ],
+      isLoading: false,
+    });
+
+    const { container } = renderWithTheme(<MyRental />);
 
     expect(container).toMatchSnapshot();
   });
