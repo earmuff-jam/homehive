@@ -289,3 +289,117 @@ export const darkTheme = createTheme({
     borderRadius: 8,
   },
 });
+
+export const neoBrutalistTheme = createTheme({
+  palette: {
+    mode: "light",
+    primary: {
+      main: "#0E7C6B",
+      light: "#37A699",
+      dark: "#0B5D50",
+      contrastText: "#FFFFFF",
+    },
+    secondary: {
+      main: "#3D4B72",
+      light: "#5E6D98",
+      dark: "#2E3A58",
+      contrastText: "#FFFFFF",
+    },
+    background: {
+      default: "#FFFDF5",
+      paper: "#FFFFFF",
+    },
+    text: {
+      primary: "#0A0A0A",
+      secondary: "#1A1A1A",
+    },
+    divider: "#0A0A0A",
+    success: { main: "#38A169" },
+    info: { main: "#3182CE" },
+    warning: { main: "#DD6B20" },
+    error: { main: "#E53E3E" },
+  },
+  typography: {
+    ...commonTypography,
+    h1: { ...commonTypography.h1, fontWeight: 900 },
+    h2: { ...commonTypography.h2, fontWeight: 800 },
+    h3: { ...commonTypography.h3, fontWeight: 800 },
+    button: {
+      ...commonTypography.button,
+      fontWeight: 700,
+      textTransform: "uppercase",
+    },
+  },
+  shape: { borderRadius: 0 },
+  components: {
+    ...commonComponents,
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          textTransform: "uppercase",
+          borderRadius: 0,
+          fontWeight: 700,
+          border: "2px solid #0A0A0A",
+          boxShadow: "4px 4px 0px #0A0A0A",
+          transition: "all 0.1s ease",
+          "&:hover": {
+            boxShadow: "2px 2px 0px #0A0A0A",
+            transform: "translate(2px, 2px)",
+          },
+          "&:active": {
+            boxShadow: "none",
+            transform: "translate(4px, 4px)",
+          },
+        },
+      },
+    },
+    MuiCard: {
+      styleOverrides: {
+        root: {
+          borderRadius: 0,
+          border: "2px solid #0A0A0A",
+          boxShadow: "6px 6px 0px #0A0A0A",
+        },
+      },
+    },
+    MuiTextField: {
+      styleOverrides: {
+        root: {
+          "& .MuiOutlinedInput-root": {
+            borderRadius: 0,
+            "& fieldset": { borderColor: "#0A0A0A", borderWidth: "2px" },
+            "&:hover fieldset": { borderColor: "#0A0A0A" },
+            "&.Mui-focused fieldset": {
+              borderColor: "#0E7C6B",
+              boxShadow: "4px 4px 0px #0E7C6B",
+            },
+          },
+        },
+      },
+    },
+    MuiPaper: {
+      styleOverrides: {
+        root: {
+          backgroundImage: "none",
+          borderRadius: 0,
+          border: "2px solid #0A0A0A",
+        },
+      },
+    },
+    MuiAppBar: {
+      styleOverrides: {
+        root: {
+          backgroundColor: "#FFFDF5",
+          color: "#0A0A0A",
+          borderBottom: "2px solid #0A0A0A",
+          boxShadow: "none",
+        },
+      },
+    },
+    MuiToolbar: {
+      styleOverrides: {
+        root: { backgroundColor: "#FFFDF5" },
+      },
+    },
+  },
+});
