@@ -45,13 +45,15 @@ export const useCalculateMaintenanceDetails = (
   );
 
   const oldestMaintenanceRecord =
-    data?.length > 0
+    data?.length > 1
       ? data.reduce((oldest, current) =>
           dayjs(current?.updatedOn).isBefore(oldest?.updatedOn)
             ? current
             : oldest,
         )
-      : null;
+      : data?.length === 1
+        ? data[0]
+        : null;
 
   const totalSpentCurrentYear = data?.reduce((acc, el) => {
     const issueCreatedThisYr = dayjs(el?.createdOn).isSame(dayjs(), "year");
@@ -88,9 +90,15 @@ export const useCalculateMaintenanceDetails = (
 
     return acc;
   }, 0);
-  const averageResolutionTime = combinedResolutionTime / data?.length || 0;
 
   const costRentRatio = totalSpentCurrentYear / totalRentalIncomeForYr;
+
+  const completedMaintenanceTasks = data?.filter(
+    (record) => record.status === MaintenanceRecordEnumValues.Completed,
+  );
+
+  const averageResolutionTime =
+    combinedResolutionTime / completedMaintenanceTasks?.length || 0;
 
   return {
     isRecentRecord: isRecentRecord,
@@ -99,6 +107,6 @@ export const useCalculateMaintenanceDetails = (
     totalSpentPreviousYear: totalSpentPreviousYear || 0,
     costRentRatio: costRentRatio || 0,
     averageResolutionTime: formatTimeDuration(averageResolutionTime),
-    latestUpdatedOn: oldestMaintenanceRecord?.latestUpdatedOn,
+    latestUpdatedOn: oldestMaintenanceRecord?.updatedOn,
   };
 };
