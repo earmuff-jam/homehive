@@ -8,7 +8,7 @@ jest.mock(
   () => () => <div>UpdateMaintenanceItemStatus</div>,
 );
 
-jest.mock("common/AButton", () => ({
+jest.mock("common/AIconButton", () => ({
   __esModule: true,
   default: ({ label, onClick, disabled }) => (
     <button onClick={onClick} disabled={disabled}>

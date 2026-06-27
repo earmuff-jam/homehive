@@ -6,6 +6,104 @@ exports[`View maintenance record tests UpdateMaintenanceItemStatus matches snaps
 >
   <form>
     <div
+      class="MuiStack-root css-niqf4j-MuiStack-root"
+    >
+      <div
+        class="MuiStack-root css-9j5txs-MuiStack-root"
+      >
+        <div
+          class="MuiStack-root css-niqf4j-MuiStack-root"
+        >
+          <span
+            class="MuiBox-root css-1ta4aep"
+            variant="body2"
+          >
+            Total Repair Cost *
+          </span>
+        </div>
+        <div
+          class="MuiFormControl-root MuiFormControl-fullWidth MuiTextField-root css-cmpglg-MuiFormControl-root-MuiTextField-root"
+        >
+          <div
+            class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-colorPrimary MuiInputBase-fullWidth MuiInputBase-formControl MuiInputBase-sizeSmall css-1blp12k-MuiInputBase-root-MuiOutlinedInput-root"
+          >
+            <input
+              aria-invalid="false"
+              aria-label="Total Repair Cost *"
+              class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputSizeSmall css-1pzfmz2-MuiInputBase-input-MuiOutlinedInput-input"
+              id="cost"
+              name="cost"
+              placeholder="Enter the estimated cost for the repair"
+              type="text"
+              value=""
+            />
+            <fieldset
+              aria-hidden="true"
+              class="MuiOutlinedInput-notchedOutline css-18p5xg2-MuiNotchedOutlined-root-MuiOutlinedInput-notchedOutline"
+            >
+              <legend
+                class="css-1nf2c5d-MuiNotchedOutlined-root"
+              >
+                <span
+                  aria-hidden="true"
+                  class="notranslate"
+                >
+                  ​
+                </span>
+              </legend>
+            </fieldset>
+          </div>
+        </div>
+      </div>
+      <div
+        class="MuiStack-root css-9j5txs-MuiStack-root"
+      >
+        <div
+          class="MuiStack-root css-niqf4j-MuiStack-root"
+        >
+          <span
+            class="MuiBox-root css-1ta4aep"
+            variant="body2"
+          >
+            Payment Method *
+          </span>
+        </div>
+        <div
+          class="MuiFormControl-root MuiFormControl-fullWidth MuiTextField-root css-cmpglg-MuiFormControl-root-MuiTextField-root"
+        >
+          <div
+            class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-colorPrimary MuiInputBase-fullWidth MuiInputBase-formControl MuiInputBase-sizeSmall css-1blp12k-MuiInputBase-root-MuiOutlinedInput-root"
+          >
+            <input
+              aria-invalid="false"
+              aria-label="Payment Method *"
+              class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputSizeSmall css-1pzfmz2-MuiInputBase-input-MuiOutlinedInput-input"
+              id="paymentMethod"
+              name="paymentMethod"
+              placeholder="Zelle, Cash..."
+              type="text"
+              value=""
+            />
+            <fieldset
+              aria-hidden="true"
+              class="MuiOutlinedInput-notchedOutline css-18p5xg2-MuiNotchedOutlined-root-MuiOutlinedInput-notchedOutline"
+            >
+              <legend
+                class="css-1nf2c5d-MuiNotchedOutlined-root"
+              >
+                <span
+                  aria-hidden="true"
+                  class="notranslate"
+                >
+                  ​
+                </span>
+              </legend>
+            </fieldset>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
       class="MuiBox-root css-ieri5n"
     >
       <div

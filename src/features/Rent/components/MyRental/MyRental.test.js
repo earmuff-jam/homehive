@@ -31,6 +31,11 @@ jest.mock("common/AButton", () => ({
   ),
 }));
 
+jest.mock("common/AIconButton", () => ({
+  __esModule: true,
+  default: (props) => <button {...props} />,
+}));
+
 jest.mock("hooks/useAppTitle", () => ({
   useAppTitle: () => {},
 }));

@@ -4,15 +4,17 @@ import dayjs from "dayjs";
 
 import {
   CommentRounded,
+  DoneRounded,
   EditAttributesOutlined,
+  HighlightOffOutlined,
   PendingActionsOutlined,
   Remove,
   TaskAltOutlined,
 } from "@mui/icons-material";
 import {
   Box,
+  Chip,
   Dialog,
-  DialogActions,
   DialogContent,
   DialogTitle,
   IconButton,
@@ -20,7 +22,7 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
-import AButton from "common/AButton";
+import AIconButton from "common/AIconButton";
 import CustomSnackbar from "common/CustomSnackbar";
 import EmptyComponent from "common/EmptyComponent";
 import relativeTime from "dayjs/plugin/relativeTime";
@@ -158,61 +160,73 @@ const ViewMaintenanceRecord = ({
     },
     renderRowActions: ({ row }) => (
       <Box>
-        <Tooltip title="Mark pending">
-          <IconButton
-            size="small"
-            disabled={isSelectionDisabled(
-              MaintenanceRecordEnumValues.Pending,
-              row?.original?.status,
-            )}
-            onClick={() =>
-              toggleDialog(
-                AddMaintenanceRecordPendingResolutionString,
-                row?.original?.id,
-                MaintenanceRecordEnumValues.Pending,
-              )
-            }
-          >
-            <PendingActionsOutlined fontSize="small" color="info" />
-          </IconButton>
-        </Tooltip>
-
-        <Tooltip title="Mark In Progress">
-          <IconButton
-            size="small"
-            disabled={isSelectionDisabled(
-              MaintenanceRecordEnumValues.Inprogress,
-              row?.original?.status,
-            )}
-            onClick={() =>
-              toggleDialog(
-                AddMaintenanceRecordCompletedResolutionString,
-                row?.original?.id,
-                MaintenanceRecordEnumValues.Inprogress,
-              )
-            }
-          >
-            <EditAttributesOutlined fontSize="small" color="secondary" />
-          </IconButton>
-        </Tooltip>
-        <Tooltip title="Mark completed">
-          <IconButton
-            size="small"
-            disabled={isSelectionDisabled(
-              MaintenanceRecordEnumValues.Completed,
-              row?.original?.status,
-            )}
-            onClick={() =>
-              toggleDialog(
-                AddMaintenanceRecordRemovedResolutionString,
-                row?.original?.id,
-                MaintenanceRecordEnumValues.Completed,
-              )
-            }
-          >
-            <TaskAltOutlined fontSize="small" color="success" />
-          </IconButton>
-        </Tooltip>
+        {row?.original?.status === MaintenanceRecordEnumValues?.Completed ? (
+          <Box>
+            <Chip
+              size="small"
+              icon={<DoneRounded />}
+              label="Completed"
+              color="primary"
+            />
+          </Box>
+        ) : (
+          <Box>
+            <Tooltip title="Mark pending">
+              <IconButton
+                size="small"
+                disabled={isSelectionDisabled(
+                  MaintenanceRecordEnumValues.Pending,
+                  row?.original?.status,
+                )}
+                onClick={() =>
+                  toggleDialog(
+                    AddMaintenanceRecordPendingResolutionString,
+                    row?.original?.id,
+                    MaintenanceRecordEnumValues.Pending,
+                  )
+                }
+              >
+                <PendingActionsOutlined fontSize="small" color="info" />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Mark In Progress">
+              <IconButton
+                size="small"
+                disabled={isSelectionDisabled(
+                  MaintenanceRecordEnumValues.Inprogress,
+                  row?.original?.status,
+                )}
+                onClick={() =>
+                  toggleDialog(
+                    AddMaintenanceRecordCompletedResolutionString,
+                    row?.original?.id,
+                    MaintenanceRecordEnumValues.Inprogress,
+                  )
+                }
+              >
+                <EditAttributesOutlined fontSize="small" color="secondary" />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Mark completed">
+              <IconButton
+                size="small"
+                disabled={isSelectionDisabled(
+                  MaintenanceRecordEnumValues.Completed,
+                  row?.original?.status,
+                )}
+                onClick={() =>
+                  toggleDialog(
+                    AddMaintenanceRecordRemovedResolutionString,
+                    row?.original?.id,
+                    MaintenanceRecordEnumValues.Completed,
+                  )
+                }
+              >
+                <TaskAltOutlined fontSize="small" color="success" />
+              </IconButton>
+            </Tooltip>
+          </Box>
+        )}
       </Box>
     ),
     mrtTheme: (theme) => ({
@@ -242,32 +256,41 @@ const ViewMaintenanceRecord = ({
   return (
     <Stack spacing={2}>
       <MaterialReactTable table={table} />
-      <Dialog
-        open={dialog.display}
-        keepMounted
-        fullWidth
-        maxWidth="sm"
-        aria-describedby="alert-dialog-slide-description"
-      >
-        <DialogTitle>{dialog.title}</DialogTitle>
-        <DialogContent>
-          <UpdateMaintenanceItemStatus
-            id={dialog?.id}
-            closeDialog={closeDialog}
-            propertyName={propertyName}
-            primaryTenantEmail={primaryTenantEmail}
-            status={dialog?.status || ""}
-          />
-        </DialogContent>
-        <DialogActions>
-          <AButton
-            size="small"
-            variant="outlined"
-            onClick={closeDialog}
-            label="Close"
-          />
-        </DialogActions>
-      </Dialog>
+      {dialog?.id ? (
+        <Dialog
+          open={dialog.display}
+          keepMounted
+          fullWidth
+          maxWidth="sm"
+          aria-describedby="alert-dialog-slide-description"
+        >
+          <DialogTitle>
+            <Stack
+              direction="row"
+              justifyContent="space-between"
+              alignItems="center"
+            >
+              <Box>{dialog.title}</Box>
+              <AIconButton
+                size="small"
+                color="error"
+                variant="outlined"
+                onClick={closeDialog}
+                label={<HighlightOffOutlined />}
+              />
+            </Stack>
+          </DialogTitle>
+          <DialogContent>
+            <UpdateMaintenanceItemStatus
+              id={dialog?.id}
+              closeDialog={closeDialog}
+              propertyName={propertyName}
+              primaryTenantEmail={primaryTenantEmail}
+              status={dialog?.status || ""}
+            />
+          </DialogContent>
+        </Dialog>
+      ) : null}
       <CustomSnackbar
         showSnackbar={showSnackbar}
         setShowSnackbar={setShowSnackbar}
