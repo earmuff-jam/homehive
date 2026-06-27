@@ -23,6 +23,7 @@ import {
   DefaultAccordionOptions,
   DefaultMaintenanceCategoryTypes,
 } from "features/Rent/constants";
+import { useSelectedPropertyDetails } from "features/Rent/hooks/useGetSelectedPropertyDetails";
 
 const Statistics = ({
   properties = [],
@@ -30,8 +31,16 @@ const Statistics = ({
   existingRents = [],
 }) => {
   const [selected, setSelected] = useState("");
-
   const handleChange = (event) => setSelected(event.target.value);
+
+  const selectedProperty = properties.find(
+    (property) => property?.id === selected,
+  );
+
+  const { totalRent } = useSelectedPropertyDetails(
+    selectedProperty,
+    existingTenants,
+  );
 
   const { data: maintenanceRecords, isFetching: isMaintenanceRecordsFetching } =
     useGetMaintenanceRecordsQuery(
@@ -110,6 +119,7 @@ const Statistics = ({
           <MaintenanceHealthAccordion
             label={DefaultAccordionOptions[3].label}
             maintenanceRecords={maintenanceRecords}
+            totalRentalIncomeForYr={totalRent * 12}
           />
           <Stack spacing={1} flexGrow={1}>
             <Typography textTransform="uppercase">

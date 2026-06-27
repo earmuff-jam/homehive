@@ -54,8 +54,6 @@ const UpdateMaintenanceItemStatus = ({
       ...data,
       id: id,
       status: status,
-      createdBy: user?.uid,
-      createdOn: dayjs().toISOString(),
       updatedBy: user?.uid,
       updatedOn: dayjs().toISOString(),
     });
