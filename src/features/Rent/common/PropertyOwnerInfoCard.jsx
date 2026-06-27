@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { v4 as uuidv4 } from "uuid";
 
@@ -46,6 +46,7 @@ import { useGetTenantByPropertyIdQuery } from "features/Api/tenantsApi";
 import AddMaintenanceRecord from "features/Rent/components/AddMaintenanceRecord/AddMaintenanceRecord";
 import { getStripeFailureReasons } from "features/Rent/components/Settings/common";
 import { AddMaintenanceRecordTextString } from "features/Rent/constants";
+import { useCalculateMaintenanceDetails } from "features/Rent/hooks/useCalculateMaintenanceDetails";
 import { useGenerateStripeCheckoutSession } from "features/Rent/hooks/useGenerateStripeCheckoutSession";
 import {
   CompleteRentStatusEnumValue,
@@ -90,6 +91,10 @@ export default function PropertyOwnerInfoCard({
   ] = useLazyGetMaintenanceRecordsQuery();
 
   const { generateStripeCheckoutSession } = useGenerateStripeCheckoutSession();
+  const { isRecentRecord } = useCalculateMaintenanceDetails(
+    maintenanceRecordData,
+    isMaintenanceRecordsFetching,
+  );
 
   const {
     data: stripeStatus,
@@ -113,12 +118,6 @@ export default function PropertyOwnerInfoCard({
 
   const tenant = data.find((item) => item);
   const currentMonthRentData = getRentByMonthResult?.data;
-
-  const hasRecentMaintenanceRequestBeenMade = useMemo(() => {
-    return maintenanceRecordData?.some(
-      (record) => dayjs().diff(dayjs(record.updatedOn), "day") <= 7,
-    );
-  }, [isMaintenanceRecordsFetching]);
 
   // used to confirm if payee understands that bank transactions sometimes takes > 3 days to complete.
   const hasRecentPaymentAttemptBeenMade = currentMonthRentData?.length > 0;
@@ -453,7 +452,7 @@ export default function PropertyOwnerInfoCard({
                   label={<HighlightOff />}
                 />
               </Stack>
-              {hasRecentMaintenanceRequestBeenMade ? (
+              {isRecentRecord ? (
                 <Alert variant="filled" severity="error">
                   A maintenance request was recently submitted. Are you sure you
                   want to proceed?

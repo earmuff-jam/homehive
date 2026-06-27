@@ -12,6 +12,7 @@ import TextFieldWithLabel from "common/TextFieldWithLabel";
 import { fetchLoggedInUser } from "common/utils";
 import { useSendEmailMutation } from "features/Api/externalIntegrationsApi";
 import { useUpdateMaintenanceDataMutation } from "features/Api/maintenanceApi";
+import { MaintenanceRecordEnumValues } from "features/Rent/constants";
 import {
   UpdateMaintenanceRecordEnumValue,
   appendDisclaimer,
@@ -27,7 +28,6 @@ const UpdateMaintenanceItemStatus = ({
   primaryTenantEmail,
 }) => {
   const user = fetchLoggedInUser();
-
   const [sendEmail] = useSendEmailMutation();
 
   const [
@@ -46,13 +46,14 @@ const UpdateMaintenanceItemStatus = ({
 
   const [showSnackbar, setShowSnackbar] = useState(false);
 
+  const isViewingCompletedStatus =
+    status === MaintenanceRecordEnumValues.Completed;
+
   const onSubmit = (data) => {
     updateMaintenanceRecord({
       ...data,
       id: id,
       status: status,
-      createdBy: user?.uid,
-      createdOn: dayjs().toISOString(),
       updatedBy: user?.uid,
       updatedOn: dayjs().toISOString(),
     });
@@ -81,6 +82,37 @@ const UpdateMaintenanceItemStatus = ({
   return (
     <Stack spacing={1}>
       <form onSubmit={handleSubmit(onSubmit)}>
+        {isViewingCompletedStatus ? (
+          <Stack direction="row" spacing={1}>
+            <TextFieldWithLabel
+              id="cost"
+              label="Total Repair Cost *"
+              placeholder="Enter the estimated cost for the repair"
+              errorMsg={errors.cost?.message}
+              inputProps={{
+                ...register("cost", {
+                  required: "Total Cost is required",
+                  pattern: {
+                    value: /^\d+(\.\d{1,2})?$/,
+                    message:
+                      "Total cost of repair must be in number format. Eg, 10.00",
+                  },
+                }),
+              }}
+            />
+            <TextFieldWithLabel
+              id="paymentMethod"
+              label="Payment Method *"
+              placeholder="Zelle, Cash..."
+              errorMsg={errors.paymentMethod?.message}
+              inputProps={{
+                ...register("paymentMethod", {
+                  required: "Payment Method is required",
+                }),
+              }}
+            />
+          </Stack>
+        ) : null}
         <Box flex={3}>
           <TextFieldWithLabel
             label="Note *"

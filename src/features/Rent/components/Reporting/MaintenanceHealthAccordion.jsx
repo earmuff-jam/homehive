@@ -11,16 +11,24 @@ import {
   Typography,
 } from "@mui/material";
 import StatsAccordionDetailsBlock from "features/Rent/components/Reporting/StatsAccordionDetailsBlock";
+import { useCalculateMaintenanceDetails } from "features/Rent/hooks/useCalculateMaintenanceDetails";
 
-const MaintenanceHealthAccordion = ({ label, maintenanceRecords = [] }) => {
-  const oldestMaintenanceRecord =
-    maintenanceRecords?.length > 0
-      ? maintenanceRecords.reduce((oldest, current) =>
-          dayjs(current.updatedOn).isBefore(oldest.updatedOn)
-            ? current
-            : oldest,
-        )
-      : null;
+const MaintenanceHealthAccordion = ({
+  label,
+  maintenanceRecords = [],
+  totalRentalIncomeForYr,
+}) => {
+  const {
+    openMaintenanceRecords,
+    totalSpentCurrentYear,
+    totalSpentPreviousYear,
+    averageResolutionTime,
+    latestUpdatedOn,
+    costRentRatio,
+  } = useCalculateMaintenanceDetails(
+    maintenanceRecords,
+    totalRentalIncomeForYr,
+  );
 
   return (
     <Accordion
@@ -66,23 +74,27 @@ const MaintenanceHealthAccordion = ({ label, maintenanceRecords = [] }) => {
         >
           <StatsAccordionDetailsBlock
             label="Open requests"
-            value={maintenanceRecords?.length}
-            caption={`Oldest: ${dayjs(oldestMaintenanceRecord?.updatedOn).fromNow()}`}
+            value={openMaintenanceRecords?.length || 0}
+            caption={
+              openMaintenanceRecords?.length === 0
+                ? "N/A"
+                : `Oldest: ${dayjs(latestUpdatedOn).fromNow()}`
+            }
           />
           <StatsAccordionDetailsBlock
             label="Avg. Resolution time"
-            value={0}
+            value={averageResolutionTime}
             caption={`Last known time`}
           />
           <StatsAccordionDetailsBlock
             label="Total spent YTD"
             // rounding support with tilda
-            value={0}
-            caption={"vs xxx from last year"}
+            value={`$${totalSpentCurrentYear}`}
+            caption={`vs $${totalSpentPreviousYear} from last year`}
           />
           <StatsAccordionDetailsBlock
-            label="Cost / Rent Ratio"
-            value={`0`}
+            label="Maintenance / Rent Ratio"
+            value={`${(costRentRatio * 100).toFixed(2)}`}
             caption="Of annual rent income"
             applyVariant
           />

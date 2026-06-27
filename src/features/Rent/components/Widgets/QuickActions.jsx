@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
@@ -34,6 +34,7 @@ import {
   AddPropertyTextString,
   AddRentRecordsTextString,
 } from "features/Rent/constants";
+import { useCalculateMaintenanceDetails } from "features/Rent/hooks/useCalculateMaintenanceDetails";
 import { sanitizeApiFields } from "features/Rent/utils";
 
 const defaultDialog = {
@@ -64,6 +65,11 @@ export default function QuickActions({ property }) {
     updateProperty,
     { isSuccess: isUpdatePropertySuccess, isLoading: isUpdatePropertyLoading },
   ] = useUpdatePropertyByIdMutation();
+
+  const { isRecentRecord } = useCalculateMaintenanceDetails(
+    maintenanceRecords,
+    isMaintenanceRecordsFetching,
+  );
 
   const {
     register,
@@ -141,12 +147,6 @@ export default function QuickActions({ property }) {
     (rent) =>
       !rent.customEventType && dayjs(rent.updatedOn).isAfter(sevenDaysAgo),
   );
-
-  const hasRecentMaintenanceRequestBeenMade = useMemo(() => {
-    return maintenanceRecords?.some(
-      (record) => dayjs().diff(dayjs(record.updatedOn), "day") <= 7,
-    );
-  }, [isMaintenanceRecordsFetching]);
 
   useEffect(() => {
     if (isUpdatePropertySuccess) {
@@ -339,7 +339,7 @@ export default function QuickActions({ property }) {
                       label={<HighlightOff />}
                     />
                   </Stack>
-                  {hasRecentMaintenanceRequestBeenMade ? (
+                  {isRecentRecord ? (
                     <Alert variant="filled" severity="error">
                       A maintenance request was recently submitted. Are you sure
                       you want to proceed?
