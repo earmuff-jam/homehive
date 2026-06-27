@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import {
   DarkModeRounded,
   EmailOutlined,
+  FaceOutlined,
   HelpOutlineRounded,
   LightModeRounded,
   PrintRounded,
@@ -20,8 +21,9 @@ import AIconButton from "common/AIconButton";
 export default function MenuOptions({
   handleHelp = () => {},
   handlePrint = () => {},
-  handleTheme = () => {},
   handleSendEmail = () => {},
+  currentThemeIdx = 0,
+  setCurrentThemeIdx = () => {},
   showPrint = false,
   isLightTheme = false,
   isSendEmailLoading = false,
@@ -34,6 +36,11 @@ export default function MenuOptions({
   const open = Boolean(anchorEl);
   const handleClose = () => setAnchorEl(null);
   const handleClick = (event) => setAnchorEl(event.currentTarget);
+
+  const handleTheme = (idx) => {
+    localStorage.setItem("theme", idx);
+    setCurrentThemeIdx(idx);
+  };
 
   return (
     <>
@@ -135,7 +142,7 @@ export default function MenuOptions({
 
         <MenuItem
           onClick={() => {
-            handleTheme();
+            handleTheme(isLightTheme ? 1 : 0);
             handleClose();
           }}
           disableRipple
@@ -143,13 +150,35 @@ export default function MenuOptions({
         >
           <ListItemIcon>
             {isLightTheme ? (
-              <LightModeRounded fontSize="small" />
-            ) : (
               <DarkModeRounded fontSize="small" />
+            ) : (
+              <LightModeRounded fontSize="small" />
             )}
           </ListItemIcon>
           <ListItemText
             primary="Change Theme"
+            slotProps={{
+              primary: {
+                fontSize: 14,
+                fontWeight: 500,
+                variant: "subtitle2",
+              },
+            }}
+          />
+        </MenuItem>
+        <MenuItem
+          onClick={() => {
+            handleTheme(currentThemeIdx === 2 ? 0 : 2);
+            handleClose();
+          }}
+          disableRipple
+          sx={{ gap: "0.5rem" }}
+        >
+          <ListItemIcon>
+            <FaceOutlined fontSize="small" />
+          </ListItemIcon>
+          <ListItemText
+            primary={currentThemeIdx === 2 ? "Revert design" : "Try new design"}
             slotProps={{
               primary: {
                 fontSize: 14,

@@ -109,18 +109,6 @@ export default function AppToolbar({
     handleDrawerClose();
   };
 
-  const changeTheme = (_, currentThemeIdx) => {
-    if (Number(currentThemeIdx) === 0) {
-      localStorage.setItem("theme", 1);
-
-      setCurrentThemeIdx(1);
-      return;
-    }
-
-    localStorage.setItem("theme", 0);
-    setCurrentThemeIdx(0);
-  };
-
   useEffect(() => {
     if (isLogoutSuccess) {
       navigate(`/?refresh=${Date.now()}`);
@@ -151,26 +139,33 @@ export default function AppToolbar({
             Homehive
           </Typography>
         </Stack>
-        <Stack direction="row" spacing={1} alignItems="center">
-          {user?.uid && (
-            <Tooltip title="logout">
-              <Button variant="outlined" size="small" onClick={() => logout()}>
-                Logout
-              </Button>
-            </Tooltip>
-          )}
-          <MenuOptions
-            showPrint={showPrint}
-            handleHelp={handleHelp}
-            handlePrint={handlePrint}
-            handleSendEmail={handleSendEmail}
-            handleTheme={() => changeTheme("", currentThemeIdx)}
-            isEmailEnabled={isSendEmailFeatureEnabled} // email feature check
-            isDisabled={isDisabled} // valid data check
-            isLightTheme={Number(currentThemeIdx) === 1}
-            showHelpAndSupport={showHelp}
-            isSendEmailLoading={sendEmailResult.isLoading}
-          />
+        <Stack>
+          <Stack direction="row" spacing={1} alignItems="center">
+            {user?.uid && (
+              <Tooltip title="logout">
+                <Button
+                  variant="outlined"
+                  size="small"
+                  onClick={() => logout()}
+                >
+                  Logout
+                </Button>
+              </Tooltip>
+            )}
+            <MenuOptions
+              showPrint={showPrint}
+              handleHelp={handleHelp}
+              handlePrint={handlePrint}
+              handleSendEmail={handleSendEmail}
+              currentThemeIdx={currentThemeIdx}
+              setCurrentThemeIdx={setCurrentThemeIdx}
+              isEmailEnabled={isSendEmailFeatureEnabled}
+              isDisabled={isDisabled}
+              isLightTheme={Number(currentThemeIdx) === 0}
+              showHelpAndSupport={showHelp}
+              isSendEmailLoading={sendEmailResult.isLoading}
+            />
+          </Stack>
         </Stack>
       </Toolbar>
       <CustomSnackbar

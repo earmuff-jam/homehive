@@ -10,17 +10,26 @@ import ScrollTopProvider from "common/ScrollTop/ScrollTopProvider";
 import { GeneratedTourSteps } from "common/TourSteps";
 import Layout from "features/Layout/Layout";
 import { MainAppRoutes } from "src/Routes";
-import { darkTheme, lightTheme } from "src/Theme";
+import { darkTheme, lightTheme, neoBrutalistTheme } from "src/Theme";
 
 function App() {
   const [currentThemeIdx, setCurrentThemeIdx] = useState(
     localStorage.getItem("theme") || 0,
   );
 
+  const applyTheme = (key) => {
+    switch (key) {
+      case 0:
+        return lightTheme;
+      case 1:
+        return darkTheme;
+      case 2:
+        return neoBrutalistTheme;
+    }
+  };
+
   return (
-    <ThemeProvider
-      theme={Number(currentThemeIdx) === 0 ? lightTheme : darkTheme}
-    >
+    <ThemeProvider theme={applyTheme(Number(currentThemeIdx))}>
       <CssBaseline />
       <TourProvider steps={GeneratedTourSteps}>
         <ScrollTopProvider>
