@@ -100,7 +100,7 @@ export const RentalAppRoutes = [
       isLoggedInFeature: true,
       isProtectedBySubscriptionGuard: true,
       displayInNavBar: true,
-      displayHelpSelector: false,
+      displayHelpSelector: true,
       displayPrintSelector: false,
     },
   },

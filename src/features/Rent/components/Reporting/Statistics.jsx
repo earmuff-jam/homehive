@@ -98,18 +98,21 @@ const Statistics = ({
       {selected ? (
         <>
           <PropertyHealthAccordion
+            dataTour="report-stats-4"
             label={DefaultAccordionOptions[0].label}
             selected={selected}
             properties={properties}
             existingTenants={existingTenants}
           />
           <LeaseHealthAccordion
+            dataTour="report-stats-5"
             label={DefaultAccordionOptions[1].label}
             selected={selected}
             properties={properties}
             existingTenants={existingTenants}
           />
           <RentCollectionAccordion
+            dataTour="report-stats-6"
             label={DefaultAccordionOptions[2].label}
             selected={selected}
             properties={properties}
@@ -117,11 +120,12 @@ const Statistics = ({
             existingTenants={existingTenants}
           />
           <MaintenanceHealthAccordion
+            dataTour="report-stats-7"
             label={DefaultAccordionOptions[3].label}
             maintenanceRecords={maintenanceRecords}
             totalRentalIncomeForYr={totalRent * 12}
           />
-          <Stack spacing={1} flexGrow={1}>
+          <Stack spacing={1} flexGrow={1} data-tour="report-stats-8">
             <Typography textTransform="uppercase">
               Top Maintenance Issues
             </Typography>

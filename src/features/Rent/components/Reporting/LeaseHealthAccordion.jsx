@@ -19,6 +19,7 @@ dayjs.extend(relativeTime);
 const LeaseHealthAccordion = ({
   label,
   selected,
+  dataTour,
   properties,
   existingTenants = [],
 }) => {
@@ -34,6 +35,7 @@ const LeaseHealthAccordion = ({
 
   return (
     <Accordion
+      data-tour={dataTour}
       elevation={0}
       key={label}
       defaultExpanded

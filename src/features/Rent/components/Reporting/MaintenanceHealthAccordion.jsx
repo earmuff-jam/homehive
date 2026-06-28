@@ -15,6 +15,7 @@ import { useCalculateMaintenanceDetails } from "features/Rent/hooks/useCalculate
 
 const MaintenanceHealthAccordion = ({
   label,
+  dataTour,
   maintenanceRecords = [],
   totalRentalIncomeForYr,
 }) => {
@@ -33,6 +34,7 @@ const MaintenanceHealthAccordion = ({
   return (
     <Accordion
       elevation={0}
+      data-tour={dataTour}
       defaultExpanded
       key={label}
       sx={{

@@ -24,7 +24,7 @@ ChartJS.register(
   Legend,
 );
 
-const SeriesChart = ({ label, data = {} }) => {
+const SeriesChart = ({ dataTour, label, data = {} }) => {
   const theme = useTheme();
 
   const [chartData, setChartData] = useState(null);
@@ -118,7 +118,10 @@ const SeriesChart = ({ label, data = {} }) => {
   }, [data, label, theme]);
 
   return (
-    <Box sx={{ height: "25rem", width: ltMediumFormFactor ? "100%" : "50%" }}>
+    <Box
+      sx={{ height: "25rem", width: ltMediumFormFactor ? "100%" : "50%" }}
+      data-tour={dataTour}
+    >
       {chartData ? <Line data={chartData} options={options} /> : null}
     </Box>
   );
