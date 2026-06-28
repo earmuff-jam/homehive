@@ -21,6 +21,7 @@ const RentCollectionAccordion = ({
   label,
   selected,
   properties,
+  dataTour,
   existingRents,
   existingTenants,
 }) => {
@@ -38,6 +39,7 @@ const RentCollectionAccordion = ({
 
   return (
     <Accordion
+      data-tour={dataTour}
       elevation={0}
       key={label}
       defaultExpanded
