@@ -43,7 +43,7 @@ import {
   useLazyGetRentByMonthQuery,
 } from "features/Api/rentApi";
 import { useGetTenantByPropertyIdQuery } from "features/Api/tenantsApi";
-import AddMaintenanceRecord from "features/Rent/components/AddMaintenanceRecord/AddMaintenanceRecord";
+import AddMaintenanceDetails from "features/Rent/components/Maintenance/AddMaintenanceDetails";
 import { getStripeFailureReasons } from "features/Rent/components/Settings/common";
 import { AddMaintenanceRecordTextString } from "features/Rent/constants";
 import { useCalculateMaintenanceDetails } from "features/Rent/hooks/useCalculateMaintenanceDetails";
@@ -463,7 +463,7 @@ export default function PropertyOwnerInfoCard({
         </DialogTitle>
         <DialogContent>
           {dialog.type === AddMaintenanceRecordTextString && (
-            <AddMaintenanceRecord
+            <AddMaintenanceDetails
               property={property}
               closeDialog={closeDialog}
               setShowSnackbar={setShowSnackbar}

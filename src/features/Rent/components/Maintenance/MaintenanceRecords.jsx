@@ -4,20 +4,20 @@ import { Card, CardContent, Skeleton, Stack } from "@mui/material";
 import RowHeader from "common/RowHeader";
 import ViewMaintenanceRecord from "features/Rent/components/Maintenance/ViewMaintenanceRecord";
 
-export default function MaintenanceRecords({
+const MaintenanceRecords = ({
   isPropertyOwner = false,
   isMaintenanceRecordsLoading,
   maintenanceRecords,
-  propertyName,
+  property,
   primaryTenantEmail,
   dataTour,
-}) {
+}) => {
   return (
     <Card sx={{ mb: 3 }} data-tour={dataTour}>
       <CardContent>
         <RowHeader
           title="Maintenance Overview"
-          caption={`View maintenance requests for ${propertyName}`}
+          caption={`View maintenance requests for ${property?.name}`}
           sxProps={{ textAlign: "left", color: "text.secondary" }}
         />
         <Stack spacing={2}>
@@ -27,7 +27,7 @@ export default function MaintenanceRecords({
             <ViewMaintenanceRecord
               isPropertyOwner={isPropertyOwner}
               data={maintenanceRecords}
-              propertyName={propertyName}
+              property={property}
               primaryTenantEmail={primaryTenantEmail}
             />
           )}
@@ -35,4 +35,6 @@ export default function MaintenanceRecords({
       </CardContent>
     </Card>
   );
-}
+};
+
+export default MaintenanceRecords;

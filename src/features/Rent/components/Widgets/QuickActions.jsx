@@ -12,7 +12,6 @@ import {
   Card,
   CardContent,
   Dialog,
-  DialogActions,
   DialogContent,
   DialogTitle,
   Stack,
@@ -26,9 +25,9 @@ import { SettingsRouteUri, fetchLoggedInUser } from "common/utils";
 import { useGetMaintenanceRecordsQuery } from "features/Api/maintenanceApi";
 import { useUpdatePropertyByIdMutation } from "features/Api/propertiesApi";
 import { useGetRentsByPropertyIdQuery } from "features/Api/rentApi";
-import AddMaintenanceRecord from "features/Rent/components/AddMaintenanceRecord/AddMaintenanceRecord";
 import AddProperty from "features/Rent/components/AddProperty/AddProperty";
 import AddRentRecords from "features/Rent/components/AddRentRecords/AddRentRecords";
+import AddMaintenanceDetails from "features/Rent/components/Maintenance/AddMaintenanceDetails";
 import {
   AddMaintenanceRecordTextString,
   AddPropertyTextString,
@@ -371,22 +370,13 @@ export default function QuickActions({ property }) {
                 />
               )}
               {dialog.type === AddMaintenanceRecordTextString && (
-                <AddMaintenanceRecord
+                <AddMaintenanceDetails
                   property={property}
                   closeDialog={closeDialog}
                   setShowSnackbar={setShowSnackbar}
                 />
               )}
             </DialogContent>
-            <DialogActions>
-              <AButton
-                size="small"
-                variant="outlined"
-                onClick={closeDialog}
-                label="Close"
-                loading={isUpdatePropertyLoading}
-              />
-            </DialogActions>
           </Dialog>
 
           <CustomSnackbar

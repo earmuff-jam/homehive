@@ -1,6 +1,7 @@
 import { getApps, initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
+import { getStorage } from "firebase/storage";
 
 // isFirebaseConfigOptionsValid ...
 const isFirebaseConfigOptionsValid = ({ options }) =>
@@ -53,3 +54,6 @@ export const authenticatorApp = isFirebaseConfigOptionsValid(
 
 // authenticatorFirestore ...
 export const authenticatorFirestore = getFirestore(authenticatorConfig);
+
+// cloud storage for images ...
+export const firebaseCloudStorage = getStorage(authenticatorConfig);

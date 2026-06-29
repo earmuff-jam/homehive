@@ -8,20 +8,21 @@ import SubscriptionGuard from "features/Subscription/SubscriptionGuard";
 // authorizedServerLevelFeatureFlags ...
 // defines a function that returns a map of all valid feature flags in the app
 export function authorizedServerLevelFeatureFlags() {
-  const invoicerAppAnalyticsEnabled = import.meta.env.VITE_ENABLE_ANALYTICS;
-  const invoicerAppEnabled = import.meta.env.VITE_ENABLE_INVOICER;
-  const invoicerAppProFeaturesEnabled = import.meta.env
-    .VITE_ENABLE_INVOICER_PRO;
-  const invoicerAppUserInformationEnabled = import.meta.env
+  const analyticsFeatureFlag = import.meta.env.VITE_ENABLE_ANALYTICS;
+  const invoicerFeatureFlag = import.meta.env.VITE_ENABLE_INVOICER;
+  const invoicerProFeatureFlag = import.meta.env.VITE_ENABLE_INVOICER_PRO;
+  const invoicerUserInformationFeatureFlag = import.meta.env
     .VITE_ENABLE_INVOICER_USER_INFORMATION;
-  const invoicerAppSendEmailEnabled = import.meta.env.VITE_ENABLE_EMAIL_FEATURE;
+  const emailServiceFeatureFlag = import.meta.env.VITE_ENABLE_EMAIL_FEATURE;
+  const cloudServiceFeatureFlag = import.meta.env.VITE_ENABLE_CLOUD_SERVICE;
 
   return new Map([
-    ["analytics", invoicerAppAnalyticsEnabled === "true"],
-    ["invoicer", invoicerAppEnabled === "true"],
-    ["invoicerPro", invoicerAppProFeaturesEnabled === "true"],
-    ["userInformation", invoicerAppUserInformationEnabled === "true"],
-    ["sendEmail", invoicerAppSendEmailEnabled === "true"],
+    ["analytics", analyticsFeatureFlag === "true"],
+    ["invoicer", invoicerFeatureFlag === "true"],
+    ["invoicerPro", invoicerProFeatureFlag === "true"],
+    ["userInformation", invoicerUserInformationFeatureFlag === "true"],
+    ["sendEmail", emailServiceFeatureFlag === "true"],
+    ["cloudService", cloudServiceFeatureFlag === "true"],
   ]);
 }
 
