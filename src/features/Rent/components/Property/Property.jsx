@@ -124,9 +124,9 @@ const Property = () => {
           />
           <MaintenanceRecords
             isPropertyOwner
+            property={property}
             maintenanceRecords={maintenanceRecords}
             isMaintenanceRecordsLoading={isMaintenanceRecordsLoading}
-            propertyName={property?.name || "Unknown"}
             primaryTenantEmail={primaryTenant?.email}
           />
         </Grid>

@@ -14,8 +14,8 @@ import { authenticatorFirestore as db } from "src/config";
 // PropertiesApiTagTypes ...
 // used to define the tag types for maintenance api
 const PropertiesApiTagTypes = {
-  getProperties: "rent/getProperties",
-  getPropertyAmenities: "rent/getPropertyAmenities",
+  getProperties: "properties/getProperties",
+  getPropertyAmenities: "properties/getPropertyAmenities",
 };
 
 export const propertiesApi = createApi({

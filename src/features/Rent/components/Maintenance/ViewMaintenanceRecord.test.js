@@ -1,14 +1,14 @@
 import React from "react";
 
 import ViewMaintenanceRecord from "./ViewMaintenanceRecord";
-import { fireEvent, render, screen } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 
 jest.mock(
-  "features/Rent/components/Maintenance/UpdateMaintenanceItemStatus",
-  () => () => <div>UpdateMaintenanceItemStatus</div>,
+  "features/Rent/components/Maintenance/UpdateMaintenanceDetails",
+  () => () => <div>UpdateMaintenanceDetails</div>,
 );
 
-jest.mock("common/AIconButton", () => ({
+jest.mock("common/AButton", () => ({
   __esModule: true,
   default: ({ label, onClick, disabled }) => (
     <button onClick={onClick} disabled={disabled}>
@@ -16,6 +16,12 @@ jest.mock("common/AIconButton", () => ({
     </button>
   ),
 }));
+
+jest.mock("common/AIconButton", () => ({
+  __esModule: true,
+  default: (props) => <button {...props} />,
+}));
+
 jest.mock("material-react-table", () => ({
   MaterialReactTable: ({ table }) => (
     <div data-testid="material-react-table">

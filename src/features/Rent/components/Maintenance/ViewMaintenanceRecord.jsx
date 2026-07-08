@@ -4,20 +4,15 @@ import dayjs from "dayjs";
 
 import {
   CommentRounded,
-  DoneRounded,
-  EditAttributesOutlined,
   HighlightOffOutlined,
-  PendingActionsOutlined,
+  OpenInNewRounded,
   Remove,
-  TaskAltOutlined,
 } from "@mui/icons-material";
 import {
-  Box,
   Chip,
   Dialog,
   DialogContent,
   DialogTitle,
-  IconButton,
   Stack,
   Tooltip,
   Typography,
@@ -26,13 +21,8 @@ import AIconButton from "common/AIconButton";
 import CustomSnackbar from "common/CustomSnackbar";
 import EmptyComponent from "common/EmptyComponent";
 import relativeTime from "dayjs/plugin/relativeTime";
-import UpdateMaintenanceItemStatus from "features/Rent/components/Maintenance/UpdateMaintenanceItemStatus";
-import {
-  AddMaintenanceRecordCompletedResolutionString,
-  AddMaintenanceRecordPendingResolutionString,
-  AddMaintenanceRecordRemovedResolutionString,
-  MaintenanceRecordEnumValues,
-} from "features/Rent/constants";
+import UpdateMaintenanceDetails from "features/Rent/components/Maintenance/UpdateMaintenanceDetails";
+import { MaintenanceRecordEnumValues } from "features/Rent/constants";
 import {
   MaterialReactTable,
   useMaterialReactTable,
@@ -46,13 +36,12 @@ const DefaultDialogProps = {
   title: "",
   id: "",
   status: "",
-  type: "",
   display: false,
 };
 
 const ViewMaintenanceRecord = ({
   data = [],
-  propertyName,
+  property,
   isPropertyOwner,
   primaryTenantEmail,
 }) => {
@@ -63,18 +52,19 @@ const ViewMaintenanceRecord = ({
     setDialog(DefaultDialogProps);
   };
 
-  const toggleDialog = (action, rowId, status) => {
+  const handleOpenMaintenanceForm = (row) => {
+    const rowId = row?.original?.id;
+    const status = row?.original?.status;
     setDialog({
-      title: `Update status: ${status}`,
+      title: `Current status: ${status}`,
       id: rowId,
-      type: action,
       status: status,
       display: true,
     });
   };
 
-  const isSelectionDisabled = (actualStatus, rowStatus) =>
-    actualStatus === rowStatus;
+  const isSelectedItemCompleted =
+    dialog?.status === MaintenanceRecordEnumValues.Completed;
 
   const columns = useMemo(
     () => [
@@ -91,9 +81,25 @@ const ViewMaintenanceRecord = ({
         accessorKey: "status",
         header: "Status",
         size: 50,
-        Cell: ({ cell }) =>
+        Cell: ({ cell, row }) =>
           cell?.getValue() ? (
-            <Typography variant="subtitle2">{cell.getValue()}</Typography>
+            <Stack direction="row" alignItems="center" spacing={1}>
+              <Chip
+                size="small"
+                label={cell.getValue()}
+                color="primary"
+                sx={{
+                  fontSize: "0.785rem",
+                  paddingBottom: "0.2rem",
+                  borderRadius: 0.5,
+                }}
+              />
+              <OpenInNewRounded
+                color="secondary"
+                sx={{ width: "1.175rem", cursor: "pointer" }}
+                onClick={() => handleOpenMaintenanceForm(row)}
+              />
+            </Stack>
           ) : (
             "-"
           ),
@@ -123,10 +129,13 @@ const ViewMaintenanceRecord = ({
         accessorKey: "updatedOn",
         header: "Updated on",
         size: 150,
-        Cell: ({ cell }) =>
-          cell.getValue()
-            ? dayjs(cell.getValue()).format("YYYY-MM-DD HH:mm:ss")
-            : "-",
+        Cell: ({ cell }) => (
+          <Typography variant="subtitle2">
+            {cell.getValue()
+              ? dayjs(cell.getValue()).format("YYYY-MM-DD HH:mm")
+              : "-"}
+          </Typography>
+        ),
       },
     ],
     [],
@@ -137,7 +146,6 @@ const ViewMaintenanceRecord = ({
     data: data,
     enableColumnActions: false,
     enableTopToolbar: false,
-    enableRowActions: isPropertyOwner ? true : false,
     enableExpandAll: false,
     // hides header for expand column
     displayColumnDefOptions: {
@@ -158,77 +166,6 @@ const ViewMaintenanceRecord = ({
         </Typography>
       ) : null;
     },
-    renderRowActions: ({ row }) => (
-      <Box>
-        {row?.original?.status === MaintenanceRecordEnumValues?.Completed ? (
-          <Box>
-            <Chip
-              size="small"
-              icon={<DoneRounded />}
-              label="Completed"
-              color="primary"
-            />
-          </Box>
-        ) : (
-          <Box>
-            <Tooltip title="Mark pending">
-              <IconButton
-                size="small"
-                disabled={isSelectionDisabled(
-                  MaintenanceRecordEnumValues.Pending,
-                  row?.original?.status,
-                )}
-                onClick={() =>
-                  toggleDialog(
-                    AddMaintenanceRecordPendingResolutionString,
-                    row?.original?.id,
-                    MaintenanceRecordEnumValues.Pending,
-                  )
-                }
-              >
-                <PendingActionsOutlined fontSize="small" color="info" />
-              </IconButton>
-            </Tooltip>
-            <Tooltip title="Mark In Progress">
-              <IconButton
-                size="small"
-                disabled={isSelectionDisabled(
-                  MaintenanceRecordEnumValues.Inprogress,
-                  row?.original?.status,
-                )}
-                onClick={() =>
-                  toggleDialog(
-                    AddMaintenanceRecordCompletedResolutionString,
-                    row?.original?.id,
-                    MaintenanceRecordEnumValues.Inprogress,
-                  )
-                }
-              >
-                <EditAttributesOutlined fontSize="small" color="secondary" />
-              </IconButton>
-            </Tooltip>
-            <Tooltip title="Mark completed">
-              <IconButton
-                size="small"
-                disabled={isSelectionDisabled(
-                  MaintenanceRecordEnumValues.Completed,
-                  row?.original?.status,
-                )}
-                onClick={() =>
-                  toggleDialog(
-                    AddMaintenanceRecordRemovedResolutionString,
-                    row?.original?.id,
-                    MaintenanceRecordEnumValues.Completed,
-                  )
-                }
-              >
-                <TaskAltOutlined fontSize="small" color="success" />
-              </IconButton>
-            </Tooltip>
-          </Box>
-        )}
-      </Box>
-    ),
     mrtTheme: (theme) => ({
       baseBackgroundColor: theme.palette.transparent.main,
     }),
@@ -261,7 +198,7 @@ const ViewMaintenanceRecord = ({
           open={dialog.display}
           keepMounted
           fullWidth
-          maxWidth="sm"
+          maxWidth="md"
           aria-describedby="alert-dialog-slide-description"
         >
           <DialogTitle>
@@ -270,7 +207,12 @@ const ViewMaintenanceRecord = ({
               justifyContent="space-between"
               alignItems="center"
             >
-              <Box>{dialog.title}</Box>
+              <Stack>
+                <Typography variant="subtitle2">
+                  Update maintenance status
+                </Typography>
+                <Typography variant="caption">{dialog.title}</Typography>
+              </Stack>
               <AIconButton
                 size="small"
                 color="error"
@@ -281,12 +223,14 @@ const ViewMaintenanceRecord = ({
             </Stack>
           </DialogTitle>
           <DialogContent>
-            <UpdateMaintenanceItemStatus
+            <UpdateMaintenanceDetails
               id={dialog?.id}
+              property={property}
               closeDialog={closeDialog}
-              propertyName={propertyName}
+              isPropertyOwner={isPropertyOwner}
+              status={dialog?.status}
+              isComplete={isSelectedItemCompleted}
               primaryTenantEmail={primaryTenantEmail}
-              status={dialog?.status || ""}
             />
           </DialogContent>
         </Dialog>

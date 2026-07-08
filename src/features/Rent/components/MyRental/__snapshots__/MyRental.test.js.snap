@@ -466,7 +466,11 @@ exports[`MyRental matches snapshot (full loaded state) 1`] = `
                             data-index="5"
                             tabindex="0"
                           >
-                            2026-06-10 21:18:30
+                            <h6
+                              class="MuiTypography-root MuiTypography-subtitle2 css-1tspyaz-MuiTypography-root"
+                            >
+                              2026-06-10 21:18
+                            </h6>
                           </td>
                         </tr>
                         <tr
