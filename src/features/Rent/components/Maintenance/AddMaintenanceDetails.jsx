@@ -44,7 +44,7 @@ import {
 const DefaultValuesCreateMaintenanceItem = {
   tenantFirstName: "",
   tenantLastName: "",
-  tenantEmailAddress: "",
+  tenantEmail: "",
   maintenanceCategory: "",
   description: "",
   status: "",
@@ -101,7 +101,6 @@ const AddMaintenanceDetails = ({ property, setShowSnackbar, closeDialog }) => {
     createMaintenanceRecord({
       ...data,
       id: uuidv4(),
-      tenantEmail: primaryTenant?.email,
       propertyId: property?.id,
       propertyOwnerId: property?.createdBy,
       tenantId: primaryTenant?.id,
@@ -120,6 +119,8 @@ const AddMaintenanceDetails = ({ property, setShowSnackbar, closeDialog }) => {
 
       const maintenanceId = maintenanceRecordOriginalArgs?.id;
       const propertyId = maintenanceRecordOriginalArgs?.propertyId;
+      // if no tenant is found, use whoever the creator put under tenant email
+      const emailAddress = maintenanceRecordOriginalArgs?.tenantEmail;
 
       const populatedImages = selectedImages.map((image) => ({
         file: image.file,
@@ -134,7 +135,7 @@ const AddMaintenanceDetails = ({ property, setShowSnackbar, closeDialog }) => {
       );
 
       formatAndSendNotification({
-        to: primaryTenant?.email,
+        to: emailAddress,
         subject: `${AddMaintenanceRecordEnumValue} - ${property.name}`,
         body: emailMsgWithDisclaimer,
         ccEmailIds: [user?.email],
@@ -145,7 +146,7 @@ const AddMaintenanceDetails = ({ property, setShowSnackbar, closeDialog }) => {
 
   useEffect(() => {
     if (primaryTenant) {
-      setValue("tenantEmailAddress", primaryTenant?.email);
+      setValue("tenantEmail", primaryTenant?.email);
     }
   }, [primaryTenant?.id]);
 
@@ -189,12 +190,14 @@ const AddMaintenanceDetails = ({ property, setShowSnackbar, closeDialog }) => {
           />
         </Stack>
         <TextFieldWithLabel
+          // disabled if primary tenant is found
+          isDisabled={primaryTenant?.email}
           label="Email Address *"
-          id="tenantEmailAddress"
+          id="tenantEmail"
           placeholder="Email address of the primary tenant"
-          errorMsg={errors.tenantEmailAddress?.message}
+          errorMsg={errors.tenantEmail?.message}
           inputProps={{
-            ...register("tenantEmailAddress", {
+            ...register("tenantEmail", {
               required: "Email address is required",
             }),
           }}

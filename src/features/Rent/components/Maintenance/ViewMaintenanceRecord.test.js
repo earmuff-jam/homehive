@@ -35,8 +35,8 @@ jest.mock("material-react-table", () => ({
 
 jest.mock("common/CustomSnackbar", () => () => <div>CustomSnackbar</div>);
 
-describe("View maintenance record tests", () => {
-  describe("ViewMaintenanceRecord", () => {
+describe("ViewMaintenanceRecord", () => {
+  describe("ViewMaintenanceRecord snapshot tests", () => {
     const defaultProps = {
       propertyName: "Test Property",
       primaryTenantEmail: "tenant@test.com",
@@ -58,8 +58,7 @@ describe("View maintenance record tests", () => {
       expect(container.firstChild).toMatchSnapshot();
     });
   });
-
-  describe("ViewMaintenanceRecord behavior", () => {
+  describe("ViewMaintenanceRecord component tests", () => {
     const defaultProps = {
       propertyName: "Test Property",
       primaryTenantEmail: "tenant@test.com",
