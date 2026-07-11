@@ -16,9 +16,9 @@ const EsignTokenPriceMap = {
 // TokenOptionsEnumValues ...
 // defines the token options and its value in dollar amount
 const TokenOptionsEnumValues = [
-  { id: 1, label: "1 credit", cost: 14.99, value: EsignTokenPriceMap.BASIC },
-  { id: 2, label: "2 credits", cost: 24.99, value: EsignTokenPriceMap.PREMIUM },
-  { id: 3, label: "5 credits", cost: 59.99, value: EsignTokenPriceMap.ULTRA },
+  { id: 1, label: "1 credit", cost: 4.99, value: EsignTokenPriceMap.BASIC },
+  { id: 2, label: "2 credits", cost: 6.99, value: EsignTokenPriceMap.PREMIUM },
+  { id: 3, label: "5 credits", cost: 9.99, value: EsignTokenPriceMap.ULTRA },
 ];
 
 const ViewTokenMenu = ({ open, anchorEl, handleClose }) => {
