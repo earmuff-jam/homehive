@@ -91,7 +91,8 @@ const Reporting = () => {
           textAlign: "left",
         }}
       />
-      <Paper variant="outlined" sx={{ padding: 2 }}>
+
+      <Paper variant="outlined" sx={{ padding: 2 }} data-tour="report-stats-0">
         <Stack spacing={1}>
           <PortfolioHealth portfolioHealth={portfolioHealth} />
           <FinancialHealth
@@ -103,7 +104,7 @@ const Reporting = () => {
       </Paper>
 
       {/* Property statistics */}
-      <Paper variant="outlined" sx={{ padding: 2 }}>
+      <Paper variant="outlined" sx={{ padding: 2 }} data-tour="report-stats-3">
         <RowHeader
           title="Property statistics"
           caption="View statistics about your registered properties"
@@ -141,10 +142,12 @@ const Reporting = () => {
           alignSelf="inherit"
         >
           <SeriesChart
+            dataTour="report-stats-1"
             label="Average Rental Income Projection"
             data={projectedRentalChange}
           />
           <PieChart
+            dataTour="report-stats-2"
             label="Total Collected Rents"
             data={totalCollectedRentsByProperties}
           />

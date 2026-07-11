@@ -2,6 +2,7 @@ import { createApi, fakeBaseQuery } from "@reduxjs/toolkit/query/react";
 import {
   collection,
   doc,
+  getDoc,
   getDocs,
   query,
   setDoc,
@@ -12,7 +13,8 @@ import { authenticatorFirestore as db } from "src/config";
 // MaintenanceApiTagTypes ...
 // used to define the tag types for maintenance api
 const MaintenanceApiTagTypes = {
-  getMaintenanceRecords: "rent/getMaintenanceRecords",
+  getMaintenanceRecord: "property/getMaintenanceRecord",
+  getMaintenanceRecords: "property/getMaintenanceRecords",
 };
 
 export const maintenanceApi = createApi({
@@ -48,7 +50,29 @@ export const maintenanceApi = createApi({
       },
       providesTags: [MaintenanceApiTagTypes.getMaintenanceRecords],
     }),
-    // creates maintenance record
+    // getMaintenanceRecord ...
+    // defines a function that returns a maintenance record
+    getMaintenanceRecord: builder.query({
+      async queryFn({ maintenanceId }) {
+        try {
+          const documentRef = doc(db, "maintenance", maintenanceId);
+          const documentSnapshot = await getDoc(documentRef);
+          if (!documentSnapshot.exists())
+            return { error: { message: "maintenance details not found" } };
+          return { data: documentSnapshot.data() };
+        } catch (error) {
+          return {
+            error: {
+              message: error.message,
+              code: error.code,
+            },
+          };
+        }
+      },
+      providesTags: [MaintenanceApiTagTypes.getMaintenanceRecord],
+    }),
+    // createMaintenanceRecord ...
+    // defines a function that creates a maintenance record
     createMaintenanceRecord: builder.mutation({
       async queryFn(maintenanceData) {
         try {
@@ -65,8 +89,12 @@ export const maintenanceApi = createApi({
           };
         }
       },
-      invalidatesTags: [MaintenanceApiTagTypes.getMaintenanceRecords],
+      invalidatesTags: [
+        MaintenanceApiTagTypes.getMaintenanceRecords,
+        MaintenanceApiTagTypes.getMaintenanceRecord,
+      ],
     }),
+    // updateMaintenanceData ...
     // update maintenance record
     updateMaintenanceData: builder.mutation({
       async queryFn(maintenanceData) {
@@ -84,13 +112,17 @@ export const maintenanceApi = createApi({
           };
         }
       },
-      invalidatesTags: [MaintenanceApiTagTypes.getMaintenanceRecords],
+      invalidatesTags: [
+        MaintenanceApiTagTypes.getMaintenanceRecords,
+        MaintenanceApiTagTypes.getMaintenanceRecord,
+      ],
     }),
   }),
 });
 
 export const {
   useGetMaintenanceRecordsQuery,
+  useGetMaintenanceRecordQuery,
   useLazyGetMaintenanceRecordsQuery,
   useCreateMaintenanceRecordMutation,
   useUpdateMaintenanceDataMutation,

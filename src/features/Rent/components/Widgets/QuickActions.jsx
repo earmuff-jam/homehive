@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
@@ -12,7 +12,6 @@ import {
   Card,
   CardContent,
   Dialog,
-  DialogActions,
   DialogContent,
   DialogTitle,
   Stack,
@@ -26,14 +25,15 @@ import { SettingsRouteUri, fetchLoggedInUser } from "common/utils";
 import { useGetMaintenanceRecordsQuery } from "features/Api/maintenanceApi";
 import { useUpdatePropertyByIdMutation } from "features/Api/propertiesApi";
 import { useGetRentsByPropertyIdQuery } from "features/Api/rentApi";
-import AddMaintenanceRecord from "features/Rent/components/AddMaintenanceRecord/AddMaintenanceRecord";
 import AddProperty from "features/Rent/components/AddProperty/AddProperty";
 import AddRentRecords from "features/Rent/components/AddRentRecords/AddRentRecords";
+import AddMaintenanceDetails from "features/Rent/components/Maintenance/AddMaintenanceDetails";
 import {
   AddMaintenanceRecordTextString,
   AddPropertyTextString,
   AddRentRecordsTextString,
 } from "features/Rent/constants";
+import { useCalculateMaintenanceDetails } from "features/Rent/hooks/useCalculateMaintenanceDetails";
 import { sanitizeApiFields } from "features/Rent/utils";
 
 const defaultDialog = {
@@ -64,6 +64,11 @@ export default function QuickActions({ property }) {
     updateProperty,
     { isSuccess: isUpdatePropertySuccess, isLoading: isUpdatePropertyLoading },
   ] = useUpdatePropertyByIdMutation();
+
+  const { isRecentRecord } = useCalculateMaintenanceDetails(
+    maintenanceRecords,
+    isMaintenanceRecordsFetching,
+  );
 
   const {
     register,
@@ -141,12 +146,6 @@ export default function QuickActions({ property }) {
     (rent) =>
       !rent.customEventType && dayjs(rent.updatedOn).isAfter(sevenDaysAgo),
   );
-
-  const hasRecentMaintenanceRequestBeenMade = useMemo(() => {
-    return maintenanceRecords?.some(
-      (record) => dayjs().diff(dayjs(record.updatedOn), "day") <= 7,
-    );
-  }, [isMaintenanceRecordsFetching]);
 
   useEffect(() => {
     if (isUpdatePropertySuccess) {
@@ -339,7 +338,7 @@ export default function QuickActions({ property }) {
                       label={<HighlightOff />}
                     />
                   </Stack>
-                  {hasRecentMaintenanceRequestBeenMade ? (
+                  {isRecentRecord ? (
                     <Alert variant="filled" severity="error">
                       A maintenance request was recently submitted. Are you sure
                       you want to proceed?
@@ -371,22 +370,13 @@ export default function QuickActions({ property }) {
                 />
               )}
               {dialog.type === AddMaintenanceRecordTextString && (
-                <AddMaintenanceRecord
+                <AddMaintenanceDetails
                   property={property}
                   closeDialog={closeDialog}
                   setShowSnackbar={setShowSnackbar}
                 />
               )}
             </DialogContent>
-            <DialogActions>
-              <AButton
-                size="small"
-                variant="outlined"
-                onClick={closeDialog}
-                label="Close"
-                loading={isUpdatePropertyLoading}
-              />
-            </DialogActions>
           </Dialog>
 
           <CustomSnackbar

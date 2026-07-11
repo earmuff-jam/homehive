@@ -15,7 +15,7 @@ import EmptyComponent from "common/EmptyComponent";
 
 ChartJS.register(RadialLinearScale, ArcElement, Tooltip, Legend, Title);
 
-const PieChart = ({ label, data = [] }) => {
+const PieChart = ({ dataTour, label, data = [] }) => {
   const theme = useTheme();
 
   const [chartData, setChartData] = useState(null);
@@ -93,7 +93,10 @@ const PieChart = ({ label, data = [] }) => {
   }, [data, theme]);
 
   return (
-    <Box sx={{ height: "25rem", width: ltMediumFormFactor ? "100%" : "50%" }}>
+    <Box
+      sx={{ height: "25rem", width: ltMediumFormFactor ? "100%" : "50%" }}
+      data-tour={dataTour}
+    >
       {!chartData ? (
         <EmptyComponent caption="Sorry, no matching records found." />
       ) : (

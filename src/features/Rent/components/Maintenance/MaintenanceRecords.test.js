@@ -17,36 +17,50 @@ jest.mock(
   ),
 );
 
+const defaultProps = {
+  isPropertyOwner: false,
+  isMaintenanceRecordsLoading: false,
+  maintenanceRecords: [
+    {
+      id: "1",
+      description: "Leaky faucet",
+    },
+  ],
+  property: {
+    id: "property-id",
+    name: "Test Property",
+  },
+  primaryTenantEmail: "tenant@test.com",
+  dataTour: "maintenance-tour",
+};
+
 describe("Maintenance Records", () => {
   it("matches snapshot", () => {
-    const { container } = render(
-      <MaintenanceRecords
-        isMaintenanceRecordsLoading={false}
-        maintenanceRecords={[
-          {
-            id: "1",
-            description: "Leaky faucet",
-          },
-        ]}
-        propertyName="Test Property"
-        primaryTenantEmail="tenant@test.com"
-        dataTour="maintenance-tour"
-      />,
-    );
+    const { container } = render(<MaintenanceRecords {...defaultProps} />);
 
     expect(container.firstChild).toMatchSnapshot();
   });
 
   describe("MaintenanceRecords", () => {
     it("renders loading skeleton when loading", () => {
-      const { container } = render(
-        <MaintenanceRecords
-          isMaintenanceRecordsLoading
-          maintenanceRecords={[]}
-          propertyName="Test Property"
-          primaryTenantEmail="tenant@test.com"
-        />,
-      );
+      const props = {
+        isPropertyOwner: false,
+        isMaintenanceRecordsLoading: true,
+        maintenanceRecords: [
+          {
+            id: "1",
+            description: "Leaky faucet",
+          },
+        ],
+        property: {
+          id: "property-id",
+          name: "Test Property",
+        },
+        primaryTenantEmail: "tenant@test.com",
+        dataTour: "maintenance-tour",
+      };
+
+      const { container } = render(<MaintenanceRecords {...props} />);
 
       expect(screen.getByTestId("row-header")).toBeInTheDocument();
       expect(screen.getByTestId("row-header")).toHaveTextContent(
@@ -65,16 +79,7 @@ describe("Maintenance Records", () => {
     });
 
     it("renders ViewMaintenanceRecord when not loading", () => {
-      const maintenanceRecords = [{ id: "1", description: "Leaky faucet" }];
-
-      render(
-        <MaintenanceRecords
-          isMaintenanceRecordsLoading={false}
-          maintenanceRecords={maintenanceRecords}
-          propertyName="Test Property"
-          primaryTenantEmail="tenant@test.com"
-        />,
-      );
+      render(<MaintenanceRecords {...defaultProps} />);
 
       expect(screen.getByTestId("view-maintenance-record")).toBeInTheDocument();
 
@@ -82,14 +87,7 @@ describe("Maintenance Records", () => {
     });
 
     it("passes props to ViewMaintenanceRecord", () => {
-      render(
-        <MaintenanceRecords
-          isMaintenanceRecordsLoading={false}
-          maintenanceRecords={[{ id: "1" }]}
-          propertyName="Test Property"
-          primaryTenantEmail="tenant@test.com"
-        />,
-      );
+      render(<MaintenanceRecords {...defaultProps} />);
 
       const component = screen.getByTestId("view-maintenance-record");
 
@@ -98,15 +96,7 @@ describe("Maintenance Records", () => {
     });
 
     it("sets data-tour attribute", () => {
-      render(
-        <MaintenanceRecords
-          isMaintenanceRecordsLoading={false}
-          maintenanceRecords={[]}
-          propertyName="Test Property"
-          primaryTenantEmail="tenant@test.com"
-          dataTour="maintenance-tour"
-        />,
-      );
+      render(<MaintenanceRecords {...defaultProps} />);
 
       expect(
         document.querySelector('[data-tour="maintenance-tour"]'),

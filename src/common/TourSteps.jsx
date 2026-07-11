@@ -9,6 +9,7 @@ import {
   MainEsignAppRouteUri,
   MainInvoiceAppRouteUri,
   MainRentAppRouteUri,
+  PropertiesReportingRouteUri,
   PropertiesRouteUri,
   PropertyRouteUri,
   RecieverInforamtionRouteUri,
@@ -311,6 +312,45 @@ const EsignHelpSteps = [
   },
 ];
 
+const ReportingAndStatisticsSteps = [
+  {
+    element:
+      "View details about your all active properties. You can also find your total monthly rental income across all properties, average cost per sq ft, and total security deposits collected across all properties.",
+  },
+  {
+    element:
+      "View your projected rental income in average across all properties. Projected rental income is a linear representation of what the rent would look like in the future, although this can change due to various other factors.",
+  },
+  {
+    element:
+      "View your total collected rents across all properties in a graphical format. Hover over each diagram to view associated collected rent for that specific property.",
+  },
+  {
+    element:
+      "Select a valid property to continue the tour for learning about property statistics.",
+  },
+  {
+    element:
+      "View details about vacancy and occupancy about your properties. View your current vacancy streak to know how long has your property stayed vacant. Occupancy rate shows the occupied status of your property. If rentees do not belong to a Single Occupancy Room (SoR) type, then the occupied status will always display 100% when occupied. Also displays average days it took to fill the property, and the total number of days the property stayed vacant since this year.",
+  },
+  {
+    element:
+      "View details about your ongoing lease. View when your current lease expires or the current tenure of the selected tenant. You can also view if the same tenant was renewed at the selected property or otherwise. Finally, you can also view the average length of lease for each property.",
+  },
+  {
+    element:
+      "View details about your collected rents. You can view how often your rents are made on time within the last year. If rent due was late, you can view how late the rental payments were made out. Please note that grace period is also taken into consideration here since rents paid within the grace period is not considered late. You can also view any outstanding balance if remaining and view the cost to rent ratio within the selected property.",
+  },
+  {
+    element:
+      "View details about your maintenance requests. You can view your open requests, average resolution time, Total spent on maintenance for the current year and also the maintenance/rent ratio based on the annual rental income. The average resolution time is the average of the time from when the maintenance was created to the time when it was marked as completed. The maintenance/rent ratio does not take additional rent into account, rather just takes the principal rent income into account.",
+  },
+  {
+    element:
+      "View the top maintenance issues related to the selected property.",
+  },
+];
+
 /**
  * derieveTourSteps
  *
@@ -603,6 +643,37 @@ export const DefaultTourStepsMapperObj = {
       MyPropertiesListHelpSteps.length +
       EsignHelpSteps.length,
   },
+  [PropertiesReportingRouteUri]: {
+    element: (
+      <>
+        {createHelperSentences("view", "reports about your active properties")}
+        {DisplaySubHelperSection()}
+      </>
+    ),
+    start:
+      ViewPdfHelpSteps.length +
+      EditPdfHelpSteps.length +
+      SenderInfoHelpSteps.length +
+      RecieverInfoHelpSteps.length +
+      DashboardHelpSteps.length +
+      SettingsHelpSteps.length +
+      RentalHelpSteps.length +
+      MyPropertyHelpSteps.length +
+      MyPropertiesListHelpSteps.length +
+      EsignHelpSteps.length,
+    end:
+      ViewPdfHelpSteps.length +
+      EditPdfHelpSteps.length +
+      SenderInfoHelpSteps.length +
+      RecieverInfoHelpSteps.length +
+      DashboardHelpSteps.length +
+      SettingsHelpSteps.length +
+      RentalHelpSteps.length +
+      MyPropertyHelpSteps.length +
+      MyPropertiesListHelpSteps.length +
+      EsignHelpSteps.length +
+      ReportingAndStatisticsSteps.length,
+  },
 };
 
 /**
@@ -622,4 +693,5 @@ export const GeneratedTourSteps = [
   ...derieveTourSteps(MyPropertyHelpSteps, "property"),
   ...derieveTourSteps(MyPropertiesListHelpSteps, "properties"),
   ...derieveTourSteps(EsignHelpSteps, "esign"),
+  ...derieveTourSteps(ReportingAndStatisticsSteps, "report-stats"),
 ];

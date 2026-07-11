@@ -21,7 +21,7 @@ exports[`Maintenance Records matches snapshot 1`] = `
       <div
         data-testid="view-maintenance-record"
       >
-        {"data":[{"id":"1","description":"Leaky faucet"}],"propertyName":"Test Property","primaryTenantEmail":"tenant@test.com"}
+        {"isPropertyOwner":false,"data":[{"id":"1","description":"Leaky faucet"}],"property":{"id":"property-id","name":"Test Property"},"primaryTenantEmail":"tenant@test.com"}
       </div>
     </div>
   </div>

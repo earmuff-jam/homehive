@@ -51,7 +51,7 @@ export const useSelectedPropertyDetails = (
 
   if (currentMonthRent) {
     const isCurrentMonthPaid =
-      currentMonthRent?.rentMonth === today.month() &&
+      currentMonthRent?.rentMonth === today.format("MMMM") &&
       [
         ManualRentStatusEnumValue,
         CompleteRentStatusEnumValue,
@@ -59,10 +59,14 @@ export const useSelectedPropertyDetails = (
       ].includes(currentMonthRent?.status);
 
     if (!isCurrentMonthPaid) {
-      nextRentalPaymentDueDate = nextDueDate.subtract(
-        monthsSinceStart + 1,
-        "month",
-      );
+      // if current month is not paid, show the next month after last payment was made
+      const rentPaidMonth = currentMonthRent?.rentMonth;
+      nextRentalPaymentDueDate = dayjs(
+        `${rentPaidMonth} ${today.year()}`,
+        "MMMM YYYY",
+      )
+        .startOf("month")
+        .add(1, "month");
     }
   }
 

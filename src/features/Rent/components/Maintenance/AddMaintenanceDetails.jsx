@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 
 import { v4 as uuidv4 } from "uuid";
 
@@ -9,23 +9,24 @@ import dayjs from "dayjs";
 import { HandymanOutlined } from "@mui/icons-material";
 import {
   Box,
-  Button,
   Divider,
   FormControl,
+  FormHelperText,
   InputLabel,
   MenuItem,
   Select,
   Stack,
   Typography,
-  styled,
 } from "@mui/material";
 import AButton from "common/AButton";
 import TextFieldWithLabel from "common/TextFieldWithLabel";
 import { fetchLoggedInUser } from "common/utils";
 import { useSendEmailMutation } from "features/Api/externalIntegrationsApi";
+import { useUploadMultipleImagesMutation } from "features/Api/firebaseStorageApi";
 import { useGetUserByEmailAddressQuery } from "features/Api/firebaseUserApi";
 import { useCreateMaintenanceRecordMutation } from "features/Api/maintenanceApi";
 import { useGetTenantByPropertyIdQuery } from "features/Api/tenantsApi";
+import MultipleImagePicker from "features/Rent/components/Image/MultipleImagePicker";
 import {
   DefaultMaintenanceCategoryTypes,
   MaintenanceRecordEnumValues,
@@ -35,33 +36,30 @@ import {
   appendDisclaimer,
   emailMessageBuilder,
   formatAndSendNotification,
+  isFeatureEnabled,
 } from "features/Rent/utils";
 
-const VisuallyHiddenInput = styled("input")({
-  clip: "rect(0 0 0 0)",
-  clipPath: "inset(50%)",
-  overflow: "hidden",
-  position: "absolute",
-  width: "100%",
-  bottom: 0,
-  left: 0,
-  whiteSpace: "nowrap",
-});
+// DefaultValuesCreateMaintenanceItem ...
+// default values for creating a maintenance item
+const DefaultValuesCreateMaintenanceItem = {
+  tenantFirstName: "",
+  tenantLastName: "",
+  tenantEmail: "",
+  maintenanceCategory: "",
+  description: "",
+  status: "",
+  paymentMethod: "",
+  note: "",
+};
 
-export default function AddMaintenanceRecord({
-  property,
-  setShowSnackbar,
-  closeDialog,
-}) {
+const AddMaintenanceDetails = ({ property, setShowSnackbar, closeDialog }) => {
   const user = fetchLoggedInUser();
-
-  const isS3StorageEnabled = false;
-
-  const [sendEmail] = useSendEmailMutation();
+  const isS3StorageEnabled = isFeatureEnabled("cloudService");
 
   const [
     createMaintenanceRecord,
     {
+      originalArgs: maintenanceRecordOriginalArgs,
       isLoading: isMaintenanceRecordLoading,
       isSuccess: isMaintenanceRecordSuccess,
     },
@@ -83,28 +81,29 @@ export default function AddMaintenanceRecord({
     skip: !primaryTenant?.email,
   });
 
-  const [maintenanceCategory, setMaintenanceCategory] = useState(
-    DefaultMaintenanceCategoryTypes[6]?.label,
-  );
-
   const {
     register,
     handleSubmit,
     setValue,
+    control,
     formState: { errors, isValid },
-  } = useForm({ mode: "onChange" });
+  } = useForm({
+    mode: "onChange",
+    defaultValues: DefaultValuesCreateMaintenanceItem,
+  });
 
-  const handleChange = (event) => setMaintenanceCategory(event.target.value);
+  const [sendEmail] = useSendEmailMutation();
+  const [uploadMultipleImages] = useUploadMultipleImagesMutation();
+
+  const [selectedImages, setSelectedImages] = useState([]);
 
   const onSubmit = (data) => {
     createMaintenanceRecord({
       ...data,
       id: uuidv4(),
-      tenantEmail: primaryTenant?.email,
       propertyId: property?.id,
       propertyOwnerId: property?.createdBy,
-      tenantId: primaryTenant?.id,
-      maintenanceCategory: maintenanceCategory,
+      tenantId: primaryTenant?.id || "",
       status: MaintenanceRecordEnumValues?.Created,
       createdBy: user?.uid,
       createdOn: dayjs().toISOString(),
@@ -118,13 +117,25 @@ export default function AddMaintenanceRecord({
       closeDialog();
       setShowSnackbar(true);
 
+      const maintenanceId = maintenanceRecordOriginalArgs?.id;
+      const propertyId = maintenanceRecordOriginalArgs?.propertyId;
+      // if no tenant is found, use whoever the creator put under tenant email
+      const emailAddress = maintenanceRecordOriginalArgs?.tenantEmail;
+
+      const populatedImages = selectedImages.map((image) => ({
+        file: image.file,
+        path: `properties/${propertyId}/maintenance/${maintenanceId}/${image.id}`,
+      }));
+
+      uploadMultipleImages(populatedImages);
+
       const emailMsgWithDisclaimer = appendDisclaimer(
         emailMessageBuilder(AddMaintenanceRecordEnumValue, property.name),
         user?.email,
       );
 
       formatAndSendNotification({
-        to: primaryTenant?.email,
+        to: emailAddress,
         subject: `${AddMaintenanceRecordEnumValue} - ${property.name}`,
         body: emailMsgWithDisclaimer,
         ccEmailIds: [user?.email],
@@ -135,13 +146,13 @@ export default function AddMaintenanceRecord({
 
   useEffect(() => {
     if (primaryTenant) {
-      setValue("tenantEmailAddress", primaryTenant?.email);
+      setValue("tenantEmail", primaryTenant?.email);
     }
   }, [primaryTenant?.id]);
 
   useEffect(() => {
     if (primaryTenantDetails) {
-      setValue("firstName", primaryTenantDetails?.firstName);
+      setValue("tenantFirstName", primaryTenantDetails?.firstName);
       setValue("tenantLastName", primaryTenantDetails?.lastName);
     }
   }, [isPrimaryTenantDetailsLoading]);
@@ -157,11 +168,11 @@ export default function AddMaintenanceRecord({
         <Stack direction={{ xs: "column", md: "row" }} spacing={1}>
           <TextFieldWithLabel
             label="First Name *"
-            id="firstName"
+            id="tenantFirstName"
             placeholder="First Name"
-            errorMsg={errors.firstName?.message}
+            errorMsg={errors.tenantFirstName?.message}
             inputProps={{
-              ...register("firstName", {
+              ...register("tenantFirstName", {
                 required: "First Name is required",
               }),
             }}
@@ -179,12 +190,14 @@ export default function AddMaintenanceRecord({
           />
         </Stack>
         <TextFieldWithLabel
+          // disabled if primary tenant is found
+          isDisabled={primaryTenant?.email}
           label="Email Address *"
-          id="tenantEmailAddress"
+          id="tenantEmail"
           placeholder="Email address of the primary tenant"
-          errorMsg={errors.tenantEmailAddress?.message}
+          errorMsg={errors.tenantEmail?.message}
           inputProps={{
-            ...register("tenantEmailAddress", {
+            ...register("tenantEmail", {
               required: "Email address is required",
             }),
           }}
@@ -195,66 +208,62 @@ export default function AddMaintenanceRecord({
           </Typography>
         </Divider>
         <Box>
-          <FormControl sx={{ m: 1, minWidth: 320 }} size="small">
-            <InputLabel id="selected-property-label-id">
-              Maintenance type
-            </InputLabel>
-            <Select
-              labelId="selected-property-label-id"
-              id="selected-property-id"
-              value={maintenanceCategory}
-              label="Selected Property"
-              onChange={handleChange}
-            >
-              <MenuItem value="">
-                <em>None</em>
-              </MenuItem>
-              {DefaultMaintenanceCategoryTypes?.map((item) => (
-                <MenuItem key={item?.id} value={item.label}>
-                  {item?.label}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
+          <Controller
+            name="maintenanceCategory"
+            control={control}
+            render={({ field, fieldState }) => (
+              <FormControl
+                size="small"
+                sx={{ m: 1, minWidth: 220 }}
+                error={!!fieldState.error}
+              >
+                <InputLabel id="maintenance-category-label">
+                  Maintenance type
+                </InputLabel>
+                <Select
+                  {...field}
+                  value={field.value ?? ""}
+                  labelId="maintenance-category-label"
+                  id="maintenanceCategory"
+                  label="Maintenance type"
+                >
+                  {DefaultMaintenanceCategoryTypes.map((item) => (
+                    <MenuItem key={item.id} value={item.label}>
+                      {item.label}
+                    </MenuItem>
+                  ))}
+                </Select>
+                <FormHelperText>{fieldState.error?.message}</FormHelperText>
+              </FormControl>
+            )}
+          />
         </Box>
-        <Stack direction={{ xs: "column", md: "row" }} spacing={1}>
-          <Box flex={3}>
-            <TextFieldWithLabel
-              label="Description"
-              id="description"
-              multiline
-              maxRows={5}
-              placeholder="Enter description of the problem in less than 1000 characters"
-              errorMsg={errors.description?.message}
-              inputProps={{
-                ...register("description", {
-                  max: {
-                    value: 1000,
-                    message: "Description should be less than 1000 characters",
-                  },
-                }),
-              }}
+        <Box flex={3}>
+          <TextFieldWithLabel
+            label="Description"
+            id="description"
+            multiline
+            maxRows={5}
+            placeholder="Enter description of the problem in less than 1000 characters"
+            errorMsg={errors.description?.message}
+            inputProps={{
+              ...register("description", {
+                max: {
+                  value: 1000,
+                  message: "Description should be less than 1000 characters",
+                },
+              }),
+            }}
+          />
+        </Box>
+        {isS3StorageEnabled ? (
+          <Box flex={2}>
+            <MultipleImagePicker
+              value={selectedImages}
+              onChange={setSelectedImages}
             />
           </Box>
-          {isS3StorageEnabled ? (
-            <Box flex={1}>
-              <Typography color="textPrimary" fontWeight="medium" gutterBottom>
-                Upload pictures (if any)
-              </Typography>
-              <Box>
-                <Button
-                  role="undefined"
-                  component="label"
-                  variant="outlined"
-                  size="small"
-                >
-                  Add images
-                  <VisuallyHiddenInput type="file" onChange={() => {}} />
-                </Button>
-              </Box>
-            </Box>
-          ) : null}
-        </Stack>
+        ) : null}
         <Box alignSelf="flex-end">
           <AButton
             variant="outlined"
@@ -268,4 +277,6 @@ export default function AddMaintenanceRecord({
       </Stack>
     </form>
   );
-}
+};
+
+export default AddMaintenanceDetails;

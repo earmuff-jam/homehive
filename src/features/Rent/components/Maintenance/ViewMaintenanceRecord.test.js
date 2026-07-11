@@ -1,11 +1,11 @@
 import React from "react";
 
 import ViewMaintenanceRecord from "./ViewMaintenanceRecord";
-import { fireEvent, render, screen } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 
 jest.mock(
-  "features/Rent/components/Maintenance/UpdateMaintenanceItemStatus",
-  () => () => <div>UpdateMaintenanceItemStatus</div>,
+  "features/Rent/components/Maintenance/UpdateMaintenanceDetails",
+  () => () => <div>UpdateMaintenanceDetails</div>,
 );
 
 jest.mock("common/AButton", () => ({
@@ -16,6 +16,12 @@ jest.mock("common/AButton", () => ({
     </button>
   ),
 }));
+
+jest.mock("common/AIconButton", () => ({
+  __esModule: true,
+  default: (props) => <button {...props} />,
+}));
+
 jest.mock("material-react-table", () => ({
   MaterialReactTable: ({ table }) => (
     <div data-testid="material-react-table">
@@ -29,8 +35,8 @@ jest.mock("material-react-table", () => ({
 
 jest.mock("common/CustomSnackbar", () => () => <div>CustomSnackbar</div>);
 
-describe("View maintenance record tests", () => {
-  describe("ViewMaintenanceRecord", () => {
+describe("ViewMaintenanceRecord", () => {
+  describe("ViewMaintenanceRecord snapshot tests", () => {
     const defaultProps = {
       propertyName: "Test Property",
       primaryTenantEmail: "tenant@test.com",
@@ -52,8 +58,7 @@ describe("View maintenance record tests", () => {
       expect(container.firstChild).toMatchSnapshot();
     });
   });
-
-  describe("ViewMaintenanceRecord behavior", () => {
+  describe("ViewMaintenanceRecord component tests", () => {
     const defaultProps = {
       propertyName: "Test Property",
       primaryTenantEmail: "tenant@test.com",

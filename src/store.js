@@ -3,6 +3,7 @@ import { analyticsApi } from "features/Api/analyticsApi";
 import { etssTokenApi } from "features/Api/etssTokenApi";
 import { externalIntegrationMultipart } from "features/Api/externalIntegrationMultipart";
 import { externalIntegrationsApi } from "features/Api/externalIntegrationsApi";
+import { firebaseStorageApi } from "features/Api/firebaseStorageApi";
 import { firebaseUserApi } from "features/Api/firebaseUserApi";
 import { invoiceApi } from "features/Api/invoiceApi";
 import { maintenanceApi } from "features/Api/maintenanceApi";
@@ -28,9 +29,10 @@ export const store = configureStore({
     [etssTokenApi.reducerPath]: etssTokenApi.reducer,
     [externalIntegrationsApi.reducerPath]: externalIntegrationsApi.reducer,
     [raspyApi.reducerPath]: raspyApi.reducer,
-    [mapAmenitiesApi.reducerPath]: mapAmenitiesApi.reducer,
     [externalIntegrationMultipart.reducerPath]:
       externalIntegrationMultipart.reducer,
+    [mapAmenitiesApi.reducerPath]: mapAmenitiesApi.reducer,
+    [firebaseStorageApi.reducerPath]: firebaseStorageApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat([
@@ -48,5 +50,6 @@ export const store = configureStore({
       raspyApi.middleware,
       externalIntegrationMultipart.middleware,
       mapAmenitiesApi.middleware,
+      firebaseStorageApi.middleware,
     ]),
 });

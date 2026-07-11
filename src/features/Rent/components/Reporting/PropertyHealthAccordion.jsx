@@ -21,6 +21,7 @@ const PropertyHealthAccordion = ({
   label,
   selected,
   properties,
+  dataTour,
   existingTenants,
 }) => {
   const {
@@ -34,6 +35,7 @@ const PropertyHealthAccordion = ({
 
   return (
     <Accordion
+      data-tour={dataTour}
       elevation={0}
       key={label}
       defaultExpanded

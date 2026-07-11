@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`View maintenance record tests ViewMaintenanceRecord matches snapshot 1`] = `
+exports[`ViewMaintenanceRecord ViewMaintenanceRecord snapshot tests matches snapshot 1`] = `
 <div
   class="MuiStack-root css-1sazv7p-MuiStack-root"
 >

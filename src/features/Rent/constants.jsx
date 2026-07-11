@@ -3,12 +3,16 @@ export const AddPropertyTextString = "ADD_PROPERTY";
 export const AddRentRecordsTextString = "ADD_RENT_RECORDS";
 export const AddMaintenanceRecordTextString = "ADD_MAINTENANCE_RECORD";
 
-export const AddMaintenanceRecordCompletedResolutionString =
-  "ADD_MAINTENANCE_COMPLETED_RECORD_RESOLUTION";
-export const AddMaintenanceRecordPendingResolutionString =
-  "ADD_MAINTENANCE_PENDING_RECORD_RESOLUTION";
-export const AddMaintenanceRecordRemovedResolutionString =
-  "ADD_MAINTENANCE_REMOVED_RECORD_RESOLUTION";
+// MaxSizeInMB ...
+export const MaxSizeInMB = 5;
+// FileUploadWaitingStatusStr ...
+export const FileUploadWaitingStatusStr = "waiting";
+// FileUploadUploadingStatusStr ...
+export const FileUploadUploadingStatusStr = "uploading";
+// FileUploadUploadedStatusStr ...
+export const FileUploadUploadedStatusStr = "uploaded";
+// FileUploadFailedStatusStr ...
+export const FileUploadFailedStatusStr = "failed";
 
 // DefaultLeaseTermOptions ...
 export const DefaultLeaseTermOptions = [
@@ -81,6 +85,42 @@ export const MaintenanceRecordEnumValues = {
   Completed: "Completed",
 };
 
+export const MaintenanceIssueCreatedResolutionType = "Created";
+export const MaintenanceIssuePendingResolutionType = "Pending";
+export const MaintenanceIssueInprogressResolutionType = "Inprogress";
+export const MaintenanceIssueIncompleteResolutionType = "Incomplete";
+export const MaintenanceIssueCompletedResolutionType = "Completed";
+
+// DefaultMaintenanceIssueResolutionTypes ...
+// defines the default maintenance issue resolution choices1
+export const DefaultMaintenanceIssueResolutionTypes = [
+  {
+    id: 1,
+    label: "Created",
+    action: MaintenanceIssueCreatedResolutionType,
+  },
+  {
+    id: 2,
+    label: "Pending",
+    action: MaintenanceIssuePendingResolutionType,
+  },
+  {
+    id: 3,
+    label: "In progress",
+    action: MaintenanceIssueInprogressResolutionType,
+  },
+  {
+    id: 4,
+    label: "Incomplete",
+    action: MaintenanceIssueIncompleteResolutionType,
+  },
+  {
+    id: 5,
+    label: "Completed",
+    action: MaintenanceIssueCompletedResolutionType,
+  },
+];
+
 // DefaultMaintenanceCategoryTypes ...
 // defines a function that populates the default maintenance categories
 export const DefaultMaintenanceCategoryTypes = [
@@ -113,3 +153,18 @@ export const DefaultMaintenanceCategoryTypes = [
     label: "General Repair",
   },
 ];
+
+// STARTER_PLAN_PRODUCT_NAME ...
+export const STARTER_PLAN_PRODUCT_NAME = "Monthly Starter Plan";
+// PROFESSIONAL_PLAN_PRODUCT_NAME ...
+export const PROFESSIONAL_PLAN_PRODUCT_NAME = "Monthly Professional Plan";
+// ENTERPRISE_PLAN_PRODUCT_NAME ...
+export const ENTERPRISE_PLAN_PRODUCT_NAME = "Monthly Enterprise Plan";
+
+// DefaultRentXPropertiesLimit ...
+// defines the max amount of authorized properties for each plan
+export const DefaultRentXPropertiesLimit = {
+  [STARTER_PLAN_PRODUCT_NAME]: 2,
+  [PROFESSIONAL_PLAN_PRODUCT_NAME]: 10,
+  [ENTERPRISE_PLAN_PRODUCT_NAME]: 20,
+};
