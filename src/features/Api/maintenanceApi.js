@@ -89,7 +89,10 @@ export const maintenanceApi = createApi({
           };
         }
       },
-      invalidatesTags: [MaintenanceApiTagTypes.getMaintenanceRecords],
+      invalidatesTags: [
+        MaintenanceApiTagTypes.getMaintenanceRecords,
+        MaintenanceApiTagTypes.getMaintenanceRecord,
+      ],
     }),
     // updateMaintenanceData ...
     // update maintenance record
@@ -109,7 +112,10 @@ export const maintenanceApi = createApi({
           };
         }
       },
-      invalidatesTags: [MaintenanceApiTagTypes.getMaintenanceRecords],
+      invalidatesTags: [
+        MaintenanceApiTagTypes.getMaintenanceRecords,
+        MaintenanceApiTagTypes.getMaintenanceRecord,
+      ],
     }),
   }),
 });
