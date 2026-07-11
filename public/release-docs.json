@@ -1,5 +1,41 @@
 [
   {
+    "version": "1.0.15",
+    "date": "2026-07-11",
+    "notes": [
+      {
+        "type": "maintenance",
+        "value": "Added tests for next payment due date by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/402",
+        "caption": "Added tests for next payment due date by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/402"
+      },
+      {
+        "type": "maintenance",
+        "value": "Added maintenance form updates by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/403",
+        "caption": "Added maintenance form updates by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/403"
+      },
+      {
+        "type": "feature",
+        "value": "Added help and support for reporting and analytics page by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/406",
+        "caption": "Added help and support for reporting and analytics page by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/406"
+      },
+      {
+        "type": "maintenance",
+        "value": "Added support for Images by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/407",
+        "caption": "Added support for Images by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/407"
+      },
+      {
+        "type": "maintenance",
+        "value": "Added cleanup to AddMaintenanceDetails test by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/409",
+        "caption": "Added cleanup to AddMaintenanceDetails test by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/409"
+      },
+      {
+        "type": "maintenance",
+        "value": "Updated Maintenance Records by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/410",
+        "caption": "Updated Maintenance Records by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/410"
+      }
+    ]
+  },
+  {
     "version": "1.0.14",
     "date": "2026-06-15",
     "notes": [
