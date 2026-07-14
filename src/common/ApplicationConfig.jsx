@@ -10,17 +10,14 @@ import SubscriptionGuard from "features/Subscription/SubscriptionGuard";
 export function authorizedServerLevelFeatureFlags() {
   const analyticsFeatureFlag = import.meta.env.VITE_ENABLE_ANALYTICS;
   const invoicerFeatureFlag = import.meta.env.VITE_ENABLE_INVOICER;
-  const invoicerProFeatureFlag = import.meta.env.VITE_ENABLE_INVOICER_PRO;
-  const invoicerUserInformationFeatureFlag = import.meta.env
-    .VITE_ENABLE_INVOICER_USER_INFORMATION;
+  const esignFeatureFlag = import.meta.env.VITE_ENABLE_ESIGN;
   const emailServiceFeatureFlag = import.meta.env.VITE_ENABLE_EMAIL_FEATURE;
   const cloudServiceFeatureFlag = import.meta.env.VITE_ENABLE_CLOUD_SERVICE;
 
   return new Map([
     ["analytics", analyticsFeatureFlag === "true"],
     ["invoicer", invoicerFeatureFlag === "true"],
-    ["invoicerPro", invoicerProFeatureFlag === "true"],
-    ["userInformation", invoicerUserInformationFeatureFlag === "true"],
+    ["esign", esignFeatureFlag === "true"],
     ["sendEmail", emailServiceFeatureFlag === "true"],
     ["cloudService", cloudServiceFeatureFlag === "true"],
   ]);

@@ -103,7 +103,7 @@ const AddMaintenanceDetails = ({ property, setShowSnackbar, closeDialog }) => {
       id: uuidv4(),
       propertyId: property?.id,
       propertyOwnerId: property?.createdBy,
-      tenantId: primaryTenant?.id,
+      tenantId: primaryTenant?.id || "",
       status: MaintenanceRecordEnumValues?.Created,
       createdBy: user?.uid,
       createdOn: dayjs().toISOString(),

@@ -50,7 +50,7 @@ export const InvoiceAppRoutes = [
     routeUri: InvoiceDashboardRouteUri,
     element: <Dashboard />,
     icon: <DashboardCustomizeRounded fontSize="small" />,
-    requiredFlags: ["invoicer", "invoicerPro"],
+    requiredFlags: ["invoicer"],
     config: {
       breadcrumb: {
         value: "View Dashboard",
@@ -107,7 +107,7 @@ export const InvoiceAppRoutes = [
     routeUri: SenderInforamtionRouteUri,
     element: <SenderInfo />,
     icon: <Person2Rounded fontSize="small" />,
-    requiredFlags: ["userInformation"],
+    requiredFlags: ["invoicer"],
     config: {
       breadcrumb: {
         value: "Sender Information",
@@ -126,7 +126,7 @@ export const InvoiceAppRoutes = [
     routeUri: RecieverInforamtionRouteUri,
     element: <RecieverInfo />,
     icon: <Person2Rounded fontSize="small" />,
-    requiredFlags: ["userInformation"],
+    requiredFlags: ["invoicer"],
     config: {
       breadcrumb: {
         value: "Reciever Information",

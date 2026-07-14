@@ -22,7 +22,7 @@ export const EsignAppRoutes = [
     routeUri: ViewEsignRouteUri,
     element: <PdfEditor />,
     icon: <ArticleRounded fontSize="small" />,
-    requiredFlags: [],
+    requiredFlags: ["esign"],
     config: {
       breadcrumb: {
         value: "Esign",
@@ -42,10 +42,10 @@ export const EsignAppRoutes = [
     routeUri: EsignAppFaqRouteUri,
     element: <Faq />,
     icon: <QuestionAnswerRounded fontSize="small" />,
-    requiredFlags: ["invoicer"],
+    requiredFlags: ["esign"],
     config: {
       breadcrumb: {
-        value: "Invoice App Help Center",
+        value: "Esign App Help Center",
         icon: <QuestionAnswerRounded fontSize="small" />,
       },
       displayInNavBar: true,

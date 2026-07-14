@@ -87,8 +87,7 @@ describe("Test utility functions", () => {
     it("returns true when feature is enabled", () => {
       expect(isFeatureEnabled("analytics")).toBe(true);
       expect(isFeatureEnabled("invoicer")).toBe(true);
-      expect(isFeatureEnabled("invoicerPro")).toBe(false);
-      expect(isFeatureEnabled("userInformation")).toBe(true);
+      expect(isFeatureEnabled("esign")).toBe(true);
       expect(isFeatureEnabled("sendEmail")).toBe(true);
     });
 

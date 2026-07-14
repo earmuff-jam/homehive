@@ -3,10 +3,10 @@ import React, { forwardRef, useMemo } from "react";
 import { useLocation } from "react-router-dom";
 
 import { Button } from "@mui/material";
-import { isBasePlanUser } from "common/utils";
+import { isBasePlanUser, isSelectedFeatureEnabled } from "common/utils";
 import { useButtonAnalytics } from "hooks/useButtonAnalytics";
 
-const analyticsEnabled = import.meta.env.VITE_ENABLE_ANALYTICS || "false";
+const analyticsEnabled = isSelectedFeatureEnabled("analytics");
 
 /**
  * AButton

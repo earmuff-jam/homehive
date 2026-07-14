@@ -5,6 +5,7 @@ import { useLocation } from "react-router-dom";
 
 import dayjs from "dayjs";
 
+import { isSelectedFeatureEnabled } from "common/utils";
 import { useGetCurrentIPAddressQuery } from "features/Api/analyticsApi";
 import { addDoc, collection } from "firebase/firestore";
 import { analyticsFirestore } from "src/config";
@@ -18,7 +19,7 @@ import { analyticsFirestore } from "src/config";
  */
 
 const NavigationContext = createContext();
-const analyticsEnabled = import.meta.env.VITE_ENABLE_ANALYTICS || "false";
+const analyticsEnabled = isSelectedFeatureEnabled("analytics");
 
 export const NavigationProvider = ({ children }) => {
   const { pathname } = useLocation();

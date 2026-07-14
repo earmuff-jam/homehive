@@ -31,8 +31,7 @@ jest.mock("common/ApplicationConfig", () => ({
     new Map([
       ["analytics", true],
       ["invoicer", true],
-      ["invoicerPro", false],
-      ["userInformation", true],
+      ["esign", true],
       ["sendEmail", true],
     ]),
 }));

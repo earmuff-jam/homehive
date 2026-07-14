@@ -335,6 +335,7 @@ export const buildPaymentLineItems = (property = {}, tenant = []) => {
 };
 
 // isFeatureEnabled ...
+// TODO: should be replaced by parent fn
 export const isFeatureEnabled = (key) => {
   const enabledFlagMap = authorizedServerLevelFeatureFlags();
   return enabledFlagMap.get(key) || false;
