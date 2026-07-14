@@ -16,13 +16,16 @@ import {
 } from "@mui/material";
 import CustomSnackbar from "common/CustomSnackbar";
 import { DefaultTourStepsMapperObj } from "common/TourSteps";
-import { HomeRouteUri, fetchLoggedInUser } from "common/utils";
+import {
+  HomeRouteUri,
+  fetchLoggedInUser,
+  isSelectedFeatureEnabled,
+} from "common/utils";
 import { useSendEmailMutation } from "features/Api/externalIntegrationsApi";
 import { useLogoutMutation } from "features/Api/firebaseUserApi";
 import { useRetrieveInvoiceDetails } from "features/Invoice/hooks/useRetrieveInvoiceDetails";
 import MenuOptions from "features/Layout/components/NavBar/MenuOptions";
 import { generateInvoiceHTML, retrieveTourKey } from "features/Layout/utils";
-import { isFeatureEnabled } from "features/Rent/utils";
 
 export default function AppToolbar({
   currentUri,
@@ -65,7 +68,7 @@ export default function AppToolbar({
     currentRoute.config.displayPrintSelector &&
     currentSubRoute?.config?.displayPrintSelector;
 
-  const isSendEmailFeatureEnabled = isFeatureEnabled("sendEmail");
+  const isSendEmailFeatureEnabled = isSelectedFeatureEnabled("sendEmail");
   const isSplashPage = currentUri === HomeRouteUri;
 
   const handleSendEmail = () => {

@@ -3,10 +3,10 @@ import React, { forwardRef } from "react";
 import { useLocation } from "react-router-dom";
 
 import { IconButton } from "@mui/material";
-import { isBasePlanUser } from "common/utils";
+import { isBasePlanUser, isSelectedFeatureEnabled } from "common/utils";
 import { useButtonAnalytics } from "hooks/useButtonAnalytics";
 
-const analyticsEnabled = import.meta.env.VITE_ENABLE_ANALYTICS || "false";
+const analyticsEnabled = isSelectedFeatureEnabled("analytics");
 
 /**
  * AIconButton
@@ -32,9 +32,8 @@ const AIconButton = forwardRef(function AIconButton(
   const buttonAnalytics = useButtonAnalytics();
 
   const handleClick = (ev) => {
-    if (analyticsEnabled?.toLowerCase() === "true") {
-      buttonAnalytics?.(label);
-    }
+    // log data only if analytics is enabled
+    analyticsEnabled && buttonAnalytics?.(label);
     onClick?.(ev);
   };
 

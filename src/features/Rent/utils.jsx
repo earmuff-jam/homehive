@@ -7,7 +7,7 @@ import {
   BubbleChartOutlined,
   PaidRounded,
 } from "@mui/icons-material";
-import { authorizedServerLevelFeatureFlags } from "common/ApplicationConfig";
+import { isSelectedFeatureEnabled } from "common/utils";
 import { DefaultLeaseTermOptions } from "features/Rent/constants";
 import { produce } from "immer";
 
@@ -110,8 +110,8 @@ export const formatAndSendNotification = ({
   bccEmailIds = [],
   sendEmail,
 }) => {
-  const isDevEnv = isFeatureEnabled("devEnv");
-  const isEmailEnabled = isFeatureEnabled("sendEmail");
+  const isDevEnv = isSelectedFeatureEnabled("devEnv");
+  const isEmailEnabled = isSelectedFeatureEnabled("sendEmail");
 
   if (isEmailEnabled) {
     switch (isDevEnv) {
@@ -332,12 +332,6 @@ export const buildPaymentLineItems = (property = {}, tenant = []) => {
       },
     },
   ];
-};
-
-// isFeatureEnabled ...
-export const isFeatureEnabled = (key) => {
-  const enabledFlagMap = authorizedServerLevelFeatureFlags();
-  return enabledFlagMap.get(key) || false;
 };
 
 // sanitizeApiFields ...

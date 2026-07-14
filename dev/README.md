@@ -183,7 +183,7 @@ git push origin v1.3.0-rc2
 
 ### Playwright Tests
 
-Playwright tests are written with end to end coverage. Mainly, the goals are to test user workflow - considering the fact that we have couple of 
+Playwright tests are written with end to end coverage. Mainly, the goals are to test user workflow - considering the fact that we have couple of
 role based behaviors in place.
 
 ### Setting up Playwright tests
@@ -193,3 +193,14 @@ role based behaviors in place.
 3. Run playwright locally with - `npx playwright test`.
 4. Run playwirght on debug mode with - `npx playwright test --headed` to debug visually
 5. Run playwright on debug mode with - `npx playwright test --ui` to debug and run tests via the ui menu.
+
+### Running netlify
+
+( Recommended Approach)
+
+1. Use netlify as a project deps. This keeps all the developers in the same version while building and developing the application. Run the command `npx netlify dev` to invoke the deps
+   of netlify and use the `netlify.toml` to build locally.
+
+( Older approach)
+
+2. If you have netlify installed as a global resource in your device, simply use the command `netlify dev` to run netlify in dev mode. This uses the `netlify.toml` file and starts vite project in the development instance.

@@ -37,12 +37,13 @@ jobs:
       - name: Run Playwright tests
         run: npx playwright test
         env:
+        
+          VITE_ENABLE_DEV_ENV: true
           VITE_ENABLE_ANALYTICS: false
           VITE_ENABLE_INVOICER: true
-          VITE_ENABLE_INVOICER_PRO: true
-          VITE_ENABLE_INVOICER_USER_INFORMATION: true
+          VITE_ENABLE_ESIGN: true
           VITE_ENABLE_EMAIL_FEATURE: true
-          VITE_ENABLE_DEV_ENV: true
+          VITE_ENABLE_CLOUD_SERVICE: true
 
       - name: Upload Playwright artifacts
         if: ${{ !cancelled() }}

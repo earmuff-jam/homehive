@@ -3,6 +3,7 @@ import React from "react";
 import secureLocalStorage from "react-secure-storage";
 
 import { Typography } from "@mui/material";
+import { authorizedServerLevelFeatureFlags } from "common/ApplicationConfig";
 
 export const HomeRouteUri = "/";
 export const NotesRouteUri = "/notes";
@@ -89,4 +90,11 @@ export const isBasePlanUser = (pathname = "") => {
     if (!user?.role) return true;
   }
   return false;
+};
+
+// isSelectedFeatureEnabled ...
+// defines a function to verify if the selected feature is enabled in the server
+export const isSelectedFeatureEnabled = (feature) => {
+  const enabledFeaturesMap = authorizedServerLevelFeatureFlags();
+  return enabledFeaturesMap?.get(feature) || false;
 };

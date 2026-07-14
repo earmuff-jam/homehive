@@ -27,10 +27,10 @@ jest.mock("common/utils", () => ({
     uid: "user-1",
     email: "owner@test.com",
   }),
+  isSelectedFeatureEnabled: jest.fn(() => true),
 }));
 
 jest.mock("features/Rent/utils", () => ({
-  isFeatureEnabled: jest.fn(() => true),
   appendDisclaimer: jest.fn((v) => v),
   emailMessageBuilder: jest.fn(() => "message"),
   formatAndSendNotification: jest.fn(),
