@@ -32,9 +32,8 @@ const AIconButton = forwardRef(function AIconButton(
   const buttonAnalytics = useButtonAnalytics();
 
   const handleClick = (ev) => {
-    if (analyticsEnabled?.toLowerCase() === "true") {
-      buttonAnalytics?.(label);
-    }
+    // log data only if analytics is enabled
+    analyticsEnabled && buttonAnalytics?.(label);
     onClick?.(ev);
   };
 

@@ -31,7 +31,7 @@ export const NavigationProvider = ({ children }) => {
 
   useEffect(() => {
     // log data only if analytics is enabled
-    if (analyticsEnabled?.toLowerCase() === "true") {
+    if (analyticsEnabled) {
       const logUserAnalyticsToFirestore = async () => {
         try {
           if (pathname) {

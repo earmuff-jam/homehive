@@ -79,7 +79,7 @@ const LeaseHealthAccordion = ({
           <StatsAccordionDetailsBlock
             label="Lease expires in"
             // diff in days since lastMoveOut happened; does not fall below 0
-            value={`${Math.max(dayjs(leaseExiprationDate).diff(dayjs(), "day"), 0)} days`}
+            value={`${Math.max(dayjs(leaseExiprationDate).diff(dayjs(), "day"), 0) || 0} days`}
             caption={`Occupied since ${dayjs(primaryTenant?.startDate).format("MM-DD-YYYY")}`}
           />
           <StatsAccordionDetailsBlock
@@ -97,7 +97,7 @@ const LeaseHealthAccordion = ({
           <StatsAccordionDetailsBlock
             label="Avg lease length"
             // Jira - #320 Parent ticket to complete this ask
-            value={`${primaryTenant?.term}`}
+            value={`${primaryTenant?.term || 0}`}
             caption="Across all tenants"
             applyVariant
           />

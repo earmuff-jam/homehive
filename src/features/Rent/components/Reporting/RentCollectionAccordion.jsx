@@ -113,7 +113,7 @@ const RentCollectionAccordion = ({
           />
           <StatsAccordionDetailsBlock
             label="Cost / Rent Ratio"
-            value={`${primaryTenant?.term}`}
+            value={`${primaryTenant?.term || 0}`}
             caption="Of annual rent income"
             applyVariant
           />

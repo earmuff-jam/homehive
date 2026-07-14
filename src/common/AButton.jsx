@@ -46,7 +46,7 @@ const AButton = forwardRef(function AButton(
 
   const handleClick = (ev) => {
     // log data only if analytics is enabled
-    analyticsEnabled?.toLowerCase() === "true" && buttonAnalytics?.(label);
+    analyticsEnabled && buttonAnalytics?.(label);
     if (typeof onClick === "function") {
       onClick?.(ev);
     }
