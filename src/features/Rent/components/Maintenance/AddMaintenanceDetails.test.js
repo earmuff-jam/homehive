@@ -9,6 +9,7 @@ jest.mock("common/utils", () => ({
     uid: "user-1",
     email: "owner@test.com",
   })),
+  isSelectedFeatureEnabled: jest.fn(() => true),
 }));
 
 jest.mock("common/AIconButton", () => ({
@@ -64,7 +65,6 @@ jest.mock("features/Rent/utils", () => ({
   appendDisclaimer: jest.fn((msg) => msg),
   emailMessageBuilder: jest.fn(() => "email body"),
   formatAndSendNotification: jest.fn(),
-  isFeatureEnabled: jest.fn(() => true),
 }));
 
 const property = {

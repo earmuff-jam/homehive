@@ -21,7 +21,7 @@ import AButton from "common/AButton";
 import CustomSnackbar from "common/CustomSnackbar";
 import RowHeader from "common/RowHeader";
 import TextFieldWithLabel from "common/TextFieldWithLabel";
-import { fetchLoggedInUser } from "common/utils";
+import { fetchLoggedInUser, isSelectedFeatureEnabled } from "common/utils";
 import { useSendEmailMutation } from "features/Api/externalIntegrationsApi";
 import { useViewMaintenanceImagesQuery } from "features/Api/firebaseStorageApi";
 import {
@@ -39,7 +39,6 @@ import {
   appendDisclaimer,
   emailMessageBuilder,
   formatAndSendNotification,
-  isFeatureEnabled,
 } from "features/Rent/utils";
 
 // DefaultValuesUpdateMaintenanceItem ...
@@ -65,7 +64,7 @@ const UpdateMaintenanceDetails = ({
   primaryTenantEmail,
 }) => {
   const user = fetchLoggedInUser();
-  const isS3StorageEnabled = isFeatureEnabled("cloudService");
+  const isS3StorageEnabled = isSelectedFeatureEnabled("cloudService");
 
   const {
     data: maintenanceRecord,

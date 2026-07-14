@@ -93,7 +93,6 @@ export const isBasePlanUser = (pathname = "") => {
 };
 
 // isSelectedFeatureEnabled ...
-// TODO: replace isFeatureEnabled in utils/rent
 // defines a function to verify if the selected feature is enabled in the server
 export const isSelectedFeatureEnabled = (feature) => {
   const enabledFeaturesMap = authorizedServerLevelFeatureFlags();

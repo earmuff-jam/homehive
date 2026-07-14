@@ -20,7 +20,7 @@ import {
 } from "@mui/material";
 import AButton from "common/AButton";
 import TextFieldWithLabel from "common/TextFieldWithLabel";
-import { fetchLoggedInUser } from "common/utils";
+import { fetchLoggedInUser, isSelectedFeatureEnabled } from "common/utils";
 import { useSendEmailMutation } from "features/Api/externalIntegrationsApi";
 import { useUploadMultipleImagesMutation } from "features/Api/firebaseStorageApi";
 import { useGetUserByEmailAddressQuery } from "features/Api/firebaseUserApi";
@@ -36,7 +36,6 @@ import {
   appendDisclaimer,
   emailMessageBuilder,
   formatAndSendNotification,
-  isFeatureEnabled,
 } from "features/Rent/utils";
 
 // DefaultValuesCreateMaintenanceItem ...
@@ -54,7 +53,7 @@ const DefaultValuesCreateMaintenanceItem = {
 
 const AddMaintenanceDetails = ({ property, setShowSnackbar, closeDialog }) => {
   const user = fetchLoggedInUser();
-  const isS3StorageEnabled = isFeatureEnabled("cloudService");
+  const isS3StorageEnabled = isSelectedFeatureEnabled("cloudService");
 
   const [
     createMaintenanceRecord,

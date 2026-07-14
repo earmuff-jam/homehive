@@ -5,7 +5,6 @@ const {
   getOccupancyRate,
   isAssociatedPropertySoR,
   buildPaymentLineItems,
-  isFeatureEnabled,
   getColorAndLabelForCurrentMonth,
 } = require("features/Rent/utils");
 
@@ -80,19 +79,6 @@ describe("Test utility functions", () => {
 
       expect(result).toHaveLength(4);
       expect(result[0].name.label).toBe("Rent Amount");
-    });
-  });
-
-  describe("test isFeatureEnabled function", () => {
-    it("returns true when feature is enabled", () => {
-      expect(isFeatureEnabled("analytics")).toBe(true);
-      expect(isFeatureEnabled("invoicer")).toBe(true);
-      expect(isFeatureEnabled("esign")).toBe(true);
-      expect(isFeatureEnabled("sendEmail")).toBe(true);
-    });
-
-    it("returns false when feature is missing", () => {
-      expect(isFeatureEnabled("missing")).toBe(false);
     });
   });
 

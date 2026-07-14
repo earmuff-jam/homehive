@@ -1,6 +1,10 @@
 import dayjs from "dayjs";
 
-import { EditInvoiceRouteUri, fetchLoggedInUser } from "common/utils";
+import {
+  EditInvoiceRouteUri,
+  fetchLoggedInUser,
+  isSelectedFeatureEnabled,
+} from "common/utils";
 import { processTemplate } from "features/Rent/components/Settings/common";
 import {
   CreateInvoiceEnumValue,
@@ -8,7 +12,6 @@ import {
   PaymentReminderEnumValue,
   RenewLeaseNoticeEnumValue,
   SendDefaultInvoiceEnumValue,
-  isFeatureEnabled,
   stripHTMLForEmailMessages,
 } from "features/Rent/utils";
 
@@ -149,7 +152,7 @@ export const handleQuickConnectAction = (
 // formatEmail ...
 // defines a function that is used to send email notification
 const formatEmail = ({ to, subject, body, html }, sendEmail) => {
-  const isEmailEnabled = isFeatureEnabled("sendEmail");
+  const isEmailEnabled = isSelectedFeatureEnabled("sendEmail");
 
   // if client has ability to send email, use that else just use whatever is available
   if (isEmailEnabled) {
