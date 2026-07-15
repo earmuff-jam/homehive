@@ -1,0 +1,38 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Portfolio Health Portfolio Health snapshot tests renders correctly and matches snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="MuiStack-root css-67e3wp-MuiStack-root"
+  >
+    <div
+      class="MuiBox-root css-8j6kgu"
+    >
+      <p
+        class="MuiTypography-root MuiTypography-body1 css-13ifp8h-MuiTypography-root"
+      >
+        10
+      </p>
+      <span
+        class="MuiTypography-root MuiTypography-caption css-mpaqru-MuiTypography-root"
+      >
+        Total properties
+      </span>
+    </div>
+    <div
+      class="MuiBox-root css-8j6kgu"
+    >
+      <p
+        class="MuiTypography-root MuiTypography-body1 css-13ifp8h-MuiTypography-root"
+      >
+        3
+      </p>
+      <span
+        class="MuiTypography-root MuiTypography-caption css-mpaqru-MuiTypography-root"
+      >
+        Vacant properties
+      </span>
+    </div>
+  </div>
+</DocumentFragment>
+`;
