@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 
 import dayjs from "dayjs";
 
-import { Paper, Skeleton, Stack } from "@mui/material";
+import { Paper, Skeleton, Stack, Typography } from "@mui/material";
 import CustomSnackbar from "common/CustomSnackbar";
 import EmptyComponent from "common/EmptyComponent";
 import RowHeader from "common/RowHeader";
@@ -13,6 +13,7 @@ import { useLazyGetTenantsByPropertiesArrQuery } from "features/Api/tenantsApi";
 import PieChart from "features/Rent/components/Reporting/ PieChart";
 import FinancialHealth from "features/Rent/components/Reporting/FinancialHealthAccordion";
 import PortfolioHealth from "features/Rent/components/Reporting/PortfolioHealth";
+import SelectProperty from "features/Rent/components/Reporting/SelectProperty";
 import SeriesChart from "features/Rent/components/Reporting/SeriesChart";
 import Statistics from "features/Rent/components/Reporting/Statistics";
 import {
@@ -42,6 +43,10 @@ const Reporting = () => {
     useLazyGetRentsByPropertiesQuery();
 
   const [showSnackbar, setShowSnackbar] = useState(false);
+  const [selectedProperty, setSelectedProperty] = useState("");
+
+  const onSelectedItemChange = (event) =>
+    setSelectedProperty(event.target.value);
 
   const avgProjectedIncrease = properties?.reduce(
     (acc, el) => (acc += Number(el?.rentIncrement)),
@@ -105,17 +110,31 @@ const Reporting = () => {
 
       {/* Property statistics */}
       <Paper variant="outlined" sx={{ padding: 2 }} data-tour="report-stats-3">
-        <RowHeader
-          title="Property statistics"
-          caption="View statistics about your registered properties"
-          sxProps={{
-            fontWeight: "bold",
-            color: "text.secondary",
-            textAlign: "left",
-          }}
-        />
+        <Stack
+          direction="row"
+          textAlign="left"
+          alignContent="center"
+          justifyContent="space-between"
+        >
+          <Stack>
+            <Typography variant="h5" fontWeight="medium">
+              Property statistics
+            </Typography>
+            <Typography variant="subtitle2">
+              View statistics about your registered properties
+            </Typography>
+          </Stack>
+          <SelectProperty
+            inputLabel="Select Property"
+            selectedItem={selectedProperty}
+            onChange={onSelectedItemChange}
+            data={properties}
+          />
+        </Stack>
+
         <Statistics
           properties={properties}
+          selected={selectedProperty}
           existingTenants={getExistingTenantsResult?.data || []}
           existingRents={getExistingRentsResult?.data || []}
         />

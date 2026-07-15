@@ -1,14 +1,9 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo } from "react";
 
 import {
-  Box,
-  FormControl,
-  InputLabel,
   List,
   ListItem,
-  MenuItem,
   Paper,
-  Select,
   Slider,
   Stack,
   Typography,
@@ -27,12 +22,10 @@ import { useSelectedPropertyDetails } from "features/Rent/hooks/useGetSelectedPr
 
 const Statistics = ({
   properties = [],
+  selected,
   existingTenants = [],
   existingRents = [],
 }) => {
-  const [selected, setSelected] = useState("");
-  const handleChange = (event) => setSelected(event.target.value);
-
   const selectedProperty = properties.find(
     (property) => property?.id === selected,
   );
@@ -71,30 +64,6 @@ const Statistics = ({
 
   return (
     <Stack marginTop={2}>
-      <Box>
-        <FormControl sx={{ m: 1, minWidth: 320 }} size="small">
-          <InputLabel id="selected-property-label-id">
-            Select Property
-          </InputLabel>
-          <Select
-            labelId="selected-property-label-id"
-            id="selected-property-id"
-            value={selected}
-            label="Selected Property"
-            onChange={handleChange}
-          >
-            <MenuItem value="">
-              <em>None</em>
-            </MenuItem>
-            {properties?.map((property) => (
-              <MenuItem key={property?.id} value={property.id}>
-                {property?.name}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-      </Box>
-
       {selected ? (
         <>
           <PropertyHealthAccordion
