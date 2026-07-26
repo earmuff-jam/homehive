@@ -46,6 +46,7 @@ export default function MenuOptions({
         aria-expanded={open ? "true" : undefined}
         variant="outlined"
         onClick={handleClick}
+        ariaLabel="Help with this page"
         label={<HelpOutlineRounded />}
       />
       <Menu

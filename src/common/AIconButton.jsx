@@ -8,22 +8,9 @@ import { useButtonAnalytics } from "hooks/useButtonAnalytics";
 
 const analyticsEnabled = isSelectedFeatureEnabled("analytics");
 
-/**
- * AIconButton
- *
- * Muiv5 icon button component setup with analytics tracking. Used to perform
- * analytics of the user location based on the route
- *
- * starterPlanUser are users who are enrolled into the application but have not
- * completed their form of payment to use the application.
- *
- * @param {string} label - the icon that is used as a html element to display
- * @param {function} onClick - the onClick handler to perform action on the icon button
- * @param {object} rest - the props passed in as a ...rest component
- *
- */
+// AIconButton ...
 const AIconButton = forwardRef(function AIconButton(
-  { label, onClick = () => {}, ...rest },
+  { label, ariaLabel = "Generic Icon button", onClick = () => {}, ...rest },
   ref,
 ) {
   const location = useLocation();
@@ -40,6 +27,7 @@ const AIconButton = forwardRef(function AIconButton(
   return (
     <IconButton
       ref={ref}
+      aria-label={ariaLabel}
       onClick={handleClick}
       disabled={starterPlanUser}
       {...rest} // at the end so that we can overwrite default settings

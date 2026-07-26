@@ -157,8 +157,7 @@ export const firebaseUserApi = createApi({
           secureLocalStorage.removeItem("user");
           return { data: { success: true } };
         } catch (error) {
-          /* eslint-disable no-console */
-          console.error("Error signing out:", error);
+          console.debug("Error signing out:", error);
           return {
             error: {
               message: error.message,

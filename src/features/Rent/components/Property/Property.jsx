@@ -173,6 +173,7 @@ const Property = () => {
               size="small"
               color="error"
               variant="outlined"
+              ariaLabel="Close"
               onClick={toggleAssociateTenantsPopup}
               label={<HighlightOff />}
             />

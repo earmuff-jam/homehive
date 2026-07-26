@@ -246,8 +246,7 @@ export const tenantsApi = createApi({
 
           return { data: null };
         } catch (error) {
-          /* eslint-disable no-console */
-          console.error("Unable to process request. Error: ", error);
+          console.debug("Unable to process request. Error: ", error);
           return {
             error: {
               message: error.message,
@@ -283,8 +282,7 @@ export const tenantsApi = createApi({
 
           return { data: null };
         } catch (error) {
-          /* eslint-disable no-console */
-          console.error("Unable to process request. Error: ", error);
+          console.debug("Unable to process request. Error: ", error);
           return {
             error: {
               message: error.message,

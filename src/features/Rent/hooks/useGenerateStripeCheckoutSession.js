@@ -51,8 +51,7 @@ export const useGenerateStripeCheckoutSession = () => {
 
       return data;
     } catch (err) {
-      /* eslint-disable no-console */
-      console.error(err);
+      console.debug(err);
       setError(err.message);
     } finally {
       setLoading(false);

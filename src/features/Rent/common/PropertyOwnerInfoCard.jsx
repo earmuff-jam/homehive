@@ -449,6 +449,7 @@ export default function PropertyOwnerInfoCard({
                   color="error"
                   variant="outlined"
                   onClick={closeDialog}
+                  ariaLabel="Close"
                   label={<HighlightOff />}
                 />
               </Stack>

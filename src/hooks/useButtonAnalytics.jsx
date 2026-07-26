@@ -26,8 +26,7 @@ export const useButtonAnalytics = () => {
         currentTime: dayjs().toISOString(),
       });
     } catch (error) {
-      /* eslint-disable no-console */
-      console.error("Error logging analytics:", error);
+      console.debug("Error logging analytics:", error);
     }
   };
 
