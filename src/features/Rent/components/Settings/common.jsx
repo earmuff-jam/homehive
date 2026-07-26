@@ -115,8 +115,7 @@ export const getStripeFailureReasons = (account) => {
  */
 export const processTemplate = (template, variables, userEmail = "") => {
   if (typeof template !== "string") {
-    /* eslint-disable no-console */
-    console.error("Template must be a string. Received:", template);
+    console.debug("Template must be a string. Received:", template);
     return "";
   }
 

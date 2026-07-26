@@ -102,6 +102,7 @@ export default function Templates() {
             <Tooltip title="Reset Template">
               <AIconButton
                 size="small"
+                ariaLabel="Undo all changes"
                 onClick={() => resetTemplateId(selectedTemplate.id)}
                 label={<ResetTvRounded fontSize="small" />}
               />

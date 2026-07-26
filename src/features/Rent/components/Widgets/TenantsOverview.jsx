@@ -52,6 +52,7 @@ export default function TenantsOverview({
                     <AIconButton
                       size="small"
                       variant="outlined"
+                      ariaLabel="Associate tenants to selected property"
                       label={<PersonAddRounded fontSize="small" />}
                       onClick={() => toggleAssociateTenantsPopup()}
                     />

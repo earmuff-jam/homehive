@@ -40,6 +40,7 @@ export default function FileDetails({ selectedFile, reset }) {
             size="small"
             color="error"
             onClick={reset}
+            ariaLabel="Close"
             label={<CloseOutlined fontSize="small" />}
           />
         </Stack>

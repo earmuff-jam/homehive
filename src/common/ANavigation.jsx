@@ -43,8 +43,7 @@ export const NavigationProvider = ({ children }) => {
             });
           }
         } catch (error) {
-          /* eslint-disable no-console */
-          console.error("Error logging page location:", error);
+          console.debug("Error logging page location:", error);
         }
       };
 

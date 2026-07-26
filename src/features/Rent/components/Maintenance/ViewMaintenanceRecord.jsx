@@ -218,6 +218,7 @@ const ViewMaintenanceRecord = ({
                 color="error"
                 variant="outlined"
                 onClick={closeDialog}
+                ariaLabel="Close"
                 label={<HighlightOffOutlined />}
               />
             </Stack>

@@ -41,8 +41,7 @@ export const rentApi = createApi({
           );
 
           if (!isOwner && !isRentee) {
-            /* eslint-disable no-console */
-            console.error(
+            console.debug(
               "unable to retrieve rental details. invalid params detected",
             );
             return {

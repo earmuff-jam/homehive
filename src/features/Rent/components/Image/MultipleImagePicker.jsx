@@ -139,6 +139,7 @@ const MultipleImagePicker = ({
             <AIconButton
               color="error"
               size="small"
+              ariaLabel="Remove all images"
               onClick={clearAll}
               label={<ClearAllRounded fontSize="small" />}
             />

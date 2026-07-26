@@ -44,7 +44,7 @@ export const handler = async (event) => {
       body: JSON.stringify(data),
     };
   } catch (err) {
-    console.error("unable to process requested api.", err);
+    console.debug("unable to process requested api.", err);
     return {
       statusCode: 500,
       headers: DefaultHeaders,

@@ -303,6 +303,7 @@ export default function QuickActions({ property }) {
                       size="small"
                       color="error"
                       variant="outlined"
+                      ariaLabel="Close"
                       onClick={closeDialog}
                       label={<HighlightOff />}
                     />
@@ -334,6 +335,7 @@ export default function QuickActions({ property }) {
                       size="small"
                       color="error"
                       variant="outlined"
+                      ariaLabel="Close"
                       onClick={closeDialog}
                       label={<HighlightOff />}
                     />
