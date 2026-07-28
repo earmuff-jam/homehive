@@ -1,0 +1,21 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`withDisclaimer tests > withDisclaimer Snapshot tests > withDisclaimer Snapshot tests > matches snapshot when dialog is closed 1`] = `
+<div
+  aria-hidden="true"
+>
+  <div>
+    Main Content
+  </div>
+</div>
+`;
+
+exports[`withDisclaimer tests > withDisclaimer Snapshot tests > withDisclaimer Snapshot tests > matches snapshot when dialog is open 1`] = `
+<div
+  aria-hidden="true"
+>
+  <div>
+    Main Content
+  </div>
+</div>
+`;

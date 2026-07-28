@@ -42,11 +42,7 @@ service cloud.firestore {
           request.resource.data.tenantId == request.auth.uid
         );
 
-      allow read: if request.auth != null &&
-        (
-          resource.data.propertyOwnerId == request.auth.uid ||
-          resource.data.tenantId == request.auth.uid
-        );
+      allow read: if request.auth != null;
 
       allow update: if request.auth != null &&
         resource.data.propertyOwnerId == request.auth.uid &&
@@ -66,11 +62,7 @@ service cloud.firestore {
           request.resource.data.tenantId == request.auth.uid
         );
 
-      allow read: if request.auth != null &&
-        (
-          resource.data.propertyOwnerId == request.auth.uid ||
-          resource.data.tenantId == request.auth.uid
-        );
+      allow read: if request.auth != null;
 
       allow update: if request.auth != null &&
         resource.data.propertyOwnerId == request.auth.uid &&

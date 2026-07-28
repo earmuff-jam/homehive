@@ -40,6 +40,7 @@ export const maintenanceApi = createApi({
 
           return { data: maintenanceRecords };
         } catch (error) {
+          console.debug(error);
           return {
             error: {
               message: error.message,
@@ -61,6 +62,7 @@ export const maintenanceApi = createApi({
             return { error: { message: "maintenance details not found" } };
           return { data: documentSnapshot.data() };
         } catch (error) {
+          console.debug(error);
           return {
             error: {
               message: error.message,
@@ -81,6 +83,7 @@ export const maintenanceApi = createApi({
 
           return { data: maintenanceData };
         } catch (error) {
+          console.debug(error);
           return {
             error: {
               message: error.message,
@@ -104,6 +107,7 @@ export const maintenanceApi = createApi({
 
           return { data: maintenanceData };
         } catch (error) {
+          console.debug(error);
           return {
             error: {
               message: error.message,

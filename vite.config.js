@@ -51,41 +51,81 @@ const manifestForPlugIn = {
 };
 
 // https://vite.dev/config/
-export default defineConfig({
-  plugins: [
-    react(),
-    VitePWA({
-      ...manifestForPlugIn,
-      devOptions: {
-        enabled: true,
-      },
-    }),
+export default defineConfig(({ mode }) => {
+  const isPlaywrightServer =
+    process.env.VITE_ENABLE_DEV_ENV === "true" &&
+    process.env.VITE_PLAYWRIGHT_TEST === "true";
 
-    visualizer({ open: true }),
-  ],
-  server: {
-    allowedHosts: ["heptagonal-lionhearted-britta.ngrok-free.dev"],
-  },
-  build: {
-    rollupOptions: {
-      output: {
-        manualChunks: {
-          react: ["react", "react-dom"],
-          mui: ["@mui/material", "@mui/icons-material"],
-          firebase: ["firebase/app", "firebase/auth", "firebase/firestore"],
-          ol: ["ol"],
-          chartjs: ["chart.js"],
+  return {
+    plugins: [
+      react(),
+      VitePWA({
+        ...manifestForPlugIn,
+        devOptions: { enabled: true },
+      }),
+      visualizer({ open: true }),
+    ],
+    server: {
+      allowedHosts: ["heptagonal-lionhearted-britta.ngrok-free.dev"],
+    },
+    build: {
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            react: ["react", "react-dom"],
+            mui: ["@mui/material", "@mui/icons-material"],
+            firebase: ["firebase/app", "firebase/auth", "firebase/firestore"],
+            ol: ["ol"],
+            chartjs: ["chart.js"],
+          },
         },
       },
     },
-  },
-
-  resolve: {
-    alias: {
-      common: path.resolve(__dirname, "src/common"),
-      hooks: path.resolve(__dirname, "src/hooks"),
-      features: path.resolve(__dirname, "src/features"),
-      src: path.resolve(__dirname, "src"),
+    resolve: {
+      alias: [
+        ...(isPlaywrightServer
+          ? [
+              {
+                find: "features/Auth/AuthenticationGuard",
+                replacement: path.resolve(
+                  __dirname,
+                  "src/features/Auth/AuthenticationGuard.mock.jsx",
+                ),
+              },
+            ]
+          : []),
+        {
+          find: "common",
+          replacement: path.resolve(__dirname, "src/common"),
+        },
+        {
+          find: "hooks",
+          replacement: path.resolve(__dirname, "src/hooks"),
+        },
+        {
+          find: "features",
+          replacement: path.resolve(__dirname, "src/features"),
+        },
+        {
+          find: "src",
+          replacement: path.resolve(__dirname, "src"),
+        },
+      ],
     },
-  },
+    test: {
+      globals: true,
+      environment: "jsdom",
+      environmentOptions: {
+        jsdom: {
+          url: "http://localhost:3000",
+        },
+      },
+      setupFiles: "./vitest.setup.jsx",
+      exclude: [
+        "**/node_modules/**",
+        "**/dist/**",
+        "**/tests/**/*.spec.{js,jsx,ts,tsx}",
+      ],
+    },
+  };
 });

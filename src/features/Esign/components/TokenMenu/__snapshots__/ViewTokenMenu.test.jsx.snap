@@ -1,0 +1,7 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`ViewTokenMenu Tests > ViewTokenMenu Snapshot tests > matches snapshot when menu is open 1`] = `
+<div
+  aria-hidden="true"
+/>
+`;

@@ -1,0 +1,21 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`CustomSnackbar Jest tests > CustomSnackbar Snapshot tests > renders correctly and matches snapshot 1`] = `
+<DocumentFragment>
+  <div
+    data-testid="snackbar"
+  >
+    <div>
+      Success!
+    </div>
+    <button>
+      View details
+    </button>
+    <button
+      aria-label="Close"
+    >
+      Close
+    </button>
+  </div>
+</DocumentFragment>
+`;

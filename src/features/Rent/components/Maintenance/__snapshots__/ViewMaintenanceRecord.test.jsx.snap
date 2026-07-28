@@ -1,0 +1,13 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`ViewMaintenanceRecord > ViewMaintenanceRecord snapshot tests > matches snapshot 1`] = `
+<div
+  class="MuiStack-root css-1sazv7p-MuiStack-root"
+>
+  <div
+    data-testid="material-react-table"
+  >
+    [{"id":"1","maintenanceCategory":"Plumbing","status":"Pending","description":"Leaky faucet","tenantEmail":"tenant@test.com","updatedOn":"2026-01-01T00:00:00.000Z"}]
+  </div>
+</div>
+`;
