@@ -33,7 +33,7 @@ exports[`AddMaintenanceDetails tests AddMaintenanceDetails snapshot tests matche
             class="MuiBox-root css-1ta4aep"
             variant="body2"
           >
-            First Name *
+            Tenant First Name *
           </span>
         </div>
         <div
@@ -44,7 +44,7 @@ exports[`AddMaintenanceDetails tests AddMaintenanceDetails snapshot tests matche
           >
             <input
               aria-invalid="false"
-              aria-label="First Name *"
+              aria-label="Tenant First Name *"
               class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputSizeSmall css-1pzfmz2-MuiInputBase-input-MuiOutlinedInput-input"
               id="tenantFirstName"
               name="tenantFirstName"

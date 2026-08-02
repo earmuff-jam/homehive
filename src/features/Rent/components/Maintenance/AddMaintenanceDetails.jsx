@@ -166,7 +166,7 @@ const AddMaintenanceDetails = ({ property, setShowSnackbar, closeDialog }) => {
         </Divider>
         <Stack direction={{ xs: "column", md: "row" }} spacing={1}>
           <TextFieldWithLabel
-            label="First Name *"
+            label="Tenant First Name *"
             id="tenantFirstName"
             placeholder="First Name"
             errorMsg={errors.tenantFirstName?.message}

@@ -1,0 +1,15 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`FileDetails Component > FileDetails Snapshot tests > matches FileDetails snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="MuiStack-root css-1colmvy-MuiStack-root"
+  >
+    <h6
+      class="MuiTypography-root MuiTypography-subtitle2 css-17mo335-MuiTypography-root"
+    >
+      Select a pdf file to validate and upload
+    </h6>
+  </div>
+</DocumentFragment>
+`;

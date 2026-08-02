@@ -37,8 +37,8 @@ jobs:
       - name: Run Playwright tests
         run: npx playwright test
         env:
-        
           VITE_ENABLE_DEV_ENV: true
+          VITE_PLAYWRIGHT_TEST: true
           VITE_ENABLE_ANALYTICS: false
           VITE_ENABLE_INVOICER: true
           VITE_ENABLE_ESIGN: true

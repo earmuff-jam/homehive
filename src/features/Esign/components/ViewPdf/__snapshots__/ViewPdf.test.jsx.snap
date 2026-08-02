@@ -1,0 +1,9 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`ViewPdf Tests > ViewPdf Snapshot Tests > matches snapshot 1`] = `
+<div>
+  <div
+    class="MuiStack-root css-u57sqq-MuiStack-root"
+  />
+</div>
+`;

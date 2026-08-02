@@ -1,0 +1,153 @@
+import { buildChildrenRoutes, retrieveTourKey } from "./utils";
+import { isValidFeatureFlagsForRoutes } from "common/ApplicationConfig";
+import { Role } from "features/Auth/AuthHelper";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+
+vi.mock("common/ApplicationConfig", () => ({
+  isValidFeatureFlagsForRoutes: vi.fn(),
+  authorizedServerLevelFeatureFlags: () =>
+    new Map([
+      ["analytics", true],
+      ["invoicer", true],
+      ["esign", false],
+      ["sendEmail", true],
+    ]),
+}));
+
+describe("retrieveTourKey tests", () => {
+  describe("validate retrieveTourKey function behavior", () => {
+    it("returns dynamic mapping when currentUri matches /rent/property/:id pattern", () => {
+      const currentUri = "/rent/property/dc7cca7d-dd4e-448c-ac4b-d2e853b749d8";
+      const result = retrieveTourKey(currentUri, "property");
+      expect(result).toBe("/rent/property/:id");
+    });
+
+    it("returns original uri when path starts with expectedStrValue but no id", () => {
+      const currentUri = "/property"; // no /id part
+      const result = retrieveTourKey(currentUri, "property");
+      expect(result).toBe("/property");
+    });
+
+    it("returns original uri when path does not include expectedStrValue", () => {
+      const currentUri = "/tenant/123";
+      const result = retrieveTourKey(currentUri, "property");
+      expect(result).toBe("/tenant/123");
+    });
+
+    it("returns dynamic mapping only if expectedStrValue is in correct segment", () => {
+      const currentUri = "/invoice/view";
+      const result = retrieveTourKey(currentUri, "property");
+      expect(result).toBe("/invoice/view");
+
+      const updatedCurrentUri =
+        "/rent/property/dc7cca7d-dd4e-448c-ac4b-d2e853b749d8";
+      const updatedResult = retrieveTourKey(updatedCurrentUri, "property");
+      expect(updatedResult).toBe("/rent/property/:id");
+    });
+
+    it("handles unexpected empty currentUri gracefully", () => {
+      const result = retrieveTourKey("", "property");
+      expect(result).toBe("");
+    });
+
+    it("handles non-matching expectedStrValue", () => {
+      const currentUri = "/property/dc7cca7d-dd4e-448c-ac4b-d2e853b749d8";
+      const result = retrieveTourKey(currentUri, "tenant");
+      expect(result).toBe(currentUri);
+    });
+  });
+  describe("validate function behavior", () => {
+    describe("buildChildrenRoutes", () => {
+      const baseUser = {
+        uid: "123",
+        role: "ADMIN",
+      };
+
+      beforeEach(() => {
+        vi.clearAllMocks();
+      });
+
+      it("returns routes when everything is valid", () => {
+        isValidFeatureFlagsForRoutes.mockReturnValue(true);
+
+        const routes = [
+          {
+            requiredFlags: ["analytics"],
+            config: {
+              invalidRoles: [Role.Owner],
+              isLoggedInFeature: true,
+            },
+          },
+        ];
+
+        const result = buildChildrenRoutes(routes, baseUser);
+
+        expect(result).toHaveLength(1);
+      });
+
+      it("filters out route when feature flags invalid", () => {
+        isValidFeatureFlagsForRoutes.mockReturnValue(false);
+
+        const routes = [
+          {
+            requiredFlags: ["esign"],
+            config: {},
+          },
+        ];
+
+        const result = buildChildrenRoutes(routes, baseUser);
+
+        expect(result).toHaveLength(0);
+      });
+
+      it("filters out route when role not allowed", () => {
+        isValidFeatureFlagsForRoutes.mockReturnValue(true);
+
+        const routes = [
+          {
+            requiredFlags: [],
+            config: {
+              invalidRoles: [Role.Admin],
+            },
+          },
+        ];
+
+        const result = buildChildrenRoutes(routes, baseUser);
+
+        expect(result).toHaveLength(0);
+      });
+
+      it("filters out route when login required but user not logged in", () => {
+        isValidFeatureFlagsForRoutes.mockReturnValue(true);
+
+        const routes = [
+          {
+            requiredFlags: [],
+            config: {
+              isLoggedInFeature: true,
+            },
+          },
+        ];
+
+        const result = buildChildrenRoutes(routes, null);
+
+        expect(result).toHaveLength(0);
+      });
+
+      it("allows route when no restrictions", () => {
+        isValidFeatureFlagsForRoutes.mockReturnValue(true);
+
+        const routes = [
+          {
+            requiredFlags: [],
+            config: {},
+          },
+        ];
+
+        const result = buildChildrenRoutes(routes, null);
+
+        expect(result).toHaveLength(1);
+      });
+    });
+  });
+});

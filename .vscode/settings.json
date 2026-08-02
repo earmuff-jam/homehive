@@ -1,5 +1,4 @@
 {
-  "jest.runMode": "on-demand",
   "editor.minimap.enabled": false,
   "editor.renderWhitespace": "none",
   "explorer.confirmDelete": false,

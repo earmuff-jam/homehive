@@ -8,6 +8,7 @@ import SubscriptionGuard from "features/Subscription/SubscriptionGuard";
 // authorizedServerLevelFeatureFlags ...
 // defines a function that returns a map of all valid feature flags in the app
 export function authorizedServerLevelFeatureFlags() {
+  const devEnvFeatureFlag = import.meta.env.VITE_ENABLE_DEV_ENV;
   const analyticsFeatureFlag = import.meta.env.VITE_ENABLE_ANALYTICS;
   const invoicerFeatureFlag = import.meta.env.VITE_ENABLE_INVOICER;
   const esignFeatureFlag = import.meta.env.VITE_ENABLE_ESIGN;
@@ -15,6 +16,7 @@ export function authorizedServerLevelFeatureFlags() {
   const cloudServiceFeatureFlag = import.meta.env.VITE_ENABLE_CLOUD_SERVICE;
 
   return new Map([
+    ["devEnv", devEnvFeatureFlag === "true"],
     ["analytics", analyticsFeatureFlag === "true"],
     ["invoicer", invoicerFeatureFlag === "true"],
     ["esign", esignFeatureFlag === "true"],
