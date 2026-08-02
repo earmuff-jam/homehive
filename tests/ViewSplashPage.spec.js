@@ -8,20 +8,20 @@ test.describe("Splash Page", () => {
   test("page loads with hero content", async ({ page }) => {
     await expect(
       page.getByRole("heading", {
-        name: /manage your rentals effortlessly all in one place/i,
+        name: /manage your rentals effortlessly/i,
       }),
     ).toBeVisible();
 
-    await expect(page.getByText(/property management platform/i)).toBeVisible();
-
     await expect(
-      page.getByText(/login with google and subscribe to get started/i),
+      page.getByText(
+        /streamline tenants, invoices, and e-signatures in one unified workspace. built for landlords who value their time./i,
+      ),
     ).toBeVisible();
   });
 
   test("hero buttons are visible", async ({ page }) => {
     await expect(
-      page.getByRole("button", { name: /see how it works/i }),
+      page.getByRole("button", { name: /get started/i }),
     ).toBeVisible();
 
     await expect(

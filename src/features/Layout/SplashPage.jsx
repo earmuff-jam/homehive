@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 import {
   ArchitectureRounded,
+  ArrowForward,
   HomeRounded,
   ReceiptRounded,
 } from "@mui/icons-material";
@@ -13,6 +14,7 @@ import {
   Button,
   Container,
   Divider,
+  Grid,
   Stack,
   Typography,
 } from "@mui/material";
@@ -94,107 +96,204 @@ export default function SplashPage() {
         py: 6,
       }}
     >
-      <Container maxWidth="md">
+      <Container maxWidth="xl">
         <Box
           sx={{
-            backgroundColor: "background.default",
-            padding: "0px 24px 72px",
             position: "relative",
+            pb: { xs: 6, md: 10 },
             overflow: "hidden",
           }}
         >
-          {/* adds a glowing feel */}
-          <Box
-            sx={{
-              position: "absolute",
-              top: -80,
-              left: "50%",
-              transform: "translateX(-50%)",
-              width: 600,
-              height: 400,
-              borderRadius: "50%",
-              background:
-                "radial-gradient(ellipse, rgba(14,124,107,.09) 0%, transparent 70%)",
-              pointerEvents: "none",
-            }}
-          />
-
-          <Box sx={{ textAlign: "center", mb: 8, position: "relative" }}>
-            <Box
-              sx={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: 0.75,
-                fontSize: "0.75rem",
-                fontWeight: 600,
-                letterSpacing: "0.05em",
-                textTransform: "uppercase",
-                color: "primary.main",
-                border: "1px solid",
-                borderColor: "primary.main",
-                px: 1.75,
-                py: 0.75,
-                borderRadius: "100px",
-                mb: 2.5,
-              }}
-            >
-              Property Management Platform
-            </Box>
-
-            <Typography
-              variant="h1"
-              sx={{
-                fontFamily: "'Instrument Serif', serif",
-                fontWeight: 700,
-                letterSpacing: "-0.015em",
-                mb: 2,
-                maxWidth: 660,
-                mx: "auto",
-                fontSize: "4rem",
-              }}
-            >
-              Manage your rentals&nbsp;
-              <Box
-                // component="em"
-                sx={{ color: "primary.main", fontStyle: "italic" }}
-              >
-                effortlessly
-              </Box>
-              all in one place
-            </Typography>
-
-            <Stack direction="column" gap={2} marginTop="1rem">
+          <Grid container spacing={6} alignItems="center">
+            <Grid size={{ xs: 12, md: 6 }}>
               <Typography
-                textAlign="center"
+                variant="h1"
+                sx={{
+                  fontFamily: "'Instrument Serif', serif",
+                  fontWeight: 700,
+                  letterSpacing: "-0.02em",
+                  lineHeight: 1.1,
+                  textAlign: "center",
+                  fontSize: { xs: "2.75rem", sm: "3.5rem", md: "4rem" },
+                  mb: 3,
+                }}
+              >
+                Manage your rentals{" "}
+                <Box
+                  component="span"
+                  sx={{
+                    color: "primary.main",
+                    fontStyle: "italic",
+                    position: "relative",
+                    textAlign: "center",
+                    "&::after": {
+                      content: '""',
+                      position: "absolute",
+                      bottom: 4,
+                      left: 0,
+                      width: "100%",
+                      height: "8px",
+                      bgcolor: "rgba(14,124,107,0.15)",
+                      borderRadius: "4px",
+                      zIndex: -1,
+                    },
+                  }}
+                >
+                  effortlessly
+                </Box>
+              </Typography>
+
+              <Typography
                 variant="body1"
                 sx={{
                   color: "#999",
                   fontWeight: 400,
+                  fontSize: "1.125rem",
+                  lineHeight: 1.6,
+                  mb: 4,
                 }}
               >
-                Login with Google and subscribe to get started.
+                Streamline tenants, invoices, and e-signatures in one unified
+                workspace. Built for landlords who value their time.
               </Typography>
-              <Stack direction="row" spacing={1} justifyContent="center">
+
+              <Stack
+                direction="row"
+                spacing={2}
+                alignItems="center"
+                justifyContent="center"
+              >
                 <Button
                   variant="contained"
-                  sx={{
-                    padding: "0.8rem",
-                    borderRadius: "0.4rem",
-                    transition: "all .18s",
-                  }}
+                  size="large"
+                  endIcon={<ArrowForward />}
                   onClick={() => handleAuthenticate({ isEsign: false })}
+                  sx={{
+                    px: 3,
+                    py: 1.2,
+                    borderRadius: "12px",
+                    fontWeight: 600,
+                    fontSize: "0.95rem",
+                    textTransform: "none",
+                    boxShadow: "0 4px 14px rgba(14,124,107,0.25)",
+                    transition: "all 0.2s ease",
+                    "&:hover": {
+                      transform: "translateY(-1px)",
+                      boxShadow: "0 6px 20px rgba(14,124,107,0.35)",
+                    },
+                  }}
                 >
-                  See how it works
+                  Get Started
                 </Button>
                 <Button
                   variant="outlined"
+                  size="large"
                   onClick={() => navigate(EditInvoiceRouteUri)}
+                  sx={{
+                    px: 3,
+                    py: 1.2,
+                    borderRadius: "12px",
+                    fontWeight: 600,
+                    fontSize: "0.95rem",
+                    textTransform: "none",
+                    borderWidth: 1.5,
+                    transition: "all 0.2s ease",
+                    "&:hover": {
+                      transform: "translateY(-1px)",
+                      borderWidth: 1.5,
+                    },
+                  }}
                 >
                   Build Invoice
                 </Button>
               </Stack>
-            </Stack>
-          </Box>
+            </Grid>
+
+            <Grid size={{ xs: 12, md: 6 }}>
+              <Box
+                sx={{
+                  position: "relative",
+                  width: "100%",
+                  height: { xs: 320, sm: 420, md: 480 },
+                  borderRadius: "24px",
+                  overflow: "hidden",
+                  boxShadow: "0 25px 60px -12px rgba(0,0,0,0.15)",
+                }}
+              >
+                <Box
+                  component="img"
+                  src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&auto=format&fit=crop&q=80"
+                  alt="Modern rental property"
+                  sx={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                    transition: "transform 0.6s ease",
+                    "&:hover": { transform: "scale(1.03)" },
+                  }}
+                />
+                {/* Subtle gradient overlay at bottom */}
+                <Box
+                  sx={{
+                    position: "absolute",
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    height: "40%",
+                    background:
+                      "linear-gradient(to top, rgba(0,0,0,0.4), transparent)",
+                    pointerEvents: "none",
+                  }}
+                />
+                {/* Floating mini-card */}
+                <Box
+                  sx={{
+                    position: "absolute",
+                    bottom: 20,
+                    left: 20,
+                    right: 20,
+                    bgcolor: "rgba(255,255,255,0.95)",
+                    backdropFilter: "blur(10px)",
+                    borderRadius: "16px",
+                    p: 2,
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 2,
+                    boxShadow: "0 8px 32px rgba(0,0,0,0.1)",
+                  }}
+                >
+                  <Box
+                    sx={{
+                      width: 44,
+                      height: 44,
+                      borderRadius: "12px",
+                      bgcolor: "primary.main",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      color: "white",
+                    }}
+                  >
+                    <HomeRounded sx={{ fontSize: 24 }} />
+                  </Box>
+                  <Box>
+                    <Typography
+                      variant="body2"
+                      sx={{ fontWeight: 700, color: "text.primary" }}
+                    >
+                      Homehive Solutions
+                    </Typography>
+                    <Typography
+                      variant="caption"
+                      sx={{ color: "text.secondary" }}
+                    >
+                      Everything about your property — in one view
+                    </Typography>
+                  </Box>
+                </Box>
+              </Box>
+            </Grid>
+          </Grid>
         </Box>
 
         <Divider />
