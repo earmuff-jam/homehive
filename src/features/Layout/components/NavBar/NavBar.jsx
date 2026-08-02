@@ -94,6 +94,7 @@ export default function NavBar({
               sx={{
                 fontFamily: "'Instrument Serif', serif",
                 fontSize: "1.8rem",
+                fontWeight: 700,
                 letterSpacing: "-0.02em",
               }}
             >
