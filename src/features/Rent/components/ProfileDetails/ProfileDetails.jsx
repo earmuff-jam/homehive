@@ -29,7 +29,7 @@ import {
 } from "features/Api/firebaseUserApi";
 import { useGetLatestSubscriptionByEmailQuery } from "features/Api/subscriptionApi";
 import { ProfileSubscriptionTooltip } from "features/Rent/components/ProfileDetails/ProfileSubscriptionTooltip";
-import { StripePaymentStatusCompleted } from "features/Subscription/SubscriptionGuard";
+import { StripePaymentStatusCompleted } from "features/Subscription/constants";
 
 export default function ProfileDetails() {
   const user = fetchLoggedInUser();

@@ -6,6 +6,7 @@ import { expect, test } from "@playwright/test";
 const selectEsignApp = async (page) => {
   await page.goto("/");
 
+  await page.waitForLoadState("networkidle");
   await expect(page.getByText("EsignX")).toBeVisible();
   await page.getByText("EsignX").click();
 };

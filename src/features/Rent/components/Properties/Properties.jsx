@@ -64,7 +64,7 @@ const Properties = () => {
   const user = fetchLoggedInUser();
 
   const { data: properties = [], isLoading } = useGetPropertiesByUserIdQuery(
-    user.uid,
+    user?.uid,
     {
       skip: !user?.uid,
     },

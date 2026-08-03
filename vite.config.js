@@ -92,6 +92,13 @@ export default defineConfig(({ mode }) => {
                   "src/features/Auth/AuthenticationGuard.mock.jsx",
                 ),
               },
+              {
+                find: "features/Subscription/SubscriptionGuard",
+                replacement: path.resolve(
+                  __dirname,
+                  "src/features/Subscription/SubscriptionGuard.mock.jsx",
+                ),
+              },
             ]
           : []),
         {
