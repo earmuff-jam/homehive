@@ -1,12 +1,26 @@
 import React from "react";
 
-import { Box, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import {
+  Box,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  Typography,
+} from "@mui/material";
 
-const SelectProperty = ({ inputLabel, selectedItem, onChange, data }) => {
+const PropertyMenuItemSelector = ({
+  inputLabel,
+  selectedItem,
+  onChange,
+  data,
+}) => {
   return (
     <Box>
       <FormControl sx={{ m: 1, minWidth: 320 }} size="small" variant="standard">
-        <InputLabel id="selected-property-label-id">{inputLabel}</InputLabel>
+        <InputLabel id="selected-property-label-id">
+          <Typography variant="subtitle2">{inputLabel}</Typography>
+        </InputLabel>
         <Select
           labelId="selected-property-label-id"
           id="selected-property-id"
@@ -15,7 +29,7 @@ const SelectProperty = ({ inputLabel, selectedItem, onChange, data }) => {
         >
           {data?.map((el) => (
             <MenuItem key={el?.id} value={el.id}>
-              {el?.name}
+              <Typography variant="subtitle2">{el?.name}</Typography>
             </MenuItem>
           ))}
         </Select>
@@ -24,4 +38,4 @@ const SelectProperty = ({ inputLabel, selectedItem, onChange, data }) => {
   );
 };
 
-export default SelectProperty;
+export default PropertyMenuItemSelector;

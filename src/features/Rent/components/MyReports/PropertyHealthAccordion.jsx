@@ -11,7 +11,7 @@ import {
   Typography,
 } from "@mui/material";
 import relativeTime from "dayjs/plugin/relativeTime";
-import StatsAccordionDetailsBlock from "features/Rent/components/Reporting/StatsAccordionDetailsBlock";
+import StatsAccordionDetailsBlock from "features/Rent/components/MyReports/StatsAccordionDetailsBlock";
 import { useCalculatePropertyStatistics } from "features/Rent/hooks/useCalculatePropertyStatistics";
 import { getOccupancyRate } from "features/Rent/utils";
 
