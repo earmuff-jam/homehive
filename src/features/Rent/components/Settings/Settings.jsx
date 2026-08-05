@@ -30,7 +30,7 @@ import ProfileDetails from "features/Rent/components/ProfileDetails/ProfileDetai
 import { TabPanel } from "features/Rent/components/Settings/common";
 import Templates from "features/Rent/components/Templates/Templates";
 import ManageSubscription from "features/Subscription/ManageSubscription";
-import { validateSubscription } from "features/Subscription/SubscriptionGuard";
+import { useValidateSubscription } from "features/Subscription/useValidateSubscription";
 import { useAppTitle } from "hooks/useAppTitle";
 
 dayjs.extend(relativeTime);
@@ -59,6 +59,12 @@ export default function Settings() {
   const currentTab = Number(searchParams.get("tabIdx")) || 0;
 
   const [activeTab, setActiveTab] = useState(currentTab);
+
+  const isSubscriptionValid = useValidateSubscription(
+    latestSubscription,
+    userData?.role,
+    userData?.createdOn,
+  );
 
   const handleTabChange = (_, newValue) => {
     setActiveTab(newValue);
@@ -104,11 +110,7 @@ export default function Settings() {
 
   return (
     <>
-      {!validateSubscription(
-        latestSubscription,
-        userData?.role,
-        userData?.createdOn,
-      ) && <ManageSubscription />}
+      {!isSubscriptionValid && <ManageSubscription />}
       <Stack spacing={1} data-tour={"settings-0"}>
         <RowHeader
           title="Account Settings"

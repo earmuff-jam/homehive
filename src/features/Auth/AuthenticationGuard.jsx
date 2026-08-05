@@ -22,9 +22,11 @@ export default function AuthenticationGuard({ children }) {
     const userID = userDetails?.uid;
     // validate user id and role is not tampered
     if (userID != user?.uid || user?.role != userDetails?.role) {
+      console.debug("Incorrect login detected");
       throw new Error("Incorrect login permission detected.");
     }
   } catch {
+    console.debug("Unable to authenticate user");
     secureLocalStorage.removeItem("user");
     return <Navigate to={HomeRouteUri} replace />;
   }
