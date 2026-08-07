@@ -1,26 +1,19 @@
 import React, { useMemo } from "react";
 
-import {
-  List,
-  ListItem,
-  Paper,
-  Slider,
-  Stack,
-  Typography,
-} from "@mui/material";
+import { Stack } from "@mui/material";
 import EmptyComponent from "common/EmptyComponent";
 import { useGetMaintenanceRecordsQuery } from "features/Api/maintenanceApi";
-import LeaseHealthAccordion from "features/Rent/components/Reporting/LeaseHealthAccordion";
-import MaintenanceHealthAccordion from "features/Rent/components/Reporting/MaintenanceHealthAccordion";
-import PropertyHealthAccordion from "features/Rent/components/Reporting/PropertyHealthAccordion";
-import RentCollectionAccordion from "features/Rent/components/Reporting/RentCollectionAccordion";
+import LeaseHealthAccordion from "features/Rent/components/MyReports/LeaseHealthAccordion";
+import MaintenanceHealthAccordion from "features/Rent/components/MyReports/MaintenanceHealthAccordion";
+import PropertyHealthAccordion from "features/Rent/components/MyReports/PropertyHealthAccordion";
+import RentCollectionAccordion from "features/Rent/components/MyReports/RentCollectionAccordion";
 import {
   DefaultAccordionOptions,
   DefaultMaintenanceCategoryTypes,
 } from "features/Rent/constants";
 import { useSelectedPropertyDetails } from "features/Rent/hooks/useGetSelectedPropertyDetails";
 
-const Statistics = ({
+const PropertyStatistics = ({
   properties = [],
   selected,
   existingTenants = [],
@@ -93,40 +86,10 @@ const Statistics = ({
             label={DefaultAccordionOptions[3].label}
             maintenanceRecords={maintenanceRecords}
             totalRentalIncomeForYr={totalRent * 12}
+            formattedMaintenanceCategoryOptions={
+              formattedMaintenanceCategoryOptions
+            }
           />
-          <Stack spacing={1} flexGrow={1} data-tour="report-stats-8">
-            <Typography textTransform="uppercase">
-              Top Maintenance Issues
-            </Typography>
-            <Paper sx={{ padding: 1, bgcolor: "background.default" }}>
-              <List>
-                {formattedMaintenanceCategoryOptions?.map((option) => (
-                  <ListItem key={option?.id} sx={{ padding: 1, gap: 1 }}>
-                    <Typography minWidth="8rem">{option?.label}</Typography>
-                    <Slider
-                      color="info"
-                      value={option?.value ?? 0}
-                      step={2}
-                      min={option?.value === 0 ? 0 : option?.value - 2} // min is 0 or lowest number
-                      max={option?.value + 10}
-                      sx={{
-                        pointerEvents: "none",
-                        "& .MuiSlider-thumb": {
-                          display: "none",
-                        },
-                        "& .MuiSlider-rail": {
-                          opacity: 0,
-                        },
-                      }}
-                    />
-                    <Typography minWidth="5rem" textAlign="right">
-                      {option?.value}
-                    </Typography>
-                  </ListItem>
-                ))}
-              </List>
-            </Paper>
-          </Stack>
         </>
       ) : (
         <EmptyComponent caption="Select a property to view statistics" />
@@ -135,4 +98,4 @@ const Statistics = ({
   );
 };
 
-export default Statistics;
+export default PropertyStatistics;

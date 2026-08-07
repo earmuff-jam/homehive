@@ -1,6 +1,6 @@
 import React from "react";
 
-import Statistics from "./Statistics";
+import PropertyStatistics from "./PropertyStatistics";
 import { render, screen } from "@testing-library/react";
 import { useGetMaintenanceRecordsQuery } from "features/Api/maintenanceApi";
 import { useSelectedPropertyDetails } from "features/Rent/hooks/useGetSelectedPropertyDetails";
@@ -84,7 +84,7 @@ vi.mock(
   },
 );
 
-describe("Statistics", () => {
+describe("PropertyStatistics", () => {
   const property = {
     id: "property-1",
     name: "Property One",
@@ -103,10 +103,10 @@ describe("Statistics", () => {
     });
   });
 
-  describe("Statistics Snapshot tests", () => {
+  describe("PropertyStatistics Snapshot tests", () => {
     it("renders correctly and matches snapshot", () => {
       const { asFragment } = render(
-        <Statistics
+        <PropertyStatistics
           properties={[property]}
           selected="property-1"
           existingTenants={[]}
@@ -118,9 +118,9 @@ describe("Statistics", () => {
     });
   });
 
-  describe("Statistics component tests", () => {
+  describe("PropertyStatistics component tests", () => {
     it("renders empty component when there are no properties", () => {
-      render(<Statistics properties={[]} />);
+      render(<PropertyStatistics properties={[]} />);
 
       expect(
         screen.getByText("Add properties to view statistics"),
@@ -129,7 +129,7 @@ describe("Statistics", () => {
 
     it("renders empty component when no property is selected", () => {
       render(
-        <Statistics
+        <PropertyStatistics
           properties={[property]}
           selected=""
           existingTenants={[]}
@@ -144,7 +144,7 @@ describe("Statistics", () => {
 
     it("renders all accordions when a property is selected", () => {
       render(
-        <Statistics
+        <PropertyStatistics
           properties={[property]}
           selected="property-1"
           existingTenants={[]}
@@ -183,7 +183,7 @@ describe("Statistics", () => {
       });
 
       render(
-        <Statistics
+        <PropertyStatistics
           properties={[property]}
           selected="property-1"
           existingTenants={[]}
@@ -199,7 +199,9 @@ describe("Statistics", () => {
     });
 
     it("passes the selected property to the maintenance query", () => {
-      render(<Statistics properties={[property]} selected="property-1" />);
+      render(
+        <PropertyStatistics properties={[property]} selected="property-1" />,
+      );
 
       expect(useGetMaintenanceRecordsQuery).toHaveBeenCalledWith(
         { propertyId: "property-1" },
@@ -208,7 +210,7 @@ describe("Statistics", () => {
     });
 
     it("skips the maintenance query when nothing is selected", () => {
-      render(<Statistics properties={[property]} selected="" />);
+      render(<PropertyStatistics properties={[property]} selected="" />);
 
       expect(useGetMaintenanceRecordsQuery).toHaveBeenCalledWith(
         { propertyId: "" },

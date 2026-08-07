@@ -26,18 +26,21 @@ import { Role } from "features/Auth/AuthHelper";
 const MyRental = React.lazy(
   () => import("features/Rent/components/MyRental/MyRental"),
 );
+
 const Properties = React.lazy(
   () => import("features/Rent/components/Properties/Properties"),
 );
+
 const Property = React.lazy(
   () => import("features/Rent/components/Property/Property"),
 );
+
 const Settings = React.lazy(
   () => import("features/Rent/components/Settings/Settings"),
 );
 
-const Reporting = React.lazy(
-  () => import("features/Rent/components/Reporting/Reporting"),
+const MyReports = React.lazy(
+  () => import("features/Rent/components/MyReports/MyReports"),
 );
 
 const Faq = React.lazy(() => import("features/Rent/components/Faq/Faq"));
@@ -86,14 +89,14 @@ export const RentalAppRoutes = [
   },
   {
     id: 3,
-    label: "Reporting and Statistics",
+    label: "My Reports",
     path: PropertiesReportingPath,
     routeUri: PropertiesReportingRouteUri,
-    element: <Reporting />,
+    element: <MyReports />,
     icon: <FlagCircleRounded fontSize="small" />,
     config: {
       breadcrumb: {
-        value: "Reporting and Statistics",
+        value: "My Reports",
         icon: <FlagCircleRounded fontSize="small" />,
       },
       invalidRoles: [Role.Tenant],

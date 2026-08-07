@@ -1,10 +1,10 @@
 import React from "react";
 
-import SelectProperty from "./SelectProperty";
+import PropertyMenuItemSelector from "./PropertyMenuItemSelector";
 import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 
-describe("SelectProperty", () => {
+describe("PropertyMenuItemSelector", () => {
   describe("SelectedProperty Snapshot tests", () => {
     const mockData = [
       {
@@ -19,7 +19,7 @@ describe("SelectProperty", () => {
 
     it("renders correctly and matches snapshot", () => {
       const { asFragment } = render(
-        <SelectProperty
+        <PropertyMenuItemSelector
           inputLabel="Select Property"
           selectedItem=""
           onChange={vi.fn()}
@@ -44,7 +44,7 @@ describe("SelectProperty", () => {
 
     it("renders the input label", () => {
       render(
-        <SelectProperty
+        <PropertyMenuItemSelector
           inputLabel="Select Property"
           selectedItem=""
           onChange={vi.fn()}
@@ -57,7 +57,7 @@ describe("SelectProperty", () => {
 
     it("renders all menu items", () => {
       render(
-        <SelectProperty
+        <PropertyMenuItemSelector
           inputLabel="Select Property"
           selectedItem=""
           onChange={vi.fn()}
@@ -76,7 +76,7 @@ describe("SelectProperty", () => {
       const handleChange = vi.fn();
 
       render(
-        <SelectProperty
+        <PropertyMenuItemSelector
           inputLabel="Select Property"
           selectedItem=""
           onChange={handleChange}
@@ -93,7 +93,7 @@ describe("SelectProperty", () => {
 
     it("shows the selected value", () => {
       render(
-        <SelectProperty
+        <PropertyMenuItemSelector
           inputLabel="Select Property"
           selectedItem="property-1"
           onChange={vi.fn()}
@@ -106,7 +106,7 @@ describe("SelectProperty", () => {
 
     it("renders without data", () => {
       render(
-        <SelectProperty
+        <PropertyMenuItemSelector
           inputLabel="Select Property"
           selectedItem=""
           onChange={vi.fn()}

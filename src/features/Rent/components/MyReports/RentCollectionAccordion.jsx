@@ -2,35 +2,39 @@ import React from "react";
 
 import dayjs from "dayjs";
 
-import { ExpandMoreRounded } from "@mui/icons-material";
+import { ExpandMoreRounded, InfoOutlineRounded } from "@mui/icons-material";
 import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
   Stack,
+  Tooltip,
   Typography,
 } from "@mui/material";
 import relativeTime from "dayjs/plugin/relativeTime";
-import StatsAccordionDetailsBlock from "features/Rent/components/Reporting/StatsAccordionDetailsBlock";
+import StatsAccordionDetailsBlock from "features/Rent/components/MyReports/StatsAccordionDetailsBlock";
 import { useCalculatePropertyStatistics } from "features/Rent/hooks/useCalculatePropertyStatistics";
 
 dayjs.extend(relativeTime);
 
-const LeaseHealthAccordion = ({
+const RentCollectionAccordion = ({
   label,
   selected,
-  dataTour,
   properties,
-  existingTenants = [],
+  dataTour,
+  existingRents,
+  existingTenants,
 }) => {
-  const { primaryTenant, leaseExiprationDate } = useCalculatePropertyStatistics(
+  const {
+    primaryTenant,
+    averageLateRentPayment,
+    averageOnTimeRentPayment,
+    outstandingBalance,
+  } = useCalculatePropertyStatistics(
     properties,
     selected,
     existingTenants,
-  );
-
-  const selectedTenant = existingTenants?.filter(
-    (et) => et.propertyId === selected,
+    existingRents,
   );
 
   return (
@@ -38,7 +42,6 @@ const LeaseHealthAccordion = ({
       data-tour={dataTour}
       elevation={0}
       key={label}
-      defaultExpanded
       sx={{
         cursor: "default",
       }}
@@ -77,28 +80,40 @@ const LeaseHealthAccordion = ({
           width="100%"
         >
           <StatsAccordionDetailsBlock
-            label="Lease expires in"
+            label="On time rent"
             // diff in days since lastMoveOut happened; does not fall below 0
-            value={`${Math.max(dayjs(leaseExiprationDate).diff(dayjs(), "day"), 0) || 0} days`}
-            caption={`Occupied since ${dayjs(primaryTenant?.startDate).format("MM-DD-YYYY")}`}
+            value={`${~~(averageOnTimeRentPayment * 100)}%`}
+            caption="Last 12 months"
           />
           <StatsAccordionDetailsBlock
-            label="Tenant tenure"
-            value={`${dayjs().diff(dayjs(primaryTenant?.startDate), "day")} days`}
-            caption={`Since ${dayjs(primaryTenant?.startDate).format("MM-DD-YYYY")}`}
+            label="Avg. days late"
+            value={`${~~averageLateRentPayment} days`}
+            caption="Last 12 months"
           />
           <StatsAccordionDetailsBlock
-            label="Renewal Rate"
-            // rounding support with tilda
-            // Jira - #320 Parent ticket to complete this ask
-            value={`${~~((existingTenants?.length / existingTenants?.length) * 100)}%`}
-            caption={`${selectedTenant?.length} out of ${existingTenants?.length} tenants renewed`}
+            label="Outstanding balance"
+            value={`$${outstandingBalance}`}
+            caption={
+              <Stack
+                direction="row"
+                spacing={1}
+                alignItems="center"
+                justifyContent="center"
+              >
+                <Typography variant="caption">Approx</Typography>
+                <Tooltip title="Outstanding balance does not take late fees or surcharges into account">
+                  <InfoOutlineRounded
+                    color="info"
+                    sx={{ height: "1rem", width: "1rem" }}
+                  />
+                </Tooltip>
+              </Stack>
+            }
           />
           <StatsAccordionDetailsBlock
-            label="Avg lease length"
-            // Jira - #320 Parent ticket to complete this ask
+            label="Cost / Rent Ratio"
             value={`${primaryTenant?.term || 0}`}
-            caption="Across all tenants"
+            caption="Of annual rent income"
             applyVariant
           />
         </Stack>
@@ -107,4 +122,4 @@ const LeaseHealthAccordion = ({
   );
 };
 
-export default LeaseHealthAccordion;
+export default RentCollectionAccordion;
