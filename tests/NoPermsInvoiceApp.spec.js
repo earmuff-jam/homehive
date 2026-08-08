@@ -5,10 +5,18 @@ import { expect, test } from "@playwright/test";
 // defines a function that navigates users from the landing page
 const selectInvoiceApp = async (page) => {
   await page.goto("/");
-  const buildInvoiceBtn = page.getByText("Build Invoice");
+  const buildInvoiceBtn = page.getByRole("button", { name: "Build Invoice" });
   await expect(buildInvoiceBtn).toBeVisible({ timeout: 10000 });
   await buildInvoiceBtn.click();
-  await expect(page.getByRole("heading", { name: /edit pdf/i })).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: /edit invoice/i, level: 5 }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("heading", {
+      name: /Edit data to populate invoice/i,
+      level: 6,
+    }),
+  ).toBeVisible();
 };
 
 // traverseNavBar ...
@@ -44,7 +52,10 @@ test.describe("Invoice App workflows", () => {
     test("select from dropdown", async ({ page }) => {
       await expect(page).toHaveURL(/edit/i);
       await expect(
-        page.getByRole("heading", { name: /edit pdf/i }),
+        page.getByRole("heading", {
+          name: /edit invoice/i,
+          level: 5,
+        }),
       ).toBeVisible();
       await expect(
         page.getByText(/edit data to populate invoice/i),
@@ -241,27 +252,16 @@ test.describe("Invoice App workflows", () => {
     test("visible form fields", async ({ page }) => {
       await expect(
         page.getByRole("heading", {
-          name: "Add details about the sender",
-          level: 5,
-        }),
-      ).toBeVisible();
-
-      await expect(
-        page.getByRole("heading", {
-          name: "Add details about the sender",
-          level: 6,
-        }),
-      ).toBeVisible();
-
-      await expect(
-        page.getByRole("heading", {
           name: "Sender Information",
           level: 5,
         }),
       ).toBeVisible();
 
       await expect(
-        page.getByText("Required fields are marked with an *"),
+        page.getByRole("heading", {
+          name: "Required fields are marked with an *",
+          level: 6,
+        }),
       ).toBeVisible();
 
       // Sender info
@@ -280,7 +280,7 @@ test.describe("Invoice App workflows", () => {
     test.beforeEach(async ({ page }) => {
       await seedInvoiceStorage(page);
       await selectInvoiceApp(page);
-      await traverseNavBar(page, "Reciever");
+      await traverseNavBar(page, "Receiver");
     });
     test("visible form fields", async ({ page }) => {
       await expect(
@@ -379,7 +379,7 @@ test.describe("Invoice App workflows", () => {
   test.describe("should be able to edit reciever information", () => {
     test.beforeEach(async ({ page }) => {
       await selectInvoiceApp(page);
-      await traverseNavBar(page, "Reciever");
+      await traverseNavBar(page, "Receiver");
     });
 
     // catch all errors in form

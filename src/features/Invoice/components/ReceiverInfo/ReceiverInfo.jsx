@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
+import { useEffect, useState } from "react";
 
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
@@ -11,14 +12,16 @@ import EmptyComponent from "common/EmptyComponent";
 import { ViewInvoiceRouteUri } from "common/utils";
 import {
   useGetInvoiceListQuery,
-  useGetSenderInfoQuery,
-  useUpsertSenderInfoMutation,
+  useGetReceiverInfoQuery,
+  useUpsertReceiverInfoMutation,
 } from "features/Api/invoiceApi";
 import InvoiceSelector from "features/Invoice/components/InvoiceSelector/InvoiceSelector";
 import UserInfoViewer from "features/Invoice/components/UserInfo/UserInfoViewer";
 import { useAppTitle } from "hooks/useAppTitle";
 
-const DefaultSenderInfo = {
+// DefaultReceiverInfo ...
+// defines the default values for the receiever info
+const DefaultReceiverInfo = {
   firstName: "",
   lastName: "",
   email: "",
@@ -29,8 +32,8 @@ const DefaultSenderInfo = {
   zipcode: "",
 };
 
-export default function SenderInfo() {
-  useAppTitle("Sender Information");
+export default function ReceiverInfo() {
+  useAppTitle("Receiver Information");
   const navigate = useNavigate();
 
   const [showSnackbar, setShowSnackbar] = useState(false);
@@ -38,19 +41,19 @@ export default function SenderInfo() {
 
   const { data: invoiceListOptions } = useGetInvoiceListQuery();
 
-  const { data: senderInfo, isFetching: isSenderInfoFetching } =
-    useGetSenderInfoQuery(
+  const { data: receiverInfo, isFetching: isReceiverInfoLoading } =
+    useGetReceiverInfoQuery(
       { invoiceID: selectedInvoice },
       { skip: !selectedInvoice },
     );
 
   const [
-    upsertSenderInfo,
+    upsertReceiverInfo,
     {
-      isLoading: isUpsertSendingInfoLoading,
-      isSuccess: isUpsertSendingInfoSuccess,
+      isLoading: isupsertReceiverInfoLoading,
+      isSuccess: isupsertReceiverInfoSuccess,
     },
-  ] = useUpsertSenderInfoMutation();
+  ] = useUpsertReceiverInfoMutation();
 
   const {
     register,
@@ -59,50 +62,49 @@ export default function SenderInfo() {
     reset,
   } = useForm({
     mode: "onChange",
-    defaultValues: DefaultSenderInfo,
+    defaultValues: DefaultReceiverInfo,
   });
 
   const submit = (formData) => {
     formData["invoiceID"] = selectedInvoice;
     formData["updatedOn"] = dayjs().toISOString();
-    upsertSenderInfo(formData);
+    upsertReceiverInfo(formData);
   };
 
   const isExistingInvoice =
     selectedInvoice && selectedInvoice !== "new_invoice";
-
   const selectedInvoiceDetails = invoiceListOptions?.invoiceDetails?.find(
     (el) => el.id === selectedInvoice,
   );
 
   useEffect(() => {
-    if (isUpsertSendingInfoSuccess) {
+    if (isupsertReceiverInfoSuccess) {
       setShowSnackbar(true);
     }
-  }, [isUpsertSendingInfoLoading]);
+  }, [isupsertReceiverInfoLoading]);
 
   useEffect(() => {
-    if (senderInfo) {
+    if (receiverInfo) {
       reset({
-        firstName: senderInfo.firstName,
-        lastName: senderInfo.lastName,
-        email: senderInfo.email,
-        phone: senderInfo.phone,
-        streetAddress: senderInfo.streetAddress,
-        city: senderInfo.city,
-        state: senderInfo.state,
-        zipcode: senderInfo.zipcode,
-        updatedOn: senderInfo.updatedOn,
+        firstName: receiverInfo.firstName,
+        lastName: receiverInfo.lastName,
+        email: receiverInfo.email,
+        phone: receiverInfo.phone,
+        streetAddress: receiverInfo.streetAddress,
+        city: receiverInfo.city,
+        state: receiverInfo.state,
+        zipcode: receiverInfo.zipcode,
+        updatedOn: receiverInfo.updatedOn,
       });
     } else {
-      reset({ ...DefaultSenderInfo });
+      reset({ ...DefaultReceiverInfo });
     }
-  }, [selectedInvoice, isSenderInfoFetching]);
+  }, [selectedInvoice, isReceiverInfoLoading]);
 
   return (
     <Container
       maxWidth="md"
-      data-tour="sender-0"
+      data-tour="reciever-0"
       sx={{
         backgroundColor: "background.paper",
         borderRadius: 2,
@@ -113,11 +115,11 @@ export default function SenderInfo() {
       <Stack direction="row" spacing={1} justifyContent="space-between">
         <Stack>
           <Typography variant="h5" color="text.secondary" fontWeight="bold">
-            Sender Information
+            Receiver Information
           </Typography>
           <Typography variant="subtitle2">
             {isExistingInvoice
-              ? `Edit sender details for ${selectedInvoiceDetails?.invoiceHeader}`
+              ? `Edit receiver details for ${selectedInvoiceDetails?.invoiceHeader}`
               : "Required fields are marked with an *"}
           </Typography>
         </Stack>
@@ -137,8 +139,8 @@ export default function SenderInfo() {
           errors={errors}
           isDisabled={!isValid}
           onSubmit={handleSubmit(submit)}
-          loading={isUpsertSendingInfoLoading}
-          handleReset={() => reset(DefaultSenderInfo)}
+          loading={isupsertReceiverInfoLoading}
+          handleReset={() => reset(DefaultReceiverInfo)}
         />
       ) : (
         <EmptyComponent caption="Select or create invoice to begin" />

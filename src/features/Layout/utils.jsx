@@ -45,8 +45,8 @@ export function generateInvoiceHTML(recieverInfo, data, invoiceStatus = "") {
         </tr>
       </thead>
       <tbody>
-        ${data.items
-          .map(
+        ${data?.lineItems
+          ?.map(
             (item) => `
           <tr>
             <td>${item.category}</td>

@@ -1,34 +1,64 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`PdfViewer snapshot 1`] = `
-<DocumentFragment>
+exports[`PdfViewer snapshots > renders snapshot when no invoiceList response is returned 1`] = `
+<div>
   <div
     class="MuiContainer-root MuiContainer-maxWidthMd css-u4uvlt-MuiContainer-root"
     data-tour="view-pdf-0"
   >
     <div
-      class="MuiStack-root css-1ug9gnt-MuiStack-root"
+      class="MuiStack-root css-jfdv4h-MuiStack-root"
     >
-      <p
-        class="MuiTypography-root MuiTypography-body1 css-m4t3jl-MuiTypography-root"
-      >
-        Sorry, no invoice found to display
-      </p>
       <div
-        class="MuiStack-root css-nen11g-MuiStack-root"
+        class="MuiStack-root no-print css-1jbxis-MuiStack-root"
       >
-        <span
-          class="MuiTypography-root MuiTypography-caption css-mpaqru-MuiTypography-root"
+        <div
+          class="MuiStack-root css-nen11g-MuiStack-root"
         >
-          Create new invoice from
-          <span
-            class="MuiTypography-root MuiTypography-caption css-mf4qso-MuiTypography-root"
+          <h5
+            class="MuiTypography-root MuiTypography-h5 css-pljev2-MuiTypography-root"
           >
-             here.
+            View Invoice
+          </h5>
+          <h6
+            class="MuiTypography-root MuiTypography-subtitle2 css-1ypmsg6-MuiTypography-root"
+          >
+            Select an invoice to begin
+          </h6>
+        </div>
+        <div
+          class="MuiStack-root css-1neh0yr-MuiStack-root"
+        >
+          <div
+            class="MuiStack-root css-1h0m7t4-MuiStack-root"
+          >
+            <button
+              disabled=""
+            >
+              Print
+            </button>
+          </div>
+        </div>
+      </div>
+      <div
+        class="MuiStack-root css-1ug9gnt-MuiStack-root"
+      >
+        <p
+          class="MuiTypography-root MuiTypography-body1 css-m4t3jl-MuiTypography-root"
+        >
+          Sorry, no matching records found.
+        </p>
+        <div
+          class="MuiStack-root css-nen11g-MuiStack-root"
+        >
+          <span
+            class="MuiTypography-root MuiTypography-caption css-mpaqru-MuiTypography-root"
+          >
+            Select an invoice to begin
           </span>
-        </span>
+        </div>
       </div>
     </div>
   </div>
-</DocumentFragment>
+</div>
 `;

@@ -2,32 +2,17 @@ import React, { useState } from "react";
 
 import {
   DarkModeRounded,
-  EmailOutlined,
   HelpOutlineRounded,
   LightModeRounded,
-  PrintRounded,
 } from "@mui/icons-material";
-import {
-  CircularProgress,
-  Divider,
-  ListItemIcon,
-  ListItemText,
-  Menu,
-  MenuItem,
-} from "@mui/material";
+import { ListItemIcon, ListItemText, Menu, MenuItem } from "@mui/material";
 import AIconButton from "common/AIconButton";
 
 export default function MenuOptions({
   handleHelp = () => {},
-  handlePrint = () => {},
   handleTheme = () => {},
-  handleSendEmail = () => {},
-  showPrint = false,
   isLightTheme = false,
-  isSendEmailLoading = false,
   showHelpAndSupport = false,
-  isEmailEnabled = false,
-  isDisabled = true,
 }) {
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -75,65 +60,6 @@ export default function MenuOptions({
           },
         }}
       >
-        {showPrint ? (
-          <>
-            <MenuItem
-              disabled={isDisabled}
-              onClick={() => {
-                handlePrint();
-                handleClose();
-              }}
-              disableRipple
-              sx={{ gap: "0.5rem" }}
-            >
-              <ListItemIcon>
-                <PrintRounded />
-              </ListItemIcon>
-              <ListItemText
-                primary="Print Invoice"
-                slotProps={{
-                  primary: {
-                    fontSize: 14,
-                    fontWeight: 500,
-                    variant: "subtitle2",
-                  },
-                }}
-              />
-            </MenuItem>
-            {isEmailEnabled ? (
-              <MenuItem
-                disabled={isSendEmailLoading || isDisabled}
-                onClick={() => {
-                  handleSendEmail();
-                  handleClose();
-                }}
-                disableRipple
-                sx={{ gap: "0.5rem" }}
-              >
-                <ListItemIcon>
-                  {isSendEmailLoading ? (
-                    <CircularProgress color="inherit" size="1rem" />
-                  ) : (
-                    <EmailOutlined />
-                  )}
-                </ListItemIcon>
-                <ListItemText
-                  primary="Send Email"
-                  slotProps={{
-                    primary: {
-                      fontSize: 14,
-                      fontWeight: 500,
-                      variant: "subtitle2",
-                    },
-                  }}
-                />
-              </MenuItem>
-            ) : null}
-          </>
-        ) : null}
-
-        {showPrint && <Divider sx={{ my: 0.5 }} />}
-
         <MenuItem
           onClick={() => {
             handleTheme();

@@ -1,25 +1,69 @@
 import React from "react";
 
-import { MemoryRouter } from "react-router-dom";
-
 import PdfViewer from "./PdfViewer";
 import { render } from "@testing-library/react";
-import { expect, test, vi } from "vitest";
+import { useSendEmailMutation } from "features/Api/externalIntegrationsApi";
+import { useGetInvoiceListQuery } from "features/Api/invoiceApi";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
-vi.mock("react-router-dom", async () => {
-  const actual = await vi.importActual("react-router-dom");
-  return {
-    ...actual,
-    useNavigate: () => vi.fn(),
-    useOutletContext: () => [false], // mock value for showWatermark
-  };
-});
+// Mock react-router-dom
+vi.mock("react-router-dom", () => ({
+  useNavigate: () => vi.fn(),
+  useOutletContext: () => [false, vi.fn()],
+}));
 
-test("PdfViewer snapshot", () => {
-  const { asFragment } = render(
-    <MemoryRouter>
-      <PdfViewer />
-    </MemoryRouter>,
-  );
-  expect(asFragment()).toMatchSnapshot();
+// Mock RTK Query hooks
+vi.mock("features/Api/invoiceApi", () => ({
+  useGetInvoiceListQuery: vi.fn(),
+}));
+
+vi.mock("features/Api/externalIntegrationsApi", () => ({
+  useSendEmailMutation: vi.fn(),
+}));
+
+// Mock common utilities
+vi.mock("common/utils", () => ({
+  EditInvoiceRouteUri: "/edit",
+  isSelectedFeatureEnabled: vi.fn(() => false),
+}));
+
+// Mock withDialog
+vi.mock("features/Invoice/withDialog", () => ({
+  default: (Component) => Component,
+}));
+
+vi.mock("common/RowHeader", () => ({
+  default: ({ title, caption }) => (
+    <div data-testid="row-header">
+      <div>{title}</div>
+      <div>{caption}</div>
+    </div>
+  ),
+}));
+
+describe("PdfViewer snapshots", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+
+    useGetInvoiceListQuery.mockReturnValue({
+      data: undefined,
+      isLoading: false,
+      isError: false,
+    });
+
+    useSendEmailMutation.mockReturnValue([
+      vi.fn(),
+      {
+        isLoading: false,
+        isSuccess: false,
+        isError: false,
+      },
+    ]);
+  });
+
+  it("renders snapshot when no invoiceList response is returned", () => {
+    const { container } = render(<PdfViewer setDialog={vi.fn()} />);
+
+    expect(container).toMatchSnapshot();
+  });
 });

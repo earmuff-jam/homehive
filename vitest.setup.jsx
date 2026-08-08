@@ -9,6 +9,25 @@ import { vi } from "vitest";
 
 dayjs.extend(relativeTime);
 
+function createStorageMock() {
+  let store = {};
+  return {
+    getItem: vi.fn((key) =>
+      Object.prototype.hasOwnProperty.call(store, key) ? store[key] : null,
+    ),
+    setItem: vi.fn((key, value) => {
+      store[key] = String(value);
+    }),
+    removeItem: vi.fn((key) => {
+      delete store[key];
+    }),
+    clear: vi.fn(() => {
+      store = {};
+    }),
+  };
+}
+
+// mock secure storage
 vi.mock("react-secure-storage", () => ({
   default: {
     getItem: vi.fn(() => null),
@@ -18,6 +37,7 @@ vi.mock("react-secure-storage", () => ({
   },
 }));
 
+// mock feature flags
 vi.mock("common/ApplicationConfig", () => ({
   __esModule: true,
   authorizedServerLevelFeatureFlags: () =>
@@ -29,6 +49,12 @@ vi.mock("common/ApplicationConfig", () => ({
     ]),
 }));
 
+// mock application hooks
+vi.mock("hooks/useAppTitle", () => ({
+  useAppTitle: vi.fn(),
+}));
+
+// mock common components
 vi.mock("common/AButton", () => ({
   __esModule: true,
   default: ({ label, onClick, disabled }) => (
@@ -73,24 +99,6 @@ vi.mock("common/CustomSnackbar", () => ({
       </div>
     ) : null,
 }));
-
-function createStorageMock() {
-  let store = {};
-  return {
-    getItem: vi.fn((key) =>
-      Object.prototype.hasOwnProperty.call(store, key) ? store[key] : null,
-    ),
-    setItem: vi.fn((key, value) => {
-      store[key] = String(value);
-    }),
-    removeItem: vi.fn((key) => {
-      delete store[key];
-    }),
-    clear: vi.fn(() => {
-      store = {};
-    }),
-  };
-}
 
 Object.defineProperty(globalThis, "localStorage", {
   value: createStorageMock(),
