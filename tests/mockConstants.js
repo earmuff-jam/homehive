@@ -13,7 +13,7 @@ const senderInfo = [
   },
 ];
 
-const recieverInfo = [
+const receiverInfo = [
   {
     firstName: "James",
     lastName: "Smith",
@@ -77,7 +77,7 @@ const invoiceList = [
 const InvoiceAppMockConstants = {
   invoiceList,
   senderInfo,
-  recieverInfo,
+  receiverInfo,
 };
 
 const e2eMockData = {

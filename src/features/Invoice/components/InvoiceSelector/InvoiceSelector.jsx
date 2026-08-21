@@ -31,7 +31,9 @@ const InvoiceSelector = ({
         <Select
           labelId="selected-property-label-id"
           id="selected-property-id"
-          value={selectedInvoice || "new_invoice"}
+          value={
+            selectedInvoice || (hideCreateNewSelector ? "" : "new_invoice")
+          }
           onChange={onChange}
         >
           {!hideCreateNewSelector && (
