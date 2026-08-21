@@ -285,7 +285,6 @@ test.describe("Invoice App workflows", () => {
       await page.waitForLoadState("networkidle");
 
       const printBtn = page.getByRole("button", { name: /print invoice/i });
-      const sendEmailBtn = page.getByRole("button", { name: /email invoice/i });
 
       await printBtn.click();
 
@@ -396,6 +395,7 @@ test.describe("Invoice App workflows", () => {
   // edit sender information
   test.describe("should be able to edit sender information", () => {
     test.beforeEach(async ({ page }) => {
+      await seedInvoiceStorage(page);
       await selectInvoiceApp(page);
       await traverseNavBar(page, "Sender");
 
@@ -416,7 +416,7 @@ test.describe("Invoice App workflows", () => {
 
     // catch all errors in form
     test("edit form fields", async ({ page }) => {
-      await selectInvoice(page, "new_invoice");
+      await selectInvoice(page, "invoice-test-id");
       await page.waitForLoadState("networkidle");
 
       await page.getByRole("textbox", { name: /first name/i }).fill("Te");
@@ -477,6 +477,7 @@ test.describe("Invoice App workflows", () => {
   // edit receiver information
   test.describe("should be able to edit receiver information", () => {
     test.beforeEach(async ({ page }) => {
+      await seedInvoiceStorage(page);
       await selectInvoiceApp(page);
       await traverseNavBar(page, "Receiver");
 
@@ -497,7 +498,7 @@ test.describe("Invoice App workflows", () => {
 
     // catch all errors in form
     test("edit form fields", async ({ page }) => {
-      await selectInvoice(page, "new_invoice");
+      await selectInvoice(page, "invoice-test-id");
       await page.waitForLoadState("networkidle");
       await page.getByRole("textbox", { name: /first name/i }).fill("Te");
       await page.getByRole("textbox", { name: /last name/i }).fill("D");

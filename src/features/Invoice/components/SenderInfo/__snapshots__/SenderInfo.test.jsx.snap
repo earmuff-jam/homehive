@@ -33,8 +33,8 @@ exports[`SenderInfo component snapshot test > renders correctly and matches snap
             class="MuiFormControl-root css-12ue2ez-MuiFormControl-root"
           >
             <label
-              class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiInputLabel-sizeSmall MuiInputLabel-standard MuiFormLabel-colorPrimary MuiFormLabel-filled MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiInputLabel-sizeSmall MuiInputLabel-standard css-1m15yum-MuiFormLabel-root-MuiInputLabel-root"
-              data-shrink="true"
+              class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-sizeSmall MuiInputLabel-standard MuiFormLabel-colorPrimary MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-sizeSmall MuiInputLabel-standard css-1pr9nav-MuiFormLabel-root-MuiInputLabel-root"
+              data-shrink="false"
               id="selected-property-label-id"
             >
               <h6
@@ -67,7 +67,7 @@ exports[`SenderInfo component snapshot test > renders correctly and matches snap
                 aria-invalid="false"
                 class="MuiSelect-nativeInput css-j0riat-MuiSelect-nativeInput"
                 tabindex="-1"
-                value="new_invoice"
+                value=""
               />
               <svg
                 aria-hidden="true"

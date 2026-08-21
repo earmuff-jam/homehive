@@ -4,7 +4,7 @@ import { createApi, fakeBaseQuery } from "@reduxjs/toolkit/query/react";
 // used to key items within the local storage
 const KeyMap = {
   InvoiceList: "invoiceList",
-  receiver: "recieverInfo",
+  receiver: "receiverInfo",
   sender: "senderInfo",
   templates: "templates",
 };
