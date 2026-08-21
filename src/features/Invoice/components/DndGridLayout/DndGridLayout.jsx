@@ -1,21 +1,27 @@
 import React, { useState } from "react";
 
+import { useFormContext, useWatch } from "react-hook-form";
+
 import { DndContext, DragOverlay, pointerWithin } from "@dnd-kit/core";
-import {
-  SortableContext,
-  arrayMove,
-  rectSortingStrategy,
-} from "@dnd-kit/sortable";
-import { Box, Stack, Typography } from "@mui/material";
+import { SortableContext, rectSortingStrategy } from "@dnd-kit/sortable";
+import { Box, Stack, useTheme } from "@mui/material";
+import EmptyComponent from "common/EmptyComponent";
 import Widget from "features/Invoice/components/DndGridLayout/Widget";
-import WidgetProps from "features/Invoice/components/DndGridLayout/WidgetProps";
 
 export default function DndGridLayout({
-  editMode,
-  widgets,
-  setWidgets,
+  handleWidgetMove,
+  handleEditMode,
   handleRemoveWidget,
 }) {
+  const theme = useTheme();
+
+  const { control } = useFormContext();
+
+  const widgets = useWatch({
+    control,
+    name: "widgets",
+  });
+
   const [activeWidget, setActiveWidget] = useState(null); // active widget for drag overlay
 
   const handleDragStart = (ev) => {
@@ -26,35 +32,27 @@ export default function DndGridLayout({
   };
 
   const handleDragEnd = (ev) => {
-    const { active, over } = ev; // active is current, over is replacing
+    const { active, over } = ev;
 
     setActiveWidget(null);
 
-    if (!over) return;
-    if (active.id === over.id) return;
+    if (!over || active.id === over.id) return;
 
     const originalIdx = widgets.findIndex(
       (widget) => widget.widgetID === active.id.toString(),
     );
+
     const newIdx = widgets.findIndex(
       (widget) => widget.widgetID === over.id.toString(),
     );
 
-    const updatedWidgets = arrayMove(widgets, originalIdx, newIdx);
+    if (originalIdx === -1 || newIdx === -1) return;
 
-    setWidgets(updatedWidgets);
-    localStorage.setItem("widgets", JSON.stringify(updatedWidgets));
+    handleWidgetMove(originalIdx, newIdx);
   };
 
-  if (widgets.length <= 0)
-    return (
-      <Stack textAlign="center">
-        <Typography variant="h5">Sorry, no matching records found</Typography>
-        <Typography variant="caption">
-          Add widgets for custom dashboard layout.
-        </Typography>
-      </Stack>
-    );
+  if (widgets?.length <= 0)
+    return <EmptyComponent caption="Add widgets for custom dashboard layout" />;
 
   return (
     <DndContext
@@ -84,17 +82,15 @@ export default function DndGridLayout({
                     sx={{
                       width: activeWidget?.config?.width,
                       height: activeWidget?.config?.height,
-                      backgroundColor: "slategrey",
+                      backgroundColor: theme.palette.primary.lightBackground,
                     }}
                   />
                 ) : (
                   <Widget
                     widget={widget}
-                    editMode={editMode}
+                    handleEditMode={handleEditMode}
                     handleRemoveWidget={handleRemoveWidget}
-                  >
-                    {WidgetProps(widget)}
-                  </Widget>
+                  />
                 )}
               </Box>
             );

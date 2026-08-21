@@ -26,6 +26,7 @@ export function noramlizeDetailsTableData(draftInvoiceList = []) {
       endDate: invoice.endDate,
       total,
       paymentMethod,
+      note: invoice?.note || "",
       updatedOn: invoice.updatedOn,
     };
   });
@@ -106,29 +107,27 @@ export function normalizeInvoiceTrendsChartsDataset(
   );
   const taxData = Array.from(monthMap.values()).map((val) => val.tax);
 
-  return [
-    {
-      labels,
-      datasets: [
-        {
-          label: "Collected Invoice",
-          data: collectedData,
-          backgroundColor: "rgba(54, 162, 235, 0.7)",
-          borderColor: "rgba(54, 162, 235, 1)",
-          fill: chartType === "line",
-          tension: 0.4,
-        },
-        {
-          label: "Tax Collected",
-          data: taxData,
-          backgroundColor: "rgba(255, 99, 132, 0.7)",
-          borderColor: "rgba(255, 99, 132, 1)",
-          fill: chartType === "line",
-          tension: 0.4,
-        },
-      ],
-    },
-  ];
+  return {
+    labels,
+    datasets: [
+      {
+        label: "Collected Invoice",
+        data: collectedData,
+        backgroundColor: "rgba(54, 162, 235, 0.7)",
+        borderColor: "rgba(54, 162, 235, 1)",
+        fill: chartType === "line",
+        tension: 0.4,
+      },
+      {
+        label: "Tax Collected",
+        data: taxData,
+        backgroundColor: "rgba(255, 99, 132, 0.7)",
+        borderColor: "rgba(255, 99, 132, 1)",
+        fill: chartType === "line",
+        tension: 0.4,
+      },
+    ],
+  };
 }
 
 // normalizeInvoiceTimelineChartDataset ...

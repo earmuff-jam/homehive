@@ -125,6 +125,7 @@ export const lightTheme = createTheme({
     primary: {
       main: "#0E7C6B",
       light: "#37A699",
+      lightBackground: "#E8F5F3",
       dark: "#0B5D50",
       contrastText: "#FFFFFF",
     },
@@ -196,6 +197,7 @@ export const darkTheme = createTheme({
     primary: {
       main: "#ffb300",
       light: "#ffd54f",
+      lightBackground: "#FFF5D6",
       dark: "#ff8f00",
       contrastText: "#121212",
     },

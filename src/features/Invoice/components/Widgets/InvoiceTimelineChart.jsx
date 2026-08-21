@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 
 import { Bar } from "react-chartjs-2";
 
@@ -12,22 +12,11 @@ import {
   Tooltip,
 } from "chart.js";
 import EmptyComponent from "common/EmptyComponent";
-import RowHeader from "common/RowHeader";
 import { normalizeInvoiceTimelineChartDataset } from "features/Invoice/utils";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Title);
 
-const InvoiceTimelineChart = ({ label, caption }) => {
-  const [data, setData] = useState({});
-
-  useEffect(() => {
-    const draftData = JSON.parse(localStorage.getItem("pdfDetails"));
-    if (draftData) {
-      const chartData = normalizeInvoiceTimelineChartDataset([draftData]);
-      setData(chartData);
-    }
-  }, []);
-
+const InvoiceTimelineChart = ({ data = {} }) => {
   const options = {
     indexAxis: "y",
     responsive: true,
@@ -56,21 +45,14 @@ const InvoiceTimelineChart = ({ label, caption }) => {
     },
   };
 
+  const chartData = normalizeInvoiceTimelineChartDataset([data]);
+
   return (
-    <Stack data-tour={"dashboard-4"}>
-      <RowHeader
-        title={label}
-        caption={caption}
-        sxProps={{
-          textAlign: "left",
-          fontWeight: "bold",
-          color: "text.secondary",
-        }}
-      />
+    <Stack data-tour="dashboard-4">
       {Object.keys(data).length <= 0 ? (
         <EmptyComponent />
       ) : (
-        <Bar data={data} options={options} />
+        <Bar data={chartData} options={options} />
       )}
     </Stack>
   );

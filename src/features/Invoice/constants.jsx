@@ -8,57 +8,62 @@ import {
   PaidRounded,
 } from "@mui/icons-material";
 
+// WidgetTypeProps ...
+// defines a constants for various widget types
+export const WidgetTypeProps = {
+  TimelineChart: "timeline-chart",
+  TaxChart: "tax-chart",
+  ServiceChart: "service-chart",
+  DetailsTable: "details-table",
+};
+
 // WidgetTypeList ...
 // defines a constants of various types of widgets
 export const WidgetTypeList = [
   {
     id: 1,
-    label: "Invoice Timeline Chart",
-    caption: "Visual diagram displaying invoice timeline.",
+    type: WidgetTypeProps.TimelineChart,
+    label: "Timeline Chart",
+    caption: "View invoice in timeline",
     config: {
-      inset: false, // makes text have extra spacing infront
       height: "25rem",
       width: "40rem",
-      widgetID: "9caef12d-a611-4573-8fd2-b5bd3036ce13", // widgetID for config is for provision only
     },
   },
   {
     id: 2,
+    type: WidgetTypeProps.TaxChart,
     label: "Collected tax and totals",
-    caption: "Visual diagram of collected tax and invoice total.",
+    caption: "View collected amount in dollars",
     columns: [],
     data: [],
     config: {
-      inset: false,
       height: "25rem",
       width: "40rem",
-      widgetID: "c04637c7-080d-4641-a4f4-4fd523280d74",
     },
   },
   {
     id: 3,
+    type: WidgetTypeProps.ServiceChart,
     label: "Items / Service Type",
-    caption: "Visual diagram of charge based on items or created service type.",
+    caption: "View invoice based on items",
     columns: [],
     data: [],
     config: {
-      inset: false,
       height: "25rem",
       width: "40rem",
-      widgetID: "052fda00-2d37-4d0f-81b7-3fcb451e5ee1",
     },
   },
   {
     id: 4,
+    type: WidgetTypeProps.DetailsTable,
     label: "Item Details Table",
-    caption: "View details about imported invoices in list form.",
+    caption: "View invoice details",
     columns: [],
     data: [],
     config: {
-      inset: false,
       height: "25rem",
       width: "75rem",
-      widgetID: "a4c036a4-feef-4f2b-bb90-b5eea115fcce",
     },
   },
 ];

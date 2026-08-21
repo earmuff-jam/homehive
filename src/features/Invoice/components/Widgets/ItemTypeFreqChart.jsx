@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 
 import { Bar } from "react-chartjs-2";
 
@@ -13,7 +13,6 @@ import {
   Tooltip,
 } from "chart.js";
 import EmptyComponent from "common/EmptyComponent";
-import RowHeader from "common/RowHeader";
 import { normalizeInvoiceItemTypeChartDataset } from "features/Invoice/utils";
 
 ChartJS.register(
@@ -25,17 +24,7 @@ ChartJS.register(
   Legend,
 );
 
-const ItemTypeFreqChart = ({ label, caption }) => {
-  const [chartData, setChartData] = useState({});
-
-  useEffect(() => {
-    const draftInvoice = JSON.parse(localStorage.getItem("pdfDetails"));
-    if (draftInvoice) {
-      const chartData = normalizeInvoiceItemTypeChartDataset([draftInvoice]);
-      setChartData(chartData);
-    }
-  }, []);
-
+const ItemTypeFreqChart = ({ data }) => {
   const options = {
     responsive: true,
     plugins: {
@@ -57,17 +46,10 @@ const ItemTypeFreqChart = ({ label, caption }) => {
     },
   };
 
+  const chartData = normalizeInvoiceItemTypeChartDataset([data]);
+
   return (
-    <Stack data-tour={"dashboard-6"}>
-      <RowHeader
-        title={label}
-        caption={caption}
-        sxProps={{
-          textAlign: "left",
-          fontWeight: "bold",
-          color: "text.secondary",
-        }}
-      />
+    <Stack data-tour="dashboard-6">
       {Object.keys(chartData).length <= 0 ? (
         <EmptyComponent />
       ) : (
