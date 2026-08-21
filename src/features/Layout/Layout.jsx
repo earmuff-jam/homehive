@@ -2,17 +2,13 @@ import React, { useState } from "react";
 
 import { Outlet, matchPath, useLocation } from "react-router-dom";
 
-import { InfoRounded } from "@mui/icons-material";
 import {
   Box,
-  Checkbox,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
-  FormControlLabel,
   Stack,
-  Tooltip,
   Typography,
   useMediaQuery,
   useTheme,
@@ -65,9 +61,6 @@ export default function Layout({
 
   const closeDialog = () => setDialog(defaultDialog);
 
-  const handleChange = () =>
-    setDialog((prev) => ({ ...prev, showWatermark: !prev.showWatermark }));
-
   const setTour = () => {
     const key = retrieveTourKey(currentUri, "property");
     const currentTourEl = DefaultTourStepsMapperObj[key];
@@ -89,7 +82,6 @@ export default function Layout({
       <AppToolbar
         currentUri={currentUri}
         currentRoute={currentRoute}
-        handleDrawerClose={() => setOpenDrawer(false)}
         handleDrawerOpen={() => setOpenDrawer(true)}
         currentThemeIdx={currentThemeIdx}
         setCurrentThemeIdx={setCurrentThemeIdx}
@@ -135,12 +127,11 @@ export default function Layout({
                 <BreadCrumbs currentRoute={currentRoute} />
               </>
             )}
-            <Outlet context={[dialog.showWatermark]} />
+            <Outlet context={[dialog.showWatermark, setOpenDrawer]} />
           </Box>
           <Footer />
         </Box>
       </Stack>
-      {/* Dialog for help and print */}
       <Dialog
         className="no-print"
         open={dialog.type === "HELP" || dialog.type === "PRINT"}
@@ -150,37 +141,16 @@ export default function Layout({
       >
         <DialogTitle>{dialog.label}</DialogTitle>
         <DialogContent>
-          <Typography>{dialog.title}</Typography>
-          {dialog.type === "PRINT" && (
-            <Stack direction="row" spacing={1} alignItems="center">
-              <FormControlLabel
-                label="Display watermark"
-                labelPlacement="end"
-                control={
-                  <Checkbox
-                    checked={dialog?.showWatermark || false}
-                    onChange={handleChange}
-                  />
-                }
-              />
-              <Tooltip title="Display invoice status if checked during print.">
-                <InfoRounded
-                  sx={{ color: "text.secondary" }}
-                  fontSize="small"
-                />
-              </Tooltip>
-            </Stack>
-          )}
+          <Typography variant="subtitle2">{dialog.title}</Typography>
         </DialogContent>
         <DialogActions>
           <AButton
             onClick={() => {
               closeDialog();
-              dialog.type === "HELP" && setTour();
-              dialog.type === "PRINT" && print();
+              setTour();
             }}
             className="no-print"
-            label={dialog.type === "HELP" ? "Start help" : "Print"}
+            label="Start help"
           />
           <AButton
             size="small"

@@ -12,7 +12,7 @@ import {
   PropertiesReportingRouteUri,
   PropertiesRouteUri,
   PropertyRouteUri,
-  RecieverInforamtionRouteUri,
+  ReceiverInforamtionRouteUri,
   RentAppFaqRouteUri,
   RentalRouteUri,
   SenderInforamtionRouteUri,
@@ -99,15 +99,15 @@ const SenderInfoHelpSteps = [
 ];
 
 /**
- * RecieverInfoHelpSteps
+ * ReceiverInfoHelpSteps
  *
  * User helpful steps in the reciever info page. This is where you can upload information about the reciever of the invoice. Leaving this
  * empty should render no salutation in the view page.
  */
-const RecieverInfoHelpSteps = [
+const ReceiverInfoHelpSteps = [
   {
     element:
-      "Reciever biographic information. Store details for selected reciever. Reciever is the person who will be recieving this invoice.",
+      "Receiver biographic information. Store details for selected reciever. Receiver is the person who will be recieving this invoice.",
   },
 ];
 
@@ -479,7 +479,7 @@ export const DefaultTourStepsMapperObj = {
       EditPdfHelpSteps.length +
       SenderInfoHelpSteps.length,
   },
-  [RecieverInforamtionRouteUri]: {
+  [ReceiverInforamtionRouteUri]: {
     element: (
       <>
         {createHelperSentences("edit / update ", "reciever information")}
@@ -494,7 +494,7 @@ export const DefaultTourStepsMapperObj = {
       ViewPdfHelpSteps.length +
       EditPdfHelpSteps.length +
       SenderInfoHelpSteps.length +
-      RecieverInfoHelpSteps.length,
+      ReceiverInfoHelpSteps.length,
   },
   [InvoiceDashboardRouteUri]: {
     element: (
@@ -507,12 +507,12 @@ export const DefaultTourStepsMapperObj = {
       ViewPdfHelpSteps.length +
       EditPdfHelpSteps.length +
       SenderInfoHelpSteps.length +
-      RecieverInfoHelpSteps.length,
+      ReceiverInfoHelpSteps.length,
     end:
       ViewPdfHelpSteps.length +
       EditPdfHelpSteps.length +
       SenderInfoHelpSteps.length +
-      RecieverInfoHelpSteps.length +
+      ReceiverInfoHelpSteps.length +
       DashboardHelpSteps.length,
   },
   [SettingsRouteUri]: {
@@ -529,13 +529,13 @@ export const DefaultTourStepsMapperObj = {
       ViewPdfHelpSteps.length +
       EditPdfHelpSteps.length +
       SenderInfoHelpSteps.length +
-      RecieverInfoHelpSteps.length +
+      ReceiverInfoHelpSteps.length +
       DashboardHelpSteps.length,
     end:
       ViewPdfHelpSteps.length +
       EditPdfHelpSteps.length +
       SenderInfoHelpSteps.length +
-      RecieverInfoHelpSteps.length +
+      ReceiverInfoHelpSteps.length +
       DashboardHelpSteps.length +
       SettingsHelpSteps.length,
   },
@@ -550,14 +550,14 @@ export const DefaultTourStepsMapperObj = {
       ViewPdfHelpSteps.length +
       EditPdfHelpSteps.length +
       SenderInfoHelpSteps.length +
-      RecieverInfoHelpSteps.length +
+      ReceiverInfoHelpSteps.length +
       DashboardHelpSteps.length +
       SettingsHelpSteps.length,
     end:
       ViewPdfHelpSteps.length +
       EditPdfHelpSteps.length +
       SenderInfoHelpSteps.length +
-      RecieverInfoHelpSteps.length +
+      ReceiverInfoHelpSteps.length +
       DashboardHelpSteps.length +
       SettingsHelpSteps.length +
       RentalHelpSteps.length,
@@ -573,7 +573,7 @@ export const DefaultTourStepsMapperObj = {
       ViewPdfHelpSteps.length +
       EditPdfHelpSteps.length +
       SenderInfoHelpSteps.length +
-      RecieverInfoHelpSteps.length +
+      ReceiverInfoHelpSteps.length +
       DashboardHelpSteps.length +
       SettingsHelpSteps.length +
       RentalHelpSteps.length,
@@ -581,7 +581,7 @@ export const DefaultTourStepsMapperObj = {
       ViewPdfHelpSteps.length +
       EditPdfHelpSteps.length +
       SenderInfoHelpSteps.length +
-      RecieverInfoHelpSteps.length +
+      ReceiverInfoHelpSteps.length +
       DashboardHelpSteps.length +
       SettingsHelpSteps.length +
       RentalHelpSteps.length +
@@ -598,7 +598,7 @@ export const DefaultTourStepsMapperObj = {
       ViewPdfHelpSteps.length +
       EditPdfHelpSteps.length +
       SenderInfoHelpSteps.length +
-      RecieverInfoHelpSteps.length +
+      ReceiverInfoHelpSteps.length +
       DashboardHelpSteps.length +
       SettingsHelpSteps.length +
       RentalHelpSteps.length +
@@ -607,7 +607,7 @@ export const DefaultTourStepsMapperObj = {
       ViewPdfHelpSteps.length +
       EditPdfHelpSteps.length +
       SenderInfoHelpSteps.length +
-      RecieverInfoHelpSteps.length +
+      ReceiverInfoHelpSteps.length +
       DashboardHelpSteps.length +
       SettingsHelpSteps.length +
       RentalHelpSteps.length +
@@ -625,7 +625,7 @@ export const DefaultTourStepsMapperObj = {
       ViewPdfHelpSteps.length +
       EditPdfHelpSteps.length +
       SenderInfoHelpSteps.length +
-      RecieverInfoHelpSteps.length +
+      ReceiverInfoHelpSteps.length +
       DashboardHelpSteps.length +
       SettingsHelpSteps.length +
       RentalHelpSteps.length +
@@ -635,7 +635,7 @@ export const DefaultTourStepsMapperObj = {
       ViewPdfHelpSteps.length +
       EditPdfHelpSteps.length +
       SenderInfoHelpSteps.length +
-      RecieverInfoHelpSteps.length +
+      ReceiverInfoHelpSteps.length +
       DashboardHelpSteps.length +
       SettingsHelpSteps.length +
       RentalHelpSteps.length +
@@ -654,7 +654,7 @@ export const DefaultTourStepsMapperObj = {
       ViewPdfHelpSteps.length +
       EditPdfHelpSteps.length +
       SenderInfoHelpSteps.length +
-      RecieverInfoHelpSteps.length +
+      ReceiverInfoHelpSteps.length +
       DashboardHelpSteps.length +
       SettingsHelpSteps.length +
       RentalHelpSteps.length +
@@ -665,7 +665,7 @@ export const DefaultTourStepsMapperObj = {
       ViewPdfHelpSteps.length +
       EditPdfHelpSteps.length +
       SenderInfoHelpSteps.length +
-      RecieverInfoHelpSteps.length +
+      ReceiverInfoHelpSteps.length +
       DashboardHelpSteps.length +
       SettingsHelpSteps.length +
       RentalHelpSteps.length +
@@ -686,7 +686,7 @@ export const GeneratedTourSteps = [
   ...derieveTourSteps(ViewPdfHelpSteps, "view-pdf"),
   ...derieveTourSteps(EditPdfHelpSteps, "edit-pdf"),
   ...derieveTourSteps(SenderInfoHelpSteps, "sender"),
-  ...derieveTourSteps(RecieverInfoHelpSteps, "reciever"),
+  ...derieveTourSteps(ReceiverInfoHelpSteps, "reciever"),
   ...derieveTourSteps(DashboardHelpSteps, "dashboard"),
   ...derieveTourSteps(SettingsHelpSteps, "settings"),
   ...derieveTourSteps(RentalHelpSteps, "rental"),

@@ -1,10 +1,10 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`SenderInfo component snapshot test > renders correctly and matches snapshot 1`] = `
+exports[`RecieverInfo component snapshot tests > renders correctly and matches snapshot 1`] = `
 <DocumentFragment>
   <div
     class="MuiContainer-root MuiContainer-maxWidthMd css-12n4y2z-MuiContainer-root"
-    data-tour="sender-0"
+    data-tour="reciever-0"
   >
     <div
       class="MuiStack-root css-1jbxis-MuiStack-root"
@@ -15,7 +15,7 @@ exports[`SenderInfo component snapshot test > renders correctly and matches snap
         <h5
           class="MuiTypography-root MuiTypography-h5 css-pljev2-MuiTypography-root"
         >
-          Sender Information
+          Receiver Information
         </h5>
         <h6
           class="MuiTypography-root MuiTypography-subtitle2 css-1ypmsg6-MuiTypography-root"

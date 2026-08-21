@@ -34,8 +34,8 @@ export const EditInvoiceRoutePath = "edit";
 export const EditInvoiceRouteUri = "/invoice/edit";
 export const SenderInforamtionRoutePath = "sender";
 export const SenderInforamtionRouteUri = "/invoice/sender";
-export const RecieverInforamtionRoutePath = "reciever";
-export const RecieverInforamtionRouteUri = "/invoice/reciever";
+export const ReceiverInforamtionRoutePath = "receiver";
+export const ReceiverInforamtionRouteUri = "/invoice/receiver";
 export const InvoiceAppFaqRouteUri = "/invoice/faq";
 
 // Default Esign app Routes

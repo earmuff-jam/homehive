@@ -3,14 +3,15 @@ import React from "react";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 
-import RecieverInfo from "./RecieverInfo";
+import RecieverInfo from "./ReceiverInfo";
 import { configureStore } from "@reduxjs/toolkit";
 import { render } from "@testing-library/react";
-import { describe, expect, it, vi } from "vitest";
-
-vi.mock("hooks/useAppTitle", () => ({
-  useAppTitle: vi.fn(),
-}));
+import {
+  useGetInvoiceListQuery,
+  useGetReceiverInfoQuery,
+} from "features/Api/invoiceApi";
+import InvoiceMockValues from "features/Invoice/mockConstants";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
 vi.mock("common/RowHeader", () => ({
   __esModule: true,
@@ -37,27 +38,34 @@ vi.mock("features/Invoice/components/UserInfo/UserInfoViewer", () => ({
 }));
 
 vi.mock("features/Api/invoiceApi", () => ({
-  useGetReceiverInfoQuery: () => ({
-    data: {},
-    isLoading: false,
-    isSuccess: true,
-  }),
+  useGetReceiverInfoQuery: vi.fn(),
+  useGetInvoiceListQuery: vi.fn(),
   useUpsertReceiverInfoMutation: () => [
     vi.fn(),
     { isLoading: false, isSuccess: false },
   ],
 }));
 
-vi.mock("common/AButton", () => ({
-  __esModule: true,
-  default: ({ label, onClick, disabled }) => (
-    <button onClick={onClick} disabled={disabled}>
-      {label}
-    </button>
-  ),
-}));
+describe("RecieverInfo component snapshot tests", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    useGetReceiverInfoQuery.mockReturnValue({
+      data: InvoiceMockValues.receiverDetails,
+      isLoading: false,
+      isSuccess: true,
+    });
 
-describe("RecieverInfo component", () => {
+    useGetInvoiceListQuery.mockReturnValue({
+      data: {
+        invoiceDetails: InvoiceMockValues.invoiceDetails,
+        senderDetails: InvoiceMockValues.senderDetails,
+        receiverDetails: InvoiceMockValues.receiverDetails,
+      },
+      isLoading: false,
+      isSuccess: true,
+    });
+  });
+
   it("renders correctly and matches snapshot", () => {
     const store = configureStore({ reducer: () => ({}) });
 

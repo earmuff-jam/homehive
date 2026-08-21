@@ -16,8 +16,8 @@ import {
   InvoiceAppFaqRouteUri,
   InvoiceDashboardRoutePath,
   InvoiceDashboardRouteUri,
-  RecieverInforamtionRoutePath,
-  RecieverInforamtionRouteUri,
+  ReceiverInforamtionRoutePath,
+  ReceiverInforamtionRouteUri,
   SenderInforamtionRoutePath,
   SenderInforamtionRouteUri,
   ViewInvoiceRoutePath,
@@ -33,8 +33,8 @@ const EditPdf = React.lazy(
 const PdfViewer = React.lazy(
   () => import("features/Invoice/components/PdfViewer/PdfViewer"),
 );
-const RecieverInfo = React.lazy(
-  () => import("features/Invoice/components/RecieverInfo/RecieverInfo"),
+const ReceiverInfo = React.lazy(
+  () => import("features/Invoice/components/ReceiverInfo/ReceiverInfo"),
 );
 const SenderInfo = React.lazy(
   () => import("features/Invoice/components/SenderInfo/SenderInfo"),
@@ -121,15 +121,15 @@ export const InvoiceAppRoutes = [
   },
   {
     id: 5,
-    label: "Reciever",
-    path: RecieverInforamtionRoutePath,
-    routeUri: RecieverInforamtionRouteUri,
-    element: <RecieverInfo />,
+    label: "Receiver",
+    path: ReceiverInforamtionRoutePath,
+    routeUri: ReceiverInforamtionRouteUri,
+    element: <ReceiverInfo />,
     icon: <Person2Rounded fontSize="small" />,
     requiredFlags: ["invoicer"],
     config: {
       breadcrumb: {
-        value: "Reciever Information",
+        value: "Receiver Information",
         icon: <Person2Rounded fontSize="small" />,
       },
       isLoggedInFeature: false,

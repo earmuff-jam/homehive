@@ -89,15 +89,6 @@ vi.mock("common/TextFieldWithLabel", () => ({
   default: ({ label }) => <div>{label}</div>,
 }));
 
-vi.mock("common/AButton", () => ({
-  __esModule: true,
-  default: ({ label, onClick, disabled }) => (
-    <button onClick={onClick} disabled={disabled}>
-      {label}
-    </button>
-  ),
-}));
-
 describe("AssociateTenantPopup", () => {
   beforeAll(() => {
     vi.useFakeTimers();

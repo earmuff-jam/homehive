@@ -5,10 +5,18 @@ import { expect, test } from "@playwright/test";
 // defines a function that navigates users from the landing page
 const selectInvoiceApp = async (page) => {
   await page.goto("/");
-  const buildInvoiceBtn = page.getByText("Build Invoice");
+  const buildInvoiceBtn = page.getByRole("button", { name: "Build Invoice" });
   await expect(buildInvoiceBtn).toBeVisible({ timeout: 10000 });
   await buildInvoiceBtn.click();
-  await expect(page.getByRole("heading", { name: /edit pdf/i })).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: /edit invoice/i, level: 5 }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("heading", {
+      name: /Edit data to populate invoice/i,
+      level: 6,
+    }),
+  ).toBeVisible();
 };
 
 // traverseNavBar ...
@@ -19,6 +27,17 @@ const traverseNavBar = async (page, linkName) => {
   await button.click();
 };
 
+// selectInvoice ...
+// defines a function that selects a valid invoice to be displayed
+const selectInvoice = async (page, selector) => {
+  const select = page.getByRole("combobox", { name: "Select Invoice" });
+  await select.click();
+
+  const option = page.locator(`[role="option"][data-value="${selector}"]`);
+  await expect(option).toBeVisible();
+  await option.click({ force: true });
+};
+
 // seedInvoiceStorage ...
 // defines a function that allows the app to seed some invoice data
 async function seedInvoiceStorage(page) {
@@ -26,9 +45,10 @@ async function seedInvoiceStorage(page) {
 
   await page.addInitScript((data) => {
     localStorage.clear();
+
+    localStorage.setItem("invoiceList", JSON.stringify(data.invoiceList));
     localStorage.setItem("senderInfo", JSON.stringify(data.senderInfo));
-    localStorage.setItem("recieverInfo", JSON.stringify(data.recieverInfo));
-    localStorage.setItem("pdfDetails", JSON.stringify(data.pdfDetails));
+    localStorage.setItem("receiverInfo", JSON.stringify(data.receiverInfo));
   }, InvoiceAppMockConstants);
 }
 
@@ -41,15 +61,20 @@ test.describe("Invoice App workflows", () => {
       await selectInvoiceApp(page);
       await traverseNavBar(page, "Edit Invoice");
     });
+
     test("select from dropdown", async ({ page }) => {
       await expect(page).toHaveURL(/edit/i);
       await expect(
-        page.getByRole("heading", { name: /edit pdf/i }),
+        page.getByRole("heading", {
+          name: /edit invoice/i,
+          level: 5,
+        }),
       ).toBeVisible();
       await expect(
         page.getByText(/edit data to populate invoice/i),
       ).toBeVisible();
     });
+
     test("visible form fields", async ({ page }) => {
       await expect(page.getByText(/invoice title/i)).toBeVisible();
       await expect(page.getByText(/invoice caption/i)).toBeVisible();
@@ -57,18 +82,22 @@ test.describe("Invoice App workflows", () => {
       await expect(page.getByText(/invoice header/i)).toBeVisible();
       await expect(page.getByText(/tax rate/i)).toBeVisible();
     });
+
     test("ability to add more line items", async ({ page }) => {
       await page.getByRole("button", { name: /add item/i }).click();
       await expect(page.getByText(/edit line 1/i)).toBeVisible();
     });
+
     test("save button initially disabled", async ({ page }) => {
       await expect(
         page.getByRole("button", { name: /^save$/i }).last(),
       ).toBeDisabled();
     });
+
     test("invoice status options visible", async ({ page }) => {
       await expect(page.getByText(/invoice status/i)).toBeVisible();
     });
+
     test("fill form fields", async ({ page }) => {
       await expect(page.getByText(/invoice title/i)).toBeVisible();
       await expect(page.getByText(/invoice caption/i)).toBeVisible();
@@ -90,6 +119,7 @@ test.describe("Invoice App workflows", () => {
         .fill("April Rent Breakdown");
       await page.getByRole("textbox", { name: /tax rate/i }).fill("8.25");
     });
+
     test("fill date fields", async ({ page }) => {
       const startDate = page.getByTestId("start-date-input");
       const endDate = page.getByTestId("end-date-input");
@@ -116,14 +146,29 @@ test.describe("Invoice App workflows", () => {
       await expect(endDate).not.toHaveValue("");
     });
   });
+
   // view an invoice
   test.describe("should be able to view invoice app", () => {
     test.beforeEach(async ({ page }) => {
       await seedInvoiceStorage(page);
       await selectInvoiceApp(page);
     });
+
     test("with localStorage data", async ({ page }) => {
       await traverseNavBar(page, "View Invoice");
+
+      await expect(
+        page.getByText("Sorry, no matching records found."),
+      ).toBeVisible();
+      await expect(
+        page.locator("span", { hasText: "Select an invoice to begin" }),
+      ).toBeVisible();
+
+      await page.waitForLoadState("networkidle");
+
+      await selectInvoice(page, "invoice-test-id");
+      await page.waitForLoadState("networkidle");
+
       await expect(page.getByText("Month of April")).toBeVisible();
       await expect(
         page.getByText("Itemized bill for completed tasks"),
@@ -165,8 +210,9 @@ test.describe("Invoice App workflows", () => {
       await expect(page.getByText("Draft")).toBeVisible();
     });
   });
-  // print invoice
-  test.describe("should be able to attempt to print invoice", () => {
+
+  // help and support
+  test.describe("should be able to view the help and support menu", () => {
     test.beforeEach(async ({ page }) => {
       await seedInvoiceStorage(page);
       await selectInvoiceApp(page);
@@ -176,13 +222,6 @@ test.describe("Invoice App workflows", () => {
     test("display menu options", async ({ page }) => {
       await page.locator("#customized-btn").click();
       await expect(page.getByRole("menu")).toBeVisible();
-      await expect(
-        page.getByRole("menuitem", { name: /print invoice/i }),
-      ).toBeVisible();
-
-      await expect(
-        page.getByRole("menuitem", { name: /send email/i }),
-      ).toBeVisible();
 
       await expect(
         page.getByRole("menuitem", { name: /change theme/i }),
@@ -192,16 +231,62 @@ test.describe("Invoice App workflows", () => {
         page.getByRole("menuitem", { name: /help and support/i }),
       ).toBeVisible();
     });
+  });
+
+  // print invoice
+  test.describe("should be able to attempt to print invoice", () => {
+    test.beforeEach(async ({ page }) => {
+      await seedInvoiceStorage(page);
+      await selectInvoiceApp(page);
+    });
+
+    test("display menu options", async ({ page }) => {
+      await traverseNavBar(page, "View Invoice");
+
+      await expect(
+        page.getByText("Sorry, no matching records found."),
+      ).toBeVisible();
+      await expect(
+        page.locator("span", { hasText: "Select an invoice to begin" }),
+      ).toBeVisible();
+
+      await page.waitForLoadState("networkidle");
+
+      const printBtn = page.getByRole("button", { name: /print invoice/i });
+      const sendEmailBtn = page.getByRole("button", { name: /email invoice/i });
+
+      await expect(printBtn).toBeVisible();
+      await expect(sendEmailBtn).toBeVisible();
+
+      await expect(printBtn).toBeDisabled();
+      await expect(sendEmailBtn).toBeDisabled();
+
+      await selectInvoice(page, "invoice-test-id");
+      await page.waitForLoadState("networkidle");
+
+      await expect(printBtn).toBeVisible();
+      await expect(sendEmailBtn).toBeVisible();
+
+      await expect(printBtn).toBeEnabled();
+      await expect(sendEmailBtn).toBeEnabled();
+    });
 
     test("display print dialog", async ({ page }) => {
-      await page.locator("#customized-btn").click();
-      await expect(page.getByRole("menu")).toBeVisible();
-      const printMenuItem = page.getByRole("menuitem", {
-        name: /print invoice/i,
-      });
+      await traverseNavBar(page, "View Invoice");
 
-      await expect(printMenuItem).toBeVisible();
-      await printMenuItem.click();
+      await expect(
+        page.getByText("Sorry, no matching records found."),
+      ).toBeVisible();
+      await expect(
+        page.locator("span", { hasText: "Select an invoice to begin" }),
+      ).toBeVisible();
+
+      await selectInvoice(page, "invoice-test-id");
+      await page.waitForLoadState("networkidle");
+
+      const printBtn = page.getByRole("button", { name: /print invoice/i });
+
+      await printBtn.click();
 
       await expect(
         page.getByText(
@@ -231,28 +316,13 @@ test.describe("Invoice App workflows", () => {
       await expect(cancelButton).toBeEnabled();
     });
   });
+
   // view sender information
   test.describe("should be able to view sender information", () => {
     test.beforeEach(async ({ page }) => {
       await seedInvoiceStorage(page);
       await selectInvoiceApp(page);
       await traverseNavBar(page, "Sender");
-    });
-    test("visible form fields", async ({ page }) => {
-      await expect(
-        page.getByRole("heading", {
-          name: "Add details about the sender",
-          level: 5,
-        }),
-      ).toBeVisible();
-
-      await expect(
-        page.getByRole("heading", {
-          name: "Add details about the sender",
-          level: 6,
-        }),
-      ).toBeVisible();
-
       await expect(
         page.getByRole("heading", {
           name: "Sender Information",
@@ -261,8 +331,16 @@ test.describe("Invoice App workflows", () => {
       ).toBeVisible();
 
       await expect(
-        page.getByText("Required fields are marked with an *"),
+        page.getByRole("heading", {
+          name: "Required fields are marked with an *",
+          level: 6,
+        }),
       ).toBeVisible();
+    });
+
+    test("visible form fields", async ({ page }) => {
+      await selectInvoice(page, "invoice-test-id");
+      await page.waitForLoadState("networkidle");
 
       // Sender info
       await expect(page.getByLabel(/first name/i)).toHaveValue("Mohit");
@@ -275,31 +353,32 @@ test.describe("Invoice App workflows", () => {
       await expect(page.getByLabel(/zip code/i)).toHaveValue("34139");
     });
   });
-  // view reciever information
-  test.describe("should be able to view reciever information", () => {
+
+  // view receiver information
+  test.describe("should be able to view receiver information", () => {
     test.beforeEach(async ({ page }) => {
       await seedInvoiceStorage(page);
       await selectInvoiceApp(page);
-      await traverseNavBar(page, "Reciever");
-    });
-    test("visible form fields", async ({ page }) => {
+      await traverseNavBar(page, "Receiver");
+
       await expect(
         page.getByRole("heading", {
-          name: "Add details about the reciever",
+          name: "Receiver Information",
           level: 5,
         }),
       ).toBeVisible();
 
       await expect(
         page.getByRole("heading", {
-          name: "Add details about the reciever",
+          name: "Required fields are marked with an *",
           level: 6,
         }),
       ).toBeVisible();
+    });
 
-      await expect(
-        page.getByText("Required fields are marked with an *"),
-      ).toBeVisible();
+    test("visible form fields", async ({ page }) => {
+      await selectInvoice(page, "invoice-test-id");
+      await page.waitForLoadState("networkidle");
 
       // Receiver info
       await expect(page.getByLabel(/first name/i)).toHaveValue("James");
@@ -312,15 +391,34 @@ test.describe("Invoice App workflows", () => {
       await expect(page.getByLabel(/zip code/i)).toHaveValue("72203");
     });
   });
+
   // edit sender information
   test.describe("should be able to edit sender information", () => {
     test.beforeEach(async ({ page }) => {
+      await seedInvoiceStorage(page);
       await selectInvoiceApp(page);
       await traverseNavBar(page, "Sender");
+
+      await expect(
+        page.getByRole("heading", {
+          name: "Sender Information",
+          level: 5,
+        }),
+      ).toBeVisible();
+
+      await expect(
+        page.getByRole("heading", {
+          name: "Required fields are marked with an *",
+          level: 6,
+        }),
+      ).toBeVisible();
+    });
+
+    // catch all errors in form
+    test("edit form fields", async ({ page }) => {
+      await selectInvoice(page, "invoice-test-id");
       await page.waitForLoadState("networkidle");
-    });
-    // catch all errors in form
-    test("edit form fields", async ({ page }) => {
+
       await page.getByRole("textbox", { name: /first name/i }).fill("Te");
       await page.getByRole("textbox", { name: /last name/i }).fill("D");
       await page
@@ -375,15 +473,33 @@ test.describe("Invoice App workflows", () => {
       await expect(page.getByText(/Enter a valid zipcode/i)).not.toBeVisible();
     });
   });
+
   // edit receiver information
-  test.describe("should be able to edit reciever information", () => {
+  test.describe("should be able to edit receiver information", () => {
     test.beforeEach(async ({ page }) => {
+      await seedInvoiceStorage(page);
       await selectInvoiceApp(page);
-      await traverseNavBar(page, "Reciever");
+      await traverseNavBar(page, "Receiver");
+
+      await expect(
+        page.getByRole("heading", {
+          name: "Receiver Information",
+          level: 5,
+        }),
+      ).toBeVisible();
+
+      await expect(
+        page.getByRole("heading", {
+          name: "Required fields are marked with an *",
+          level: 6,
+        }),
+      ).toBeVisible();
     });
 
     // catch all errors in form
     test("edit form fields", async ({ page }) => {
+      await selectInvoice(page, "invoice-test-id");
+      await page.waitForLoadState("networkidle");
       await page.getByRole("textbox", { name: /first name/i }).fill("Te");
       await page.getByRole("textbox", { name: /last name/i }).fill("D");
       await page
@@ -438,6 +554,7 @@ test.describe("Invoice App workflows", () => {
       await expect(page.getByText(/Enter a valid zipcode/i)).not.toBeVisible();
     });
   });
+
   // view help information
   test.describe("should be able to view help center", () => {
     test.beforeEach(async ({ page }) => {

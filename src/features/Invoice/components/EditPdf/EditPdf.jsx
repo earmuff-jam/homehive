@@ -3,6 +3,8 @@ import React, { useEffect, useState } from "react";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
+import { v4 as uuidv4 } from "uuid";
+
 import dayjs from "dayjs";
 
 import {
@@ -33,10 +35,11 @@ import CustomSnackbar from "common/CustomSnackbar";
 import TextFieldWithLabel from "common/TextFieldWithLabel";
 import { ViewInvoiceRouteUri } from "common/utils";
 import {
-  useGetPdfDetailsQuery,
+  useGetInvoiceListQuery,
   useUpsertPdfDetailsMutation,
 } from "features/Api/invoiceApi";
 import EditPdfLineItemAccordion from "features/Invoice/components/EditPdf/EditPdfLineItemAccordion";
+import InvoiceSelector from "features/Invoice/components/InvoiceSelector/InvoiceSelector";
 import {
   DefaultInvoiceStatusIcons,
   DefaultInvoiceStatusOptions,
@@ -45,6 +48,7 @@ import { useAppTitle } from "hooks/useAppTitle";
 import { produce } from "immer";
 
 const defaultInvoiceFormFields = {
+  id: uuidv4(),
   title: "",
   caption: "",
   note: "",
@@ -56,17 +60,17 @@ const defaultInvoiceFormFields = {
 };
 
 export default function EditPdf({
-  title = "Edit Pdf",
+  title = "Edit Invoice",
   caption = "Edit data to populate invoice",
 }) {
   useAppTitle("Edit Invoice");
   const navigate = useNavigate();
 
   const {
-    data,
-    isLoading: isPdfDetailsLoading,
-    isSuccess: isPdfDetailsSuccess,
-  } = useGetPdfDetailsQuery();
+    data: invoiceList,
+    isLoading: isInvoiceListLoading,
+    isSuccess: isInvoiceListSuccess,
+  } = useGetInvoiceListQuery();
 
   const [upsertPdf, upsertPdfResult] = useUpsertPdfDetailsMutation();
 
@@ -86,6 +90,7 @@ export default function EditPdf({
   });
 
   const [showSnackbar, setShowSnackbar] = useState(false);
+  const [selectedInvoice, setSelectedInvoice] = useState("");
 
   const [options, setOptions] = useState(DefaultInvoiceStatusOptions);
 
@@ -137,25 +142,33 @@ export default function EditPdf({
   }, [upsertPdfResult.isLoading]);
 
   useEffect(() => {
-    if (isPdfDetailsSuccess) {
-      const invoiceDetails = data?.invoiceDetails;
-      if (invoiceDetails) {
+    if (isInvoiceListSuccess) {
+      const invoiceDetails = invoiceList?.invoiceDetails;
+      const selectedInvoiceDetails = invoiceDetails?.find(
+        (el) => el.id === selectedInvoice,
+      );
+      if (selectedInvoiceDetails) {
         reset({
-          title: invoiceDetails.title || "",
-          caption: invoiceDetails.caption || "",
-          note: invoiceDetails.note || "",
-          startDate: invoiceDetails.startDate || dayjs(),
-          endDate: invoiceDetails.endDate || dayjs(),
-          taxRate: invoiceDetails.taxRate || "",
-          invoiceHeader: invoiceDetails.invoiceHeader || "",
-          lineItems: invoiceDetails.lineItems || [],
+          id: selectedInvoiceDetails?.id || uuidv4(),
+          title: selectedInvoiceDetails.title || "",
+          caption: selectedInvoiceDetails.caption || "",
+          note: selectedInvoiceDetails.note || "",
+          startDate: selectedInvoiceDetails.startDate || dayjs(),
+          endDate: selectedInvoiceDetails.endDate || dayjs(),
+          taxRate: selectedInvoiceDetails.taxRate || "",
+          invoiceHeader: selectedInvoiceDetails.invoiceHeader || "",
+          lineItems: selectedInvoiceDetails.lineItems || [],
         });
+        setSelectedInvoice(selectedInvoiceDetails?.id);
+      } else {
+        // reset invoice form fields for create new invoice ...
+        reset({ ...defaultInvoiceFormFields });
       }
 
-      const existingInvoiceStatus = invoiceDetails?.invoiceStatus;
+      const existingInvoiceStatus = selectedInvoiceDetails?.invoiceStatus;
       handleSelection(existingInvoiceStatus?.label);
     }
-  }, [isPdfDetailsLoading]);
+  }, [isInvoiceListLoading, selectedInvoice]);
 
   return (
     <Container
@@ -169,21 +182,32 @@ export default function EditPdf({
       }}
     >
       <Stack spacing={2}>
-        <Stack>
-          <IconButton
-            onClick={handleSubmit(submit)}
-            color="primary"
-            size="small"
-            sx={{ alignSelf: "flex-end" }}
-            disabled={!isValid}
-          >
-            <SaveRounded />
-          </IconButton>
-          <Typography variant="h5" fontWeight="bold">
-            {title}
-          </Typography>
-          <Typography variant="subtitle2">{caption}</Typography>
+        <Stack direction="row" spacing={1} justifyContent="space-between">
+          <Stack>
+            <Typography variant="h5" color="text.secondary" fontWeight="bold">
+              {title}
+            </Typography>
+            <Typography variant="subtitle2">{caption}</Typography>
+          </Stack>
+          <Stack justifyContent="flex-end" direction="row" spacing={1}>
+            <InvoiceSelector
+              inputLabel="Select Invoice"
+              options={invoiceList?.invoiceDetails}
+              selectedInvoice={selectedInvoice}
+              setSelectedInvoice={setSelectedInvoice}
+            />
+            <IconButton
+              onClick={handleSubmit(submit)}
+              color="primary"
+              size="small"
+              sx={{ alignSelf: "flex-end" }}
+              disabled={!isValid}
+            >
+              <SaveRounded />
+            </IconButton>
+          </Stack>
         </Stack>
+
         {/* Invoice title and caption */}
         <Stack direction="row" spacing={2}>
           <Controller

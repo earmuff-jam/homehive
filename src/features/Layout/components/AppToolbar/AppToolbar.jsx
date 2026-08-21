@@ -14,18 +14,11 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import CustomSnackbar from "common/CustomSnackbar";
 import { DefaultTourStepsMapperObj } from "common/TourSteps";
-import {
-  HomeRouteUri,
-  fetchLoggedInUser,
-  isSelectedFeatureEnabled,
-} from "common/utils";
-import { useSendEmailMutation } from "features/Api/externalIntegrationsApi";
+import { HomeRouteUri, fetchLoggedInUser } from "common/utils";
 import { useLogoutMutation } from "features/Api/firebaseUserApi";
-import { useRetrieveInvoiceDetails } from "features/Invoice/hooks/useRetrieveInvoiceDetails";
 import MenuOptions from "features/Layout/components/NavBar/MenuOptions";
-import { generateInvoiceHTML, retrieveTourKey } from "features/Layout/utils";
+import { retrieveTourKey } from "features/Layout/utils";
 
 export default function AppToolbar({
   currentUri,
@@ -33,7 +26,6 @@ export default function AppToolbar({
   currentThemeIdx,
   setCurrentThemeIdx,
   handleDrawerOpen,
-  handleDrawerClose,
   setDialog,
 }) {
   const theme = useTheme();
@@ -44,19 +36,8 @@ export default function AppToolbar({
 
   const smallFormFactor = useMediaQuery(theme.breakpoints.down("sm"));
 
-  const [sendEmail, sendEmailResult] = useSendEmailMutation();
-
   const [logout, { isSuccess: isLogoutSuccess, isLoading: isLogoutLoading }] =
     useLogoutMutation();
-
-  const {
-    data,
-    recieverInfo,
-    draftInvoiceHeader,
-    draftInvoiceStatusLabel,
-    draftRecieverUserEmailAddress,
-    isDisabled,
-  } = useRetrieveInvoiceDetails();
 
   const currentSubRoute = currentRoute?.element.props?.routes?.find((route) =>
     matchPath(route.routeUri, location.pathname),
@@ -64,23 +45,8 @@ export default function AppToolbar({
   const showHelp =
     currentRoute.config.displayHelpSelector &&
     currentSubRoute?.config?.displayHelpSelector;
-  const showPrint =
-    currentRoute.config.displayPrintSelector &&
-    currentSubRoute?.config?.displayPrintSelector;
 
-  const isSendEmailFeatureEnabled = isSelectedFeatureEnabled("sendEmail");
   const isSplashPage = currentUri === HomeRouteUri;
-
-  const handleSendEmail = () => {
-    sendEmail({
-      to: draftRecieverUserEmailAddress,
-      subject: draftInvoiceHeader
-        ? `Invoice Details - ${draftInvoiceHeader}`
-        : "Invoice Details",
-      text: "Please view your attached invoice.",
-      html: generateInvoiceHTML(recieverInfo, data, draftInvoiceStatusLabel),
-    });
-  };
 
   const handleHelp = () => {
     const key = retrieveTourKey(currentUri, "property");
@@ -95,21 +61,6 @@ export default function AppToolbar({
     });
 
     !smallFormFactor && handleDrawerOpen();
-  };
-
-  const handlePrint = () => {
-    const draftDialogTitle =
-      "Verify all information is correct before proceeding to print. Press print when ready.";
-
-    setDialog({
-      title: draftDialogTitle,
-      label: "Verify Information",
-      type: "PRINT",
-      display: true,
-      showWatermark: false,
-    });
-
-    handleDrawerClose();
   };
 
   const changeTheme = (_, currentThemeIdx) => {
@@ -164,29 +115,13 @@ export default function AppToolbar({
             </Tooltip>
           )}
           <MenuOptions
-            showPrint={showPrint}
             handleHelp={handleHelp}
-            handlePrint={handlePrint}
-            handleSendEmail={handleSendEmail}
             handleTheme={() => changeTheme("", currentThemeIdx)}
-            isEmailEnabled={isSendEmailFeatureEnabled} // email feature check
-            isDisabled={isDisabled} // valid data check
             isLightTheme={Number(currentThemeIdx) === 1}
             showHelpAndSupport={showHelp}
-            isSendEmailLoading={sendEmailResult.isLoading}
           />
         </Stack>
       </Toolbar>
-      <CustomSnackbar
-        showSnackbar={sendEmailResult.isSuccess || sendEmailResult.isError}
-        setShowSnackbar={() => {}}
-        severity={sendEmailResult.isSuccess ? "success" : "error"}
-        title={
-          sendEmailResult.isSuccess
-            ? "Email sent successfully. Check spam if necessary."
-            : "Error sending email."
-        }
-      />
     </AppBar>
   );
 }

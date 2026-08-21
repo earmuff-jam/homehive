@@ -101,7 +101,7 @@ exports[`PropertyStatistics > PropertyStatistics Snapshot tests > renders correc
                     <span
                       class="MuiTypography-root MuiTypography-caption css-mpaqru-MuiTypography-root"
                     >
-                      Occupied since 08-07-2026
+                      Occupied since 08-13-2026
                     </span>
                   </div>
                   <div
@@ -264,7 +264,7 @@ exports[`PropertyStatistics > PropertyStatistics Snapshot tests > renders correc
                     <span
                       class="MuiTypography-root MuiTypography-caption css-mpaqru-MuiTypography-root"
                     >
-                      Occupied since 08-07-2026
+                      Occupied since 08-13-2026
                     </span>
                   </div>
                   <div
@@ -283,7 +283,7 @@ exports[`PropertyStatistics > PropertyStatistics Snapshot tests > renders correc
                     <span
                       class="MuiTypography-root MuiTypography-caption css-mpaqru-MuiTypography-root"
                     >
-                      Since 08-07-2026
+                      Since 08-13-2026
                     </span>
                   </div>
                   <div

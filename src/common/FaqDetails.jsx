@@ -1,6 +1,6 @@
 import React from "react";
 
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { ExpandMore } from "@mui/icons-material";
 import {
   Accordion,
   AccordionDetails,
@@ -34,9 +34,7 @@ export default function FaqDetails({ data }) {
               elevation={0}
               sx={{ marginBottom: "1rem" }}
             >
-              <AccordionSummary
-                expandIcon={<ExpandMoreIcon fontSize="small" />}
-              >
+              <AccordionSummary expandIcon={<ExpandMore fontSize="small" />}>
                 <Stack direction="row" spacing={1}>
                   <Box sx={{ color: "info.main" }}>{item.icon}</Box>
                   <Typography fontWeight="bold" fontSize="0.875rem">

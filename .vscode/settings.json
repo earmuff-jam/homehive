@@ -3,7 +3,6 @@
   "editor.renderWhitespace": "none",
   "explorer.confirmDelete": false,
   "explorer.confirmDragAndDrop": false,
-  "javascript.updateImportsOnFileMove.enabled": "always",
   "[javascript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
@@ -31,7 +30,6 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "go.toolsManagement.autoUpdate": true,
-  "javascript.preferences.importModuleSpecifier": "non-relative",
   "explorer.confirmPasteNative": false,
   "window.confirmSaveUntitledWorkspace": false,
   "workbench.editorAssociations": {
@@ -40,10 +38,4 @@
   "[jsonc]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  "workbench.colorCustomizations": {
-    "titleBar.activeBackground": "#61dafb",
-    "titleBar.activeForeground": "#15202b",
-    "titleBar.inactiveBackground": "#61dafb99",
-    "titleBar.inactiveForeground": "#15202b99"
-  }
 }

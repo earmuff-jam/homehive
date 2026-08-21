@@ -1,10 +1,10 @@
 import { createApi, fakeBaseQuery } from "@reduxjs/toolkit/query/react";
 
-// LocalStorageKeys ...
+// KeyMap ...
 // used to key items within the local storage
-const LocalStorageKeys = {
-  pdfDetails: "pdfDetails",
-  receiver: "recieverInfo",
+const KeyMap = {
+  InvoiceList: "invoiceList",
+  receiver: "receiverInfo",
   sender: "senderInfo",
   templates: "templates",
 };
@@ -12,7 +12,7 @@ const LocalStorageKeys = {
 // InvoiceApiTagTypes ...
 // used to define the tag types for rtk query
 const InvoiceApiTagTypes = {
-  pdfDetails: "invoice/pdfDetails",
+  getInvoiceList: "invoice/getInvoiceList",
   receiver: "invoice/recieverInfo",
   sender: "invoice/senderInfo",
   templates: "invoice/templates",
@@ -23,45 +23,50 @@ export const invoiceApi = createApi({
   baseQuery: fakeBaseQuery(),
   tagTypes: Object.values(InvoiceApiTagTypes),
   endpoints: (builder) => ({
-    // getPdfDetails ...
-    // defines a function that returns pdf details
-    getPdfDetails: builder.query({
+    // getInvoiceList ...
+    // defines a function that returns a list of pdf invoices
+    getInvoiceList: builder.query({
       queryFn: () => {
         try {
           return {
             data: {
-              invoiceDetails: JSON.parse(localStorage.getItem("pdfDetails")),
-              recieverInfo: JSON.parse(localStorage.getItem("recieverInfo")),
+              invoiceDetails: JSON.parse(
+                localStorage.getItem(KeyMap.InvoiceList),
+              ),
+              senderDetails: JSON.parse(localStorage.getItem(KeyMap.sender)),
+              receiverDetails: JSON.parse(
+                localStorage.getItem(KeyMap.receiver),
+              ),
             },
           };
         } catch (err) {
           return { error: err };
         }
       },
-      providesTags: [InvoiceApiTagTypes.pdfDetails],
+      providesTags: [InvoiceApiTagTypes.getInvoiceList],
     }),
     // getSenderInfo ...
     // defines a function that returns sender info
     getSenderInfo: builder.query({
-      queryFn: () => {
+      queryFn: ({ invoiceID }) => {
         try {
-          const data =
-            JSON.parse(localStorage.getItem(LocalStorageKeys.sender)) || {};
-          return { data };
+          const data = JSON.parse(localStorage.getItem(KeyMap.sender)) || [];
+          const senderInfo = data?.find((el) => el.invoiceID === invoiceID);
+          return { data: senderInfo };
         } catch (err) {
           return { error: err };
         }
       },
       providesTags: [InvoiceApiTagTypes.sender],
     }),
-    // getRecieverInfo ...
-    // defines a function that returns reciever info
+    // getReceiverInfo ...
+    // defines a function that returns receiver info
     getReceiverInfo: builder.query({
-      queryFn: () => {
+      queryFn: ({ invoiceID }) => {
         try {
-          const data =
-            JSON.parse(localStorage.getItem(LocalStorageKeys.receiver)) || {};
-          return { data };
+          const data = JSON.parse(localStorage.getItem(KeyMap.receiver)) || [];
+          const receiverInfo = data?.find((el) => el.invoiceID === invoiceID);
+          return { data: receiverInfo };
         } catch (err) {
           return { error: err };
         }
@@ -73,56 +78,110 @@ export const invoiceApi = createApi({
     upsertPdfDetails: builder.mutation({
       queryFn: (newData) => {
         try {
-          localStorage.setItem(
-            LocalStorageKeys.pdfDetails,
-            JSON.stringify(newData),
+          const existingInvoices = JSON.parse(
+            localStorage.getItem(KeyMap.InvoiceList) || "[]",
           );
+
+          const invoiceIndex = existingInvoices.findIndex(
+            (invoice) => invoice.id === newData.id,
+          );
+
+          if (invoiceIndex >= 0) {
+            existingInvoices[invoiceIndex] = newData;
+          } else {
+            existingInvoices.push(newData);
+          }
+
+          localStorage.setItem(
+            KeyMap.InvoiceList,
+            JSON.stringify(existingInvoices),
+          );
+
           return { data: newData };
         } catch (err) {
           return { error: err };
         }
       },
-      invalidatesTags: [InvoiceApiTagTypes.pdfDetails],
+      invalidatesTags: [
+        InvoiceApiTagTypes.pdfDetails,
+        InvoiceApiTagTypes.getInvoiceList,
+      ],
     }),
+
     // upsertSenderInfo ...
     // defines a function that upserts sender info
     upsertSenderInfo: builder.mutation({
       queryFn: (newData) => {
         try {
-          localStorage.setItem(
-            LocalStorageKeys.sender,
-            JSON.stringify(newData),
+          const existingSenders = JSON.parse(
+            localStorage.getItem(KeyMap.sender) || "[]",
           );
+
+          const senderInvoiceIdx = existingSenders.findIndex(
+            (sender) => sender.invoiceID === newData.invoiceID,
+          );
+
+          if (senderInvoiceIdx >= 0) {
+            existingSenders[senderInvoiceIdx] = newData;
+          } else {
+            existingSenders.push(newData);
+          }
+
+          localStorage.setItem(KeyMap.sender, JSON.stringify(existingSenders));
+
           return { data: newData };
         } catch (err) {
           return { error: err };
         }
       },
-      invalidatesTags: [InvoiceApiTagTypes.sender],
+
+      invalidatesTags: [
+        InvoiceApiTagTypes.sender,
+        InvoiceApiTagTypes.getInvoiceList,
+      ],
     }),
+
     // upsertReceiverInfo ...
     // defines a function that upserts reciever info
     upsertReceiverInfo: builder.mutation({
       queryFn: (newData) => {
         try {
-          localStorage.setItem(
-            LocalStorageKeys.receiver,
-            JSON.stringify(newData),
+          const existingReceivers = JSON.parse(
+            localStorage.getItem(KeyMap.receiver) || "[]",
           );
+
+          const receiverInvoiceIdx = existingReceivers.findIndex(
+            (receiver) => receiver.invoiceID === newData.invoiceID,
+          );
+
+          if (receiverInvoiceIdx >= 0) {
+            existingReceivers[receiverInvoiceIdx] = newData;
+          } else {
+            existingReceivers.push(newData);
+          }
+
+          localStorage.setItem(
+            KeyMap.receiver,
+            JSON.stringify(existingReceivers),
+          );
+
           return { data: newData };
         } catch (err) {
           return { error: err };
         }
       },
-      invalidatesTags: [InvoiceApiTagTypes.receiver],
+      invalidatesTags: [
+        InvoiceApiTagTypes.receiver,
+        InvoiceApiTagTypes.getInvoiceList,
+      ],
     }),
+
     // getCustomTemplates ...
     // defines a function that retrieves custom template
     getCustomTemplates: builder.query({
       queryFn: () => {
         try {
-          const data =
-            JSON.parse(localStorage.getItem(LocalStorageKeys.templates)) || {};
+          const data = JSON.parse(localStorage.getItem(KeyMap.templates)) || {};
           return { data };
         } catch (err) {
           return { error: err };
@@ -135,10 +194,7 @@ export const invoiceApi = createApi({
     upsertCustomTemplate: builder.mutation({
       queryFn: (newData) => {
         try {
-          localStorage.setItem(
-            LocalStorageKeys.templates,
-            JSON.stringify(newData),
-          );
+          localStorage.setItem(KeyMap.templates, JSON.stringify(newData));
           return { data: newData };
         } catch (err) {
           return { error: err };
@@ -150,7 +206,7 @@ export const invoiceApi = createApi({
 });
 
 export const {
-  useGetPdfDetailsQuery,
+  useGetInvoiceListQuery,
   useGetSenderInfoQuery,
   useGetReceiverInfoQuery,
   useUpsertPdfDetailsMutation,
