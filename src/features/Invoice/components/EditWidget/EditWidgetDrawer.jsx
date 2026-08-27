@@ -173,7 +173,7 @@ export default function EditWidgetDrawer({
           >
             <Stack direction="row" justifyContent="flex-end" spacing={1}>
               <AButton
-                label="Cancel"
+                label="Close"
                 variant="contained"
                 size="small"
                 onClick={() => handleEditingWidget("")}
