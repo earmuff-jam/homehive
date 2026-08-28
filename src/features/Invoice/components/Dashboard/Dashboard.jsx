@@ -166,7 +166,7 @@ export default function Dashboard() {
           <Stack direction="row" spacing={1}>
             <Tooltip title="Save changes in dashboard">
               <AIconButton
-                // data-tour="dashboard-1"
+                data-tour="dashboard-1"
                 onClick={formMethods.handleSubmit(submit)}
                 label={<SaveRounded fontSize="small" color="primary" />}
               />

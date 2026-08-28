@@ -131,34 +131,35 @@ export function normalizeInvoiceTrendsChartsDataset(
 }
 
 // normalizeInvoiceTimelineChartDataset ...
-export function normalizeInvoiceTimelineChartDataset(draftInvoiceList = []) {
-  const months = new Set();
-  const filteredDraftInvoiceList = draftInvoiceList.filter(Boolean); // remove unwanted values
+export function normalizeInvoiceTimelineChartDataset(invoices = []) {
+  const filteredInvoices = invoices.filter(Boolean);
 
-  filteredDraftInvoiceList.forEach((invoice) => {
-    const month = dayjs(invoice.startDate).format("MMMM");
-    months.add(month);
-  });
+  const datasets = filteredInvoices.map((invoice, id) => {
+    const startDate = dayjs(invoice.startDate);
+    const endDate = dayjs(invoice.endDate);
 
-  const monthLabels = Array.from(months);
-
-  const datasets = draftInvoiceList.map((invoice, id) => {
-    const month = dayjs(invoice.startDate).format("MMMM");
-    const index = monthLabels.indexOf(month);
-
-    const duration = dayjs(invoice.endDate).diff(invoice.startDate, "day");
-    const data = monthLabels.map((_, idx) => (idx === index ? duration : null));
+    const duration = endDate.diff(startDate, "day");
 
     return {
       label: `Payment: $${invoice.lineItems?.[0]?.payment} via ${invoice.lineItems?.[0]?.paymentMethod}`,
-      data,
+
+      data: [
+        {
+          x: [startDate.toDate(), endDate.toDate()],
+          y: id,
+          startDate: startDate.toDate(),
+          endDate: endDate.toDate(),
+          duration,
+        },
+      ],
+
       backgroundColor: id % 2 === 0 ? "#4CAF50" : "rgba(255, 99, 132, 0.7)",
+
       borderWidth: 1,
     };
   });
 
   return {
-    labels: monthLabels,
     datasets,
   };
 }

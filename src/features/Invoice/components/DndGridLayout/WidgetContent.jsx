@@ -2,21 +2,21 @@ import React from "react";
 
 import { EditRounded } from "@mui/icons-material";
 import { Skeleton, Stack, Typography } from "@mui/material";
-import { useGetInvoiceQuery } from "features/Api/invoiceApi";
+import { useGetInvoicesQuery } from "features/Api/invoiceApi";
 import WidgetContentWrapper from "features/Invoice/components/DndGridLayout/WidgetContentWrapper";
 
 export default function WidgetContent({ widget }) {
-  const selectedInvoiceID = widget?.filters?.selectedInvoiceID;
+  const selectedInvoiceIDs = widget?.filters?.invoiceIDs;
 
-  const { data: invoice = {}, isLoading: isInvoiceListLoading } =
-    useGetInvoiceQuery(
-      { invoiceID: selectedInvoiceID },
-      { skip: !selectedInvoiceID },
+  const { data: invoices = [], isLoading: isInvoiceListLoading } =
+    useGetInvoicesQuery(
+      { invoiceIDs: selectedInvoiceIDs },
+      { skip: selectedInvoiceIDs?.length <= 0 },
     );
 
   if (isInvoiceListLoading) return <Skeleton height="5rem" />;
 
-  if (!selectedInvoiceID) {
+  if (!selectedInvoiceIDs || selectedInvoiceIDs?.length <= 0) {
     return (
       <Stack alignItems="center" justifyContent="center" margin="5rem">
         <EditRounded
@@ -32,5 +32,11 @@ export default function WidgetContent({ widget }) {
     );
   }
 
-  return <WidgetContentWrapper type={widget?.type} data={invoice} />;
+  return (
+    <WidgetContentWrapper
+      data={invoices}
+      widget={widget}
+      selectedInvoiceIDs={selectedInvoiceIDs}
+    />
+  );
 }

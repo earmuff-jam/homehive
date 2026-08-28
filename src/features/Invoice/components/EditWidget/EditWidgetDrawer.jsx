@@ -46,10 +46,10 @@ export default function EditWidgetDrawer({
       onClose={() => handleEditingWidget(editingWidgetID)}
       aria-modal="true"
       sx={{
-        width: ltMedFormFactor ? "100%" : 440,
+        width: ltMedFormFactor ? "100%" : 500,
         flexShrink: 0,
         [`& .MuiDrawer-paper`]: {
-          width: ltMedFormFactor ? "100%" : 440,
+          width: ltMedFormFactor ? "100%" : 500,
           boxSizing: "border-box",
           display: "flex",
           flexDirection: "column",
@@ -63,6 +63,7 @@ export default function EditWidgetDrawer({
           sx={{
             height: "100%",
             minHeight: 0,
+            padding: 1,
           }}
         >
           <Stack padding={1} spacing={1}>
@@ -124,39 +125,38 @@ export default function EditWidgetDrawer({
                 />
                 <Divider>Choose Invoice</Divider>
                 <Controller
-                  name={`widgets.${widgetIndex}.filters.selectedInvoiceID`}
+                  name={`widgets.${widgetIndex}.filters.invoiceIDs`}
                   control={control}
-                  render={({ field }) => (
-                    <Stack>
-                      <Typography
-                        variant="body2"
-                        fontWeight="medium"
-                        gutterBottom
-                      >
-                        Select Invoice *
-                      </Typography>
+                  defaultValue={[]}
+                  render={({ field }) => {
+                    const selectedInvoices =
+                      invoiceList?.invoiceDetails?.filter((invoice) =>
+                        field.value?.includes(invoice.id),
+                      ) || [];
 
+                    return (
                       <Autocomplete
+                        multiple
                         options={invoiceList?.invoiceDetails || []}
-                        getOptionLabel={(opt) => opt?.invoiceHeader || ""}
-                        value={
-                          invoiceList?.invoiceDetails?.find(
-                            (invoice) => invoice.id === field.value,
-                          ) || null
+                        getOptionLabel={(option) => option?.invoiceHeader || ""}
+                        isOptionEqualToValue={(option, value) =>
+                          option.id === value.id
                         }
-                        onChange={(_, value) =>
-                          field.onChange(value?.id ?? null)
-                        }
+                        value={selectedInvoices}
+                        onChange={(_, values) => {
+                          field.onChange(values.map((invoice) => invoice.id));
+                        }}
                         renderInput={(params) => (
                           <TextField
                             {...params}
                             size="small"
-                            placeholder="Select invoice"
+                            variant="standard"
+                            placeholder="Select invoices"
                           />
                         )}
                       />
-                    </Stack>
-                  )}
+                    );
+                  }}
                 />
               </Stack>
             </form>

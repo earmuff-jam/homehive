@@ -49,17 +49,19 @@ export const invoiceApi = createApi({
       providesTags: [InvoiceApiTagTypes.getInvoiceList],
     }),
 
-    // getInvoice ...
-    // defines a function that returns a specific invoice
-    getInvoice: builder.query({
-      queryFn: ({ invoiceID }) => {
+    // getInvoices ...
+    // defines a function that returns invoices that match passed in IDs
+    getInvoices: builder.query({
+      queryFn: ({ invoiceIDs }) => {
         try {
           const invoiceList = JSON.parse(
             localStorage.getItem(KeyMap.InvoiceList),
           );
 
           return {
-            data: invoiceList?.find((item) => item.id === invoiceID),
+            data: invoiceList?.filter((invoice) =>
+              invoiceIDs.includes(invoice?.id),
+            ),
           };
         } catch (err) {
           return { error: err };
@@ -262,7 +264,7 @@ export const invoiceApi = createApi({
 
 export const {
   useGetInvoiceListQuery,
-  useGetInvoiceQuery,
+  useGetInvoicesQuery,
   useGetSenderInfoQuery,
   useGetReceiverInfoQuery,
   useUpsertPdfDetailsMutation,
