@@ -52,7 +52,7 @@ export const invoiceApi = createApi({
     // getInvoices ...
     // defines a function that returns invoices that match passed in IDs
     getInvoices: builder.query({
-      queryFn: ({ invoiceIDs }) => {
+      queryFn: ({ invoiceIDs = [] }) => {
         try {
           const invoiceList = JSON.parse(
             localStorage.getItem(KeyMap.InvoiceList),
