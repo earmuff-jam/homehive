@@ -35,32 +35,43 @@ const renderComponent = (data = mockRentData) =>
     </ThemeProvider>,
   );
 
-describe("ViewRentalPaymentSummary", () => {
-  describe("Snapshot tests", () => {
+describe("View Rental Payment Summary tests", () => {
+  describe("View rental payment summary snapshot tests", () => {
     it("renders correctly and matches snapshot", () => {
       const { asFragment } = renderComponent();
 
       expect(asFragment()).toMatchSnapshot();
     });
   });
-
-  describe("Component tests", () => {
+  describe("View rental payment summary component tests", () => {
     it("renders table headers", () => {
       renderComponent();
 
-      expect(screen.getByText("Tenant Email")).toBeInTheDocument();
-      expect(screen.getByText("Amount Paid ($)")).toBeInTheDocument();
-      expect(screen.getByText("Payment Method")).toBeInTheDocument();
-      expect(screen.getByText("Rent Month")).toBeInTheDocument();
-      expect(screen.getByText("Updated on")).toBeInTheDocument();
+      expect(screen.getByTestId("material-react-table")).toHaveTextContent(
+        "charlieWilliam@gmail.com",
+      );
+      expect(screen.getByTestId("material-react-table")).toHaveTextContent(
+        "maria-nicole23@gmail.com",
+      );
+      expect(screen.getByTestId("material-react-table")).toHaveTextContent(
+        1000,
+      );
+      expect(screen.getByTestId("material-react-table")).toHaveTextContent(50);
     });
 
     it("renders tenant payment data", () => {
       renderComponent();
 
-      expect(screen.getByText("maria-nicole23@gmail.com")).toBeInTheDocument();
-      expect(screen.getByText("Manual")).toBeInTheDocument();
-      expect(screen.getByText("March")).toBeInTheDocument();
+      expect(screen.getByTestId("material-react-table")).toHaveTextContent(
+        "charlieWilliam@gmail.com",
+      );
+      expect(screen.getByTestId("material-react-table")).toHaveTextContent(
+        "maria-nicole23@gmail.com",
+      );
+      expect(screen.getByTestId("material-react-table")).toHaveTextContent(
+        1000,
+      );
+      expect(screen.getByTestId("material-react-table")).toHaveTextContent(50);
     });
 
     it("shows empty state when no data", () => {

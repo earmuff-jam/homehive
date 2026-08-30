@@ -1,0 +1,25 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Invoice timeline chart tests > Invoice timeline chart snapshot tests > matches the snapshot with valid datasets 1`] = `
+<DocumentFragment>
+  <div
+    class="MuiStack-root css-nen11g-MuiStack-root"
+    data-tour="dashboard-4"
+  >
+    <div
+      data-testid="bar-chart"
+    >
+      <span
+        data-testid="chart-data"
+      >
+        {"datasets":[{"label":"Payment: $undefined via undefined","data":[{"x":["2026-06-12T12:00:00.000Z","2026-06-12T12:00:00.000Z"],"y":0,"startDate":"2026-06-12T12:00:00.000Z","endDate":"2026-06-12T12:00:00.000Z","duration":0}],"backgroundColor":"#4CAF50","borderWidth":1}]}
+      </span>
+      <span
+        data-testid="chart-options"
+      >
+        {"indexAxis":"y","responsive":true,"plugins":{"title":{"display":true,"text":"Invoice Timeline"},"tooltip":{"displayColors":false,"callbacks":{}}},"scales":{"x":{"type":"time","title":{"display":true,"text":"Date"},"time":{"unit":"month","displayFormats":{"month":"MMM YY"}}},"y":{"display":false}}}
+      </span>
+    </div>
+  </div>
+</DocumentFragment>
+`;

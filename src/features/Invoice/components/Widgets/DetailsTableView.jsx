@@ -14,7 +14,7 @@ import {
 
 dayjs.extend(relativeTime);
 
-const DetailsTableView = ({ data = {} }) => {
+const DetailsTableView = ({ data = [] }) => {
   const columns = [
     {
       accessorKey: "category",
@@ -64,7 +64,7 @@ const DetailsTableView = ({ data = {} }) => {
   ];
 
   // protect from re-render
-  const tableData = useMemo(() => noramlizeDetailsTableData([data]), [data]);
+  const tableData = useMemo(() => noramlizeDetailsTableData(data), [data]);
 
   const table = useMaterialReactTable({
     columns,
