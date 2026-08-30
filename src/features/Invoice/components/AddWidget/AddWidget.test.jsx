@@ -4,13 +4,6 @@ import AddWidget from "./AddWidget";
 import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it, test, vi } from "vitest";
 
-vi.mock("features/Invoice/constants", () => ({
-  WidgetTypeList: [
-    { id: "chart", label: "Chart", config: {} },
-    { id: "summary", label: "Summary", config: {} },
-  ],
-}));
-
 describe("AddWidget Component", () => {
   describe("AddWidget Component snapshot tests", () => {
     test("Footer matches snapshot", () => {
@@ -24,18 +17,36 @@ describe("AddWidget Component", () => {
 
       expect(screen.getByText("Add Widget")).toBeInTheDocument();
 
-      expect(screen.getByText("Chart")).toBeInTheDocument();
-      expect(screen.getByText("Summary")).toBeInTheDocument();
+      expect(screen.getByText("Timeline Chart")).toBeInTheDocument();
+      expect(screen.getByText("Collected tax and totals")).toBeInTheDocument();
+      expect(screen.getByText("Items / Service Type")).toBeInTheDocument();
+      expect(screen.getByText("Item Details Table")).toBeInTheDocument();
     });
 
-    it("calls handleAddWidget with correct id on click", () => {
+    it("calls handleAddWidget with the selected widget type", () => {
       const handleAddWidget = vi.fn();
+
       render(<AddWidget handleAddWidget={handleAddWidget} />);
 
-      fireEvent.click(screen.getByText("Chart"));
+      fireEvent.click(screen.getByText("Timeline Chart"));
 
       expect(handleAddWidget).toHaveBeenCalledTimes(1);
-      expect(handleAddWidget).toHaveBeenCalledWith("chart");
+      expect(handleAddWidget).toHaveBeenCalledWith("timeline-chart");
+
+      fireEvent.click(screen.getByText("Collected tax and totals"));
+
+      expect(handleAddWidget).toHaveBeenCalledTimes(2);
+      expect(handleAddWidget).toHaveBeenCalledWith("tax-chart");
+
+      fireEvent.click(screen.getByText("Items / Service Type"));
+
+      expect(handleAddWidget).toHaveBeenCalledTimes(3);
+      expect(handleAddWidget).toHaveBeenCalledWith("service-chart");
+
+      fireEvent.click(screen.getByText("Item Details Table"));
+
+      expect(handleAddWidget).toHaveBeenCalledTimes(4);
+      expect(handleAddWidget).toHaveBeenCalledWith("details-table");
     });
   });
 });

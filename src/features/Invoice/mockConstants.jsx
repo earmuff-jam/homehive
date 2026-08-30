@@ -99,6 +99,18 @@ const InvoiceMockValues = {
         },
       ],
     },
+    InvoiceItemTypeFreqChartData: {
+      labels: ["Services", "Fees"],
+      datasets: [
+        {
+          label: "Item Type Frequency",
+          data: [1, 1],
+          backgroundColor: "rgba(153, 102, 255, 0.7)",
+          borderColor: "rgba(153, 102, 255, 1)",
+          borderWidth: 1,
+        },
+      ],
+    },
   },
 };
 

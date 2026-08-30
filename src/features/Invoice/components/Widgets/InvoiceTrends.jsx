@@ -68,6 +68,7 @@ const InvoiceTrendsChart = ({ data = {} }) => {
   };
 
   const chartData = normalizeInvoiceTrendsChartsDataset([data], chartType);
+  // console.log(data, chartData);
 
   return (
     <Stack data-tour="dashboard-5">

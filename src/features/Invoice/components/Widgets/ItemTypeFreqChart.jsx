@@ -24,7 +24,7 @@ ChartJS.register(
   Legend,
 );
 
-const ItemTypeFreqChart = ({ data }) => {
+const ItemTypeFreqChart = ({ data = [] }) => {
   const options = {
     responsive: true,
     plugins: {
@@ -46,11 +46,13 @@ const ItemTypeFreqChart = ({ data }) => {
     },
   };
 
-  const chartData = normalizeInvoiceItemTypeChartDataset([data]);
+  const chartData = normalizeInvoiceItemTypeChartDataset(data);
+
+  const containsLabels = chartData?.labels.length;
 
   return (
     <Stack data-tour="dashboard-6">
-      {Object.keys(chartData).length <= 0 ? (
+      {containsLabels <= 0 ? (
         <EmptyComponent />
       ) : (
         <Bar data={chartData} options={options} />

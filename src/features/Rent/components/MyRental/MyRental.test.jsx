@@ -12,7 +12,7 @@ import {
   useGetTenantByPropertyIdQuery,
 } from "features/Api/tenantsApi";
 import { lightTheme } from "src/Theme";
-import { afterEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 vi.mock("common/utils", () => ({
   __esModule: true,
@@ -122,7 +122,14 @@ const renderWithTheme = (item) =>
   render(<ThemeProvider theme={lightTheme}>{item}</ThemeProvider>);
 
 describe("MyRental", () => {
-  afterEach(() => resetMocks());
+  beforeEach(() => {
+    vi.useFakeTimers();
+  });
+
+  afterEach(() => {
+    resetMocks();
+    vi.useRealTimers();
+  });
 
   it("shows empty state when no property", () => {
     useGetActiveTenantsByEmailAddressQuery.mockReturnValue({
@@ -165,6 +172,8 @@ describe("MyRental", () => {
   });
 
   it("matches snapshot (full loaded state)", () => {
+    vi.setSystemTime(new Date("2026-06-10"));
+
     useGetActiveTenantsByEmailAddressQuery.mockReturnValue({
       data: {
         propertyId: "123",

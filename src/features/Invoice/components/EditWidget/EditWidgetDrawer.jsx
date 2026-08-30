@@ -137,6 +137,7 @@ export default function EditWidgetDrawer({
                     return (
                       <Autocomplete
                         multiple
+                        limitTags={3}
                         options={invoiceList?.invoiceDetails || []}
                         getOptionLabel={(option) => option?.invoiceHeader || ""}
                         isOptionEqualToValue={(option, value) =>

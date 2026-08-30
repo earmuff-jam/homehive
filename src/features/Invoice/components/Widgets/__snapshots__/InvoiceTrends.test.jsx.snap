@@ -1,19 +1,14 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`InvoiceTrends > renders correctly and matches snapshot 1`] = `
+exports[`InvoiceTrends > renders correctly and matches empty snapshot 1`] = `
 <DocumentFragment>
   <div
     class="MuiStack-root css-nen11g-MuiStack-root"
     data-tour="dashboard-5"
   >
     <div
-      class="MuiStack-root css-gmwslw-MuiStack-root"
+      class="MuiStack-root css-nen11g-MuiStack-root"
     >
-      <div
-        data-testid="row-header"
-      >
-        Trends - Overview
-      </div>
       <div
         class="MuiBox-root css-0"
       >
@@ -69,7 +64,7 @@ exports[`InvoiceTrends > renders correctly and matches snapshot 1`] = `
       class="MuiBox-root css-0"
     >
       <div
-        data-testid="empty-component"
+        data-testid="bar-chart"
       />
     </div>
   </div>

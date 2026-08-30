@@ -7,8 +7,6 @@ import InvoiceMockValues from "features/Invoice/mockConstants";
 import * as utils from "features/Invoice/utils";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-vi.mock("chartjs-adapter-dayjs-4", () => ({}));
-
 vi.mock("react-chartjs-2", () => ({
   Bar: ({ data, options }) => (
     <div data-testid="bar-chart">
