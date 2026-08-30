@@ -36,7 +36,7 @@ const ChartType = {
   Line: "line",
 };
 
-const InvoiceTrendsChart = ({ data = {} }) => {
+const InvoiceTrendsChart = ({ data = [] }) => {
   const [chartType, setChartType] = useState(ChartType.Bar);
 
   const handleChartType = (ev, draftChartType) => {
@@ -67,8 +67,7 @@ const InvoiceTrendsChart = ({ data = {} }) => {
     },
   };
 
-  const chartData = normalizeInvoiceTrendsChartsDataset([data], chartType);
-
+  const chartData = normalizeInvoiceTrendsChartsDataset(data, chartType);
   return (
     <Stack data-tour="dashboard-5">
       <Stack>
@@ -97,7 +96,7 @@ const InvoiceTrendsChart = ({ data = {} }) => {
         </Box>
       </Stack>
       <Box>
-        {chartData === null ? (
+        {chartData?.labels?.length <= 0 ? (
           <EmptyComponent />
         ) : chartType === ChartType.Bar ? (
           <Bar data={chartData} options={options} />
