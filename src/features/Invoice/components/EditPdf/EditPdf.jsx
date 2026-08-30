@@ -47,7 +47,9 @@ import {
 import { useAppTitle } from "hooks/useAppTitle";
 import { produce } from "immer";
 
-const defaultInvoiceFormFields = {
+// DefaultInvoiceFormFields ...
+// defines the default invoice form fields
+const DefaultInvoiceFormFields = {
   id: uuidv4(),
   title: "",
   caption: "",
@@ -81,7 +83,7 @@ export default function EditPdf({
     reset,
   } = useForm({
     mode: "onChange",
-    defaultValues: defaultInvoiceFormFields,
+    defaultValues: DefaultInvoiceFormFields,
   });
 
   const { fields, append, remove } = useFieldArray({
@@ -162,7 +164,7 @@ export default function EditPdf({
         setSelectedInvoice(selectedInvoiceDetails?.id);
       } else {
         // reset invoice form fields for create new invoice ...
-        reset({ ...defaultInvoiceFormFields });
+        reset({ ...DefaultInvoiceFormFields });
       }
 
       const existingInvoiceStatus = selectedInvoiceDetails?.invoiceStatus;

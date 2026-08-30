@@ -7,12 +7,15 @@ const KeyMap = {
   receiver: "receiverInfo",
   sender: "senderInfo",
   templates: "templates",
+  DashboardWidgets: "dashboardWidgets",
 };
 
 // InvoiceApiTagTypes ...
 // used to define the tag types for rtk query
 const InvoiceApiTagTypes = {
   getInvoiceList: "invoice/getInvoiceList",
+  getInvoice: "invoice/getInvoice",
+  getDashboardWidgets: "invoice/getDashboardWidgets",
   receiver: "invoice/recieverInfo",
   sender: "invoice/senderInfo",
   templates: "invoice/templates",
@@ -45,6 +48,27 @@ export const invoiceApi = createApi({
       },
       providesTags: [InvoiceApiTagTypes.getInvoiceList],
     }),
+
+    // getInvoices ...
+    // defines a function that returns invoices that match passed in IDs
+    getInvoices: builder.query({
+      queryFn: ({ invoiceIDs = [] }) => {
+        try {
+          const invoiceList = JSON.parse(
+            localStorage.getItem(KeyMap.InvoiceList),
+          );
+
+          return {
+            data: invoiceList?.filter((invoice) =>
+              invoiceIDs.includes(invoice?.id),
+            ),
+          };
+        } catch (err) {
+          return { error: err };
+        }
+      },
+    }),
+
     // getSenderInfo ...
     // defines a function that returns sender info
     getSenderInfo: builder.query({
@@ -59,6 +83,7 @@ export const invoiceApi = createApi({
       },
       providesTags: [InvoiceApiTagTypes.sender],
     }),
+
     // getReceiverInfo ...
     // defines a function that returns receiver info
     getReceiverInfo: builder.query({
@@ -189,6 +214,7 @@ export const invoiceApi = createApi({
       },
       providesTags: [InvoiceApiTagTypes.templates],
     }),
+
     // upsertCustomTemplate ...
     // defines a function that upserts reciever info
     upsertCustomTemplate: builder.mutation({
@@ -202,11 +228,43 @@ export const invoiceApi = createApi({
       },
       invalidatesTags: [InvoiceApiTagTypes.templates],
     }),
+
+    // getDashboardWidgets ...
+    // defines a function that retrieves custom widgets for the dashboard
+    getDashboardWidgets: builder.query({
+      queryFn: () => {
+        try {
+          const data =
+            JSON.parse(localStorage.getItem(KeyMap.DashboardWidgets)) || [];
+
+          return { data: data || [] };
+        } catch (err) {
+          return { error: err };
+        }
+      },
+      providesTags: [InvoiceApiTagTypes.getDashboardWidgets],
+    }),
+
+    // upsertDashboardWidgets ...
+    // defines a function that upserts dashboard widgets
+    upsertDashboardWidgets: builder.mutation({
+      queryFn: (data) => {
+        try {
+          localStorage.setItem(KeyMap.DashboardWidgets, JSON.stringify(data));
+
+          return { data: data };
+        } catch (err) {
+          return { error: err };
+        }
+      },
+      invalidatesTags: [InvoiceApiTagTypes.getDashboardWidgets],
+    }),
   }),
 });
 
 export const {
   useGetInvoiceListQuery,
+  useGetInvoicesQuery,
   useGetSenderInfoQuery,
   useGetReceiverInfoQuery,
   useUpsertPdfDetailsMutation,
@@ -214,4 +272,6 @@ export const {
   useUpsertReceiverInfoMutation,
   useGetCustomTemplatesQuery,
   useUpsertCustomTemplateMutation,
+  useGetDashboardWidgetsQuery,
+  useUpsertDashboardWidgetsMutation,
 } = invoiceApi;

@@ -2,16 +2,27 @@ import React from "react";
 
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { CancelRounded, DragIndicatorRounded } from "@mui/icons-material";
-import { Badge, Box, IconButton, Paper, Stack, Tooltip } from "@mui/material";
+import {
+  CancelRounded,
+  DragIndicatorRounded,
+  EditRounded,
+} from "@mui/icons-material";
+import {
+  Box,
+  IconButton,
+  Paper,
+  Stack,
+  Tooltip,
+  Typography,
+} from "@mui/material";
+import AIconButton from "common/AIconButton";
+import WidgetContent from "features/Invoice/components/DndGridLayout/WidgetContent";
 
 export default function Widget({
-  editMode,
   widget = {},
+  handleEditMode,
   handleRemoveWidget,
-  children,
 }) {
-  const { widgetID, inset, ...config } = widget.config; // eslint-disable-line no-unused-vars
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({
       id: widget.widgetID,
@@ -24,56 +35,64 @@ export default function Widget({
 
   return (
     <Box sx={{ ...style }} ref={setNodeRef}>
-      <Badge
-        badgeContent={
-          editMode && (
-            <IconButton
+      <Box
+        component={Paper}
+        {...widget.config}
+        sx={{
+          padding: 1,
+          overflow: "auto",
+          backgroundColor: "background.paper",
+        }}
+      >
+        <Stack direction="row" justifyContent="space-between" spacing={1}>
+          <Stack direction="row" spacing={1} alignItems="center">
+            <Tooltip title="Drag and drop to restructure widget layout">
+              <IconButton
+                size="small"
+                {...attributes}
+                {...listeners}
+                disableRipple
+                disableFocusRipple
+                disableTouchRipple
+                color="primary"
+                sx={{
+                  cursor: "move",
+                  alignSelf: "flex-start", // put icon to the top of the widget container
+                  paddingTop: "1rem",
+                }}
+              >
+                <DragIndicatorRounded fontSize="inherit" />
+              </IconButton>
+            </Tooltip>
+            <Stack>
+              <Typography variant="h6" color="primary">
+                {widget?.title}
+              </Typography>
+              <Typography variant="caption">{widget?.caption}</Typography>
+            </Stack>
+          </Stack>
+          <Stack direction="row" spacing={1}>
+            <AIconButton
+              size="small"
+              disableRipple
+              disableFocusRipple
+              disableTouchRipple
+              onClick={() => handleEditMode(widget?.widgetID)}
+              label={<EditRounded fontSize="small" />}
+            />
+            <AIconButton
               size="small"
               color="error"
               disableRipple
               disableFocusRipple
               disableTouchRipple
-              onClick={() => handleRemoveWidget(widget?.widgetID || "")}
-            >
-              <CancelRounded fontSize="small" />
-            </IconButton>
-          )
-        }
-      >
-        <Box
-          component={Paper}
-          {...config}
-          sx={{
-            padding: 1,
-            overflow: "auto",
-            backgroundColor: "background.paper",
-          }}
-        >
-          <Stack direction="row" spacing={1}>
-            {editMode && (
-              <Tooltip title="Drag and drop to restructure widget layout">
-                <IconButton
-                  size="small"
-                  {...attributes}
-                  {...listeners}
-                  disableRipple
-                  disableFocusRipple
-                  disableTouchRipple
-                  color="primary"
-                  sx={{
-                    cursor: "move",
-                    alignSelf: "flex-start", // put icon to the top of the widget container
-                    paddingTop: "1rem",
-                  }}
-                >
-                  <DragIndicatorRounded fontSize="inherit" />
-                </IconButton>
-              </Tooltip>
-            )}
-            {children}
+              onClick={() => handleRemoveWidget(widget?.widgetID)}
+              label={<CancelRounded fontSize="small" />}
+            />
           </Stack>
-        </Box>
-      </Badge>
+        </Stack>
+        <WidgetContent widget={widget} />
+      </Box>
     </Box>
   );
 }

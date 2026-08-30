@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 import { Bar, Line } from "react-chartjs-2";
 
@@ -16,7 +16,6 @@ import {
   Tooltip,
 } from "chart.js";
 import EmptyComponent from "common/EmptyComponent";
-import RowHeader from "common/RowHeader";
 import { normalizeInvoiceTrendsChartsDataset } from "features/Invoice/utils";
 
 ChartJS.register(
@@ -30,26 +29,21 @@ ChartJS.register(
   Title,
 );
 
-const InvoiceTrendsChart = ({ label, caption }) => {
-  const [chartData, setChartData] = useState(null);
-  const [chartType, setChartType] = useState("bar"); // or "line"
+// ChartType ...
+// defines the type of chart to render
+const ChartType = {
+  Bar: "bar",
+  Line: "line",
+};
+
+const InvoiceTrendsChart = ({ data = {} }) => {
+  const [chartType, setChartType] = useState(ChartType.Bar);
 
   const handleChartType = (ev, draftChartType) => {
     if (draftChartType !== null) {
       setChartType(draftChartType);
     }
   };
-
-  useEffect(() => {
-    const draftData = JSON.parse(localStorage.getItem("pdfDetails"));
-    if (draftData) {
-      const chartData = normalizeInvoiceTrendsChartsDataset(
-        [draftData],
-        chartType,
-      );
-      setChartData(chartData[0]);
-    }
-  }, [chartType]);
 
   const options = {
     responsive: true,
@@ -73,19 +67,11 @@ const InvoiceTrendsChart = ({ label, caption }) => {
     },
   };
 
-  return (
-    <Stack data-tour={"dashboard-5"}>
-      <Stack direction="row" justifyContent="space-between">
-        <RowHeader
-          title={label}
-          caption={caption}
-          sxProps={{
-            textAlign: "left",
-            fontWeight: "bold",
-            color: "text.secondary",
-          }}
-        />
+  const chartData = normalizeInvoiceTrendsChartsDataset([data], chartType);
 
+  return (
+    <Stack data-tour="dashboard-5">
+      <Stack>
         <Box>
           <ToggleButtonGroup
             value={chartType}
@@ -93,10 +79,18 @@ const InvoiceTrendsChart = ({ label, caption }) => {
             onChange={handleChartType}
             aria-label="bar or line chart"
           >
-            <ToggleButton value="bar" aria-label="bar chart" size="small">
+            <ToggleButton
+              value={ChartType.Bar}
+              aria-label="bar chart"
+              size="small"
+            >
               <BarChartRounded fontSize="small" />
             </ToggleButton>
-            <ToggleButton value="line" aria-label="line chart" size="small">
+            <ToggleButton
+              value={ChartType.Line}
+              aria-label="line chart"
+              size="small"
+            >
               <StackedLineChartRounded fontSize="small" />
             </ToggleButton>
           </ToggleButtonGroup>
@@ -105,7 +99,7 @@ const InvoiceTrendsChart = ({ label, caption }) => {
       <Box>
         {chartData === null ? (
           <EmptyComponent />
-        ) : chartType === "bar" ? (
+        ) : chartType === ChartType.Bar ? (
           <Bar data={chartData} options={options} />
         ) : (
           <Line data={chartData} options={options} />

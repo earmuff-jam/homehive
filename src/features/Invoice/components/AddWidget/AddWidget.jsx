@@ -18,17 +18,15 @@ export default function AddWidget({ handleAddWidget }) {
       <Typography>Add Widget</Typography>
       <Divider />
       <MenuList dense>
-        {WidgetTypeList.map((widgetType) => (
+        {WidgetTypeList.map((widget) => (
           <MenuItem
-            key={widgetType.id}
-            onClick={() => handleAddWidget(widgetType.id)}
+            key={widget.type}
+            onClick={() => handleAddWidget(widget?.type)}
           >
             <ListItemIcon>
               <AddRounded fontSize="small" />
             </ListItemIcon>
-            <ListItemText inset={widgetType.config.inset}>
-              {widgetType.label}
-            </ListItemText>
+            <ListItemText>{widget.label}</ListItemText>
           </MenuItem>
         ))}
       </MenuList>

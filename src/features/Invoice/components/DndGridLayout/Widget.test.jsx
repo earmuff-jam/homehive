@@ -1,46 +1,63 @@
 import React from "react";
 
+import { Provider } from "react-redux";
+
 import Widget from "./Widget";
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
+import { store } from "src/store";
 import { describe, expect, it, vi } from "vitest";
 
+vi.mock("@dnd-kit/sortable", () => ({
+  useSortable: () => ({
+    attributes: {},
+    listeners: {},
+    setNodeRef: vi.fn(),
+    transform: null,
+    transition: undefined,
+  }),
+}));
+
 describe("Widget", () => {
-  const mockHandleRemoveWidget = vi.fn();
+  it("renders widget details and handles edit and remove actions", () => {
+    const handleEditMode = vi.fn();
+    const handleRemoveWidget = vi.fn();
 
-  const widget = {
-    widgetID: "1",
-    config: {
-      width: 200,
-      height: 100,
-    },
-  };
+    const widget = {
+      widgetID: "widget-1",
+      title: "Water Repair",
+      caption: "Plumbing and cleanup Cost",
+      type: "timeline-chart",
+      config: {
+        width: 400,
+        height: 300,
+      },
+      data: [],
+    };
 
-  it("renders correctly and matches snapshot", () => {
-    const { asFragment } = render(
-      <Widget
-        editMode={false}
-        widget={widget}
-        handleRemoveWidget={mockHandleRemoveWidget}
-      >
-        <div>Child Content</div>
-      </Widget>,
+    render(
+      <Provider store={store}>
+        <Widget
+          widget={widget}
+          handleEditMode={handleEditMode}
+          handleRemoveWidget={handleRemoveWidget}
+        />
+        ,
+      </Provider>,
     );
 
-    expect(screen.getByText(/Child Content/i)).toBeInTheDocument();
-    expect(asFragment()).toMatchSnapshot();
-  });
+    expect(screen.getByText("Water Repair")).toBeInTheDocument();
+    expect(screen.getByText("Plumbing and cleanup Cost")).toBeInTheDocument();
 
-  it("shows edit icons when in edit mode", () => {
-    const { asFragment } = render(
-      <Widget
-        editMode={true}
-        widget={widget}
-        handleRemoveWidget={mockHandleRemoveWidget}
-      >
-        <div>Child Content</div>
-      </Widget>,
-    );
+    const buttons = screen.getAllByRole("button");
 
-    expect(asFragment()).toMatchSnapshot();
+    fireEvent.click(buttons[1]);
+
+    expect(handleEditMode).toHaveBeenCalledTimes(1);
+    expect(handleEditMode).toHaveBeenCalledWith("widget-1");
+
+    fireEvent.click(buttons[2]);
+
+    expect(handleRemoveWidget).toHaveBeenCalledTimes(1);
+    expect(handleRemoveWidget).toHaveBeenCalledWith("widget-1");
   });
 });

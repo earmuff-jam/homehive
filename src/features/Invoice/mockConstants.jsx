@@ -74,6 +74,44 @@ const InvoiceMockValues = {
       invoiceID: "9e6913b1-86a9-431f-bd13-e6c209ba71ad",
     },
   ],
+  chartDetails: {
+    InvoiceTimelineChartData: {
+      labels: ["Water Repair", "Electric Repair"],
+      datasets: [
+        {
+          label: "Invoice Timeline",
+          data: [
+            {
+              x: ["2026-08-27T05:00:00.000Z", "2026-12-31T06:00:00.000Z"],
+              y: "Water Repair",
+              startDate: "2026-08-27T05:00:00.000Z",
+              endDate: "2026-12-31T06:00:00.000Z",
+              duration: 126,
+            },
+            {
+              x: ["2026-07-01T05:00:00.000Z", "2026-07-31T05:00:00.000Z"],
+              y: "Electric Repair",
+              startDate: "2026-07-01T05:00:00.000Z",
+              endDate: "2026-07-31T05:00:00.000Z",
+              duration: 30,
+            },
+          ],
+        },
+      ],
+    },
+    InvoiceItemTypeFreqChartData: {
+      labels: ["Services", "Fees"],
+      datasets: [
+        {
+          label: "Item Type Frequency",
+          data: [1, 1],
+          backgroundColor: "rgba(153, 102, 255, 0.7)",
+          borderColor: "rgba(153, 102, 255, 1)",
+          borderWidth: 1,
+        },
+      ],
+    },
+  },
 };
 
 export default InvoiceMockValues;

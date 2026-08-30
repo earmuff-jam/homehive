@@ -117,17 +117,17 @@ describe("Invoice normalization utilities", () => {
 
       const result = normalizeInvoiceTrendsChartsDataset(input, "bar");
 
-      expect(result[0].labels).toEqual(["January"]);
-      expect(result[0].datasets[0].data).toEqual([150]); // collected
-      expect(result[0].datasets[1].data).toEqual([15]); // tax
+      expect(result.labels).toEqual(["January"]);
+      expect(result.datasets[0].data).toEqual([150]); // collected
+      expect(result.datasets[1].data).toEqual([15]); // tax
     });
 
     it("returns empty datasets when input is empty", () => {
       const result = normalizeInvoiceTrendsChartsDataset([]);
 
-      expect(result[0].labels).toEqual([]);
-      expect(result[0].datasets[0].data).toEqual([]);
-      expect(result[0].datasets[1].data).toEqual([]);
+      expect(result.labels).toEqual([]);
+      expect(result.datasets[0].data).toEqual([]);
+      expect(result.datasets[1].data).toEqual([]);
     });
   });
 
@@ -148,11 +148,17 @@ describe("Invoice normalization utilities", () => {
 
       const result = normalizeInvoiceTimelineChartDataset(input);
 
-      expect(result.labels).toEqual(["January", "February"]);
       expect(result.datasets).toHaveLength(2);
 
-      expect(result.datasets[0].data).toEqual([9, null]);
-      expect(result.datasets[1].data).toEqual([null, 4]);
+      expect(result.datasets[0].data.length).toEqual(1);
+      expect(result.datasets[0].data[0].duration).toEqual(9);
+      expect(result.datasets[0].data[0].y).toEqual(0); // 1st item on the graph
+      expect(result.datasets[0].data[0].x.length).toEqual(2); // two variables on x axis
+
+      expect(result.datasets[1].data.length).toEqual(1);
+      expect(result.datasets[1].data[0].duration).toEqual(4);
+      expect(result.datasets[1].data[0].y).toEqual(1); // 2nd item on the graph
+      expect(result.datasets[1].data[0].x.length).toEqual(2); // two variables on x axis
 
       expect(result.datasets[0].label).toContain("Payment: $100");
       expect(result.datasets[1].label).toContain("Payment: $50");

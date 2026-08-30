@@ -3,21 +3,25 @@ import React from "react";
 import ItemTypeFreqChart from "./ItemTypeFreqChart";
 import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/react";
-import * as utils from "features/Invoice/utils";
+import InvoiceMockValues from "features/Invoice/mockConstants";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
+vi.mock("chart.js", () => ({
+  BarElement: {},
+  CategoryScale: {},
+  Chart: {
+    register: vi.fn(),
+  },
+  Legend: {},
+  LinearScale: {},
+  Title: {},
+  Tooltip: {},
+}));
+
 vi.mock("react-chartjs-2", () => ({
-  Bar: vi.fn(() => <div data-testid="bar-chart" />),
-}));
-
-vi.mock("common/EmptyComponent", () => ({
-  default: () => <div data-testid="empty-component" />,
-}));
-
-vi.mock("common/RowHeader", () => ({
-  default: (props) => (
-    <div data-testid="row-header">
-      {props.title} - {props.caption}
+  Bar: ({ data }) => (
+    <div data-testid="bar-chart">
+      <div data-testid="bar-chart-data">{JSON.stringify(data)}</div>
     </div>
   ),
 }));
@@ -25,49 +29,69 @@ vi.mock("common/RowHeader", () => ({
 describe("ItemTypeFreqChart", () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    localStorage.clear();
   });
 
-  it("renders correctly and matches snapshot", () => {
-    const { asFragment } = render(
-      <ItemTypeFreqChart label="Item Types" caption="Frequency overview" />,
-    );
-    expect(asFragment()).toMatchSnapshot();
+  it("renders EmptyComponent when data is empty", () => {
+    render(<ItemTypeFreqChart data={[]} />);
+
+    expect(
+      screen.getByText("Sorry, no matching records found."),
+    ).toBeInTheDocument();
+
+    expect(screen.queryByTestId("bar-chart")).not.toBeInTheDocument();
   });
 
-  it("renders EmptyComponent when no pdfDetails in localStorage", () => {
-    render(
-      <ItemTypeFreqChart label="Item Types" caption="Frequency overview" />,
-    );
-    expect(screen.getByTestId("row-header")).toHaveTextContent(
-      "Item Types - Frequency overview",
-    );
-    expect(screen.getByTestId("empty-component")).toBeInTheDocument();
+  it("renders EmptyComponent when data is not provided", () => {
+    render(<ItemTypeFreqChart />);
+
+    expect(
+      screen.getByText("Sorry, no matching records found."),
+    ).toBeInTheDocument();
+
+    expect(screen.queryByTestId("bar-chart")).not.toBeInTheDocument();
   });
 
-  it("renders Bar chart when pdfDetails exist in localStorage", () => {
-    const mockChartData = {
-      labels: ["Item A"],
-      datasets: [{ label: "Frequency", data: [5] }],
-    };
-
-    vi.spyOn(utils, "normalizeInvoiceItemTypeChartDataset").mockReturnValue(
-      mockChartData,
-    );
-
-    localStorage.setItem(
-      "pdfDetails",
-      JSON.stringify({ id: 1, name: "Invoice 1" }),
-    );
-
-    render(
-      <ItemTypeFreqChart label="Item Types" caption="Frequency overview" />,
-    );
-
-    expect(utils.normalizeInvoiceItemTypeChartDataset).toHaveBeenCalledWith([
-      { id: 1, name: "Invoice 1" },
-    ]);
+  it("renders Bar chart when invoice data is available", () => {
+    render(<ItemTypeFreqChart data={InvoiceMockValues.invoiceDetails} />);
 
     expect(screen.getByTestId("bar-chart")).toBeInTheDocument();
+
+    expect(
+      screen.queryByText("Sorry, no matching records found."),
+    ).not.toBeInTheDocument();
+  });
+
+  it("passes normalized invoice item type data to Bar", () => {
+    render(<ItemTypeFreqChart data={InvoiceMockValues.invoiceDetails} />);
+
+    const chartData = JSON.parse(
+      screen.getByTestId("bar-chart-data").textContent,
+    );
+
+    expect(chartData.datasets[0].label).toEqual(
+      InvoiceMockValues.chartDetails.InvoiceItemTypeFreqChartData.datasets[0]
+        .label,
+    );
+
+    expect(chartData.datasets[0].data.length).toEqual(2);
+    expect(chartData.datasets[0].data[0]).toEqual(1);
+    expect(chartData.datasets[0].data[0]).toEqual(1);
+  });
+
+  it("renders all invoice item type categories in the chart", () => {
+    render(<ItemTypeFreqChart data={InvoiceMockValues.invoiceDetails} />);
+
+    const chartData = JSON.parse(
+      screen.getByTestId("bar-chart-data").textContent,
+    );
+
+    expect(chartData.labels).toEqual(["Fees", "Services"]);
+
+    expect(chartData.datasets).toHaveLength(1);
+
+    expect(chartData.datasets[0]).toMatchObject({
+      label: "Item Type Frequency",
+      data: [1, 1],
+    });
   });
 });

@@ -7,22 +7,22 @@ const DefaultLinks = [
   {
     id: 1,
     title: "Privacy Policy",
-    link: "privacyPolicy",
+    link: "/privacyPolicy",
   },
   {
     id: 2,
     title: "Terms of Service",
-    link: "termsOfService",
+    link: "/termsOfService",
   },
   {
     id: 3,
     title: "Contact",
-    link: "contact",
+    link: "/contact",
   },
   {
     id: 4,
     title: "Help Center",
-    link: "helpCenter",
+    link: "/helpCenter",
   },
 ];
 

@@ -37,6 +37,9 @@ vi.mock("react-secure-storage", () => ({
   },
 }));
 
+// mock chartjs adapters
+vi.mock("chartjs-adapter-dayjs-4", () => ({}));
+
 // mock feature flags
 vi.mock("common/ApplicationConfig", () => ({
   __esModule: true,
