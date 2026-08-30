@@ -111,6 +111,93 @@ const InvoiceMockValues = {
         },
       ],
     },
+    InvoiceTrendsChartData: {
+      data: [
+        {
+          id: "9e6913b1-86a9-431f-bd13-e6c209ba71ad",
+          title: "Rent Details",
+          caption: "Rent for the month of April",
+          note: "All utility bills have been registered and paid in full amount.",
+          startDate: "2026-04-01T05:00:00.000Z",
+          endDate: "2026-04-01T05:00:00.000Z",
+          taxRate: "1.00",
+          invoiceHeader: "Rent for the month of April",
+          lineItems: [
+            {
+              category: {
+                label: "Fees",
+                value: "fees",
+              },
+              description: "Application Fee",
+              caption: "Initial cost of application usage",
+              quantity: "1",
+              price: "99.99",
+              payment: "0.00",
+              paymentMethod: "Bank note - Bank of America",
+            },
+            {
+              category: {
+                label: "Services",
+                value: "services",
+              },
+              description: "Application setup fee",
+              caption: "Charge for setting up the application",
+              quantity: "1",
+              price: "12.99",
+              payment: "0.00",
+              paymentMethod: "Bank of America",
+            },
+            {
+              category: "",
+              description: "Test",
+              caption: "2",
+              quantity: "2",
+              price: "2",
+              payment: "2",
+              paymentMethod: "Casy",
+            },
+          ],
+          updatedOn: "2026-08-22T21:02:04.116Z",
+          invoiceStatus: {
+            id: 3,
+            label: "Overdue",
+            selected: true,
+            display: true,
+          },
+        },
+        {
+          id: "c5e944fd-40ed-441b-a344-713d5bb7e57c",
+          title: "Invoice title2",
+          caption: "Invoice Caption2",
+          note: "Additional notes 2",
+          startDate: "2026-08-15T05:00:00.000Z",
+          endDate: "2026-08-15T05:00:00.000Z",
+          taxRate: "1.00",
+          invoiceHeader: "Invoice Header 2",
+          lineItems: [
+            {
+              category: {
+                label: "Products",
+                value: "products",
+              },
+              description: "Simple product for testing",
+              caption: "Simple product for testing",
+              quantity: "1",
+              price: "12.40",
+              payment: "12.33",
+              paymentMethod: "Cash",
+            },
+          ],
+          updatedOn: "2026-08-13T22:03:24.876Z",
+          invoiceStatus: {
+            id: 4,
+            label: "Cancelled",
+            selected: true,
+            display: true,
+          },
+        },
+      ],
+    },
   },
   utils: {
     trendsChartReq: [

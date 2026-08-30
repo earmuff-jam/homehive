@@ -68,7 +68,6 @@ const InvoiceTrendsChart = ({ data = [] }) => {
   };
 
   const chartData = normalizeInvoiceTrendsChartsDataset(data, chartType);
-  console.log(chartData);
   return (
     <Stack data-tour="dashboard-5">
       <Stack>
@@ -97,7 +96,7 @@ const InvoiceTrendsChart = ({ data = [] }) => {
         </Box>
       </Stack>
       <Box>
-        {chartData === null ? (
+        {chartData?.labels?.length <= 0 ? (
           <EmptyComponent />
         ) : chartType === ChartType.Bar ? (
           <Bar data={chartData} options={options} />
