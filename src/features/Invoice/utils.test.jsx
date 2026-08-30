@@ -4,6 +4,7 @@ import {
   normalizeInvoiceTimelineChartDataset,
   normalizeInvoiceTrendsChartsDataset,
 } from "./utils";
+import InvoiceMockValues from "features/Invoice/mockConstants";
 import { describe, expect, it } from "vitest";
 
 describe("Invoice normalization utilities", () => {
@@ -102,20 +103,10 @@ describe("Invoice normalization utilities", () => {
 
   describe("normalizeInvoiceTrendsChartsDataset", () => {
     it("builds collected and tax datasets per month", () => {
-      const input = [
-        {
-          startDate: "2025-01-01",
-          taxRate: 10,
-          lineItems: [{ payment: 100 }],
-        },
-        {
-          startDate: "2025-01-15",
-          taxRate: 10,
-          lineItems: [{ payment: 50 }],
-        },
-      ];
-
-      const result = normalizeInvoiceTrendsChartsDataset(input, "bar");
+      const result = normalizeInvoiceTrendsChartsDataset(
+        InvoiceMockValues.utils.trendsChartReq,
+        "bar",
+      );
 
       expect(result.labels).toEqual(["January"]);
       expect(result.datasets[0].data).toEqual([150]); // collected

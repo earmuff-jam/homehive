@@ -112,6 +112,41 @@ const InvoiceMockValues = {
       ],
     },
   },
+  utils: {
+    trendsChartReq: [
+      {
+        startDate: "2025-01-01",
+        taxRate: 10,
+        lineItems: [{ payment: 100 }],
+      },
+      {
+        startDate: "2025-01-15",
+        taxRate: 10,
+        lineItems: [{ payment: 50 }],
+      },
+    ],
+    trendsChartRes: {
+      labels: ["August", "July"],
+      datasets: [
+        {
+          label: "Collected Invoice",
+          data: [12, 0],
+          backgroundColor: "rgba(54, 162, 235, 0.7)",
+          borderColor: "rgba(54, 162, 235, 1)",
+          fill: true,
+          tension: 0.4,
+        },
+        {
+          label: "Tax Collected",
+          data: [0.12, 0],
+          backgroundColor: "rgba(255, 99, 132, 0.7)",
+          borderColor: "rgba(255, 99, 132, 1)",
+          fill: true,
+          tension: 0.4,
+        },
+      ],
+    },
+  },
 };
 
 export default InvoiceMockValues;
