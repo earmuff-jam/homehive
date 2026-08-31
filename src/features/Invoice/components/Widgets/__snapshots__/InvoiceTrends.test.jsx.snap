@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`InvoiceTrends > renders correctly and matches empty snapshot 1`] = `
+exports[`Invoice trends chart tests > Invoice trends chart snapshot tests > matches the snapshot with valid datasets 1`] = `
 <DocumentFragment>
   <div
     class="MuiStack-root css-nen11g-MuiStack-root"
@@ -65,7 +65,19 @@ exports[`InvoiceTrends > renders correctly and matches empty snapshot 1`] = `
     >
       <div
         data-testid="bar-chart"
-      />
+      >
+        Bar Chart
+        <span
+          data-testid="chart-title"
+        >
+          Invoice Totals & Tax Collected Over Time
+        </span>
+        <span
+          data-testid="chart-data"
+        >
+          {"labels":["June"],"datasets":[{"label":"Collected Invoice","data":[null],"backgroundColor":"rgba(54, 162, 235, 0.7)","borderColor":"rgba(54, 162, 235, 1)","fill":false,"tension":0.4},{"label":"Tax Collected","data":[null],"backgroundColor":"rgba(255, 99, 132, 0.7)","borderColor":"rgba(255, 99, 132, 1)","fill":false,"tension":0.4}]}
+        </span>
+      </div>
     </div>
   </div>
 </DocumentFragment>

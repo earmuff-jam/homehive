@@ -63,7 +63,7 @@ export const WidgetTypeList = [
     data: [],
     config: {
       height: "25rem",
-      width: "75rem",
+      width: "50rem",
     },
   },
 ];

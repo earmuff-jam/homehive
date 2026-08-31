@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`MyRental > matches snapshot (full loaded state) 1`] = `
+exports[`MyRental snapshot tests > should match snapshot when property exists 1`] = `
 <div>
   <div
     class="MuiStack-root css-nen11g-MuiStack-root"
@@ -11,11 +11,161 @@ exports[`MyRental > matches snapshot (full loaded state) 1`] = `
       style="--Paper-shadow: none;"
     >
       <div
-        data-testid="property-header"
-      />
+        class="MuiStack-root css-jfdv4h-MuiStack-root"
+      >
+        <div
+          class="MuiStack-root css-nen11g-MuiStack-root"
+        >
+          <div
+            class="MuiBox-root css-j0ozid"
+          >
+            <svg
+              aria-hidden="true"
+              class="MuiSvgIcon-root MuiSvgIcon-colorPrimary MuiSvgIcon-fontSizeMedium css-6pq8my-MuiSvgIcon-root"
+              data-testid="HomeIcon"
+              focusable="false"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"
+              />
+            </svg>
+            <div
+              class="MuiStack-root css-nen11g-MuiStack-root"
+            >
+              <h4
+                class="MuiTypography-root MuiTypography-h4 css-1f925ed-MuiTypography-root"
+              >
+                Charles Zanco Home
+              </h4>
+              <div
+                class="MuiStack-root css-5hw9o0-MuiStack-root"
+              >
+                <div
+                  class="MuiStack-root css-niqf4j-MuiStack-root"
+                />
+                <h6
+                  class="MuiTypography-root MuiTypography-subtitle2 css-1lmrxy0-MuiTypography-root"
+                >
+                  , 
+                  , 
+                   
+                </h6>
+              </div>
+            </div>
+          </div>
+          <div
+            class="MuiStack-root css-1o22yl8-MuiStack-root"
+          >
+            <h6
+              class="MuiTypography-root MuiTypography-subtitle2 css-1khdnpy-MuiTypography-root"
+              data-mui-internal-clone-element="true"
+            />
+          </div>
+        </div>
+        <div
+          class="MuiBox-root css-0"
+        >
+          <div
+            class="MuiChip-root MuiChip-filled MuiChip-sizeMedium MuiChip-colorDefault MuiChip-filledDefault css-ygioqs-MuiChip-root"
+          >
+            <span
+              class="MuiChip-label MuiChip-labelMedium css-1dybbl5-MuiChip-label"
+            >
+              Primary Renter
+            </span>
+          </div>
+        </div>
+      </div>
       <div
-        data-testid="property-stats"
-      />
+        class="MuiGrid-root MuiGrid-container MuiGrid-direction-xs-row MuiGrid-spacing-xs-3 css-1bt52fc-MuiGrid-root"
+        data-tour="rental-1"
+      >
+        <div
+          class="MuiGrid-root MuiGrid-direction-xs-row MuiGrid-grid-xs-12 MuiGrid-grid-md-3 MuiGrid-grid-sm-6 css-17hq2y0-MuiGrid-root"
+        >
+          <div
+            class="MuiPaper-root MuiPaper-outlined MuiPaper-rounded MuiCard-root css-4gzqou-MuiPaper-root-MuiCard-root"
+          >
+            <div
+              class="MuiCardContent-root css-8rand2-MuiCardContent-root"
+            >
+              <h4
+                class="MuiTypography-root MuiTypography-h4 css-1adnbqp-MuiTypography-root"
+              />
+              <p
+                class="MuiTypography-root MuiTypography-body2 css-10nvtog-MuiTypography-root"
+              >
+                Total Bedrooms
+              </p>
+            </div>
+          </div>
+        </div>
+        <div
+          class="MuiGrid-root MuiGrid-direction-xs-row MuiGrid-grid-xs-12 MuiGrid-grid-md-3 MuiGrid-grid-sm-6 css-17hq2y0-MuiGrid-root"
+        >
+          <div
+            class="MuiPaper-root MuiPaper-outlined MuiPaper-rounded MuiCard-root css-4gzqou-MuiPaper-root-MuiCard-root"
+          >
+            <div
+              class="MuiCardContent-root css-8rand2-MuiCardContent-root"
+            >
+              <h4
+                class="MuiTypography-root MuiTypography-h4 css-1adnbqp-MuiTypography-root"
+              >
+                1
+              </h4>
+              <p
+                class="MuiTypography-root MuiTypography-body2 css-10nvtog-MuiTypography-root"
+              >
+                Home Occupied
+              </p>
+            </div>
+          </div>
+        </div>
+        <div
+          class="MuiGrid-root MuiGrid-direction-xs-row MuiGrid-grid-xs-12 MuiGrid-grid-md-3 MuiGrid-grid-sm-6 css-17hq2y0-MuiGrid-root"
+        >
+          <div
+            class="MuiPaper-root MuiPaper-outlined MuiPaper-rounded MuiCard-root css-4gzqou-MuiPaper-root-MuiCard-root"
+          >
+            <div
+              class="MuiCardContent-root css-8rand2-MuiCardContent-root"
+            >
+              <h4
+                class="MuiTypography-root MuiTypography-h4 css-1j9dcm2-MuiTypography-root"
+              >
+                %
+              </h4>
+              <p
+                class="MuiTypography-root MuiTypography-body2 css-10nvtog-MuiTypography-root"
+              >
+                Occupancy Rate
+              </p>
+            </div>
+          </div>
+        </div>
+        <div
+          class="MuiGrid-root MuiGrid-direction-xs-row MuiGrid-grid-xs-12 MuiGrid-grid-md-3 MuiGrid-grid-sm-6 css-17hq2y0-MuiGrid-root"
+        >
+          <div
+            class="MuiPaper-root MuiPaper-outlined MuiPaper-rounded MuiCard-root css-4gzqou-MuiPaper-root-MuiCard-root"
+          >
+            <div
+              class="MuiCardContent-root css-8rand2-MuiCardContent-root"
+            >
+              <h4
+                class="MuiTypography-root MuiTypography-h4 css-1j9dcm2-MuiTypography-root"
+              />
+              <p
+                class="MuiTypography-root MuiTypography-body2 css-10nvtog-MuiTypography-root"
+              >
+                Monthly Revenue
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
     <div
       class="MuiGrid-root MuiGrid-container MuiGrid-direction-xs-row MuiGrid-spacing-xs-3 css-1u8xl8z-MuiGrid-root"
@@ -24,11 +174,118 @@ exports[`MyRental > matches snapshot (full loaded state) 1`] = `
         class="MuiGrid-root MuiGrid-direction-xs-row MuiGrid-grid-xs-12 MuiGrid-grid-md-8 css-q5srq4-MuiGrid-root"
       >
         <div
-          data-testid="financial-overview"
-        />
+          class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 MuiCard-root css-1l0syj-MuiPaper-root-MuiCard-root"
+          data-tour="rental-2"
+          style="--Paper-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12);"
+        >
+          <div
+            class="MuiCardContent-root css-1lt5qva-MuiCardContent-root"
+          >
+            <div
+              class="MuiStack-root css-1tag0n1-MuiStack-root"
+            >
+              <h5
+                class="MuiTypography-root MuiTypography-h5 css-14jaoc3-MuiTypography-root"
+              >
+                Financial Overview
+              </h5>
+              <h6
+                class="MuiTypography-root MuiTypography-subtitle2 css-1tspyaz-MuiTypography-root"
+              >
+                View financial details for Charles Zanco Home
+              </h6>
+              <div
+                class="MuiBox-root css-56sg73"
+              />
+            </div>
+            <div
+              class="MuiStack-root css-1sazv7p-MuiStack-root"
+            >
+              <div
+                class="MuiStack-root css-yrqrat-MuiStack-root"
+              >
+                <div
+                  class="MuiStack-root css-4vpst1-MuiStack-root"
+                >
+                  <h6
+                    class="MuiTypography-root MuiTypography-subtitle2 css-14dxmel-MuiTypography-root"
+                  >
+                    $
+                    <span
+                      class="MuiTypography-root MuiTypography-caption css-10o28e5-MuiTypography-root"
+                    >
+                       USD / m
+                    </span>
+                  </h6>
+                  <h6
+                    class="MuiTypography-root MuiTypography-subtitle2 css-gbvgxs-MuiTypography-root"
+                  >
+                    Monthly Revenue
+                  </h6>
+                </div>
+                <div
+                  class="MuiStack-root css-4vpst1-MuiStack-root"
+                >
+                  <h6
+                    class="MuiTypography-root MuiTypography-subtitle2 css-14dxmel-MuiTypography-root"
+                  >
+                    $
+                    <span
+                      class="MuiTypography-root MuiTypography-caption css-10o28e5-MuiTypography-root"
+                    >
+                       USD / yr
+                    </span>
+                  </h6>
+                  <h6
+                    class="MuiTypography-root MuiTypography-subtitle2 css-gbvgxs-MuiTypography-root"
+                  >
+                    Projected Annual Revenue
+                  </h6>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
         <div
-          data-testid="payment-overview"
-        />
+          class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 MuiCard-root css-1l0syj-MuiPaper-root-MuiCard-root"
+          data-tour="rental-7"
+          style="--Paper-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12);"
+        >
+          <div
+            class="MuiCardContent-root css-1lt5qva-MuiCardContent-root"
+          >
+            <div
+              class="MuiStack-root css-1tag0n1-MuiStack-root"
+            >
+              <h5
+                class="MuiTypography-root MuiTypography-h5 css-14jaoc3-MuiTypography-root"
+              >
+                Payments Overview
+              </h5>
+              <h6
+                class="MuiTypography-root MuiTypography-subtitle2 css-1tspyaz-MuiTypography-root"
+              >
+                View payment summaries for Charles Zanco Home
+              </h6>
+              <div
+                class="MuiBox-root css-56sg73"
+              />
+            </div>
+            <div
+              class="MuiStack-root css-1sazv7p-MuiStack-root"
+            >
+              <div
+                class="MuiStack-root css-1sazv7p-MuiStack-root"
+              >
+                <div
+                  data-testid="material-react-table"
+                >
+                  []
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
         <div
           class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 MuiCard-root css-1l0syj-MuiPaper-root-MuiCard-root"
           style="--Paper-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12);"
@@ -60,551 +317,9 @@ exports[`MyRental > matches snapshot (full loaded state) 1`] = `
                 class="MuiStack-root css-1sazv7p-MuiStack-root"
               >
                 <div
-                  class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation0 css-1uz3ykl-MuiPaper-root"
-                  style="--Paper-shadow: none;"
+                  data-testid="material-react-table"
                 >
-                  <div
-                    class="MuiTableContainer-root css-mhsyl6-MuiTableContainer-root"
-                  >
-                    <table
-                      class="MuiTable-root css-1cr5sg7-MuiTable-root"
-                      style="--header-mrt_row_expand-size: 70; --col-mrt_row_expand-size: 70; --header-maintenanceCategory-size: 50; --col-maintenanceCategory-size: 50; --header-status-size: 50; --col-status-size: 50; --header-description-size: 200; --col-description-size: 200; --header-tenantEmail-size: 150; --col-tenantEmail-size: 150; --header-updatedOn-size: 150; --col-updatedOn-size: 150;"
-                    >
-                      <thead
-                        class="MuiTableHead-root css-1w3oqpz-MuiTableHead-root"
-                      >
-                        <tr
-                          class="MuiTableRow-root MuiTableRow-head css-1w6yqxo-MuiTableRow-root"
-                        >
-                          <th
-                            aria-sort="none"
-                            class="MuiTableCell-root MuiTableCell-head MuiTableCell-alignLeft MuiTableCell-sizeMedium css-1sjznkk-MuiTableCell-root"
-                            colspan="1"
-                            data-index="0"
-                            scope="col"
-                            tabindex="0"
-                          >
-                            <div
-                              class="Mui-TableHeadCell-Content MuiBox-root css-1w86f15"
-                            >
-                              <div
-                                class="Mui-TableHeadCell-Content-Labels MuiBox-root css-4ng264"
-                              >
-                                <div
-                                  class="Mui-TableHeadCell-Content-Wrapper MuiBox-root css-10aqj5p"
-                                />
-                              </div>
-                              <div
-                                class="Mui-TableHeadCell-Content-Actions MuiBox-root css-epvm6"
-                              />
-                            </div>
-                          </th>
-                          <th
-                            aria-sort="none"
-                            class="MuiTableCell-root MuiTableCell-head MuiTableCell-alignLeft MuiTableCell-sizeMedium css-1jx092p-MuiTableCell-root"
-                            colspan="1"
-                            data-can-sort="true"
-                            data-index="1"
-                            scope="col"
-                            tabindex="0"
-                          >
-                            <div
-                              class="Mui-TableHeadCell-Content MuiBox-root css-1w86f15"
-                            >
-                              <div
-                                class="Mui-TableHeadCell-Content-Labels MuiBox-root css-68rqdf"
-                              >
-                                <div
-                                  class="Mui-TableHeadCell-Content-Wrapper MuiBox-root css-lapokc"
-                                >
-                                  Category
-                                </div>
-                                <span
-                                  aria-label="Sort by Category ascending"
-                                  class="MuiBadge-root css-63ezxx-MuiBadge-root"
-                                  data-mui-internal-clone-element="true"
-                                >
-                                  <span
-                                    aria-label="Sort by Category ascending"
-                                    class="MuiButtonBase-root MuiTableSortLabel-root Mui-active MuiTableSortLabel-directionAsc css-zae4v7-MuiButtonBase-root-MuiTableSortLabel-root"
-                                    role="button"
-                                    tabindex="0"
-                                  >
-                                    <svg
-                                      aria-hidden="true"
-                                      class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium MuiTableSortLabel-icon MuiTableSortLabel-iconDirectionAsc css-7ojauk-MuiSvgIcon-root-MuiTableSortLabel-icon"
-                                      data-testid="SyncAltIcon"
-                                      focusable="false"
-                                      style="transform: rotate(-90deg) scaleX(0.9) translateX(-1px);"
-                                      viewBox="0 0 24 24"
-                                    >
-                                      <path
-                                        d="m18 12 4-4-4-4v3H3v2h15zM6 12l-4 4 4 4v-3h15v-2H6z"
-                                      />
-                                    </svg>
-                                  </span>
-                                  <span
-                                    class="MuiBadge-badge MuiBadge-standard MuiBadge-invisible MuiBadge-anchorOriginTopRight MuiBadge-anchorOriginTopRightCircular MuiBadge-overlapCircular css-1q3fol-MuiBadge-badge"
-                                  >
-                                    0
-                                  </span>
-                                </span>
-                              </div>
-                              <div
-                                class="Mui-TableHeadCell-Content-Actions MuiBox-root css-epvm6"
-                              />
-                            </div>
-                          </th>
-                          <th
-                            aria-sort="none"
-                            class="MuiTableCell-root MuiTableCell-head MuiTableCell-alignLeft MuiTableCell-sizeMedium css-j43uog-MuiTableCell-root"
-                            colspan="1"
-                            data-can-sort="true"
-                            data-index="2"
-                            scope="col"
-                            tabindex="0"
-                          >
-                            <div
-                              class="Mui-TableHeadCell-Content MuiBox-root css-1w86f15"
-                            >
-                              <div
-                                class="Mui-TableHeadCell-Content-Labels MuiBox-root css-68rqdf"
-                              >
-                                <div
-                                  class="Mui-TableHeadCell-Content-Wrapper MuiBox-root css-lapokc"
-                                >
-                                  Status
-                                </div>
-                                <span
-                                  aria-label="Sort by Status descending"
-                                  class="MuiBadge-root css-63ezxx-MuiBadge-root"
-                                  data-mui-internal-clone-element="true"
-                                >
-                                  <span
-                                    aria-label="Sort by Status descending"
-                                    class="MuiButtonBase-root MuiTableSortLabel-root Mui-active MuiTableSortLabel-directionAsc css-zae4v7-MuiButtonBase-root-MuiTableSortLabel-root"
-                                    role="button"
-                                    tabindex="0"
-                                  >
-                                    <svg
-                                      aria-hidden="true"
-                                      class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium MuiTableSortLabel-icon MuiTableSortLabel-iconDirectionAsc css-7ojauk-MuiSvgIcon-root-MuiTableSortLabel-icon"
-                                      data-testid="SyncAltIcon"
-                                      focusable="false"
-                                      style="transform: rotate(-90deg) scaleX(0.9) translateX(-1px);"
-                                      viewBox="0 0 24 24"
-                                    >
-                                      <path
-                                        d="m18 12 4-4-4-4v3H3v2h15zM6 12l-4 4 4 4v-3h15v-2H6z"
-                                      />
-                                    </svg>
-                                  </span>
-                                  <span
-                                    class="MuiBadge-badge MuiBadge-standard MuiBadge-invisible MuiBadge-anchorOriginTopRight MuiBadge-anchorOriginTopRightCircular MuiBadge-overlapCircular css-1q3fol-MuiBadge-badge"
-                                  >
-                                    0
-                                  </span>
-                                </span>
-                              </div>
-                              <div
-                                class="Mui-TableHeadCell-Content-Actions MuiBox-root css-epvm6"
-                              />
-                            </div>
-                          </th>
-                          <th
-                            aria-sort="none"
-                            class="MuiTableCell-root MuiTableCell-head MuiTableCell-alignLeft MuiTableCell-sizeMedium css-ienjkg-MuiTableCell-root"
-                            colspan="1"
-                            data-can-sort="true"
-                            data-index="3"
-                            scope="col"
-                            tabindex="0"
-                          >
-                            <div
-                              class="Mui-TableHeadCell-Content MuiBox-root css-1w86f15"
-                            >
-                              <div
-                                class="Mui-TableHeadCell-Content-Labels MuiBox-root css-68rqdf"
-                              >
-                                <div
-                                  class="Mui-TableHeadCell-Content-Wrapper MuiBox-root css-lapokc"
-                                >
-                                  Description
-                                </div>
-                                <span
-                                  aria-label="Sort by Description ascending"
-                                  class="MuiBadge-root css-63ezxx-MuiBadge-root"
-                                  data-mui-internal-clone-element="true"
-                                >
-                                  <span
-                                    aria-label="Sort by Description ascending"
-                                    class="MuiButtonBase-root MuiTableSortLabel-root Mui-active MuiTableSortLabel-directionAsc css-zae4v7-MuiButtonBase-root-MuiTableSortLabel-root"
-                                    role="button"
-                                    tabindex="0"
-                                  >
-                                    <svg
-                                      aria-hidden="true"
-                                      class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium MuiTableSortLabel-icon MuiTableSortLabel-iconDirectionAsc css-7ojauk-MuiSvgIcon-root-MuiTableSortLabel-icon"
-                                      data-testid="SyncAltIcon"
-                                      focusable="false"
-                                      style="transform: rotate(-90deg) scaleX(0.9) translateX(-1px);"
-                                      viewBox="0 0 24 24"
-                                    >
-                                      <path
-                                        d="m18 12 4-4-4-4v3H3v2h15zM6 12l-4 4 4 4v-3h15v-2H6z"
-                                      />
-                                    </svg>
-                                  </span>
-                                  <span
-                                    class="MuiBadge-badge MuiBadge-standard MuiBadge-invisible MuiBadge-anchorOriginTopRight MuiBadge-anchorOriginTopRightCircular MuiBadge-overlapCircular css-1q3fol-MuiBadge-badge"
-                                  >
-                                    0
-                                  </span>
-                                </span>
-                              </div>
-                              <div
-                                class="Mui-TableHeadCell-Content-Actions MuiBox-root css-epvm6"
-                              />
-                            </div>
-                          </th>
-                          <th
-                            aria-sort="none"
-                            class="MuiTableCell-root MuiTableCell-head MuiTableCell-alignLeft MuiTableCell-sizeMedium css-12wghiz-MuiTableCell-root"
-                            colspan="1"
-                            data-can-sort="true"
-                            data-index="4"
-                            scope="col"
-                            tabindex="0"
-                          >
-                            <div
-                              class="Mui-TableHeadCell-Content MuiBox-root css-1w86f15"
-                            >
-                              <div
-                                class="Mui-TableHeadCell-Content-Labels MuiBox-root css-68rqdf"
-                              >
-                                <div
-                                  class="Mui-TableHeadCell-Content-Wrapper MuiBox-root css-lapokc"
-                                >
-                                  Tenant Email
-                                </div>
-                                <span
-                                  aria-label="Sort by Tenant Email ascending"
-                                  class="MuiBadge-root css-63ezxx-MuiBadge-root"
-                                  data-mui-internal-clone-element="true"
-                                >
-                                  <span
-                                    aria-label="Sort by Tenant Email ascending"
-                                    class="MuiButtonBase-root MuiTableSortLabel-root Mui-active MuiTableSortLabel-directionAsc css-zae4v7-MuiButtonBase-root-MuiTableSortLabel-root"
-                                    role="button"
-                                    tabindex="0"
-                                  >
-                                    <svg
-                                      aria-hidden="true"
-                                      class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium MuiTableSortLabel-icon MuiTableSortLabel-iconDirectionAsc css-7ojauk-MuiSvgIcon-root-MuiTableSortLabel-icon"
-                                      data-testid="SyncAltIcon"
-                                      focusable="false"
-                                      style="transform: rotate(-90deg) scaleX(0.9) translateX(-1px);"
-                                      viewBox="0 0 24 24"
-                                    >
-                                      <path
-                                        d="m18 12 4-4-4-4v3H3v2h15zM6 12l-4 4 4 4v-3h15v-2H6z"
-                                      />
-                                    </svg>
-                                  </span>
-                                  <span
-                                    class="MuiBadge-badge MuiBadge-standard MuiBadge-invisible MuiBadge-anchorOriginTopRight MuiBadge-anchorOriginTopRightCircular MuiBadge-overlapCircular css-1q3fol-MuiBadge-badge"
-                                  >
-                                    0
-                                  </span>
-                                </span>
-                              </div>
-                              <div
-                                class="Mui-TableHeadCell-Content-Actions MuiBox-root css-epvm6"
-                              />
-                            </div>
-                          </th>
-                          <th
-                            aria-sort="descending"
-                            class="MuiTableCell-root MuiTableCell-head MuiTableCell-alignLeft MuiTableCell-sizeMedium css-iejvou-MuiTableCell-root"
-                            colspan="1"
-                            data-can-sort="true"
-                            data-index="5"
-                            data-sort="desc"
-                            scope="col"
-                            tabindex="0"
-                          >
-                            <div
-                              class="Mui-TableHeadCell-Content MuiBox-root css-1w86f15"
-                            >
-                              <div
-                                class="Mui-TableHeadCell-Content-Labels MuiBox-root css-68rqdf"
-                              >
-                                <div
-                                  class="Mui-TableHeadCell-Content-Wrapper MuiBox-root css-lapokc"
-                                >
-                                  Updated on
-                                </div>
-                                <span
-                                  aria-label="Sorted by Updated on descending"
-                                  class="MuiBadge-root css-63ezxx-MuiBadge-root"
-                                  data-mui-internal-clone-element="true"
-                                >
-                                  <span
-                                    aria-label="Sorted by Updated on descending"
-                                    class="MuiButtonBase-root MuiTableSortLabel-root Mui-active MuiTableSortLabel-directionDesc css-9kxhll-MuiButtonBase-root-MuiTableSortLabel-root"
-                                    role="button"
-                                    tabindex="0"
-                                  >
-                                    <svg
-                                      aria-hidden="true"
-                                      class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium MuiTableSortLabel-icon MuiTableSortLabel-iconDirectionDesc css-asweb8-MuiSvgIcon-root-MuiTableSortLabel-icon"
-                                      data-testid="ArrowDownwardIcon"
-                                      focusable="false"
-                                      viewBox="0 0 24 24"
-                                    >
-                                      <path
-                                        d="m20 12-1.41-1.41L13 16.17V4h-2v12.17l-5.58-5.59L4 12l8 8z"
-                                      />
-                                    </svg>
-                                  </span>
-                                  <span
-                                    class="MuiBadge-badge MuiBadge-standard MuiBadge-invisible MuiBadge-anchorOriginTopRight MuiBadge-anchorOriginTopRightCircular MuiBadge-overlapCircular css-1q3fol-MuiBadge-badge"
-                                  >
-                                    0
-                                  </span>
-                                </span>
-                              </div>
-                              <div
-                                class="Mui-TableHeadCell-Content-Actions MuiBox-root css-epvm6"
-                              />
-                            </div>
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody
-                        class="MuiTableBody-root css-1768eoe-MuiTableBody-root"
-                      >
-                        <tr
-                          class="MuiTableRow-root css-1nmlwky-MuiTableRow-root"
-                          data-index="0"
-                        >
-                          <td
-                            class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignLeft MuiTableCell-sizeMedium css-ug9ox1-MuiTableCell-root"
-                            data-index="0"
-                            tabindex="0"
-                          >
-                            <span
-                              aria-label="Expand"
-                              class=""
-                              data-mui-internal-clone-element="true"
-                            >
-                              <button
-                                aria-label="Expand"
-                                class="MuiButtonBase-root Mui-disabled MuiIconButton-root Mui-disabled MuiIconButton-sizeMedium css-1vkfkxh-MuiButtonBase-root-MuiIconButton-root"
-                                disabled=""
-                                tabindex="-1"
-                                type="button"
-                              >
-                                <svg
-                                  aria-hidden="true"
-                                  class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-q861zp-MuiSvgIcon-root"
-                                  data-testid="CommentRoundedIcon"
-                                  focusable="false"
-                                  viewBox="0 0 24 24"
-                                >
-                                  <path
-                                    d="M21.99 4c0-1.1-.89-2-1.99-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4zM17 14H7c-.55 0-1-.45-1-1s.45-1 1-1h10c.55 0 1 .45 1 1s-.45 1-1 1m0-3H7c-.55 0-1-.45-1-1s.45-1 1-1h10c.55 0 1 .45 1 1s-.45 1-1 1m0-3H7c-.55 0-1-.45-1-1s.45-1 1-1h10c.55 0 1 .45 1 1s-.45 1-1 1"
-                                  />
-                                </svg>
-                              </button>
-                            </span>
-                          </td>
-                          <td
-                            class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignLeft MuiTableCell-sizeMedium css-78fgic-MuiTableCell-root"
-                            data-index="1"
-                            tabindex="0"
-                          >
-                            <h6
-                              class="MuiTypography-root MuiTypography-subtitle2 css-1tspyaz-MuiTypography-root"
-                            >
-                              Appliances
-                            </h6>
-                          </td>
-                          <td
-                            class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignLeft MuiTableCell-sizeMedium css-xrq0e5-MuiTableCell-root"
-                            data-index="2"
-                            tabindex="0"
-                          >
-                            -
-                          </td>
-                          <td
-                            class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignLeft MuiTableCell-sizeMedium css-1vi340w-MuiTableCell-root"
-                            data-index="3"
-                            tabindex="0"
-                          >
-                            <h6
-                              aria-label="The fridge broke and does not work anymore."
-                              class="MuiTypography-root MuiTypography-subtitle2 MuiTypography-noWrap css-ebmj81-MuiTypography-root"
-                              data-mui-internal-clone-element="true"
-                            >
-                              The fridge broke and does not work anymore.
-                            </h6>
-                          </td>
-                          <td
-                            class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignLeft MuiTableCell-sizeMedium css-13kykzi-MuiTableCell-root"
-                            data-index="4"
-                            tabindex="0"
-                          >
-                            <h6
-                              class="MuiTypography-root MuiTypography-subtitle2 css-1tspyaz-MuiTypography-root"
-                            >
-                              testUserEmail@gmail.com
-                            </h6>
-                          </td>
-                          <td
-                            class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignLeft MuiTableCell-sizeMedium css-776lfi-MuiTableCell-root"
-                            data-index="5"
-                            tabindex="0"
-                          >
-                            <h6
-                              class="MuiTypography-root MuiTypography-subtitle2 css-1tspyaz-MuiTypography-root"
-                            >
-                              2026-06-10 21:18
-                            </h6>
-                          </td>
-                        </tr>
-                        <tr
-                          class="MuiTableRow-root Mui-TableBodyCell-DetailPanel css-1ur8psu-MuiTableRow-root"
-                          data-index="1"
-                        >
-                          <td
-                            class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeMedium Mui-TableBodyCell-DetailPanel css-1bqrqyj-MuiTableCell-root"
-                            colspan="6"
-                          />
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                  <div
-                    class="MuiBox-root css-161u6l"
-                  >
-                    <div
-                      class="MuiBox-root css-1llu0od"
-                    >
-                      <span />
-                      <div
-                        class="MuiBox-root css-qpxlqp"
-                      >
-                        <div
-                          class="MuiTablePagination-root MuiBox-root css-8k4lth"
-                        >
-                          <div
-                            class="MuiBox-root css-exd1zr"
-                          >
-                            <label
-                              class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-animated MuiFormLabel-colorPrimary MuiInputLabel-root MuiInputLabel-animated css-1l4jewz-MuiFormLabel-root-MuiInputLabel-root"
-                              for="mrt-rows-per-page-:r1:"
-                            >
-                              Rows per page
-                            </label>
-                            <div
-                              class="MuiInputBase-root MuiInput-root MuiInputBase-colorPrimary MuiSelect-root css-lr2oep-MuiInputBase-root-MuiInput-root-MuiSelect-root"
-                            >
-                              <div
-                                aria-expanded="false"
-                                aria-haspopup="listbox"
-                                aria-label="Rows per page"
-                                class="MuiSelect-select MuiSelect-standard MuiInputBase-input MuiInput-input css-sfgwbn-MuiNativeSelect-root-MuiSelect-select-MuiInputBase-input-MuiInput-input"
-                                role="combobox"
-                                tabindex="0"
-                              >
-                                10
-                              </div>
-                              <input
-                                aria-hidden="true"
-                                aria-invalid="false"
-                                class="MuiSelect-nativeInput css-j0riat-MuiSelect-nativeInput"
-                                id="mrt-rows-per-page-:r1:"
-                                tabindex="-1"
-                                value="10"
-                              />
-                              <svg
-                                aria-hidden="true"
-                                class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium MuiSelect-icon MuiSelect-iconStandard css-ug7h84-MuiSvgIcon-root-MuiNativeSelect-root-MuiSelect-icon"
-                                data-testid="ArrowDropDownIcon"
-                                focusable="false"
-                                viewBox="0 0 24 24"
-                              >
-                                <path
-                                  d="M7 10l5 5 5-5z"
-                                />
-                              </svg>
-                            </div>
-                          </div>
-                          <span
-                            class="MuiTypography-root MuiTypography-body2 MuiTypography-alignCenter css-6vlt0b-MuiTypography-root"
-                            style="--Typography-textAlign: center;"
-                          >
-                            1-1 of 1
-                          </span>
-                          <div
-                            class="MuiBox-root css-192dx0w"
-                          >
-                            <span
-                              aria-label="Go to previous page"
-                              class=""
-                              data-mui-internal-clone-element="true"
-                            >
-                              <button
-                                aria-label="Go to previous page"
-                                class="MuiButtonBase-root Mui-disabled MuiIconButton-root Mui-disabled MuiIconButton-sizeSmall css-155wbr6-MuiButtonBase-root-MuiIconButton-root"
-                                disabled=""
-                                tabindex="-1"
-                                type="button"
-                              >
-                                <svg
-                                  aria-hidden="true"
-                                  class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1umw9bq-MuiSvgIcon-root"
-                                  data-testid="ChevronLeftIcon"
-                                  focusable="false"
-                                  viewBox="0 0 24 24"
-                                >
-                                  <path
-                                    d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"
-                                  />
-                                </svg>
-                              </button>
-                            </span>
-                            <span
-                              aria-label="Go to next page"
-                              class=""
-                              data-mui-internal-clone-element="true"
-                            >
-                              <button
-                                aria-label="Go to next page"
-                                class="MuiButtonBase-root Mui-disabled MuiIconButton-root Mui-disabled MuiIconButton-sizeSmall css-155wbr6-MuiButtonBase-root-MuiIconButton-root"
-                                disabled=""
-                                tabindex="-1"
-                                type="button"
-                              >
-                                <svg
-                                  aria-hidden="true"
-                                  class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1umw9bq-MuiSvgIcon-root"
-                                  data-testid="ChevronRightIcon"
-                                  focusable="false"
-                                  viewBox="0 0 24 24"
-                                >
-                                  <path
-                                    d="M10 6 8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"
-                                  />
-                                </svg>
-                              </button>
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                  [{"id":"test-id","updatedBy":"testUserId","description":"The fridge broke and does not work anymore.","tenantEmailAddress":"testUserEmail@gmail.com","propertyOwnerId":"ownerId","propertyId":"testPropertyId","firstName":"John","tenantLastName":"Doe","createdOn":"2026-06-10T21:18:30.853Z","tenantEmail":"testUserEmail@gmail.com","tenantId":"testTenantId","updatedOn":"2026-06-10T21:18:30.853Z","createdBy":"testUserId","maintenanceCategory":"Appliances"}]
                 </div>
               </div>
             </div>
@@ -615,11 +330,361 @@ exports[`MyRental > matches snapshot (full loaded state) 1`] = `
         class="MuiGrid-root MuiGrid-direction-xs-row MuiGrid-grid-xs-12 MuiGrid-grid-md-4 css-xur2zb-MuiGrid-root"
       >
         <div
-          data-testid="owner-card"
-        />
+          class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 MuiCard-root css-1l0syj-MuiPaper-root-MuiCard-root"
+          data-tour="rental-3"
+          style="--Paper-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12);"
+        >
+          <div
+            class="MuiCardContent-root css-1lt5qva-MuiCardContent-root"
+          >
+            <div
+              class="MuiStack-root css-3f6c0i-MuiStack-root"
+              variant="subtitle2"
+            >
+              <h6
+                class="MuiTypography-root MuiTypography-subtitle2 css-isywqh-MuiTypography-root"
+              >
+                Property Owner
+              </h6>
+              <h6
+                class="MuiTypography-root MuiTypography-subtitle2 css-1tspyaz-MuiTypography-root"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="MuiSvgIcon-root MuiSvgIcon-colorPrimary MuiSvgIcon-fontSizeSmall css-jjnrn1-MuiSvgIcon-root"
+                  data-testid="BusinessRoundedIcon"
+                  focusable="false"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M12 7V5c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V9c0-1.1-.9-2-2-2zM6 19H4v-2h2zm0-4H4v-2h2zm0-4H4V9h2zm0-4H4V5h2zm4 12H8v-2h2zm0-4H8v-2h2zm0-4H8V9h2zm0-4H8V5h2zm9 12h-7v-2h2v-2h-2v-2h2v-2h-2V9h7c.55 0 1 .45 1 1v8c0 .55-.45 1-1 1m-1-8h-2v2h2zm0 4h-2v2h2z"
+                  />
+                </svg>
+              </h6>
+              <div
+                class="MuiBox-root css-56sg73"
+              />
+            </div>
+            <div
+              class="MuiBox-root css-ukdiqv"
+            >
+              <div
+                class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-vgrmjk-MuiAvatar-root"
+              />
+              <div
+                class="MuiBox-root css-0"
+              >
+                <div
+                  class="MuiStack-root css-niqf4j-MuiStack-root"
+                >
+                  <div
+                    class="MuiStack-root css-nen11g-MuiStack-root"
+                  >
+                    <span
+                      class="MuiTypography-root MuiTypography-caption css-1k9vb4e-MuiTypography-root"
+                    >
+                       
+                    </span>
+                    <span
+                      class="MuiTypography-root MuiTypography-caption css-1o9h3xv-MuiTypography-root"
+                    >
+                      owner@test.com
+                    </span>
+                  </div>
+                  <a
+                    aria-label="Send email"
+                    class="MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeMedium css-14iw7nl-MuiButtonBase-root-MuiIconButton-root"
+                    data-mui-internal-clone-element="true"
+                    href="mailto:owner@test.com"
+                    tabindex="0"
+                    target="_blank"
+                  >
+                    <svg
+                      aria-hidden="true"
+                      class="MuiSvgIcon-root MuiSvgIcon-fontSizeSmall css-120dh41-MuiSvgIcon-root"
+                      data-testid="EmailRoundedIcon"
+                      focusable="false"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2m-.4 4.25-7.07 4.42c-.32.2-.74.2-1.06 0L4.4 8.25c-.25-.16-.4-.43-.4-.72 0-.67.73-1.07 1.3-.72L12 11l6.7-4.19c.57-.35 1.3.05 1.3.72 0 .29-.15.56-.4.72"
+                      />
+                    </svg>
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div
+              class="MuiStack-root css-jfdv4h-MuiStack-root"
+            />
+            <div
+              class="MuiStack-root css-jfdv4h-MuiStack-root"
+            >
+              <div
+                class="MuiBox-root css-0"
+              >
+                <div
+                  class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation0 MuiAlert-root MuiAlert-colorInfo MuiAlert-standardInfo MuiAlert-standard css-123fevm-MuiPaper-root-MuiAlert-root"
+                  role="alert"
+                  style="--Paper-shadow: none;"
+                >
+                  <div
+                    class="MuiAlert-icon css-vab54s-MuiAlert-icon"
+                  >
+                    <svg
+                      aria-hidden="true"
+                      class="MuiSvgIcon-root MuiSvgIcon-fontSizeSmall css-120dh41-MuiSvgIcon-root"
+                      data-testid="WarningAmberRoundedIcon"
+                      focusable="false"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        d="M12 5.99 19.53 19H4.47zM2.74 18c-.77 1.33.19 3 1.73 3h15.06c1.54 0 2.5-1.67 1.73-3L13.73 4.99c-.77-1.33-2.69-1.33-3.46 0zM11 11v2c0 .55.45 1 1 1s1-.45 1-1v-2c0-.55-.45-1-1-1s-1 .45-1 1m0 5h2v2h-2z"
+                      />
+                    </svg>
+                  </div>
+                  <div
+                    class="MuiAlert-message css-zioonp-MuiAlert-message"
+                  >
+                    <p
+                      class="MuiTypography-root MuiTypography-body1 css-plprd6-MuiTypography-root"
+                    >
+                      Rent can be paid only if the owner has stripe setup and if current month is due.
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="MuiBox-root css-0"
+              >
+                <div
+                  class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation0 MuiAlert-root MuiAlert-colorError MuiAlert-standardError MuiAlert-standard css-1v9ofud-MuiPaper-root-MuiAlert-root"
+                  role="alert"
+                  style="--Paper-shadow: none;"
+                >
+                  <div
+                    class="MuiAlert-icon css-vab54s-MuiAlert-icon"
+                  >
+                    <svg
+                      aria-hidden="true"
+                      class="MuiSvgIcon-root MuiSvgIcon-fontSizeSmall css-120dh41-MuiSvgIcon-root"
+                      data-testid="WarningAmberRoundedIcon"
+                      focusable="false"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        d="M12 5.99 19.53 19H4.47zM2.74 18c-.77 1.33.19 3 1.73 3h15.06c1.54 0 2.5-1.67 1.73-3L13.73 4.99c-.77-1.33-2.69-1.33-3.46 0zM11 11v2c0 .55.45 1 1 1s1-.45 1-1v-2c0-.55-.45-1-1-1s-1 .45-1 1m0 5h2v2h-2z"
+                      />
+                    </svg>
+                  </div>
+                  <div
+                    class="MuiAlert-message css-zioonp-MuiAlert-message"
+                  >
+                    <p
+                      class="MuiTypography-root MuiTypography-body1 css-plprd6-MuiTypography-root"
+                    >
+                      Card payments are processed instantly and includes higher processing fees. Bank transfers typically take upto 3 business days to complete but have lower fees.
+                      <a
+                        class="MuiBox-root css-6r72ju"
+                        href="https://stripe.com/pricing"
+                        rel="noopener noreferrer"
+                        target="_blank"
+                      >
+                        Learn more
+                      </a>
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <button>
+                Create maintenance issue
+              </button>
+              <button
+                disabled=""
+              >
+                Pay Rent
+              </button>
+            </div>
+          </div>
+        </div>
         <div
-          data-testid="property-details"
-        />
+          class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 MuiCard-root css-1l0syj-MuiPaper-root-MuiCard-root"
+          data-tour="rental-4"
+          style="--Paper-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12);"
+        >
+          <div
+            class="MuiStack-root css-190znio-MuiStack-root"
+          >
+            <span
+              class="MuiTypography-root MuiTypography-caption css-10o28e5-MuiTypography-root"
+            />
+            <div
+              class="MuiBox-root css-1vhwco1"
+            >
+              <div
+                class="MuiBox-root css-v2kfba"
+              >
+                <div
+                  class="ol-viewport ol-touch"
+                  style="position: relative; overflow: hidden; width: 100%; height: 100%;"
+                >
+                  <div
+                    class="ol-unselectable ol-layers"
+                    style="position: absolute; width: 100%; height: 100%; z-index: 0;"
+                  />
+                  <div
+                    class="ol-overlaycontainer"
+                    style="position: absolute; z-index: 0; width: 100%; height: 100%; pointer-events: none;"
+                  />
+                  <div
+                    class="ol-overlaycontainer-stopevent"
+                    style="position: absolute; z-index: 0; width: 100%; height: 100%; pointer-events: none;"
+                  >
+                    <div
+                      class="ol-overlay-container ol-selectable"
+                      style="position: absolute; pointer-events: auto; display: none;"
+                    >
+                      <div
+                        class="MuiBox-root css-1uqranr"
+                      />
+                    </div>
+                    <div
+                      class="ol-attribution ol-unselectable ol-control ol-uncollapsible"
+                      style="pointer-events: auto;"
+                    >
+                      <button
+                        aria-expanded="true"
+                        title="Attributions"
+                        type="button"
+                      >
+                        <span
+                          class="ol-attribution-expand"
+                        >
+                          i
+                        </span>
+                      </button>
+                      <ul />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="MuiBox-root css-v4wpu8"
+              >
+                undefined, undefined, undefined undefined
+              </div>
+            </div>
+          </div>
+          <div
+            class="MuiCardContent-root css-1lt5qva-MuiCardContent-root"
+            data-tour="rental-5"
+          >
+            <div
+              class="MuiStack-root css-3f6c0i-MuiStack-root"
+              variant="subtitle2"
+            >
+              <h6
+                class="MuiTypography-root MuiTypography-subtitle2 css-isywqh-MuiTypography-root"
+              >
+                Property Details
+              </h6>
+              <h6
+                class="MuiTypography-root MuiTypography-subtitle2 css-1tspyaz-MuiTypography-root"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="MuiSvgIcon-root MuiSvgIcon-colorPrimary MuiSvgIcon-fontSizeMedium css-2kd6p7-MuiSvgIcon-root"
+                  data-testid="BusinessIcon"
+                  focusable="false"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M12 7V3H2v18h20V7zM6 19H4v-2h2zm0-4H4v-2h2zm0-4H4V9h2zm0-4H4V5h2zm4 12H8v-2h2zm0-4H8v-2h2zm0-4H8V9h2zm0-4H8V5h2zm10 12h-8v-2h2v-2h-2v-2h2v-2h-2V9h8zm-2-8h-2v2h2zm0 4h-2v2h2z"
+                  />
+                </svg>
+              </h6>
+              <div
+                class="MuiBox-root css-56sg73"
+              />
+            </div>
+            <div
+              class="MuiStack-root css-1sazv7p-MuiStack-root"
+            >
+              <div
+                class="MuiStack-root css-m69qwo-MuiStack-root"
+              >
+                <div
+                  class="MuiStack-root css-4vpst1-MuiStack-root"
+                >
+                  <h4
+                    class="MuiTypography-root MuiTypography-h4 css-1j9dcm2-MuiTypography-root"
+                  />
+                  <h6
+                    class="MuiTypography-root MuiTypography-subtitle2 css-gbvgxs-MuiTypography-root"
+                  >
+                    Bedrooms
+                  </h6>
+                </div>
+                <div
+                  class="MuiStack-root css-4vpst1-MuiStack-root"
+                >
+                  <h4
+                    class="MuiTypography-root MuiTypography-h4 css-1j9dcm2-MuiTypography-root"
+                  />
+                  <h6
+                    class="MuiTypography-root MuiTypography-subtitle2 css-gbvgxs-MuiTypography-root"
+                  >
+                    Bathrooms
+                  </h6>
+                </div>
+              </div>
+              <div
+                class="MuiStack-root css-m69qwo-MuiStack-root"
+              >
+                <div
+                  class="MuiStack-root css-4vpst1-MuiStack-root"
+                >
+                  <div
+                    aria-label="Jun 10, 2026"
+                    class="MuiStack-root css-nen11g-MuiStack-root"
+                    data-mui-internal-clone-element="true"
+                  >
+                    <h6
+                      class="MuiTypography-root MuiTypography-subtitle2 css-1tspyaz-MuiTypography-root"
+                    >
+                      06 10 2026
+                    </h6>
+                    <p
+                      class="MuiTypography-root MuiTypography-body2 css-10nvtog-MuiTypography-root"
+                    >
+                      Created
+                    </p>
+                  </div>
+                </div>
+                <div
+                  class="MuiStack-root css-4vpst1-MuiStack-root"
+                >
+                  <div
+                    aria-label="2026-06-10T00:00:00.000Z"
+                    class="MuiStack-root css-nen11g-MuiStack-root"
+                    data-mui-internal-clone-element="true"
+                  >
+                    <h6
+                      class="MuiTypography-root MuiTypography-subtitle2 css-1tspyaz-MuiTypography-root"
+                    >
+                      a few seconds ago
+                    </h6>
+                    <p
+                      class="MuiTypography-root MuiTypography-body2 css-10nvtog-MuiTypography-root"
+                    >
+                      Last Updated
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>

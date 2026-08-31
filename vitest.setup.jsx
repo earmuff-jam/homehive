@@ -9,6 +9,14 @@ import { vi } from "vitest";
 
 dayjs.extend(relativeTime);
 
+// mock ResizeObserver ...
+// used for ol maps
+class ResizeObserver {
+  observe() {}
+  unobserve() {}
+  disconnect() {}
+}
+
 function createStorageMock() {
   let store = {};
   return {
@@ -26,6 +34,31 @@ function createStorageMock() {
     }),
   };
 }
+
+// mock react-router-dom
+vi.mock("react-router-dom", async (importOriginal) => {
+  const actual = await importOriginal();
+
+  return {
+    ...actual,
+    useLocation: () => ({
+      search: "",
+    }),
+    useNavigate: () => vi.fn(),
+  };
+});
+
+// mock mrt table
+vi.mock("material-react-table", () => ({
+  MaterialReactTable: ({ table }) => (
+    <div data-testid="material-react-table">
+      {JSON.stringify(table.options.data)}
+    </div>
+  ),
+  useMaterialReactTable: vi.fn((options) => ({
+    options,
+  })),
+}));
 
 // mock secure storage
 vi.mock("react-secure-storage", () => ({
@@ -117,3 +150,4 @@ Object.defineProperty(globalThis, "sessionStorage", {
 
 globalThis.TextEncoder = TextEncoder;
 globalThis.TextDecoder = TextDecoder;
+globalThis.ResizeObserver = ResizeObserver;

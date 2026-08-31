@@ -2,25 +2,7 @@ import React from "react";
 
 import ViewMaintenanceRecord from "./ViewMaintenanceRecord";
 import { render, screen } from "@testing-library/react";
-import { describe, expect, it, vi } from "vitest";
-
-vi.mock(
-  "features/Rent/components/Maintenance/UpdateMaintenanceDetails",
-  () => ({
-    default: () => <div>UpdateMaintenanceDetails</div>,
-  }),
-);
-
-vi.mock("material-react-table", () => ({
-  MaterialReactTable: ({ table }) => (
-    <div data-testid="material-react-table">
-      {JSON.stringify(table.options.data)}
-    </div>
-  ),
-  useMaterialReactTable: vi.fn((options) => ({
-    options,
-  })),
-}));
+import { describe, expect, it } from "vitest";
 
 describe("ViewMaintenanceRecord", () => {
   describe("ViewMaintenanceRecord snapshot tests", () => {
@@ -33,7 +15,6 @@ describe("ViewMaintenanceRecord", () => {
           maintenanceCategory: "Plumbing",
           status: "Pending",
           description: "Leaky faucet",
-          tenantEmail: "tenant@test.com",
           updatedOn: "2026-01-01T00:00:00.000Z",
         },
       ],

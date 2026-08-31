@@ -1,7 +1,6 @@
 import React from "react";
 
 import MyRental from "./MyRental";
-import { ThemeProvider } from "@mui/material";
 import { render, screen } from "@testing-library/react";
 import { useGetUserDataByIdQuery } from "features/Api/firebaseUserApi";
 import { useGetMaintenanceRecordsQuery } from "features/Api/maintenanceApi";
@@ -11,7 +10,7 @@ import {
   useGetActiveTenantsByEmailAddressQuery,
   useGetTenantByPropertyIdQuery,
 } from "features/Api/tenantsApi";
-import { lightTheme } from "src/Theme";
+import { renderWithTheme } from "src/vitestUtils";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 vi.mock("common/utils", () => ({
@@ -21,28 +20,35 @@ vi.mock("common/utils", () => ({
   }),
 }));
 
-vi.mock("react-router-dom", () => ({
-  __esModule: true,
-  useLocation: () => ({
-    search: "",
-  }),
-  useNavigate: () => vi.fn(),
-}));
-
-vi.mock("hooks/useAppTitle", () => ({
-  __esModule: true,
-  useAppTitle: () => {},
-}));
-
 vi.mock("features/Api/tenantsApi", () => ({
   __esModule: true,
   useGetActiveTenantsByEmailAddressQuery: vi.fn(),
   useGetTenantByPropertyIdQuery: vi.fn(),
 }));
 
+vi.mock("features/Api/mapAmenitiesApi", () => ({
+  __esModule: true,
+  useGetNearbyAmenitiesQuery: () => ({
+    data: {},
+    isLoading: false,
+    isError: false,
+  }),
+}));
+
 vi.mock("features/Api/propertiesApi", () => ({
   __esModule: true,
   useGetPropertiesByPropertyIdQuery: vi.fn(),
+  useSaveAmenitiesForPropertyMutation: vi.fn(() => [
+    vi.fn(),
+    {
+      isLoading: false,
+    },
+  ]),
+  useFetchAdditionalAmenitiesQuery: () => ({
+    data: {},
+    isLoading: false,
+    isError: false,
+  }),
 }));
 
 vi.mock("features/Api/firebaseUserApi", () => ({
@@ -53,6 +59,18 @@ vi.mock("features/Api/firebaseUserApi", () => ({
 vi.mock("features/Api/rentApi", () => ({
   __esModule: true,
   useGetRentsByPropertyIdQuery: vi.fn(),
+  useCreateRentRecordMutation: vi.fn(() => [
+    vi.fn(),
+    {
+      isLoading: false,
+    },
+  ]),
+  useLazyGetRentByMonthQuery: vi.fn(() => [
+    vi.fn(),
+    {
+      isLoading: false,
+    },
+  ]),
 }));
 
 vi.mock("features/Api/maintenanceApi", () => ({
@@ -64,49 +82,32 @@ vi.mock("features/Api/maintenanceApi", () => ({
       isLoading: false,
     },
   ]),
+  useLazyGetMaintenanceRecordsQuery: vi.fn(() => [
+    vi.fn(),
+    {
+      isLoading: false,
+    },
+  ]),
 }));
 
 vi.mock("features/Api/externalIntegrationsApi", () => ({
   __esModule: true,
   useSendEmailMutation: () => [vi.fn()],
+  useCheckStripeAccountStatusQuery: () => ({
+    data: {},
+    isLoading: false,
+    isError: false,
+  }),
 }));
 
 vi.mock("features/Rent/utils", () => ({
   __esModule: true,
   AddMaintenanceRecordEnumValue: "Create Maintenance",
   appendDisclaimer: (msg) => msg,
+  getOccupancyRate: vi.fn(),
+  formatCurrency: vi.fn(),
   emailMessageBuilder: () => "email-body",
   formatAndSendNotification: vi.fn(),
-}));
-
-vi.mock("features/Rent/common/PropertyHeader", () => ({
-  __esModule: true,
-  default: () => <div data-testid="property-header" />,
-}));
-
-vi.mock("features/Rent/common/PropertyStatistics", () => ({
-  __esModule: true,
-  default: () => <div data-testid="property-stats" />,
-}));
-
-vi.mock("features/Rent/components/Widgets/FinancialOverview", () => ({
-  __esModule: true,
-  default: () => <div data-testid="financial-overview" />,
-}));
-
-vi.mock("features/Rent/components/Widgets/RentalPaymentOverview", () => ({
-  __esModule: true,
-  default: () => <div data-testid="payment-overview" />,
-}));
-
-vi.mock("features/Rent/common/PropertyOwnerInfoCard", () => ({
-  __esModule: true,
-  default: () => <div data-testid="owner-card" />,
-}));
-
-vi.mock("features/Rent/common/PropertyDetails", () => ({
-  __esModule: true,
-  default: () => <div data-testid="property-details" />,
 }));
 
 const resetMocks = () => {
@@ -118,10 +119,7 @@ const resetMocks = () => {
   useGetMaintenanceRecordsQuery.mockReset();
 };
 
-const renderWithTheme = (item) =>
-  render(<ThemeProvider theme={lightTheme}>{item}</ThemeProvider>);
-
-describe("MyRental", () => {
+describe("MyRental snapshot tests", () => {
   beforeEach(() => {
     vi.useFakeTimers();
   });
@@ -131,7 +129,7 @@ describe("MyRental", () => {
     vi.useRealTimers();
   });
 
-  it("shows empty state when no property", () => {
+  it("should match snapshot when property does not exist", () => {
     useGetActiveTenantsByEmailAddressQuery.mockReturnValue({
       data: undefined,
       isLoading: false,
@@ -171,7 +169,7 @@ describe("MyRental", () => {
     ).toBeInTheDocument();
   });
 
-  it("matches snapshot (full loaded state)", () => {
+  it("should match snapshot when property exists", () => {
     vi.setSystemTime(new Date("2026-06-10"));
 
     useGetActiveTenantsByEmailAddressQuery.mockReturnValue({
