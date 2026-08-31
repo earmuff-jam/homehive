@@ -3,7 +3,7 @@ import React, { useMemo } from "react";
 import dayjs from "dayjs";
 
 import { CommentRounded, Remove } from "@mui/icons-material";
-import { Stack, Typography } from "@mui/material";
+import { Box, Stack, Tooltip, Typography } from "@mui/material";
 import EmptyComponent from "common/EmptyComponent";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { noramlizeDetailsTableData } from "features/Invoice/utils";
@@ -20,46 +20,100 @@ const DetailsTableView = ({ data = [] }) => {
       accessorKey: "category",
       header: "Categories",
       size: 200,
-      Cell: ({ cell }) => (cell?.getValue() ? cell.getValue() : "-"),
+      Cell: ({ cell }) =>
+        cell?.getValue() ? (
+          <Typography variant="caption">{cell.getValue()}</Typography>
+        ) : (
+          "-"
+        ),
     },
     {
       accessorKey: "startDate",
       header: "Start Month",
       Cell: ({ cell }) =>
-        cell?.getValue() ? dayjs(cell.getValue()).format("MM-DD-YYYY") : "-",
+        cell?.getValue() ? (
+          <Typography variant="caption">
+            {dayjs(cell.getValue()).format("MM-DD-YYYY")}
+          </Typography>
+        ) : (
+          "-"
+        ),
       size: 150,
     },
     {
       accessorKey: "endDate",
       header: "End Month",
       Cell: ({ cell }) =>
-        cell?.getValue() ? dayjs(cell.getValue()).format("MM-DD-YYYY") : "-",
+        cell?.getValue() ? (
+          <Typography variant="caption">
+            {dayjs(cell.getValue()).format("MM-DD-YYYY")}
+          </Typography>
+        ) : (
+          "-"
+        ),
       size: 150,
     },
     {
       accessorKey: "total",
       header: "Total Collected",
       size: 150,
-      Cell: ({ cell }) => `$${cell?.getValue()}`,
+      Cell: ({ cell }) =>
+        cell?.getValue() ? (
+          <Typography variant="caption">{cell.getValue()}</Typography>
+        ) : (
+          "-"
+        ),
     },
     {
       accessorKey: "invoiceStatus",
       header: "Invoice Status",
       size: 100,
       Cell: ({ cell }) =>
-        cell?.getValue()?.label ? cell.getValue()?.label : "-",
+        cell?.getValue()?.label ? (
+          <Typography variant="caption">{cell.getValue()?.label}</Typography>
+        ) : (
+          "-"
+        ),
     },
     {
       accessorKey: "paymentMethod",
       header: "Payment methods",
       size: 150,
-      Cell: ({ cell }) => (cell?.getValue() ? cell.getValue() : "-"),
+      Cell: ({ cell }) =>
+        cell?.getValue() ? (
+          <Box sx={{ width: "inherit" }}>
+            <Tooltip title={cell?.getValue()}>
+              <Typography
+                noWrap
+                variant="caption"
+                sx={{
+                  display: "block",
+                  width: "100%",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                }}
+              >
+                {cell.getValue()}
+              </Typography>
+            </Tooltip>
+          </Box>
+        ) : (
+          "-"
+        ),
     },
     {
       accessorKey: "updatedOn",
       header: "Updated on",
       size: 150,
-      Cell: ({ cell }) => dayjs(cell?.getValue()).fromNow(),
+
+      Cell: ({ cell }) =>
+        cell?.getValue() ? (
+          <Typography variant="caption">
+            {dayjs(cell.getValue()).fromNow()}
+          </Typography>
+        ) : (
+          "-"
+        ),
     },
   ];
 
