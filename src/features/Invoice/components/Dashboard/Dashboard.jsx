@@ -16,6 +16,7 @@ import {
 } from "@mui/icons-material";
 import {
   Alert,
+  Badge,
   Box,
   Popover,
   Stack,
@@ -108,12 +109,19 @@ export default function Dashboard() {
     handleClose();
   };
 
-  const handleRemoveWidget = (id) => remove(id);
+  const handleRemoveWidget = (widgetID) => {
+    const selectedWidgetIdx = widgets?.findIndex(
+      (widget) => widget?.widgetID === widgetID,
+    );
+    if (selectedWidgetIdx >= 0) remove(selectedWidgetIdx);
+  };
 
   const resetDashboardWidgets = () => {
     formMethods.reset({ widgets: [] });
     handleClose();
   };
+
+  const isFormDirty = formMethods.formState.isDirty;
 
   useEffect(() => {
     if (isUpsertWidgetSuccess) {
@@ -164,12 +172,28 @@ export default function Dashboard() {
             )}
           </Stack>
           <Stack direction="row" spacing={1}>
-            <Tooltip title="Save changes in dashboard">
-              <AIconButton
-                data-tour="dashboard-1"
-                onClick={formMethods.handleSubmit(submit)}
-                label={<SaveRounded fontSize="small" color="primary" />}
-              />
+            <Tooltip
+              title={
+                isFormDirty &&
+                "Dashboard changes detected. Save layout to persist"
+              }
+            >
+              <span>
+                <AIconButton
+                  data-tour="dashboard-1"
+                  disabled={!isFormDirty}
+                  onClick={formMethods.handleSubmit(submit)}
+                  label={
+                    isFormDirty ? (
+                      <Badge color="error" variant="dot">
+                        <SaveRounded fontSize="small" color="primary" />
+                      </Badge>
+                    ) : (
+                      <SaveRounded fontSize="small" />
+                    )
+                  }
+                />
+              </span>
             </Tooltip>
             <Tooltip title="Add Widget">
               <AIconButton

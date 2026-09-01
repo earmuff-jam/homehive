@@ -6,7 +6,7 @@ import InvoiceTrendsChart from "features/Invoice/components/Widgets/InvoiceTrend
 import ItemTypeFreqChart from "features/Invoice/components/Widgets/ItemTypeFreqChart";
 import { WidgetTypeProps } from "features/Invoice/constants";
 
-export default function WidgetContentWrapper({ widget, data }) {
+export default function WidgetContentWrapper({ widget, data = [] }) {
   switch (widget?.type) {
     case WidgetTypeProps.TimelineChart:
       return <InvoiceTimelineChart data={data} />;

@@ -252,7 +252,7 @@ export default function SplashPage() {
                     bottom: 20,
                     left: 20,
                     right: 20,
-                    bgcolor: "rgba(255,255,255,0.95)",
+                    bgcolor: "background.paper",
                     backdropFilter: "blur(10px)",
                     borderRadius: "16px",
                     p: 2,
