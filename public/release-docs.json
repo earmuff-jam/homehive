@@ -1,6 +1,107 @@
 [
   {
     "version": "1.0.15",
+    "date": "2026-09-01",
+    "notes": [
+      {
+        "type": "maintenance",
+        "value": "Added tests for next payment due date by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/402",
+        "caption": "Added tests for next payment due date by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/402"
+      },
+      {
+        "type": "maintenance",
+        "value": "Added maintenance form updates by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/403",
+        "caption": "Added maintenance form updates by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/403"
+      },
+      {
+        "type": "feature",
+        "value": "Added help and support for reporting and analytics page by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/406",
+        "caption": "Added help and support for reporting and analytics page by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/406"
+      },
+      {
+        "type": "feature",
+        "value": "Added support for Images by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/407",
+        "caption": "Added support for Images by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/407"
+      },
+      {
+        "type": "maintenance",
+        "value": "Added cleanup to AddMaintenanceDetails test by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/409",
+        "caption": "Added cleanup to AddMaintenanceDetails test by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/409"
+      },
+      {
+        "type": "maintenance",
+        "value": "Updated Maintenance Records by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/410",
+        "caption": "Updated Maintenance Records by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/410"
+      },
+      {
+        "type": "maintenance",
+        "value": "Added cleanup feature flags by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/413",
+        "caption": "Added cleanup feature flags by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/413"
+      },
+      {
+        "type": "bugfix",
+        "value": "Added support to update selected property under Reporting and Analytics by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/415",
+        "caption": "Added support to update selected property under Reporting and Analytics by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/415"
+      },
+      {
+        "type": "feature",
+        "value": "Added changes to bump up SEO  by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/416",
+        "caption": "Added changes to bump up SEO  by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/416"
+      },
+      {
+        "type": "maintenance",
+        "value": "Hardened DB Schema and Update test coverage by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/418",
+        "caption": "Hardened DB Schema and Update test coverage by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/418"
+      },
+      {
+        "type": "maintenance",
+        "value": "Updated Landing Page by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/419",
+        "caption": "Updated Landing Page by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/419"
+      },
+      {
+        "type": "bugfix",
+        "value": "Added fix to support tenant sign in by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/421",
+        "caption": "Added fix to support tenant sign in by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/421"
+      },
+      {
+        "type": "feature",
+        "value": "Added support for displaying recent events by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/422",
+        "caption": "Added support for displaying recent events by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/422"
+      },
+      {
+        "type": "feature",
+        "value": "Added ability to create multiple invoices by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/423",
+        "caption": "Added ability to create multiple invoices by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/423"
+      },
+      {
+        "type": "feature",
+        "value": "Updated timeline chart for multiple invoices by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/425",
+        "caption": "Updated timeline chart for multiple invoices by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/425"
+      },
+      {
+        "type": "feature",
+        "value": "Upated InvoiceTrendsChart to support display of multiple invoices by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/437",
+        "caption": "Upated InvoiceTrendsChart to support display of multiple invoices by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/437"
+      },
+      {
+        "type": "feature",
+        "value": "Update ItemDetailsTable to support multiple invoices by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/438",
+        "caption": "Update ItemDetailsTable to support multiple invoices by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/438"
+      },
+      {
+        "type": "feature",
+        "value": "Update dashboard for a better UX by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/439",
+        "caption": "Update dashboard for a better UX by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/439"
+      },
+      {
+        "type": "feature",
+        "value": "Added help and support for Invoices by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/440",
+        "caption": "Added help and support for Invoices by @mohit2530 in https://github.com/earmuff-jam/homehive/pull/440"
+      }
+    ]
+  },
+  {
+    "version": "1.0.15",
     "date": "2026-07-11",
     "notes": [
       {
