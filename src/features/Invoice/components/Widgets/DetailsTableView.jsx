@@ -171,7 +171,7 @@ const DetailsTableView = ({ data = [] }) => {
   });
 
   return (
-    <Stack spacing={2} data-tour="dashboard-7">
+    <Stack spacing={2} data-tour="dashboard-8">
       <MaterialReactTable table={table} />
     </Stack>
   );

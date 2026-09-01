@@ -32,9 +32,10 @@ const ViewPdfHelpSteps = [
     element:
       "View created pdf from here. If you do not have any pdf to print, navigate to 'Edit Invoice' to create new invoices.",
   },
+  { element: "Select an invoice to view." },
   {
     element:
-      "Use options to help navigate or perform certain actions on specific pages. Such as Sending Email, Printing etc.",
+      "Select option to print or email to the reciever. If receiver information is not filled out, then the ability to send email is disabled.",
   },
 ];
 
@@ -47,6 +48,10 @@ const EditPdfHelpSteps = [
   {
     element:
       "Create or update a selected invoice. Invoices created are temporarily stored in the device so users can retrieve it easily.",
+  },
+  {
+    element:
+      "Select an invoice to edit or select 'Create New...' to create a new invoice.",
   },
   {
     element:
@@ -94,8 +99,10 @@ const EditPdfHelpSteps = [
 const SenderInfoHelpSteps = [
   {
     element:
-      "Sender biographic information. Store details for selected sender. Sender is the person who is requesting to send the invoice.",
+      "Sender biographic information. Sender is the person who is requesting to send the invoice. Select an invoice to proceed next.",
   },
+  { element: "Select invoice to edit the sender information" },
+  { element: "Edit the sender demographic fields" },
 ];
 
 /**
@@ -107,8 +114,10 @@ const SenderInfoHelpSteps = [
 const ReceiverInfoHelpSteps = [
   {
     element:
-      "Receiver biographic information. Store details for selected reciever. Receiver is the person who will be recieving this invoice.",
+      "Receiver biographic information. Receiver is the person who will be recieving this invoice. Select an invoice to proceed next.",
   },
+  { element: "Select invoice to edit the receiver information" },
+  { element: "Edit the receiver demographic fields" },
 ];
 
 /**
@@ -120,14 +129,18 @@ const ReceiverInfoHelpSteps = [
 const DashboardHelpSteps = [
   {
     element:
-      "Welcome to your local dashboard view. Your most recent invoice data characteristics are displayed here. This is your standard layout. Press the 'Edit' button to edit or remove a selected widget.",
+      "This is your standard dashboard view. Your most recent invoice data characteristics are displayed here.",
   },
   {
     element:
-      "Select '+' to add widgets in the dashboard. You can add multiple of the same widgets as well.",
+      "Click here to add widgets in the dashboard. You can add multiple of the same widgets as well.",
   },
   {
-    element: "Reset your dashboard to remove clutter.",
+    element: "Click here to reset your dashboard to a blank slate.",
+  },
+  {
+    element:
+      "Click here to save your dashboard. You can save new layout, new widgets or even data within the widgets",
   },
   {
     element:

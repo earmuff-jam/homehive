@@ -123,7 +123,12 @@ export default function ReceiverInfo() {
               : "Required fields are marked with an *"}
           </Typography>
         </Stack>
-        <Stack justifyContent="flex-end" direction="row" spacing={1}>
+        <Stack
+          justifyContent="flex-end"
+          direction="row"
+          spacing={1}
+          data-tour="reciever-1"
+        >
           <InvoiceSelector
             hideCreateNewSelector
             inputLabel="Select Invoice"
@@ -135,6 +140,7 @@ export default function ReceiverInfo() {
       </Stack>
       {selectedInvoice ? (
         <UserInfoViewer
+          dataTour="reciever-2"
           register={register}
           errors={errors}
           isDisabled={!isValid}

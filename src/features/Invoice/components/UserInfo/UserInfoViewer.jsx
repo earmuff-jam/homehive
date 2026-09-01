@@ -5,6 +5,7 @@ import AButton from "common/AButton";
 import TextFieldWithLabel from "common/TextFieldWithLabel";
 
 export default function UserInfoViewer({
+  dataTour,
   register,
   errors,
   isDisabled,
@@ -12,7 +13,7 @@ export default function UserInfoViewer({
   loading,
 }) {
   return (
-    <Stack spacing={2}>
+    <Stack spacing={2} data-tour={dataTour}>
       {/* First and Last Name */}
       <Stack direction="row" spacing={2}>
         <TextFieldWithLabel

@@ -153,7 +153,7 @@ export default function Dashboard() {
           direction="row"
           justifyContent="space-between"
           alignItems="center"
-          data-tour={"dashboard-0"}
+          data-tour="dashboard-0"
         >
           <Stack direction="row">
             {!medFormFactor && (
@@ -180,7 +180,7 @@ export default function Dashboard() {
             >
               <span>
                 <AIconButton
-                  data-tour="dashboard-1"
+                  data-tour="dashboard-3"
                   disabled={!isFormDirty}
                   onClick={formMethods.handleSubmit(submit)}
                   label={
@@ -197,8 +197,8 @@ export default function Dashboard() {
             </Tooltip>
             <Tooltip title="Add Widget">
               <AIconButton
-                onClick={handleClick}
                 data-tour="dashboard-1"
+                onClick={handleClick}
                 label={
                   <DashboardCustomizeRounded fontSize="small" color="primary" />
                 }
@@ -218,7 +218,7 @@ export default function Dashboard() {
           </Stack>
         </Stack>
 
-        <Box data-tour={"dashboard-3"}>
+        <Box data-tour={"dashboard-4"}>
           <DndGridLayout
             handleWidgetMove={move}
             handleEditMode={handleEditMode}
