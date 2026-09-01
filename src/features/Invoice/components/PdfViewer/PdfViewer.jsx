@@ -143,7 +143,7 @@ const PdfViewer = ({ setDialog }) => {
                   : "Select an invoice to begin"}
               </Typography>
             </Stack>
-            <Stack justifyContent="flex-end" spacing={1}>
+            <Stack justifyContent="flex-end" spacing={1} data-tour="view-pdf-1">
               <InvoiceSelector
                 hideCreateNewSelector
                 inputLabel="Select Invoice"
@@ -156,6 +156,7 @@ const PdfViewer = ({ setDialog }) => {
                 justifyContent="flex-end"
                 alignItems="flex-end"
                 spacing={1}
+                data-tour="view-pdf-2"
               >
                 <AButton
                   size="small"

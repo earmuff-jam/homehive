@@ -70,7 +70,7 @@ const InvoiceTimelineChart = ({ data = [] }) => {
   const chartData = normalizeInvoiceTimelineChartDataset(data);
 
   return (
-    <Stack data-tour="dashboard-4">
+    <Stack data-tour="dashboard-5">
       {data?.length <= 0 ? (
         <EmptyComponent />
       ) : (

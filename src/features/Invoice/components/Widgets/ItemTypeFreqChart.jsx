@@ -51,7 +51,7 @@ const ItemTypeFreqChart = ({ data = [] }) => {
   const containsLabels = chartData?.labels.length;
 
   return (
-    <Stack data-tour="dashboard-6">
+    <Stack data-tour="dashboard-7">
       {containsLabels <= 0 ? (
         <EmptyComponent />
       ) : (

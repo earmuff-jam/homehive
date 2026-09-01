@@ -23,7 +23,6 @@ export default function MenuOptions({
   return (
     <>
       <AIconButton
-        data-tour="view-pdf-1"
         id="customized-btn"
         className="no-print"
         aria-controls={open ? "customized-btn" : undefined}

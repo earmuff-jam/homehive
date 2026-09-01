@@ -69,7 +69,7 @@ const InvoiceTrendsChart = ({ data = [] }) => {
 
   const chartData = normalizeInvoiceTrendsChartsDataset(data, chartType);
   return (
-    <Stack data-tour="dashboard-5">
+    <Stack data-tour="dashboard-6">
       <Stack>
         <Box>
           <ToggleButtonGroup

@@ -4,7 +4,7 @@ exports[`Invoice timeline chart tests > Invoice timeline chart snapshot tests > 
 <DocumentFragment>
   <div
     class="MuiStack-root css-nen11g-MuiStack-root"
-    data-tour="dashboard-4"
+    data-tour="dashboard-5"
   >
     <div
       data-testid="bar-chart"

@@ -175,7 +175,6 @@ export default function EditPdf({
   return (
     <Container
       maxWidth="md"
-      data-tour="edit-pdf-0"
       sx={{
         backgroundColor: "background.paper",
         borderRadius: 2,
@@ -184,14 +183,24 @@ export default function EditPdf({
       }}
     >
       <Stack spacing={2}>
-        <Stack direction="row" spacing={1} justifyContent="space-between">
+        <Stack
+          direction="row"
+          spacing={1}
+          justifyContent="space-between"
+          data-tour="edit-pdf-0"
+        >
           <Stack>
             <Typography variant="h5" color="text.secondary" fontWeight="bold">
               {title}
             </Typography>
             <Typography variant="subtitle2">{caption}</Typography>
           </Stack>
-          <Stack justifyContent="flex-end" direction="row" spacing={1}>
+          <Stack
+            justifyContent="flex-end"
+            direction="row"
+            spacing={1}
+            data-tour="edit-pdf-1"
+          >
             <InvoiceSelector
               inputLabel="Select Invoice"
               options={invoiceList?.invoiceDetails}
@@ -229,7 +238,7 @@ export default function EditPdf({
               <TextFieldWithLabel
                 {...field}
                 fullWidth
-                dataTour="edit-pdf-1"
+                dataTour="edit-pdf-2"
                 label="Invoice Title *"
                 error={!!errors.title}
                 errorMsg={errors.title?.message}
@@ -251,7 +260,7 @@ export default function EditPdf({
               <TextFieldWithLabel
                 {...field}
                 fullWidth
-                dataTour="edit-pdf-2"
+                dataTour="edit-pdf-3"
                 label="Invoice Caption"
                 error={!!errors.caption}
                 errorMsg={errors.caption?.message}
@@ -275,7 +284,7 @@ export default function EditPdf({
               fullWidth
               multiline
               maxRows={3}
-              dataTour="edit-pdf-3"
+              dataTour="edit-pdf-4"
               label="Additional Notes"
               error={!!errors.note}
               errorMsg={errors.note?.message}
@@ -284,7 +293,7 @@ export default function EditPdf({
           )}
         />
         {/* Start and end dates */}
-        <Stack direction="row" spacing={2} data-tour="edit-pdf-4">
+        <Stack direction="row" spacing={2} data-tour="edit-pdf-5">
           <Controller
             name="startDate"
             control={control}
@@ -362,7 +371,7 @@ export default function EditPdf({
             <TextFieldWithLabel
               {...field}
               fullWidth
-              dataTour="edit-pdf-5"
+              dataTour="edit-pdf-6"
               label="Invoice Header *"
               error={!!errors.invoiceHeader}
               errorMsg={errors.invoiceHeader?.message}
@@ -394,14 +403,14 @@ export default function EditPdf({
               {...field}
               fullWidth
               label="Tax Rate *"
-              dataTour="edit-pdf-6"
+              dataTour="edit-pdf-7"
               error={!!errors.taxRate}
               errorMsg={errors.taxRate?.message}
               placeholder="The rate of tax in upto 2 decimal places. Eg., 8.25 "
             />
           )}
         />
-        <Paper sx={{ padding: "1rem" }} data-tour="edit-pdf-7">
+        <Paper sx={{ padding: "1rem" }} data-tour="edit-pdf-8">
           <Tooltip
             title="The current status of the invoice. Selecting 'none' will not display any status."
             placement="top-start"
@@ -431,7 +440,7 @@ export default function EditPdf({
         {/* Line items */}
         <Stack alignItems={"flex-end"}>
           <AButton
-            data-tour="edit-pdf-8"
+            data-tour="edit-pdf-9"
             onClick={() => addLineItems()}
             startIcon={<AddRounded />}
             variant="outlined"
@@ -450,7 +459,7 @@ export default function EditPdf({
           />
         ))}
         <AButton
-          data-tour="edit-pdf-9"
+          data-tour="edit-pdf-10"
           variant="contained"
           onClick={handleSubmit(submit)}
           disabled={!isValid}

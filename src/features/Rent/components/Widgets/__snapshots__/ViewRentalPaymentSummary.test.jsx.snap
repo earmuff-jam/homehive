@@ -13,17 +13,3 @@ exports[`View Rental Payment Summary tests > View rental payment summary snapsho
   </div>
 </DocumentFragment>
 `;
-
-exports[`ViewRentalPaymentSummary > Snapshot tests > renders correctly and matches snapshot 1`] = `
-<DocumentFragment>
-  <div
-    class="MuiStack-root css-1sazv7p-MuiStack-root"
-  >
-    <div
-      data-testid="material-react-table"
-    >
-      [{"tenantEmail":"charlieWilliam@gmail.com","rentAmount":1000,"additionalCharges":50,"initialLateFee":10,"dailyLateFee":5,"status":"complete","rentMonth":"Feb","updatedOn":"2026-02-28T10:00:00Z","note":"Monthly rent and utility bill included in rent"},{"tenantEmail":"maria-nicole23@gmail.com","rentAmount":39.99,"status":"Manual","rentMonth":"March","updatedOn":"2026-03-10T10:00:00Z","note":"Emergency generator needed fuel and oil replacement"}]
-    </div>
-  </div>
-</DocumentFragment>
-`;

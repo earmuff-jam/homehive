@@ -25,6 +25,7 @@ exports[`SenderInfo component snapshot test > renders correctly and matches snap
       </div>
       <div
         class="MuiStack-root css-2bof0u-MuiStack-root"
+        data-tour="sender-1"
       >
         <div
           class="no-print MuiBox-root css-0"

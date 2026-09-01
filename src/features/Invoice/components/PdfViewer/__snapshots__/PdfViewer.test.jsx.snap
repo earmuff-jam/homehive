@@ -28,9 +28,11 @@ exports[`PdfViewer snapshots > renders snapshot when no invoiceList response is 
         </div>
         <div
           class="MuiStack-root css-1neh0yr-MuiStack-root"
+          data-tour="view-pdf-1"
         >
           <div
             class="MuiStack-root css-1h0m7t4-MuiStack-root"
+            data-tour="view-pdf-2"
           >
             <button
               disabled=""
