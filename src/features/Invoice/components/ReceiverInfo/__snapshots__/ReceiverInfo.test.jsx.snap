@@ -25,6 +25,7 @@ exports[`RecieverInfo component snapshot tests > renders correctly and matches s
       </div>
       <div
         class="MuiStack-root css-2bof0u-MuiStack-root"
+        data-tour="reciever-1"
       >
         <div
           class="no-print MuiBox-root css-0"
