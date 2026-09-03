@@ -494,7 +494,6 @@ export default function AssociateTenantPopup({
           clearErrors={clearErrors}
         />
 
-        {/* Owner covered utilities */}
         <Stack>
           <Controller
             name="isAutoRenewPolicySet"
@@ -505,7 +504,7 @@ export default function AssociateTenantPopup({
                 control={<Checkbox {...field} checked={field.value} />}
                 label={
                   <Stack direction="row" spacing={1} alignItems="center">
-                    <AutorenewOutlined />
+                    <AutorenewOutlined fontSize="small" />
                     <Typography variant="subtitle2">
                       {`Setup auto renewal for ${property?.name}`}
                     </Typography>
