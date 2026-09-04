@@ -83,7 +83,7 @@ export default function AppToolbar({
 
   return (
     <AppBar elevation={0} sx={{ padding: "0.30rem 0rem" }} className="no-print">
-      <Toolbar>
+      <Toolbar variant="dense">
         <Stack
           direction="row"
           spacing={2}
