@@ -85,11 +85,10 @@ export default function NavBar({
             flexDirection: "row",
             justifyContent: "space-between",
             alignItems: "center",
-            padding: "0.4rem",
           }}
         >
           <Stack direction="row" spacing={2} alignItems="center">
-            <img src="/logo-no-text.png" height="100%" width="50rem" />
+            <img src="/logo-no-text.png" width="18%" />
             <Typography
               sx={{
                 fontFamily: "'Instrument Serif', serif",
