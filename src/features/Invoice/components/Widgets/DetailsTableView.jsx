@@ -22,7 +22,9 @@ const DetailsTableView = ({ data = [] }) => {
       size: 200,
       Cell: ({ cell }) =>
         cell?.getValue() ? (
-          <Typography variant="caption">{cell.getValue()}</Typography>
+          <Typography variant="subtitle2" fontWeight="light">
+            {cell.getValue()}
+          </Typography>
         ) : (
           "-"
         ),
@@ -32,7 +34,7 @@ const DetailsTableView = ({ data = [] }) => {
       header: "Start Month",
       Cell: ({ cell }) =>
         cell?.getValue() ? (
-          <Typography variant="caption">
+          <Typography variant="subtitle2" fontWeight="light">
             {dayjs(cell.getValue()).format("MM-DD-YYYY")}
           </Typography>
         ) : (
@@ -45,7 +47,7 @@ const DetailsTableView = ({ data = [] }) => {
       header: "End Month",
       Cell: ({ cell }) =>
         cell?.getValue() ? (
-          <Typography variant="caption">
+          <Typography variant="subtitle2" fontWeight="light">
             {dayjs(cell.getValue()).format("MM-DD-YYYY")}
           </Typography>
         ) : (
@@ -59,7 +61,9 @@ const DetailsTableView = ({ data = [] }) => {
       size: 150,
       Cell: ({ cell }) =>
         cell?.getValue() ? (
-          <Typography variant="caption">{cell.getValue()}</Typography>
+          <Typography variant="subtitle2" fontWeight="light">
+            {cell.getValue()}
+          </Typography>
         ) : (
           "-"
         ),
@@ -70,7 +74,9 @@ const DetailsTableView = ({ data = [] }) => {
       size: 100,
       Cell: ({ cell }) =>
         cell?.getValue()?.label ? (
-          <Typography variant="caption">{cell.getValue()?.label}</Typography>
+          <Typography variant="subtitle2" fontWeight="light">
+            {cell.getValue()?.label}
+          </Typography>
         ) : (
           "-"
         ),
@@ -85,7 +91,8 @@ const DetailsTableView = ({ data = [] }) => {
             <Tooltip title={cell?.getValue()}>
               <Typography
                 noWrap
-                variant="caption"
+                variant="subtitle2"
+                fontWeight="light"
                 sx={{
                   display: "block",
                   width: "100%",
@@ -108,7 +115,7 @@ const DetailsTableView = ({ data = [] }) => {
 
       Cell: ({ cell }) =>
         cell?.getValue() ? (
-          <Typography variant="caption">
+          <Typography variant="subtitle2" fontWeight="light">
             {dayjs(cell.getValue()).fromNow()}
           </Typography>
         ) : (
