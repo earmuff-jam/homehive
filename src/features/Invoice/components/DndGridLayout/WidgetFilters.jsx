@@ -18,7 +18,7 @@ export default function WidgetFilters({ filters }) {
         <Typography variant="subtitle2">Selected Invoices</Typography>
       </Divider>
       {invoices?.map((invoice) => (
-        <Box>
+        <Box key={invoice?.id}>
           <Chip label={invoice?.title} />
         </Box>
       ))}
