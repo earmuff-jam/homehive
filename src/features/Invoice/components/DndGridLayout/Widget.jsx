@@ -81,21 +81,23 @@ export default function Widget({
             </Stack>
           </Stack>
           <Stack direction="row" spacing={1}>
-            <AIconButton
-              size="small"
-              disableRipple
-              disableFocusRipple
-              disableTouchRipple
-              onClick={handleClick}
-              label={
-                <Badge
-                  color="info"
-                  badgeContent={widget?.filters?.invoiceIDs?.length || 0}
-                >
-                  <FilterListRounded fontSize="small" />
-                </Badge>
-              }
-            />
+            {widget?.filters?.invoiceIDs?.length > 0 && (
+              <AIconButton
+                size="small"
+                disableRipple
+                disableFocusRipple
+                disableTouchRipple
+                onClick={handleClick}
+                label={
+                  <Badge
+                    color="info"
+                    badgeContent={widget?.filters?.invoiceIDs?.length || 0}
+                  >
+                    <FilterListRounded fontSize="small" />
+                  </Badge>
+                }
+              />
+            )}
 
             <AIconButton
               size="small"

@@ -127,7 +127,6 @@ export default function EditWidgetDrawer({
                 <Controller
                   name={`widgets.${widgetIndex}.filters.invoiceIDs`}
                   control={control}
-                  defaultValue={[]}
                   render={({ field }) => {
                     const selectedInvoices =
                       invoiceList?.invoiceDetails?.filter((invoice) =>
