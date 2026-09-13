@@ -35,6 +35,7 @@ import {
 } from "features/Rent/constants";
 import { useCalculateMaintenanceDetails } from "features/Rent/hooks/useCalculateMaintenanceDetails";
 import { sanitizeApiFields } from "features/Rent/utils";
+import { celebrations } from "src/utils/celebrations";
 
 const defaultDialog = {
   title: "",

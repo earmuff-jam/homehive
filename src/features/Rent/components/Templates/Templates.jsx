@@ -14,6 +14,7 @@ import EditTemplate from "features/Rent/components/Templates/EditTemplate";
 import ViewMissingFields from "features/Rent/components/Templates/ViewMissingFields";
 import { DefaultRentalAppEmailTemplates } from "features/Rent/components/Templates/constants";
 import { produce } from "immer";
+import { celebrations } from "src/utils/celebrations";
 
 export default function Templates() {
   const {
@@ -51,6 +52,7 @@ export default function Templates() {
       const updatedTemplate = upsertCustomTemplateResult?.data;
       setSelectedTemplate(updatedTemplate[selectedTemplateId]);
       setShowSnackbar(true);
+      celebrations.commonConfetti();
     }
   }, [upsertCustomTemplateResult.isLoading]);
 

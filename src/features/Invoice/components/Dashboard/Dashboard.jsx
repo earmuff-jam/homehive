@@ -38,6 +38,7 @@ import DndGridLayout from "features/Invoice/components/Dashboard/DndGridLayout";
 import EditWidgetDrawer from "features/Invoice/components/EditWidget/EditWidgetDrawer";
 import { WidgetTypeList, WidgetTypeProps } from "features/Invoice/constants";
 import { useAppTitle } from "hooks/useAppTitle";
+import { celebrations } from "src/utils/celebrations";
 
 export default function Dashboard() {
   useAppTitle("Dashboard");
@@ -140,6 +141,7 @@ export default function Dashboard() {
       formMethods.reset({
         widgets: dashboardWidgets,
       });
+      celebrations?.commonConfetti();
     } else {
       formMethods.reset({ widgets: [] });
     }
