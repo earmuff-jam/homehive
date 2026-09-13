@@ -50,6 +50,7 @@ import { AddPropertyTextString } from "features/Rent/constants";
 import { useVerifySubscriptionForProperties } from "features/Rent/hooks/useVerifySubscriptionForProperties";
 import { sanitizeApiFields } from "features/Rent/utils";
 import { useAppTitle } from "hooks/useAppTitle";
+import { celebrations } from "src/utils/celebrations";
 
 const defaultDialog = {
   title: "",
@@ -62,6 +63,21 @@ const Properties = () => {
 
   const navigate = useNavigate();
   const user = fetchLoggedInUser();
+
+  const [
+    createProperty,
+    { isSuccess: isCreatePropertySuccess, isLoading: isCreatePropertyLoading },
+  ] = useCreatePropertyMutation();
+
+  const [
+    triggerGetRents,
+    { isLoading: isGetRentsResultLoading, data: getRentsResultData },
+  ] = useLazyGetRentsByPropertyIdWithFiltersQuery();
+
+  const [
+    deleteProperty,
+    { isSuccess: isDeletePropertySuccess, isLoading: isDeletePropertyLoading },
+  ] = useDeletePropertyByIdMutation();
 
   const { data: properties = [], isLoading } = useGetPropertiesByUserIdQuery(
     user?.uid,
@@ -89,13 +105,6 @@ const Properties = () => {
       subscriptionOptions,
       properties?.length,
     );
-
-  const [createProperty, createPropertyResult] = useCreatePropertyMutation();
-  const [triggerGetRents, getRentsResult] =
-    useLazyGetRentsByPropertyIdWithFiltersQuery();
-
-  const [deleteProperty, deletePropertyResult] =
-    useDeletePropertyByIdMutation();
 
   const {
     register,
@@ -185,7 +194,7 @@ const Properties = () => {
       id: uuidv4(),
       isDeleted: false,
       createdBy: user?.uid,
-      ownerEmail: user?.email, // used for rtk query for rents
+      ownerEmail: user?.email, // used for rtkq for rents
       createdOn: dayjs().toISOString(),
       updatedBy: user?.uid,
       updatedOn: dayjs().toISOString(),
@@ -202,10 +211,14 @@ const Properties = () => {
   const isOwnerCoveredUtilities = watch("isOwnerCoveredUtilities");
 
   useEffect(() => {
-    if (createPropertyResult.isSuccess || deletePropertyResult.isSuccess) {
+    if (isCreatePropertySuccess || isDeletePropertySuccess) {
       setShowSnackbar(true);
     }
-  }, [createPropertyResult.isLoading, deletePropertyResult.isLoading]);
+
+    if (isCreatePropertySuccess) {
+      celebrations.commonConfetti();
+    }
+  }, [isCreatePropertyLoading, isDeletePropertyLoading]);
 
   if (isLoading) return <Skeleton height="10rem" />;
 
@@ -229,9 +242,7 @@ const Properties = () => {
               label="Add Property"
               size="small"
               variant="outlined"
-              loading={
-                createPropertyResult.isLoading || deletePropertyResult.isLoading
-              }
+              loading={isCreatePropertyLoading || isDeletePropertyLoading}
               disabled={!canAddProperty}
               endIcon={<AddRounded fontSize="small" />}
               onClick={toggleAddPropertyPopup}
@@ -351,8 +362,8 @@ const Properties = () => {
                 <ViewPropertyAccordionDetails
                   property={property}
                   userData={userData}
-                  rentDetails={getRentsResult.data}
-                  isRentDetailsLoading={getRentsResult.isLoading}
+                  rentDetails={getRentsResultData}
+                  isRentDetailsLoading={isGetRentsResultLoading}
                 />
               </AccordionDetails>
             </Accordion>

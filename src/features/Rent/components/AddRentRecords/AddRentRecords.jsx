@@ -26,6 +26,7 @@ import {
   emailMessageBuilder,
   formatAndSendNotification,
 } from "features/Rent/utils";
+import { celebrations } from "src/utils/celebrations";
 
 export default function AddRentRecords({
   property,
@@ -112,6 +113,7 @@ export default function AddRentRecords({
         ccEmailIds: [user?.email],
         sendEmail,
       });
+      celebrations?.commonConfetti();
     }
   }, [createRentRecordResult.isLoading]);
 

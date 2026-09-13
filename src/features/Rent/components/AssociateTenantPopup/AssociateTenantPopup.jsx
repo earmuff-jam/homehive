@@ -41,6 +41,7 @@ import {
   emailMessageBuilder,
   formatAndSendNotification,
 } from "features/Rent/utils";
+import { celebrations } from "src/utils/celebrations";
 
 export default function AssociateTenantPopup({
   closeDialog,
@@ -50,8 +51,16 @@ export default function AssociateTenantPopup({
 }) {
   const user = fetchLoggedInUser();
 
+  const [
+    associateTenant,
+    {
+      isLoading: isAssociateTenantLoading,
+      isSuccess: isAssociateTenantSuccess,
+      originalArgs: associateTenantOriginalArgs,
+    },
+  ] = useAssociateTenantMutation();
+
   const [sendEmail] = useSendEmailMutation();
-  const [associateTenant, associateTenantResult] = useAssociateTenantMutation();
 
   const [showSnackbar, setShowSnackbar] = useState(false);
 
@@ -137,20 +146,20 @@ export default function AssociateTenantPopup({
   }, [property]);
 
   useEffect(() => {
-    if (associateTenantResult.isSuccess) {
+    if (isAssociateTenantSuccess) {
       setShowSnackbar(true);
 
       const emailMsgWithDisclaimer = appendDisclaimer(
         emailMessageBuilder(
           AddNotificationEnumType,
-          associateTenantResult.originalArgs.property?.name,
+          associateTenantOriginalArgs?.property?.name,
         ),
         user?.email,
       );
 
       formatAndSendNotification({
-        to: associateTenantResult.originalArgs.draftData.email,
-        subject: `${AddTenantNotificationEnumValue} - ${associateTenantResult.originalArgs.property?.name}`,
+        to: associateTenantOriginalArgs?.draftData.email,
+        subject: `${AddTenantNotificationEnumValue} - ${associateTenantOriginalArgs?.property?.name}`,
         body: emailMsgWithDisclaimer,
         ccEmailIds: [user?.email],
         sendEmail,
@@ -159,8 +168,9 @@ export default function AssociateTenantPopup({
       reset();
       closeDialog();
       refetchGetProperty();
+      celebrations.commonConfetti();
     }
-  }, [associateTenantResult.isLoading]);
+  }, [isAssociateTenantLoading]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>

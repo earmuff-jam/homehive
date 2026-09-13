@@ -37,6 +37,7 @@ import {
   emailMessageBuilder,
   formatAndSendNotification,
 } from "features/Rent/utils";
+import { celebrations } from "src/utils/celebrations";
 
 // DefaultValuesCreateMaintenanceItem ...
 // default values for creating a maintenance item
@@ -140,6 +141,8 @@ const AddMaintenanceDetails = ({ property, setShowSnackbar, closeDialog }) => {
         ccEmailIds: [user?.email],
         sendEmail,
       });
+
+      celebrations.commonConfetti();
     }
   }, [isMaintenanceRecordLoading]);
 

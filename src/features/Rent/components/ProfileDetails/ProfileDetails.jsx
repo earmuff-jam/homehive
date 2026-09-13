@@ -30,6 +30,7 @@ import {
 import { useGetLatestSubscriptionByEmailQuery } from "features/Api/subscriptionApi";
 import { ProfileSubscriptionTooltip } from "features/Rent/components/ProfileDetails/ProfileSubscriptionTooltip";
 import { StripePaymentStatusCompleted } from "features/Subscription/constants";
+import { celebrations } from "src/utils/celebrations";
 
 export default function ProfileDetails() {
   const user = fetchLoggedInUser();
@@ -89,6 +90,7 @@ export default function ProfileDetails() {
       },
     });
     setShowSnackbar(true);
+    celebrations.commonConfetti();
   };
 
   const handleManageSubscription = (customerId) =>
