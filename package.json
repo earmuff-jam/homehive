@@ -36,6 +36,7 @@
     "@tiptap/extension-text-align": "^3.22.5",
     "@tiptap/react": "^3.22.5",
     "@tiptap/starter-kit": "^3.22.5",
+    "canvas-confetti": "^1.9.4",
     "chart.js": "^4.4.9",
     "chartjs-adapter-dayjs-4": "^1.0.4",
     "dayjs": "^1.11.13",
