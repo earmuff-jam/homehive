@@ -11,6 +11,7 @@ import {
   Card,
   CardActions,
   Chip,
+  Divider,
   Grid,
   Skeleton,
   Stack,
@@ -28,6 +29,7 @@ import {
   useUpdateUserByUidMutation,
 } from "features/Api/firebaseUserApi";
 import { useGetLatestSubscriptionByEmailQuery } from "features/Api/subscriptionApi";
+import ViewOwnedBadges from "features/Badges/ViewOwnedBadges";
 import { ProfileSubscriptionTooltip } from "features/Rent/components/ProfileDetails/ProfileSubscriptionTooltip";
 import { StripePaymentStatusCompleted } from "features/Subscription/constants";
 import { celebrations } from "src/utils/celebrations";
@@ -407,7 +409,6 @@ export default function ProfileDetails() {
                 )}
               />
             </Stack>
-
             <Box>
               <AButton
                 label="Save"
@@ -422,6 +423,8 @@ export default function ProfileDetails() {
               {dayjs(userData?.googleLastLoginAt).fromNow() ||
                 dayjs().fromNow()}
             </Typography>
+            <Divider />
+            <ViewOwnedBadges />
           </Card>
         </form>
       </Grid>

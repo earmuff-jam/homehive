@@ -1,3 +1,16 @@
+import React from "react";
+
+import {
+  AccountBalanceWalletRounded,
+  ApartmentRounded,
+  AtmRounded,
+  BusinessRounded,
+  DomainRounded,
+  HomeRounded,
+  MonetizationOnRounded,
+  MoneyRounded,
+} from "@mui/icons-material";
+
 // Enum Constants ...
 export const AddPropertyTextString = "ADD_PROPERTY";
 export const AddRentRecordsTextString = "ADD_RENT_RECORDS";
@@ -154,11 +167,8 @@ export const DefaultMaintenanceCategoryTypes = [
   },
 ];
 
-// STARTER_PLAN_PRODUCT_NAME ...
 export const STARTER_PLAN_PRODUCT_NAME = "Monthly Starter Plan";
-// PROFESSIONAL_PLAN_PRODUCT_NAME ...
 export const PROFESSIONAL_PLAN_PRODUCT_NAME = "Monthly Professional Plan";
-// ENTERPRISE_PLAN_PRODUCT_NAME ...
 export const ENTERPRISE_PLAN_PRODUCT_NAME = "Monthly Enterprise Plan";
 
 // DefaultRentXPropertiesLimit ...
@@ -167,4 +177,80 @@ export const DefaultRentXPropertiesLimit = {
   [STARTER_PLAN_PRODUCT_NAME]: 2,
   [PROFESSIONAL_PLAN_PRODUCT_NAME]: 10,
   [ENTERPRISE_PLAN_PRODUCT_NAME]: 20,
+};
+
+const FIRST_PROPERTY_VALUE = "first_property";
+const FIVE_PROPERTIES_VALUES = "five_properties";
+const TEN_PROPERTIES_VALUE = "ten_properties";
+const TWENTY_FIVE_PROPERTIES_VALUE = "twenty_five_properties";
+const FIFTY_PROPERTIES_VALUE = "fifty_properties";
+
+// PropertiesBadges ...
+// defines a list of badges that can be allocated in relationship to properties.
+// Should tally against the number of properties under the logged in user
+export const PropertiesBadges = {
+  1: {
+    value: FIRST_PROPERTY_VALUE,
+    title: "First Property",
+    description: "Added your first property",
+    icon: <HomeRounded fontSize="small" />,
+  },
+  5: {
+    value: FIVE_PROPERTIES_VALUES,
+    title: "Growing Portfolio",
+    description: "Added 5 properties",
+    icon: <ApartmentRounded fontSize="small" />,
+  },
+  10: {
+    value: TEN_PROPERTIES_VALUE,
+    title: "Portfolio Builder",
+    description: "Added 10 properties",
+    icon: <BusinessRounded fontSize="small" />,
+  },
+  25: {
+    value: TWENTY_FIVE_PROPERTIES_VALUE,
+    title: "Property Pro",
+    description: "Built a portfolio of 25 properties",
+    icon: <DomainRounded fontSize="small" />,
+  },
+  50: {
+    value: FIFTY_PROPERTIES_VALUE,
+    title: "Portfolio Powerhouse",
+    description: "Built a portfolio of 50 properties",
+    icon: <DomainRounded fontSize="small" />,
+  },
+};
+
+const FIRST_RENTAL_INCOME_VALUE = "first_rental_income";
+const FIVE_RENTAL_INCOME_VALUE = "five_rental_income";
+const TEN_RENTAL_INCOME_VALUE = "ten_rental_income";
+const TWENTY_FIVE_RENTAL_INCOME_VALUE = "twenty_five_rental_income";
+
+// RentIncomeBadges ...
+// defines a function that populates badges for each corrosponding rental income
+export const RentIncomeBadges = {
+  1: {
+    value: FIRST_RENTAL_INCOME_VALUE,
+    title: "First Rental Income",
+    description: "Generated your first rental income",
+    icon: <MoneyRounded fontSize="small" />,
+  },
+  5: {
+    value: FIVE_RENTAL_INCOME_VALUE,
+    title: "Fifth Rental Income",
+    description: "Generated your fifth rental income",
+    icon: <AccountBalanceWalletRounded fontSize="small" />,
+  },
+  10: {
+    value: TEN_RENTAL_INCOME_VALUE,
+    title: "Tenth Rental Income",
+    description: "Generated your tenth rental income",
+    icon: <MonetizationOnRounded fontSize="small" />,
+  },
+  25: {
+    value: TWENTY_FIVE_RENTAL_INCOME_VALUE,
+    title: "Twenty fifth Rental Income",
+    description: "Generated your twenty fifth rental income",
+    icon: <AtmRounded fontSize="small" />,
+  },
 };

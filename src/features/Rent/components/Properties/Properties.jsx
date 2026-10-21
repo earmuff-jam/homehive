@@ -36,7 +36,10 @@ import EmptyComponent from "common/EmptyComponent";
 import RowHeader from "common/RowHeader";
 import { fetchLoggedInUser } from "common/utils";
 import { useGetSubscriptionOptionsQuery } from "features/Api/externalIntegrationsApi";
-import { useGetUserDataByIdQuery } from "features/Api/firebaseUserApi";
+import {
+  useGetUserDataByIdQuery,
+  useUpdateUserByUidMutation,
+} from "features/Api/firebaseUserApi";
 import {
   useCreatePropertyMutation,
   useDeletePropertyByIdMutation,
@@ -44,9 +47,13 @@ import {
 } from "features/Api/propertiesApi";
 import { useLazyGetRentsByPropertyIdWithFiltersQuery } from "features/Api/rentApi";
 import { useGetLatestSubscriptionByEmailQuery } from "features/Api/subscriptionApi";
+import BadgeValidation from "features/Badges/BadgeValidation";
 import AddProperty from "features/Rent/components/AddProperty/AddProperty";
 import ViewPropertyAccordionDetails from "features/Rent/components/Properties/ViewPropertyAccordionDetails";
-import { AddPropertyTextString } from "features/Rent/constants";
+import {
+  AddPropertyTextString,
+  PropertiesBadges,
+} from "features/Rent/constants";
 import { useVerifySubscriptionForProperties } from "features/Rent/hooks/useVerifySubscriptionForProperties";
 import { sanitizeApiFields } from "features/Rent/utils";
 import { useAppTitle } from "hooks/useAppTitle";
@@ -63,6 +70,8 @@ const Properties = () => {
 
   const navigate = useNavigate();
   const user = fetchLoggedInUser();
+
+  const [updateUser] = useUpdateUserByUidMutation();
 
   const [
     createProperty,
@@ -216,6 +225,16 @@ const Properties = () => {
     }
 
     if (isCreatePropertySuccess) {
+      const allocatedBadge = PropertiesBadges[properties?.length]?.value;
+      // only give badge if the badge does not exist
+      if (allocatedBadge && !BadgeValidation(user?.uid, [allocatedBadge])) {
+        updateUser({
+          uid: user?.uid,
+          newData: {
+            badges: [allocatedBadge],
+          },
+        });
+      }
       celebrations.commonConfetti();
     }
   }, [isCreatePropertyLoading, isDeletePropertyLoading]);

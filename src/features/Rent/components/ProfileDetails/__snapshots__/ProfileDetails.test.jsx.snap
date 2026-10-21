@@ -141,6 +141,17 @@ exports[`ProfileDetails > matches snapshot 1`] = `
             Last login around 
             a few seconds ago
           </span>
+          <hr
+            class="MuiDivider-root MuiDivider-fullWidth css-1jpc804-MuiDivider-root"
+          />
+          <div
+            class="MuiStack-root css-nen11g-MuiStack-root"
+          >
+            <div
+              data-testid="row-header"
+            />
+            {}
+          </div>
         </div>
       </form>
     </div>
