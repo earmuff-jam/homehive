@@ -141,7 +141,7 @@ export default function Dashboard() {
       formMethods.reset({
         widgets: dashboardWidgets,
       });
-      celebrations?.commonConfetti();
+      dashboardWidgets?.length > 0 && celebrations?.commonConfetti();
     } else {
       formMethods.reset({ widgets: [] });
     }
