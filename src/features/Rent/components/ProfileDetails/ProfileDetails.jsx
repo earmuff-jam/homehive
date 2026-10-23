@@ -11,6 +11,7 @@ import {
   Card,
   CardActions,
   Chip,
+  Divider,
   Grid,
   Skeleton,
   Stack,
@@ -18,6 +19,7 @@ import {
   Typography,
 } from "@mui/material";
 import AButton from "common/AButton";
+import ViewOwnedBadges from "common/Badges/Badges";
 import CustomSnackbar from "common/CustomSnackbar";
 import RowHeader from "common/RowHeader";
 import TextFieldWithLabel from "common/TextFieldWithLabel";
@@ -407,7 +409,6 @@ export default function ProfileDetails() {
                 )}
               />
             </Stack>
-
             <Box>
               <AButton
                 label="Save"
@@ -422,6 +423,8 @@ export default function ProfileDetails() {
               {dayjs(userData?.googleLastLoginAt).fromNow() ||
                 dayjs().fromNow()}
             </Typography>
+            <Divider />
+            <ViewOwnedBadges />
           </Card>
         </form>
       </Grid>

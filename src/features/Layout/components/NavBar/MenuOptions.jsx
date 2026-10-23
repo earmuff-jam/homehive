@@ -1,12 +1,16 @@
 import React, { useState } from "react";
 
+import { useNavigate } from "react-router-dom";
+
 import {
   DarkModeRounded,
   HelpOutlineRounded,
   LightModeRounded,
+  PersonOffOutlined,
 } from "@mui/icons-material";
 import { ListItemIcon, ListItemText, Menu, MenuItem } from "@mui/material";
 import AIconButton from "common/AIconButton";
+import { SettingsRouteUri, fetchLoggedInUser } from "common/utils";
 
 export default function MenuOptions({
   handleHelp = () => {},
@@ -14,10 +18,13 @@ export default function MenuOptions({
   isLightTheme = false,
   showHelpAndSupport = false,
 }) {
+  const navigate = useNavigate();
+  const user = fetchLoggedInUser();
   const [anchorEl, setAnchorEl] = useState(null);
 
   const open = Boolean(anchorEl);
   const handleClose = () => setAnchorEl(null);
+  const handleViewProfile = () => navigate(SettingsRouteUri);
   const handleClick = (event) => setAnchorEl(event.currentTarget);
 
   return (
@@ -109,6 +116,29 @@ export default function MenuOptions({
             />
           </MenuItem>
         ) : null}
+        <MenuItem
+          disabled={!user}
+          onClick={() => {
+            handleViewProfile();
+            handleClose();
+          }}
+          disableRipple
+          sx={{ gap: "0.5rem" }}
+        >
+          <ListItemIcon>
+            <PersonOffOutlined fontSize="small" />
+          </ListItemIcon>
+          <ListItemText
+            primary="View Profile"
+            slotProps={{
+              primary: {
+                fontSize: 14,
+                fontWeight: 500,
+                variant: "subtitle2",
+              },
+            }}
+          />
+        </MenuItem>
       </Menu>
     </>
   );

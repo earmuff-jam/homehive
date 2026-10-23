@@ -11,6 +11,10 @@ import { Box, Divider, Stack, Typography } from "@mui/material";
 import { LocalizationProvider, MobileDatePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import AButton from "common/AButton";
+import {
+  FirstIncomeReportKey,
+  ReportBadges,
+} from "common/Badges/BadgeValidation";
 import TextFieldWithLabel from "common/TextFieldWithLabel";
 import { fetchLoggedInUser } from "common/utils";
 import { useSendEmailMutation } from "features/Api/externalIntegrationsApi";
@@ -18,7 +22,11 @@ import {
   useGetUserByEmailAddressQuery,
   useGetUserDataByIdQuery,
 } from "features/Api/firebaseUserApi";
-import { useCreateRentRecordMutation } from "features/Api/rentApi";
+import { useGetPropertiesByUserIdQuery } from "features/Api/propertiesApi";
+import {
+  useCreateRentRecordMutation,
+  useGetRentsByPropertyIdQuery,
+} from "features/Api/rentApi";
 import { useGetTenantByPropertyIdQuery } from "features/Api/tenantsApi";
 import {
   AddRentPaymentNotificationEnumValue,
@@ -49,6 +57,13 @@ export default function AddRentRecords({
   const { data: tenants = [] } = useGetTenantByPropertyIdQuery(property?.id, {
     skip: !property?.id,
   });
+
+  const { data: rentList = [] } = useGetRentsByPropertyIdQuery(
+    { propertyId: property?.id, currentUserEmail: user?.email },
+    {
+      skip: !property?.id,
+    },
+  );
 
   const primaryTenant = useMemo(
     () => tenants?.find((tenant) => tenant.isPrimary),
@@ -100,6 +115,19 @@ export default function AddRentRecords({
     if (createRentRecordResult.isSuccess) {
       closeDialog();
       setShowSnackbar(true);
+
+      // only give badge for the first time
+      if (rentList?.length === 1) {
+        const allocatedBadge = ReportBadges[FirstIncomeReportKey];
+        if (allocatedBadge) {
+          updateUser({
+            uid: user?.uid,
+            newData: {
+              badges: [allocatedBadge],
+            },
+          });
+        }
+      }
 
       const emailMsgWithDisclaimer = appendDisclaimer(
         emailMessageBuilder(AddRentPaymentNotificationEnumValue, property.name),

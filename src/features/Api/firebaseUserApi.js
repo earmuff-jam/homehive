@@ -23,7 +23,7 @@ import { authenticatorConfig, authenticatorFirestore as db } from "src/config";
 export const firebaseUserApi = createApi({
   reducerPath: "firebaseUserApi",
   baseQuery: fakeBaseQuery(),
-  tagTypes: ["User"],
+  tagTypes: ["User", "Badge"],
 
   endpoints: (builder) => ({
     // fetch user data where user id matches the passed in user id from users db
@@ -167,6 +167,29 @@ export const firebaseUserApi = createApi({
         }
       },
     }),
+    // retrive saved user badges
+    getUserOwnedBadges: builder.query({
+      async queryFn(uid) {
+        try {
+          const docRef = doc(db, "users", uid);
+          const docSnap = await getDoc(docRef);
+          if (!docSnap.exists()) {
+            return { error: { message: "User not found" } };
+          } else {
+            const userData = docSnap.data();
+            return { data: userData?.ownedBadges || [] };
+          }
+        } catch (error) {
+          return {
+            error: {
+              message: error.message,
+              code: error.code,
+            },
+          };
+        }
+      },
+      providesTags: ["Badges"],
+    }),
   }),
 });
 
@@ -178,4 +201,5 @@ export const {
   useAuthenticateMutation,
   useUpdateUserByUidMutation,
   useLogoutMutation,
+  useGetUserOwnedBadgesQuery,
 } = firebaseUserApi;
