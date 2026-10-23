@@ -19,11 +19,11 @@ import {
   Typography,
 } from "@mui/material";
 import AButton from "common/AButton";
+import ViewOwnedBadges from "common/Badges/Badges";
 import CustomSnackbar from "common/CustomSnackbar";
 import RowHeader from "common/RowHeader";
 import TextFieldWithLabel from "common/TextFieldWithLabel";
 import { fetchLoggedInUser } from "common/utils";
-import Badges from "features/Accolades/Badges";
 import { useCreateStripeManageSubscriptionLinkMutation } from "features/Api/externalIntegrationsApi";
 import {
   useGetUserDataByIdQuery,
@@ -409,9 +409,6 @@ export default function ProfileDetails() {
                 )}
               />
             </Stack>
-            <Divider />
-            <Badges />
-
             <Box>
               <AButton
                 label="Save"
@@ -426,6 +423,8 @@ export default function ProfileDetails() {
               {dayjs(userData?.googleLastLoginAt).fromNow() ||
                 dayjs().fromNow()}
             </Typography>
+            <Divider />
+            <ViewOwnedBadges />
           </Card>
         </form>
       </Grid>

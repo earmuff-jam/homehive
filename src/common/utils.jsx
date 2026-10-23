@@ -101,3 +101,4 @@ export const isSelectedFeatureEnabled = (feature) => {
   const enabledFeaturesMap = authorizedServerLevelFeatureFlags();
   return enabledFeaturesMap?.get(feature) || false;
 };
+

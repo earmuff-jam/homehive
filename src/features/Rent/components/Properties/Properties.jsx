@@ -28,6 +28,7 @@ import {
   Typography,
 } from "@mui/material";
 import AButton from "common/AButton";
+import { PropertiesBadges } from "common/Badges/BadgeValidation";
 import ConfirmationBox, {
   DefaultConfirmationBoxProps,
 } from "common/ConfirmationBox";
@@ -36,7 +37,10 @@ import EmptyComponent from "common/EmptyComponent";
 import RowHeader from "common/RowHeader";
 import { fetchLoggedInUser } from "common/utils";
 import { useGetSubscriptionOptionsQuery } from "features/Api/externalIntegrationsApi";
-import { useGetUserDataByIdQuery } from "features/Api/firebaseUserApi";
+import {
+  useGetUserDataByIdQuery,
+  useUpdateUserByUidMutation,
+} from "features/Api/firebaseUserApi";
 import {
   useCreatePropertyMutation,
   useDeletePropertyByIdMutation,
@@ -63,6 +67,8 @@ const Properties = () => {
 
   const navigate = useNavigate();
   const user = fetchLoggedInUser();
+
+  const [updateUser] = useUpdateUserByUidMutation();
 
   const [
     createProperty,
@@ -216,6 +222,15 @@ const Properties = () => {
     }
 
     if (isCreatePropertySuccess) {
+      const allocatedBadge = PropertiesBadges[properties?.length];
+      if (allocatedBadge) {
+        updateUser({
+          uid: user?.uid,
+          newData: {
+            badges: [allocatedBadge],
+          },
+        });
+      }
       celebrations.commonConfetti();
     }
   }, [isCreatePropertyLoading, isDeletePropertyLoading]);
