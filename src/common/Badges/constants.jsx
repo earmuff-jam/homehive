@@ -120,13 +120,6 @@ const Accolades = {
 
   myReports: [
     {
-      id: "10000000-0000-4000-8000-000000000001",
-      value: "first_report",
-      title: "First Report",
-      description: "Generated your first property report",
-      icon: <AssessmentRounded />,
-    },
-    {
       id: "10000000-0000-4000-8000-000000000002",
       value: "first_income_report",
       title: "Numbers Don't Lie",

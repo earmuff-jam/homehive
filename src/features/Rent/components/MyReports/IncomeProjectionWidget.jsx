@@ -6,6 +6,11 @@ import PieChart from "features/Rent/components/MyReports/ PieChart";
 import SeriesChart from "features/Rent/components/MyReports/SeriesChart";
 import { useCalculateProjectedRentalChange } from "features/Rent/hooks/useCalculateProjectedRentalChange";
 import { useCalculateTotalCollectedRents } from "features/Rent/hooks/useCalculateTotalCollectedRents";
+import {
+  CompleteRentStatusEnumValue,
+  ManualRentStatusEnumValue,
+  PaidRentStatusEnumValue,
+} from "features/Rent/utils";
 
 const IncomeProjectionWidget = ({ properties, existingRents }) => {
   const avgProjectedIncrease = properties?.reduce(
@@ -22,6 +27,16 @@ const IncomeProjectionWidget = ({ properties, existingRents }) => {
     properties,
     existingRents,
   );
+
+  const incomeGeneratedFromRent = existingRents?.filter((r) =>
+    [
+      ManualRentStatusEnumValue,
+      CompleteRentStatusEnumValue,
+      PaidRentStatusEnumValue,
+    ].includes(r.status),
+  )?.length;
+
+  console.log(incomeGeneratedFromRent);
 
   return (
     <Paper variant="outlined" sx={{ padding: 2 }}>
