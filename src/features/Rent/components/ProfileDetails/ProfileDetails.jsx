@@ -11,6 +11,7 @@ import {
   Card,
   CardActions,
   Chip,
+  Divider,
   Grid,
   Skeleton,
   Stack,
@@ -22,6 +23,7 @@ import CustomSnackbar from "common/CustomSnackbar";
 import RowHeader from "common/RowHeader";
 import TextFieldWithLabel from "common/TextFieldWithLabel";
 import { fetchLoggedInUser } from "common/utils";
+import Badges from "features/Accolades/Badges";
 import { useCreateStripeManageSubscriptionLinkMutation } from "features/Api/externalIntegrationsApi";
 import {
   useGetUserDataByIdQuery,
@@ -407,6 +409,8 @@ export default function ProfileDetails() {
                 )}
               />
             </Stack>
+            <Divider />
+            <Badges />
 
             <Box>
               <AButton
