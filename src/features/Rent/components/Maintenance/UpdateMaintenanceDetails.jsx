@@ -24,12 +24,16 @@ import TextFieldWithLabel from "common/TextFieldWithLabel";
 import { fetchLoggedInUser, isSelectedFeatureEnabled } from "common/utils";
 import { useSendEmailMutation } from "features/Api/externalIntegrationsApi";
 import { useViewMaintenanceImagesQuery } from "features/Api/firebaseStorageApi";
+import { useUpdateUserByUidMutation } from "features/Api/firebaseUserApi";
 import {
   useGetMaintenanceRecordQuery,
+  useGetMaintenanceRecordsQuery,
   useUpdateMaintenanceDataMutation,
 } from "features/Api/maintenanceApi";
+import BadgeValidation from "features/Badges/BadgeValidation";
 import DisplayImages from "features/Rent/components/Image/DisplayImages";
 import {
+  CompletedMaintenanceBadges,
   DefaultMaintenanceCategoryTypes,
   DefaultMaintenanceIssueResolutionTypes,
   MaintenanceRecordEnumValues,
@@ -66,6 +70,11 @@ const UpdateMaintenanceDetails = ({
   const user = fetchLoggedInUser();
   const isS3StorageEnabled = isSelectedFeatureEnabled("cloudService");
 
+  const { data: maintenanceRecords = [] } = useGetMaintenanceRecordsQuery(
+    { propertyId: property?.id },
+    { skip: !property?.id },
+  );
+
   const {
     data: maintenanceRecord,
     isLoading: isMaintenanceRecordLoading,
@@ -82,6 +91,7 @@ const UpdateMaintenanceDetails = ({
   );
 
   const [sendEmail] = useSendEmailMutation();
+  const [updateUser] = useUpdateUserByUidMutation();
 
   const [
     updateMaintenanceRecord,
@@ -123,6 +133,22 @@ const UpdateMaintenanceDetails = ({
     if (isUpdateMaintenanceRecordSuccess) {
       closeDialog();
       setShowSnackbar(true);
+
+      const completedMaintenanceList = maintenanceRecords?.filter(
+        (record) => record.status === MaintenanceRecordEnumValues.Completed,
+      );
+
+      const allocatedBadge =
+        CompletedMaintenanceBadges[completedMaintenanceList?.length]?.value;
+      // only give badge if the badge does not exist
+      if (allocatedBadge && !BadgeValidation(user?.uid, [allocatedBadge])) {
+        updateUser({
+          uid: user?.uid,
+          newData: {
+            badges: [allocatedBadge],
+          },
+        });
+      }
 
       const emailMsgWithDisclaimer = appendDisclaimer(
         emailMessageBuilder(UpdateMaintenanceRecordEnumValue, property?.name),

@@ -62,6 +62,13 @@ vi.mock("features/Api/firebaseUserApi", async (importOriginal) => {
       },
       isLoading: false,
     }),
+    useUpdateUserByUidMutation: () => [
+      vi.fn(),
+      {
+        isSuccess: false,
+        isLoading: false,
+      },
+    ],
   };
 });
 

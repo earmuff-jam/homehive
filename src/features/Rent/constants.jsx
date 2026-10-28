@@ -6,9 +6,13 @@ import {
   AtmRounded,
   BusinessRounded,
   DomainRounded,
+  GroupsRounded,
   HomeRounded,
   MonetizationOnRounded,
   MoneyRounded,
+  PeopleRounded,
+  Person2Rounded,
+  PersonRounded,
 } from "@mui/icons-material";
 
 // Enum Constants ...
@@ -252,5 +256,73 @@ export const RentIncomeBadges = {
     title: "Twenty fifth Rental Income",
     description: "Generated your twenty fifth rental income",
     icon: <AtmRounded fontSize="small" />,
+  },
+};
+
+const FIRST_TENANT_VALUE = "first_tenant";
+const FIVE_TENANTS_VALUE = "five_tenant";
+const TEN_TENANTS_VALUE = "ten_tenant";
+const TWENTY_FIVE_TENANTS_VALUE = "twenty_five_tenant";
+
+// AssociatedTenantsBadges ...
+// defines a function that populates badges for each associated tenants
+export const AssociatedTenantsBadges = {
+  1: {
+    value: FIRST_TENANT_VALUE,
+    title: "First Associated Tenant",
+    description: "Associated your first tenant",
+    icon: <PersonRounded fontSize="small" />,
+  },
+  5: {
+    value: FIVE_TENANTS_VALUE,
+    title: "Fifth Associated Tenant",
+    description: "Associated your fifth tenant",
+    icon: <PeopleRounded fontSize="small" />,
+  },
+  10: {
+    value: TEN_TENANTS_VALUE,
+    title: "Tenth Associated Tenant",
+    description: "Associated your tenth tenant",
+    icon: <Person2Rounded fontSize="small" />,
+  },
+  25: {
+    value: TWENTY_FIVE_TENANTS_VALUE,
+    title: "Twenty fifth Associated Tenant",
+    description: "Associated your twenty-fifth tenant",
+    icon: <GroupsRounded fontSize="small" />,
+  },
+};
+
+const FIRST_MAINTENANCE_VALUE = "first_maintenance";
+const FIVE_MAINTENANCE_VALUE = "five_maintenance";
+const TEN_MAINTENANCE_VALUE = "ten_maintenance";
+const TWENTY_FIVE_MAINTENANCE_VALUE = "twenty_five_maintenance";
+
+// CompletedMaintenanceBadges ...
+// defines a function that populates badges for each completed maintenance request
+export const CompletedMaintenanceBadges = {
+  1: {
+    value: FIRST_MAINTENANCE_VALUE,
+    title: "First Maintenace Request Completed",
+    description: "Completed your first maintenance request",
+    icon: <PersonRounded fontSize="small" />,
+  },
+  5: {
+    value: FIVE_MAINTENANCE_VALUE,
+    title: "Fifth Maintenace Request Completed",
+    description: "Completed your fifth maintenance request",
+    icon: <PeopleRounded fontSize="small" />,
+  },
+  10: {
+    value: TEN_MAINTENANCE_VALUE,
+    title: "Tenth Maintenace Request Completed",
+    description: "Completed your tenth maintenance request",
+    icon: <Person2Rounded fontSize="small" />,
+  },
+  25: {
+    value: TWENTY_FIVE_MAINTENANCE_VALUE,
+    title: "Twenty fifth Maintenace Request Completed",
+    description: "Completed your twenty-fifth maintenance request",
+    icon: <GroupsRounded fontSize="small" />,
   },
 };

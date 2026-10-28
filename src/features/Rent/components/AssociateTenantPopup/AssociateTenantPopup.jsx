@@ -31,9 +31,14 @@ import CustomSnackbar from "common/CustomSnackbar";
 import TextFieldWithLabel from "common/TextFieldWithLabel";
 import { fetchLoggedInUser } from "common/utils";
 import { useSendEmailMutation } from "features/Api/externalIntegrationsApi";
+import { useUpdateUserByUidMutation } from "features/Api/firebaseUserApi";
 import { useAssociateTenantMutation } from "features/Api/tenantsApi";
+import BadgeValidation from "features/Badges/BadgeValidation";
 import TenantEmailAutocomplete from "features/Rent/components/AssociateTenantPopup/TenantEmailAutocomplete";
-import { DefaultLeaseTermOptions } from "features/Rent/constants";
+import {
+  AssociatedTenantsBadges,
+  DefaultLeaseTermOptions,
+} from "features/Rent/constants";
 import {
   AddNotificationEnumType,
   AddTenantNotificationEnumValue,
@@ -61,6 +66,7 @@ export default function AssociateTenantPopup({
   ] = useAssociateTenantMutation();
 
   const [sendEmail] = useSendEmailMutation();
+  const [updateUser] = useUpdateUserByUidMutation();
 
   const [showSnackbar, setShowSnackbar] = useState(false);
 
@@ -148,6 +154,17 @@ export default function AssociateTenantPopup({
   useEffect(() => {
     if (isAssociateTenantSuccess) {
       setShowSnackbar(true);
+
+      const allocatedBadge = AssociatedTenantsBadges[tenants?.length]?.value;
+      // only give badge if the badge does not exist
+      if (allocatedBadge && !BadgeValidation(user?.uid, [allocatedBadge])) {
+        updateUser({
+          uid: user?.uid,
+          newData: {
+            badges: [allocatedBadge],
+          },
+        });
+      }
 
       const emailMsgWithDisclaimer = appendDisclaimer(
         emailMessageBuilder(

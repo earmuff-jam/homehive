@@ -59,30 +59,6 @@
 // } from "@mui/icons-material";
 
 // const Accolades = {
-//   myProperties: [
-//     {
-//       id: "6ba7b810-9dad-41d1-80b4-00c04fd430c8",
-//       value: "first_tenant",
-//       title: "First Tenant",
-//       description: "Added your first tenant",
-//       icon: <PersonRounded />,
-//     },
-//     {
-//       id: "7c9e6679-7425-40de-944b-e07fc1f90ae7",
-//       value: "first_rent_payment",
-//       title: "First Rent",
-//       description: "Recorded your first rent payment",
-//       icon: <PaymentRounded />,
-//     },
-//     {
-//       id: "8f14e45f-ea67-4a3b-9b5c-2d7e8f1a4b6c",
-//       value: "first_maintenance_request",
-//       title: "First Maintenance",
-//       description: "Created your first maintenance request",
-//       icon: <ConstructionRounded />,
-//     },
-//   ],
-
 //   myReports: [
 //     {
 //       id: "10000000-0000-4000-8000-000000000002",
