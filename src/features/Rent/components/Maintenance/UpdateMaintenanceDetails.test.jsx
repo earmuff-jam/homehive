@@ -6,6 +6,7 @@ import { useSendEmailMutation } from "features/Api/externalIntegrationsApi";
 import { useViewMaintenanceImagesQuery } from "features/Api/firebaseStorageApi";
 import {
   useGetMaintenanceRecordQuery,
+  useGetMaintenanceRecordsQuery,
   useUpdateMaintenanceDataMutation,
 } from "features/Api/maintenanceApi";
 import { beforeEach, describe, expect, it, vi } from "vitest";
@@ -13,6 +14,13 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 vi.mock("features/Api/maintenanceApi");
 vi.mock("features/Api/firebaseStorageApi");
 vi.mock("features/Api/externalIntegrationsApi");
+
+vi.mock("features/Api/firebaseUserApi", () => ({
+  useUpdateUserByUidMutation: vi.fn(() => [
+    vi.fn(),
+    { isSuccess: false, isLoading: false },
+  ]),
+}));
 
 vi.mock("common/AButton", () => ({
   __esModule: true,
@@ -62,6 +70,12 @@ describe("UpdateMaintenanceDetails", () => {
         updateMutation,
         { isFetching: false, isSuccess: false },
       ]);
+
+      useGetMaintenanceRecordsQuery.mockReturnValue({
+        isLoading: false,
+        isSuccess: true,
+        data: [],
+      });
 
       useGetMaintenanceRecordQuery.mockReturnValue({
         isLoading: false,

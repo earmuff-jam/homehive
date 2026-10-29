@@ -23,7 +23,7 @@ import { authenticatorConfig, authenticatorFirestore as db } from "src/config";
 export const firebaseUserApi = createApi({
   reducerPath: "firebaseUserApi",
   baseQuery: fakeBaseQuery(),
-  tagTypes: ["User"],
+  tagTypes: ["User", "Badge"],
 
   endpoints: (builder) => ({
     // fetch user data where user id matches the passed in user id from users db
@@ -167,6 +167,62 @@ export const firebaseUserApi = createApi({
         }
       },
     }),
+    // getBadgeValidationByBadgeKeys ...
+    // defines a function that validates if provided badges exists for user
+    getBadgeValidationByBadgeKeys: builder.query({
+      async queryFn({ uid, keys = [] }) {
+        try {
+          if (!keys?.length) {
+            return { data: false };
+          }
+
+          const docRef = doc(db, "users", uid);
+          const docSnap = await getDoc(docRef);
+
+          if (!docSnap.exists()) {
+            return { error: { message: "User not found" } };
+          }
+
+          const userData = docSnap.data();
+          const ownedBadges = userData?.ownedBadges ?? [];
+
+          const allBadgesExist = keys.every((key) => ownedBadges.includes(key));
+
+          return { data: allBadgesExist };
+        } catch (error) {
+          return {
+            error: {
+              message: error.message,
+              code: error.code,
+            },
+          };
+        }
+      },
+    }),
+    // getUserOwnedBadges ...
+    // defines a function that retrieves saved user badges
+    getUserOwnedBadges: builder.query({
+      async queryFn(uid) {
+        try {
+          const docRef = doc(db, "users", uid);
+          const docSnap = await getDoc(docRef);
+          if (!docSnap.exists()) {
+            return { error: { message: "User not found" } };
+          } else {
+            const userData = docSnap.data();
+            return { data: userData?.badges || [] };
+          }
+        } catch (error) {
+          return {
+            error: {
+              message: error.message,
+              code: error.code,
+            },
+          };
+        }
+      },
+      providesTags: ["Badges"],
+    }),
   }),
 });
 
@@ -178,4 +234,7 @@ export const {
   useAuthenticateMutation,
   useUpdateUserByUidMutation,
   useLogoutMutation,
+  useGetUserOwnedBadgesQuery,
+  useGetBadgeValidationByBadgeKeysQuery,
+  useLazyGetBadgeValidationByBadgeKeysQuery,
 } = firebaseUserApi;

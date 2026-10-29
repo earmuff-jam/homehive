@@ -5,7 +5,7 @@ import CustomSnackbar from "common/CustomSnackbar";
 import EmptyComponent from "common/EmptyComponent";
 import RowHeader from "common/RowHeader";
 import { fetchLoggedInUser } from "common/utils";
-import { useGetPropertiesByUserIdQuery } from "features/Api/propertiesApi";
+import { useGetPropertiesByPropertyIdQuery } from "features/Api/propertiesApi";
 import { useLazyGetRentsByPropertiesQuery } from "features/Api/rentApi";
 import { useLazyGetTenantsByPropertiesArrQuery } from "features/Api/tenantsApi";
 import IncomeProjectionWidget from "features/Rent/components/MyReports/IncomeProjectionWidget";
@@ -22,7 +22,7 @@ const MyReports = () => {
     data: properties = [],
     isLoading: isPropertiesListLoading,
     isSuccess: isPropertiesListSuccess,
-  } = useGetPropertiesByUserIdQuery(user.uid, {
+  } = useGetPropertiesByPropertyIdQuery(user.uid, {
     skip: !user?.uid,
   });
 
@@ -69,9 +69,7 @@ const MyReports = () => {
           textAlign: "left",
         }}
       />
-
       <ReportOverview properties={properties} />
-
       <StatisticsWidget
         data={properties}
         existingTenants={existingTenants}

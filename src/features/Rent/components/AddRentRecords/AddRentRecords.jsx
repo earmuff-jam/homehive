@@ -17,9 +17,15 @@ import { useSendEmailMutation } from "features/Api/externalIntegrationsApi";
 import {
   useGetUserByEmailAddressQuery,
   useGetUserDataByIdQuery,
+  useUpdateUserByUidMutation,
 } from "features/Api/firebaseUserApi";
-import { useCreateRentRecordMutation } from "features/Api/rentApi";
+import {
+  useCreateRentRecordMutation,
+  useGetRentsByPropertyIdQuery,
+} from "features/Api/rentApi";
 import { useGetTenantByPropertyIdQuery } from "features/Api/tenantsApi";
+import BadgeValidation from "features/Badges/BadgeValidation";
+import { RentIncomeBadges } from "features/Rent/constants";
 import {
   AddRentPaymentNotificationEnumValue,
   appendDisclaimer,
@@ -36,6 +42,8 @@ export default function AddRentRecords({
   const user = fetchLoggedInUser();
 
   const [sendEmail] = useSendEmailMutation();
+  const [updateUser] = useUpdateUserByUidMutation();
+
   const [createRentRecord, createRentRecordResult] =
     useCreateRentRecordMutation();
 
@@ -49,6 +57,13 @@ export default function AddRentRecords({
   const { data: tenants = [] } = useGetTenantByPropertyIdQuery(property?.id, {
     skip: !property?.id,
   });
+
+  const { data: rentList = [] } = useGetRentsByPropertyIdQuery(
+    { propertyId: property?.id, currentUserEmail: user?.email },
+    {
+      skip: !property?.id,
+    },
+  );
 
   const primaryTenant = useMemo(
     () => tenants?.find((tenant) => tenant.isPrimary),
@@ -100,6 +115,17 @@ export default function AddRentRecords({
     if (createRentRecordResult.isSuccess) {
       closeDialog();
       setShowSnackbar(true);
+
+      const allocatedBadge = RentIncomeBadges[rentList?.length]?.value;
+      // only give badge if the badge does not exist
+      if (allocatedBadge && !BadgeValidation(user?.uid, [allocatedBadge])) {
+        updateUser({
+          uid: user?.uid,
+          newData: {
+            badges: [allocatedBadge],
+          },
+        });
+      }
 
       const emailMsgWithDisclaimer = appendDisclaimer(
         emailMessageBuilder(AddRentPaymentNotificationEnumValue, property.name),

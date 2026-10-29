@@ -38,6 +38,7 @@ export default function Pricing({
       (option) => option.priceId === id,
     );
     setSelectedSubscription(selectedSubscription);
+    handleRentClick?.(); // handle authenticate if exists
   };
 
   const sortedSubscriptionOptions = subscriptionOptions
@@ -129,7 +130,7 @@ export default function Pricing({
                 }}
               >
                 <Button
-                  onClick={handleRentClick}
+                  onClick={() => handleClick(plan.priceId)}
                   variant={isPopular ? "contained" : "outlined"}
                   sx={{
                     padding: "0.8rem",
