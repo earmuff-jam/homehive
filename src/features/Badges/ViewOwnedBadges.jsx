@@ -18,8 +18,8 @@ const ViewOwnedBadges = () => {
   return (
     <Stack>
       <RowHeader
-        title="Badges and accolades"
-        caption="View your accolades or owned badges"
+        title="View Badges"
+        caption="View your owned badges"
         sxProps={{
           textAlign: "left",
           color: "text.secondary",
