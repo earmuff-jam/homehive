@@ -170,7 +170,7 @@ export const firebaseUserApi = createApi({
     // getBadgeValidationByBadgeKeys ...
     // defines a function that validates if provided badges exists for user
     getBadgeValidationByBadgeKeys: builder.query({
-      async queryFn(uid, keys = []) {
+      async queryFn({ uid, keys = [] }) {
         try {
           if (!keys?.length) {
             return { data: false };
@@ -210,7 +210,7 @@ export const firebaseUserApi = createApi({
             return { error: { message: "User not found" } };
           } else {
             const userData = docSnap.data();
-            return { data: userData?.ownedBadges || [] };
+            return { data: userData?.badges || [] };
           }
         } catch (error) {
           return {
@@ -236,4 +236,5 @@ export const {
   useLogoutMutation,
   useGetUserOwnedBadgesQuery,
   useGetBadgeValidationByBadgeKeysQuery,
+  useLazyGetBadgeValidationByBadgeKeysQuery,
 } = firebaseUserApi;

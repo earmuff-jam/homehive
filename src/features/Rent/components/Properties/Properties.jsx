@@ -38,6 +38,7 @@ import { fetchLoggedInUser } from "common/utils";
 import { useGetSubscriptionOptionsQuery } from "features/Api/externalIntegrationsApi";
 import {
   useGetUserDataByIdQuery,
+  useLazyGetBadgeValidationByBadgeKeysQuery,
   useUpdateUserByUidMutation,
 } from "features/Api/firebaseUserApi";
 import {
@@ -72,6 +73,16 @@ const Properties = () => {
   const user = fetchLoggedInUser();
 
   const [updateUser] = useUpdateUserByUidMutation();
+
+  const [
+    validateBadge,
+    {
+      data: badgeExists = false,
+      isLoading: isValidateBadgeLoading,
+      isSuccess: isValidateBadgeSuccess,
+      originalArgs: validateBadgeOriginalArgs,
+    },
+  ] = useLazyGetBadgeValidationByBadgeKeysQuery();
 
   const [
     createProperty,
@@ -225,19 +236,29 @@ const Properties = () => {
     }
 
     if (isCreatePropertySuccess) {
-      const allocatedBadge = PropertiesBadges[properties?.length]?.value;
+      // update count to support the newly created property
+      const allocatedBadge = PropertiesBadges[properties?.length + 1]?.value;
       // only give badge if the badge does not exist
-      if (allocatedBadge && !BadgeValidation(user?.uid, [allocatedBadge])) {
-        updateUser({
-          uid: user?.uid,
-          newData: {
-            badges: [allocatedBadge],
-          },
-        });
-      }
+      if (
+        allocatedBadge &&
+        validateBadge({ uid: user?.uid, keys: [allocatedBadge] })
+      );
       celebrations.commonConfetti();
     }
   }, [isCreatePropertyLoading, isDeletePropertyLoading]);
+
+  useEffect(() => {
+    if (!isValidateBadgeLoading && isValidateBadgeSuccess) {
+      if (!badgeExists) {
+        updateUser({
+          uid: user?.uid,
+          newData: {
+            badges: validateBadgeOriginalArgs?.keys,
+          },
+        });
+      }
+    }
+  }, [isValidateBadgeLoading]);
 
   if (isLoading) return <Skeleton height="10rem" />;
 

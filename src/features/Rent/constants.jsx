@@ -326,3 +326,11 @@ export const CompletedMaintenanceBadges = {
     icon: <GroupsRounded fontSize="small" />,
   },
 };
+
+const retrieveBadgesInList = (obj) => Object.values(obj);
+
+export const BADGES_LIST = [
+  ...retrieveBadgesInList(PropertiesBadges),
+  ...retrieveBadgesInList(RentIncomeBadges),
+  ...retrieveBadgesInList(CompletedMaintenanceBadges),
+];
