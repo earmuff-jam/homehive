@@ -52,7 +52,7 @@ import AddProperty from "features/Rent/components/AddProperty/AddProperty";
 import ViewPropertyAccordionDetails from "features/Rent/components/Properties/ViewPropertyAccordionDetails";
 import {
   AddPropertyTextString,
-  PropertiesBadges,
+  PROPERTIES_BADGES,
 } from "features/Rent/constants";
 import { useVerifySubscriptionForProperties } from "features/Rent/hooks/useVerifySubscriptionForProperties";
 import { sanitizeApiFields } from "features/Rent/utils";
@@ -235,8 +235,7 @@ const Properties = () => {
     }
 
     if (isCreatePropertySuccess) {
-      // update count to support the newly created property
-      const allocatedBadge = PropertiesBadges[properties?.length + 1]?.value;
+      const allocatedBadge = PROPERTIES_BADGES[properties?.length + 1]?.value;
       allocatedBadge &&
         validateBadge({ uid: user?.uid, keys: [allocatedBadge] });
       celebrations.commonConfetti();

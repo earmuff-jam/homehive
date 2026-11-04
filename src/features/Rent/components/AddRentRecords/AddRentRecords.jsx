@@ -25,7 +25,7 @@ import {
   useGetRentsByPropertyIdQuery,
 } from "features/Api/rentApi";
 import { useGetTenantByPropertyIdQuery } from "features/Api/tenantsApi";
-import { RentIncomeBadges } from "features/Rent/constants";
+import { RENT_INCOME_BADGES } from "features/Rent/constants";
 import {
   AddRentPaymentNotificationEnumValue,
   appendDisclaimer,
@@ -48,7 +48,7 @@ export default function AddRentRecords({
     validateBadge,
     {
       data: badgeExists = false,
-      isLoading: isValidateBadgeLoading,
+      isFetching: isValidateBadgeLoading,
       isSuccess: isValidateBadgeSuccess,
       originalArgs: validateBadgeOriginalArgs,
     },
@@ -86,12 +86,12 @@ export default function AddRentRecords({
     [tenants],
   );
 
-  const {
-    data: primaryTenantDetails = {},
-    isLoading: isPrimaryTenantDetailsLoading,
-  } = useGetUserByEmailAddressQuery(primaryTenant?.email, {
-    skip: !primaryTenant?.email,
-  });
+  const { data: primaryTenantDetails = {} } = useGetUserByEmailAddressQuery(
+    primaryTenant?.email,
+    {
+      skip: !primaryTenant?.email,
+    },
+  );
 
   const {
     register,
@@ -129,14 +129,9 @@ export default function AddRentRecords({
 
   useEffect(() => {
     if (isCreateRentRecordSuccess) {
-      closeDialog();
-      setShowSnackbar(true);
-
-      const allocatedBadge = RentIncomeBadges[rentList?.length + 1]?.value;
-      if (
-        allocatedBadge &&
-        validateBadge({ uid: user?.uid, keys: [allocatedBadge] })
-      );
+      const allocatedBadge = RENT_INCOME_BADGES[rentList?.length + 1]?.value;
+      allocatedBadge &&
+        validateBadge({ uid: user?.uid, keys: [allocatedBadge] });
 
       const emailMsgWithDisclaimer = appendDisclaimer(
         emailMessageBuilder(AddRentPaymentNotificationEnumValue, property.name),
@@ -150,7 +145,6 @@ export default function AddRentRecords({
         ccEmailIds: [user?.email],
         sendEmail,
       });
-      celebrations?.commonConfetti();
     }
   }, [isCreateRentRecordLoading]);
 
@@ -164,21 +158,20 @@ export default function AddRentRecords({
           },
         });
       }
+
+      closeDialog();
+      setShowSnackbar(true);
+      celebrations?.commonConfetti();
     }
   }, [isValidateBadgeLoading]);
 
   useEffect(() => {
     if (primaryTenant) {
       setValue("tenantEmailAddress", primaryTenant?.email);
-    }
-  }, [primaryTenant?.id]);
-
-  useEffect(() => {
-    if (primaryTenantDetails) {
       setValue("tenantFirstName", primaryTenantDetails?.firstName);
       setValue("tenantLastName", primaryTenantDetails?.lastName);
     }
-  }, [isPrimaryTenantDetailsLoading]);
+  }, [primaryTenant?.id]);
 
   useEffect(() => {
     if (propertyOwnerData) {

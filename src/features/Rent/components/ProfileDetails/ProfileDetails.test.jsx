@@ -14,6 +14,7 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 
 vi.mock("common/utils", () => ({
   __esModule: true,
+  pluralize: vi.fn(),
   fetchLoggedInUser: () => ({
     uid: "user-1",
     email: "test@test.com",

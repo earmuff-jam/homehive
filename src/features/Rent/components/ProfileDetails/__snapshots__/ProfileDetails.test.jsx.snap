@@ -145,11 +145,46 @@ exports[`ProfileDetails > matches snapshot 1`] = `
             class="MuiDivider-root MuiDivider-fullWidth css-1jpc804-MuiDivider-root"
           />
           <div
-            class="MuiStack-root css-jfdv4h-MuiStack-root"
+            class="MuiStack-root css-1sazv7p-MuiStack-root"
           >
             <div
-              data-testid="row-header"
-            />
+              class="MuiStack-root css-2wsl5x-MuiStack-root"
+            >
+              <div
+                class="MuiStack-root css-nen11g-MuiStack-root"
+              >
+                <h5
+                  class="MuiTypography-root MuiTypography-h5 css-1aso48g-MuiTypography-root"
+                >
+                  Your Achievements
+                </h5>
+                <h6
+                  class="MuiTypography-root MuiTypography-subtitle2 css-1ypmsg6-MuiTypography-root"
+                >
+                  A collection of milestones you've accomplished
+                </h6>
+              </div>
+              <div
+                class="MuiStack-root css-wubis5-MuiStack-root"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="MuiSvgIcon-root MuiSvgIcon-colorWarning MuiSvgIcon-fontSizeMedium css-pr4iv3-MuiSvgIcon-root"
+                  data-testid="EmojiEventsOutlinedIcon"
+                  focusable="false"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94.63 1.5 1.98 2.63 3.61 2.96V19H7v2h10v-2h-4v-3.1c1.63-.33 2.98-1.46 3.61-2.96C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2M5 8V7h2v3.82C5.84 10.4 5 9.3 5 8m7 6c-1.65 0-3-1.35-3-3V5h6v6c0 1.65-1.35 3-3 3m7-6c0 1.3-.84 2.4-2 2.82V7h2z"
+                  />
+                </svg>
+                <p
+                  class="MuiTypography-root MuiTypography-body2 css-1wle3ir-MuiTypography-root"
+                >
+                  0 undefined earned
+                </p>
+              </div>
+            </div>
             <div
               class="MuiStack-root css-1ug9gnt-MuiStack-root"
             >
@@ -164,7 +199,7 @@ exports[`ProfileDetails > matches snapshot 1`] = `
                 <span
                   class="MuiTypography-root MuiTypography-caption css-mpaqru-MuiTypography-root"
                 >
-                  Complete quests to get badges
+                  Complete quests to earn your first badge!
                 </span>
               </div>
             </div>

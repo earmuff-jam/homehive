@@ -1,18 +1,23 @@
 import React from "react";
 
 import {
-  AccountBalanceWalletRounded,
+  AccountBalanceRounded,
   ApartmentRounded,
-  AtmRounded,
+  BuildCircleRounded,
   BusinessRounded,
-  DomainRounded,
+  CastleRounded,
+  Diversity3Rounded,
+  EngineeringRounded,
   GroupsRounded,
-  HomeRounded,
+  HandymanRounded,
+  HomeWorkRounded,
+  LocationCityRounded,
+  MilitaryTechRounded,
   MonetizationOnRounded,
-  MoneyRounded,
-  PeopleRounded,
-  Person2Rounded,
-  PersonRounded,
+  PeopleAltRounded,
+  PersonAddAlt1Rounded,
+  SavingsRounded,
+  WorkspacePremiumRounded,
 } from "@mui/icons-material";
 
 // Enum Constants ...
@@ -20,15 +25,10 @@ export const AddPropertyTextString = "ADD_PROPERTY";
 export const AddRentRecordsTextString = "ADD_RENT_RECORDS";
 export const AddMaintenanceRecordTextString = "ADD_MAINTENANCE_RECORD";
 
-// MaxSizeInMB ...
 export const MaxSizeInMB = 5;
-// FileUploadWaitingStatusStr ...
 export const FileUploadWaitingStatusStr = "waiting";
-// FileUploadUploadingStatusStr ...
 export const FileUploadUploadingStatusStr = "uploading";
-// FileUploadUploadedStatusStr ...
 export const FileUploadUploadedStatusStr = "uploaded";
-// FileUploadFailedStatusStr ...
 export const FileUploadFailedStatusStr = "failed";
 
 // DefaultLeaseTermOptions ...
@@ -189,39 +189,38 @@ const TEN_PROPERTIES_VALUE = "ten_properties";
 const TWENTY_FIVE_PROPERTIES_VALUE = "twenty_five_properties";
 const FIFTY_PROPERTIES_VALUE = "fifty_properties";
 
-// PropertiesBadges ...
+// PROPERTIES_BADGES ...
 // defines a list of badges that can be allocated in relationship to properties.
-// Should tally against the number of properties under the logged in user
-export const PropertiesBadges = {
+export const PROPERTIES_BADGES = {
   1: {
     value: FIRST_PROPERTY_VALUE,
     title: "First Property",
     description: "Added your first property",
-    icon: <HomeRounded fontSize="small" />,
+    icon: <HomeWorkRounded fontSize="small" sx={{ color: "#F4B942" }} />,
   },
   5: {
     value: FIVE_PROPERTIES_VALUES,
     title: "Growing Portfolio",
     description: "Added 5 properties",
-    icon: <ApartmentRounded fontSize="small" />,
+    icon: <ApartmentRounded fontSize="small" sx={{ color: "#F4B942" }} />,
   },
   10: {
     value: TEN_PROPERTIES_VALUE,
     title: "Portfolio Builder",
     description: "Added 10 properties",
-    icon: <BusinessRounded fontSize="small" />,
+    icon: <BusinessRounded fontSize="small" sx={{ color: "#F4B942" }} />,
   },
   25: {
     value: TWENTY_FIVE_PROPERTIES_VALUE,
     title: "Property Pro",
     description: "Built a portfolio of 25 properties",
-    icon: <DomainRounded fontSize="small" />,
+    icon: <LocationCityRounded fontSize="small" sx={{ color: "#F4B942" }} />,
   },
   50: {
     value: FIFTY_PROPERTIES_VALUE,
     title: "Portfolio Powerhouse",
     description: "Built a portfolio of 50 properties",
-    icon: <DomainRounded fontSize="small" />,
+    icon: <CastleRounded fontSize="small" sx={{ color: "#F4B942" }} />,
   },
 };
 
@@ -230,32 +229,34 @@ const FIVE_RENTAL_INCOME_VALUE = "five_rental_income";
 const TEN_RENTAL_INCOME_VALUE = "ten_rental_income";
 const TWENTY_FIVE_RENTAL_INCOME_VALUE = "twenty_five_rental_income";
 
-// RentIncomeBadges ...
-// defines a function that populates badges for each corrosponding rental income
-export const RentIncomeBadges = {
+// RENT_INCOME_BADGES ...
+// defines a const that populates badges for each corrosponding rental income
+export const RENT_INCOME_BADGES = {
   1: {
     value: FIRST_RENTAL_INCOME_VALUE,
     title: "First Rental Income",
     description: "Generated your first rental income",
-    icon: <MoneyRounded fontSize="small" />,
+    icon: <MonetizationOnRounded fontSize="small" sx={{ color: "#9466D8" }} />,
   },
   5: {
     value: FIVE_RENTAL_INCOME_VALUE,
     title: "Fifth Rental Income",
     description: "Generated your fifth rental income",
-    icon: <AccountBalanceWalletRounded fontSize="small" />,
+    icon: <SavingsRounded fontSize="small" sx={{ color: "#9466D8" }} />,
   },
   10: {
     value: TEN_RENTAL_INCOME_VALUE,
     title: "Tenth Rental Income",
     description: "Generated your tenth rental income",
-    icon: <MonetizationOnRounded fontSize="small" />,
+    icon: <AccountBalanceRounded fontSize="small" sx={{ color: "#9466D8" }} />,
   },
   25: {
     value: TWENTY_FIVE_RENTAL_INCOME_VALUE,
     title: "Twenty fifth Rental Income",
     description: "Generated your twenty fifth rental income",
-    icon: <AtmRounded fontSize="small" />,
+    icon: (
+      <WorkspacePremiumRounded fontSize="small" sx={{ color: "#9466D8" }} />
+    ),
   },
 };
 
@@ -264,32 +265,32 @@ const FIVE_TENANTS_VALUE = "five_tenant";
 const TEN_TENANTS_VALUE = "ten_tenant";
 const TWENTY_FIVE_TENANTS_VALUE = "twenty_five_tenant";
 
-// AssociatedTenantsBadges ...
-// defines a function that populates badges for each associated tenants
-export const AssociatedTenantsBadges = {
+// ASSOCIATED_TENANT_BADGES ...
+// defines a const that populates badges for each associated tenants
+export const ASSOCIATED_TENANT_BADGES = {
   1: {
     value: FIRST_TENANT_VALUE,
     title: "First Associated Tenant",
     description: "Associated your first tenant",
-    icon: <PersonRounded fontSize="small" />,
+    icon: <PersonAddAlt1Rounded fontSize="small" sx={{ color: "#2EAD75" }} />,
   },
   5: {
     value: FIVE_TENANTS_VALUE,
     title: "Fifth Associated Tenant",
     description: "Associated your fifth tenant",
-    icon: <PeopleRounded fontSize="small" />,
+    icon: <PeopleAltRounded fontSize="small" sx={{ color: "#2EAD75" }} />,
   },
   10: {
     value: TEN_TENANTS_VALUE,
     title: "Tenth Associated Tenant",
     description: "Associated your tenth tenant",
-    icon: <Person2Rounded fontSize="small" />,
+    icon: <GroupsRounded fontSize="small" sx={{ color: "#2EAD75" }} />,
   },
   25: {
     value: TWENTY_FIVE_TENANTS_VALUE,
     title: "Twenty fifth Associated Tenant",
     description: "Associated your twenty-fifth tenant",
-    icon: <GroupsRounded fontSize="small" />,
+    icon: <Diversity3Rounded fontSize="small" sx={{ color: "#2EAD75" }} />,
   },
 };
 
@@ -298,39 +299,42 @@ const FIVE_MAINTENANCE_VALUE = "five_maintenance";
 const TEN_MAINTENANCE_VALUE = "ten_maintenance";
 const TWENTY_FIVE_MAINTENANCE_VALUE = "twenty_five_maintenance";
 
-// CompletedMaintenanceBadges ...
-// defines a function that populates badges for each completed maintenance request
-export const CompletedMaintenanceBadges = {
+// COMPLETED_MAINTENANCE_BADGES ...
+// defines a const that populates badges for each completed maintenance request
+export const COMPLETED_MAINTENANCE_BADGES = {
   1: {
     value: FIRST_MAINTENANCE_VALUE,
     title: "First Maintenace Request Completed",
     description: "Completed your first maintenance request",
-    icon: <PersonRounded fontSize="small" />,
+    icon: <BuildCircleRounded fontSize="small" sx={{ color: "#4285E8" }} />,
   },
   5: {
     value: FIVE_MAINTENANCE_VALUE,
     title: "Fifth Maintenace Request Completed",
     description: "Completed your fifth maintenance request",
-    icon: <PeopleRounded fontSize="small" />,
+    icon: <HandymanRounded fontSize="small" sx={{ color: "#4285E8" }} />,
   },
   10: {
     value: TEN_MAINTENANCE_VALUE,
     title: "Tenth Maintenace Request Completed",
     description: "Completed your tenth maintenance request",
-    icon: <Person2Rounded fontSize="small" />,
+    icon: <EngineeringRounded fontSize="small" sx={{ color: "#4285E8" }} />,
   },
   25: {
     value: TWENTY_FIVE_MAINTENANCE_VALUE,
     title: "Twenty fifth Maintenace Request Completed",
     description: "Completed your twenty-fifth maintenance request",
-    icon: <GroupsRounded fontSize="small" />,
+    icon: <MilitaryTechRounded fontSize="small" sx={{ color: "#4285E8" }} />,
   },
 };
 
-const retrieveBadgesInList = (obj) => Object.values(obj);
+const retrieveBadgesInList = (badgeObj) => Object.values(badgeObj);
 
+// BADGES_LIST
+// defines a list of badges that can be assigned to the user
 export const BADGES_LIST = [
-  ...retrieveBadgesInList(PropertiesBadges),
-  ...retrieveBadgesInList(RentIncomeBadges),
-  ...retrieveBadgesInList(CompletedMaintenanceBadges),
+  ...retrieveBadgesInList(PROPERTIES_BADGES),
+  ...retrieveBadgesInList(RENT_INCOME_BADGES),
+  ...retrieveBadgesInList(ASSOCIATED_TENANT_BADGES),
+  ...retrieveBadgesInList(COMPLETED_MAINTENANCE_BADGES),
 ];

@@ -150,7 +150,7 @@ export const firebaseUserApi = createApi({
           };
         }
       },
-      invalidatesTags: ["User"],
+      invalidatesTags: ["User", "Badges"],
     }),
     // log off users from the system
     logout: builder.mutation({
@@ -189,7 +189,6 @@ export const firebaseUserApi = createApi({
           const ownedBadges = userData?.badges ?? [];
 
           const allBadgesExist = keys.every((key) => ownedBadges.includes(key));
-
           return { data: allBadgesExist };
         } catch (error) {
           return {
@@ -235,6 +234,5 @@ export const {
   useUpdateUserByUidMutation,
   useLogoutMutation,
   useGetUserOwnedBadgesQuery,
-  useGetBadgeValidationByBadgeKeysQuery,
   useLazyGetBadgeValidationByBadgeKeysQuery,
 } = firebaseUserApi;

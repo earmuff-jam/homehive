@@ -5,8 +5,14 @@ import "@testing-library/jest-dom/vitest";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-const { mockCreateMaintenanceRecord } = vi.hoisted(() => ({
+const {
+  mockCreateMaintenanceRecord,
+  mockGetMaintenanceRecords,
+  mockUpdateUser,
+} = vi.hoisted(() => ({
   mockCreateMaintenanceRecord: vi.fn(),
+  mockGetMaintenanceRecords: vi.fn(),
+  mockUpdateUser: vi.fn(),
 }));
 
 vi.mock("common/utils", () => ({
@@ -37,6 +43,16 @@ vi.mock("features/Api/firebaseUserApi", () => ({
     },
     isLoading: false,
   }),
+  useLazyGetBadgeValidationByBadgeKeysQuery: () => [
+    vi.fn(),
+    {
+      data: false,
+      isLoading: false,
+      isSuccess: false,
+      originalArgs: undefined,
+    },
+  ],
+  useUpdateUserByUidMutation: () => [mockUpdateUser],
 }));
 
 vi.mock("features/Api/maintenanceApi", () => ({
@@ -49,6 +65,7 @@ vi.mock("features/Api/maintenanceApi", () => ({
       isSuccess: false,
     },
   ],
+  useGetMaintenanceRecordsQuery: mockGetMaintenanceRecords,
 }));
 
 vi.mock("features/Api/tenantsApi", () => ({
@@ -95,6 +112,12 @@ describe("AddMaintenanceDetails tests", () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
+
+    mockGetMaintenanceRecords.mockReturnValue({
+      data: [],
+      isLoading: false,
+      isSuccess: true,
+    });
   });
 
   describe("AddMaintenanceDetails snapshot tests", () => {
@@ -123,11 +146,11 @@ describe("AddMaintenanceDetails tests", () => {
 
       expect(submitButton).toBeDisabled();
 
-      fireEvent.input(screen.getByPlaceholderText("First Name"), {
+      fireEvent.change(screen.getByPlaceholderText("First Name"), {
         target: { value: "Jane" },
       });
 
-      fireEvent.input(screen.getByPlaceholderText("Last Name"), {
+      fireEvent.change(screen.getByPlaceholderText("Last Name"), {
         target: { value: "Smith" },
       });
 
@@ -139,11 +162,11 @@ describe("AddMaintenanceDetails tests", () => {
     it("calls createMaintenanceRecord with expected payload on submit", async () => {
       render(<AddMaintenanceDetails {...defaultProps} />);
 
-      fireEvent.input(screen.getByPlaceholderText("First Name"), {
+      fireEvent.change(screen.getByPlaceholderText("First Name"), {
         target: { value: "Jane" },
       });
 
-      fireEvent.input(screen.getByPlaceholderText("Last Name"), {
+      fireEvent.change(screen.getByPlaceholderText("Last Name"), {
         target: { value: "Smith" },
       });
 
@@ -161,6 +184,11 @@ describe("AddMaintenanceDetails tests", () => {
             propertyId: "prop-1",
             propertyOwnerId: "owner-1",
             tenantId: "tenant-1",
+            tenantEmail: "tenant@test.com",
+            tenantFirstName: "Jane",
+            tenantLastName: "Smith",
+            status: "Created",
+            createdBy: "user-1",
           }),
         );
       });

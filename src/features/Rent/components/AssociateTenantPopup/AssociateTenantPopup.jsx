@@ -38,7 +38,7 @@ import {
 import { useAssociateTenantMutation } from "features/Api/tenantsApi";
 import TenantEmailAutocomplete from "features/Rent/components/AssociateTenantPopup/TenantEmailAutocomplete";
 import {
-  AssociatedTenantsBadges,
+  ASSOCIATED_TENANT_BADGES,
   DefaultLeaseTermOptions,
 } from "features/Rent/constants";
 import {
@@ -168,7 +168,7 @@ export default function AssociateTenantPopup({
       setShowSnackbar(true);
 
       const allocatedBadge =
-        AssociatedTenantsBadges[tenants?.length + 1]?.value;
+        ASSOCIATED_TENANT_BADGES[tenants?.length + 1]?.value;
       allocatedBadge &&
         validateBadge({ uid: user?.uid, keys: [allocatedBadge] });
 
