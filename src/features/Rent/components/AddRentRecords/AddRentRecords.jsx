@@ -17,9 +17,15 @@ import { useSendEmailMutation } from "features/Api/externalIntegrationsApi";
 import {
   useGetUserByEmailAddressQuery,
   useGetUserDataByIdQuery,
+  useLazyGetBadgeValidationByBadgeKeysQuery,
+  useUpdateUserByUidMutation,
 } from "features/Api/firebaseUserApi";
-import { useCreateRentRecordMutation } from "features/Api/rentApi";
+import {
+  useCreateRentRecordMutation,
+  useGetRentsByPropertyIdQuery,
+} from "features/Api/rentApi";
 import { useGetTenantByPropertyIdQuery } from "features/Api/tenantsApi";
+import { RentIncomeBadges } from "features/Rent/constants";
 import {
   AddRentPaymentNotificationEnumValue,
   appendDisclaimer,
@@ -36,8 +42,26 @@ export default function AddRentRecords({
   const user = fetchLoggedInUser();
 
   const [sendEmail] = useSendEmailMutation();
-  const [createRentRecord, createRentRecordResult] =
-    useCreateRentRecordMutation();
+  const [updateUser] = useUpdateUserByUidMutation();
+
+  const [
+    validateBadge,
+    {
+      data: badgeExists = false,
+      isLoading: isValidateBadgeLoading,
+      isSuccess: isValidateBadgeSuccess,
+      originalArgs: validateBadgeOriginalArgs,
+    },
+  ] = useLazyGetBadgeValidationByBadgeKeysQuery();
+
+  const [
+    createRentRecord,
+    {
+      isLoading: isCreateRentRecordLoading,
+      isSuccess: isCreateRentRecordSuccess,
+      originalArgs: createRentRecordOrginalArgs,
+    },
+  ] = useCreateRentRecordMutation();
 
   const {
     data: propertyOwnerData = {},
@@ -49,6 +73,13 @@ export default function AddRentRecords({
   const { data: tenants = [] } = useGetTenantByPropertyIdQuery(property?.id, {
     skip: !property?.id,
   });
+
+  const { data: rentList = [] } = useGetRentsByPropertyIdQuery(
+    { propertyId: property?.id, currentUserEmail: user?.email },
+    {
+      skip: !property?.id,
+    },
+  );
 
   const primaryTenant = useMemo(
     () => tenants?.find((tenant) => tenant.isPrimary),
@@ -97,9 +128,15 @@ export default function AddRentRecords({
   };
 
   useEffect(() => {
-    if (createRentRecordResult.isSuccess) {
+    if (isCreateRentRecordSuccess) {
       closeDialog();
       setShowSnackbar(true);
+
+      const allocatedBadge = RentIncomeBadges[rentList?.length + 1]?.value;
+      if (
+        allocatedBadge &&
+        validateBadge({ uid: user?.uid, keys: [allocatedBadge] })
+      );
 
       const emailMsgWithDisclaimer = appendDisclaimer(
         emailMessageBuilder(AddRentPaymentNotificationEnumValue, property.name),
@@ -107,7 +144,7 @@ export default function AddRentRecords({
       );
 
       formatAndSendNotification({
-        to: createRentRecordResult.originalArgs.tenantEmail,
+        to: createRentRecordOrginalArgs?.tenantEmail,
         subject: `${AddRentPaymentNotificationEnumValue} - ${property.name}`,
         body: emailMsgWithDisclaimer,
         ccEmailIds: [user?.email],
@@ -115,7 +152,20 @@ export default function AddRentRecords({
       });
       celebrations?.commonConfetti();
     }
-  }, [createRentRecordResult.isLoading]);
+  }, [isCreateRentRecordLoading]);
+
+  useEffect(() => {
+    if (!isValidateBadgeLoading && isValidateBadgeSuccess) {
+      if (!badgeExists) {
+        updateUser({
+          uid: user?.uid,
+          newData: {
+            badges: validateBadgeOriginalArgs?.keys,
+          },
+        });
+      }
+    }
+  }, [isValidateBadgeLoading]);
 
   useEffect(() => {
     if (primaryTenant) {
@@ -351,7 +401,7 @@ export default function AddRentRecords({
           disabled={!isValid}
           endIcon={<AddRounded fontSize="small" />}
           label="Create rent record"
-          loading={createRentRecordResult.isLoading}
+          loading={isCreateRentRecordLoading}
           onClick={handleSubmit(onSubmit)}
         />
       </Stack>

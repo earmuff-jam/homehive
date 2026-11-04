@@ -5,6 +5,10 @@ import "@testing-library/jest-dom/vitest";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
+const { mockCreateMaintenanceRecord } = vi.hoisted(() => ({
+  mockCreateMaintenanceRecord: vi.fn(),
+}));
+
 vi.mock("common/utils", () => ({
   __esModule: true,
   fetchLoggedInUser: vi.fn(() => ({
@@ -34,8 +38,6 @@ vi.mock("features/Api/firebaseUserApi", () => ({
     isLoading: false,
   }),
 }));
-
-const mockCreateMaintenanceRecord = vi.fn();
 
 vi.mock("features/Api/maintenanceApi", () => ({
   __esModule: true,
@@ -85,13 +87,17 @@ const setShowSnackbar = vi.fn();
 const closeDialog = vi.fn();
 
 describe("AddMaintenanceDetails tests", () => {
-  describe("AddMaintenanceDetails snapshot tests", () => {
-    const defaultProps = {
-      property,
-      setShowSnackbar,
-      closeDialog,
-    };
+  const defaultProps = {
+    property,
+    setShowSnackbar,
+    closeDialog,
+  };
 
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  describe("AddMaintenanceDetails snapshot tests", () => {
     it("matches snapshot", () => {
       const { container } = render(<AddMaintenanceDetails {...defaultProps} />);
 
@@ -100,18 +106,8 @@ describe("AddMaintenanceDetails tests", () => {
   });
 
   describe("AddMaintenanceDetails component tests", () => {
-    beforeEach(() => {
-      vi.clearAllMocks();
-    });
-
     it("renders the tenant and maintenance request fields", () => {
-      render(
-        <AddMaintenanceDetails
-          property={property}
-          setShowSnackbar={setShowSnackbar}
-          closeDialog={closeDialog}
-        />,
-      );
+      render(<AddMaintenanceDetails {...defaultProps} />);
 
       expect(screen.getByText(/Tenant Information/i)).toBeInTheDocument();
       expect(screen.getByText(/^Maintenance Request$/i)).toBeInTheDocument();
@@ -121,28 +117,18 @@ describe("AddMaintenanceDetails tests", () => {
     });
 
     it("disables the submit button until required fields are filled", async () => {
-      render(
-        <AddMaintenanceDetails
-          property={property}
-          setShowSnackbar={setShowSnackbar}
-          closeDialog={closeDialog}
-        />,
-      );
+      render(<AddMaintenanceDetails {...defaultProps} />);
 
       const submitButton = screen.getByText(/Create maintenance request/i);
 
       expect(submitButton).toBeDisabled();
 
       fireEvent.input(screen.getByPlaceholderText("First Name"), {
-        target: {
-          value: "Jane",
-        },
+        target: { value: "Jane" },
       });
 
       fireEvent.input(screen.getByPlaceholderText("Last Name"), {
-        target: {
-          value: "Smith",
-        },
+        target: { value: "Smith" },
       });
 
       await waitFor(() => {
@@ -151,24 +137,14 @@ describe("AddMaintenanceDetails tests", () => {
     });
 
     it("calls createMaintenanceRecord with expected payload on submit", async () => {
-      render(
-        <AddMaintenanceDetails
-          property={property}
-          setShowSnackbar={setShowSnackbar}
-          closeDialog={closeDialog}
-        />,
-      );
+      render(<AddMaintenanceDetails {...defaultProps} />);
 
       fireEvent.input(screen.getByPlaceholderText("First Name"), {
-        target: {
-          value: "Jane",
-        },
+        target: { value: "Jane" },
       });
 
       fireEvent.input(screen.getByPlaceholderText("Last Name"), {
-        target: {
-          value: "Smith",
-        },
+        target: { value: "Smith" },
       });
 
       const submitButton = screen.getByText(/Create maintenance request/i);

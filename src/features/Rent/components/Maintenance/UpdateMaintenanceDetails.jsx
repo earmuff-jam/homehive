@@ -25,11 +25,17 @@ import { fetchLoggedInUser, isSelectedFeatureEnabled } from "common/utils";
 import { useSendEmailMutation } from "features/Api/externalIntegrationsApi";
 import { useViewMaintenanceImagesQuery } from "features/Api/firebaseStorageApi";
 import {
+  useLazyGetBadgeValidationByBadgeKeysQuery,
+  useUpdateUserByUidMutation,
+} from "features/Api/firebaseUserApi";
+import {
   useGetMaintenanceRecordQuery,
+  useGetMaintenanceRecordsQuery,
   useUpdateMaintenanceDataMutation,
 } from "features/Api/maintenanceApi";
 import DisplayImages from "features/Rent/components/Image/DisplayImages";
 import {
+  CompletedMaintenanceBadges,
   DefaultMaintenanceCategoryTypes,
   DefaultMaintenanceIssueResolutionTypes,
   MaintenanceRecordEnumValues,
@@ -66,6 +72,11 @@ const UpdateMaintenanceDetails = ({
   const user = fetchLoggedInUser();
   const isS3StorageEnabled = isSelectedFeatureEnabled("cloudService");
 
+  const { data: maintenanceRecords = [] } = useGetMaintenanceRecordsQuery(
+    { propertyId: property?.id },
+    { skip: !property?.id },
+  );
+
   const {
     data: maintenanceRecord,
     isLoading: isMaintenanceRecordLoading,
@@ -81,7 +92,18 @@ const UpdateMaintenanceDetails = ({
     { skip: !property?.id || !id },
   );
 
+  const [
+    validateBadge,
+    {
+      data: badgeExists = false,
+      isLoading: isValidateBadgeLoading,
+      isSuccess: isValidateBadgeSuccess,
+      originalArgs: validateBadgeOriginalArgs,
+    },
+  ] = useLazyGetBadgeValidationByBadgeKeysQuery();
+
   const [sendEmail] = useSendEmailMutation();
+  const [updateUser] = useUpdateUserByUidMutation();
 
   const [
     updateMaintenanceRecord,
@@ -124,6 +146,15 @@ const UpdateMaintenanceDetails = ({
       closeDialog();
       setShowSnackbar(true);
 
+      const completedMaintenanceList = maintenanceRecords?.filter(
+        (record) => record.status === MaintenanceRecordEnumValues.Completed,
+      );
+
+      const allocatedBadge =
+        CompletedMaintenanceBadges[completedMaintenanceList?.length + 1]?.value;
+      allocatedBadge &&
+        validateBadge({ uid: user?.uid, keys: [allocatedBadge] });
+
       const emailMsgWithDisclaimer = appendDisclaimer(
         emailMessageBuilder(UpdateMaintenanceRecordEnumValue, property?.name),
         user?.email,
@@ -138,6 +169,19 @@ const UpdateMaintenanceDetails = ({
       });
     }
   }, [isUpdateMaintenanceRecordSuccess]);
+
+  useEffect(() => {
+    if (!isValidateBadgeLoading && isValidateBadgeSuccess) {
+      if (!badgeExists) {
+        updateUser({
+          uid: user?.uid,
+          newData: {
+            badges: validateBadgeOriginalArgs?.keys,
+          },
+        });
+      }
+    }
+  }, [isValidateBadgeLoading]);
 
   useEffect(() => {
     if (isMaintenanceRecordSuccess && maintenanceRecord) {
