@@ -55,6 +55,7 @@ vi.mock("features/Api/firebaseUserApi", async (importOriginal) => {
 
   return {
     ...actual,
+    useLazyGetBadgeValidationByBadgeKeysQuery: () => [vi.fn(), { data: null }],
     useGetUserByEmailAddressQuery: () => ({
       data: {
         firstName: "John",

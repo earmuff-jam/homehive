@@ -24,7 +24,7 @@ import { authenticatorConfig, authenticatorFirestore as db } from "src/config";
 export const firebaseUserApi = createApi({
   reducerPath: "firebaseUserApi",
   baseQuery: fakeBaseQuery(),
-  tagTypes: ["User", "Badge"],
+  tagTypes: ["User", "Badges"],
 
   endpoints: (builder) => ({
     // fetch user data where user id matches the passed in user id from users db

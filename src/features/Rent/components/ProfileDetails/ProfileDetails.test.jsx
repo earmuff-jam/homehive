@@ -117,7 +117,7 @@ describe("ProfileDetails", () => {
     });
 
     useGetUserOwnedBadgesQuery.mockReturnValue({
-      data: {},
+      data: [],
       isLoading: false,
     });
 

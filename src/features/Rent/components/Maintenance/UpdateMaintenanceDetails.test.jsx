@@ -20,6 +20,7 @@ vi.mock("features/Api/firebaseUserApi", () => ({
     vi.fn(),
     { isSuccess: false, isLoading: false },
   ]),
+  useLazyGetBadgeValidationByBadgeKeysQuery: () => [vi.fn(), { data: null }],
 }));
 
 vi.mock("common/AButton", () => ({
