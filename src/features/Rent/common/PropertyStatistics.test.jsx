@@ -15,7 +15,6 @@ vi.mock("features/Rent/hooks/useGetSelectedPropertyDetails", () => ({
     totalRent: "2500",
     getOccupancyRate: 75,
     nextPaymentDueDate: "Feb 01, 2024",
-    isSelectedPropertySoR: false,
   })),
 }));
 

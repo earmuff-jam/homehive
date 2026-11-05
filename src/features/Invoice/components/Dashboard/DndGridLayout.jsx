@@ -6,16 +6,15 @@ import { DndContext, DragOverlay, pointerWithin } from "@dnd-kit/core";
 import { SortableContext, rectSortingStrategy } from "@dnd-kit/sortable";
 import { Box, Stack, useTheme } from "@mui/material";
 import EmptyComponent from "common/EmptyComponent";
-import Widget from "features/Invoice/components/DndGridLayout/Widget";
+import Widget from "features/Invoice/components/Widgets/Widget";
 
 export default function DndGridLayout({
-  handleWidgetMove,
+  handleLayoutChange,
   handleEditMode,
   handleRemoveWidget,
 }) {
   const theme = useTheme();
-
-  const { control } = useFormContext();
+  const { control, setValue } = useFormContext();
 
   const widgets = useWatch({
     control,
@@ -33,9 +32,7 @@ export default function DndGridLayout({
 
   const handleDragEnd = (ev) => {
     const { active, over } = ev;
-
     setActiveWidget(null);
-
     if (!over || active.id === over.id) return;
 
     const originalIdx = widgets.findIndex(
@@ -47,8 +44,25 @@ export default function DndGridLayout({
     );
 
     if (originalIdx === -1 || newIdx === -1) return;
+    handleLayoutChange(originalIdx, newIdx);
+  };
 
-    handleWidgetMove(originalIdx, newIdx);
+  const handleResizeWidget = (widgetID, dimensions) => {
+    const updatedWidgets = widgets.map((widget) =>
+      widget.widgetID === widgetID
+        ? {
+            ...widget,
+            config: {
+              ...widget.config,
+              ...dimensions,
+            },
+          }
+        : widget,
+    );
+
+    setValue("widgets", updatedWidgets, {
+      shouldDirty: true,
+    });
   };
 
   if (widgets?.length <= 0)
@@ -90,6 +104,7 @@ export default function DndGridLayout({
                     widget={widget}
                     handleEditMode={handleEditMode}
                     handleRemoveWidget={handleRemoveWidget}
+                    handleResizeWidget={handleResizeWidget}
                   />
                 )}
               </Box>

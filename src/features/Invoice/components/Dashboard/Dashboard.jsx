@@ -34,10 +34,11 @@ import {
   useUpsertDashboardWidgetsMutation,
 } from "features/Api/invoiceApi";
 import AddWidget from "features/Invoice/components/AddWidget/AddWidget";
-import DndGridLayout from "features/Invoice/components/DndGridLayout/DndGridLayout";
+import DndGridLayout from "features/Invoice/components/Dashboard/DndGridLayout";
 import EditWidgetDrawer from "features/Invoice/components/EditWidget/EditWidgetDrawer";
-import { WidgetTypeList } from "features/Invoice/constants";
+import { WidgetTypeList, WidgetTypeProps } from "features/Invoice/constants";
 import { useAppTitle } from "hooks/useAppTitle";
+import { celebrations } from "src/utils/celebrations";
 
 export default function Dashboard() {
   useAppTitle("Dashboard");
@@ -96,10 +97,14 @@ export default function Dashboard() {
       widgetID: uuidv4(),
       title: selectedWidget.label,
       caption: selectedWidget.caption,
-      filters: {},
+      filters: {
+        ...(selectedWidget.type === WidgetTypeProps.TaxChart && {
+          chartType: "bar",
+        }),
+        invoiceIDs: [],
+      },
       config: {
-        height: selectedWidget.config.height,
-        width: selectedWidget.config.width,
+        ...selectedWidget?.config,
       },
       data: selectedWidget?.data || [],
       columns: selectedWidget?.columns || [],
@@ -117,11 +122,13 @@ export default function Dashboard() {
   };
 
   const resetDashboardWidgets = () => {
-    formMethods.reset({ widgets: [] });
+    formMethods.setValue("widgets", [], {
+      shouldDirty: true,
+    });
     handleClose();
   };
 
-  const isFormDirty = formMethods.formState.isDirty;
+  const shouldEnableSaveBtn = formMethods.formState.isDirty;
 
   useEffect(() => {
     if (isUpsertWidgetSuccess) {
@@ -134,6 +141,7 @@ export default function Dashboard() {
       formMethods.reset({
         widgets: dashboardWidgets,
       });
+      dashboardWidgets?.length > 0 && celebrations?.commonConfetti();
     } else {
       formMethods.reset({ widgets: [] });
     }
@@ -174,17 +182,17 @@ export default function Dashboard() {
           <Stack direction="row" spacing={1}>
             <Tooltip
               title={
-                isFormDirty &&
+                shouldEnableSaveBtn &&
                 "Dashboard changes detected. Save layout to persist"
               }
             >
               <span>
                 <AIconButton
                   data-tour="dashboard-3"
-                  disabled={!isFormDirty}
+                  disabled={!shouldEnableSaveBtn}
                   onClick={formMethods.handleSubmit(submit)}
                   label={
-                    isFormDirty ? (
+                    shouldEnableSaveBtn ? (
                       <Badge color="error" variant="dot">
                         <SaveRounded fontSize="small" color="primary" />
                       </Badge>
@@ -220,7 +228,7 @@ export default function Dashboard() {
 
         <Box data-tour={"dashboard-4"}>
           <DndGridLayout
-            handleWidgetMove={move}
+            handleLayoutChange={move}
             handleEditMode={handleEditMode}
             handleRemoveWidget={handleRemoveWidget}
           />

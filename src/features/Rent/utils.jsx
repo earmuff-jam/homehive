@@ -294,15 +294,6 @@ export const getColorAndLabelForCurrentMonth = (
   }
 };
 
-// isAssociatedPropertySoR ...
-export const isAssociatedPropertySoR = (property, tenants) => {
-  if (tenants?.length <= 0) return true;
-  return (
-    property?.rentees?.length > 0 &&
-    tenants.some((tenant) => tenant.isActive && tenant.isSoR)
-  );
-};
-
 // buildPaymentLineItems ...
 // defines a function that builds payment line items for each invoice
 export const buildPaymentLineItems = (property = {}, tenant = []) => {

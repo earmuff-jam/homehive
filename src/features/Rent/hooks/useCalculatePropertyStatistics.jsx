@@ -6,8 +6,6 @@ import {
   PaidRentStatusEnumValue,
 } from "features/Rent/utils";
 
-const currentDateTime = dayjs().toISOString();
-
 // calculateRentInfo ...
 // calculates the average of on time rental payments upto 12 months and
 // also calculates the average days the primary tenant is late on payment upto 12 months
@@ -16,6 +14,14 @@ const calculateRentInfo = (
   rentsForSelectedProperty,
   primaryTenant,
 ) => {
+  if (!primaryTenant?.startDate) {
+    return {
+      totalOnTimePaymentsMade: 0,
+      totalLateDaysPaymentMade: 0,
+      outstandingBalance: 0,
+    };
+  }
+
   const totalTimeline = totalMonthsRenting > 12 ? 12 : totalMonthsRenting;
   const totalMonthsRentingInArr = Array.from(
     { length: totalTimeline },
@@ -119,10 +125,9 @@ export const useCalculatePropertyStatistics = (
   const formattedLeaseExpirationDate =
     leaseExiprationDate?.format("MM-DD-YYYY");
 
-  const totalMonthsRenting = dayjs(currentDateTime).diff(
-    dayjs(primaryTenant?.startDate),
-    "month",
-  );
+  const totalMonthsRenting = primaryTenant?.startDate
+    ? dayjs().diff(dayjs(primaryTenant.startDate), "month")
+    : 0;
 
   const draftRentInfo = calculateRentInfo(
     totalMonthsRenting,

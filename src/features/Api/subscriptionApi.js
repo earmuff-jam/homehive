@@ -4,10 +4,16 @@ import { createApi, fakeBaseQuery } from "@reduxjs/toolkit/query/react";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { authenticatorFirestore as db } from "src/config";
 
+// SubscriptionApiTagTypes ...
+const SubscriptionApiTagTypes = {
+  Subscriptions: "subscriptions",
+  LatestSubscription: "latestSubscription",
+};
+
 export const subscriptionApi = createApi({
   reducerPath: "subscriptionApi",
   baseQuery: fakeBaseQuery(),
-  tagTypes: ["subscriptions"],
+  tagTypes: Object.values(SubscriptionApiTagTypes),
   endpoints: (builder) => ({
     // getSubscriptionByEmail ...
     // defines a query function that returns subscription details
@@ -39,7 +45,7 @@ export const subscriptionApi = createApi({
           };
         }
       },
-      providesTags: ["subscriptions"],
+      providesTags: [SubscriptionApiTagTypes.Subscriptions],
     }),
     // getLatestSubscriptionByEmail ...
     // defines a query function that returns the latest subscription details
@@ -86,7 +92,7 @@ export const subscriptionApi = createApi({
           };
         }
       },
-      providesTags: ["subscriptions"],
+      invalidatesTags: [SubscriptionApiTagTypes.LatestSubscription],
     }),
   }),
 });

@@ -15,8 +15,6 @@ export const useSelectedPropertyDetails = (
   currentMonthRent,
 ) => {
   const today = dayjs();
-
-  const isAnyPropertySoR = tenants?.some((tenant) => tenant.isSoR);
   const primaryTenant = tenants?.find((tenant) => tenant?.isPrimary);
 
   const monthsSinceStart = today.diff(primaryTenant?.startDate, "month");
@@ -28,14 +26,6 @@ export const useSelectedPropertyDetails = (
   let totalRent =
     Number(property?.rent || 0) + Number(property?.additionalRent || 0);
 
-  if (isAnyPropertySoR) {
-    totalRent = tenants.reduce(
-      (total, tenant) =>
-        total + parseInt(tenant.rent || 0) + parseInt(property?.additionalRent),
-      0,
-    );
-  }
-
   let nextRentalPaymentDueDate = nextDueDate;
 
   // tenant start date is due date if tenants are created for a
@@ -45,7 +35,6 @@ export const useSelectedPropertyDetails = (
     return {
       nextPaymentDueDate: dayjs(primaryTenantStartDate).format("MMM DD"),
       totalRent: totalRent,
-      isSelectedPropertySoR: false,
     };
   }
 
@@ -73,6 +62,5 @@ export const useSelectedPropertyDetails = (
   return {
     nextPaymentDueDate: dayjs(nextRentalPaymentDueDate).format("MMM DD"),
     totalRent: totalRent,
-    isSelectedPropertySoR: false,
   };
 };

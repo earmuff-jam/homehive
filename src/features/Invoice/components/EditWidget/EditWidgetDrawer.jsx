@@ -8,6 +8,11 @@ import {
   Box,
   Divider,
   Drawer,
+  FormControl,
+  FormControlLabel,
+  FormLabel,
+  Radio,
+  RadioGroup,
   Skeleton,
   Stack,
   TextField,
@@ -19,6 +24,7 @@ import AButton from "common/AButton";
 import AIconButton from "common/AIconButton";
 import TextFieldWithLabel from "common/TextFieldWithLabel";
 import { useGetInvoiceListQuery } from "features/Api/invoiceApi";
+import { WidgetTypeProps } from "features/Invoice/constants";
 
 export default function EditWidgetDrawer({
   editingWidgetID,
@@ -80,7 +86,7 @@ export default function EditWidgetDrawer({
               <AIconButton
                 size="small"
                 onClick={() => handleEditingWidget("")}
-                label={<CancelOutlined fontSize="small" />}
+                label={<CancelOutlined color="error" fontSize="small" />}
               />
             </Stack>
 
@@ -123,11 +129,45 @@ export default function EditWidgetDrawer({
                     />
                   )}
                 />
+                {widgets[widgetIndex].type === WidgetTypeProps.TaxChart && (
+                  <>
+                    <Divider>Edit Chart type</Divider>
+                    <Controller
+                      name={`widgets.${widgetIndex}.filters.chartType`}
+                      control={control}
+                      render={({ field }) => (
+                        <FormControl>
+                          <FormLabel id={`${field?.name}-label`}>
+                            Type of chart
+                          </FormLabel>
+                          <RadioGroup
+                            row
+                            aria-labelledby={`${field?.name}-label`}
+                            name="controlled-radio-buttons-group"
+                            value={field.value ?? ""}
+                            onChange={field?.onChange}
+                          >
+                            <FormControlLabel
+                              value="bar"
+                              control={<Radio />}
+                              label="Bar"
+                            />
+                            <FormControlLabel
+                              value="line"
+                              control={<Radio />}
+                              label="Line"
+                            />
+                          </RadioGroup>
+                        </FormControl>
+                      )}
+                    />
+                  </>
+                )}
+
                 <Divider>Choose Invoice</Divider>
                 <Controller
                   name={`widgets.${widgetIndex}.filters.invoiceIDs`}
                   control={control}
-                  defaultValue={[]}
                   render={({ field }) => {
                     const selectedInvoices =
                       invoiceList?.invoiceDetails?.filter((invoice) =>

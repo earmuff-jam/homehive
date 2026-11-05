@@ -40,7 +40,11 @@ const withDialog = (WrappedComponent) => {
 
     return (
       <>
-        <WrappedComponent {...props} setDialog={setDialog} />
+        <WrappedComponent
+          {...props}
+          setDialog={setDialog}
+          showWatermark={dialog.showWatermark}
+        />
         <Dialog
           keepMounted
           className="no-print"

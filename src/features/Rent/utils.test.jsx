@@ -3,7 +3,6 @@ import {
   formatCurrency,
   getColorAndLabelForCurrentMonth,
   getOccupancyRate,
-  isAssociatedPropertySoR,
   stripHTMLForEmailMessages,
 } from "features/Rent/utils";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
@@ -58,15 +57,6 @@ describe("Test utility functions", () => {
 
     it("returns 100% for non-SoR with tenants", () => {
       expect(getOccupancyRate({}, [{}], false)).toBe(100);
-    });
-  });
-
-  describe("test isAssociatedPropertySoR function", () => {
-    it("returns true if active SoR tenant exists", () => {
-      const property = { rentees: [{}] };
-      const tenants = [{ isActive: true, isSoR: true }];
-
-      expect(isAssociatedPropertySoR(property, tenants)).toBe(true);
     });
   });
 

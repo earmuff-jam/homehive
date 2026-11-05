@@ -35,6 +35,7 @@ import { PDFDocument } from "pdf-lib";
 import { rgb } from "pdf-lib";
 import * as pdfjsLib from "pdfjs-dist";
 import pdfWorker from "pdfjs-dist/build/pdf.worker.min?url";
+import { celebrations } from "src/utils/celebrations";
 
 pdfjsLib.GlobalWorkerOptions.workerSrc = pdfWorker;
 
@@ -89,8 +90,13 @@ const PdfEditor = () => {
     isLoading: isLoadingValidTokensForETSS,
   } = useGetEtssTokensByEmailIdQuery(user?.email);
 
-  const [sendPreparedDocument, sendPrepareDocumentResult] =
-    useSendPreparedDocumentMutation();
+  const [
+    executePreparedDocument,
+    {
+      isLoading: isExecutePreparedDocumentLoading,
+      isSuccess: isExecutePreparedDocumentSuccess,
+    },
+  ] = useSendPreparedDocumentMutation();
 
   const [file, setFile] = useState(null);
   const [fields, setFields] = useState([]);
@@ -231,14 +237,17 @@ const PdfEditor = () => {
               return copy;
             });
           };
+
+          const DEFAULT_TEXT_SIZE = "16";
+
           Object.assign(input.style, {
             position: "absolute",
             left: `${left}px`,
             top: `${top}px`,
             width: `${width}px`,
             height: `${height}px`,
-            fontSize: a?.multiLine ? `16px` : `${height * 0.6}px`,
-            lineHeight: a?.multiLine ? `16px` : `${height}px`,
+            fontSize: `${DEFAULT_TEXT_SIZE}px`,
+            lineHeight: `${DEFAULT_TEXT_SIZE}px`,
             padding: "2px 4px",
             boxSizing: "border-box",
             border: "1px solid #ccc",
@@ -513,7 +522,7 @@ const PdfEditor = () => {
       JSON.stringify(createdSignatureFields),
     );
 
-    sendPreparedDocument(formData);
+    executePreparedDocument(formData);
   };
 
   // getPageAndLocalCoords ...
@@ -664,17 +673,15 @@ const PdfEditor = () => {
   }, [handleMouseDown, handleMouseMove, handleMouseUp]);
 
   useEffect(() => {
-    if (
-      !sendPrepareDocumentResult.isLoading &&
-      sendPrepareDocumentResult.isSuccess
-    ) {
+    if (!isExecutePreparedDocumentLoading && isExecutePreparedDocumentSuccess) {
       setFields([]);
       setFile(null);
       setShowSnackbar(true);
       setShowConfirmationBox({ value: false, updateKey: "" });
       navigate(0);
+      celebrations.commonConfetti();
     }
-  }, [sendPrepareDocumentResult.isLoading]);
+  }, [isExecutePreparedDocumentLoading]);
 
   if (isLoadingValidTokensForETSS) return <Skeleton height="10rem" />;
 
@@ -787,7 +794,7 @@ const PdfEditor = () => {
         title="Send document to signers?"
         captionText="Action consumes 1 non-refundable token. Proceed?"
         isOpen={showConfirmationBox?.value}
-        isLoading={sendPrepareDocumentResult?.isLoading}
+        isLoading={isExecutePreparedDocumentLoading}
         handleCancel={() =>
           setShowConfirmationBox({ value: false, updateKey: "" })
         }

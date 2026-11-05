@@ -52,7 +52,6 @@ describe("for useGetSelectedPropertyDetailsHook tests", () => {
 
       expect(result.totalRent).toBe(2500);
       expect(result.nextPaymentDueDate).toBe("May 01");
-      expect(result.isSelectedPropertySoR).toBe(false); // default SoR is false
     });
 
     it("should return correct values when no rental payment data is detected", () => {
@@ -64,7 +63,6 @@ describe("for useGetSelectedPropertyDetailsHook tests", () => {
 
       expect(result.totalRent).toBe(2500);
       expect(result.nextPaymentDueDate).toBe("May 01");
-      expect(result.isSelectedPropertySoR).toBe(false); // default SoR is false
     });
   });
 
@@ -108,7 +106,6 @@ describe("for useGetSelectedPropertyDetailsHook tests", () => {
 
       expect(result.totalRent).toBe(2500);
       expect(result.nextPaymentDueDate).toBe("Apr 01"); // next month after last payment was made
-      expect(result.isSelectedPropertySoR).toBe(false); // default SoR is false
     });
   });
 
@@ -141,7 +138,6 @@ describe("for useGetSelectedPropertyDetailsHook tests", () => {
 
       expect(result.totalRent).toBe(0);
       expect(result.nextPaymentDueDate).toBe("May 01"); // day of provision
-      expect(result.isSelectedPropertySoR).toBe(false); // default SoR is false
     });
   });
 });

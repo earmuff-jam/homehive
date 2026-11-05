@@ -36,7 +36,11 @@ import EmptyComponent from "common/EmptyComponent";
 import RowHeader from "common/RowHeader";
 import { fetchLoggedInUser } from "common/utils";
 import { useGetSubscriptionOptionsQuery } from "features/Api/externalIntegrationsApi";
-import { useGetUserDataByIdQuery } from "features/Api/firebaseUserApi";
+import {
+  useGetUserDataByIdQuery,
+  useLazyGetBadgeValidationByBadgeKeysQuery,
+  useUpdateUserByUidMutation,
+} from "features/Api/firebaseUserApi";
 import {
   useCreatePropertyMutation,
   useDeletePropertyByIdMutation,
@@ -46,10 +50,14 @@ import { useLazyGetRentsByPropertyIdWithFiltersQuery } from "features/Api/rentAp
 import { useGetLatestSubscriptionByEmailQuery } from "features/Api/subscriptionApi";
 import AddProperty from "features/Rent/components/AddProperty/AddProperty";
 import ViewPropertyAccordionDetails from "features/Rent/components/Properties/ViewPropertyAccordionDetails";
-import { AddPropertyTextString } from "features/Rent/constants";
+import {
+  AddPropertyTextString,
+  PROPERTIES_BADGES,
+} from "features/Rent/constants";
 import { useVerifySubscriptionForProperties } from "features/Rent/hooks/useVerifySubscriptionForProperties";
 import { sanitizeApiFields } from "features/Rent/utils";
 import { useAppTitle } from "hooks/useAppTitle";
+import { celebrations } from "src/utils/celebrations";
 
 const defaultDialog = {
   title: "",
@@ -62,6 +70,33 @@ const Properties = () => {
 
   const navigate = useNavigate();
   const user = fetchLoggedInUser();
+
+  const [updateUser] = useUpdateUserByUidMutation();
+
+  const [
+    validateBadge,
+    {
+      data: badgeExists = false,
+      isLoading: isValidateBadgeLoading,
+      isSuccess: isValidateBadgeSuccess,
+      originalArgs: validateBadgeOriginalArgs,
+    },
+  ] = useLazyGetBadgeValidationByBadgeKeysQuery();
+
+  const [
+    createProperty,
+    { isSuccess: isCreatePropertySuccess, isLoading: isCreatePropertyLoading },
+  ] = useCreatePropertyMutation();
+
+  const [
+    triggerGetRents,
+    { isLoading: isGetRentsResultLoading, data: getRentsResultData },
+  ] = useLazyGetRentsByPropertyIdWithFiltersQuery();
+
+  const [
+    deleteProperty,
+    { isSuccess: isDeletePropertySuccess, isLoading: isDeletePropertyLoading },
+  ] = useDeletePropertyByIdMutation();
 
   const { data: properties = [], isLoading } = useGetPropertiesByUserIdQuery(
     user?.uid,
@@ -89,13 +124,6 @@ const Properties = () => {
       subscriptionOptions,
       properties?.length,
     );
-
-  const [createProperty, createPropertyResult] = useCreatePropertyMutation();
-  const [triggerGetRents, getRentsResult] =
-    useLazyGetRentsByPropertyIdWithFiltersQuery();
-
-  const [deleteProperty, deletePropertyResult] =
-    useDeletePropertyByIdMutation();
 
   const {
     register,
@@ -185,7 +213,7 @@ const Properties = () => {
       id: uuidv4(),
       isDeleted: false,
       createdBy: user?.uid,
-      ownerEmail: user?.email, // used for rtk query for rents
+      ownerEmail: user?.email, // used for rtkq for rents
       createdOn: dayjs().toISOString(),
       updatedBy: user?.uid,
       updatedOn: dayjs().toISOString(),
@@ -202,10 +230,30 @@ const Properties = () => {
   const isOwnerCoveredUtilities = watch("isOwnerCoveredUtilities");
 
   useEffect(() => {
-    if (createPropertyResult.isSuccess || deletePropertyResult.isSuccess) {
+    if (isCreatePropertySuccess || isDeletePropertySuccess) {
       setShowSnackbar(true);
     }
-  }, [createPropertyResult.isLoading, deletePropertyResult.isLoading]);
+
+    if (isCreatePropertySuccess) {
+      const allocatedBadge = PROPERTIES_BADGES[properties?.length + 1]?.value;
+      allocatedBadge &&
+        validateBadge({ uid: user?.uid, keys: [allocatedBadge] });
+      celebrations.commonConfetti();
+    }
+  }, [isCreatePropertyLoading, isDeletePropertyLoading]);
+
+  useEffect(() => {
+    if (!isValidateBadgeLoading && isValidateBadgeSuccess) {
+      if (!badgeExists) {
+        updateUser({
+          uid: user?.uid,
+          newData: {
+            badges: validateBadgeOriginalArgs?.keys,
+          },
+        });
+      }
+    }
+  }, [isValidateBadgeLoading]);
 
   if (isLoading) return <Skeleton height="10rem" />;
 
@@ -229,9 +277,7 @@ const Properties = () => {
               label="Add Property"
               size="small"
               variant="outlined"
-              loading={
-                createPropertyResult.isLoading || deletePropertyResult.isLoading
-              }
+              loading={isCreatePropertyLoading || isDeletePropertyLoading}
               disabled={!canAddProperty}
               endIcon={<AddRounded fontSize="small" />}
               onClick={toggleAddPropertyPopup}
@@ -351,8 +397,8 @@ const Properties = () => {
                 <ViewPropertyAccordionDetails
                   property={property}
                   userData={userData}
-                  rentDetails={getRentsResult.data}
-                  isRentDetailsLoading={getRentsResult.isLoading}
+                  rentDetails={getRentsResultData}
+                  isRentDetailsLoading={isGetRentsResultLoading}
                 />
               </AccordionDetails>
             </Accordion>

@@ -3,9 +3,10 @@ import React from "react";
 import { EditRounded } from "@mui/icons-material";
 import { Skeleton, Stack, Typography } from "@mui/material";
 import { useGetInvoicesQuery } from "features/Api/invoiceApi";
-import WidgetContentWrapper from "features/Invoice/components/DndGridLayout/WidgetContentWrapper";
+import WidgetContentWrapper from "features/Invoice/components/Widgets/WidgetContentWrapper";
 
 export default function WidgetContent({ widget }) {
+  const chartType = widget?.filters?.chartType || "";
   const selectedInvoiceIDs = widget?.filters?.invoiceIDs;
 
   const { data: invoices = [], isLoading: isInvoiceListLoading } =
@@ -36,7 +37,7 @@ export default function WidgetContent({ widget }) {
     <WidgetContentWrapper
       data={invoices}
       widget={widget}
-      selectedInvoiceIDs={selectedInvoiceIDs}
+      chartType={chartType}
     />
   );
 }

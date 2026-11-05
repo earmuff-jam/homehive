@@ -8,6 +8,7 @@ import { render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 
 vi.mock("features/Api/firebaseUserApi", () => ({
+  useLazyGetBadgeValidationByBadgeKeysQuery: () => [vi.fn(), { data: null }],
   useGetUserDataByIdQuery: vi.fn(() => ({
     data: {},
     isLoading: false,
@@ -16,6 +17,13 @@ vi.mock("features/Api/firebaseUserApi", () => ({
     data: {},
     isLoading: false,
   })),
+  useUpdateUserByUidMutation: vi.fn(() => [
+    vi.fn(),
+    {
+      isSuccess: false,
+      isLoading: false,
+    },
+  ]),
 }));
 
 vi.mock("features/Api/tenantsApi", () => ({
@@ -27,6 +35,11 @@ vi.mock("features/Api/tenantsApi", () => ({
 vi.mock("features/Api/rentApi", () => ({
   useGetUserDataByIdQuery: vi.fn(() => ({
     data: {},
+    isLoading: false,
+  })),
+
+  useGetRentsByPropertyIdQuery: vi.fn(() => ({
+    data: [],
     isLoading: false,
   })),
 

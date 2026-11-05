@@ -31,17 +31,24 @@ import CustomSnackbar from "common/CustomSnackbar";
 import TextFieldWithLabel from "common/TextFieldWithLabel";
 import { fetchLoggedInUser } from "common/utils";
 import { useSendEmailMutation } from "features/Api/externalIntegrationsApi";
+import {
+  useLazyGetBadgeValidationByBadgeKeysQuery,
+  useUpdateUserByUidMutation,
+} from "features/Api/firebaseUserApi";
 import { useAssociateTenantMutation } from "features/Api/tenantsApi";
 import TenantEmailAutocomplete from "features/Rent/components/AssociateTenantPopup/TenantEmailAutocomplete";
-import { DefaultLeaseTermOptions } from "features/Rent/constants";
+import {
+  ASSOCIATED_TENANT_BADGES,
+  DefaultLeaseTermOptions,
+} from "features/Rent/constants";
 import {
   AddNotificationEnumType,
   AddTenantNotificationEnumValue,
   appendDisclaimer,
   emailMessageBuilder,
   formatAndSendNotification,
-  isAssociatedPropertySoR,
 } from "features/Rent/utils";
+import { celebrations } from "src/utils/celebrations";
 
 export default function AssociateTenantPopup({
   closeDialog,
@@ -51,8 +58,27 @@ export default function AssociateTenantPopup({
 }) {
   const user = fetchLoggedInUser();
 
+  const [
+    associateTenant,
+    {
+      isLoading: isAssociateTenantLoading,
+      isSuccess: isAssociateTenantSuccess,
+      originalArgs: associateTenantOriginalArgs,
+    },
+  ] = useAssociateTenantMutation();
+
+  const [
+    validateBadge,
+    {
+      data: badgeExists = false,
+      isLoading: isValidateBadgeLoading,
+      isSuccess: isValidateBadgeSuccess,
+      originalArgs: validateBadgeOriginalArgs,
+    },
+  ] = useLazyGetBadgeValidationByBadgeKeysQuery();
+
   const [sendEmail] = useSendEmailMutation();
-  const [associateTenant, associateTenantResult] = useAssociateTenantMutation();
+  const [updateUser] = useUpdateUserByUidMutation();
 
   const [showSnackbar, setShowSnackbar] = useState(false);
 
@@ -138,20 +164,25 @@ export default function AssociateTenantPopup({
   }, [property]);
 
   useEffect(() => {
-    if (associateTenantResult.isSuccess) {
+    if (isAssociateTenantSuccess) {
       setShowSnackbar(true);
+
+      const allocatedBadge =
+        ASSOCIATED_TENANT_BADGES[tenants?.length + 1]?.value;
+      allocatedBadge &&
+        validateBadge({ uid: user?.uid, keys: [allocatedBadge] });
 
       const emailMsgWithDisclaimer = appendDisclaimer(
         emailMessageBuilder(
           AddNotificationEnumType,
-          associateTenantResult.originalArgs.property?.name,
+          associateTenantOriginalArgs?.property?.name,
         ),
         user?.email,
       );
 
       formatAndSendNotification({
-        to: associateTenantResult.originalArgs.draftData.email,
-        subject: `${AddTenantNotificationEnumValue} - ${associateTenantResult.originalArgs.property?.name}`,
+        to: associateTenantOriginalArgs?.draftData.email,
+        subject: `${AddTenantNotificationEnumValue} - ${associateTenantOriginalArgs?.property?.name}`,
         body: emailMsgWithDisclaimer,
         ccEmailIds: [user?.email],
         sendEmail,
@@ -160,8 +191,22 @@ export default function AssociateTenantPopup({
       reset();
       closeDialog();
       refetchGetProperty();
+      celebrations.commonConfetti();
     }
-  }, [associateTenantResult.isLoading]);
+  }, [isAssociateTenantLoading]);
+
+  useEffect(() => {
+    if (!isValidateBadgeLoading && isValidateBadgeSuccess) {
+      if (!badgeExists) {
+        updateUser({
+          uid: user?.uid,
+          newData: {
+            badges: validateBadgeOriginalArgs?.keys,
+          },
+        });
+      }
+    }
+  }, [isValidateBadgeLoading]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -494,7 +539,6 @@ export default function AssociateTenantPopup({
           clearErrors={clearErrors}
         />
 
-        {/* Owner covered utilities */}
         <Stack>
           <Controller
             name="isAutoRenewPolicySet"
@@ -505,7 +549,7 @@ export default function AssociateTenantPopup({
                 control={<Checkbox {...field} checked={field.value} />}
                 label={
                   <Stack direction="row" spacing={1} alignItems="center">
-                    <AutorenewOutlined />
+                    <AutorenewOutlined fontSize="small" />
                     <Typography variant="subtitle2">
                       {`Setup auto renewal for ${property?.name}`}
                     </Typography>
@@ -570,40 +614,6 @@ export default function AssociateTenantPopup({
               />
             )}
           />
-        </Stack>
-
-        <Stack>
-          <Controller
-            name="isSoR"
-            control={control}
-            render={({ field }) => (
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    {...field}
-                    checked={field.value}
-                    disabled={!isAssociatedPropertySoR(property, tenants)}
-                  />
-                }
-                label="Single Occupancy Room (SoR)?"
-              />
-            )}
-          />
-
-          {isSoR && (
-            <Controller
-              name="assignedRoomName"
-              control={control}
-              render={({ field }) => (
-                <TextFieldWithLabel
-                  label="Room Name"
-                  placeholder="Assign the above user a room"
-                  errorMsg={errors.assignedRoomName?.message}
-                  {...field}
-                />
-              )}
-            />
-          )}
         </Stack>
 
         <Divider>

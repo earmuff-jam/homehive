@@ -91,8 +91,8 @@ export const propertiesApi = createApi({
       },
       providesTags: [PropertiesApiTagTypes.getProperties],
     }),
-    // retrieves a list of properties created by the
-    // passed in userId; filters deleted properties
+    // getPropertiesByUserId ...
+    // retrieves a list of properties without filters
     getPropertiesByUserId: builder.query({
       async queryFn(userId) {
         try {

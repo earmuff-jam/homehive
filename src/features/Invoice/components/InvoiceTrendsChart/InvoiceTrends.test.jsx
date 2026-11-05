@@ -1,9 +1,8 @@
 import React from "react";
 
-import InvoiceTrendsChart from "./InvoiceTrends";
-import { fireEvent, render, screen } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
+import InvoiceTrendsChart from "features/Invoice/components/InvoiceTrendsChart/InvoiceTrends";
 import InvoiceMockValues from "features/Invoice/mockConstants";
-import { normalizeInvoiceTrendsChartsDataset } from "features/Invoice/utils";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { afterEach } from "vitest";
 
@@ -29,9 +28,7 @@ vi.mock("features/Invoice/utils", async () => {
 
   return {
     ...actual,
-    normalizeInvoiceTrendsChartsDataset: vi.fn(
-      actual.normalizeInvoiceTrendsChartsDataset,
-    ),
+    normalizeTrendsChart: vi.fn(actual.normalizeTrendsChart),
   };
 });
 
@@ -78,48 +75,6 @@ describe("Invoice trends chart tests", () => {
       expect(screen.queryByTestId("line-chart")).not.toBeInTheDocument();
     });
 
-    it("calls normalizeInvoiceTrendsChartsDataset with bar chart type by default", () => {
-      render(<InvoiceTrendsChart data={[InvoiceMockValues.invoiceDetails]} />);
-
-      expect(normalizeInvoiceTrendsChartsDataset).toHaveBeenCalledWith(
-        [InvoiceMockValues.invoiceDetails],
-        "bar",
-      );
-    });
-
-    it("renders the line chart when the line toggle is selected", () => {
-      render(<InvoiceTrendsChart data={[InvoiceMockValues.invoiceDetails]} />);
-
-      fireEvent.click(screen.getByRole("button", { name: "line chart" }));
-
-      expect(screen.queryByTestId("line-chart")).toBeInTheDocument();
-      expect(screen.queryByTestId("bar-chart")).not.toBeInTheDocument();
-    });
-
-    it("calls normalizeInvoiceTrendsChartsDataset with line chart type after switching", () => {
-      render(<InvoiceTrendsChart data={[InvoiceMockValues.invoiceDetails]} />);
-
-      fireEvent.click(screen.getByRole("button", { name: "line chart" }));
-
-      expect(normalizeInvoiceTrendsChartsDataset).toHaveBeenLastCalledWith(
-        [InvoiceMockValues.invoiceDetails],
-        "line",
-      );
-    });
-
-    it("switches back to the bar chart", () => {
-      render(<InvoiceTrendsChart data={[InvoiceMockValues.invoiceDetails]} />);
-
-      fireEvent.click(screen.getByRole("button", { name: "line chart" }));
-
-      expect(screen.getByTestId("line-chart")).toBeInTheDocument();
-
-      fireEvent.click(screen.getByRole("button", { name: "bar chart" }));
-
-      expect(screen.getByTestId("bar-chart")).toBeInTheDocument();
-      expect(screen.queryByTestId("line-chart")).not.toBeInTheDocument();
-    });
-
     it("renders EmptyComponent when normalized chart data is null", () => {
       render(<InvoiceTrendsChart data={[]} />);
 
@@ -130,32 +85,12 @@ describe("Invoice trends chart tests", () => {
       expect(screen.queryByTestId("line-chart")).not.toBeInTheDocument();
     });
 
-    it("renders EmptyComponent for line charts when normalized data is null", () => {
-      render(<InvoiceTrendsChart data={[]} />);
-
-      fireEvent.click(screen.getByRole("button", { name: "line chart" }));
-
-      expect(
-        screen.getByText("Sorry, no matching records found."),
-      ).toBeInTheDocument();
-      expect(screen.queryByTestId("line-chart")).not.toBeInTheDocument();
-    });
-
     it("renders the chart title", () => {
       render(<InvoiceTrendsChart data={[InvoiceMockValues.invoiceDetails]} />);
 
       expect(
         screen.getByText("Invoice Totals & Tax Collected Over Time"),
       ).toBeInTheDocument();
-    });
-
-    it("uses the provided data", () => {
-      render(<InvoiceTrendsChart data={[InvoiceMockValues.invoiceDetails]} />);
-
-      expect(normalizeInvoiceTrendsChartsDataset).toHaveBeenCalledWith(
-        [InvoiceMockValues.invoiceDetails],
-        "bar",
-      );
     });
   });
 });

@@ -13,7 +13,7 @@ import {
   Tooltip,
 } from "chart.js";
 import EmptyComponent from "common/EmptyComponent";
-import { normalizeInvoiceItemTypeChartDataset } from "features/Invoice/utils";
+import { normalizeItemTypeChart } from "features/Invoice/utils/normalizeItemTypeChart";
 
 ChartJS.register(
   CategoryScale,
@@ -23,13 +23,13 @@ ChartJS.register(
   Title,
   Legend,
 );
-
 const ItemTypeFreqChart = ({ data = [] }) => {
   const options = {
     responsive: true,
+    maintainAspectRatio: false,
     plugins: {
       title: {
-        display: true,
+        display: false,
         text: "Item Type Frequency",
       },
       legend: {
@@ -46,12 +46,18 @@ const ItemTypeFreqChart = ({ data = [] }) => {
     },
   };
 
-  const chartData = normalizeInvoiceItemTypeChartDataset(data);
-
+  const chartData = normalizeItemTypeChart(data);
   const containsLabels = chartData?.labels.length;
 
   return (
-    <Stack data-tour="dashboard-7">
+    <Stack
+      data-tour="dashboard-7"
+      sx={{
+        minHeight: 0,
+        width: "100%",
+        height: "calc(100% - 3rem)",
+      }}
+    >
       {containsLabels <= 0 ? (
         <EmptyComponent />
       ) : (

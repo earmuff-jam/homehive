@@ -191,7 +191,7 @@ export default function Tenants({
                     <Box>
                       <Tooltip title="Next payment due date">
                         <Chip
-                          label={dayjs(nextPaymentDueDate).format("DD MMMM")}
+                          label={nextPaymentDueDate}
                           size="small"
                           sx={{
                             height: 24,

@@ -15,7 +15,7 @@ import {
 } from "chart.js";
 import "chartjs-adapter-dayjs-4";
 import EmptyComponent from "common/EmptyComponent";
-import { normalizeInvoiceTimelineChartDataset } from "features/Invoice/utils";
+import { normalizeTimelineChart } from "features/Invoice/utils/normalizeTimelineChart";
 
 ChartJS.register(TimeScale, LinearScale, BarElement, Tooltip, Title);
 
@@ -25,7 +25,7 @@ const InvoiceTimelineChart = ({ data = [] }) => {
     responsive: true,
     plugins: {
       title: {
-        display: true,
+        display: false,
         text: "Invoice Timeline",
       },
       tooltip: {
@@ -67,10 +67,18 @@ const InvoiceTimelineChart = ({ data = [] }) => {
     },
   };
 
-  const chartData = normalizeInvoiceTimelineChartDataset(data);
+  const chartData = normalizeTimelineChart(data);
 
   return (
-    <Stack data-tour="dashboard-5">
+    <Stack
+      data-tour="dashboard-5"
+      flexGrow={1}
+      sx={{
+        minHeight: 0,
+        width: "100%",
+        height: "calc(100% - 3rem)",
+      }}
+    >
       {data?.length <= 0 ? (
         <EmptyComponent />
       ) : (

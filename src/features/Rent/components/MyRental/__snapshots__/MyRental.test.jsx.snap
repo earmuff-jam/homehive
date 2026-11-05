@@ -7,7 +7,7 @@ exports[`MyRental snapshot tests > should match snapshot when property exists 1`
     data-tour="rental-0"
   >
     <div
-      class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation0 css-gd7n75-MuiPaper-root"
+      class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation0 css-1g0cu6y-MuiPaper-root"
       style="--Paper-shadow: none;"
     >
       <div
@@ -34,7 +34,7 @@ exports[`MyRental snapshot tests > should match snapshot when property exists 1`
               class="MuiStack-root css-nen11g-MuiStack-root"
             >
               <h4
-                class="MuiTypography-root MuiTypography-h4 css-1f925ed-MuiTypography-root"
+                class="MuiTypography-root MuiTypography-h4 css-1jayzmt-MuiTypography-root"
               >
                 Charles Zanco Home
               </h4>
@@ -45,7 +45,7 @@ exports[`MyRental snapshot tests > should match snapshot when property exists 1`
                   class="MuiStack-root css-niqf4j-MuiStack-root"
                 />
                 <h6
-                  class="MuiTypography-root MuiTypography-subtitle2 css-1lmrxy0-MuiTypography-root"
+                  class="MuiTypography-root MuiTypography-subtitle2 css-i0pvuy-MuiTypography-root"
                 >
                   , 
                   , 
@@ -58,7 +58,7 @@ exports[`MyRental snapshot tests > should match snapshot when property exists 1`
             class="MuiStack-root css-1o22yl8-MuiStack-root"
           >
             <h6
-              class="MuiTypography-root MuiTypography-subtitle2 css-1khdnpy-MuiTypography-root"
+              class="MuiTypography-root MuiTypography-subtitle2 css-io8qmp-MuiTypography-root"
               data-mui-internal-clone-element="true"
             />
           </div>
@@ -67,10 +67,10 @@ exports[`MyRental snapshot tests > should match snapshot when property exists 1`
           class="MuiBox-root css-0"
         >
           <div
-            class="MuiChip-root MuiChip-filled MuiChip-sizeMedium MuiChip-colorDefault MuiChip-filledDefault css-ygioqs-MuiChip-root"
+            class="MuiChip-root MuiChip-filled MuiChip-sizeMedium MuiChip-colorDefault MuiChip-filledDefault css-17i1lk4-MuiChip-root"
           >
             <span
-              class="MuiChip-label MuiChip-labelMedium css-1dybbl5-MuiChip-label"
+              class="MuiChip-label MuiChip-labelMedium css-1glixai-MuiChip-label"
             >
               Primary Renter
             </span>
@@ -85,16 +85,16 @@ exports[`MyRental snapshot tests > should match snapshot when property exists 1`
           class="MuiGrid-root MuiGrid-direction-xs-row MuiGrid-grid-xs-12 MuiGrid-grid-md-3 MuiGrid-grid-sm-6 css-17hq2y0-MuiGrid-root"
         >
           <div
-            class="MuiPaper-root MuiPaper-outlined MuiPaper-rounded MuiCard-root css-4gzqou-MuiPaper-root-MuiCard-root"
+            class="MuiPaper-root MuiPaper-outlined MuiPaper-rounded MuiCard-root css-203ymv-MuiPaper-root-MuiCard-root"
           >
             <div
               class="MuiCardContent-root css-8rand2-MuiCardContent-root"
             >
               <h4
-                class="MuiTypography-root MuiTypography-h4 css-1adnbqp-MuiTypography-root"
+                class="MuiTypography-root MuiTypography-h4 css-15cx1yt-MuiTypography-root"
               />
               <p
-                class="MuiTypography-root MuiTypography-body2 css-10nvtog-MuiTypography-root"
+                class="MuiTypography-root MuiTypography-body2 css-1ldd3vr-MuiTypography-root"
               >
                 Total Bedrooms
               </p>
@@ -105,18 +105,18 @@ exports[`MyRental snapshot tests > should match snapshot when property exists 1`
           class="MuiGrid-root MuiGrid-direction-xs-row MuiGrid-grid-xs-12 MuiGrid-grid-md-3 MuiGrid-grid-sm-6 css-17hq2y0-MuiGrid-root"
         >
           <div
-            class="MuiPaper-root MuiPaper-outlined MuiPaper-rounded MuiCard-root css-4gzqou-MuiPaper-root-MuiCard-root"
+            class="MuiPaper-root MuiPaper-outlined MuiPaper-rounded MuiCard-root css-203ymv-MuiPaper-root-MuiCard-root"
           >
             <div
               class="MuiCardContent-root css-8rand2-MuiCardContent-root"
             >
               <h4
-                class="MuiTypography-root MuiTypography-h4 css-1adnbqp-MuiTypography-root"
+                class="MuiTypography-root MuiTypography-h4 css-15cx1yt-MuiTypography-root"
               >
                 1
               </h4>
               <p
-                class="MuiTypography-root MuiTypography-body2 css-10nvtog-MuiTypography-root"
+                class="MuiTypography-root MuiTypography-body2 css-1ldd3vr-MuiTypography-root"
               >
                 Home Occupied
               </p>
@@ -127,18 +127,18 @@ exports[`MyRental snapshot tests > should match snapshot when property exists 1`
           class="MuiGrid-root MuiGrid-direction-xs-row MuiGrid-grid-xs-12 MuiGrid-grid-md-3 MuiGrid-grid-sm-6 css-17hq2y0-MuiGrid-root"
         >
           <div
-            class="MuiPaper-root MuiPaper-outlined MuiPaper-rounded MuiCard-root css-4gzqou-MuiPaper-root-MuiCard-root"
+            class="MuiPaper-root MuiPaper-outlined MuiPaper-rounded MuiCard-root css-203ymv-MuiPaper-root-MuiCard-root"
           >
             <div
               class="MuiCardContent-root css-8rand2-MuiCardContent-root"
             >
               <h4
-                class="MuiTypography-root MuiTypography-h4 css-1j9dcm2-MuiTypography-root"
+                class="MuiTypography-root MuiTypography-h4 css-19tx7bo-MuiTypography-root"
               >
                 %
               </h4>
               <p
-                class="MuiTypography-root MuiTypography-body2 css-10nvtog-MuiTypography-root"
+                class="MuiTypography-root MuiTypography-body2 css-1ldd3vr-MuiTypography-root"
               >
                 Occupancy Rate
               </p>
@@ -149,16 +149,16 @@ exports[`MyRental snapshot tests > should match snapshot when property exists 1`
           class="MuiGrid-root MuiGrid-direction-xs-row MuiGrid-grid-xs-12 MuiGrid-grid-md-3 MuiGrid-grid-sm-6 css-17hq2y0-MuiGrid-root"
         >
           <div
-            class="MuiPaper-root MuiPaper-outlined MuiPaper-rounded MuiCard-root css-4gzqou-MuiPaper-root-MuiCard-root"
+            class="MuiPaper-root MuiPaper-outlined MuiPaper-rounded MuiCard-root css-203ymv-MuiPaper-root-MuiCard-root"
           >
             <div
               class="MuiCardContent-root css-8rand2-MuiCardContent-root"
             >
               <h4
-                class="MuiTypography-root MuiTypography-h4 css-1j9dcm2-MuiTypography-root"
+                class="MuiTypography-root MuiTypography-h4 css-19tx7bo-MuiTypography-root"
               />
               <p
-                class="MuiTypography-root MuiTypography-body2 css-10nvtog-MuiTypography-root"
+                class="MuiTypography-root MuiTypography-body2 css-1ldd3vr-MuiTypography-root"
               >
                 Monthly Revenue
               </p>
@@ -174,7 +174,7 @@ exports[`MyRental snapshot tests > should match snapshot when property exists 1`
         class="MuiGrid-root MuiGrid-direction-xs-row MuiGrid-grid-xs-12 MuiGrid-grid-md-8 css-q5srq4-MuiGrid-root"
       >
         <div
-          class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 MuiCard-root css-1l0syj-MuiPaper-root-MuiCard-root"
+          class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 MuiCard-root css-rdw19h-MuiPaper-root-MuiCard-root"
           data-tour="rental-2"
           style="--Paper-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12);"
         >
@@ -182,15 +182,15 @@ exports[`MyRental snapshot tests > should match snapshot when property exists 1`
             class="MuiCardContent-root css-1lt5qva-MuiCardContent-root"
           >
             <div
-              class="MuiStack-root css-1tag0n1-MuiStack-root"
+              class="MuiStack-root css-1c7idsl-MuiStack-root"
             >
               <h5
-                class="MuiTypography-root MuiTypography-h5 css-14jaoc3-MuiTypography-root"
+                class="MuiTypography-root MuiTypography-h5 css-1ni202z-MuiTypography-root"
               >
                 Financial Overview
               </h5>
               <h6
-                class="MuiTypography-root MuiTypography-subtitle2 css-1tspyaz-MuiTypography-root"
+                class="MuiTypography-root MuiTypography-subtitle2 css-1rk5in-MuiTypography-root"
               >
                 View financial details for Charles Zanco Home
               </h6>
@@ -208,17 +208,17 @@ exports[`MyRental snapshot tests > should match snapshot when property exists 1`
                   class="MuiStack-root css-4vpst1-MuiStack-root"
                 >
                   <h6
-                    class="MuiTypography-root MuiTypography-subtitle2 css-14dxmel-MuiTypography-root"
+                    class="MuiTypography-root MuiTypography-subtitle2 css-1gpz75-MuiTypography-root"
                   >
                     $
                     <span
-                      class="MuiTypography-root MuiTypography-caption css-10o28e5-MuiTypography-root"
+                      class="MuiTypography-root MuiTypography-caption css-1r9hdyc-MuiTypography-root"
                     >
                        USD / m
                     </span>
                   </h6>
                   <h6
-                    class="MuiTypography-root MuiTypography-subtitle2 css-gbvgxs-MuiTypography-root"
+                    class="MuiTypography-root MuiTypography-subtitle2 css-1jznmdf-MuiTypography-root"
                   >
                     Monthly Revenue
                   </h6>
@@ -227,17 +227,17 @@ exports[`MyRental snapshot tests > should match snapshot when property exists 1`
                   class="MuiStack-root css-4vpst1-MuiStack-root"
                 >
                   <h6
-                    class="MuiTypography-root MuiTypography-subtitle2 css-14dxmel-MuiTypography-root"
+                    class="MuiTypography-root MuiTypography-subtitle2 css-1gpz75-MuiTypography-root"
                   >
                     $
                     <span
-                      class="MuiTypography-root MuiTypography-caption css-10o28e5-MuiTypography-root"
+                      class="MuiTypography-root MuiTypography-caption css-1r9hdyc-MuiTypography-root"
                     >
                        USD / yr
                     </span>
                   </h6>
                   <h6
-                    class="MuiTypography-root MuiTypography-subtitle2 css-gbvgxs-MuiTypography-root"
+                    class="MuiTypography-root MuiTypography-subtitle2 css-1jznmdf-MuiTypography-root"
                   >
                     Projected Annual Revenue
                   </h6>
@@ -247,7 +247,7 @@ exports[`MyRental snapshot tests > should match snapshot when property exists 1`
           </div>
         </div>
         <div
-          class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 MuiCard-root css-1l0syj-MuiPaper-root-MuiCard-root"
+          class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 MuiCard-root css-rdw19h-MuiPaper-root-MuiCard-root"
           data-tour="rental-7"
           style="--Paper-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12);"
         >
@@ -255,15 +255,15 @@ exports[`MyRental snapshot tests > should match snapshot when property exists 1`
             class="MuiCardContent-root css-1lt5qva-MuiCardContent-root"
           >
             <div
-              class="MuiStack-root css-1tag0n1-MuiStack-root"
+              class="MuiStack-root css-1c7idsl-MuiStack-root"
             >
               <h5
-                class="MuiTypography-root MuiTypography-h5 css-14jaoc3-MuiTypography-root"
+                class="MuiTypography-root MuiTypography-h5 css-1ni202z-MuiTypography-root"
               >
                 Payments Overview
               </h5>
               <h6
-                class="MuiTypography-root MuiTypography-subtitle2 css-1tspyaz-MuiTypography-root"
+                class="MuiTypography-root MuiTypography-subtitle2 css-1rk5in-MuiTypography-root"
               >
                 View payment summaries for Charles Zanco Home
               </h6>
@@ -287,22 +287,22 @@ exports[`MyRental snapshot tests > should match snapshot when property exists 1`
           </div>
         </div>
         <div
-          class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 MuiCard-root css-1l0syj-MuiPaper-root-MuiCard-root"
+          class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 MuiCard-root css-rdw19h-MuiPaper-root-MuiCard-root"
           style="--Paper-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12);"
         >
           <div
             class="MuiCardContent-root css-1lt5qva-MuiCardContent-root"
           >
             <div
-              class="MuiStack-root css-1tag0n1-MuiStack-root"
+              class="MuiStack-root css-1c7idsl-MuiStack-root"
             >
               <h5
-                class="MuiTypography-root MuiTypography-h5 css-14jaoc3-MuiTypography-root"
+                class="MuiTypography-root MuiTypography-h5 css-1ni202z-MuiTypography-root"
               >
                 Maintenance Overview
               </h5>
               <h6
-                class="MuiTypography-root MuiTypography-subtitle2 css-1tspyaz-MuiTypography-root"
+                class="MuiTypography-root MuiTypography-subtitle2 css-1rk5in-MuiTypography-root"
               >
                 View maintenance requests for Charles Zanco Home
               </h6>
@@ -330,7 +330,7 @@ exports[`MyRental snapshot tests > should match snapshot when property exists 1`
         class="MuiGrid-root MuiGrid-direction-xs-row MuiGrid-grid-xs-12 MuiGrid-grid-md-4 css-xur2zb-MuiGrid-root"
       >
         <div
-          class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 MuiCard-root css-1l0syj-MuiPaper-root-MuiCard-root"
+          class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 MuiCard-root css-rdw19h-MuiPaper-root-MuiCard-root"
           data-tour="rental-3"
           style="--Paper-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12);"
         >
@@ -342,12 +342,12 @@ exports[`MyRental snapshot tests > should match snapshot when property exists 1`
               variant="subtitle2"
             >
               <h6
-                class="MuiTypography-root MuiTypography-subtitle2 css-isywqh-MuiTypography-root"
+                class="MuiTypography-root MuiTypography-subtitle2 css-15t3qg8-MuiTypography-root"
               >
                 Property Owner
               </h6>
               <h6
-                class="MuiTypography-root MuiTypography-subtitle2 css-1tspyaz-MuiTypography-root"
+                class="MuiTypography-root MuiTypography-subtitle2 css-1rk5in-MuiTypography-root"
               >
                 <svg
                   aria-hidden="true"
@@ -369,7 +369,7 @@ exports[`MyRental snapshot tests > should match snapshot when property exists 1`
               class="MuiBox-root css-ukdiqv"
             >
               <div
-                class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-vgrmjk-MuiAvatar-root"
+                class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-7tyhiy-MuiAvatar-root"
               />
               <div
                 class="MuiBox-root css-0"
@@ -381,12 +381,12 @@ exports[`MyRental snapshot tests > should match snapshot when property exists 1`
                     class="MuiStack-root css-nen11g-MuiStack-root"
                   >
                     <span
-                      class="MuiTypography-root MuiTypography-caption css-1k9vb4e-MuiTypography-root"
+                      class="MuiTypography-root MuiTypography-caption css-11192jg-MuiTypography-root"
                     >
                        
                     </span>
                     <span
-                      class="MuiTypography-root MuiTypography-caption css-1o9h3xv-MuiTypography-root"
+                      class="MuiTypography-root MuiTypography-caption css-1b9n4fe-MuiTypography-root"
                     >
                       owner@test.com
                     </span>
@@ -424,7 +424,7 @@ exports[`MyRental snapshot tests > should match snapshot when property exists 1`
                 class="MuiBox-root css-0"
               >
                 <div
-                  class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation0 MuiAlert-root MuiAlert-colorInfo MuiAlert-standardInfo MuiAlert-standard css-123fevm-MuiPaper-root-MuiAlert-root"
+                  class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation0 MuiAlert-root MuiAlert-colorInfo MuiAlert-standardInfo MuiAlert-standard css-3t1j3t-MuiPaper-root-MuiAlert-root"
                   role="alert"
                   style="--Paper-shadow: none;"
                 >
@@ -447,7 +447,7 @@ exports[`MyRental snapshot tests > should match snapshot when property exists 1`
                     class="MuiAlert-message css-zioonp-MuiAlert-message"
                   >
                     <p
-                      class="MuiTypography-root MuiTypography-body1 css-plprd6-MuiTypography-root"
+                      class="MuiTypography-root MuiTypography-body1 css-131tfld-MuiTypography-root"
                     >
                       Rent can be paid only if the owner has stripe setup and if current month is due.
                     </p>
@@ -458,7 +458,7 @@ exports[`MyRental snapshot tests > should match snapshot when property exists 1`
                 class="MuiBox-root css-0"
               >
                 <div
-                  class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation0 MuiAlert-root MuiAlert-colorError MuiAlert-standardError MuiAlert-standard css-1v9ofud-MuiPaper-root-MuiAlert-root"
+                  class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation0 MuiAlert-root MuiAlert-colorError MuiAlert-standardError MuiAlert-standard css-1ayk094-MuiPaper-root-MuiAlert-root"
                   role="alert"
                   style="--Paper-shadow: none;"
                 >
@@ -481,7 +481,7 @@ exports[`MyRental snapshot tests > should match snapshot when property exists 1`
                     class="MuiAlert-message css-zioonp-MuiAlert-message"
                   >
                     <p
-                      class="MuiTypography-root MuiTypography-body1 css-plprd6-MuiTypography-root"
+                      class="MuiTypography-root MuiTypography-body1 css-131tfld-MuiTypography-root"
                     >
                       Card payments are processed instantly and includes higher processing fees. Bank transfers typically take upto 3 business days to complete but have lower fees.
                       <a
@@ -508,7 +508,7 @@ exports[`MyRental snapshot tests > should match snapshot when property exists 1`
           </div>
         </div>
         <div
-          class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 MuiCard-root css-1l0syj-MuiPaper-root-MuiCard-root"
+          class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 MuiCard-root css-rdw19h-MuiPaper-root-MuiCard-root"
           data-tour="rental-4"
           style="--Paper-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12);"
         >
@@ -516,10 +516,10 @@ exports[`MyRental snapshot tests > should match snapshot when property exists 1`
             class="MuiStack-root css-190znio-MuiStack-root"
           >
             <span
-              class="MuiTypography-root MuiTypography-caption css-10o28e5-MuiTypography-root"
+              class="MuiTypography-root MuiTypography-caption css-1r9hdyc-MuiTypography-root"
             />
             <div
-              class="MuiBox-root css-1vhwco1"
+              class="MuiBox-root css-vomml6"
             >
               <div
                 class="MuiBox-root css-v2kfba"
@@ -545,7 +545,7 @@ exports[`MyRental snapshot tests > should match snapshot when property exists 1`
                       style="position: absolute; pointer-events: auto; display: none;"
                     >
                       <div
-                        class="MuiBox-root css-1uqranr"
+                        class="MuiBox-root css-lo704p"
                       />
                     </div>
                     <div
@@ -584,12 +584,12 @@ exports[`MyRental snapshot tests > should match snapshot when property exists 1`
               variant="subtitle2"
             >
               <h6
-                class="MuiTypography-root MuiTypography-subtitle2 css-isywqh-MuiTypography-root"
+                class="MuiTypography-root MuiTypography-subtitle2 css-15t3qg8-MuiTypography-root"
               >
                 Property Details
               </h6>
               <h6
-                class="MuiTypography-root MuiTypography-subtitle2 css-1tspyaz-MuiTypography-root"
+                class="MuiTypography-root MuiTypography-subtitle2 css-1rk5in-MuiTypography-root"
               >
                 <svg
                   aria-hidden="true"
@@ -617,10 +617,10 @@ exports[`MyRental snapshot tests > should match snapshot when property exists 1`
                   class="MuiStack-root css-4vpst1-MuiStack-root"
                 >
                   <h4
-                    class="MuiTypography-root MuiTypography-h4 css-1j9dcm2-MuiTypography-root"
+                    class="MuiTypography-root MuiTypography-h4 css-19tx7bo-MuiTypography-root"
                   />
                   <h6
-                    class="MuiTypography-root MuiTypography-subtitle2 css-gbvgxs-MuiTypography-root"
+                    class="MuiTypography-root MuiTypography-subtitle2 css-1jznmdf-MuiTypography-root"
                   >
                     Bedrooms
                   </h6>
@@ -629,10 +629,10 @@ exports[`MyRental snapshot tests > should match snapshot when property exists 1`
                   class="MuiStack-root css-4vpst1-MuiStack-root"
                 >
                   <h4
-                    class="MuiTypography-root MuiTypography-h4 css-1j9dcm2-MuiTypography-root"
+                    class="MuiTypography-root MuiTypography-h4 css-19tx7bo-MuiTypography-root"
                   />
                   <h6
-                    class="MuiTypography-root MuiTypography-subtitle2 css-gbvgxs-MuiTypography-root"
+                    class="MuiTypography-root MuiTypography-subtitle2 css-1jznmdf-MuiTypography-root"
                   >
                     Bathrooms
                   </h6>
@@ -650,12 +650,12 @@ exports[`MyRental snapshot tests > should match snapshot when property exists 1`
                     data-mui-internal-clone-element="true"
                   >
                     <h6
-                      class="MuiTypography-root MuiTypography-subtitle2 css-1tspyaz-MuiTypography-root"
+                      class="MuiTypography-root MuiTypography-subtitle2 css-1rk5in-MuiTypography-root"
                     >
                       06 10 2026
                     </h6>
                     <p
-                      class="MuiTypography-root MuiTypography-body2 css-10nvtog-MuiTypography-root"
+                      class="MuiTypography-root MuiTypography-body2 css-1ldd3vr-MuiTypography-root"
                     >
                       Created
                     </p>
@@ -670,12 +670,12 @@ exports[`MyRental snapshot tests > should match snapshot when property exists 1`
                     data-mui-internal-clone-element="true"
                   >
                     <h6
-                      class="MuiTypography-root MuiTypography-subtitle2 css-1tspyaz-MuiTypography-root"
+                      class="MuiTypography-root MuiTypography-subtitle2 css-1rk5in-MuiTypography-root"
                     >
                       a few seconds ago
                     </h6>
                     <p
-                      class="MuiTypography-root MuiTypography-body2 css-10nvtog-MuiTypography-root"
+                      class="MuiTypography-root MuiTypography-body2 css-1ldd3vr-MuiTypography-root"
                     >
                       Last Updated
                     </p>

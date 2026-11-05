@@ -21,11 +21,11 @@ import withDialog from "features/Invoice/withDialog";
 import { generateInvoiceHTML } from "features/Layout/utils";
 import { useAppTitle } from "hooks/useAppTitle";
 
-const PdfViewer = ({ setDialog }) => {
+const PdfViewer = ({ setDialog, showWatermark = false }) => {
   useAppTitle("View Invoice");
 
   const navigate = useNavigate();
-  const [showWatermark, setOpenDrawer] = useOutletContext();
+  const [, setOpenDrawer] = useOutletContext();
   const isEmailEnabled = isSelectedFeatureEnabled("sendEmail");
 
   const { data: invoiceList, isLoading: isInvoiceListLoading } =

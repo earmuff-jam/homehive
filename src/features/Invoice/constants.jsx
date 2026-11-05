@@ -8,6 +8,13 @@ import {
   PaidRounded,
 } from "@mui/icons-material";
 
+// TaxChartTypes ...
+// defines the variations of different types of tax charts
+export const TaxChartTypes = {
+  Bar: "bar",
+  Line: "line",
+};
+
 // WidgetTypeProps ...
 // defines a constants for various widget types
 export const WidgetTypeProps = {
@@ -28,6 +35,8 @@ export const WidgetTypeList = [
     config: {
       height: "25rem",
       width: "40rem",
+      minHeight: 300,
+      minWidth: 300,
     },
   },
   {
@@ -40,6 +49,8 @@ export const WidgetTypeList = [
     config: {
       height: "25rem",
       width: "40rem",
+      minHeight: 300,
+      minWidth: 300,
     },
   },
   {
@@ -52,6 +63,8 @@ export const WidgetTypeList = [
     config: {
       height: "25rem",
       width: "40rem",
+      minHeight: 300,
+      minWidth: 300,
     },
   },
   {
@@ -64,6 +77,8 @@ export const WidgetTypeList = [
     config: {
       height: "25rem",
       width: "50rem",
+      minHeight: 300,
+      minWidth: 300,
     },
   },
 ];

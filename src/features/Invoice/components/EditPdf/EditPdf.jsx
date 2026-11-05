@@ -46,6 +46,7 @@ import {
 } from "features/Invoice/constants";
 import { useAppTitle } from "hooks/useAppTitle";
 import { produce } from "immer";
+import { celebrations } from "src/utils/celebrations";
 
 // DefaultInvoiceFormFields ...
 // defines the default invoice form fields
@@ -135,6 +136,10 @@ export default function EditPdf({
       startDate: dayjs(data.startDate).toISOString(),
       invoiceStatus: options.find((option) => option.selected),
     });
+
+    if (!invoiceList?.invoiceDetails) {
+      celebrations?.commonConfetti();
+    }
   };
 
   useEffect(() => {

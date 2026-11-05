@@ -9,6 +9,7 @@ import {
 } from "features/Auth/AuthHelper";
 import { getAuth, signOut } from "firebase/auth";
 import {
+  arrayUnion,
   collection,
   deleteDoc,
   doc,
@@ -20,10 +21,16 @@ import {
 } from "firebase/firestore";
 import { authenticatorConfig, authenticatorFirestore as db } from "src/config";
 
+// FirebaseUserApiTagTypes ...
+const FirebaseUserApiTagTypes = {
+  User: "user",
+  Badges: "badges",
+};
+
 export const firebaseUserApi = createApi({
   reducerPath: "firebaseUserApi",
   baseQuery: fakeBaseQuery(),
-  tagTypes: ["User"],
+  tagTypes: Object.values(FirebaseUserApiTagTypes),
 
   endpoints: (builder) => ({
     // fetch user data where user id matches the passed in user id from users db
@@ -44,7 +51,7 @@ export const firebaseUserApi = createApi({
           };
         }
       },
-      providesTags: ["User"],
+      providesTags: [FirebaseUserApiTagTypes.User],
     }),
     // fetch user data by email address
     getUserByEmailAddress: builder.query({
@@ -73,7 +80,7 @@ export const firebaseUserApi = createApi({
           };
         }
       },
-      providesTags: ["tenants"],
+      providesTags: [FirebaseUserApiTagTypes.User],
     }),
     // create user in users db
     authenticate: builder.mutation({
@@ -128,14 +135,17 @@ export const firebaseUserApi = createApi({
           };
         }
       },
-      invalidatesTags: ["User"],
+      invalidatesTags: [FirebaseUserApiTagTypes.User],
     }),
     // update user in users db
     updateUserByUid: builder.mutation({
       async queryFn({ uid, newData }) {
         try {
           const userRef = doc(db, "users", uid);
-          await setDoc(userRef, newData, { merge: true });
+          const payload = Array.isArray(newData?.badges)
+            ? { ...newData, badges: arrayUnion(...newData.badges) }
+            : newData;
+          await setDoc(userRef, payload, { merge: true });
           return { data: newData };
         } catch (error) {
           return {
@@ -146,7 +156,10 @@ export const firebaseUserApi = createApi({
           };
         }
       },
-      invalidatesTags: ["User"],
+      invalidatesTags: [
+        FirebaseUserApiTagTypes.User,
+        FirebaseUserApiTagTypes.Badges,
+      ],
     }),
     // log off users from the system
     logout: builder.mutation({
@@ -166,6 +179,62 @@ export const firebaseUserApi = createApi({
           };
         }
       },
+      invalidatesTags: [
+        FirebaseUserApiTagTypes.User,
+        FirebaseUserApiTagTypes.Badges,
+      ],
+    }),
+    getBadgeValidationByBadgeKeys: builder.query({
+      async queryFn({ uid, keys = [] }) {
+        try {
+          if (!keys?.length) {
+            return { data: false };
+          }
+
+          const docRef = doc(db, "users", uid);
+          const docSnap = await getDoc(docRef);
+
+          if (!docSnap.exists()) {
+            return { error: { message: "User not found" } };
+          }
+
+          const userData = docSnap.data();
+          const ownedBadges = userData?.badges ?? [];
+
+          const allBadgesExist = keys.every((key) => ownedBadges.includes(key));
+          return { data: allBadgesExist };
+        } catch (error) {
+          return {
+            error: {
+              message: error.message,
+              code: error.code,
+            },
+          };
+        }
+      },
+      providesTags: [FirebaseUserApiTagTypes.Badges],
+    }),
+    getUserOwnedBadges: builder.query({
+      async queryFn(uid) {
+        try {
+          const docRef = doc(db, "users", uid);
+          const docSnap = await getDoc(docRef);
+          if (!docSnap.exists()) {
+            return { error: { message: "User not found" } };
+          } else {
+            const userData = docSnap.data();
+            return { data: userData?.badges || [] };
+          }
+        } catch (error) {
+          return {
+            error: {
+              message: error.message,
+              code: error.code,
+            },
+          };
+        }
+      },
+      invalidatesTags: [FirebaseUserApiTagTypes.Badges],
     }),
   }),
 });
@@ -178,4 +247,6 @@ export const {
   useAuthenticateMutation,
   useUpdateUserByUidMutation,
   useLogoutMutation,
+  useGetUserOwnedBadgesQuery,
+  useLazyGetBadgeValidationByBadgeKeysQuery,
 } = firebaseUserApi;

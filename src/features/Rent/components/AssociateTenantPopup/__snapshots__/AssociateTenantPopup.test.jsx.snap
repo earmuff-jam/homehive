@@ -434,7 +434,7 @@ exports[`AssociateTenantPopup > Snapshot tests > matches snapshot 1`] = `
           >
             <svg
               aria-hidden="true"
-              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1umw9bq-MuiSvgIcon-root"
+              class="MuiSvgIcon-root MuiSvgIcon-fontSizeSmall css-120dh41-MuiSvgIcon-root"
               data-testid="AutorenewOutlinedIcon"
               focusable="false"
               viewBox="0 0 24 24"
@@ -499,41 +499,6 @@ exports[`AssociateTenantPopup > Snapshot tests > matches snapshot 1`] = `
           class="MuiTypography-root MuiTypography-body1 MuiFormControlLabel-label Mui-disabled css-rizt0-MuiTypography-root"
         >
           Primary point of contact (PoC)
-        </span>
-      </label>
-    </div>
-    <div
-      class="MuiStack-root css-nen11g-MuiStack-root"
-    >
-      <label
-        class="MuiFormControlLabel-root MuiFormControlLabel-labelPlacementEnd css-19opgx6-MuiFormControlLabel-root"
-      >
-        <span
-          class="MuiButtonBase-root MuiCheckbox-root MuiCheckbox-colorPrimary MuiCheckbox-sizeMedium PrivateSwitchBase-root MuiCheckbox-root MuiCheckbox-colorPrimary MuiCheckbox-sizeMedium MuiCheckbox-root MuiCheckbox-colorPrimary MuiCheckbox-sizeMedium css-vuhw6e-MuiButtonBase-root-MuiSwitchBase-root-MuiCheckbox-root"
-        >
-          <input
-            class="PrivateSwitchBase-input css-12xagqm-MuiSwitchBase-root"
-            data-indeterminate="false"
-            name="isSoR"
-            type="checkbox"
-            value="false"
-          />
-          <svg
-            aria-hidden="true"
-            class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1umw9bq-MuiSvgIcon-root"
-            data-testid="CheckBoxOutlineBlankIcon"
-            focusable="false"
-            viewBox="0 0 24 24"
-          >
-            <path
-              d="M19 5v14H5V5h14m0-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"
-            />
-          </svg>
-        </span>
-        <span
-          class="MuiTypography-root MuiTypography-body1 MuiFormControlLabel-label css-rizt0-MuiTypography-root"
-        >
-          Single Occupancy Room (SoR)?
         </span>
       </label>
     </div>

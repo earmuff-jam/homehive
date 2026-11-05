@@ -26,7 +26,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: v24.22.2
 
       - name: Set pull strategy to merge
         run: git config --global pull.rebase false
