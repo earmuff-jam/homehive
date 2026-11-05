@@ -69,9 +69,7 @@ const MyReports = () => {
           textAlign: "left",
         }}
       />
-
       <ReportOverview properties={properties} />
-
       <StatisticsWidget
         data={properties}
         existingTenants={existingTenants}

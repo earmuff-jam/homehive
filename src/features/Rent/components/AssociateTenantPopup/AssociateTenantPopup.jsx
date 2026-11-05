@@ -31,9 +31,16 @@ import CustomSnackbar from "common/CustomSnackbar";
 import TextFieldWithLabel from "common/TextFieldWithLabel";
 import { fetchLoggedInUser } from "common/utils";
 import { useSendEmailMutation } from "features/Api/externalIntegrationsApi";
+import {
+  useLazyGetBadgeValidationByBadgeKeysQuery,
+  useUpdateUserByUidMutation,
+} from "features/Api/firebaseUserApi";
 import { useAssociateTenantMutation } from "features/Api/tenantsApi";
 import TenantEmailAutocomplete from "features/Rent/components/AssociateTenantPopup/TenantEmailAutocomplete";
-import { DefaultLeaseTermOptions } from "features/Rent/constants";
+import {
+  ASSOCIATED_TENANT_BADGES,
+  DefaultLeaseTermOptions,
+} from "features/Rent/constants";
 import {
   AddNotificationEnumType,
   AddTenantNotificationEnumValue,
@@ -60,7 +67,18 @@ export default function AssociateTenantPopup({
     },
   ] = useAssociateTenantMutation();
 
+  const [
+    validateBadge,
+    {
+      data: badgeExists = false,
+      isLoading: isValidateBadgeLoading,
+      isSuccess: isValidateBadgeSuccess,
+      originalArgs: validateBadgeOriginalArgs,
+    },
+  ] = useLazyGetBadgeValidationByBadgeKeysQuery();
+
   const [sendEmail] = useSendEmailMutation();
+  const [updateUser] = useUpdateUserByUidMutation();
 
   const [showSnackbar, setShowSnackbar] = useState(false);
 
@@ -149,6 +167,11 @@ export default function AssociateTenantPopup({
     if (isAssociateTenantSuccess) {
       setShowSnackbar(true);
 
+      const allocatedBadge =
+        ASSOCIATED_TENANT_BADGES[tenants?.length + 1]?.value;
+      allocatedBadge &&
+        validateBadge({ uid: user?.uid, keys: [allocatedBadge] });
+
       const emailMsgWithDisclaimer = appendDisclaimer(
         emailMessageBuilder(
           AddNotificationEnumType,
@@ -171,6 +194,19 @@ export default function AssociateTenantPopup({
       celebrations.commonConfetti();
     }
   }, [isAssociateTenantLoading]);
+
+  useEffect(() => {
+    if (!isValidateBadgeLoading && isValidateBadgeSuccess) {
+      if (!badgeExists) {
+        updateUser({
+          uid: user?.uid,
+          newData: {
+            badges: validateBadgeOriginalArgs?.keys,
+          },
+        });
+      }
+    }
+  }, [isValidateBadgeLoading]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>

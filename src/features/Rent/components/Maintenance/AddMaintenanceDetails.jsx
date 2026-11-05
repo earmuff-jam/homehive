@@ -23,11 +23,19 @@ import TextFieldWithLabel from "common/TextFieldWithLabel";
 import { fetchLoggedInUser, isSelectedFeatureEnabled } from "common/utils";
 import { useSendEmailMutation } from "features/Api/externalIntegrationsApi";
 import { useUploadMultipleImagesMutation } from "features/Api/firebaseStorageApi";
-import { useGetUserByEmailAddressQuery } from "features/Api/firebaseUserApi";
-import { useCreateMaintenanceRecordMutation } from "features/Api/maintenanceApi";
+import {
+  useGetUserByEmailAddressQuery,
+  useLazyGetBadgeValidationByBadgeKeysQuery,
+  useUpdateUserByUidMutation,
+} from "features/Api/firebaseUserApi";
+import {
+  useCreateMaintenanceRecordMutation,
+  useGetMaintenanceRecordsQuery,
+} from "features/Api/maintenanceApi";
 import { useGetTenantByPropertyIdQuery } from "features/Api/tenantsApi";
 import MultipleImagePicker from "features/Rent/components/Image/MultipleImagePicker";
 import {
+  COMPLETED_MAINTENANCE_BADGES,
   DefaultMaintenanceCategoryTypes,
   MaintenanceRecordEnumValues,
 } from "features/Rent/constants";
@@ -56,6 +64,11 @@ const AddMaintenanceDetails = ({ property, setShowSnackbar, closeDialog }) => {
   const user = fetchLoggedInUser();
   const isS3StorageEnabled = isSelectedFeatureEnabled("cloudService");
 
+  const { data: maintenanceRecords = [] } = useGetMaintenanceRecordsQuery(
+    { propertyId: property?.id },
+    { skip: !property?.id },
+  );
+
   const [
     createMaintenanceRecord,
     {
@@ -64,6 +77,16 @@ const AddMaintenanceDetails = ({ property, setShowSnackbar, closeDialog }) => {
       isSuccess: isMaintenanceRecordSuccess,
     },
   ] = useCreateMaintenanceRecordMutation();
+
+  const [
+    validateBadge,
+    {
+      data: badgeExists = false,
+      isLoading: isValidateBadgeLoading,
+      isSuccess: isValidateBadgeSuccess,
+      originalArgs: validateBadgeOriginalArgs,
+    },
+  ] = useLazyGetBadgeValidationByBadgeKeysQuery();
 
   const { data: tenants = [] } = useGetTenantByPropertyIdQuery(property?.id, {
     skip: !property?.id,
@@ -74,12 +97,12 @@ const AddMaintenanceDetails = ({ property, setShowSnackbar, closeDialog }) => {
     [tenants],
   );
 
-  const {
-    data: primaryTenantDetails = {},
-    isLoading: isPrimaryTenantDetailsLoading,
-  } = useGetUserByEmailAddressQuery(primaryTenant?.email, {
-    skip: !primaryTenant?.email,
-  });
+  const { data: primaryTenantDetails = {} } = useGetUserByEmailAddressQuery(
+    primaryTenant?.email,
+    {
+      skip: !primaryTenant?.email,
+    },
+  );
 
   const {
     register,
@@ -93,6 +116,7 @@ const AddMaintenanceDetails = ({ property, setShowSnackbar, closeDialog }) => {
   });
 
   const [sendEmail] = useSendEmailMutation();
+  const [updateUser] = useUpdateUserByUidMutation();
   const [uploadMultipleImages] = useUploadMultipleImagesMutation();
 
   const [selectedImages, setSelectedImages] = useState([]);
@@ -114,9 +138,6 @@ const AddMaintenanceDetails = ({ property, setShowSnackbar, closeDialog }) => {
 
   useEffect(() => {
     if (isMaintenanceRecordSuccess) {
-      closeDialog();
-      setShowSnackbar(true);
-
       const maintenanceId = maintenanceRecordOriginalArgs?.id;
       const propertyId = maintenanceRecordOriginalArgs?.propertyId;
       // if no tenant is found, use whoever the creator put under tenant email
@@ -128,6 +149,16 @@ const AddMaintenanceDetails = ({ property, setShowSnackbar, closeDialog }) => {
       }));
 
       uploadMultipleImages(populatedImages);
+
+      const completedMaintenanceList = maintenanceRecords?.filter(
+        (record) => record.status === MaintenanceRecordEnumValues.Completed,
+      );
+
+      const allocatedBadge =
+        COMPLETED_MAINTENANCE_BADGES[completedMaintenanceList?.length + 1]
+          ?.value;
+      allocatedBadge &&
+        validateBadge({ uid: user?.uid, keys: [allocatedBadge] });
 
       const emailMsgWithDisclaimer = appendDisclaimer(
         emailMessageBuilder(AddMaintenanceRecordEnumValue, property.name),
@@ -141,23 +172,33 @@ const AddMaintenanceDetails = ({ property, setShowSnackbar, closeDialog }) => {
         ccEmailIds: [user?.email],
         sendEmail,
       });
-
-      celebrations.commonConfetti();
     }
   }, [isMaintenanceRecordLoading]);
 
   useEffect(() => {
-    if (primaryTenant) {
-      setValue("tenantEmail", primaryTenant?.email);
+    if (!isValidateBadgeLoading && isValidateBadgeSuccess) {
+      if (!badgeExists) {
+        updateUser({
+          uid: user?.uid,
+          newData: {
+            badges: validateBadgeOriginalArgs?.keys,
+          },
+        });
+      }
+
+      closeDialog();
+      setShowSnackbar(true);
+      celebrations.commonConfetti();
     }
-  }, [primaryTenant?.id]);
+  }, [isValidateBadgeLoading]);
 
   useEffect(() => {
-    if (primaryTenantDetails) {
+    if (primaryTenant) {
+      setValue("tenantEmail", primaryTenant?.email);
       setValue("tenantFirstName", primaryTenantDetails?.firstName);
       setValue("tenantLastName", primaryTenantDetails?.lastName);
     }
-  }, [isPrimaryTenantDetailsLoading]);
+  }, [primaryTenant?.id]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>

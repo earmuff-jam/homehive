@@ -36,7 +36,11 @@ import EmptyComponent from "common/EmptyComponent";
 import RowHeader from "common/RowHeader";
 import { fetchLoggedInUser } from "common/utils";
 import { useGetSubscriptionOptionsQuery } from "features/Api/externalIntegrationsApi";
-import { useGetUserDataByIdQuery } from "features/Api/firebaseUserApi";
+import {
+  useGetUserDataByIdQuery,
+  useLazyGetBadgeValidationByBadgeKeysQuery,
+  useUpdateUserByUidMutation,
+} from "features/Api/firebaseUserApi";
 import {
   useCreatePropertyMutation,
   useDeletePropertyByIdMutation,
@@ -46,7 +50,10 @@ import { useLazyGetRentsByPropertyIdWithFiltersQuery } from "features/Api/rentAp
 import { useGetLatestSubscriptionByEmailQuery } from "features/Api/subscriptionApi";
 import AddProperty from "features/Rent/components/AddProperty/AddProperty";
 import ViewPropertyAccordionDetails from "features/Rent/components/Properties/ViewPropertyAccordionDetails";
-import { AddPropertyTextString } from "features/Rent/constants";
+import {
+  AddPropertyTextString,
+  PROPERTIES_BADGES,
+} from "features/Rent/constants";
 import { useVerifySubscriptionForProperties } from "features/Rent/hooks/useVerifySubscriptionForProperties";
 import { sanitizeApiFields } from "features/Rent/utils";
 import { useAppTitle } from "hooks/useAppTitle";
@@ -63,6 +70,18 @@ const Properties = () => {
 
   const navigate = useNavigate();
   const user = fetchLoggedInUser();
+
+  const [updateUser] = useUpdateUserByUidMutation();
+
+  const [
+    validateBadge,
+    {
+      data: badgeExists = false,
+      isLoading: isValidateBadgeLoading,
+      isSuccess: isValidateBadgeSuccess,
+      originalArgs: validateBadgeOriginalArgs,
+    },
+  ] = useLazyGetBadgeValidationByBadgeKeysQuery();
 
   const [
     createProperty,
@@ -216,9 +235,25 @@ const Properties = () => {
     }
 
     if (isCreatePropertySuccess) {
+      const allocatedBadge = PROPERTIES_BADGES[properties?.length + 1]?.value;
+      allocatedBadge &&
+        validateBadge({ uid: user?.uid, keys: [allocatedBadge] });
       celebrations.commonConfetti();
     }
   }, [isCreatePropertyLoading, isDeletePropertyLoading]);
+
+  useEffect(() => {
+    if (!isValidateBadgeLoading && isValidateBadgeSuccess) {
+      if (!badgeExists) {
+        updateUser({
+          uid: user?.uid,
+          newData: {
+            badges: validateBadgeOriginalArgs?.keys,
+          },
+        });
+      }
+    }
+  }, [isValidateBadgeLoading]);
 
   if (isLoading) return <Skeleton height="10rem" />;
 

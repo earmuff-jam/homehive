@@ -6,6 +6,7 @@ import { render, screen } from "@testing-library/react";
 import { useCreateStripeManageSubscriptionLinkMutation } from "features/Api/externalIntegrationsApi";
 import {
   useGetUserDataByIdQuery,
+  useGetUserOwnedBadgesQuery,
   useUpdateUserByUidMutation,
 } from "features/Api/firebaseUserApi";
 import { useGetLatestSubscriptionByEmailQuery } from "features/Api/subscriptionApi";
@@ -13,6 +14,7 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 
 vi.mock("common/utils", () => ({
   __esModule: true,
+  pluralize: vi.fn(),
   fetchLoggedInUser: () => ({
     uid: "user-1",
     email: "test@test.com",
@@ -24,6 +26,7 @@ vi.mock("features/Api/firebaseUserApi", () => ({
   __esModule: true,
   useGetUserDataByIdQuery: vi.fn(),
   useUpdateUserByUidMutation: vi.fn(),
+  useGetUserOwnedBadgesQuery: vi.fn(),
 }));
 
 vi.mock("features/Api/subscriptionApi", () => ({
@@ -111,6 +114,11 @@ describe("ProfileDetails", () => {
         googlePhotoURL: "",
         googleLastLoginAt: new Date().toISOString(),
       },
+      isLoading: false,
+    });
+
+    useGetUserOwnedBadgesQuery.mockReturnValue({
+      data: [],
       isLoading: false,
     });
 
