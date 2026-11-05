@@ -1,6 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-const OverpassTagTypes = {
+// MapAmenitiesApiTagTypes ...
+const MapAmenitiesApiTagTypes = {
   nearbySchools: "nearbySchools",
 };
 
@@ -9,7 +10,7 @@ export const mapAmenitiesApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: "https://overpass-api.de/api",
   }),
-  tagTypes: [OverpassTagTypes.nearbySchools],
+  tagTypes: [MapAmenitiesApiTagTypes.nearbySchools],
   endpoints: (builder) => ({
     // getNearbyAmenities ...
     // fetch nearby amenties based on the property id
@@ -41,7 +42,7 @@ export const mapAmenitiesApi = createApi({
 
         return `/interpreter?data=${encodeURIComponent(query)}`;
       },
-      providesTags: [OverpassTagTypes.nearbySchools],
+      providesTags: [MapAmenitiesApiTagTypes.nearbySchools],
       transformResponse: (response) => {
         if (!response?.elements?.length) return [];
 

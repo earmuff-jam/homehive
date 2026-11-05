@@ -21,10 +21,16 @@ import {
 } from "firebase/firestore";
 import { authenticatorConfig, authenticatorFirestore as db } from "src/config";
 
+// FirebaseUserApiTagTypes ...
+const FirebaseUserApiTagTypes = {
+  User: "user",
+  Badges: "badges",
+};
+
 export const firebaseUserApi = createApi({
   reducerPath: "firebaseUserApi",
   baseQuery: fakeBaseQuery(),
-  tagTypes: ["User", "Badges"],
+  tagTypes: Object.values(FirebaseUserApiTagTypes),
 
   endpoints: (builder) => ({
     // fetch user data where user id matches the passed in user id from users db
@@ -45,7 +51,7 @@ export const firebaseUserApi = createApi({
           };
         }
       },
-      providesTags: ["User"],
+      providesTags: [FirebaseUserApiTagTypes.User],
     }),
     // fetch user data by email address
     getUserByEmailAddress: builder.query({
@@ -74,7 +80,7 @@ export const firebaseUserApi = createApi({
           };
         }
       },
-      providesTags: ["tenants"],
+      providesTags: [FirebaseUserApiTagTypes.User],
     }),
     // create user in users db
     authenticate: builder.mutation({
@@ -129,7 +135,7 @@ export const firebaseUserApi = createApi({
           };
         }
       },
-      invalidatesTags: ["User"],
+      invalidatesTags: [FirebaseUserApiTagTypes.User],
     }),
     // update user in users db
     updateUserByUid: builder.mutation({
@@ -150,7 +156,10 @@ export const firebaseUserApi = createApi({
           };
         }
       },
-      invalidatesTags: ["User", "Badges"],
+      invalidatesTags: [
+        FirebaseUserApiTagTypes.User,
+        FirebaseUserApiTagTypes.Badges,
+      ],
     }),
     // log off users from the system
     logout: builder.mutation({
@@ -170,6 +179,10 @@ export const firebaseUserApi = createApi({
           };
         }
       },
+      invalidatesTags: [
+        FirebaseUserApiTagTypes.User,
+        FirebaseUserApiTagTypes.Badges,
+      ],
     }),
     getBadgeValidationByBadgeKeys: builder.query({
       async queryFn({ uid, keys = [] }) {
@@ -199,6 +212,7 @@ export const firebaseUserApi = createApi({
           };
         }
       },
+      providesTags: [FirebaseUserApiTagTypes.Badges],
     }),
     getUserOwnedBadges: builder.query({
       async queryFn(uid) {
@@ -220,7 +234,7 @@ export const firebaseUserApi = createApi({
           };
         }
       },
-      providesTags: ["Badges"],
+      invalidatesTags: [FirebaseUserApiTagTypes.Badges],
     }),
   }),
 });

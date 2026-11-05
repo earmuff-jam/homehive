@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
+// MapserviceApiTagTypes ...
 const MapserviceApiTagTypes = {
   userLatLon: "userLatLon",
 };
