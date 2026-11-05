@@ -2,15 +2,15 @@ import { createApi, fakeBaseQuery } from "@reduxjs/toolkit/query/react";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { authenticatorFirestore as db } from "src/config";
 
-// EtssTokenPaymentsApiTagTypes ...
-const EtssTokenPaymentsApiTagTypes = {
+// EtssTokenApiTagTypes ...
+const EtssTokenApiTagTypes = {
   GetEtssPayments: "get-etss-payments",
 };
 
 export const etssTokenApi = createApi({
   reducerPath: "etssTokenApi",
   baseQuery: fakeBaseQuery(),
-  tagTypes: Object.values(EtssTokenPaymentsApiTagTypes),
+  tagTypes: Object.values(EtssTokenApiTagTypes),
   endpoints: (builder) => ({
     // getEtssTokensByEmailId ...
     // get ETSS tokens for a specific user
@@ -49,7 +49,7 @@ export const etssTokenApi = createApi({
           };
         }
       },
-      providesTags: [EtssTokenPaymentsApiTagTypes.GetEtssPayments],
+      providesTags: [EtssTokenApiTagTypes.GetEtssPayments],
     }),
   }),
 });

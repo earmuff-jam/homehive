@@ -1,6 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-const TagTypes = {
+// ExternalIntegrationsApiTagTypes ...
+const ExternalIntegrationsApiTagTypes = {
   SendEmail: "send-email",
   EsignTemplates: "esign-templates",
   EsignWorkspaces: "esign-workspaces",
@@ -10,7 +11,7 @@ const TagTypes = {
 
 export const externalIntegrationsApi = createApi({
   reducerPath: "externalIntegrationsApi",
-  tagTypes: Object.values(TagTypes),
+  tagTypes: Object.values(ExternalIntegrationsApiTagTypes),
   baseQuery: fetchBaseQuery({
     baseUrl: "/.netlify/functions/proxy",
     prepareHeaders: (headers) => {
@@ -30,7 +31,7 @@ export const externalIntegrationsApi = createApi({
           payload: { to, subject, text, html, ccEmailIds, bccEmailIds },
         }),
       }),
-      providesTags: [TagTypes.SendEmail],
+      providesTags: [ExternalIntegrationsApiTagTypes.SendEmail],
     }),
     // getWorkspaces ...
     // defines an mutation that returns a list of workspaces
@@ -42,7 +43,7 @@ export const externalIntegrationsApi = createApi({
           fMethod: "POST",
         }),
       }),
-      providesTags: [TagTypes.EsignWorkspaces],
+      providesTags: [ExternalIntegrationsApiTagTypes.EsignWorkspaces],
     }),
     // getEsignTemplates ...
     // defines a function that returns esign templates
@@ -55,7 +56,7 @@ export const externalIntegrationsApi = createApi({
           payload: userId,
         }),
       }),
-      providesTags: [TagTypes.EsignTemplates],
+      providesTags: [ExternalIntegrationsApiTagTypes.EsignTemplates],
     }),
     // createTemplate ...
     // defines a function that creates template
@@ -68,7 +69,7 @@ export const externalIntegrationsApi = createApi({
           payload: data,
         }),
       }),
-      invalidatesTags: [TagTypes.EsignTemplates],
+      invalidatesTags: [ExternalIntegrationsApiTagTypes.EsignTemplates],
     }),
     // deleteTemplate ...
     // defines a function that removes template
@@ -81,7 +82,7 @@ export const externalIntegrationsApi = createApi({
           payload: data,
         }),
       }),
-      invalidatesTags: [TagTypes.EsignTemplates],
+      invalidatesTags: [ExternalIntegrationsApiTagTypes.EsignTemplates],
     }),
     // createEsignFromTemplate ...
     // defines a function that creates Esign documents from the template
@@ -106,7 +107,7 @@ export const externalIntegrationsApi = createApi({
           payload: { accountId },
         }),
       }),
-      providesTags: [TagTypes.CheckStripeAccountStatus],
+      providesTags: [ExternalIntegrationsApiTagTypes.CheckStripeAccountStatus],
     }),
     // createStripeAccount ...
     // defines a mutation that creates a stripe account
@@ -119,7 +120,9 @@ export const externalIntegrationsApi = createApi({
           payload: email,
         }),
       }),
-      invalidatesTags: [TagTypes.CheckStripeAccountStatus],
+      invalidatesTags: [
+        ExternalIntegrationsApiTagTypes.CheckStripeAccountStatus,
+      ],
     }),
     // createStripeAccountLink ...
     // defines a mutation that creates a stripe account
@@ -132,7 +135,9 @@ export const externalIntegrationsApi = createApi({
           payload: data,
         }),
       }),
-      invalidatesTags: [TagTypes.CheckStripeAccountStatus],
+      invalidatesTags: [
+        ExternalIntegrationsApiTagTypes.CheckStripeAccountStatus,
+      ],
     }),
     // createSecureStripeLoginLink ...
     // defines a mutation that creates a stripe account
@@ -145,7 +150,9 @@ export const externalIntegrationsApi = createApi({
           payload: { accountId },
         }),
       }),
-      invalidatesTags: [TagTypes.CheckStripeAccountStatus],
+      invalidatesTags: [
+        ExternalIntegrationsApiTagTypes.CheckStripeAccountStatus,
+      ],
     }),
     // getRecentTransactions ...
     // defines a query that retrieves recent transactions made under stripe
@@ -158,7 +165,7 @@ export const externalIntegrationsApi = createApi({
           payload: { userId, stripeAccountId },
         }),
       }),
-      providesTags: [TagTypes.RecentStripeTransactions],
+      providesTags: [ExternalIntegrationsApiTagTypes.RecentStripeTransactions],
     }),
     // createStripeCustomerLink ...
     // defines a function that creates stripe customer for subscription
@@ -182,7 +189,7 @@ export const externalIntegrationsApi = createApi({
           fMethod: "POST",
         }),
       }),
-      providesTags: [TagTypes.CheckStripeAccountStatus],
+      providesTags: [ExternalIntegrationsApiTagTypes.CheckStripeAccountStatus],
     }),
     // createStripeManageSubscriptionLink ...
     // defines a function that creates stripe link for subscription

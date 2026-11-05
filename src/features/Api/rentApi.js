@@ -10,10 +10,16 @@ import {
 } from "firebase/firestore";
 import { authenticatorFirestore as db } from "src/config";
 
+// RentApiTagTypes ...
+const RentApiTagTypes = {
+  Rent: "rent",
+  RentByProperties: "rentByProperties",
+};
+
 export const rentApi = createApi({
   reducerPath: "rentApi",
   baseQuery: fakeBaseQuery(),
-  tagTypes: ["rent"],
+  tagTypes: Object.values(RentApiTagTypes),
   endpoints: (builder) => ({
     // fetches rents by property id and currentUserEmail
     // currentUserEmail must either be a tenant or a property owner to view data
@@ -86,7 +92,7 @@ export const rentApi = createApi({
           };
         }
       },
-      providesTags: ["rent"],
+      providesTags: [RentApiTagTypes.Rent],
     }),
     // getRentsByProperties ...
     // defines a function that returns rents for a list of properties
@@ -121,7 +127,7 @@ export const rentApi = createApi({
           };
         }
       },
-      providesTags: ["rentsByProperties"],
+      providesTags: [RentApiTagTypes.RentByProperties],
     }),
     // Get rent records by property ID, tenant list, and current rent month.
     // all filters are required by default
@@ -164,7 +170,7 @@ export const rentApi = createApi({
           };
         }
       },
-      providesTags: ["rent"],
+      providesTags: [RentApiTagTypes.RentByProperties],
     }),
     // get rental information by property id for a specific month
     getRentByMonth: builder.query({
@@ -192,7 +198,7 @@ export const rentApi = createApi({
           };
         }
       },
-      providesTags: ["rent"],
+      providesTags: [RentApiTagTypes.Rent],
     }),
     // creates rental record for a property
     // occurs when user initiates stripe checkout session
@@ -251,7 +257,7 @@ export const rentApi = createApi({
           };
         }
       },
-      invalidatesTags: ["rent"],
+      invalidatesTags: [RentApiTagTypes.Rent, RentApiTagTypes.RentByProperties],
     }),
   }),
 });

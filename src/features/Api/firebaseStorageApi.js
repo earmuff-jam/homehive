@@ -2,6 +2,7 @@ import { createApi, fakeBaseQuery } from "@reduxjs/toolkit/query/react";
 import { getDownloadURL, listAll, ref, uploadBytes } from "firebase/storage";
 import { firebaseCloudStorage } from "src/config";
 
+// FirebaseStorageApiTagTypes ...
 const FirebaseStorageApiTagTypes = {
   maintenanceImage: "property/image",
 };
