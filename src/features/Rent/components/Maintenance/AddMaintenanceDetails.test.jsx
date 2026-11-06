@@ -38,10 +38,12 @@ vi.mock("features/Api/firebaseUserApi", () => ({
   __esModule: true,
   useGetUserByEmailAddressQuery: () => ({
     data: {
-      firstName: "John",
-      lastName: "Doe",
+      firstName: "Jane",
+      lastName: "Smith",
+      email: "tenant@test.com",
     },
     isLoading: false,
+    isSuccess: true,
   }),
   useLazyGetBadgeValidationByBadgeKeysQuery: () => [
     vi.fn(),
@@ -113,6 +115,10 @@ describe("AddMaintenanceDetails tests", () => {
   beforeEach(() => {
     vi.clearAllMocks();
 
+    mockCreateMaintenanceRecord.mockReturnValue({
+      unwrap: vi.fn().mockResolvedValue({}),
+    });
+
     mockGetMaintenanceRecords.mockReturnValue({
       data: [],
       isLoading: false,
@@ -120,7 +126,7 @@ describe("AddMaintenanceDetails tests", () => {
     });
   });
 
-  describe("AddMaintenanceDetails snapshot tests", () => {
+  describe("snapshot tests", () => {
     it("matches snapshot", () => {
       const { container } = render(<AddMaintenanceDetails {...defaultProps} />);
 
@@ -128,7 +134,7 @@ describe("AddMaintenanceDetails tests", () => {
     });
   });
 
-  describe("AddMaintenanceDetails component tests", () => {
+  describe("component tests", () => {
     it("renders the tenant and maintenance request fields", () => {
       render(<AddMaintenanceDetails {...defaultProps} />);
 
@@ -146,12 +152,23 @@ describe("AddMaintenanceDetails tests", () => {
 
       expect(submitButton).toBeDisabled();
 
-      fireEvent.change(screen.getByPlaceholderText("First Name"), {
-        target: { value: "Jane" },
-      });
+      fireEvent.mouseDown(
+        screen.getByRole("combobox", {
+          name: "Maintenance Type *",
+        }),
+      );
 
-      fireEvent.change(screen.getByPlaceholderText("Last Name"), {
-        target: { value: "Smith" },
+      fireEvent.click(
+        screen.getByRole("option", {
+          name: "Plumbing",
+        }),
+      );
+
+      fireEvent.change(screen.getByLabelText("Description *"), {
+        target: {
+          value:
+            "This is a sample maintenance description that exceeds fifty characters.",
+        },
       });
 
       await waitFor(() => {
@@ -162,15 +179,31 @@ describe("AddMaintenanceDetails tests", () => {
     it("calls createMaintenanceRecord with expected payload on submit", async () => {
       render(<AddMaintenanceDetails {...defaultProps} />);
 
-      fireEvent.change(screen.getByPlaceholderText("First Name"), {
-        target: { value: "Jane" },
-      });
-
-      fireEvent.change(screen.getByPlaceholderText("Last Name"), {
-        target: { value: "Smith" },
-      });
-
       const submitButton = screen.getByText(/Create maintenance request/i);
+
+      await waitFor(() => {
+        expect(screen.getByPlaceholderText("First Name")).toHaveValue("Jane");
+        expect(screen.getByPlaceholderText("Last Name")).toHaveValue("Smith");
+      });
+
+      fireEvent.mouseDown(
+        screen.getByRole("combobox", {
+          name: "Maintenance Type *",
+        }),
+      );
+
+      fireEvent.click(
+        screen.getByRole("option", {
+          name: "Plumbing",
+        }),
+      );
+
+      fireEvent.change(screen.getByLabelText("Description *"), {
+        target: {
+          value:
+            "This is a sample maintenance description that exceeds fifty characters.",
+        },
+      });
 
       await waitFor(() => {
         expect(submitButton).not.toBeDisabled();
@@ -187,6 +220,9 @@ describe("AddMaintenanceDetails tests", () => {
             tenantEmail: "tenant@test.com",
             tenantFirstName: "Jane",
             tenantLastName: "Smith",
+            maintenanceCategory: "Plumbing",
+            description:
+              "This is a sample maintenance description that exceeds fifty characters.",
             status: "Created",
             createdBy: "user-1",
           }),
