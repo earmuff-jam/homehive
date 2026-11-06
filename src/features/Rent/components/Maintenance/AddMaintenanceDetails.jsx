@@ -97,12 +97,13 @@ const AddMaintenanceDetails = ({ property, setShowSnackbar, closeDialog }) => {
     [tenants],
   );
 
-  const { data: primaryTenantDetails = {} } = useGetUserByEmailAddressQuery(
-    primaryTenant?.email,
-    {
-      skip: !primaryTenant?.email,
-    },
-  );
+  const {
+    data: primaryTenantDetails = {},
+    isLoading: isPrimaryTenantDetailsLoading,
+    isSuccess: isPrimaryTenantDetailsSuccess,
+  } = useGetUserByEmailAddressQuery(primaryTenant?.email, {
+    skip: !primaryTenant?.email,
+  });
 
   const {
     register,
@@ -193,12 +194,12 @@ const AddMaintenanceDetails = ({ property, setShowSnackbar, closeDialog }) => {
   }, [isValidateBadgeLoading]);
 
   useEffect(() => {
-    if (primaryTenant) {
-      setValue("tenantEmail", primaryTenant?.email);
+    if (isPrimaryTenantDetailsSuccess) {
+      setValue("tenantEmail", primaryTenantDetails?.email);
       setValue("tenantFirstName", primaryTenantDetails?.firstName);
       setValue("tenantLastName", primaryTenantDetails?.lastName);
     }
-  }, [primaryTenant?.id]);
+  }, [isPrimaryTenantDetailsLoading]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -233,8 +234,7 @@ const AddMaintenanceDetails = ({ property, setShowSnackbar, closeDialog }) => {
           />
         </Stack>
         <TextFieldWithLabel
-          // disabled if primary tenant is found
-          isDisabled={primaryTenant?.email}
+          isDisabled={Boolean(primaryTenant?.email)}
           label="Email Address *"
           id="tenantEmail"
           placeholder="Email address of the primary tenant"
@@ -254,14 +254,21 @@ const AddMaintenanceDetails = ({ property, setShowSnackbar, closeDialog }) => {
           <Controller
             name="maintenanceCategory"
             control={control}
+            rules={{
+              required: {
+                value: true,
+                message: "Maintenance category type is required",
+              },
+            }}
             render={({ field, fieldState }) => (
               <FormControl
                 size="small"
-                sx={{ m: 1, minWidth: 220 }}
+                variant="standard"
+                sx={{ margin: 1, minWidth: 260 }}
                 error={!!fieldState.error}
               >
                 <InputLabel id="maintenance-category-label">
-                  Maintenance type
+                  Maintenance Type *
                 </InputLabel>
                 <Select
                   {...field}
@@ -283,7 +290,7 @@ const AddMaintenanceDetails = ({ property, setShowSnackbar, closeDialog }) => {
         </Box>
         <Box flex={3}>
           <TextFieldWithLabel
-            label="Description"
+            label="Description *"
             id="description"
             multiline
             maxRows={5}
@@ -295,6 +302,11 @@ const AddMaintenanceDetails = ({ property, setShowSnackbar, closeDialog }) => {
                   value: 1000,
                   message: "Description should be less than 1000 characters",
                 },
+                min: {
+                  value: 50,
+                  message: "Description should be at least 50 characters",
+                },
+                required: "Description is required",
               }),
             }}
           />

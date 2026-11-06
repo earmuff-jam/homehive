@@ -19,7 +19,7 @@ export default function AuthenticationGuard({ children }) {
   if (isUserDetailsLoading) return <Skeleton height="100%" />;
 
   try {
-    const userID = userDetails?.uid;
+    const userID = userDetails.uid;
     // validate user id and role is not tampered
     if (userID != user?.uid || user?.role != userDetails?.role) {
       console.debug("Incorrect login detected");

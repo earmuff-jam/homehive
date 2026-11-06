@@ -27,9 +27,10 @@ vi.mock("features/Rent/hooks/useCalculateProjectedRentalChange", () => ({
 }));
 
 vi.mock("features/Rent/hooks/useCalculateTotalCollectedRents", () => ({
-  useCalculateTotalCollectedRents: vi.fn(() => ({
-    collected: 5000,
-  })),
+  useCalculateTotalCollectedRents: vi.fn(() => [
+    { name: "January", value: 5000 },
+    { name: "February", value: 3000 },
+  ]),
 }));
 
 describe("IncomeProjectionWidget", () => {
