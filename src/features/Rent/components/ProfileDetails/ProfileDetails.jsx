@@ -149,10 +149,10 @@ export default function ProfileDetails() {
           />
 
           <Typography variant="h6" fontWeight={600} color="textSecondary">
-            {userData.googleDisplayName}
+            {userData?.googleDisplayName}
           </Typography>
           <Typography variant="h6" fontWeight={600} color="textSecondary">
-            {userData.email}
+            {userData?.email}
           </Typography>
           <Typography variant="body2" color="text.secondary">
             {user?.role}
