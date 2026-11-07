@@ -26,7 +26,7 @@ const TextFieldWithLabel = React.forwardRef(
   ) => {
     return (
       <Stack spacing={0.5} width="100%" data-tour={dataTour}>
-        <Stack direction="row" spacing={1}>
+        <Stack direction="row" spacing={1} alignItems="center">
           <Box
             component="span"
             variant={variant}

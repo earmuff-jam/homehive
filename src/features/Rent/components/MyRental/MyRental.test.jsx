@@ -53,6 +53,12 @@ vi.mock("features/Api/propertiesApi", () => ({
 
 vi.mock("features/Api/firebaseUserApi", () => ({
   __esModule: true,
+  useUpdateUserByUidMutation: vi.fn(() => [
+    vi.fn(),
+    {
+      isLoading: false,
+    },
+  ]),
   useGetUserDataByIdQuery: vi.fn(),
 }));
 
@@ -170,7 +176,7 @@ describe("MyRental snapshot tests", () => {
   });
 
   it("should match snapshot when property exists", () => {
-    vi.setSystemTime(new Date("2026-06-10"));
+    vi.setSystemTime(new Date(2026, 5, 10, 12));
 
     useGetActiveTenantsByEmailAddressQuery.mockReturnValue({
       data: {
@@ -223,7 +229,6 @@ describe("MyRental snapshot tests", () => {
           firstName: "John",
           tenantLastName: "Doe",
           createdOn: "2026-06-10T21:18:30.853Z",
-          tenantEmail: "testUserEmail@gmail.com",
           tenantId: "testTenantId",
           updatedOn: "2026-06-10T21:18:30.853Z",
           createdBy: "testUserId",

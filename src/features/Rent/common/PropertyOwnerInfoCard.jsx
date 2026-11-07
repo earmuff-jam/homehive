@@ -36,22 +36,34 @@ import CustomSnackbar from "common/CustomSnackbar";
 import RowHeader from "common/RowHeader";
 import { fetchLoggedInUser } from "common/utils";
 import { useCheckStripeAccountStatusQuery } from "features/Api/externalIntegrationsApi";
-import { useGetUserDataByIdQuery } from "features/Api/firebaseUserApi";
+import {
+  useGetUserDataByIdQuery,
+  useUpdateUserByUidMutation,
+} from "features/Api/firebaseUserApi";
 import { useLazyGetMaintenanceRecordsQuery } from "features/Api/maintenanceApi";
 import {
   useCreateRentRecordMutation,
   useLazyGetRentByMonthQuery,
 } from "features/Api/rentApi";
 import { useGetTenantByPropertyIdQuery } from "features/Api/tenantsApi";
+import PayRentButtonGroup from "features/Rent/common/PayRentButtonGroup";
 import AddMaintenanceDetails from "features/Rent/components/Maintenance/AddMaintenanceDetails";
 import { getStripeFailureReasons } from "features/Rent/components/Settings/common";
-import { AddMaintenanceRecordTextString } from "features/Rent/constants";
+import {
+  AddMaintenanceRecordTextString,
+  CASH_APP_BASE_URL,
+  CASH_APP_PAYMENT_VALUE,
+  STRIPE_PAYMENT_VALUE,
+} from "features/Rent/constants";
 import { useCalculateMaintenanceDetails } from "features/Rent/hooks/useCalculateMaintenanceDetails";
 import { useGenerateStripeCheckoutSession } from "features/Rent/hooks/useGenerateStripeCheckoutSession";
 import {
+  CashAppRentPaymentEnumValue,
   CompleteRentStatusEnumValue,
   ManualRentStatusEnumValue,
   PaidRentStatusEnumValue,
+  RentIntentStatusEnumValue,
+  StripeRentPaymentEnumValue,
   formatCurrency,
   getNumberOfDaysPastDue,
 } from "features/Rent/utils";
@@ -91,6 +103,7 @@ export default function PropertyOwnerInfoCard({
   ] = useLazyGetMaintenanceRecordsQuery();
 
   const { generateStripeCheckoutSession } = useGenerateStripeCheckoutSession();
+
   const { isRecentRecord } = useCalculateMaintenanceDetails(
     maintenanceRecordData,
     isMaintenanceRecordsFetching,
@@ -105,6 +118,7 @@ export default function PropertyOwnerInfoCard({
     skip: !owner?.stripeAccountId,
   });
 
+  const [updateUser] = useUpdateUserByUidMutation();
   const [createRentRecord, createRentRecordResult] =
     useCreateRentRecordMutation();
 
@@ -119,9 +133,12 @@ export default function PropertyOwnerInfoCard({
   const tenant = data.find((item) => item);
   const currentMonthRentData = getRentByMonthResult?.data;
 
-  // used to confirm if payee understands that bank transactions sometimes takes > 3 days to complete.
+  // check if rent is paid or intent is demonstrated
+  // confirm if payee understands that bank transactions sometimes takes > 3 days to complete.
   const hasRecentPaymentAttemptBeenMade = currentMonthRentData?.length > 0;
-  const paymentCompleteForCurrentMonth = Boolean(
+
+  // check if rent payment is made and is successful
+  const isRentPaymentSuccessForCurrentMonth = Boolean(
     currentMonthRentData?.some(
       (item) =>
         item.status === CompleteRentStatusEnumValue ||
@@ -134,7 +151,56 @@ export default function PropertyOwnerInfoCard({
     setDialog(DefaultDialogProps);
   };
 
-  const handleRentPayment = async ({
+  const handleCashAppRentPayment = async ({
+    rentAmount,
+    additionalCharges,
+    initialLateFee,
+    dailyLateFee,
+    propertyId,
+    propertyOwnerId,
+    tenantId,
+    tenantEmail,
+  }) => {
+    const draftData = {
+      id: uuidv4(),
+      rentAmount,
+      additionalCharges,
+      initialLateFee,
+      dailyLateFee,
+      tenantEmail,
+      propertyId,
+      propertyOwnerId,
+      tenantId,
+      rentMonth: dayjs().format("MMMM YYYY"),
+    };
+
+    await createRentRecord({
+      ...draftData,
+      paymentMethod: CashAppRentPaymentEnumValue,
+      status: RentIntentStatusEnumValue,
+      createdBy: draftData?.tenantId, // tenant is the only one who can pay
+      createdOn: dayjs().toISOString(),
+      updatedBy: draftData?.tenantId,
+      updatedOn: dayjs().toISOString(),
+    }).unwrap();
+
+    await updateUser({
+      uid: user?.uid,
+      newData: {
+        preferredMethodOfRentPayment: CashAppRentPaymentEnumValue,
+      },
+    }).unwrap();
+
+    const trimmedCashAppTag = owner?.cashAppTag?.trim();
+
+    const cashAppURL =
+      CASH_APP_BASE_URL + encodeURIComponent(`$${trimmedCashAppTag}`);
+    window.open(cashAppURL, "_blank", "noopener,noreferrer");
+
+    return null;
+  };
+
+  const handleStripeRentPayment = async ({
     rentAmount,
     additionalCharges,
     initialLateFee,
@@ -161,10 +227,10 @@ export default function PropertyOwnerInfoCard({
       propertyId,
       propertyOwnerId,
       tenantId,
-      rentMonth: dayjs().format("MMMM"),
+      rentMonth: dayjs().format("MMMM YYYY"),
     };
 
-    const draftDataWithCentsDirectives = {
+    const populateRentDataForStripePaymentService = {
       ...draftData,
       rentAmount: Math.round(rentAmount * 100),
       additionalCharges: Math.round(additionalCharges * 100),
@@ -173,16 +239,24 @@ export default function PropertyOwnerInfoCard({
     };
 
     const stripeCheckoutSessionData = await generateStripeCheckoutSession(
-      draftDataWithCentsDirectives,
+      populateRentDataForStripePaymentService,
     );
 
     await createRentRecord({
       ...draftData,
-      status: "intent", // the first step of stripe checkout
+      paymentMethod: StripeRentPaymentEnumValue,
+      status: RentIntentStatusEnumValue,
       createdBy: tenantId, // tenant is the only one who can pay
       createdOn: dayjs().toISOString(),
       updatedBy: tenantId,
       updatedOn: dayjs().toISOString(),
+    }).unwrap();
+
+    await updateUser({
+      uid: user?.uid,
+      newData: {
+        preferredMethodOfRentPayment: StripeRentPaymentEnumValue,
+      },
     }).unwrap();
 
     window.location.href = stripeCheckoutSessionData?.url;
@@ -366,31 +440,43 @@ export default function PropertyOwnerInfoCard({
                     </Typography>
                   </Alert>
                 </Box>
-
-                <AButton
-                  variant="outlined"
-                  fullWidth
-                  label="Create maintenance issue"
-                  onClick={() =>
-                    setDialog({
-                      title: "Create maintenance issue",
-                      type: AddMaintenanceRecordTextString,
-                      display: true,
-                    })
+                <PayRentButtonGroup
+                  isStripeStatusLoading={isStripeStatusLoading}
+                  isRentPaymentSuccessForCurrentMonth={
+                    isRentPaymentSuccessForCurrentMonth
                   }
-                />
-
-                <AButton
-                  size="small"
-                  variant="contained"
-                  label="Pay Rent"
-                  sx={{ margin: "0.4rem 0rem" }}
-                  loading={isStripeStatusLoading}
-                  disabled={!stripeValid || paymentCompleteForCurrentMonth}
-                  onClick={() =>
+                  isStripeValid={!stripeValid}
+                  isCashAppValid={Boolean(owner?.cashAppTag)}
+                  handleCashAppClick={() => {
                     setShowConfirmationBox({
                       value: true,
-                      updateKey: "rentPayment",
+                      updateKey: CASH_APP_PAYMENT_VALUE,
+                      details: {
+                        propertyId: property?.id,
+                        propertyOwnerId: property?.createdBy, // the owner of the property
+                        tenantId: user?.uid, // the current payee which is also a tenant
+                        tenantEmail: user?.email, // the current renter
+                        rentAmount: formatCurrency(Number(property?.rent)),
+                        additionalCharges: formatCurrency(
+                          Number(property?.additionalRent),
+                        ),
+                        initialLateFee: formatCurrency(
+                          Number(tenant?.initialLateFee),
+                        ),
+                        dailyLateFee: formatCurrency(
+                          Number(tenant?.dailyLateFee) *
+                            getNumberOfDaysPastDue(
+                              tenant?.startDate,
+                              tenant?.gracePeriod,
+                            ).count,
+                        ),
+                      },
+                    });
+                  }}
+                  handleStripeClick={() =>
+                    setShowConfirmationBox({
+                      value: true,
+                      updateKey: STRIPE_PAYMENT_VALUE,
                       details: {
                         stripeOwnerAccountId: owner?.stripeAccountId,
                         stripeAccountIsActive: owner?.stripeAccountIsActive,
@@ -413,6 +499,18 @@ export default function PropertyOwnerInfoCard({
                             ).count,
                         ),
                       },
+                    })
+                  }
+                />
+                <AButton
+                  variant="outlined"
+                  fullWidth
+                  label="Create maintenance issue"
+                  onClick={() =>
+                    setDialog({
+                      title: "Create maintenance issue",
+                      type: AddMaintenanceRecordTextString,
+                      display: true,
                     })
                   }
                 />
@@ -481,7 +579,11 @@ export default function PropertyOwnerInfoCard({
             ? "A recent attempt at rent payment was detected. Some bank accounts may take couple of days for processing. Are you sure you want to proceed?"
             : "Confirm rent payment for the current month?"
         }
-        handleConfirm={() => handleRentPayment(showConfirmationBox?.details)}
+        handleConfirm={
+          showConfirmationBox?.updateKey === STRIPE_PAYMENT_VALUE
+            ? () => handleStripeRentPayment(showConfirmationBox?.details)
+            : () => handleCashAppRentPayment(showConfirmationBox?.details)
+        }
         handleCancel={() => setShowConfirmationBox(DefaultConfirmationBoxProps)}
       />
 

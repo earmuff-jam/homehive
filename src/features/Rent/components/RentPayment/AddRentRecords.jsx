@@ -28,6 +28,7 @@ import { useGetTenantByPropertyIdQuery } from "features/Api/tenantsApi";
 import { RENT_INCOME_BADGES } from "features/Rent/constants";
 import {
   AddRentPaymentNotificationEnumValue,
+  ManualRentStatusEnumValue,
   appendDisclaimer,
   emailMessageBuilder,
   formatAndSendNotification,
@@ -110,7 +111,8 @@ export default function AddRentRecords({
       propertyOwnerId: property?.createdBy,
       tenantId: primaryTenant?.id,
       rentAmount: data?.rentAmount,
-      rentMonth: dayjs(data?.rentMonth).format("MMMM"),
+      rentMonth: dayjs(data?.rentMonth).format("MMMM YYYY"),
+      paymentMethod: data?.paymentMethod,
       note: data?.note,
       ...(propertyOwnerData?.stripeOwnerAccountId && {
         stripeOwnerAccountId: propertyOwnerData.stripeOwnerAccountId,
@@ -119,7 +121,7 @@ export default function AddRentRecords({
 
     createRentRecord({
       ...draftData,
-      status: "manual",
+      status: ManualRentStatusEnumValue,
       createdBy: user?.uid,
       createdOn: dayjs().toISOString(),
       updatedBy: user?.uid,

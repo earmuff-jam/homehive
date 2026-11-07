@@ -119,7 +119,7 @@ const ViewMaintenanceRecord = ({
           ) || "-",
       },
       {
-        accessorKey: "tenantEmail",
+        accessorKey: "tenantEmailAddress",
         header: "Tenant Email",
         size: 150,
         Cell: ({ cell }) =>
@@ -229,7 +229,6 @@ const ViewMaintenanceRecord = ({
               property={property}
               closeDialog={closeDialog}
               isPropertyOwner={isPropertyOwner}
-              status={dialog?.status}
               isComplete={isSelectedItemCompleted}
               primaryTenantEmail={primaryTenantEmail}
             />

@@ -19,8 +19,8 @@ import PropertyHeader from "features/Rent/common/PropertyHeader";
 import PropertyOwnerInfoCard from "features/Rent/common/PropertyOwnerInfoCard";
 import PropertyStatistics from "features/Rent/common/PropertyStatistics";
 import MaintenanceRecords from "features/Rent/components/Maintenance/MaintenanceRecords";
+import PaymentsOverview from "features/Rent/components/RentPayment/PaymentsOverview";
 import FinancialOverview from "features/Rent/components/Widgets/FinancialOverview";
-import RentalPaymentOverview from "features/Rent/components/Widgets/RentalPaymentOverview";
 import { useAppTitle } from "hooks/useAppTitle";
 
 const MyRental = () => {
@@ -151,7 +151,7 @@ const MyRental = () => {
             tenants={tenants}
             dataTour="rental-2"
           />
-          <RentalPaymentOverview
+          <PaymentsOverview
             dataTour="rental-7"
             rentList={rentList}
             isRentListForPropertyLoading={isRentListForPropertyLoading}

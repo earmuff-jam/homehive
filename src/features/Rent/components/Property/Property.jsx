@@ -27,9 +27,9 @@ import PropertyOwnerInfoCard from "features/Rent/common/PropertyOwnerInfoCard";
 import PropertyStatistics from "features/Rent/common/PropertyStatistics";
 import AssociateTenantPopup from "features/Rent/components/AssociateTenantPopup/AssociateTenantPopup";
 import MaintenanceRecords from "features/Rent/components/Maintenance/MaintenanceRecords";
+import PaymentsOverview from "features/Rent/components/RentPayment/PaymentsOverview";
 import FinancialOverview from "features/Rent/components/Widgets/FinancialOverview";
 import QuickActions from "features/Rent/components/Widgets/QuickActions";
-import RentalPaymentOverview from "features/Rent/components/Widgets/RentalPaymentOverview";
 import TenantsOverview from "features/Rent/components/Widgets/TenantsOverview";
 import { useAppTitle } from "hooks/useAppTitle";
 
@@ -116,8 +116,9 @@ const Property = () => {
             refetchGetProperty={refetchGetProperty}
             toggleAssociateTenantsPopup={toggleAssociateTenantsPopup}
           />
-          <RentalPaymentOverview
+          <PaymentsOverview
             dataTour="property-6"
+            isPropertyOwner
             rentList={rentList}
             isRentListForPropertyLoading={isRentListForPropertyLoading}
             propertyName={property?.name || "Unknown"}

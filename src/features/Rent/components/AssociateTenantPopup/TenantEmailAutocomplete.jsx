@@ -12,7 +12,7 @@ import {
 import { createFilterOptions } from "@mui/material/Autocomplete";
 import {
   useGetTenantListQuery,
-  useLazyGetTenantListQuery,
+  useLazyGetTenantsByPropertiesArrQuery,
 } from "features/Api/tenantsApi";
 
 const filter = createFilterOptions();
@@ -22,12 +22,16 @@ export default function TenantEmailAutocomplete({
   errors,
   setError,
   clearErrors,
+  propertyId,
 }) {
   const { data: activeTenants, isLoading } = useGetTenantListQuery();
-  const [getExistingTenants, getExistingTenantsResult] =
-    useLazyGetTenantListQuery();
 
-  const inactiveTenants = getExistingTenantsResult?.data || [];
+  const [
+    getExistingTenants,
+    { data: existingTenants, isLoading: isGetExistingTenantsLoading },
+  ] = useLazyGetTenantsByPropertiesArrQuery();
+
+  const inactiveTenants = existingTenants || [];
   if (isLoading) return <Skeleton height="inherit" />;
 
   return (
@@ -45,14 +49,16 @@ export default function TenantEmailAutocomplete({
             selectOnFocus
             clearOnBlur
             handleHomeEndKeys
-            loading={getExistingTenantsResult.isLoading}
+            loading={isGetExistingTenantsLoading}
             options={inactiveTenants.map((t) => ({ title: t.email })) || []}
             getOptionLabel={(option) => {
               if (typeof option === "string") return option;
               if (option.inputValue) return option.inputValue;
               return option.title;
             }}
-            onOpen={() => getExistingTenants(false)}
+            onOpen={() =>
+              getExistingTenants({ propertyIds: [propertyId], isActive: false })
+            }
             filterOptions={(options, params) => {
               const filtered = filter(options, params);
               const { inputValue } = params;
