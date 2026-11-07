@@ -533,10 +533,11 @@ export default function AssociateTenantPopup({
         </Divider>
 
         <TenantEmailAutocomplete
-          control={control}
           errors={errors}
+          control={control}
           setError={setError}
           clearErrors={clearErrors}
+          propertyId={property?.id}
         />
 
         <Stack>
