@@ -11,7 +11,7 @@ vi.mock("features/Api/tenantsApi", () => ({
     data: [],
     isLoading: false,
   }),
-  useLazyGetTenantListQuery: () => [
+  useLazyGetTenantsByPropertiesArrQuery: () => [
     vi.fn(),
     {
       data: [],
@@ -33,6 +33,7 @@ function Wrapper() {
       errors={{}}
       setError={vi.fn()}
       clearErrors={vi.fn()}
+      propertyId={"test-property-id"}
     />
   );
 }

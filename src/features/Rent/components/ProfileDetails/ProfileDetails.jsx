@@ -4,7 +4,7 @@ import { Controller, useForm } from "react-hook-form";
 
 import dayjs from "dayjs";
 
-import { InfoRounded } from "@mui/icons-material";
+import { AddRounded, InfoRounded } from "@mui/icons-material";
 import {
   Avatar,
   Box,
@@ -61,6 +61,8 @@ export default function ProfileDetails() {
   const {
     control,
     handleSubmit,
+    watch,
+    setValue,
     reset,
     formState: { errors, isValid },
   } = useForm({
@@ -73,6 +75,7 @@ export default function ProfileDetails() {
       city: "",
       state: "",
       zipcode: "",
+      cashAppTag: "",
     },
   });
 
@@ -98,6 +101,8 @@ export default function ProfileDetails() {
   const handleManageSubscription = (customerId) =>
     generateStripeManageSubscriptionLink({ customerId: customerId });
 
+  const cashAppTag = watch("cashAppTag");
+
   useEffect(() => {
     if (
       generateStripeManageSubscriptionLinkResult.isSuccess &&
@@ -110,10 +115,6 @@ export default function ProfileDetails() {
   }, [generateStripeManageSubscriptionLinkResult.isLoading]);
 
   useEffect(() => {
-    if (updateUserResult.isSuccess) setShowSnackbar(false);
-  }, [updateUserResult.isLoading]);
-
-  useEffect(() => {
     if (userData) {
       reset({
         firstName: userData?.firstName || "",
@@ -123,6 +124,7 @@ export default function ProfileDetails() {
         city: userData?.city || "",
         state: userData?.state || "",
         zipcode: userData?.zipcode || "",
+        cashAppTag: userData?.cashAppTag || "",
       });
     }
   }, [isUserDataLoading, reset]);
@@ -409,6 +411,38 @@ export default function ProfileDetails() {
                 )}
               />
             </Stack>
+
+            {!cashAppTag ? (
+              <Box>
+                <AButton
+                  label="Add Cashapp Tag"
+                  variant="outlined"
+                  onClick={() => setValue("cashAppTag", " ")}
+                  startIcon={<AddRounded fontSize="small" />}
+                />
+              </Box>
+            ) : (
+              <Controller
+                name="cashAppTag"
+                control={control}
+                render={({ field }) => (
+                  <TextFieldWithLabel
+                    {...field}
+                    fullWidth
+                    id="cashAppTag"
+                    name="cashAppTag"
+                    label="Cash App Tag"
+                    placeholder="Enter your cash app tag"
+                    error={!!errors.cashAppTag}
+                    errorMsg={errors.cashAppTag?.message}
+                    labelIcon={
+                      <InfoRounded fontSize="small" color="secondary" />
+                    }
+                    labelIconHelper="Allows tenants to find your cashapp tag when saved."
+                  />
+                )}
+              />
+            )}
             <Box>
               <AButton
                 label="Save"
