@@ -23,11 +23,7 @@ import TextFieldWithLabel from "common/TextFieldWithLabel";
 import { fetchLoggedInUser, isSelectedFeatureEnabled } from "common/utils";
 import { useSendEmailMutation } from "features/Api/externalIntegrationsApi";
 import { useUploadMultipleImagesMutation } from "features/Api/firebaseStorageApi";
-import {
-  useGetUserByEmailAddressQuery,
-  useLazyGetBadgeValidationByBadgeKeysQuery,
-  useUpdateUserByUidMutation,
-} from "features/Api/firebaseUserApi";
+import { useGetUserByEmailAddressQuery } from "features/Api/firebaseUserApi";
 import {
   useCreateMaintenanceRecordMutation,
   useGetMaintenanceRecordsQuery,
@@ -60,7 +56,12 @@ const DefaultValuesCreateMaintenanceItem = {
   note: "",
 };
 
-const AddMaintenanceDetails = ({ property, setShowSnackbar, closeDialog }) => {
+const AddMaintenanceDetails = ({
+  property,
+  validateBadge,
+  setShowSnackbar,
+  closeDialog,
+}) => {
   const user = fetchLoggedInUser();
   const isS3StorageEnabled = isSelectedFeatureEnabled("cloudService");
 
@@ -77,16 +78,6 @@ const AddMaintenanceDetails = ({ property, setShowSnackbar, closeDialog }) => {
       isSuccess: isMaintenanceRecordSuccess,
     },
   ] = useCreateMaintenanceRecordMutation();
-
-  const [
-    validateBadge,
-    {
-      data: badgeExists = false,
-      isLoading: isValidateBadgeLoading,
-      isSuccess: isValidateBadgeSuccess,
-      originalArgs: validateBadgeOriginalArgs,
-    },
-  ] = useLazyGetBadgeValidationByBadgeKeysQuery();
 
   const { data: tenants = [] } = useGetTenantByPropertyIdQuery(property?.id, {
     skip: !property?.id,
@@ -117,7 +108,6 @@ const AddMaintenanceDetails = ({ property, setShowSnackbar, closeDialog }) => {
   });
 
   const [sendEmail] = useSendEmailMutation();
-  const [updateUser] = useUpdateUserByUidMutation();
   const [uploadMultipleImages] = useUploadMultipleImagesMutation();
 
   const [selectedImages, setSelectedImages] = useState([]);
@@ -173,25 +163,12 @@ const AddMaintenanceDetails = ({ property, setShowSnackbar, closeDialog }) => {
         ccEmailIds: [user?.email],
         sendEmail,
       });
-    }
-  }, [isMaintenanceRecordLoading]);
-
-  useEffect(() => {
-    if (!isValidateBadgeLoading && isValidateBadgeSuccess) {
-      if (!badgeExists) {
-        updateUser({
-          uid: user?.uid,
-          newData: {
-            badges: validateBadgeOriginalArgs?.keys,
-          },
-        });
-      }
 
       closeDialog();
       setShowSnackbar(true);
       celebrations.commonConfetti();
     }
-  }, [isValidateBadgeLoading]);
+  }, [isMaintenanceRecordLoading]);
 
   useEffect(() => {
     if (isPrimaryTenantDetailsSuccess) {

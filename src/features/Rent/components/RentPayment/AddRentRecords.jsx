@@ -17,8 +17,6 @@ import { useSendEmailMutation } from "features/Api/externalIntegrationsApi";
 import {
   useGetUserByEmailAddressQuery,
   useGetUserDataByIdQuery,
-  useLazyGetBadgeValidationByBadgeKeysQuery,
-  useUpdateUserByUidMutation,
 } from "features/Api/firebaseUserApi";
 import {
   useCreateRentRecordMutation,
@@ -37,23 +35,13 @@ import { celebrations } from "src/utils/celebrations";
 
 export default function AddRentRecords({
   property,
+  validateBadge,
   setShowSnackbar,
   closeDialog,
 }) {
   const user = fetchLoggedInUser();
 
   const [sendEmail] = useSendEmailMutation();
-  const [updateUser] = useUpdateUserByUidMutation();
-
-  const [
-    validateBadge,
-    {
-      data: badgeExists = false,
-      isFetching: isValidateBadgeLoading,
-      isSuccess: isValidateBadgeSuccess,
-      originalArgs: validateBadgeOriginalArgs,
-    },
-  ] = useLazyGetBadgeValidationByBadgeKeysQuery();
 
   const [
     createRentRecord,
@@ -130,7 +118,7 @@ export default function AddRentRecords({
   };
 
   useEffect(() => {
-    if (isCreateRentRecordSuccess) {
+    if (isCreateRentRecordSuccess && createRentRecord) {
       const allocatedBadge = RENT_INCOME_BADGES[rentList?.length + 1]?.value;
       allocatedBadge &&
         validateBadge({ uid: user?.uid, keys: [allocatedBadge] });
@@ -147,25 +135,12 @@ export default function AddRentRecords({
         ccEmailIds: [user?.email],
         sendEmail,
       });
-    }
-  }, [isCreateRentRecordLoading]);
-
-  useEffect(() => {
-    if (!isValidateBadgeLoading && isValidateBadgeSuccess) {
-      if (!badgeExists) {
-        updateUser({
-          uid: user?.uid,
-          newData: {
-            badges: validateBadgeOriginalArgs?.keys,
-          },
-        });
-      }
 
       closeDialog();
       setShowSnackbar(true);
       celebrations?.commonConfetti();
     }
-  }, [isValidateBadgeLoading]);
+  }, [isCreateRentRecordLoading]);
 
   useEffect(() => {
     if (primaryTenant) {

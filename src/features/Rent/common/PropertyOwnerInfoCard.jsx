@@ -564,6 +564,10 @@ export default function PropertyOwnerInfoCard({
           {dialog.type === AddMaintenanceRecordTextString && (
             <AddMaintenanceDetails
               property={property}
+              // ignore this function for tenants
+              validateBadge={(o) => {
+                o;
+              }}
               closeDialog={closeDialog}
               setShowSnackbar={setShowSnackbar}
             />
