@@ -234,7 +234,7 @@ export const firebaseUserApi = createApi({
           };
         }
       },
-      invalidatesTags: [FirebaseUserApiTagTypes.Badges],
+      providesTags: [FirebaseUserApiTagTypes.Badges],
     }),
   }),
 });

@@ -22,6 +22,10 @@ import AIconButton from "common/AIconButton";
 import CustomSnackbar from "common/CustomSnackbar";
 import RowHeader from "common/RowHeader";
 import { SettingsRouteUri, fetchLoggedInUser } from "common/utils";
+import {
+  useLazyGetBadgeValidationByBadgeKeysQuery,
+  useUpdateUserByUidMutation,
+} from "features/Api/firebaseUserApi";
 import { useGetMaintenanceRecordsQuery } from "features/Api/maintenanceApi";
 import { useUpdatePropertyByIdMutation } from "features/Api/propertiesApi";
 import { useGetRentsByPropertyIdQuery } from "features/Api/rentApi";
@@ -60,10 +64,23 @@ export default function QuickActions({ property }) {
     { propertyId: property?.id },
     { skip: !property?.id },
   );
+
   const [
     updateProperty,
     { isSuccess: isUpdatePropertySuccess, isLoading: isUpdatePropertyLoading },
   ] = useUpdatePropertyByIdMutation();
+
+  const [updateUser] = useUpdateUserByUidMutation();
+
+  const [
+    validateBadge,
+    {
+      data: badgeExists = false,
+      isFetching: isValidateBadgeLoading,
+      isSuccess: isValidateBadgeSuccess,
+      originalArgs: validateBadgeOriginalArgs,
+    },
+  ] = useLazyGetBadgeValidationByBadgeKeysQuery();
 
   const { isRecentRecord: isRecentMaintenanceRecord } =
     useCalculateMaintenanceDetails(
@@ -153,7 +170,20 @@ export default function QuickActions({ property }) {
       closeDialog();
       setShowSnackbar(true);
     }
-  }, [isUpdatePropertySuccess]);
+  }, [isUpdatePropertyLoading]);
+
+  useEffect(() => {
+    if (!isValidateBadgeLoading && isValidateBadgeSuccess) {
+      if (!badgeExists) {
+        updateUser({
+          uid: user?.uid,
+          newData: {
+            badges: validateBadgeOriginalArgs?.keys,
+          },
+        });
+      }
+    }
+  }, [isValidateBadgeLoading]);
 
   useEffect(() => {
     if (property?.id) {
@@ -367,6 +397,7 @@ export default function QuickActions({ property }) {
                 <AddRentRecords
                   property={property}
                   closeDialog={closeDialog}
+                  validateBadge={validateBadge}
                   setShowSnackbar={setShowSnackbar}
                 />
               )}
@@ -374,6 +405,7 @@ export default function QuickActions({ property }) {
                 <AddMaintenanceDetails
                   property={property}
                   closeDialog={closeDialog}
+                  validateBadge={validateBadge}
                   setShowSnackbar={setShowSnackbar}
                 />
               )}
