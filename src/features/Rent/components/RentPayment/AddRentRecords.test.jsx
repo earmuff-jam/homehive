@@ -64,7 +64,6 @@ describe("AddRentRecords Component Tests", () => {
             setShowSnackbar={vi.fn()}
             closeDialog={vi.fn()}
           />
-          ,
         </Provider>,
       );
       expect(asFragment()).toMatchSnapshot();

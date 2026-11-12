@@ -217,7 +217,7 @@ describe("AddMaintenanceDetails tests", () => {
             propertyId: "prop-1",
             propertyOwnerId: "owner-1",
             tenantId: "tenant-1",
-            tenantEmail: "tenant@test.com",
+            tenantEmailAddress: "tenant@test.com",
             tenantFirstName: "Jane",
             tenantLastName: "Smith",
             maintenanceCategory: "Plumbing",

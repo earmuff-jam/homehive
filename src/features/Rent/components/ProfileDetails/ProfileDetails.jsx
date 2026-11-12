@@ -4,8 +4,9 @@ import { Controller, useForm } from "react-hook-form";
 
 import dayjs from "dayjs";
 
-import { InfoRounded } from "@mui/icons-material";
+import { AddRounded, InfoRounded } from "@mui/icons-material";
 import {
+  Alert,
   Avatar,
   Box,
   Card,
@@ -19,6 +20,9 @@ import {
   Typography,
 } from "@mui/material";
 import AButton from "common/AButton";
+import ConfirmationBox, {
+  DefaultConfirmationBoxProps,
+} from "common/ConfirmationBox";
 import CustomSnackbar from "common/CustomSnackbar";
 import RowHeader from "common/RowHeader";
 import TextFieldWithLabel from "common/TextFieldWithLabel";
@@ -57,10 +61,15 @@ export default function ProfileDetails() {
   const [updateUser, updateUserResult] = useUpdateUserByUidMutation();
 
   const [showSnackbar, setShowSnackbar] = useState(false);
+  const [showConfirmationBox, setShowConfirmationBox] = useState(
+    DefaultConfirmationBoxProps,
+  );
 
   const {
     control,
     handleSubmit,
+    watch,
+    setValue,
     reset,
     formState: { errors, isValid },
   } = useForm({
@@ -73,6 +82,7 @@ export default function ProfileDetails() {
       city: "",
       state: "",
       zipcode: "",
+      cashAppTag: "",
     },
   });
 
@@ -95,8 +105,17 @@ export default function ProfileDetails() {
     celebrations.commonConfetti();
   };
 
+  const handleSave = () => {
+    setShowConfirmationBox({
+      ...DefaultConfirmationBoxProps,
+      value: true,
+    });
+  };
+
   const handleManageSubscription = (customerId) =>
     generateStripeManageSubscriptionLink({ customerId: customerId });
+
+  const cashAppTag = watch("cashAppTag");
 
   useEffect(() => {
     if (
@@ -110,10 +129,6 @@ export default function ProfileDetails() {
   }, [generateStripeManageSubscriptionLinkResult.isLoading]);
 
   useEffect(() => {
-    if (updateUserResult.isSuccess) setShowSnackbar(false);
-  }, [updateUserResult.isLoading]);
-
-  useEffect(() => {
     if (userData) {
       reset({
         firstName: userData?.firstName || "",
@@ -123,6 +138,7 @@ export default function ProfileDetails() {
         city: userData?.city || "",
         state: userData?.state || "",
         zipcode: userData?.zipcode || "",
+        cashAppTag: userData?.cashAppTag || "",
       });
     }
   }, [isUserDataLoading, reset]);
@@ -409,11 +425,56 @@ export default function ProfileDetails() {
                 )}
               />
             </Stack>
+
+            <Alert severity="error">
+              <Typography variant="subtitle2" fontWeight={600}>
+                Important: Cash App Payment Disclaimer
+              </Typography>
+              <Typography variant="body2">
+                By adding your Cash App tag, you acknowledge that you are solely
+                responsible for managing and verifying payments received through
+                Cash App, maintaining payment records, handling disputes or
+                refunds, and complying with any applicable tax reporting and
+                legal obligations. We do not process, collect, verify, or
+                guarantee payments made through Cash App.
+              </Typography>
+            </Alert>
+            {!cashAppTag ? (
+              <Box>
+                <AButton
+                  label="Add Cashapp Tag"
+                  variant="outlined"
+                  onClick={() => setValue("cashAppTag", " ")}
+                  startIcon={<AddRounded fontSize="small" />}
+                />
+              </Box>
+            ) : (
+              <Controller
+                name="cashAppTag"
+                control={control}
+                render={({ field }) => (
+                  <TextFieldWithLabel
+                    {...field}
+                    fullWidth
+                    id="cashAppTag"
+                    name="cashAppTag"
+                    label="Cash App Tag"
+                    placeholder="Enter your cash app tag"
+                    error={!!errors.cashAppTag}
+                    errorMsg={errors.cashAppTag?.message}
+                    labelIcon={
+                      <InfoRounded fontSize="small" color="secondary" />
+                    }
+                    labelIconHelper="Allows tenants to find your cashapp tag when saved."
+                  />
+                )}
+              />
+            )}
             <Box>
               <AButton
                 label="Save"
                 variant="contained"
-                type="submit"
+                onClick={handleSave}
                 disabled={!isValid}
                 loading={updateUserResult.isLoading}
               />
@@ -428,6 +489,22 @@ export default function ProfileDetails() {
           </Card>
         </form>
       </Grid>
+
+      <ConfirmationBox
+        isOpen={showConfirmationBox.value}
+        title="Confirm profile changes"
+        captionText={
+          cashAppTag?.trim()
+            ? "Adding your Cash App tag allows renters to pay you using Cash App. Would you like to continue?"
+            : "Are you sure you want to update your profile details?"
+        }
+        handleConfirm={() => {
+          handleSubmit(onSubmit)();
+          setShowConfirmationBox(DefaultConfirmationBoxProps);
+        }}
+        handleCancel={() => setShowConfirmationBox(DefaultConfirmationBoxProps)}
+      />
+
       <CustomSnackbar
         showSnackbar={showSnackbar}
         setShowSnackbar={setShowSnackbar}

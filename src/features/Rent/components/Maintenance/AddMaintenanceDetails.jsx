@@ -52,7 +52,7 @@ import { celebrations } from "src/utils/celebrations";
 const DefaultValuesCreateMaintenanceItem = {
   tenantFirstName: "",
   tenantLastName: "",
-  tenantEmail: "",
+  tenantEmailAddress: "",
   maintenanceCategory: "",
   description: "",
   status: "",
@@ -142,7 +142,7 @@ const AddMaintenanceDetails = ({ property, setShowSnackbar, closeDialog }) => {
       const maintenanceId = maintenanceRecordOriginalArgs?.id;
       const propertyId = maintenanceRecordOriginalArgs?.propertyId;
       // if no tenant is found, use whoever the creator put under tenant email
-      const emailAddress = maintenanceRecordOriginalArgs?.tenantEmail;
+      const emailAddress = maintenanceRecordOriginalArgs?.tenantEmailAddress;
 
       const populatedImages = selectedImages.map((image) => ({
         file: image.file,
@@ -195,7 +195,7 @@ const AddMaintenanceDetails = ({ property, setShowSnackbar, closeDialog }) => {
 
   useEffect(() => {
     if (isPrimaryTenantDetailsSuccess) {
-      setValue("tenantEmail", primaryTenantDetails?.email);
+      setValue("tenantEmailAddress", primaryTenantDetails?.email);
       setValue("tenantFirstName", primaryTenantDetails?.firstName);
       setValue("tenantLastName", primaryTenantDetails?.lastName);
     }
@@ -236,11 +236,11 @@ const AddMaintenanceDetails = ({ property, setShowSnackbar, closeDialog }) => {
         <TextFieldWithLabel
           isDisabled={Boolean(primaryTenant?.email)}
           label="Email Address *"
-          id="tenantEmail"
+          id="tenantEmailAddress"
           placeholder="Email address of the primary tenant"
-          errorMsg={errors.tenantEmail?.message}
+          errorMsg={errors.tenantEmailAddress?.message}
           inputProps={{
-            ...register("tenantEmail", {
+            ...register("tenantEmailAddress", {
               required: "Email address is required",
             }),
           }}

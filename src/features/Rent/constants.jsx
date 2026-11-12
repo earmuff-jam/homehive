@@ -31,6 +31,33 @@ export const FileUploadUploadingStatusStr = "uploading";
 export const FileUploadUploadedStatusStr = "uploaded";
 export const FileUploadFailedStatusStr = "failed";
 
+export const STRIPE_PAYMENT_VALUE = "card_payment";
+export const CASH_APP_PAYMENT_VALUE = "cash_app";
+
+export const CASH_APP_BASE_URL = "https://cash.app/";
+
+// RentalPaymentEnumValues ...
+// rental payment enum values for created records
+export const RentalPaymentEnumValues = {
+  [CASH_APP_PAYMENT_VALUE]: "Cash App",
+  [STRIPE_PAYMENT_VALUE]: "Card Payment",
+};
+
+// DefaultRentPaymentOptions ...
+// defines the default payment options
+export const DefaultRentPaymentOptions = [
+  {
+    id: 1,
+    label: "Pay with Card",
+    value: STRIPE_PAYMENT_VALUE,
+  },
+  {
+    id: 2,
+    label: "Pay with Cashapp",
+    value: CASH_APP_PAYMENT_VALUE,
+  },
+];
+
 // DefaultLeaseTermOptions ...
 export const DefaultLeaseTermOptions = [
   {

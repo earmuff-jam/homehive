@@ -26,8 +26,8 @@ import { useGetMaintenanceRecordsQuery } from "features/Api/maintenanceApi";
 import { useUpdatePropertyByIdMutation } from "features/Api/propertiesApi";
 import { useGetRentsByPropertyIdQuery } from "features/Api/rentApi";
 import AddProperty from "features/Rent/components/AddProperty/AddProperty";
-import AddRentRecords from "features/Rent/components/AddRentRecords/AddRentRecords";
 import AddMaintenanceDetails from "features/Rent/components/Maintenance/AddMaintenanceDetails";
+import AddRentRecords from "features/Rent/components/RentPayment/AddRentRecords";
 import {
   AddMaintenanceRecordTextString,
   AddPropertyTextString,
@@ -65,10 +65,11 @@ export default function QuickActions({ property }) {
     { isSuccess: isUpdatePropertySuccess, isLoading: isUpdatePropertyLoading },
   ] = useUpdatePropertyByIdMutation();
 
-  const { isRecentRecord } = useCalculateMaintenanceDetails(
-    maintenanceRecords,
-    isMaintenanceRecordsFetching,
-  );
+  const { isRecentRecord: isRecentMaintenanceRecord } =
+    useCalculateMaintenanceDetails(
+      maintenanceRecords,
+      isMaintenanceRecordsFetching,
+    );
 
   const {
     register,
@@ -142,7 +143,7 @@ export default function QuickActions({ property }) {
   const isOwnerCoveredUtilities = watch("isOwnerCoveredUtilities");
 
   const sevenDaysAgo = dayjs().subtract(7, "day");
-  const hasRecentPaymentAttemptBeenMade = rentList.some(
+  const recentRentPaymentAttempt = rentList.some(
     (rent) =>
       !rent.customEventType && dayjs(rent.updatedOn).isAfter(sevenDaysAgo),
   );
@@ -203,12 +204,11 @@ export default function QuickActions({ property }) {
             fontWeight: "bold",
           }}
         />
-        <Stack spacing={1}>
+        <Stack spacing={1} sx={{ paddingTop: 1 }}>
           <Tooltip
             title={
-              property?.rentees?.length > 0
-                ? "Editing a property is disabled when tenants are present"
-                : ""
+              property?.rentees?.length > 0 &&
+              "Editing a property is disabled when tenants are present"
             }
           >
             <span>
@@ -257,7 +257,6 @@ export default function QuickActions({ property }) {
               })
             }
           />
-
           <Dialog
             open={dialog.display}
             keepMounted
@@ -308,7 +307,7 @@ export default function QuickActions({ property }) {
                       label={<HighlightOff />}
                     />
                   </Stack>
-                  {hasRecentPaymentAttemptBeenMade ? (
+                  {recentRentPaymentAttempt ? (
                     <Alert variant="filled" severity="error">
                       A recent attempt at rent payment was detected. Some bank
                       accounts may take couple of days for processing. Are you
@@ -340,7 +339,7 @@ export default function QuickActions({ property }) {
                       label={<HighlightOff />}
                     />
                   </Stack>
-                  {isRecentRecord ? (
+                  {isRecentMaintenanceRecord ? (
                     <Alert variant="filled" severity="error">
                       A maintenance request was recently submitted. Are you sure
                       you want to proceed?

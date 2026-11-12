@@ -13,6 +13,7 @@ import { authenticatorFirestore as db } from "src/config";
 // RentApiTagTypes ...
 const RentApiTagTypes = {
   Rent: "rent",
+  RentById: "rent/rentId",
   RentByProperties: "rentByProperties",
 };
 
@@ -200,7 +201,35 @@ export const rentApi = createApi({
       },
       providesTags: [RentApiTagTypes.Rent],
     }),
-    // creates rental record for a property
+    // getRentRecord ...
+    // defines a function to retrieve rent records by id
+    getRentRecord: builder.query({
+      async queryFn({ rentId }) {
+        try {
+          const docRef = doc(db, "rents", rentId);
+          const docSnapshot = await getDoc(docRef);
+          if (!docSnapshot.exists()) {
+            return {
+              error: {
+                message: "Rent details not found",
+              },
+            };
+          }
+          return { data: docSnapshot.data() };
+        } catch (error) {
+          console.debug(error);
+          return {
+            error: {
+              message: error.message,
+              code: error.code,
+            },
+          };
+        }
+      },
+      providesTags: [RentApiTagTypes.RentById],
+    }),
+    // createRentRecord ...
+    // defines a function to create rent record for a property
     // occurs when user initiates stripe checkout session
     createRentRecord: builder.mutation({
       async queryFn(rentData) {
@@ -257,7 +286,29 @@ export const rentApi = createApi({
           };
         }
       },
-      invalidatesTags: [RentApiTagTypes.Rent, RentApiTagTypes.RentByProperties],
+      invalidatesTags: Object.values(RentApiTagTypes),
+    }),
+    // updateRentRecord ...
+    // defines a function to update a rent record
+    updateRentRecord: builder.mutation({
+      async queryFn(rentData) {
+        try {
+          const docRef = doc(db, "rents", rentData?.id);
+          await setDoc(docRef, rentData, {
+            merge: true,
+          });
+          return { data: rentData };
+        } catch (error) {
+          console.debug(error);
+          return {
+            error: {
+              message: error.message,
+              code: error.code,
+            },
+          };
+        }
+      },
+      invalidatesTags: Object.values(RentApiTagTypes),
     }),
   }),
 });
@@ -267,5 +318,7 @@ export const {
   useLazyGetRentsByPropertiesQuery,
   useLazyGetRentsByPropertyIdWithFiltersQuery,
   useLazyGetRentByMonthQuery,
+  useGetRentRecordQuery,
   useCreateRentRecordMutation,
+  useUpdateRentRecordMutation,
 } = rentApi;

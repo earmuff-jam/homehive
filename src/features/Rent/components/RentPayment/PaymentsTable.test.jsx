@@ -1,6 +1,6 @@
 import React from "react";
 
-import ViewRentalPaymentSummary from "./ViewRentalPaymentSummary";
+import PaymentsTable from "./PaymentsTable";
 import { ThemeProvider } from "@mui/material";
 import { render, screen } from "@testing-library/react";
 import { lightTheme } from "src/Theme";
@@ -31,7 +31,7 @@ const mockRentData = [
 const renderComponent = (data = mockRentData) =>
   render(
     <ThemeProvider theme={lightTheme}>
-      <ViewRentalPaymentSummary rentData={data} />
+      <PaymentsTable rentData={data} />
     </ThemeProvider>,
   );
 

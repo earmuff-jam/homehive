@@ -16,6 +16,9 @@ export const RentIntentStatusEnumValue = "intent";
 export const ManualRentStatusEnumValue = "manual";
 export const CompleteRentStatusEnumValue = "complete";
 
+export const StripeRentPaymentEnumValue = "stripe";
+export const CashAppRentPaymentEnumValue = "cash_app";
+
 export const CreateInvoiceEnumValue = "CreateInvoice";
 export const PaymentReminderEnumValue = "PaymentReminder";
 export const OneTimePaymentRequest = "OneTimePaymentRequest";
@@ -27,6 +30,8 @@ export const RemoveNotificationEnumType = "RemoveNotification";
 export const AddTenantNotificationEnumValue = "Notice of Addition";
 export const RemoveTenantNotificationEnumValue = "Notice of Removal";
 export const AddRentPaymentNotificationEnumValue = "Notice of Rent Payment";
+export const UpdateRentPaymentNotificationEnumValue =
+  "Notice of Updated Rent Payment";
 export const AddMaintenanceRecordEnumValue = "Notice of Maintenance Request";
 export const UpdateMaintenanceRecordEnumValue =
   "Notice of Update to Maintenance Request";
@@ -271,14 +276,17 @@ export const getColorAndLabelForCurrentMonth = (
     startDate,
     gracePeriod,
   );
+
   const isRentForCurrentMonthPaid = [
     PaidRentStatusEnumValue,
     CompleteRentStatusEnumValue,
     ManualRentStatusEnumValue,
   ].includes(rent?.status.toLowerCase());
+
   if (isRentForCurrentMonthPaid) {
     return { color: "success", label: "Paid", icon: <PaidRounded /> };
   }
+
   if (isPastGracePeriod) {
     return {
       color: "error",

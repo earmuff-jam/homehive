@@ -2,9 +2,10 @@ import React from "react";
 
 import { Card, CardContent, Skeleton, Stack } from "@mui/material";
 import RowHeader from "common/RowHeader";
-import ViewRentalPaymentSummary from "features/Rent/components/Widgets/ViewRentalPaymentSummary";
+import PaymentsTable from "features/Rent/components/RentPayment/PaymentsTable";
 
-export default function RentalPaymentOverview({
+export default function PaymentsOverview({
+  isPropertyOwner = false,
   isRentListForPropertyLoading,
   rentList,
   propertyName,
@@ -22,7 +23,11 @@ export default function RentalPaymentOverview({
           {isRentListForPropertyLoading ? (
             <Skeleton height="5rem" />
           ) : (
-            <ViewRentalPaymentSummary rentData={rentList} />
+            <PaymentsTable
+              rentData={rentList}
+              propertyName={propertyName}
+              isPropertyOwner={isPropertyOwner}
+            />
           )}
         </Stack>
       </CardContent>

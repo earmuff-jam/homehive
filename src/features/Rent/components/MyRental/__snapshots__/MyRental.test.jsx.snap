@@ -319,7 +319,7 @@ exports[`MyRental snapshot tests > should match snapshot when property exists 1`
                 <div
                   data-testid="material-react-table"
                 >
-                  [{"id":"test-id","updatedBy":"testUserId","description":"The fridge broke and does not work anymore.","tenantEmailAddress":"testUserEmail@gmail.com","propertyOwnerId":"ownerId","propertyId":"testPropertyId","firstName":"John","tenantLastName":"Doe","createdOn":"2026-06-10T21:18:30.853Z","tenantEmail":"testUserEmail@gmail.com","tenantId":"testTenantId","updatedOn":"2026-06-10T21:18:30.853Z","createdBy":"testUserId","maintenanceCategory":"Appliances"}]
+                  [{"id":"test-id","updatedBy":"testUserId","description":"The fridge broke and does not work anymore.","tenantEmailAddress":"testUserEmail@gmail.com","propertyOwnerId":"ownerId","propertyId":"testPropertyId","firstName":"John","tenantLastName":"Doe","createdOn":"2026-06-10T21:18:30.853Z","tenantId":"testTenantId","updatedOn":"2026-06-10T21:18:30.853Z","createdBy":"testUserId","maintenanceCategory":"Appliances"}]
                 </div>
               </div>
             </div>
@@ -496,13 +496,36 @@ exports[`MyRental snapshot tests > should match snapshot when property exists 1`
                   </div>
                 </div>
               </div>
+              <div
+                aria-label="Button group with a nested menu"
+                class="MuiButtonGroup-root MuiButtonGroup-contained MuiButtonGroup-horizontal MuiButtonGroup-colorPrimary css-cp1xnw-MuiButtonGroup-root"
+                role="group"
+              >
+                <button>
+                  Pay with Card
+                </button>
+                <button
+                  aria-haspopup="menu"
+                  aria-label="select merge strategy"
+                  class="MuiButtonBase-root MuiButtonGroup-grouped MuiButtonGroup-groupedHorizontal MuiButtonGroup-groupedContained MuiButtonGroup-groupedContainedHorizontal MuiButtonGroup-groupedContainedPrimary MuiButton-root MuiButton-contained MuiButton-containedPrimary MuiButton-sizeSmall MuiButton-containedSizeSmall MuiButton-colorPrimary MuiButtonGroup-grouped MuiButtonGroup-groupedHorizontal MuiButtonGroup-groupedContained MuiButtonGroup-groupedContainedHorizontal MuiButtonGroup-groupedContainedPrimary MuiButtonGroup-lastButton css-ze6h74-MuiButtonBase-root-MuiButton-root"
+                  tabindex="0"
+                  type="button"
+                >
+                  <svg
+                    aria-hidden="true"
+                    class="MuiSvgIcon-root MuiSvgIcon-fontSizeSmall css-120dh41-MuiSvgIcon-root"
+                    data-testid="ArrowDropDownCircleRoundedIcon"
+                    focusable="false"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m-.35 12.65-2.79-2.79c-.32-.32-.1-.86.35-.86h5.59c.45 0 .67.54.35.85l-2.79 2.79c-.2.2-.52.2-.71.01"
+                    />
+                  </svg>
+                </button>
+              </div>
               <button>
                 Create maintenance issue
-              </button>
-              <button
-                disabled=""
-              >
-                Pay Rent
               </button>
             </div>
           </div>
@@ -665,7 +688,7 @@ exports[`MyRental snapshot tests > should match snapshot when property exists 1`
                   class="MuiStack-root css-4vpst1-MuiStack-root"
                 >
                   <div
-                    aria-label="2026-06-10T00:00:00.000Z"
+                    aria-label="2026-06-10T12:00:00.000Z"
                     class="MuiStack-root css-nen11g-MuiStack-root"
                     data-mui-internal-clone-element="true"
                   >
