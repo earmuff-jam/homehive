@@ -11,7 +11,6 @@ import {
   Stack,
   Tooltip,
   Typography,
-  keyframes,
   useMediaQuery,
   useTheme,
 } from "@mui/material";
@@ -21,7 +20,11 @@ import ConfirmationBox, {
 import CustomSnackbar from "common/CustomSnackbar";
 import RowHeader from "common/RowHeader";
 import { fetchLoggedInUser } from "common/utils";
-import { useGetEtssTokensByEmailIdQuery } from "features/Api/etssTokenApi";
+import {
+  useCreateEsignDocumentMutation,
+  useGetEsignDocumentsByUserIdQuery,
+  useGetEtssTokensByEmailIdQuery,
+} from "features/Api/esignApi";
 import { useSendPreparedDocumentMutation } from "features/Api/externalIntegrationMultipart";
 import UploadEsignDocument from "features/Esign/components/Esign/UploadEsignDocument";
 import ViewFile from "features/Esign/components/Esign/ViewFile";
@@ -29,6 +32,13 @@ import ViewTokenAlert from "features/Esign/components/Esign/ViewTokenAlert";
 import ViewFormTemplates from "features/Esign/components/FormTemplates/ViewFormTemplates";
 import ViewSigners from "features/Esign/components/Signers/ViewSigners";
 import ViewTokenMenu from "features/Esign/components/TokenMenu/ViewTokenMenu";
+import {
+  COLOR_ENUM_VALUES,
+  GLITTER_KEYFRAMES,
+  INITIAL_SIGNER_ENUM_VALUES,
+  SCALE,
+} from "features/Esign/constants";
+import { getSigningFields } from "features/Esign/utils/getSigningFields";
 import withDisclaimer from "features/Esign/withDisclaimer";
 import { produce } from "immer";
 import { PDFDocument } from "pdf-lib";
@@ -38,40 +48,6 @@ import pdfWorker from "pdfjs-dist/build/pdf.worker.min?url";
 import { celebrations } from "src/utils/celebrations";
 
 pdfjsLib.GlobalWorkerOptions.workerSrc = pdfWorker;
-
-const SCALE = 1.5;
-
-// ColorEnumValues ...
-// used to color code the follow up signers
-const ColorEnumValues = ["#dc2626", "#9333ea", "#ea580c", "#0891b2"];
-
-// InitialSignerEnumValues ...
-// defines a constant default signer option when a new pdf is added to esign
-const InitialSignerEnumValues = [
-  {
-    id: "creator",
-    role: "Creator",
-    name: "",
-    email_address: "",
-    color: "#2563eb",
-    order: 0,
-  },
-];
-
-const glitter = keyframes`
-  0% {
-    transform: scale(1);
-    filter: drop-shadow(0 0 0px rgba(255,255,255,0));
-  }
-  50% {
-    transform: scale(1.25);
-    filter: drop-shadow(0 0 6px rgba(255,215,0,0.8));
-  }
-  100% {
-    transform: scale(1);
-    filter: drop-shadow(0 0 0px rgba(255,255,255,0));
-  }
-`;
 
 const PdfEditor = () => {
   const theme = useTheme();
@@ -88,7 +64,13 @@ const PdfEditor = () => {
   const {
     data: validTokensForETSS = 0,
     isLoading: isLoadingValidTokensForETSS,
-  } = useGetEtssTokensByEmailIdQuery(user?.email);
+  } = useGetEtssTokensByEmailIdQuery(user?.email, { skip: !user?.email });
+
+  const {
+    data: esignDocuments = [],
+    isLoading: isEsignDocumentsLoading,
+    isSuccess: isEsignDocumentsSuccess,
+  } = useGetEsignDocumentsByUserIdQuery(user?.uid, { skip: !user?.uid });
 
   const [
     executePreparedDocument,
@@ -98,12 +80,14 @@ const PdfEditor = () => {
     },
   ] = useSendPreparedDocumentMutation();
 
+  const [createEsignDocument] = useCreateEsignDocumentMutation();
+
   const [file, setFile] = useState(null);
   const [fields, setFields] = useState([]);
   const [scrollTop, setScrollTop] = useState(0);
   const [tokenAnchor, setTokenAnchor] = useState(null);
   const [activeSigner, setActiveSigner] = useState(null);
-  const [signers, setSigners] = useState(InitialSignerEnumValues);
+  const [signers, setSigners] = useState(INITIAL_SIGNER_ENUM_VALUES);
   const [activeFieldType, setActiveFieldType] = useState("signature");
 
   const [showSnackbar, setShowSnackbar] = useState(false);
@@ -123,13 +107,13 @@ const PdfEditor = () => {
 
   const addFollowUpSigners = () => {
     const idx = signers?.length;
-    const colorIdx = (idx - 2) % ColorEnumValues.length;
+    const colorIdx = (idx - 2) % COLOR_ENUM_VALUES.length;
     const newSigner = {
       id: `signer_${idx}`,
       role: `Signer ${idx}`,
       name: "",
       email_address: "",
-      color: ColorEnumValues[Math.abs(colorIdx)],
+      color: COLOR_ENUM_VALUES[Math.abs(colorIdx)],
       order: signers.length,
     };
     setSigners((prev) => [...prev, newSigner]);
@@ -151,9 +135,6 @@ const PdfEditor = () => {
   const handleConfirm = () =>
     setShowConfirmationBox({ value: true, updateKey: "tenant" });
 
-  // handleUpload ...
-  // defines a function that is used to upload a pdf to the canvas for editing
-  // purposes. this function sets up the conditions to fill the pdf acro form
   const handleUpload = async (e) => {
     const uploadedFile = e.target.files[0];
     if (!uploadedFile) return;
@@ -339,8 +320,6 @@ const PdfEditor = () => {
     });
   };
 
-  // handleRemoveSigner ...
-  // defines a function that removes the selected signer.
   const handleRemoveSigner = (signerId) => {
     if (signerId !== "creator") {
       setSigners((prev) => prev.filter((s) => s.id !== signerId));
@@ -349,10 +328,6 @@ const PdfEditor = () => {
     }
   };
 
-  // handleSelectSigner ...
-  // defines a function that allows creators to select same active
-  // signer to turn off signing feature. Select the current active signer
-  // to get out of signing mode.
   const handleSelectSigner = (signer) => {
     if (activeSigner) {
       const activeSignerId = activeSigner?.id;
@@ -364,41 +339,10 @@ const PdfEditor = () => {
     setActiveSigner(signer);
   };
 
-  // removeBox ...
-  // defines a function that removes the selected box.
   const removeBox = (boxId) => {
     setSignatureBoxes((prev) => prev.filter((b) => b.id !== boxId));
   };
 
-  // generatedSignatureFields ...
-  // defines a function that creates new signature fields based
-  // on the placement of the signature boxes
-  const generatedSignatureFields = (signatureBoxes = []) => {
-    if (signatureBoxes.length <= 0) {
-      console.debug("Unable to generate signature boxes");
-      return;
-    }
-
-    return signatureBoxes?.map((signatureBox, index) => ({
-      document_index: 0,
-      api_id: `sig_${index}`,
-      type: signatureBox.fieldType === "date" ? "date" : "signature",
-      signer:
-        signatureBox?.signerId === "creator"
-          ? 0
-          : Number(signatureBox?.signerId?.split("_")[1]), // reads tenant_x number to determine the tenant number to sign
-      page: signatureBox?.pageNum,
-      x: signatureBox?.pdfX,
-      y: signatureBox?.pdfY,
-      width: signatureBox?.pdfW,
-      height: signatureBox?.pdfH,
-      required: true,
-    }));
-  };
-
-  // exportPdf ...
-  // defines a function that re-creates the pdf with added signatures
-  // and populated values
   const exportPdf = async () => {
     if (!file) return;
 
@@ -516,18 +460,15 @@ const PdfEditor = () => {
       "Please review and sign the provided document at your earliest convenience",
     );
 
-    const createdSignatureFields = generatedSignatureFields(signatureBoxes);
-    formData.append(
-      "formFieldsPerDocument",
-      JSON.stringify(createdSignatureFields),
-    );
+    const formFields = getSigningFields(signatureBoxes);
+    formData.append("formFieldsPerDocument", JSON.stringify(formFields));
 
+    console.log(formData);
+    await createEsignDocument(formData).unwrap();
     executePreparedDocument(formData);
   };
 
-  // getPageAndLocalCoords ...
-  // defines a function that retrieves local co-ordinates when the mouse is moved in the canvas
-  const getPageAndLocalCoords = useCallback((clientX, clientY) => {
+  const getCoordsForCanvas = useCallback((clientX, clientY) => {
     const container = containerRef.current;
     const containerRect = container.getBoundingClientRect();
     const scroll = container.scrollTop;
@@ -547,14 +488,12 @@ const PdfEditor = () => {
     return null;
   }, []);
 
-  // handleMouseDown ...
-  // defines a function that handles mouse button click events in the canvas
   const handleMouseDown = useCallback(
     (e) => {
       if (!activeSigner) return;
       if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA")
         return;
-      const hit = getPageAndLocalCoords(e.clientX, e.clientY);
+      const hit = getCoordsForCanvas(e.clientX, e.clientY);
       if (!hit) return;
 
       e.preventDefault();
@@ -584,15 +523,13 @@ const PdfEditor = () => {
         signer: activeSigner,
       };
     },
-    [activeSigner, getPageAndLocalCoords],
+    [activeSigner, getCoordsForCanvas],
   );
 
-  // handleMouseMove ...
-  // defines a function that handles mouse events when the mouse is moved in the canvas
   const handleMouseMove = useCallback(
     (e) => {
       if (!dragState.current || !overlayRef.current) return;
-      const hit = getPageAndLocalCoords(e.clientX, e.clientY);
+      const hit = getCoordsForCanvas(e.clientX, e.clientY);
       if (!hit || hit.pageNum !== dragState.current.pageNum) return;
 
       const { startX, startY } = dragState.current;
@@ -606,16 +543,14 @@ const PdfEditor = () => {
       overlayRef.current.style.width = `${w}px`;
       overlayRef.current.style.height = `${h}px`;
     },
-    [getPageAndLocalCoords],
+    [getCoordsForCanvas],
   );
 
-  // handleMouseMove ...
-  // defines a function that handles mouse events when the mouse is moved in the canvas
   const handleMouseUp = useCallback(
     (e) => {
       if (!dragState.current || !overlayRef.current) return;
 
-      const hit = getPageAndLocalCoords(e.clientX, e.clientY);
+      const hit = getCoordsForCanvas(e.clientX, e.clientY);
       const { startX, startY, pageNum, signer } = dragState.current;
 
       overlayRef.current.remove();
@@ -656,7 +591,7 @@ const PdfEditor = () => {
         },
       ]);
     },
-    [getPageAndLocalCoords, activeFieldType],
+    [getCoordsForCanvas, activeFieldType],
   );
 
   useEffect(() => {
@@ -673,7 +608,7 @@ const PdfEditor = () => {
   }, [handleMouseDown, handleMouseMove, handleMouseUp]);
 
   useEffect(() => {
-    if (!isExecutePreparedDocumentLoading && isExecutePreparedDocumentSuccess) {
+    if (isExecutePreparedDocumentSuccess && !isExecutePreparedDocumentLoading) {
       setFields([]);
       setFile(null);
       setShowSnackbar(true);
@@ -683,7 +618,12 @@ const PdfEditor = () => {
     }
   }, [isExecutePreparedDocumentLoading]);
 
-  if (isLoadingValidTokensForETSS) return <Skeleton height="10rem" />;
+  useEffect(() => {
+    if (isEsignDocumentsSuccess && !isEsignDocumentsLoading) {
+      // populate the field with the document
+      console.log(esignDocuments);
+    }
+  }, [isEsignDocumentsLoading]);
 
   return (
     <Stack data-tour="esign-0">
@@ -726,7 +666,7 @@ const PdfEditor = () => {
               <Box
                 sx={{
                   display: "inline-flex",
-                  animation: `${glitter} 1s ease-in-out infinite`,
+                  animation: `${GLITTER_KEYFRAMES} 1s ease-in-out infinite`,
                 }}
               >
                 <CurrencyLiraRounded fontSize="small" color="primary" />
