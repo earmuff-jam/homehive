@@ -53,14 +53,19 @@ service cloud.firestore {
         resource.data.propertyOwnerId == request.auth.uid;
     }
     
-		// match maintenance collection for users
+	// match maintenance collection for users
     match /maintenance/{maintenanceId} {
       allow create: if request.auth != null &&
         request.resource.data.createdBy == request.auth.uid &&
-        (
-          request.resource.data.propertyOwnerId == request.auth.uid ||
-          request.resource.data.tenantId == request.auth.uid
-        );
+      (
+        request.resource.data.propertyOwnerId == request.auth.uid ||
+      (
+        request.resource.data.tenantId != null &&
+        exists(/databases/$(database)/documents/tenants/$(request.resource.data.tenantId)) &&
+        get(/databases/$(database)/documents/tenants/$(request.resource.data.tenantId)).data.propertyId == request.resource.data.propertyId &&
+        get(/databases/$(database)/documents/tenants/$(request.resource.data.tenantId)).data.isActive == true
+    )
+  );
 
       allow read: if request.auth != null;
 
@@ -71,6 +76,11 @@ service cloud.firestore {
 
       allow delete: if request.auth != null &&
         resource.data.propertyOwnerId == request.auth.uid;
+    }
+
+    // match esign documents collection for users
+    match /esign/{esignId} {
+      allow read, write, delete: if request.auth != null;
     }
 
     // match invites collection for users

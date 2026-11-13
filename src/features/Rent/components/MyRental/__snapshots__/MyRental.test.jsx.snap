@@ -7,7 +7,7 @@ exports[`MyRental snapshot tests > should match snapshot when property exists 1`
     data-tour="rental-0"
   >
     <div
-      class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation0 css-1g0cu6y-MuiPaper-root"
+      class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation0 css-1yvv4s1-MuiPaper-root"
       style="--Paper-shadow: none;"
     >
       <div
@@ -85,7 +85,7 @@ exports[`MyRental snapshot tests > should match snapshot when property exists 1`
           class="MuiGrid-root MuiGrid-direction-xs-row MuiGrid-grid-xs-12 MuiGrid-grid-md-3 MuiGrid-grid-sm-6 css-17hq2y0-MuiGrid-root"
         >
           <div
-            class="MuiPaper-root MuiPaper-outlined MuiPaper-rounded MuiCard-root css-203ymv-MuiPaper-root-MuiCard-root"
+            class="MuiPaper-root MuiPaper-outlined MuiPaper-rounded MuiCard-root css-udjbjk-MuiPaper-root-MuiCard-root"
           >
             <div
               class="MuiCardContent-root css-8rand2-MuiCardContent-root"
@@ -105,7 +105,7 @@ exports[`MyRental snapshot tests > should match snapshot when property exists 1`
           class="MuiGrid-root MuiGrid-direction-xs-row MuiGrid-grid-xs-12 MuiGrid-grid-md-3 MuiGrid-grid-sm-6 css-17hq2y0-MuiGrid-root"
         >
           <div
-            class="MuiPaper-root MuiPaper-outlined MuiPaper-rounded MuiCard-root css-203ymv-MuiPaper-root-MuiCard-root"
+            class="MuiPaper-root MuiPaper-outlined MuiPaper-rounded MuiCard-root css-udjbjk-MuiPaper-root-MuiCard-root"
           >
             <div
               class="MuiCardContent-root css-8rand2-MuiCardContent-root"
@@ -127,7 +127,7 @@ exports[`MyRental snapshot tests > should match snapshot when property exists 1`
           class="MuiGrid-root MuiGrid-direction-xs-row MuiGrid-grid-xs-12 MuiGrid-grid-md-3 MuiGrid-grid-sm-6 css-17hq2y0-MuiGrid-root"
         >
           <div
-            class="MuiPaper-root MuiPaper-outlined MuiPaper-rounded MuiCard-root css-203ymv-MuiPaper-root-MuiCard-root"
+            class="MuiPaper-root MuiPaper-outlined MuiPaper-rounded MuiCard-root css-udjbjk-MuiPaper-root-MuiCard-root"
           >
             <div
               class="MuiCardContent-root css-8rand2-MuiCardContent-root"
@@ -149,7 +149,7 @@ exports[`MyRental snapshot tests > should match snapshot when property exists 1`
           class="MuiGrid-root MuiGrid-direction-xs-row MuiGrid-grid-xs-12 MuiGrid-grid-md-3 MuiGrid-grid-sm-6 css-17hq2y0-MuiGrid-root"
         >
           <div
-            class="MuiPaper-root MuiPaper-outlined MuiPaper-rounded MuiCard-root css-203ymv-MuiPaper-root-MuiCard-root"
+            class="MuiPaper-root MuiPaper-outlined MuiPaper-rounded MuiCard-root css-udjbjk-MuiPaper-root-MuiCard-root"
           >
             <div
               class="MuiCardContent-root css-8rand2-MuiCardContent-root"
@@ -174,7 +174,7 @@ exports[`MyRental snapshot tests > should match snapshot when property exists 1`
         class="MuiGrid-root MuiGrid-direction-xs-row MuiGrid-grid-xs-12 MuiGrid-grid-md-8 css-q5srq4-MuiGrid-root"
       >
         <div
-          class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 MuiCard-root css-rdw19h-MuiPaper-root-MuiCard-root"
+          class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 MuiCard-root css-18tx27v-MuiPaper-root-MuiCard-root"
           data-tour="rental-2"
           style="--Paper-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12);"
         >
@@ -247,7 +247,7 @@ exports[`MyRental snapshot tests > should match snapshot when property exists 1`
           </div>
         </div>
         <div
-          class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 MuiCard-root css-rdw19h-MuiPaper-root-MuiCard-root"
+          class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 MuiCard-root css-18tx27v-MuiPaper-root-MuiCard-root"
           data-tour="rental-7"
           style="--Paper-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12);"
         >
@@ -287,7 +287,7 @@ exports[`MyRental snapshot tests > should match snapshot when property exists 1`
           </div>
         </div>
         <div
-          class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 MuiCard-root css-rdw19h-MuiPaper-root-MuiCard-root"
+          class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 MuiCard-root css-18tx27v-MuiPaper-root-MuiCard-root"
           style="--Paper-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12);"
         >
           <div
@@ -330,7 +330,7 @@ exports[`MyRental snapshot tests > should match snapshot when property exists 1`
         class="MuiGrid-root MuiGrid-direction-xs-row MuiGrid-grid-xs-12 MuiGrid-grid-md-4 css-xur2zb-MuiGrid-root"
       >
         <div
-          class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 MuiCard-root css-rdw19h-MuiPaper-root-MuiCard-root"
+          class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 MuiCard-root css-18tx27v-MuiPaper-root-MuiCard-root"
           data-tour="rental-3"
           style="--Paper-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12);"
         >
@@ -424,7 +424,7 @@ exports[`MyRental snapshot tests > should match snapshot when property exists 1`
                 class="MuiBox-root css-0"
               >
                 <div
-                  class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation0 MuiAlert-root MuiAlert-colorInfo MuiAlert-standardInfo MuiAlert-standard css-3t1j3t-MuiPaper-root-MuiAlert-root"
+                  class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation0 MuiAlert-root MuiAlert-colorInfo MuiAlert-standardInfo MuiAlert-standard css-13vbyq6-MuiPaper-root-MuiAlert-root"
                   role="alert"
                   style="--Paper-shadow: none;"
                 >
@@ -458,7 +458,7 @@ exports[`MyRental snapshot tests > should match snapshot when property exists 1`
                 class="MuiBox-root css-0"
               >
                 <div
-                  class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation0 MuiAlert-root MuiAlert-colorError MuiAlert-standardError MuiAlert-standard css-1ayk094-MuiPaper-root-MuiAlert-root"
+                  class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation0 MuiAlert-root MuiAlert-colorError MuiAlert-standardError MuiAlert-standard css-otfg4v-MuiPaper-root-MuiAlert-root"
                   role="alert"
                   style="--Paper-shadow: none;"
                 >
@@ -498,7 +498,7 @@ exports[`MyRental snapshot tests > should match snapshot when property exists 1`
               </div>
               <div
                 aria-label="Button group with a nested menu"
-                class="MuiButtonGroup-root MuiButtonGroup-contained MuiButtonGroup-horizontal MuiButtonGroup-colorPrimary css-cp1xnw-MuiButtonGroup-root"
+                class="MuiButtonGroup-root MuiButtonGroup-contained MuiButtonGroup-horizontal MuiButtonGroup-colorPrimary css-1bla3hk-MuiButtonGroup-root"
                 role="group"
               >
                 <button>
@@ -507,7 +507,7 @@ exports[`MyRental snapshot tests > should match snapshot when property exists 1`
                 <button
                   aria-haspopup="menu"
                   aria-label="select merge strategy"
-                  class="MuiButtonBase-root MuiButtonGroup-grouped MuiButtonGroup-groupedHorizontal MuiButtonGroup-groupedContained MuiButtonGroup-groupedContainedHorizontal MuiButtonGroup-groupedContainedPrimary MuiButton-root MuiButton-contained MuiButton-containedPrimary MuiButton-sizeSmall MuiButton-containedSizeSmall MuiButton-colorPrimary MuiButtonGroup-grouped MuiButtonGroup-groupedHorizontal MuiButtonGroup-groupedContained MuiButtonGroup-groupedContainedHorizontal MuiButtonGroup-groupedContainedPrimary MuiButtonGroup-lastButton css-ze6h74-MuiButtonBase-root-MuiButton-root"
+                  class="MuiButtonBase-root MuiButtonGroup-grouped MuiButtonGroup-groupedHorizontal MuiButtonGroup-groupedContained MuiButtonGroup-groupedContainedHorizontal MuiButtonGroup-groupedContainedPrimary MuiButton-root MuiButton-contained MuiButton-containedPrimary MuiButton-sizeSmall MuiButton-containedSizeSmall MuiButton-colorPrimary MuiButtonGroup-grouped MuiButtonGroup-groupedHorizontal MuiButtonGroup-groupedContained MuiButtonGroup-groupedContainedHorizontal MuiButtonGroup-groupedContainedPrimary MuiButtonGroup-lastButton css-1quc461-MuiButtonBase-root-MuiButton-root"
                   tabindex="0"
                   type="button"
                 >
@@ -531,7 +531,7 @@ exports[`MyRental snapshot tests > should match snapshot when property exists 1`
           </div>
         </div>
         <div
-          class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 MuiCard-root css-rdw19h-MuiPaper-root-MuiCard-root"
+          class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 MuiCard-root css-18tx27v-MuiPaper-root-MuiCard-root"
           data-tour="rental-4"
           style="--Paper-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12);"
         >
@@ -542,7 +542,7 @@ exports[`MyRental snapshot tests > should match snapshot when property exists 1`
               class="MuiTypography-root MuiTypography-caption css-1r9hdyc-MuiTypography-root"
             />
             <div
-              class="MuiBox-root css-vomml6"
+              class="MuiBox-root css-h8y47z"
             >
               <div
                 class="MuiBox-root css-v2kfba"
@@ -568,7 +568,7 @@ exports[`MyRental snapshot tests > should match snapshot when property exists 1`
                       style="position: absolute; pointer-events: auto; display: none;"
                     >
                       <div
-                        class="MuiBox-root css-lo704p"
+                        class="MuiBox-root css-rvoote"
                       />
                     </div>
                     <div

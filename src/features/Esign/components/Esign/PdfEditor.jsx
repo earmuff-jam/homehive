@@ -1,77 +1,52 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 
+import { useFieldArray, useForm, useWatch } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
-import { CurrencyLiraRounded } from "@mui/icons-material";
-import {
-  Alert,
-  Box,
-  Button,
-  Skeleton,
-  Stack,
-  Tooltip,
-  Typography,
-  keyframes,
-  useMediaQuery,
-  useTheme,
-} from "@mui/material";
+import { v4 as uuidv4 } from "uuid";
+
+import dayjs from "dayjs";
+
+import { Box, Stack, useMediaQuery, useTheme } from "@mui/material";
 import ConfirmationBox, {
   DefaultConfirmationBoxProps,
 } from "common/ConfirmationBox";
 import CustomSnackbar from "common/CustomSnackbar";
+import EmptyComponent from "common/EmptyComponent";
 import RowHeader from "common/RowHeader";
 import { fetchLoggedInUser } from "common/utils";
-import { useGetEtssTokensByEmailIdQuery } from "features/Api/etssTokenApi";
+import {
+  useCreateEsignDocumentMutation,
+  useGetEsignDocumentsByUserIdQuery,
+  useGetEtssTokensByEmailIdQuery,
+  useRemoveEsignDocumentMutation,
+} from "features/Api/esignApi";
 import { useSendPreparedDocumentMutation } from "features/Api/externalIntegrationMultipart";
-import UploadEsignDocument from "features/Esign/components/Esign/UploadEsignDocument";
-import ViewFile from "features/Esign/components/Esign/ViewFile";
+import EditPdfDocumentPanel from "features/Esign/components/EditPdfDocumentPanel/EditPdfDocumentPanel";
 import ViewTokenAlert from "features/Esign/components/Esign/ViewTokenAlert";
+import EsignPdfActionButton from "features/Esign/components/EsignPdfActionButton/EsignPdfActionButton";
 import ViewFormTemplates from "features/Esign/components/FormTemplates/ViewFormTemplates";
-import ViewSigners from "features/Esign/components/Signers/ViewSigners";
-import ViewTokenMenu from "features/Esign/components/TokenMenu/ViewTokenMenu";
+import PdfDocumentReviewBox from "features/Esign/components/PdfDocumentReviewBox/PdfDocumentReviewBox";
+import PdfDocumentWorkHistory from "features/Esign/components/PdfDocumentWorkHistory/PdfDocumentWorkHistory";
+import PdfDocumentReviewDialog from "features/Esign/components/Signers/PdfDocumentReviewDialog";
+import SigningBox from "features/Esign/components/ViewPdf/SigningBox";
+import ViewPdf from "features/Esign/components/ViewPdf/ViewPdf";
+import {
+  ACTIVE_FORM_TYPE_ENUM_VALUES,
+  COLOR_ENUM_VALUES,
+  INITIAL_SIGNER_ENUM_VALUES,
+  SCALE,
+} from "features/Esign/constants";
+import getAnnotationsForDocument from "features/Esign/utils/getAnnotationsForDocument";
+import { getEditablePDFData } from "features/Esign/utils/getEditablePDFData";
+import getFinalFormData from "features/Esign/utils/getFinalFormData";
+import getSigningFields from "features/Esign/utils/getSigningFields";
 import withDisclaimer from "features/Esign/withDisclaimer";
-import { produce } from "immer";
-import { PDFDocument } from "pdf-lib";
-import { rgb } from "pdf-lib";
 import * as pdfjsLib from "pdfjs-dist";
 import pdfWorker from "pdfjs-dist/build/pdf.worker.min?url";
 import { celebrations } from "src/utils/celebrations";
 
 pdfjsLib.GlobalWorkerOptions.workerSrc = pdfWorker;
-
-const SCALE = 1.5;
-
-// ColorEnumValues ...
-// used to color code the follow up signers
-const ColorEnumValues = ["#dc2626", "#9333ea", "#ea580c", "#0891b2"];
-
-// InitialSignerEnumValues ...
-// defines a constant default signer option when a new pdf is added to esign
-const InitialSignerEnumValues = [
-  {
-    id: "creator",
-    role: "Creator",
-    name: "",
-    email_address: "",
-    color: "#2563eb",
-    order: 0,
-  },
-];
-
-const glitter = keyframes`
-  0% {
-    transform: scale(1);
-    filter: drop-shadow(0 0 0px rgba(255,255,255,0));
-  }
-  50% {
-    transform: scale(1.25);
-    filter: drop-shadow(0 0 6px rgba(255,215,0,0.8));
-  }
-  100% {
-    transform: scale(1);
-    filter: drop-shadow(0 0 0px rgba(255,255,255,0));
-  }
-`;
 
 const PdfEditor = () => {
   const theme = useTheme();
@@ -80,7 +55,6 @@ const PdfEditor = () => {
 
   const pageHeights = useRef({});
   const pageOffsets = useRef({});
-
   const dragState = useRef(null);
   const overlayRef = useRef(null);
   const containerRef = useRef(null);
@@ -88,7 +62,12 @@ const PdfEditor = () => {
   const {
     data: validTokensForETSS = 0,
     isLoading: isLoadingValidTokensForETSS,
-  } = useGetEtssTokensByEmailIdQuery(user?.email);
+  } = useGetEtssTokensByEmailIdQuery(user?.email, { skip: !user?.email });
+
+  const { data: esignDocuments = [] } = useGetEsignDocumentsByUserIdQuery(
+    user?.uid,
+    { skip: !user?.uid },
+  );
 
   const [
     executePreparedDocument,
@@ -98,69 +77,130 @@ const PdfEditor = () => {
     },
   ] = useSendPreparedDocumentMutation();
 
+  const [
+    removeEsignDocument,
+    {
+      isLoading: isRemoveEsignDocumentLoading,
+      isSuccess: isRemoveEsignDocumentSuccess,
+    },
+  ] = useRemoveEsignDocumentMutation();
+
+  const [
+    createEsignDocument,
+    {
+      isLoading: isCreateEsignDocumentLoading,
+      originalArgs: createEsignDocumentOrginalArgs,
+    },
+  ] = useCreateEsignDocumentMutation();
+
   const [file, setFile] = useState(null);
   const [fields, setFields] = useState([]);
   const [scrollTop, setScrollTop] = useState(0);
   const [tokenAnchor, setTokenAnchor] = useState(null);
-  const [activeSigner, setActiveSigner] = useState(null);
-  const [signers, setSigners] = useState(InitialSignerEnumValues);
-  const [activeFieldType, setActiveFieldType] = useState("signature");
-
   const [showSnackbar, setShowSnackbar] = useState(false);
   const [signatureBoxes, setSignatureBoxes] = useState([]);
   const [showConfirmationBox, setShowConfirmationBox] = useState(
     DefaultConfirmationBoxProps,
   );
 
-  const isTokenAnchorOpen = Boolean(tokenAnchor);
+  const {
+    control,
+    getValues,
+    setValue,
+    formState: { errors },
+  } = useForm({
+    mode: "onChange",
+    defaultValues: {
+      signers: INITIAL_SIGNER_ENUM_VALUES,
+      activeSignerId: null,
+      activeFieldType: ACTIVE_FORM_TYPE_ENUM_VALUES.Signature,
+    },
+  });
+
+  const {
+    fields: signerFields,
+    append: appendSigner,
+    remove: removeSigner,
+    replace: replaceSigners,
+  } = useFieldArray({
+    control,
+    name: "signers",
+    keyName: "fieldId",
+  });
+
+  const signers =
+    useWatch({
+      control,
+      name: "signers",
+    }) || [];
+
+  const activeSignerId = useWatch({
+    control,
+    name: "activeSignerId",
+  });
+
+  const activeFieldType = useWatch({
+    control,
+    name: "activeFieldType",
+  });
+
+  const activeSigner =
+    signers.find((signer) => signer.id === activeSignerId) ?? null;
+
   const ltMediumFormFactor = useMediaQuery(theme.breakpoints.down("md"));
 
-  const handleCloseTokenAnchorMenu = () => setTokenAnchor(null);
-  const handleClickTokenAnchorMenu = (event) => {
-    event.stopPropagation();
-    setTokenAnchor(event.currentTarget);
-  };
-
   const addFollowUpSigners = () => {
-    const idx = signers?.length;
-    const colorIdx = (idx - 2) % ColorEnumValues.length;
-    const newSigner = {
+    const currentSigners = getValues("signers") || [];
+    const idx = currentSigners.length;
+    const colorIdx = (idx - 2) % COLOR_ENUM_VALUES.length;
+
+    appendSigner({
       id: `signer_${idx}`,
       role: `Signer ${idx}`,
       name: "",
       email_address: "",
-      color: ColorEnumValues[Math.abs(colorIdx)],
-      order: signers.length,
-    };
-    setSigners((prev) => [...prev, newSigner]);
-  };
-
-  const updateSignerDetails = (data) => {
-    const updatedSignerData = produce(signers, (draft) => {
-      const signer = draft.find((s) => s?.role === data?.role);
-
-      if (signer) {
-        signer.name = data.name;
-        signer.email_address = data.email_address;
-      }
+      color: COLOR_ENUM_VALUES[Math.abs(colorIdx)],
+      order: idx,
     });
-
-    setSigners(updatedSignerData);
   };
 
-  const handleConfirm = () =>
-    setShowConfirmationBox({ value: true, updateKey: "tenant" });
+  const handleSelectSigner = (signer) => {
+    const currentActiveSignerId = getValues("activeSignerId");
 
-  // handleUpload ...
-  // defines a function that is used to upload a pdf to the canvas for editing
-  // purposes. this function sets up the conditions to fill the pdf acro form
-  const handleUpload = async (e) => {
+    setValue(
+      "activeSignerId",
+      currentActiveSignerId === signer?.id ? null : signer?.id,
+    );
+  };
+
+  const handleSelectFieldType = (signer, fieldType) => {
+    setValue("activeSignerId", signer.id);
+    setValue("activeFieldType", fieldType);
+  };
+
+  const getEditablePdfDocument = async (e) => {
     const uploadedFile = e.target.files[0];
-    if (!uploadedFile) return;
+    if (!uploadedFile) {
+      setScrollTop(0);
+      setFile(null);
+      setFields([]);
+      replaceSigners([]);
+      setValue("activeSignerId", null);
+      setValue("activeFieldType", ACTIVE_FORM_TYPE_ENUM_VALUES.Signature);
+      setSignatureBoxes([]);
+      return;
+    }
 
-    setFile(uploadedFile);
     setScrollTop(0);
-    setSignatureBoxes([]);
+    setFile(uploadedFile);
+    setFields(e?.savedFields?.length > 0 ? e?.savedFields : []);
+    setSignatureBoxes(e?.signatureBoxes?.length > 0 ? e.signatureBoxes : []);
+
+    setValue("activeSignerId", null);
+    setValue("activeFieldType", ACTIVE_FORM_TYPE_ENUM_VALUES.Signature);
+    replaceSigners(
+      e?.signers?.length > 0 ? e.signers : INITIAL_SIGNER_ENUM_VALUES,
+    );
 
     pageHeights.current = {};
     pageOffsets.current = {};
@@ -190,141 +230,19 @@ const PdfEditor = () => {
       pageDiv.appendChild(canvas);
 
       pageHeights.current[pageNum] = viewport.height;
-
       const annotations = await page.getAnnotations();
-
-      annotations.forEach((a) => {
-        if (a.subtype !== "Widget") return;
-        const fieldName = a.fieldName || `field_${pageNum}_${a.id}`;
-
-        const [x1, y1, x2, y2] = a.rect;
-        const left = x1 * SCALE;
-        const top = viewport.height - y2 * SCALE;
-        const width = (x2 - x1) * SCALE;
-        const height = (y2 - y1) * SCALE;
-
-        if (a.fieldType === "Tx") {
-          let input;
-          if (a.datetimeType === "date") {
-            input = document.createElement("input");
-            input.type = "date";
-          } else if (a.multiLine) {
-            input = document.createElement("textarea");
-            input.style.resize = "none";
-          } else {
-            input = document.createElement("input");
-            input.type = "text";
-          }
-          if (a.fieldValue) {
-            if (a.datetimeType === "date") {
-              const [mm, dd, yyyy] = a.fieldValue.split("/");
-              input.value = `${yyyy}-${mm}-${dd}`;
-            } else {
-              input.value = a.fieldValue;
-            }
-          }
-          input.oninput = (ev) => {
-            let value = ev.target.value;
-            if (a.datetimeType === "date" && value) {
-              const [yyyy, mm, dd] = value.split("-");
-              value = `${mm}/${dd}/${yyyy}`;
-            }
-            setFields((prev) => {
-              const copy = [...prev];
-              const existing = copy.find((f) => f.name === fieldName);
-              if (existing) existing.value = value;
-              else copy.push({ name: fieldName, value, type: "text" });
-              return copy;
-            });
-          };
-
-          const DEFAULT_TEXT_SIZE = "16";
-
-          Object.assign(input.style, {
-            position: "absolute",
-            left: `${left}px`,
-            top: `${top}px`,
-            width: `${width}px`,
-            height: `${height}px`,
-            fontSize: `${DEFAULT_TEXT_SIZE}px`,
-            lineHeight: `${DEFAULT_TEXT_SIZE}px`,
-            padding: "2px 4px",
-            boxSizing: "border-box",
-            border: "1px solid #ccc",
-            fontFamily: "Helvetica, Arial, sans-serif",
-            fontWeight: "500",
-          });
-
-          pageDiv.appendChild(input);
-
-          // always adds to newFields, even if hidden to protect export pdf from crashing out
-          newFields.push({
-            name: fieldName,
-            value: a.fieldValue || "",
-            type: "text",
-          });
-        }
-
-        if (a.fieldType === "Btn" && !a.radioButton) {
-          const input = document.createElement("input");
-          input.type = "checkbox";
-
-          const checked = a.fieldValue === "Yes" || a.fieldValue === "On";
-          input.checked = checked;
-
-          Object.assign(input.style, {
-            position: "absolute",
-            left: `${left}px`,
-            top: `${top}px`,
-            width: `${width}px`,
-            height: `${height}px`,
-            cursor: "pointer",
-            opacity: "0.7",
-            margin: "0",
-          });
-
-          input.onchange = () => {
-            setFields((prev) => {
-              const copy = [...prev];
-
-              const existing = copy.find(
-                (f) =>
-                  f.name === fieldName &&
-                  f.pageNum === pageNum &&
-                  f.rect?.[0] === x1 &&
-                  f.rect?.[1] === y1,
-              );
-
-              const value = input.checked ? "Yes" : "Off";
-
-              if (existing) {
-                existing.value = value;
-              } else {
-                copy.push({
-                  name: fieldName,
-                  type: "checkbox",
-                  value,
-                  pageNum,
-                  rect: a.rect,
-                });
-              }
-
-              return copy;
-            });
-          };
-
-          pageDiv.appendChild(input);
-
-          // always adds to newFields, even if hidden to protect export pdf from crashing out
-          newFields.push({
-            name: fieldName,
-            type: "checkbox",
-            value: checked ? "Yes" : "Off",
-            pageNum,
-            rect: a.rect,
-          });
-        }
-      });
+      getAnnotationsForDocument(
+        annotations,
+        newFields,
+        setFields,
+        e?.savedFields,
+        {
+          pageNumber: pageNum,
+          viewport,
+          pageDiv,
+          container,
+        },
+      );
 
       container.appendChild(pageDiv);
     }
@@ -339,195 +257,92 @@ const PdfEditor = () => {
     });
   };
 
-  // handleRemoveSigner ...
-  // defines a function that removes the selected signer.
   const handleRemoveSigner = (signerId) => {
-    if (signerId !== "creator") {
-      setSigners((prev) => prev.filter((s) => s.id !== signerId));
-      setSignatureBoxes((prev) => prev.filter((b) => b.signerId !== signerId));
-      if (activeSigner?.id === signerId) setActiveSigner(null);
+    if (signerId === "creator") return;
+
+    const currentSigners = getValues("signers") || [];
+    const signerIndex = currentSigners.findIndex(
+      (signer) => signer.id === signerId,
+    );
+
+    if (signerIndex === -1) return;
+
+    removeSigner(signerIndex);
+
+    setSignatureBoxes((prev) =>
+      prev.filter((box) => box.signerId !== signerId),
+    );
+
+    if (getValues("activeSignerId") === signerId) {
+      setValue("activeSignerId", null);
     }
   };
 
-  // handleSelectSigner ...
-  // defines a function that allows creators to select same active
-  // signer to turn off signing feature. Select the current active signer
-  // to get out of signing mode.
-  const handleSelectSigner = (signer) => {
-    if (activeSigner) {
-      const activeSignerId = activeSigner?.id;
-      if (signer?.id === activeSignerId) {
-        setActiveSigner(null);
-        return;
-      }
-    }
-    setActiveSigner(signer);
-  };
-
-  // removeBox ...
-  // defines a function that removes the selected box.
   const removeBox = (boxId) => {
-    setSignatureBoxes((prev) => prev.filter((b) => b.id !== boxId));
+    setSignatureBoxes((prev) => prev.filter((box) => box.id !== boxId));
   };
 
-  // generatedSignatureFields ...
-  // defines a function that creates new signature fields based
-  // on the placement of the signature boxes
-  const generatedSignatureFields = (signatureBoxes = []) => {
-    if (signatureBoxes.length <= 0) {
-      console.debug("Unable to generate signature boxes");
-      return;
-    }
+  const handlePrepareEsign = async (fileUniqueId) => {
+    const signingFormFields = getSigningFields(signatureBoxes);
 
-    return signatureBoxes?.map((signatureBox, index) => ({
-      document_index: 0,
-      api_id: `sig_${index}`,
-      type: signatureBox.fieldType === "date" ? "date" : "signature",
-      signer:
-        signatureBox?.signerId === "creator"
-          ? 0
-          : Number(signatureBox?.signerId?.split("_")[1]), // reads tenant_x number to determine the tenant number to sign
-      page: signatureBox?.pageNum,
-      x: signatureBox?.pdfX,
-      y: signatureBox?.pdfY,
-      width: signatureBox?.pdfW,
-      height: signatureBox?.pdfH,
-      required: true,
-    }));
-  };
+    const { formBytes: populatedEsignDocument } = await getEditablePDFData(
+      file,
+      fields,
+      false, // Does not draw checkboxes since this is not the final version.
+    );
 
-  // exportPdf ...
-  // defines a function that re-creates the pdf with added signatures
-  // and populated values
-  const exportPdf = async () => {
-    if (!file) return;
+    if (!fileUniqueId || !populatedEsignDocument) return;
 
-    const bytes = await file.arrayBuffer();
-    const pdfDoc = await PDFDocument.load(bytes);
-    const form = pdfDoc.getForm();
-    const pages = pdfDoc.getPages();
-
-    const textFields = fields.filter((f) => f.type === "text");
-    const checkboxFields = fields.filter((f) => f.type === "checkbox");
-
-    textFields.forEach((stateField) => {
-      try {
-        const textField = form.getTextField(stateField.name);
-        textField.setText(stateField.value || "");
-      } catch (err) {
-        console.debug("Failed to set text:", stateField.name, err);
-      }
+    const previewPopulatedEsignDocument = new Blob([populatedEsignDocument], {
+      type: "application/pdf",
     });
 
-    // handle checkboxes differently, since we have to burn the false values
-    // as well in the application
-    for (const stateField of checkboxFields) {
-      try {
-        const pageIndex = stateField.pageNum - 1;
-        if (pageIndex < 0 || pageIndex >= pages.length) continue;
+    createEsignDocument({
+      file: previewPopulatedEsignDocument,
+      path: `esign/${user?.uid}/documents/${fileUniqueId}`,
+      fileId: fileUniqueId,
+      fileName: file?.name,
+      userId: user?.uid,
+      signers,
+      fields,
+      signatureBoxes,
+      signingFormFields,
+      createdAt: dayjs().toISOString(),
+      createdBy: user?.uid,
+    });
 
-        const page = pages[pageIndex];
-        const [x1, y1] = stateField.rect;
+    setShowConfirmationBox({
+      value: true,
+      updateKey: "review_esign_document",
+    });
+  };
 
-        const isChecked =
-          stateField.value === "Yes" || stateField.value === "On";
+  const exportPdf = async () => {
+    const {
+      pdfDoc,
+      form,
+      formBytes: populatedEsignDocument,
+    } = await getEditablePDFData(file, fields);
 
-        const x = x1;
-        const y = y1;
-
-        // draw checkbox field
-        page.drawRectangle({
-          x,
-          y,
-          width: 10,
-          height: 10,
-          borderColor: rgb(0, 0, 0),
-          borderWidth: 1,
-          color: rgb(1, 1, 1),
-        });
-
-        // if checked, draw X
-        if (isChecked) {
-          page.drawLine({
-            start: { x: x + 2, y: y + 2 },
-            end: { x: x + 8, y: y + 8 },
-            thickness: 1,
-            color: rgb(0, 0, 0),
-          });
-
-          page.drawLine({
-            start: { x: x + 8, y: y + 2 },
-            end: { x: x + 2, y: y + 8 },
-            thickness: 1,
-            color: rgb(0, 0, 0),
-          });
-        }
-
-        try {
-          const field = form.getCheckBox(stateField.name);
-          form.removeField(field);
-        } catch (e) {
-          // eat the exception; no error
-          console.debug("Failed to remove the checkbox field", e);
-        }
-      } catch (err) {
-        console.debug("Failed to process checkbox:", stateField.name, err);
-
-        // if buring the checkbox fails, we let the acroForm handle it
-        try {
-          const cb = form.getCheckBox(stateField.name);
-          if (stateField.value === "Yes" || stateField.value === "On") {
-            cb.check();
-          } else {
-            cb.uncheck();
-          }
-        } catch (e) {
-          // do nothing; eat the exception
-          console.debug(
-            "Failed to process checkbox using acroform after attempting to burn the checkboxes. ",
-            e,
-          );
-        }
-      }
-    }
+    if (!populatedEsignDocument || !form) return;
 
     try {
       form.flatten();
     } catch (err) {
       console.debug("Unable to flatten form.", err);
     }
-
     const finalBytes = await pdfDoc.save();
-    const formData = new FormData();
-    formData.append(
-      "file",
-      new Blob([finalBytes], { type: "application/pdf" }),
-      "prepared-esign.pdf",
-    );
-    formData.append("fUrl", "0029_SendPreparedEsignDocument");
-    formData.append("fMethod", "POST");
-    formData.append("title", "Lease agreement");
-    formData.append("subject", "Requesting electronic signature");
-    formData.append("signers", JSON.stringify(signers));
-    formData.append("userId", user?.uid);
-    formData.append("stripeCustomerEmail", user?.email);
-    formData.append(
-      "message",
-      "Please review and sign the provided document at your earliest convenience",
+    const generatedFormData = getFinalFormData(
+      finalBytes,
+      signatureBoxes,
+      signers,
+      user,
     );
 
-    const createdSignatureFields = generatedSignatureFields(signatureBoxes);
-    formData.append(
-      "formFieldsPerDocument",
-      JSON.stringify(createdSignatureFields),
-    );
-
-    executePreparedDocument(formData);
+    executePreparedDocument(generatedFormData);
   };
 
-  // getPageAndLocalCoords ...
-  // defines a function that retrieves local co-ordinates when the mouse is moved in the canvas
-  const getPageAndLocalCoords = useCallback((clientX, clientY) => {
+  const getCoordsForCanvas = useCallback((clientX, clientY) => {
     const container = containerRef.current;
     const containerRect = container.getBoundingClientRect();
     const scroll = container.scrollTop;
@@ -547,20 +362,19 @@ const PdfEditor = () => {
     return null;
   }, []);
 
-  // handleMouseDown ...
-  // defines a function that handles mouse button click events in the canvas
   const handleMouseDown = useCallback(
     (e) => {
       if (!activeSigner) return;
       if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA")
         return;
-      const hit = getPageAndLocalCoords(e.clientX, e.clientY);
+      const hit = getCoordsForCanvas(e.clientX, e.clientY);
       if (!hit) return;
 
       e.preventDefault();
 
       const container = containerRef.current;
       const div = document.createElement("div");
+
       div.style.cssText = `
         position: absolute;
         border: 2px dashed ${activeSigner.color};
@@ -572,7 +386,9 @@ const PdfEditor = () => {
         width: 0px;
         height: 0px;
       `;
+
       const pageDiv = container.querySelector(`[data-page="${hit.pageNum}"]`);
+
       pageDiv.appendChild(div);
       overlayRef.current = div;
 
@@ -584,15 +400,13 @@ const PdfEditor = () => {
         signer: activeSigner,
       };
     },
-    [activeSigner, getPageAndLocalCoords],
+    [activeSigner, getCoordsForCanvas],
   );
 
-  // handleMouseMove ...
-  // defines a function that handles mouse events when the mouse is moved in the canvas
   const handleMouseMove = useCallback(
     (e) => {
       if (!dragState.current || !overlayRef.current) return;
-      const hit = getPageAndLocalCoords(e.clientX, e.clientY);
+      const hit = getCoordsForCanvas(e.clientX, e.clientY);
       if (!hit || hit.pageNum !== dragState.current.pageNum) return;
 
       const { startX, startY } = dragState.current;
@@ -606,16 +420,14 @@ const PdfEditor = () => {
       overlayRef.current.style.width = `${w}px`;
       overlayRef.current.style.height = `${h}px`;
     },
-    [getPageAndLocalCoords],
+    [getCoordsForCanvas],
   );
 
-  // handleMouseMove ...
-  // defines a function that handles mouse events when the mouse is moved in the canvas
   const handleMouseUp = useCallback(
     (e) => {
       if (!dragState.current || !overlayRef.current) return;
 
-      const hit = getPageAndLocalCoords(e.clientX, e.clientY);
+      const hit = getCoordsForCanvas(e.clientX, e.clientY);
       const { startX, startY, pageNum, signer } = dragState.current;
 
       overlayRef.current.remove();
@@ -639,7 +451,7 @@ const PdfEditor = () => {
       setSignatureBoxes((prev) => [
         ...prev,
         {
-          id: `sigbox_${Date.now()}`,
+          id: `sigbox_${uuidv4()}`,
           signerId: signer.id,
           signerRole: signer.role,
           color: signer.color,
@@ -656,8 +468,11 @@ const PdfEditor = () => {
         },
       ]);
     },
-    [getPageAndLocalCoords, activeFieldType],
+    [getCoordsForCanvas, activeFieldType],
   );
+
+  const shouldReviewEsignDoc =
+    showConfirmationBox?.updateKey === "review_esign_document";
 
   useEffect(() => {
     const container = containerRef.current;
@@ -673,7 +488,13 @@ const PdfEditor = () => {
   }, [handleMouseDown, handleMouseMove, handleMouseUp]);
 
   useEffect(() => {
-    if (!isExecutePreparedDocumentLoading && isExecutePreparedDocumentSuccess) {
+    if (isRemoveEsignDocumentSuccess && !isRemoveEsignDocumentLoading) {
+      setShowConfirmationBox({ value: false, updateKey: "" });
+    }
+  }, [isRemoveEsignDocumentLoading]);
+
+  useEffect(() => {
+    if (isExecutePreparedDocumentSuccess) {
       setFields([]);
       setFile(null);
       setShowSnackbar(true);
@@ -681,9 +502,7 @@ const PdfEditor = () => {
       navigate(0);
       celebrations.commonConfetti();
     }
-  }, [isExecutePreparedDocumentLoading]);
-
-  if (isLoadingValidTokensForETSS) return <Skeleton height="10rem" />;
+  }, [isExecutePreparedDocumentSuccess, navigate]);
 
   return (
     <Stack data-tour="esign-0">
@@ -702,111 +521,130 @@ const PdfEditor = () => {
             color: "text.secondary",
           }}
         />
-        <Stack>
-          <Tooltip
-            title={
-              !isTokenAnchorOpen ? "Add non-refundable tokens for E-sign" : null
-            }
-          >
-            <Stack
-              spacing={1}
-              direction="row"
-              alignItems="flex-end"
-              justifyContent="center"
-              onClick={handleClickTokenAnchorMenu}
-              data-tour="esign-1"
-              sx={{
-                border: 1,
-                paddingY: 0.5,
-                marginBottom: 0.5,
-                cursor: "pointer",
-                borderColor: "primary.main",
-              }}
-            >
-              <Box
-                sx={{
-                  display: "inline-flex",
-                  animation: `${glitter} 1s ease-in-out infinite`,
-                }}
-              >
-                <CurrencyLiraRounded fontSize="small" color="primary" />
-              </Box>
-              <Typography variant="caption" color="primary">
-                Non-Refundable Tokens: {validTokensForETSS}
-              </Typography>
-            </Stack>
-          </Tooltip>
-          <ViewTokenMenu
-            anchorEl={tokenAnchor}
-            open={isTokenAnchorOpen}
-            handleClose={handleCloseTokenAnchorMenu}
-          />
-          <Stack direction="row" spacing={1}>
-            <UploadEsignDocument
-              handleUpload={handleUpload}
-              isDisabled={ltMediumFormFactor}
-            />
-            <Box data-tour="esign-7">
-              <Button
-                size="small"
-                variant="contained"
-                onClick={handleConfirm}
-                disabled={!file || fields.length === 0}
-              >
-                Prepare Esign
-              </Button>
-            </Box>
-          </Stack>
-        </Stack>
+        <EsignPdfActionButton
+          file={file}
+          fields={fields}
+          tokenAnchor={tokenAnchor}
+          setTokenAnchor={setTokenAnchor}
+          validTokensForETSS={validTokensForETSS}
+          ltMediumFormFactor={ltMediumFormFactor}
+          handlePrepareEsign={handlePrepareEsign}
+          selectedEsignDocument={esignDocuments[0]}
+          getEditablePdfDocument={getEditablePdfDocument}
+          isLoadingValidTokensForETSS={isLoadingValidTokensForETSS}
+          isCreateEsignDocumentLoading={isCreateEsignDocumentLoading}
+        />
       </Stack>
       <ViewTokenAlert tokenCount={validTokensForETSS} />
-      {!ltMediumFormFactor && <ViewFormTemplates handleUpload={handleUpload} />}
-      {ltMediumFormFactor ? (
-        <Alert severity="error">
-          <Typography variant="subtitle2">
-            Due to the nature of document security, electronic signatures are
-            prohibited from being created in smaller screen sizes. Please use
-            laptop or a tablet to proceed.
-          </Typography>
-        </Alert>
-      ) : (
-        <ViewFile
-          file={file}
-          containerRef={containerRef}
-          signers={signers}
-          activeSigner={activeSigner}
-          handleSelectSigner={handleSelectSigner}
-          updateSignerDetails={updateSignerDetails}
-          setScrollTop={setScrollTop}
-          signatureBoxes={signatureBoxes}
-          removeBox={removeBox}
-          scrollTop={scrollTop}
-          pageOffsets={pageOffsets}
-          activeFieldType={activeFieldType}
-          setActiveFieldType={setActiveFieldType}
-          addFollowUpSigners={addFollowUpSigners}
-          handleRemoveSigner={handleRemoveSigner}
-        />
-      )}
+      <Box>
+        {ltMediumFormFactor ? (
+          <PdfDocumentReviewBox
+            isValid={!ltMediumFormFactor}
+            errorStr="Due to the nature of document security, electronic signatures are prohibited from being created in smaller screen sizes. Please use laptop or a tablet to proceed."
+          />
+        ) : (
+          <Stack>
+            <form>
+              <ViewFormTemplates
+                savedOptions={esignDocuments}
+                handleUpload={getEditablePdfDocument}
+                handleRemove={(id) =>
+                  setShowConfirmationBox({
+                    value: true,
+                    updateKey: id,
+                  })
+                }
+              />
+              {!file ? (
+                <EmptyComponent caption="Upload pdf file to begin." />
+              ) : (
+                <Stack spacing={1} direction="row" paddingY={1}>
+                  <EditPdfDocumentPanel
+                    signerFields={signerFields}
+                    control={control}
+                    errors={{ errors }}
+                    signers={signers}
+                    activeSigner={activeSigner}
+                    handleSelectSigner={handleSelectSigner}
+                    handleSelectFieldType={handleSelectFieldType}
+                    activeFieldType={activeFieldType}
+                    addFollowUpSigners={addFollowUpSigners}
+                    handleRemoveSigner={handleRemoveSigner}
+                  />
+                  <Box sx={{ position: "relative", flexShrink: 0 }}>
+                    <ViewPdf
+                      containerRef={containerRef}
+                      activeSigner={activeSigner}
+                      setScrollTop={setScrollTop}
+                    />
+
+                    <Box
+                      sx={{
+                        position: "absolute",
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        height: "800px",
+                        pointerEvents: "none",
+                        overflow: "hidden",
+                      }}
+                    >
+                      {signatureBoxes.map((box) => (
+                        <SigningBox
+                          key={box.id}
+                          createdBox={box}
+                          removeBox={removeBox}
+                          scrollTop={scrollTop}
+                          pageOffsets={pageOffsets}
+                        />
+                      ))}
+                    </Box>
+                  </Box>
+                  <PdfDocumentWorkHistory
+                    removeBox={removeBox}
+                    signatureBoxes={signatureBoxes}
+                  />
+                </Stack>
+              )}
+            </form>
+          </Stack>
+        )}
+      </Box>
 
       <ConfirmationBox
+        maxWidth={shouldReviewEsignDoc ? "md" : undefined}
         isBlocked={validTokensForETSS <= 0}
-        title="Send document to signers?"
-        captionText="Action consumes 1 non-refundable token. Proceed?"
+        title={shouldReviewEsignDoc ? "Send document to signers?" : undefined}
+        captionText={
+          shouldReviewEsignDoc
+            ? "Action consumes 1 non-refundable token. Proceed?"
+            : "Removed esign documents disrupt auto renewal workflow. Are you sure you want to proceed with this action?"
+        }
         isOpen={showConfirmationBox?.value}
         isLoading={isExecutePreparedDocumentLoading}
         handleCancel={() =>
           setShowConfirmationBox({ value: false, updateKey: "" })
         }
-        handleConfirm={exportPdf}
+        handleConfirm={
+          shouldReviewEsignDoc
+            ? () => exportPdf()
+            : () =>
+                removeEsignDocument({
+                  fileId: showConfirmationBox?.updateKey,
+                  path: `esign/${user?.uid}/documents/${showConfirmationBox?.updateKey}`,
+                })
+        }
       >
-        <ViewSigners
-          signers={signers}
-          tokenCount={validTokensForETSS}
-          signatureBoxes={signatureBoxes}
-        />
+        {shouldReviewEsignDoc && (
+          <PdfDocumentReviewDialog
+            signers={signers}
+            tokenCount={validTokensForETSS}
+            signatureBoxes={signatureBoxes}
+            previewData={createEsignDocumentOrginalArgs}
+            isCreateEsignDocumentLoading={isCreateEsignDocumentLoading}
+          />
+        )}
       </ConfirmationBox>
-
       <CustomSnackbar
         showSnackbar={showSnackbar}
         setShowSnackbar={setShowSnackbar}

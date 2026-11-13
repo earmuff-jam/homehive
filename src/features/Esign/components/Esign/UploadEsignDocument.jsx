@@ -23,7 +23,7 @@ export default function UploadEsignDocument({ handleUpload, isDisabled }) {
         size="small"
         disabled={isDisabled}
       >
-        Upload files
+        Upload Files
         <VisuallyHiddenInput type="file" onChange={handleUpload} />
       </Button>
     </Box>
