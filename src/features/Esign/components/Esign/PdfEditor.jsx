@@ -2,6 +2,10 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 
 import { useNavigate } from "react-router-dom";
 
+import { v4 as uuidv4 } from "uuid";
+
+import dayjs from "dayjs";
+
 import { CurrencyLiraRounded } from "@mui/icons-material";
 import {
   Alert,
@@ -23,6 +27,7 @@ import { fetchLoggedInUser } from "common/utils";
 import {
   useCreateEsignDocumentMutation,
   useGetEsignDocumentsByUserIdQuery,
+  useGetEsignPDFContentsFromFileQuery,
   useGetEtssTokensByEmailIdQuery,
 } from "features/Api/esignApi";
 import { useSendPreparedDocumentMutation } from "features/Api/externalIntegrationMultipart";
@@ -34,15 +39,18 @@ import ViewSigners from "features/Esign/components/Signers/ViewSigners";
 import ViewTokenMenu from "features/Esign/components/TokenMenu/ViewTokenMenu";
 import {
   COLOR_ENUM_VALUES,
+  DEFAULT_TEXT_SIZE,
   GLITTER_KEYFRAMES,
   INITIAL_SIGNER_ENUM_VALUES,
   SCALE,
 } from "features/Esign/constants";
-import { getSigningFields } from "features/Esign/utils/getSigningFields";
+import { getEditablePDFData } from "features/Esign/utils/getEditablePDFData";
+import {
+  getSigningFields,
+  populateFinalFormData,
+} from "features/Esign/utils/getSigningFields";
 import withDisclaimer from "features/Esign/withDisclaimer";
 import { produce } from "immer";
-import { PDFDocument } from "pdf-lib";
-import { rgb } from "pdf-lib";
 import * as pdfjsLib from "pdfjs-dist";
 import pdfWorker from "pdfjs-dist/build/pdf.worker.min?url";
 import { celebrations } from "src/utils/celebrations";
@@ -66,11 +74,22 @@ const PdfEditor = () => {
     isLoading: isLoadingValidTokensForETSS,
   } = useGetEtssTokensByEmailIdQuery(user?.email, { skip: !user?.email });
 
+  const { data: esignDocuments = [] } = useGetEsignDocumentsByUserIdQuery(
+    user?.uid,
+    { skip: !user?.uid },
+  );
+
   const {
-    data: esignDocuments = [],
-    isLoading: isEsignDocumentsLoading,
-    isSuccess: isEsignDocumentsSuccess,
-  } = useGetEsignDocumentsByUserIdQuery(user?.uid, { skip: !user?.uid });
+    data: pdfContentsFromFile,
+    isLoading: isPdfContentsFromFileLoading,
+    isSuccess: isPdfContentsFromFileSuccess,
+  } = useGetEsignPDFContentsFromFileQuery(
+    {
+      url: esignDocuments[0]?.filePath,
+      fileName: esignDocuments[0]?.fileName,
+    },
+    { skip: !esignDocuments[0]?.filePath },
+  );
 
   const [
     executePreparedDocument,
@@ -80,7 +99,13 @@ const PdfEditor = () => {
     },
   ] = useSendPreparedDocumentMutation();
 
-  const [createEsignDocument] = useCreateEsignDocumentMutation();
+  const [
+    createEsignDocument,
+    {
+      isLoading: isCreateEsignDocumentLoading,
+      originalArgs: createEsignDocumentOrginalArgs,
+    },
+  ] = useCreateEsignDocumentMutation();
 
   const [file, setFile] = useState(null);
   const [fields, setFields] = useState([]);
@@ -132,10 +157,7 @@ const PdfEditor = () => {
     setSigners(updatedSignerData);
   };
 
-  const handleConfirm = () =>
-    setShowConfirmationBox({ value: true, updateKey: "tenant" });
-
-  const handleUpload = async (e) => {
+  const getEditablePdfDocument = async (e) => {
     const uploadedFile = e.target.files[0];
     if (!uploadedFile) return;
 
@@ -219,8 +241,6 @@ const PdfEditor = () => {
             });
           };
 
-          const DEFAULT_TEXT_SIZE = "16";
-
           Object.assign(input.style, {
             position: "absolute",
             left: `${left}px`,
@@ -228,12 +248,11 @@ const PdfEditor = () => {
             width: `${width}px`,
             height: `${height}px`,
             fontSize: `${DEFAULT_TEXT_SIZE}px`,
-            lineHeight: `${DEFAULT_TEXT_SIZE}px`,
             padding: "2px 4px",
             boxSizing: "border-box",
             border: "1px solid #ccc",
-            fontFamily: "Helvetica, Arial, sans-serif",
-            fontWeight: "500",
+            fontFamily: "system-ui, -apple-system, sans-serif",
+            fontWeight: "bold",
           });
 
           pageDiv.appendChild(input);
@@ -343,129 +362,51 @@ const PdfEditor = () => {
     setSignatureBoxes((prev) => prev.filter((b) => b.id !== boxId));
   };
 
-  const exportPdf = async () => {
-    if (!file) return;
+  const handleConfirm = async () => {
+    const fileName = `${uuidv4()}-${file.name}`;
+    const signingFormFields = getSigningFields(signatureBoxes);
+    const populatedEsignDocument = await getEditablePDFData(
+      file,
+      fields,
+      signatureBoxes,
+    );
 
-    const bytes = await file.arrayBuffer();
-    const pdfDoc = await PDFDocument.load(bytes);
-    const form = pdfDoc.getForm();
-    const pages = pdfDoc.getPages();
+    if (!populatedEsignDocument) return;
 
-    const textFields = fields.filter((f) => f.type === "text");
-    const checkboxFields = fields.filter((f) => f.type === "checkbox");
-
-    textFields.forEach((stateField) => {
-      try {
-        const textField = form.getTextField(stateField.name);
-        textField.setText(stateField.value || "");
-      } catch (err) {
-        console.debug("Failed to set text:", stateField.name, err);
-      }
+    createEsignDocument({
+      file: new Blob([populatedEsignDocument], {
+        type: "application/pdf",
+      }),
+      path: `esign/${user?.uid}/documents/${fileName}`,
+      fileId: uuidv4(),
+      fileName: fileName,
+      userId: user?.uid,
+      signers: signers,
+      signatureBoxes: signatureBoxes,
+      signingFormFields: signingFormFields,
+      createdAt: dayjs().toISOString(),
+      createdBy: user?.uid,
     });
 
-    // handle checkboxes differently, since we have to burn the false values
-    // as well in the application
-    for (const stateField of checkboxFields) {
-      try {
-        const pageIndex = stateField.pageNum - 1;
-        if (pageIndex < 0 || pageIndex >= pages.length) continue;
+    setShowConfirmationBox({ value: true, updateKey: "tenant" });
+  };
 
-        const page = pages[pageIndex];
-        const [x1, y1] = stateField.rect;
-
-        const isChecked =
-          stateField.value === "Yes" || stateField.value === "On";
-
-        const x = x1;
-        const y = y1;
-
-        // draw checkbox field
-        page.drawRectangle({
-          x,
-          y,
-          width: 10,
-          height: 10,
-          borderColor: rgb(0, 0, 0),
-          borderWidth: 1,
-          color: rgb(1, 1, 1),
-        });
-
-        // if checked, draw X
-        if (isChecked) {
-          page.drawLine({
-            start: { x: x + 2, y: y + 2 },
-            end: { x: x + 8, y: y + 8 },
-            thickness: 1,
-            color: rgb(0, 0, 0),
-          });
-
-          page.drawLine({
-            start: { x: x + 8, y: y + 2 },
-            end: { x: x + 2, y: y + 8 },
-            thickness: 1,
-            color: rgb(0, 0, 0),
-          });
-        }
-
-        try {
-          const field = form.getCheckBox(stateField.name);
-          form.removeField(field);
-        } catch (e) {
-          // eat the exception; no error
-          console.debug("Failed to remove the checkbox field", e);
-        }
-      } catch (err) {
-        console.debug("Failed to process checkbox:", stateField.name, err);
-
-        // if buring the checkbox fails, we let the acroForm handle it
-        try {
-          const cb = form.getCheckBox(stateField.name);
-          if (stateField.value === "Yes" || stateField.value === "On") {
-            cb.check();
-          } else {
-            cb.uncheck();
-          }
-        } catch (e) {
-          // do nothing; eat the exception
-          console.debug(
-            "Failed to process checkbox using acroform after attempting to burn the checkboxes. ",
-            e,
-          );
-        }
-      }
-    }
-
+  const exportPdf = async () => {
     try {
       form.flatten();
     } catch (err) {
       console.debug("Unable to flatten form.", err);
     }
-
     const finalBytes = await pdfDoc.save();
-    const formData = new FormData();
-    formData.append(
-      "file",
-      new Blob([finalBytes], { type: "application/pdf" }),
-      "prepared-esign.pdf",
-    );
-    formData.append("fUrl", "0029_SendPreparedEsignDocument");
-    formData.append("fMethod", "POST");
-    formData.append("title", "Lease agreement");
-    formData.append("subject", "Requesting electronic signature");
-    formData.append("signers", JSON.stringify(signers));
-    formData.append("userId", user?.uid);
-    formData.append("stripeCustomerEmail", user?.email);
-    formData.append(
-      "message",
-      "Please review and sign the provided document at your earliest convenience",
+    const generatedFormData = populateFinalFormData(
+      finalBytes,
+      signatureBoxes,
+      signers,
+      user,
     );
 
-    const formFields = getSigningFields(signatureBoxes);
-    formData.append("formFieldsPerDocument", JSON.stringify(formFields));
-
-    console.log(formData);
-    await createEsignDocument(formData).unwrap();
-    executePreparedDocument(formData);
+    console.log("end result = ", JSON.stringify(generatedFormData));
+    // executePreparedDocument(generatedFormData);
   };
 
   const getCoordsForCanvas = useCallback((clientX, clientY) => {
@@ -574,7 +515,7 @@ const PdfEditor = () => {
       setSignatureBoxes((prev) => [
         ...prev,
         {
-          id: `sigbox_${Date.now()}`,
+          id: `sigbox_${uuidv4()}`,
           signerId: signer.id,
           signerRole: signer.role,
           color: signer.color,
@@ -619,11 +560,18 @@ const PdfEditor = () => {
   }, [isExecutePreparedDocumentLoading]);
 
   useEffect(() => {
-    if (isEsignDocumentsSuccess && !isEsignDocumentsLoading) {
-      // populate the field with the document
-      console.log(esignDocuments);
+    if (isPdfContentsFromFileSuccess && pdfContentsFromFile) {
+      getEditablePdfDocument({
+        target: {
+          files: [pdfContentsFromFile],
+        },
+      });
+
+      console.log(pdfContentsFromFile);
+      setSigners(esignDocuments[0]?.signers || []);
+      setSignatureBoxes(esignDocuments[0]?.signatureBoxes || []);
     }
-  }, [isEsignDocumentsLoading]);
+  }, [isPdfContentsFromFileLoading]);
 
   return (
     <Stack data-tour="esign-0">
@@ -683,8 +631,8 @@ const PdfEditor = () => {
           />
           <Stack direction="row" spacing={1}>
             <UploadEsignDocument
-              handleUpload={handleUpload}
               isDisabled={ltMediumFormFactor}
+              handleUpload={getEditablePdfDocument}
             />
             <Box data-tour="esign-7">
               <Button
@@ -692,6 +640,7 @@ const PdfEditor = () => {
                 variant="contained"
                 onClick={handleConfirm}
                 disabled={!file || fields.length === 0}
+                isLoading={isCreateEsignDocumentLoading}
               >
                 Prepare Esign
               </Button>
@@ -700,36 +649,41 @@ const PdfEditor = () => {
         </Stack>
       </Stack>
       <ViewTokenAlert tokenCount={validTokensForETSS} />
-      {!ltMediumFormFactor && <ViewFormTemplates handleUpload={handleUpload} />}
-      {ltMediumFormFactor ? (
-        <Alert severity="error">
-          <Typography variant="subtitle2">
-            Due to the nature of document security, electronic signatures are
-            prohibited from being created in smaller screen sizes. Please use
-            laptop or a tablet to proceed.
-          </Typography>
-        </Alert>
-      ) : (
-        <ViewFile
-          file={file}
-          containerRef={containerRef}
-          signers={signers}
-          activeSigner={activeSigner}
-          handleSelectSigner={handleSelectSigner}
-          updateSignerDetails={updateSignerDetails}
-          setScrollTop={setScrollTop}
-          signatureBoxes={signatureBoxes}
-          removeBox={removeBox}
-          scrollTop={scrollTop}
-          pageOffsets={pageOffsets}
-          activeFieldType={activeFieldType}
-          setActiveFieldType={setActiveFieldType}
-          addFollowUpSigners={addFollowUpSigners}
-          handleRemoveSigner={handleRemoveSigner}
-        />
+      {!ltMediumFormFactor && (
+        <ViewFormTemplates handleUpload={getEditablePdfDocument} />
       )}
+      <Box>
+        {ltMediumFormFactor ? (
+          <Alert severity="error">
+            <Typography variant="subtitle2">
+              Due to the nature of document security, electronic signatures are
+              prohibited from being created in smaller screen sizes. Please use
+              laptop or a tablet to proceed.
+            </Typography>
+          </Alert>
+        ) : (
+          <ViewFile
+            file={file}
+            containerRef={containerRef}
+            signers={signers}
+            activeSigner={activeSigner}
+            handleSelectSigner={handleSelectSigner}
+            updateSignerDetails={updateSignerDetails}
+            setScrollTop={setScrollTop}
+            signatureBoxes={signatureBoxes}
+            removeBox={removeBox}
+            scrollTop={scrollTop}
+            pageOffsets={pageOffsets}
+            activeFieldType={activeFieldType}
+            setActiveFieldType={setActiveFieldType}
+            addFollowUpSigners={addFollowUpSigners}
+            handleRemoveSigner={handleRemoveSigner}
+          />
+        )}
+      </Box>
 
       <ConfirmationBox
+        maxWidth="md"
         isBlocked={validTokensForETSS <= 0}
         title="Send document to signers?"
         captionText="Action consumes 1 non-refundable token. Proceed?"
@@ -744,6 +698,7 @@ const PdfEditor = () => {
           signers={signers}
           tokenCount={validTokensForETSS}
           signatureBoxes={signatureBoxes}
+          previewData={createEsignDocumentOrginalArgs}
         />
       </ConfirmationBox>
 

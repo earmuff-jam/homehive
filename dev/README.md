@@ -1,9 +1,9 @@
-## Developer setup and ease of guide.
+# Developer setup and ease of guide.
 
 HomeHiveSolutions app is written in React and is used to build invoices on the fly. It is also used to setup rental reminders via email and
 also provides support to "stripe payment services" via webhook and db connectivity supported by Firebase for ARPS system (Automatic Payment Reminder System)
 
-### Installation
+# Installation
 
 To run locally, simply run `npm ci` in project root. A `dev version` should boot up. Ensure you have `.env` file filled with
 required variables. View file `env.sample` to view a sample of the `.env` file.
@@ -12,7 +12,7 @@ required variables. View file `env.sample` to view a sample of the `.env` file.
 This should be enough to run the application locally, however some of the functions might not be readily available to the
 developer. This setup generally is for quick testing, unit testing etc. To enable other features, continue below.
 
-### [FOMO] Extra Architecture and Software Overhaul
+## [FOMO] Extra Architecture and Software Overhaul
 
 Need to test something specific during dev environment? Look below.
 
@@ -62,7 +62,12 @@ stripe listen --api-key sk_test_xxx --forward-to http://localhost:9999/.netlify/
 6. Breakpoint should hit.
 7. For all webhook notifications, when you listen at step 4, you should get a secret key. Use that key for env variable `STRIPE_WEBHOOK_SECRET` in server repository as we need it to properly execute a webhook event.
 
-### Deployment and Git Tag
+# Cloud Storage
+
+Currently, we are using firebase storage solutions to save images and pdf for esign documents. This allows us to quickly retrieve the required images and documents. One huge caveat is that we need to
+retrieve pdf documents with CORS enabled. To ensure CORS is enabled for the selected project, we need to navigate to `https://console.cloud.google.com/storage/browser?forceOnBucketsSortingFiltering=true&authuser=0&hl=en&project=homehive-dev-b26d2&prefix=&bucketType=live` for each respective project and configure the CORS `Cross-origin resource sharing` under `Configurations`. Ensure the project name, bucket name and configurations match to the required values. Without that it is not possible to load pdf details for Esign application.
+
+# Deployment
 
 `Note`: Please ensure that we have the proper commit messages built. We need the commit
 messages to be in the format of
@@ -88,7 +93,7 @@ git push origin tags
 
 ```
 
-### Steps to invoke the deployment approach
+## Steps to invoke the deployment approach
 
 1. Navigate to the CI pipeline.
 

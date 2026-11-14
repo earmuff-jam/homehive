@@ -25,16 +25,16 @@ const ViewFile = ({
   handleRemoveSigner,
 }) => {
   return (
-    <>
+    <Stack>
       {file ? (
         <Stack
           direction={{ xs: "column", lg: "row" }}
           spacing={1}
           sx={{
-            alignItems: "flex-start",
-            justifyContent: "flex-start",
+            alignItems: "center",
           }}
         >
+          <Box flex={1} />
           <Box sx={{ position: "relative" }}>
             <ViewPdf
               containerRef={containerRef}
@@ -73,9 +73,9 @@ const ViewFile = ({
           </Box>
           <Box
             sx={{
-              flex: 1,
-              padding: 1,
               top: 100,
+              padding: 1,
+              maxWidth: "30%",
               position: "sticky",
               alignSelf: "flex-start",
             }}
@@ -95,7 +95,7 @@ const ViewFile = ({
       ) : (
         <EmptyComponent caption="Upload pdf file to begin." />
       )}
-    </>
+    </Stack>
   );
 };
 

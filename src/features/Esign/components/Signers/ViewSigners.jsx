@@ -2,8 +2,9 @@ import React from "react";
 
 import { PermIdentityRounded } from "@mui/icons-material";
 import { Alert, Paper, Stack, Typography } from "@mui/material";
+import Preview from "features/Esign/components/Preview/Preview";
 
-const ViewSigners = ({ tokenCount = 0, signers = [], signatureBoxes = [] }) => {
+const ViewSigners = ({ tokenCount = 0, signers = [], signatureBoxes = [], previewData, }) => {
   const acuteDateBoxes = signatureBoxes?.filter(
     (box) => box.fieldType === "date",
   );
@@ -19,81 +20,86 @@ const ViewSigners = ({ tokenCount = 0, signers = [], signatureBoxes = [] }) => {
     signers?.length !== signers?.filter((signer) => signer?.name).length;
 
   return (
-    <Stack paddingTop="1rem">
-      <Stack spacing={1}>
-        {isSignatureBoxesMatchesSigners ? (
-          <Alert severity="error">
-            <Typography variant="caption">
-              {`You have ${signers?.length} signers but ${acuteSignatureBoxes?.length} signature boxes. Is this correct?`}
-            </Typography>
-          </Alert>
-        ) : (
-          <Alert severity="success">
-            <Typography variant="caption">
-              Found {acuteSignatureBoxes?.length} signature boxes.
-            </Typography>
-          </Alert>
-        )}
+    <Stack paddingTop="1rem" direction="row" gap={1}>
+      <Stack flex={2}>
+        <Stack spacing={1}>
+          {isSignatureBoxesMatchesSigners ? (
+            <Alert severity="error">
+              <Typography variant="caption">
+                {`You have ${signers?.length} signers but ${acuteSignatureBoxes?.length} signature boxes. Is this correct?`}
+              </Typography>
+            </Alert>
+          ) : (
+            <Alert severity="success">
+              <Typography variant="caption">
+                Found {acuteSignatureBoxes?.length} signature boxes.
+              </Typography>
+            </Alert>
+          )}
 
-        {isDateBoxesMatchesSigners ? (
-          <Alert severity="error">
-            <Typography variant="caption">
-              {`You have ${signers?.length} signers but ${acuteDateBoxes?.length} date boxes. Is this correct?`}
-            </Typography>
-          </Alert>
-        ) : (
-          <Alert severity="success">
-            <Typography variant="caption">
-              Found {acuteDateBoxes?.length} date boxes.
-            </Typography>
-          </Alert>
-        )}
+          {isDateBoxesMatchesSigners ? (
+            <Alert severity="error">
+              <Typography variant="caption">
+                {`You have ${signers?.length} signers but ${acuteDateBoxes?.length} date boxes. Is this correct?`}
+              </Typography>
+            </Alert>
+          ) : (
+            <Alert severity="success">
+              <Typography variant="caption">
+                Found {acuteDateBoxes?.length} date boxes.
+              </Typography>
+            </Alert>
+          )}
 
-        {isRequiredFieldsMissing ? (
-          <Alert severity="error">
-            <Typography variant="caption">
-              Missing required fields. Please ensure full name and email is
-              filled out for each signer including the Creator.
-            </Typography>
-          </Alert>
-        ) : null}
+          {isRequiredFieldsMissing ? (
+            <Alert severity="error">
+              <Typography variant="caption">
+                Missing required fields. Please ensure full name and email is
+                filled out for each signer including the Creator.
+              </Typography>
+            </Alert>
+          ) : null}
 
-        {tokenCount <= 0 ? (
-          <Alert severity="error">
-            <Typography variant="caption">
-              Not enough tokens to send electronic signature.
-            </Typography>
-          </Alert>
-        ) : null}
-      </Stack>
-
-      <Typography variant="subtitle2" gutterBottom>
-        Assigned Signers:
-      </Typography>
-      <Paper sx={{ padding: 1 }}>
-        <Stack>
-          {signers?.map((signer) => (
-            <Stack
-              spacing={1}
-              paddingY={1}
-              direction="row"
-              key={signer.id}
-              alignItems="center"
-            >
-              <PermIdentityRounded
-                fontSize="small"
-                sx={{ color: signer?.color }}
-              />
-              <Stack>
-                <Typography variant="caption">{signer?.role}</Typography>
-                <Typography variant="caption">
-                  {signer?.email_address}
-                </Typography>
-              </Stack>
-            </Stack>
-          ))}
+          {tokenCount <= 0 ? (
+            <Alert severity="error">
+              <Typography variant="caption">
+                Not enough tokens to send electronic signature.
+              </Typography>
+            </Alert>
+          ) : null}
         </Stack>
-      </Paper>
+
+        <Typography variant="subtitle2" gutterBottom>
+          Assigned Signers:
+        </Typography>
+        <Paper sx={{ padding: 1 }}>
+          <Stack>
+            {signers?.map((signer) => (
+              <Stack
+                spacing={1}
+                paddingY={1}
+                direction="row"
+                key={signer.id}
+                alignItems="center"
+              >
+                <PermIdentityRounded
+                  fontSize="small"
+                  sx={{ color: signer?.color }}
+                />
+                <Stack>
+                  <Typography variant="caption">{signer?.role}</Typography>
+                  <Typography variant="caption">
+                    {signer?.email_address}
+                  </Typography>
+                </Stack>
+              </Stack>
+            ))}
+          </Stack>
+        </Paper>
+      </Stack>
+      <Stack flex={1}>
+        <Preview data={previewData}/>
+      </Stack>
     </Stack>
   );
 };

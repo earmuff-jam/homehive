@@ -1,6 +1,7 @@
 import { keyframes } from "@mui/material";
 
-export const SCALE = 1.5;
+export const SCALE = 1.25;
+export const DEFAULT_TEXT_SIZE = "13";
 
 export const COLOR_ENUM_VALUES = ["#dc2626", "#9333ea", "#ea580c", "#0891b2"];
 

@@ -1,6 +1,14 @@
 import { createApi, fakeBaseQuery } from "@reduxjs/toolkit/query/react";
-import { collection, getDocs, query, where } from "firebase/firestore";
-import { authenticatorFirestore as db } from "src/config";
+import {
+  collection,
+  doc,
+  getDocs,
+  query,
+  setDoc,
+  where,
+} from "firebase/firestore";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { authenticatorFirestore as db, firebaseCloudStorage } from "src/config";
 
 const ESIGN_DB_NAME = "esign";
 const ESIGN_PAYMENTS_DB_NAME = "etssPayments";
@@ -9,6 +17,7 @@ const ESIGN_PAYMENTS_DB_NAME = "etssPayments";
 const EsignApiTagTypes = {
   EsignTokenPayments: "esign/etss-token-payments",
   EsignPrefilledDocument: "esign/prefilled-document",
+  EsignPDFContents: "esign/pdf-content",
 };
 
 export const esignApi = createApi({
@@ -80,17 +89,24 @@ export const esignApi = createApi({
           };
         }
       },
-      invalidatesTags: [EsignApiTagTypes.EsignPrefilledDocument],
+      providesTags: [EsignApiTagTypes.EsignPrefilledDocument],
     }),
 
-    // createEsignDocument ...
-    // defines a mutation that saves the esign template
-    createEsignDocument: builder.mutation({
-      async queryFn(data) {
+    // getEsignPDFContentsFromFile ...
+    // defines a function that fetches and downloads a file from storage
+    getEsignPDFContentsFromFile: builder.query({
+      async queryFn({ url, fileName }) {
         try {
-          const docRef = doc(db, ESIGN_DB_NAME, data?.id);
-          await setDoc(docRef, data);
-          return { data: data };
+          const res = await fetch(url);
+          if (!res.ok) {
+            throw new Error(`failed to download selected file: ${res.status}`);
+          }
+          const blob = await res.blob();
+          const readableFile = new File([blob], fileName, {
+            type: "application/pdf",
+          });
+
+          return { data: readableFile };
         } catch (error) {
           return {
             error: {
@@ -100,7 +116,61 @@ export const esignApi = createApi({
           };
         }
       },
-      invalidatesTags: [EsignApiTagTypes.EsignPrefilledDocument],
+      invalidatesTags: Object.values(EsignApiTagTypes),
+    }),
+
+    // createEsignDocument ...
+    // defines a function that uploads pdf documents to storage and saves the metadata
+    createEsignDocument: builder.mutation({
+      async queryFn({
+        file,
+        path,
+        fileId,
+        fileName,
+        userId,
+        signers,
+        signatureBoxes,
+        signingFormFields,
+        createdAt,
+        createdBy,
+      }) {
+        try {
+          const storageRef = ref(firebaseCloudStorage, path);
+          await uploadBytes(storageRef, file);
+          const downloadURL = await getDownloadURL(storageRef);
+
+          try {
+            const docRef = doc(db, ESIGN_DB_NAME, fileId);
+            await setDoc(docRef, {
+              filePath: downloadURL,
+              fileId: fileId,
+              fileName: fileName,
+              userId: userId,
+              signers: signers,
+              signatureBoxes: signatureBoxes,
+              signingFormFields: signingFormFields,
+              createdAt: createdAt,
+              createdBy: createdBy,
+            });
+            return { data: data };
+          } catch (error) {
+            return {
+              error: {
+                message: error.message,
+                code: error.code,
+              },
+            };
+          }
+        } catch (error) {
+          return {
+            error: {
+              message: error?.message ?? "Failed to upload pdf document",
+              code: error.code,
+            },
+          };
+        }
+      },
+      providesTags: [EsignApiTagTypes.EsignPrefilledDocument],
     }),
   }),
 });
@@ -108,5 +178,6 @@ export const esignApi = createApi({
 export const {
   useGetEtssTokensByEmailIdQuery,
   useGetEsignDocumentsByUserIdQuery,
+  useGetEsignPDFContentsFromFileQuery,
   useCreateEsignDocumentMutation,
 } = esignApi;
