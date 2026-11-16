@@ -10,8 +10,6 @@ import { CurrencyLiraRounded } from "@mui/icons-material";
 import {
   Alert,
   Box,
-  Button,
-  Skeleton,
   Stack,
   Tooltip,
   Typography,
@@ -38,6 +36,7 @@ import ViewFormTemplates from "features/Esign/components/FormTemplates/ViewFormT
 import ViewSigners from "features/Esign/components/Signers/ViewSigners";
 import ViewTokenMenu from "features/Esign/components/TokenMenu/ViewTokenMenu";
 import {
+  ACTIVE_FORM_TYPE_ENUM_VALUES,
   COLOR_ENUM_VALUES,
   DEFAULT_TEXT_SIZE,
   GLITTER_KEYFRAMES,
@@ -100,13 +99,18 @@ const PdfEditor = () => {
   const [file, setFile] = useState(null);
   const [fields, setFields] = useState([]);
   const [scrollTop, setScrollTop] = useState(0);
+
   const [tokenAnchor, setTokenAnchor] = useState(null);
   const [activeSigner, setActiveSigner] = useState(null);
-  const [signers, setSigners] = useState(INITIAL_SIGNER_ENUM_VALUES);
-  const [activeFieldType, setActiveFieldType] = useState("signature");
-
   const [showSnackbar, setShowSnackbar] = useState(false);
+
   const [signatureBoxes, setSignatureBoxes] = useState([]);
+  const [signers, setSigners] = useState(INITIAL_SIGNER_ENUM_VALUES);
+
+  const [activeFieldType, setActiveFieldType] = useState(
+    ACTIVE_FORM_TYPE_ENUM_VALUES.Signature,
+  );
+
   const [showConfirmationBox, setShowConfirmationBox] = useState(
     DefaultConfirmationBoxProps,
   );
@@ -147,7 +151,7 @@ const PdfEditor = () => {
     setSigners(updatedSignerData);
   };
 
-  const getEditablePdfDocument = async (e) => {
+  const getEditablePdfDocument = async (e, savedFields = []) => {
     const uploadedFile = e.target.files[0];
     if (!uploadedFile) return;
 
@@ -259,7 +263,17 @@ const PdfEditor = () => {
           const input = document.createElement("input");
           input.type = "checkbox";
 
-          const checked = a.fieldValue === "Yes" || a.fieldValue === "On";
+          const savedField = savedFields.find(
+            (field) =>
+              field.type === "checkbox" &&
+              field.name === fieldName &&
+              field.pageNum === pageNum,
+          );
+
+          const checked = savedField
+            ? savedField.value === "Yes"
+            : a.fieldValue === "Yes" || a.fieldValue === "On";
+
           input.checked = checked;
 
           Object.assign(input.style, {
@@ -355,10 +369,15 @@ const PdfEditor = () => {
   const handleConfirm = async (fileUniqueId) => {
     const fileName = `${uuidv4()}-${file.name}`;
     const signingFormFields = getSigningFields(signatureBoxes);
-    const populatedEsignDocument = await getEditablePDFData(file, fields);
+    const populatedEsignDocument = await getEditablePDFData(
+      file,
+      fields,
+      false,
+    );
 
     if (!populatedEsignDocument) return;
 
+    // TODO: creating a document two or more times is just adding the fileName and making it longer why?
     createEsignDocument({
       file: new Blob([populatedEsignDocument], {
         type: "application/pdf",
@@ -368,6 +387,7 @@ const PdfEditor = () => {
       fileName: fileName,
       userId: user?.uid,
       signers: signers,
+      fields: fields,
       signatureBoxes: signatureBoxes,
       signingFormFields: signingFormFields,
       createdAt: dayjs().toISOString(),
@@ -536,11 +556,14 @@ const PdfEditor = () => {
             firstDocument.fileName,
           );
 
-          getEditablePdfDocument({
-            target: {
-              files: [pdfContentsFromFile],
+          await getEditablePdfDocument(
+            {
+              target: {
+                files: [pdfContentsFromFile],
+              },
             },
-          });
+            firstDocument.fields || [],
+          );
 
           setSigners(firstDocument?.signers || []);
           setActiveSigner(firstDocument?.signers[0]);

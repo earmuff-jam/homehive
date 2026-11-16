@@ -5,6 +5,13 @@ export const DEFAULT_TEXT_SIZE = "13";
 
 export const COLOR_ENUM_VALUES = ["#dc2626", "#9333ea", "#ea580c", "#0891b2"];
 
+// ACTIVE_FORM_TYPE_ENUM_VALUES ...
+// defines the constant for active form field type
+export const ACTIVE_FORM_TYPE_ENUM_VALUES = {
+  Signature: "signature",
+  Date: "date",
+};
+
 // INITIAL_SIGNER_ENUM_VALUES ...
 // defines a constant default signer option when a new pdf is added to esign
 export const INITIAL_SIGNER_ENUM_VALUES = [

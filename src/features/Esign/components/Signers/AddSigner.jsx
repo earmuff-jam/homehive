@@ -1,35 +1,28 @@
 import React, { useEffect } from "react";
 
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 
 import {
   AddCircleOutlineRounded,
-  AddRounded,
   CalendarMonthRounded,
   CancelRounded,
   GestureOutlined,
 } from "@mui/icons-material";
 import {
-  Autocomplete,
   Box,
-  Button,
   Chip,
   Divider,
-  ListItem,
   Paper,
   Stack,
-  TextField,
   Tooltip,
   Typography,
-  createFilterOptions,
 } from "@mui/material";
 import AButton from "common/AButton";
 import AIconButton from "common/AIconButton";
 import EditSigners from "features/Esign/components/Signers/EditSigners";
+import { ACTIVE_FORM_TYPE_ENUM_VALUES } from "features/Esign/constants";
 
-// DefaultSigners ...
-// defines the default signers
-const DefaultSigners = {
+const DocumentSignerFormFields = {
   name: "",
   email_address: "",
 };
@@ -51,12 +44,12 @@ const AddSigner = ({
     reset,
   } = useForm({
     mode: "onChange",
-    defaultValues: DefaultSigners,
+    defaultValues: DocumentSignerFormFields,
   });
 
   const onSubmit = (data) => {
     updateSignerDetails({ ...data, role: activeSigner?.role });
-    reset(DefaultSigners);
+    reset(DocumentSignerFormFields);
   };
 
   useEffect(() => {
@@ -143,20 +136,28 @@ const AddSigner = ({
                 <AButton
                   size="small"
                   variant={
-                    activeFieldType === "signature" ? "contained" : "outlined"
+                    activeFieldType === ACTIVE_FORM_TYPE_ENUM_VALUES.Signature
+                      ? "contained"
+                      : "outlined"
                   }
-                  onClick={() => setActiveFieldType("signature")}
+                  onClick={() =>
+                    setActiveFieldType(ACTIVE_FORM_TYPE_ENUM_VALUES.Signature)
+                  }
                   startIcon={<GestureOutlined fontSize="small" />}
-                  label="Signature"
+                  label={ACTIVE_FORM_TYPE_ENUM_VALUES.Signature}
                 />
                 <AButton
                   size="small"
                   variant={
-                    activeFieldType === "date" ? "contained" : "outlined"
+                    activeFieldType === ACTIVE_FORM_TYPE_ENUM_VALUES.Date
+                      ? "contained"
+                      : "outlined"
                   }
-                  onClick={() => setActiveFieldType("date")}
+                  onClick={() =>
+                    setActiveFieldType(ACTIVE_FORM_TYPE_ENUM_VALUES.Date)
+                  }
                   startIcon={<CalendarMonthRounded fontSize="small" />}
-                  label="Date"
+                  label={ACTIVE_FORM_TYPE_ENUM_VALUES.Date}
                 />
               </Stack>
             </Stack>

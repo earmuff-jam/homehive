@@ -1,4 +1,3 @@
-import { getSigningFields } from "features/Esign/utils/getSigningFields";
 import { PDFDocument, rgb } from "pdf-lib";
 
 const drawRectangle = (page, isChecked, x, y) => {
@@ -55,7 +54,12 @@ export const populateTextFields = (form, textFields = []) => {
   });
 };
 
-export const populateCheckboxFields = (form, pages, checkboxFields = []) => {
+export const populateCheckboxFields = (
+  form,
+  pages,
+  checkboxFields = [],
+  shouldDrawCheckboxes,
+) => {
   if (!form) return;
   for (const field of checkboxFields) {
     try {
@@ -68,7 +72,7 @@ export const populateCheckboxFields = (form, pages, checkboxFields = []) => {
       const x = x1;
       const y = y1;
 
-      drawRectangle(page, isChecked, x, y);
+      shouldDrawCheckboxes && drawRectangle(page, isChecked, x, y);
 
       try {
         const checkbox = form.getCheckBox(field.name);
@@ -89,6 +93,7 @@ export const populateCheckboxFields = (form, pages, checkboxFields = []) => {
 export const getEditablePDFData = async (
   file,
   fields = [],
+  shouldDrawCheckboxes = true,
 ) => {
   if (!file) return null;
 
@@ -106,6 +111,7 @@ export const getEditablePDFData = async (
     form,
     pages,
     fields.filter((f) => f.type === "checkbox"),
+    shouldDrawCheckboxes,
   );
 
   return await pdfDoc.save();
