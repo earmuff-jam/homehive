@@ -4,7 +4,13 @@ import { PermIdentityRounded } from "@mui/icons-material";
 import { Alert, Paper, Stack, Typography } from "@mui/material";
 import Preview from "features/Esign/components/Preview/Preview";
 
-const ViewSigners = ({ tokenCount = 0, signers = [], signatureBoxes = [], previewData, }) => {
+const ViewSigners = ({
+  tokenCount = 0,
+  signers = [],
+  signatureBoxes = [],
+  previewData,
+  isCreateEsignDocumentLoading,
+}) => {
   const acuteDateBoxes = signatureBoxes?.filter(
     (box) => box.fieldType === "date",
   );
@@ -98,7 +104,7 @@ const ViewSigners = ({ tokenCount = 0, signers = [], signatureBoxes = [], previe
         </Paper>
       </Stack>
       <Stack flex={1}>
-        <Preview data={previewData}/>
+        <Preview data={previewData} isLoading={isCreateEsignDocumentLoading} />
       </Stack>
     </Stack>
   );

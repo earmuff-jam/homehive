@@ -18,6 +18,7 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
+import AButton from "common/AButton";
 import ConfirmationBox, {
   DefaultConfirmationBoxProps,
 } from "common/ConfirmationBox";
@@ -27,7 +28,6 @@ import { fetchLoggedInUser } from "common/utils";
 import {
   useCreateEsignDocumentMutation,
   useGetEsignDocumentsByUserIdQuery,
-  useGetEsignPDFContentsFromFileQuery,
   useGetEtssTokensByEmailIdQuery,
 } from "features/Api/esignApi";
 import { useSendPreparedDocumentMutation } from "features/Api/externalIntegrationMultipart";
@@ -45,6 +45,7 @@ import {
   SCALE,
 } from "features/Esign/constants";
 import { getEditablePDFData } from "features/Esign/utils/getEditablePDFData";
+import { getPdfContentsFromURL } from "features/Esign/utils/getPdfContentsFromFile";
 import {
   getSigningFields,
   populateFinalFormData,
@@ -74,22 +75,11 @@ const PdfEditor = () => {
     isLoading: isLoadingValidTokensForETSS,
   } = useGetEtssTokensByEmailIdQuery(user?.email, { skip: !user?.email });
 
-  const { data: esignDocuments = [] } = useGetEsignDocumentsByUserIdQuery(
-    user?.uid,
-    { skip: !user?.uid },
-  );
-
   const {
-    data: pdfContentsFromFile,
-    isLoading: isPdfContentsFromFileLoading,
-    isSuccess: isPdfContentsFromFileSuccess,
-  } = useGetEsignPDFContentsFromFileQuery(
-    {
-      url: esignDocuments[0]?.filePath,
-      fileName: esignDocuments[0]?.fileName,
-    },
-    { skip: !esignDocuments[0]?.filePath },
-  );
+    data: esignDocuments = [],
+    isLoading: isEsignDocumentsLoading,
+    isSuccess: isEsignDocumentsSuccess,
+  } = useGetEsignDocumentsByUserIdQuery(user?.uid, { skip: !user?.uid });
 
   const [
     executePreparedDocument,
@@ -362,14 +352,10 @@ const PdfEditor = () => {
     setSignatureBoxes((prev) => prev.filter((b) => b.id !== boxId));
   };
 
-  const handleConfirm = async () => {
+  const handleConfirm = async (fileUniqueId) => {
     const fileName = `${uuidv4()}-${file.name}`;
     const signingFormFields = getSigningFields(signatureBoxes);
-    const populatedEsignDocument = await getEditablePDFData(
-      file,
-      fields,
-      signatureBoxes,
-    );
+    const populatedEsignDocument = await getEditablePDFData(file, fields);
 
     if (!populatedEsignDocument) return;
 
@@ -378,7 +364,7 @@ const PdfEditor = () => {
         type: "application/pdf",
       }),
       path: `esign/${user?.uid}/documents/${fileName}`,
-      fileId: uuidv4(),
+      fileId: fileUniqueId,
       fileName: fileName,
       userId: user?.uid,
       signers: signers,
@@ -536,6 +522,39 @@ const PdfEditor = () => {
   );
 
   useEffect(() => {
+    // TODO: Limit users to the number of properties they have to create document.
+    // TODO: We currently fetch all documents, refactor to allow users to chose which document to pursue
+    if (isEsignDocumentsSuccess && !isEsignDocumentsLoading) {
+      const fetchPdf = async () => {
+        const firstDocument = esignDocuments[0];
+
+        if (!firstDocument) return;
+
+        try {
+          const pdfContentsFromFile = await getPdfContentsFromURL(
+            firstDocument.filePath,
+            firstDocument.fileName,
+          );
+
+          getEditablePdfDocument({
+            target: {
+              files: [pdfContentsFromFile],
+            },
+          });
+
+          setSigners(firstDocument?.signers || []);
+          setActiveSigner(firstDocument?.signers[0]);
+          setSignatureBoxes(firstDocument?.signatureBoxes || []);
+        } catch (error) {
+          console.debug("unable to fetch saved document.", error);
+        }
+      };
+
+      fetchPdf();
+    }
+  }, [isEsignDocumentsSuccess, isEsignDocumentsLoading]);
+
+  useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
     container.addEventListener("mousedown", handleMouseDown);
@@ -558,20 +577,6 @@ const PdfEditor = () => {
       celebrations.commonConfetti();
     }
   }, [isExecutePreparedDocumentLoading]);
-
-  useEffect(() => {
-    if (isPdfContentsFromFileSuccess && pdfContentsFromFile) {
-      getEditablePdfDocument({
-        target: {
-          files: [pdfContentsFromFile],
-        },
-      });
-
-      console.log(pdfContentsFromFile);
-      setSigners(esignDocuments[0]?.signers || []);
-      setSignatureBoxes(esignDocuments[0]?.signatureBoxes || []);
-    }
-  }, [isPdfContentsFromFileLoading]);
 
   return (
     <Stack data-tour="esign-0">
@@ -635,15 +640,14 @@ const PdfEditor = () => {
               handleUpload={getEditablePdfDocument}
             />
             <Box data-tour="esign-7">
-              <Button
+              <AButton
                 size="small"
                 variant="contained"
-                onClick={handleConfirm}
+                onClick={() => handleConfirm(esignDocuments[0]?.id || uuidv4())}
                 disabled={!file || fields.length === 0}
                 isLoading={isCreateEsignDocumentLoading}
-              >
-                Prepare Esign
-              </Button>
+                label="Prepare Esign"
+              />
             </Box>
           </Stack>
         </Stack>
@@ -699,6 +703,7 @@ const PdfEditor = () => {
           tokenCount={validTokensForETSS}
           signatureBoxes={signatureBoxes}
           previewData={createEsignDocumentOrginalArgs}
+          isCreateEsignDocumentLoading={isCreateEsignDocumentLoading}
         />
       </ConfirmationBox>
 

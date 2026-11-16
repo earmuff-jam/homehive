@@ -89,7 +89,6 @@ export const populateCheckboxFields = (form, pages, checkboxFields = []) => {
 export const getEditablePDFData = async (
   file,
   fields = [],
-  signatureBoxes = [],
 ) => {
   if (!file) return null;
 

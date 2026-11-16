@@ -17,7 +17,6 @@ const ESIGN_PAYMENTS_DB_NAME = "etssPayments";
 const EsignApiTagTypes = {
   EsignTokenPayments: "esign/etss-token-payments",
   EsignPrefilledDocument: "esign/prefilled-document",
-  EsignPDFContents: "esign/pdf-content",
 };
 
 export const esignApi = createApi({
@@ -92,33 +91,6 @@ export const esignApi = createApi({
       providesTags: [EsignApiTagTypes.EsignPrefilledDocument],
     }),
 
-    // getEsignPDFContentsFromFile ...
-    // defines a function that fetches and downloads a file from storage
-    getEsignPDFContentsFromFile: builder.query({
-      async queryFn({ url, fileName }) {
-        try {
-          const res = await fetch(url);
-          if (!res.ok) {
-            throw new Error(`failed to download selected file: ${res.status}`);
-          }
-          const blob = await res.blob();
-          const readableFile = new File([blob], fileName, {
-            type: "application/pdf",
-          });
-
-          return { data: readableFile };
-        } catch (error) {
-          return {
-            error: {
-              message: error.message,
-              code: error.code,
-            },
-          };
-        }
-      },
-      invalidatesTags: Object.values(EsignApiTagTypes),
-    }),
-
     // createEsignDocument ...
     // defines a function that uploads pdf documents to storage and saves the metadata
     createEsignDocument: builder.mutation({
@@ -141,7 +113,23 @@ export const esignApi = createApi({
 
           try {
             const docRef = doc(db, ESIGN_DB_NAME, fileId);
-            await setDoc(docRef, {
+            await setDoc(
+              docRef,
+              {
+                filePath: downloadURL,
+                fileId: fileId,
+                fileName: fileName,
+                userId: userId,
+                signers: signers,
+                signatureBoxes: signatureBoxes,
+                signingFormFields: signingFormFields,
+                createdAt: createdAt,
+                createdBy: createdBy,
+              },
+              { merge: true },
+            );
+
+            const result = {
               filePath: downloadURL,
               fileId: fileId,
               fileName: fileName,
@@ -151,8 +139,11 @@ export const esignApi = createApi({
               signingFormFields: signingFormFields,
               createdAt: createdAt,
               createdBy: createdBy,
-            });
-            return { data: data };
+            };
+
+            return {
+              data: result,
+            };
           } catch (error) {
             return {
               error: {
@@ -178,6 +169,5 @@ export const esignApi = createApi({
 export const {
   useGetEtssTokensByEmailIdQuery,
   useGetEsignDocumentsByUserIdQuery,
-  useGetEsignPDFContentsFromFileQuery,
   useCreateEsignDocumentMutation,
 } = esignApi;
