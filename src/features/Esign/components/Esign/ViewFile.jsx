@@ -5,7 +5,7 @@ import EmptyComponent from "common/EmptyComponent";
 import AddSigner from "features/Esign/components/Signers/AddSigner";
 import SigningBox from "features/Esign/components/ViewPdf/SigningBox";
 import ViewPdf from "features/Esign/components/ViewPdf/ViewPdf";
-import ViewSigningFields from "features/Esign/components/ViewPdf/ViewSigningFields";
+import ViewPlacedFields from "features/Esign/components/ViewPlacedFields/ViewPlacedFields";
 
 const ViewFile = ({
   file,
@@ -41,7 +41,6 @@ const ViewFile = ({
               activeSigner={activeSigner}
               setScrollTop={setScrollTop}
             />
-
             <Box
               sx={{
                 position: "absolute",
@@ -63,13 +62,6 @@ const ViewFile = ({
                 />
               ))}
             </Box>
-
-            {signatureBoxes.length > 0 && (
-              <ViewSigningFields
-                removeBox={removeBox}
-                signatureBoxes={signatureBoxes}
-              />
-            )}
           </Box>
           <Box
             sx={{
@@ -90,6 +82,12 @@ const ViewFile = ({
               addFollowUpSigners={addFollowUpSigners}
               handleRemoveSigner={handleRemoveSigner}
             />
+            {signatureBoxes.length > 0 && (
+              <ViewPlacedFields
+                removeBox={removeBox}
+                signatureBoxes={signatureBoxes}
+              />
+            )}
           </Box>
         </Stack>
       ) : (

@@ -1,20 +1,24 @@
 import React, { useEffect, useRef } from "react";
 
-import { CircularProgress, FormHelperText, Skeleton, Stack } from "@mui/material";
+import {
+  CircularProgress,
+  FormHelperText,
+  Stack,
+  Typography,
+} from "@mui/material";
 import { ESIGN_DOCUMENT_PREVIEW_WIDTH } from "features/Esign/constants";
 import * as pdfjsLib from "pdfjs-dist";
 import pdfWorker from "pdfjs-dist/build/pdf.worker.min?url";
 
 pdfjsLib.GlobalWorkerOptions.workerSrc = pdfWorker;
 
-const Preview = ({ data, isLoading }) => {
+const PdfDocumentPreview = ({ data, isLoading }) => {
   const canvasRef = useRef(null);
   const file = data?.file;
 
   useEffect(() => {
     if (isLoading || !file || !canvasRef.current) return;
 
-    let cancelled = false;
     let pdf = null;
 
     const renderFirstPage = async () => {
@@ -22,7 +26,7 @@ const Preview = ({ data, isLoading }) => {
         const bytes = await file.arrayBuffer();
         pdf = await pdfjsLib.getDocument({ data: bytes }).promise;
         const page = await pdf.getPage(1);
-        if (cancelled || !canvasRef.current) return;
+        if (!canvasRef.current) return;
 
         const baseViewport = page.getViewport({ scale: 1 });
         const dpr = window.devicePixelRatio || 1;
@@ -47,7 +51,6 @@ const Preview = ({ data, isLoading }) => {
     renderFirstPage();
 
     return () => {
-      cancelled = true;
       pdf?.destroy();
     };
   }, [file, isLoading]);
@@ -79,8 +82,11 @@ const Preview = ({ data, isLoading }) => {
       }}
     >
       <canvas ref={canvasRef} />
+      <Typography variant="caption">
+        Size: {(file.size / (1024 * 1024)).toFixed(2)} MB
+      </Typography>
     </Stack>
   );
 };
 
-export default Preview;
+export default PdfDocumentPreview;

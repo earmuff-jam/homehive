@@ -114,5 +114,9 @@ export const getEditablePDFData = async (
     shouldDrawCheckboxes,
   );
 
-  return await pdfDoc.save();
+  return {
+    pdfDoc,
+    form,
+    formBytes: await pdfDoc.save(),
+  };
 };

@@ -6,17 +6,7 @@ import { v4 as uuidv4 } from "uuid";
 
 import dayjs from "dayjs";
 
-import { CurrencyLiraRounded } from "@mui/icons-material";
-import {
-  Alert,
-  Box,
-  Stack,
-  Tooltip,
-  Typography,
-  useMediaQuery,
-  useTheme,
-} from "@mui/material";
-import AButton from "common/AButton";
+import { Box, Stack, useMediaQuery, useTheme } from "@mui/material";
 import ConfirmationBox, {
   DefaultConfirmationBoxProps,
 } from "common/ConfirmationBox";
@@ -29,17 +19,16 @@ import {
   useGetEtssTokensByEmailIdQuery,
 } from "features/Api/esignApi";
 import { useSendPreparedDocumentMutation } from "features/Api/externalIntegrationMultipart";
-import UploadEsignDocument from "features/Esign/components/Esign/UploadEsignDocument";
 import ViewFile from "features/Esign/components/Esign/ViewFile";
 import ViewTokenAlert from "features/Esign/components/Esign/ViewTokenAlert";
+import EsignPdfActionButton from "features/Esign/components/EsignPdfActionButton/EsignPdfActionButton";
 import ViewFormTemplates from "features/Esign/components/FormTemplates/ViewFormTemplates";
-import ViewSigners from "features/Esign/components/Signers/ViewSigners";
-import ViewTokenMenu from "features/Esign/components/TokenMenu/ViewTokenMenu";
+import PdfDocumentReviewBox from "features/Esign/components/PdfDocumentReviewBox/PdfDocumentReviewBox";
+import PdfDocumentReviewDialog from "features/Esign/components/Signers/PdfDocumentReviewDialog";
 import {
   ACTIVE_FORM_TYPE_ENUM_VALUES,
   COLOR_ENUM_VALUES,
   DEFAULT_TEXT_SIZE,
-  GLITTER_KEYFRAMES,
   INITIAL_SIGNER_ENUM_VALUES,
   SCALE,
 } from "features/Esign/constants";
@@ -54,9 +43,6 @@ import { produce } from "immer";
 import * as pdfjsLib from "pdfjs-dist";
 import pdfWorker from "pdfjs-dist/build/pdf.worker.min?url";
 import { celebrations } from "src/utils/celebrations";
-import ViewPdf from "features/Esign/components/ViewPdf/ViewPdf";
-import SigningBox from "features/Esign/components/ViewPdf/SigningBox";
-import ViewSigningFields from "features/Esign/components/ViewPdf/ViewSigningFields";
 
 pdfjsLib.GlobalWorkerOptions.workerSrc = pdfWorker;
 
@@ -118,14 +104,7 @@ const PdfEditor = () => {
     DefaultConfirmationBoxProps,
   );
 
-  const isTokenAnchorOpen = Boolean(tokenAnchor);
   const ltMediumFormFactor = useMediaQuery(theme.breakpoints.down("md"));
-
-  const handleCloseTokenAnchorMenu = () => setTokenAnchor(null);
-  const handleClickTokenAnchorMenu = (event) => {
-    event.stopPropagation();
-    setTokenAnchor(event.currentTarget);
-  };
 
   const addFollowUpSigners = () => {
     const idx = signers?.length;
@@ -370,24 +349,24 @@ const PdfEditor = () => {
   };
 
   const handlePrepareEsign = async (fileUniqueId) => {
-    const fileName = `${fileUniqueId}-${file.name}`;
     const signingFormFields = getSigningFields(signatureBoxes);
-    const populatedEsignDocument = await getEditablePDFData(
+    const { formBytes: populatedEsignDocument } = await getEditablePDFData(
       file,
       fields,
       false, // does not draw checkboxes; since not final version
     );
 
     if (!populatedEsignDocument) return;
+    const previewPopulatedEsignDocument = new Blob([populatedEsignDocument], {
+      type: "application/pdf",
+    });
 
     // TODO: creating a document two or more times is just adding the fileName and making it longer why?
     createEsignDocument({
-      file: new Blob([populatedEsignDocument], {
-        type: "application/pdf",
-      }),
-      path: `esign/${user?.uid}/documents/${fileName}`,
+      file: previewPopulatedEsignDocument,
+      path: `esign/${user?.uid}/documents/${fileUniqueId}`,
       fileId: fileUniqueId,
-      fileName: fileName,
+      fileName: file?.name,
       userId: user?.uid,
       signers: signers,
       fields: fields,
@@ -401,6 +380,14 @@ const PdfEditor = () => {
   };
 
   const exportPdf = async () => {
+    const {
+      pdfDoc,
+      form,
+      formBytes: populatedEsignDocument,
+    } = await getEditablePDFData(file, fields);
+
+    if (!populatedEsignDocument || !form) return;
+
     try {
       form.flatten();
     } catch (err) {
@@ -414,8 +401,7 @@ const PdfEditor = () => {
       user,
     );
 
-    console.log("end result = ", JSON.stringify(generatedFormData));
-    // executePreparedDocument(generatedFormData);
+    executePreparedDocument(generatedFormData);
   };
 
   const getCoordsForCanvas = useCallback((clientX, clientY) => {
@@ -620,64 +606,19 @@ const PdfEditor = () => {
             color: "text.secondary",
           }}
         />
-        <Stack>
-          <Tooltip
-            title={
-              !isTokenAnchorOpen ? "Add non-refundable tokens for E-sign" : null
-            }
-          >
-            <Stack
-              spacing={1}
-              direction="row"
-              alignItems="flex-end"
-              justifyContent="center"
-              onClick={handleClickTokenAnchorMenu}
-              data-tour="esign-1"
-              sx={{
-                border: 1,
-                paddingY: 0.5,
-                marginBottom: 0.5,
-                cursor: "pointer",
-                borderColor: "primary.main",
-              }}
-            >
-              <Box
-                sx={{
-                  display: "inline-flex",
-                  animation: `${GLITTER_KEYFRAMES} 1s ease-in-out infinite`,
-                }}
-              >
-                <CurrencyLiraRounded fontSize="small" color="primary" />
-              </Box>
-              <Typography variant="caption" color="primary">
-                Non-Refundable Tokens: {validTokensForETSS}
-              </Typography>
-            </Stack>
-          </Tooltip>
-          <ViewTokenMenu
-            anchorEl={tokenAnchor}
-            open={isTokenAnchorOpen}
-            handleClose={handleCloseTokenAnchorMenu}
-          />
-          <Stack direction="row" spacing={1}>
-            <UploadEsignDocument
-              isDisabled={ltMediumFormFactor}
-              handleUpload={getEditablePdfDocument}
-            />
-            <Box data-tour="esign-7">
-              <AButton
-                size="small"
-                variant="contained"
-                onClick={() =>
-                  handlePrepareEsign(esignDocuments[0]?.id || uuidv4())
-                }
-                disabled={!file || fields.length === 0}
-                isLoading={isCreateEsignDocumentLoading}
-                label="Prepare Esign"
-              />
-            </Box>
-          </Stack>
-        </Stack>
+        <EsignPdfActionButton
+          file={file}
+          fields={fields}
+          tokenAnchor={tokenAnchor}
+          setTokenAnchor={setTokenAnchor}
+          validTokensForETSS={validTokensForETSS}
+          ltMediumFormFactor={ltMediumFormFactor}
+          handlePrepareEsign={handlePrepareEsign}
+          selectedEsignDocument={esignDocuments[0]}
+          getEditablePdfDocument={getEditablePdfDocument}
+          isLoadingValidTokensForETSS={isLoadingValidTokensForETSS}
+          isCreateEsignDocumentLoading={isCreateEsignDocumentLoading}
+        />
       </Stack>
       <ViewTokenAlert tokenCount={validTokensForETSS} />
       {!ltMediumFormFactor && (
@@ -685,13 +626,12 @@ const PdfEditor = () => {
       )}
       <Box>
         {ltMediumFormFactor ? (
-          <Alert severity="error">
-            <Typography variant="subtitle2">
-              Due to the nature of document security, electronic signatures are
+          <PdfDocumentReviewBox
+            isValid={!ltMediumFormFactor}
+            errorStr="Due to the nature of document security, electronic signatures are
               prohibited from being created in smaller screen sizes. Please use
-              laptop or a tablet to proceed.
-            </Typography>
-          </Alert>
+              laptop or a tablet to proceed."
+          />
         ) : (
           <ViewFile
             file={file}
@@ -725,7 +665,7 @@ const PdfEditor = () => {
         }
         handleConfirm={exportPdf}
       >
-        <ViewSigners
+        <PdfDocumentReviewDialog
           signers={signers}
           tokenCount={validTokensForETSS}
           signatureBoxes={signatureBoxes}
