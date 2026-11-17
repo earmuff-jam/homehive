@@ -42,7 +42,7 @@ const populateCheckboxUsingAcroForm = (form, field) => {
   }
 };
 
-export const populateTextFields = (form, textFields = []) => {
+const populateTextFields = (form, textFields = []) => {
   if (!form) return;
   textFields?.forEach((field) => {
     try {
@@ -54,7 +54,7 @@ export const populateTextFields = (form, textFields = []) => {
   });
 };
 
-export const populateCheckboxFields = (
+const populateCheckboxFields = (
   form,
   pages,
   checkboxFields = [],

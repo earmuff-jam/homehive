@@ -1,7 +1,7 @@
 import React from "react";
 
 import { PermIdentityRounded } from "@mui/icons-material";
-import { Alert, Paper, Stack, Typography } from "@mui/material";
+import { Alert, Divider, Paper, Stack, Typography } from "@mui/material";
 import Preview from "features/Esign/components/Preview/Preview";
 
 const ViewSigners = ({
@@ -27,7 +27,7 @@ const ViewSigners = ({
 
   return (
     <Stack paddingTop="1rem" direction="row" gap={1}>
-      <Stack flex={2}>
+      <Stack flex={2} spacing={1}>
         <Stack spacing={1}>
           {isSignatureBoxesMatchesSigners ? (
             <Alert severity="error">
@@ -74,34 +74,36 @@ const ViewSigners = ({
             </Alert>
           ) : null}
         </Stack>
-
-        <Typography variant="subtitle2" gutterBottom>
-          Assigned Signers:
-        </Typography>
-        <Paper sx={{ padding: 1 }}>
-          <Stack>
-            {signers?.map((signer) => (
-              <Stack
-                spacing={1}
-                paddingY={1}
-                direction="row"
-                key={signer.id}
-                alignItems="center"
-              >
-                <PermIdentityRounded
-                  fontSize="small"
-                  sx={{ color: signer?.color }}
-                />
-                <Stack>
-                  <Typography variant="caption">{signer?.role}</Typography>
-                  <Typography variant="caption">
-                    {signer?.email_address}
-                  </Typography>
+        <Divider />
+        <Stack spacing={1}>
+          <Typography variant="subtitle2" gutterBottom>
+            Assigned Signers:
+          </Typography>
+          <Paper sx={{ padding: 1 }}>
+            <Stack>
+              {signers?.map((signer) => (
+                <Stack
+                  spacing={1}
+                  paddingY={1}
+                  direction="row"
+                  key={signer.id}
+                  alignItems="center"
+                >
+                  <PermIdentityRounded
+                    fontSize="small"
+                    sx={{ color: signer?.color }}
+                  />
+                  <Stack>
+                    <Typography variant="caption">{signer?.role}</Typography>
+                    <Typography variant="caption">
+                      {signer?.email_address}
+                    </Typography>
+                  </Stack>
                 </Stack>
-              </Stack>
-            ))}
-          </Stack>
-        </Paper>
+              ))}
+            </Stack>
+          </Paper>
+        </Stack>
       </Stack>
       <Stack flex={1}>
         <Preview data={previewData} isLoading={isCreateEsignDocumentLoading} />

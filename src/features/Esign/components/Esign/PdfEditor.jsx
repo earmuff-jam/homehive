@@ -54,6 +54,9 @@ import { produce } from "immer";
 import * as pdfjsLib from "pdfjs-dist";
 import pdfWorker from "pdfjs-dist/build/pdf.worker.min?url";
 import { celebrations } from "src/utils/celebrations";
+import ViewPdf from "features/Esign/components/ViewPdf/ViewPdf";
+import SigningBox from "features/Esign/components/ViewPdf/SigningBox";
+import ViewSigningFields from "features/Esign/components/ViewPdf/ViewSigningFields";
 
 pdfjsLib.GlobalWorkerOptions.workerSrc = pdfWorker;
 
@@ -366,13 +369,13 @@ const PdfEditor = () => {
     setSignatureBoxes((prev) => prev.filter((b) => b.id !== boxId));
   };
 
-  const handleConfirm = async (fileUniqueId) => {
-    const fileName = `${uuidv4()}-${file.name}`;
+  const handlePrepareEsign = async (fileUniqueId) => {
+    const fileName = `${fileUniqueId}-${file.name}`;
     const signingFormFields = getSigningFields(signatureBoxes);
     const populatedEsignDocument = await getEditablePDFData(
       file,
       fields,
-      false,
+      false, // does not draw checkboxes; since not final version
     );
 
     if (!populatedEsignDocument) return;
@@ -394,7 +397,7 @@ const PdfEditor = () => {
       createdBy: user?.uid,
     });
 
-    setShowConfirmationBox({ value: true, updateKey: "tenant" });
+    setShowConfirmationBox({ value: true, updateKey: "esign" });
   };
 
   const exportPdf = async () => {
@@ -566,7 +569,6 @@ const PdfEditor = () => {
           );
 
           setSigners(firstDocument?.signers || []);
-          setActiveSigner(firstDocument?.signers[0]);
           setSignatureBoxes(firstDocument?.signatureBoxes || []);
         } catch (error) {
           console.debug("unable to fetch saved document.", error);
@@ -666,7 +668,9 @@ const PdfEditor = () => {
               <AButton
                 size="small"
                 variant="contained"
-                onClick={() => handleConfirm(esignDocuments[0]?.id || uuidv4())}
+                onClick={() =>
+                  handlePrepareEsign(esignDocuments[0]?.id || uuidv4())
+                }
                 disabled={!file || fields.length === 0}
                 isLoading={isCreateEsignDocumentLoading}
                 label="Prepare Esign"
