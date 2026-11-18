@@ -2,7 +2,6 @@ import React from "react";
 
 import { Box, Stack } from "@mui/material";
 import EmptyComponent from "common/EmptyComponent";
-import AddSigner from "features/Esign/components/Signers/AddSigner";
 import SigningBox from "features/Esign/components/ViewPdf/SigningBox";
 import ViewPdf from "features/Esign/components/ViewPdf/ViewPdf";
 import ViewPlacedFields from "features/Esign/components/ViewPlacedFields/ViewPlacedFields";
@@ -10,19 +9,12 @@ import ViewPlacedFields from "features/Esign/components/ViewPlacedFields/ViewPla
 const ViewFile = ({
   file,
   containerRef,
-  signers,
   activeSigner,
-  handleSelectSigner,
-  updateSignerDetails,
   setScrollTop,
   signatureBoxes,
   removeBox,
   scrollTop,
   pageOffsets,
-  activeFieldType,
-  setActiveFieldType,
-  addFollowUpSigners,
-  handleRemoveSigner,
 }) => {
   return (
     <Stack>
@@ -32,9 +24,9 @@ const ViewFile = ({
           spacing={1}
           sx={{
             alignItems: "center",
+            justifyContent: "center"
           }}
         >
-          <Box flex={1} />
           <Box sx={{ position: "relative" }}>
             <ViewPdf
               containerRef={containerRef}
@@ -63,7 +55,8 @@ const ViewFile = ({
               ))}
             </Box>
           </Box>
-          <Box
+          <Stack
+            spacing={1}
             sx={{
               top: 100,
               padding: 1,
@@ -72,23 +65,13 @@ const ViewFile = ({
               alignSelf: "flex-start",
             }}
           >
-            <AddSigner
-              signers={signers}
-              activeSigner={activeSigner}
-              handleSelectSigner={handleSelectSigner}
-              activeFieldType={activeFieldType}
-              setActiveFieldType={setActiveFieldType}
-              updateSignerDetails={updateSignerDetails}
-              addFollowUpSigners={addFollowUpSigners}
-              handleRemoveSigner={handleRemoveSigner}
-            />
             {signatureBoxes.length > 0 && (
               <ViewPlacedFields
                 removeBox={removeBox}
                 signatureBoxes={signatureBoxes}
               />
             )}
-          </Box>
+          </Stack>
         </Stack>
       ) : (
         <EmptyComponent caption="Upload pdf file to begin." />

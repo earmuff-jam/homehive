@@ -6,7 +6,10 @@ import { v4 as uuidv4 } from "uuid";
 
 import dayjs from "dayjs";
 
+import { EditRounded } from "@mui/icons-material";
 import { Box, Stack, useMediaQuery, useTheme } from "@mui/material";
+import AButton from "common/AButton";
+import AIconButton from "common/AIconButton";
 import ConfirmationBox, {
   DefaultConfirmationBoxProps,
 } from "common/ConfirmationBox";
@@ -19,6 +22,7 @@ import {
   useGetEtssTokensByEmailIdQuery,
 } from "features/Api/esignApi";
 import { useSendPreparedDocumentMutation } from "features/Api/externalIntegrationMultipart";
+import EditPdfOptionDrawer from "features/Esign/components/EditPdfOptionDrawer/EditPdfOptionDrawer";
 import ViewFile from "features/Esign/components/Esign/ViewFile";
 import ViewTokenAlert from "features/Esign/components/Esign/ViewTokenAlert";
 import EsignPdfActionButton from "features/Esign/components/EsignPdfActionButton/EsignPdfActionButton";
@@ -93,6 +97,8 @@ const PdfEditor = () => {
   const [activeSigner, setActiveSigner] = useState(null);
   const [showSnackbar, setShowSnackbar] = useState(false);
 
+  const [isEditOptionDrawer, setIsEditOptionDrawer] = useState(false);
+
   const [signatureBoxes, setSignatureBoxes] = useState([]);
   const [signers, setSigners] = useState(INITIAL_SIGNER_ENUM_VALUES);
 
@@ -135,11 +141,18 @@ const PdfEditor = () => {
 
   const getEditablePdfDocument = async (e, savedFields = []) => {
     const uploadedFile = e.target.files[0];
-    if (!uploadedFile) return;
+    if (!uploadedFile) {
+      setFile(null);
+      setScrollTop(0);
+      setSignatureBoxes([]);
+      return;
+    }
 
-    setFile(uploadedFile);
     setScrollTop(0);
-    setSignatureBoxes([]);
+    setFile(uploadedFile);
+    setFields(e?.fields || []);
+    setSigners(e?.signers || []);
+    setSignatureBoxes(e?.signatureBoxes || []);
 
     pageHeights.current = {};
     pageOffsets.current = {};
@@ -531,41 +544,6 @@ const PdfEditor = () => {
   );
 
   useEffect(() => {
-    // TODO: Limit users to the number of properties they have to create document.
-    // TODO: We currently fetch all documents, refactor to allow users to chose which document to pursue
-    if (isEsignDocumentsSuccess && !isEsignDocumentsLoading) {
-      const fetchPdf = async () => {
-        const firstDocument = esignDocuments[0];
-
-        if (!firstDocument) return;
-
-        try {
-          const pdfContentsFromFile = await getPdfContentsFromURL(
-            firstDocument.filePath,
-            firstDocument.fileName,
-          );
-
-          await getEditablePdfDocument(
-            {
-              target: {
-                files: [pdfContentsFromFile],
-              },
-            },
-            firstDocument.fields || [],
-          );
-
-          setSigners(firstDocument?.signers || []);
-          setSignatureBoxes(firstDocument?.signatureBoxes || []);
-        } catch (error) {
-          console.debug("unable to fetch saved document.", error);
-        }
-      };
-
-      fetchPdf();
-    }
-  }, [isEsignDocumentsSuccess, isEsignDocumentsLoading]);
-
-  useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
     container.addEventListener("mousedown", handleMouseDown);
@@ -621,9 +599,6 @@ const PdfEditor = () => {
         />
       </Stack>
       <ViewTokenAlert tokenCount={validTokensForETSS} />
-      {!ltMediumFormFactor && (
-        <ViewFormTemplates handleUpload={getEditablePdfDocument} />
-      )}
       <Box>
         {ltMediumFormFactor ? (
           <PdfDocumentReviewBox
@@ -633,23 +608,42 @@ const PdfEditor = () => {
               laptop or a tablet to proceed."
           />
         ) : (
-          <ViewFile
-            file={file}
-            containerRef={containerRef}
-            signers={signers}
-            activeSigner={activeSigner}
-            handleSelectSigner={handleSelectSigner}
-            updateSignerDetails={updateSignerDetails}
-            setScrollTop={setScrollTop}
-            signatureBoxes={signatureBoxes}
-            removeBox={removeBox}
-            scrollTop={scrollTop}
-            pageOffsets={pageOffsets}
-            activeFieldType={activeFieldType}
-            setActiveFieldType={setActiveFieldType}
-            addFollowUpSigners={addFollowUpSigners}
-            handleRemoveSigner={handleRemoveSigner}
-          />
+          <Stack>
+            <Box alignSelf="flex-end">
+              <AButton
+                size="small"
+                variant="outlined"
+                label="Edit options"
+                onClick={() => setIsEditOptionDrawer(true)}
+                startIcon={<EditRounded fontSize="small" />}
+              />
+            </Box>
+
+            <ViewFile
+              file={file}
+              containerRef={containerRef}
+              activeSigner={activeSigner}
+              setScrollTop={setScrollTop}
+              signatureBoxes={signatureBoxes}
+              removeBox={removeBox}
+              scrollTop={scrollTop}
+              pageOffsets={pageOffsets}
+            />
+            <EditPdfOptionDrawer
+              signers={signers}
+              options={esignDocuments}
+              isOpen={isEditOptionDrawer}
+              setIsOpen={setIsEditOptionDrawer}
+              activeSigner={activeSigner}
+              handleSelectSigner={handleSelectSigner}
+              activeFieldType={activeFieldType}
+              setActiveFieldType={setActiveFieldType}
+              updateSignerDetails={updateSignerDetails}
+              addFollowUpSigners={addFollowUpSigners}
+              handleRemoveSigner={handleRemoveSigner}
+              getEditablePdfDocument={getEditablePdfDocument}
+            />
+          </Stack>
         )}
       </Box>
 
