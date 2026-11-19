@@ -66,7 +66,7 @@ const AddSigner = ({
   }, [signers, activeSigner?.role]);
 
   return (
-    <Stack spacing={1} marginY="1rem" data-tour="esign-4">
+    <Stack spacing={1} marginBottom="1rem" data-tour="esign-4">
       <Stack
         direction="row"
         justifyContent="space-between"

@@ -1,99 +1,66 @@
 import React from "react";
 
-import { Controller, useForm } from "react-hook-form";
-
-import { Autocomplete, TextField } from "@mui/material";
+import { Button, Stack } from "@mui/material";
 import { getPreprocessedFile } from "features/Esign/utils/getPreprocessedFile";
 
-export const ExistingFormTemplateEnumValues = [
+// DefaultFormTemplates ...
+// defines some default templates
+export const DefaultFormTemplates = [
   {
     id: "form_1",
     name: "Lease Agreement",
     fileName: "lease-agreement.pdf",
-    filePath: "/forms/residential-lease.pdf",
+    url: "/forms/residential-lease.pdf",
   },
   {
     id: "form_2",
     name: "Lease Extension",
     fileName: "lease-extension.pdf",
-    filePath: "/forms/residential-lease-extension.pdf",
+    url: "/forms/residential-lease-extension.pdf",
   },
   {
     id: "form_3",
     name: "Early Termination",
     fileName: "early-termination.pdf",
-    filePath: "/forms/residential-lease-early-termination.pdf",
+    url: "/forms/residential-lease-early-termination.pdf",
   },
   {
     id: "form_4",
     name: "Lease Renewal",
     fileName: "lease-renewal.pdf",
-    filePath: "/forms/lease-renewal.pdf",
+    url: "/forms/lease-renewal.pdf",
   },
 ];
 
-const DefaultPdfFormTemplates = {
-  template: null,
-};
-
-const ViewFormTemplates = ({ savedOptions = [], handleUpload }) => {
-  const { control } = useForm({
-    mode: "onChange",
-    defaultValues: DefaultPdfFormTemplates,
-  });
-
-  const handleSelect = async (file) => {
-    if (!file) {
-      handleUpload({
-        target: {
-          files: [null],
-        },
-      });
-      return;
-    }
-
-    const readableFile = await getPreprocessedFile(
-      file.filePath,
-      file.fileName,
-    );
-
-    handleUpload({
-      target: {
-        files: [readableFile],
-      },
-      fields: file?.fields || [],
-      signatureBoxes: file?.signatureBoxes || [],
-      signers: file?.signers || [],
-    });
-  };
-
+const ViewFormTemplates = ({ handleUpload }) => {
   return (
-    <Controller
-      name="template"
-      control={control}
-      render={({ field }) => (
-        <Autocomplete
-          options={[...savedOptions, ...ExistingFormTemplateEnumValues]}
-          getOptionLabel={(option) =>
-            option?.name || `Saved ${option?.fileName}` || ""
-          }
-          isOptionEqualToValue={(option, value) => option.id === value.id}
-          value={field.value}
-          onChange={(_, value) => {
-            field.onChange(value);
-            handleSelect(value);
+    <Stack
+      direction="row"
+      spacing={1}
+      justifyContent="center"
+      paddingY={1}
+      data-tour="esign-3"
+    >
+      {DefaultFormTemplates.map((form) => (
+        <Button
+          key={form.id}
+          variant="outlined"
+          onClick={async () => {
+            const readableFile = await getPreprocessedFile(
+              form.url,
+              form.fileName,
+            );
+            handleUpload({
+              target: {
+                files: [readableFile],
+              },
+            });
           }}
-          renderInput={(params) => (
-            <TextField
-              {...params}
-              size="small"
-              variant="standard"
-              placeholder="Select a form to edit ..."
-            />
-          )}
-        />
-      )}
-    />
+        >
+          {form.name}
+        </Button>
+      ))}
+    </Stack>
   );
 };
 
