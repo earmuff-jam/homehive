@@ -139,17 +139,21 @@ const PdfEditor = () => {
   const getEditablePdfDocument = async (e, savedFields = []) => {
     const uploadedFile = e.target.files[0];
     if (!uploadedFile) {
-      setFile(null);
       setScrollTop(0);
+      setFile(null);
+      setFields([]);
+      setSigners([]);
       setSignatureBoxes([]);
       return;
     }
 
     setScrollTop(0);
     setFile(uploadedFile);
-    setFields(e?.fields || []);
-    setSigners(e?.signers || []);
-    setSignatureBoxes(e?.signatureBoxes || []);
+    setFields(e?.fields?.length > 0 ? e?.fields : []);
+    setSigners(
+      e?.signers?.length > 0 ? e?.signers : INITIAL_SIGNER_ENUM_VALUES,
+    );
+    setSignatureBoxes(e?.signatureBoxes?.length > 0 ? e?.signatureBoxes : []);
 
     pageHeights.current = {};
     pageOffsets.current = {};
