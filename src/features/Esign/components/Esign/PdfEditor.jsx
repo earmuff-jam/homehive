@@ -19,12 +19,16 @@ import {
   useGetEtssTokensByEmailIdQuery,
 } from "features/Api/esignApi";
 import { useSendPreparedDocumentMutation } from "features/Api/externalIntegrationMultipart";
-import ViewFile from "features/Esign/components/Esign/ViewFile";
 import ViewTokenAlert from "features/Esign/components/Esign/ViewTokenAlert";
 import EsignPdfActionButton from "features/Esign/components/EsignPdfActionButton/EsignPdfActionButton";
 import ViewFormTemplates from "features/Esign/components/FormTemplates/ViewFormTemplates";
 import PdfDocumentReviewBox from "features/Esign/components/PdfDocumentReviewBox/PdfDocumentReviewBox";
+import AddSigner from "features/Esign/components/Signers/AddSigner";
 import PdfDocumentReviewDialog from "features/Esign/components/Signers/PdfDocumentReviewDialog";
+import SigningBox from "features/Esign/components/ViewPdf/SigningBox";
+import ViewPdf from "features/Esign/components/ViewPdf/ViewPdf";
+import ViewPlacedFields from "features/Esign/components/ViewPlacedFields/ViewPlacedFields";
+import ViewSelectedDocument from "features/Esign/components/ViewSelectedDocument/ViewSelectedDocument";
 import {
   ACTIVE_FORM_TYPE_ENUM_VALUES,
   COLOR_ENUM_VALUES,
@@ -621,9 +625,6 @@ const PdfEditor = () => {
         />
       </Stack>
       <ViewTokenAlert tokenCount={validTokensForETSS} />
-      {!ltMediumFormFactor && (
-        <ViewFormTemplates handleUpload={getEditablePdfDocument} />
-      )}
       <Box>
         {ltMediumFormFactor ? (
           <PdfDocumentReviewBox
@@ -633,23 +634,89 @@ const PdfEditor = () => {
               laptop or a tablet to proceed."
           />
         ) : (
-          <ViewFile
-            file={file}
-            containerRef={containerRef}
-            signers={signers}
-            activeSigner={activeSigner}
-            handleSelectSigner={handleSelectSigner}
-            updateSignerDetails={updateSignerDetails}
-            setScrollTop={setScrollTop}
-            signatureBoxes={signatureBoxes}
-            removeBox={removeBox}
-            scrollTop={scrollTop}
-            pageOffsets={pageOffsets}
-            activeFieldType={activeFieldType}
-            setActiveFieldType={setActiveFieldType}
-            addFollowUpSigners={addFollowUpSigners}
-            handleRemoveSigner={handleRemoveSigner}
-          />
+          <Stack
+            direction={{ xs: "column", lg: "row" }}
+            spacing={1}
+            sx={{
+              alignItems: "center",
+            }}
+          >
+            <Box flex={1} />
+            <Box sx={{ position: "relative" }}>
+              <ViewPdf
+                containerRef={containerRef}
+                activeSigner={activeSigner}
+                setScrollTop={setScrollTop}
+              />
+              <Box
+                sx={{
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  height: "800px",
+                  pointerEvents: "none",
+                  overflow: "hidden",
+                }}
+              >
+                {signatureBoxes.map((box) => (
+                  <SigningBox
+                    key={box.id}
+                    createdBox={box}
+                    removeBox={removeBox}
+                    scrollTop={scrollTop}
+                    pageOffsets={pageOffsets}
+                  />
+                ))}
+              </Box>
+            </Box>
+            <Box
+              sx={{
+                top: 100,
+                padding: 1,
+                maxWidth: "30%",
+                position: "sticky",
+                alignSelf: "flex-start",
+              }}
+            >
+              {!ltMediumFormFactor && (
+                <ViewFormTemplates handleUpload={getEditablePdfDocument} />
+              )}
+              <AddSigner
+                signers={signers}
+                activeSigner={activeSigner}
+                handleSelectSigner={handleSelectSigner}
+                activeFieldType={activeFieldType}
+                setActiveFieldType={setActiveFieldType}
+                updateSignerDetails={updateSignerDetails}
+                addFollowUpSigners={addFollowUpSigners}
+                handleRemoveSigner={handleRemoveSigner}
+              />
+              {signatureBoxes.length > 0 && (
+                <ViewPlacedFields
+                  removeBox={removeBox}
+                  signatureBoxes={signatureBoxes}
+                />
+              )}
+            </Box>
+            {/* <ViewFile
+              file={file}
+              containerRef={containerRef}
+              signers={signers}
+              activeSigner={activeSigner}
+              handleSelectSigner={handleSelectSigner}
+              updateSignerDetails={updateSignerDetails}
+              setScrollTop={setScrollTop}
+              signatureBoxes={signatureBoxes}
+              removeBox={removeBox}
+              scrollTop={scrollTop}
+              pageOffsets={pageOffsets}
+              activeFieldType={activeFieldType}
+              setActiveFieldType={setActiveFieldType}
+              addFollowUpSigners={addFollowUpSigners}
+              handleRemoveSigner={handleRemoveSigner}
+            /> */}
+          </Stack>
         )}
       </Box>
 
