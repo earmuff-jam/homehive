@@ -22,7 +22,9 @@ import AIconButton from "common/AIconButton";
 import EditSigners from "features/Esign/components/Signers/EditSigners";
 import { ACTIVE_FORM_TYPE_ENUM_VALUES } from "features/Esign/constants";
 
-const DocumentSignerFormFields = {
+// SIGNER_FORM_FIELDS_ENUM_VALUES ...
+// defines the signer form fields
+const SIGNER_FORM_FIELDS_ENUM_VALUES = {
   name: "",
   email_address: "",
 };
@@ -44,12 +46,12 @@ const AddSigner = ({
     reset,
   } = useForm({
     mode: "onChange",
-    defaultValues: DocumentSignerFormFields,
+    defaultValues: SIGNER_FORM_FIELDS_ENUM_VALUES,
   });
 
   const onSubmit = (data) => {
     updateSignerDetails({ ...data, role: activeSigner?.role });
-    reset(DocumentSignerFormFields);
+    reset(SIGNER_FORM_FIELDS_ENUM_VALUES);
   };
 
   useEffect(() => {
