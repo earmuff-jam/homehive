@@ -23,7 +23,6 @@ import {
 } from "@mui/material";
 import AButton from "common/AButton";
 import AIconButton from "common/AIconButton";
-import TextFieldWithLabel from "common/TextFieldWithLabel";
 import EditSigners from "features/Esign/components/Signers/EditSigners";
 import { ACTIVE_FORM_TYPE_ENUM_VALUES } from "features/Esign/constants";
 
@@ -79,7 +78,8 @@ const AddSigner = ({
         control={control}
         render={({ field }) => (
           <Autocomplete
-            options={signers}
+            multiple
+            options={signers || []}
             getOptionLabel={(option) => option?.role || ""}
             isOptionEqualToValue={(option, value) => option.id === value.id}
             value={field.value}
@@ -90,7 +90,7 @@ const AddSigner = ({
                 fullWidth
                 size="small"
                 variant="outlined"
-                placeholder="Add Signer"
+                placeholder="Add Signers"
                 slotProps={{
                   input: {
                     ...params.InputProps,
