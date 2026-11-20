@@ -1,17 +1,14 @@
 import React from "react";
 
-import { Chip, Stack, Typography } from "@mui/material";
+import { Chip, Divider, Stack, Typography } from "@mui/material";
 
 const ViewPlacedFields = ({ signatureBoxes = [], removeBox }) => (
-  <Stack mt={1} spacing={0.5}>
-    <Typography
-      variant="caption"
-      color="text.secondary"
-      fontWeight={600}
-      sx={{ textTransform: "uppercase", letterSpacing: 1 }}
-    >
-      Placed Fields
-    </Typography>
+  <Stack marginTop={1} spacing={1}>
+    <Divider>
+      <Typography variant="caption" color="textSecondary">
+        Placed Fields
+      </Typography>
+    </Divider>
     {signatureBoxes?.length > 0 && (
       <Stack direction="row" flexWrap="wrap" gap={1}>
         {signatureBoxes.map((box) => (

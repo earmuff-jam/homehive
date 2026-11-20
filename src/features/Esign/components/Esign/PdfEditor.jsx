@@ -1,19 +1,13 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 
+import { useFieldArray, useForm, useWatch } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
 import { v4 as uuidv4 } from "uuid";
 
 import dayjs from "dayjs";
 
-import {
-  Box,
-  Divider,
-  Paper,
-  Stack,
-  useMediaQuery,
-  useTheme,
-} from "@mui/material";
+import { Box, Stack, useMediaQuery, useTheme } from "@mui/material";
 import ConfirmationBox, {
   DefaultConfirmationBoxProps,
 } from "common/ConfirmationBox";
@@ -35,6 +29,7 @@ import PdfDocumentReviewBox from "features/Esign/components/PdfDocumentReviewBox
 import PdfDocumentReviewDialog from "features/Esign/components/Signers/PdfDocumentReviewDialog";
 import SigningBox from "features/Esign/components/ViewPdf/SigningBox";
 import ViewPdf from "features/Esign/components/ViewPdf/ViewPdf";
+import ViewPlacedFields from "features/Esign/components/ViewPlacedFields/ViewPlacedFields";
 import {
   ACTIVE_FORM_TYPE_ENUM_VALUES,
   COLOR_ENUM_VALUES,
@@ -48,10 +43,10 @@ import {
   populateFinalFormData,
 } from "features/Esign/utils/getSigningFields";
 import withDisclaimer from "features/Esign/withDisclaimer";
-import { produce } from "immer";
 import * as pdfjsLib from "pdfjs-dist";
 import pdfWorker from "pdfjs-dist/build/pdf.worker.min?url";
 import { celebrations } from "src/utils/celebrations";
+import PdfDocumentWorkHistory from "features/Esign/components/PdfDocumentWorkHistory/PdfDocumentWorkHistory";
 
 pdfjsLib.GlobalWorkerOptions.workerSrc = pdfWorker;
 
@@ -62,7 +57,6 @@ const PdfEditor = () => {
 
   const pageHeights = useRef({});
   const pageOffsets = useRef({});
-
   const dragState = useRef(null);
   const overlayRef = useRef(null);
   const containerRef = useRef(null);
@@ -72,11 +66,10 @@ const PdfEditor = () => {
     isLoading: isLoadingValidTokensForETSS,
   } = useGetEtssTokensByEmailIdQuery(user?.email, { skip: !user?.email });
 
-  const {
-    data: esignDocuments = [],
-    isLoading: isEsignDocumentsLoading,
-    isSuccess: isEsignDocumentsSuccess,
-  } = useGetEsignDocumentsByUserIdQuery(user?.uid, { skip: !user?.uid });
+  const { data: esignDocuments = [] } = useGetEsignDocumentsByUserIdQuery(
+    user?.uid,
+    { skip: !user?.uid },
+  );
 
   const [
     executePreparedDocument,
@@ -97,49 +90,86 @@ const PdfEditor = () => {
   const [file, setFile] = useState(null);
   const [fields, setFields] = useState([]);
   const [scrollTop, setScrollTop] = useState(0);
-
   const [tokenAnchor, setTokenAnchor] = useState(null);
-  const [activeSigner, setActiveSigner] = useState(null);
   const [showSnackbar, setShowSnackbar] = useState(false);
-
   const [signatureBoxes, setSignatureBoxes] = useState([]);
-  const [signers, setSigners] = useState(INITIAL_SIGNER_ENUM_VALUES);
-
-  const [activeFieldType, setActiveFieldType] = useState(
-    ACTIVE_FORM_TYPE_ENUM_VALUES.Signature,
-  );
-
   const [showConfirmationBox, setShowConfirmationBox] = useState(
     DefaultConfirmationBoxProps,
   );
 
+  const {
+    control,
+    getValues,
+    setValue,
+    formState: { errors },
+  } = useForm({
+    mode: "onChange",
+    defaultValues: {
+      signers: INITIAL_SIGNER_ENUM_VALUES,
+      activeSignerId: null,
+      activeFieldType: ACTIVE_FORM_TYPE_ENUM_VALUES.Signature,
+    },
+  });
+
+  const {
+    fields: signerFields,
+    append: appendSigner,
+    remove: removeSigner,
+    replace: replaceSigners,
+  } = useFieldArray({
+    control,
+    name: "signers",
+    keyName: "fieldId",
+  });
+
+  const signers =
+    useWatch({
+      control,
+      name: "signers",
+    }) || [];
+
+  const activeSignerId = useWatch({
+    control,
+    name: "activeSignerId",
+  });
+
+  const activeFieldType = useWatch({
+    control,
+    name: "activeFieldType",
+  });
+
+  const activeSigner =
+    signers.find((signer) => signer.id === activeSignerId) ?? null;
+
   const ltMediumFormFactor = useMediaQuery(theme.breakpoints.down("md"));
 
   const addFollowUpSigners = () => {
-    const idx = signers?.length;
+    const currentSigners = getValues("signers") || [];
+    const idx = currentSigners.length;
     const colorIdx = (idx - 2) % COLOR_ENUM_VALUES.length;
-    const newSigner = {
+
+    appendSigner({
       id: `signer_${idx}`,
       role: `Signer ${idx}`,
       name: "",
       email_address: "",
       color: COLOR_ENUM_VALUES[Math.abs(colorIdx)],
-      order: signers.length,
-    };
-    setSigners((prev) => [...prev, newSigner]);
+      order: idx,
+    });
   };
 
-  const updateSignerDetails = (data) => {
-    const updatedSignerData = produce(signers, (draft) => {
-      const signer = draft.find((s) => s?.role === data?.role);
+  const handleSelectSigner = (signer) => {
+    const currentActiveSignerId = getValues("activeSignerId");
 
-      if (signer) {
-        signer.name = data.name;
-        signer.email_address = data.email_address;
-      }
-    });
+    setValue(
+      "activeSignerId",
+      currentActiveSignerId === signer?.id ? null : signer?.id,
+    );
+  };
 
-    setSigners(updatedSignerData);
+  const handleSelectFieldType = (signer, fieldType) => {
+    setValue("activeSignerId", signer.id);
+    setValue("activeFieldType", fieldType);
   };
 
   const getEditablePdfDocument = async (e, savedFields = []) => {
@@ -148,7 +178,9 @@ const PdfEditor = () => {
       setScrollTop(0);
       setFile(null);
       setFields([]);
-      setSigners([]);
+      replaceSigners([]);
+      setValue("activeSignerId", null);
+      setValue("activeFieldType", ACTIVE_FORM_TYPE_ENUM_VALUES.Signature);
       setSignatureBoxes([]);
       return;
     }
@@ -156,10 +188,13 @@ const PdfEditor = () => {
     setScrollTop(0);
     setFile(uploadedFile);
     setFields(e?.fields?.length > 0 ? e?.fields : []);
-    setSigners(
-      e?.signers?.length > 0 ? e?.signers : INITIAL_SIGNER_ENUM_VALUES,
+    setSignatureBoxes(e?.signatureBoxes?.length > 0 ? e.signatureBoxes : []);
+
+    setValue("activeSignerId", null);
+    setValue("activeFieldType", ACTIVE_FORM_TYPE_ENUM_VALUES.Signature);
+    replaceSigners(
+      e?.signers?.length > 0 ? e.signers : INITIAL_SIGNER_ENUM_VALUES,
     );
-    setSignatureBoxes(e?.signatureBoxes?.length > 0 ? e?.signatureBoxes : []);
 
     pageHeights.current = {};
     pageOffsets.current = {};
@@ -346,52 +381,55 @@ const PdfEditor = () => {
   };
 
   const handleRemoveSigner = (signerId) => {
-    if (signerId !== "creator") {
-      setSigners((prev) => prev.filter((s) => s.id !== signerId));
-      setSignatureBoxes((prev) => prev.filter((b) => b.signerId !== signerId));
-      if (activeSigner?.id === signerId) setActiveSigner(null);
-    }
-  };
+    if (signerId === "creator") return;
 
-  const handleSelectSigner = (signer) => {
-    if (activeSigner) {
-      const activeSignerId = activeSigner?.id;
-      if (signer?.id === activeSignerId) {
-        setActiveSigner(null);
-        return;
-      }
+    const currentSigners = getValues("signers") || [];
+    const signerIndex = currentSigners.findIndex(
+      (signer) => signer.id === signerId,
+    );
+
+    if (signerIndex === -1) return;
+
+    removeSigner(signerIndex);
+
+    setSignatureBoxes((prev) =>
+      prev.filter((box) => box.signerId !== signerId),
+    );
+
+    if (getValues("activeSignerId") === signerId) {
+      setValue("activeSignerId", null);
     }
-    setActiveSigner(signer);
   };
 
   const removeBox = (boxId) => {
-    setSignatureBoxes((prev) => prev.filter((b) => b.id !== boxId));
+    setSignatureBoxes((prev) => prev.filter((box) => box.id !== boxId));
   };
 
   const handlePrepareEsign = async (fileUniqueId) => {
     const signingFormFields = getSigningFields(signatureBoxes);
+
     const { formBytes: populatedEsignDocument } = await getEditablePDFData(
       file,
       fields,
-      false, // does not draw checkboxes; since not final version
+      false, // Does not draw checkboxes since this is not the final version.
     );
 
     if (!populatedEsignDocument) return;
+
     const previewPopulatedEsignDocument = new Blob([populatedEsignDocument], {
       type: "application/pdf",
     });
 
-    // TODO: creating a document two or more times is just adding the fileName and making it longer why?
     createEsignDocument({
       file: previewPopulatedEsignDocument,
       path: `esign/${user?.uid}/documents/${fileUniqueId}`,
       fileId: fileUniqueId,
       fileName: file?.name,
       userId: user?.uid,
-      signers: signers,
-      fields: fields,
-      signatureBoxes: signatureBoxes,
-      signingFormFields: signingFormFields,
+      signers,
+      fields,
+      signatureBoxes,
+      signingFormFields,
       createdAt: dayjs().toISOString(),
       createdBy: user?.uid,
     });
@@ -456,6 +494,7 @@ const PdfEditor = () => {
 
       const container = containerRef.current;
       const div = document.createElement("div");
+
       div.style.cssText = `
         position: absolute;
         border: 2px dashed ${activeSigner.color};
@@ -467,7 +506,9 @@ const PdfEditor = () => {
         width: 0px;
         height: 0px;
       `;
+
       const pageDiv = container.querySelector(`[data-page="${hit.pageNum}"]`);
+
       pageDiv.appendChild(div);
       overlayRef.current = div;
 
@@ -564,7 +605,7 @@ const PdfEditor = () => {
   }, [handleMouseDown, handleMouseMove, handleMouseUp]);
 
   useEffect(() => {
-    if (isExecutePreparedDocumentSuccess && !isExecutePreparedDocumentLoading) {
+    if (isExecutePreparedDocumentSuccess) {
       setFields([]);
       setFile(null);
       setShowSnackbar(true);
@@ -572,7 +613,7 @@ const PdfEditor = () => {
       navigate(0);
       celebrations.commonConfetti();
     }
-  }, [isExecutePreparedDocumentLoading]);
+  }, [isExecutePreparedDocumentSuccess, navigate]);
 
   return (
     <Stack data-tour="esign-0">
@@ -610,9 +651,7 @@ const PdfEditor = () => {
         {ltMediumFormFactor ? (
           <PdfDocumentReviewBox
             isValid={!ltMediumFormFactor}
-            errorStr="Due to the nature of document security, electronic signatures are
-              prohibited from being created in smaller screen sizes. Please use
-              laptop or a tablet to proceed."
+            errorStr="Due to the nature of document security, electronic signatures are prohibited from being created in smaller screen sizes. Please use laptop or a tablet to proceed."
           />
         ) : (
           <Stack>
@@ -633,16 +672,16 @@ const PdfEditor = () => {
                   }}
                 >
                   <EditPdfDocumentPanel
+                    signerFields={signerFields}
+                    control={control}
+                    errors={{ errors }}
                     signers={signers}
                     activeSigner={activeSigner}
                     handleSelectSigner={handleSelectSigner}
+                    handleSelectFieldType={handleSelectFieldType}
                     activeFieldType={activeFieldType}
-                    setActiveFieldType={setActiveFieldType}
-                    updateSignerDetails={updateSignerDetails}
                     addFollowUpSigners={addFollowUpSigners}
                     handleRemoveSigner={handleRemoveSigner}
-                    removeBox={removeBox}
-                    signatureBoxes={signatureBoxes}
                   />
                   <Box sx={{ position: "relative" }}>
                     <ViewPdf
@@ -650,6 +689,7 @@ const PdfEditor = () => {
                       activeSigner={activeSigner}
                       setScrollTop={setScrollTop}
                     />
+
                     <Box
                       sx={{
                         position: "absolute",
@@ -672,9 +712,7 @@ const PdfEditor = () => {
                       ))}
                     </Box>
                   </Box>
-                  <Box>
-                    WORK HISTORY GOES HERE
-                  </Box>
+                    <PdfDocumentWorkHistory removeBox={removeBox} signatureBoxes={signatureBoxes} />
                 </Stack>
               )}
             </form>

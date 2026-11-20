@@ -85,7 +85,7 @@ const ViewFormTemplates = ({ savedOptions = [], handleUpload }) => {
       }}
     >
       <Typography fontWeight="bold" color="textSecondary" gutterBottom>
-        Setup Esign
+        Edit Form Fields
       </Typography>
       <Divider>
         <Typography variant="caption" color="textSecondary">
