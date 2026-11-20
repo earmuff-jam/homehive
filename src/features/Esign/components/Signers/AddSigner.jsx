@@ -1,24 +1,29 @@
 import React, { useEffect } from "react";
 
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 
 import {
   AddCircleOutlineRounded,
+  AddRounded,
   CalendarMonthRounded,
   CancelRounded,
   GestureOutlined,
 } from "@mui/icons-material";
 import {
+  Autocomplete,
   Box,
   Chip,
   Divider,
+  InputAdornment,
   Paper,
   Stack,
+  TextField,
   Tooltip,
   Typography,
 } from "@mui/material";
 import AButton from "common/AButton";
 import AIconButton from "common/AIconButton";
+import TextFieldWithLabel from "common/TextFieldWithLabel";
 import EditSigners from "features/Esign/components/Signers/EditSigners";
 import { ACTIVE_FORM_TYPE_ENUM_VALUES } from "features/Esign/constants";
 
@@ -69,6 +74,94 @@ const AddSigner = ({
 
   return (
     <Stack spacing={1} marginBottom="1rem" data-tour="esign-4">
+      <Controller
+        name="signers"
+        control={control}
+        render={({ field }) => (
+          <Autocomplete
+            options={signers}
+            getOptionLabel={(option) => option?.role || ""}
+            isOptionEqualToValue={(option, value) => option.id === value.id}
+            value={field.value}
+            onChange={(_, value) => field.onChange(value)}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                fullWidth
+                size="small"
+                variant="outlined"
+                placeholder="Add Signer"
+                slotProps={{
+                  input: {
+                    ...params.InputProps,
+                    startAdornment: (
+                      <>
+                        <InputAdornment position="start">
+                          <AddRounded fontSize="small" />
+                        </InputAdornment>
+                        {params.InputProps.startAdornment}
+                      </>
+                    ),
+                  },
+                }}
+              />
+            )}
+          />
+        )}
+      />
+
+      <Controller
+        name="fullname"
+        control={control}
+        rules={{
+          required: "Full name is required",
+          validate: (value) =>
+            value.trim().length > 3 ||
+            "Full name must be more than 3 characters",
+          maxLength: {
+            value: 300,
+            message: "Full name should be less than 300 characters",
+          },
+        }}
+        render={({ params }) => (
+          <TextField
+            {...params}
+            fullWidth
+            size="small"
+            variant="outlined"
+            placeholder="Full name"
+            error={!!errors.fullname}
+            errorMsg={errors.fullname?.message}
+          />
+        )}
+      />
+
+      <Controller
+        name="email"
+        control={control}
+        rules={{
+          required: "Email Address is required",
+          validate: (value) =>
+            value.trim().length > 3 ||
+            "Email Address must be more than 3 characters",
+          maxLength: {
+            value: 300,
+            message: "Email Address should be less than 300 characters",
+          },
+        }}
+        render={({ params }) => (
+          <TextField
+            {...params}
+            fullWidth
+            size="small"
+            variant="outlined"
+            placeholder="Email Address"
+            error={!!errors.email}
+            errorMsg={errors.email?.message}
+          />
+        )}
+      />
+
       <Stack
         direction="row"
         justifyContent="space-between"

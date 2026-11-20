@@ -5,6 +5,7 @@ import { Controller, useForm } from "react-hook-form";
 import {
   Autocomplete,
   Box,
+  Divider,
   FormHelperText,
   TextField,
   Typography,
@@ -81,10 +82,17 @@ const ViewFormTemplates = ({ savedOptions = [], handleUpload }) => {
         top: 100,
         padding: 1,
         width: "30%",
-        alignSelf: "flex-end",
       }}
     >
-      <Typography gutterBottom>Select Document</Typography>
+      <Typography fontWeight="bold" color="textSecondary" gutterBottom>
+        Setup Esign
+      </Typography>
+      <Divider>
+        <Typography variant="caption" color="textSecondary">
+          Document Information
+        </Typography>
+      </Divider>
+      <Typography gutterBottom>Select Document *</Typography>
       <Controller
         name="template"
         control={control}

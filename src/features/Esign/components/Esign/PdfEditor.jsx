@@ -6,7 +6,14 @@ import { v4 as uuidv4 } from "uuid";
 
 import dayjs from "dayjs";
 
-import { Box, Divider, Stack, useMediaQuery, useTheme } from "@mui/material";
+import {
+  Box,
+  Divider,
+  Paper,
+  Stack,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
 import ConfirmationBox, {
   DefaultConfirmationBoxProps,
 } from "common/ConfirmationBox";
@@ -36,7 +43,6 @@ import {
   SCALE,
 } from "features/Esign/constants";
 import { getEditablePDFData } from "features/Esign/utils/getEditablePDFData";
-import { getPdfContentsFromURL } from "features/Esign/utils/getPdfContentsFromFile";
 import {
   getSigningFields,
   populateFinalFormData,
@@ -610,63 +616,68 @@ const PdfEditor = () => {
           />
         ) : (
           <Stack>
-            <ViewFormTemplates
-              handleUpload={getEditablePdfDocument}
-              savedOptions={esignDocuments}
-            />
-            {!file ? (
-              <EmptyComponent caption="Upload pdf file to begin." />
-            ) : (
-              <Stack
-                direction={{ xs: "column", lg: "row" }}
-                spacing={1}
-                sx={{
-                  alignItems: "center",
-                }}
-              >
-                <Box flex={1} />
-                <Box sx={{ position: "relative" }}>
-                  <ViewPdf
-                    containerRef={containerRef}
+            <form>
+              <ViewFormTemplates
+                handleUpload={getEditablePdfDocument}
+                savedOptions={esignDocuments}
+              />
+              {!file ? (
+                <EmptyComponent caption="Upload pdf file to begin." />
+              ) : (
+                <Stack
+                  direction={{ xs: "column", lg: "row" }}
+                  spacing={1}
+                  sx={{
+                    alignItems: "center",
+                    paddingY: 1,
+                  }}
+                >
+                  <EditPdfDocumentPanel
+                    signers={signers}
                     activeSigner={activeSigner}
-                    setScrollTop={setScrollTop}
+                    handleSelectSigner={handleSelectSigner}
+                    activeFieldType={activeFieldType}
+                    setActiveFieldType={setActiveFieldType}
+                    updateSignerDetails={updateSignerDetails}
+                    addFollowUpSigners={addFollowUpSigners}
+                    handleRemoveSigner={handleRemoveSigner}
+                    removeBox={removeBox}
+                    signatureBoxes={signatureBoxes}
                   />
-                  <Box
-                    sx={{
-                      position: "absolute",
-                      top: 0,
-                      left: 0,
-                      right: 0,
-                      height: "800px",
-                      pointerEvents: "none",
-                      overflow: "hidden",
-                    }}
-                  >
-                    {signatureBoxes.map((box) => (
-                      <SigningBox
-                        key={box.id}
-                        createdBox={box}
-                        removeBox={removeBox}
-                        scrollTop={scrollTop}
-                        pageOffsets={pageOffsets}
-                      />
-                    ))}
+                  <Box sx={{ position: "relative" }}>
+                    <ViewPdf
+                      containerRef={containerRef}
+                      activeSigner={activeSigner}
+                      setScrollTop={setScrollTop}
+                    />
+                    <Box
+                      sx={{
+                        position: "absolute",
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        height: "800px",
+                        pointerEvents: "none",
+                        overflow: "hidden",
+                      }}
+                    >
+                      {signatureBoxes.map((box) => (
+                        <SigningBox
+                          key={box.id}
+                          createdBox={box}
+                          removeBox={removeBox}
+                          scrollTop={scrollTop}
+                          pageOffsets={pageOffsets}
+                        />
+                      ))}
+                    </Box>
                   </Box>
-                </Box>
-                <EditPdfDocumentPanel
-                  signers={signers}
-                  activeSigner={activeSigner}
-                  handleSelectSigner={handleSelectSigner}
-                  activeFieldType={activeFieldType}
-                  setActiveFieldType={setActiveFieldType}
-                  updateSignerDetails={updateSignerDetails}
-                  addFollowUpSigners={addFollowUpSigners}
-                  handleRemoveSigner={handleRemoveSigner}
-                  removeBox={removeBox}
-                  signatureBoxes={signatureBoxes}
-                />
-              </Stack>
-            )}
+                  <Box>
+                    WORK HISTORY GOES HERE
+                  </Box>
+                </Stack>
+              )}
+            </form>
           </Stack>
         )}
       </Box>
