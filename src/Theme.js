@@ -103,7 +103,6 @@ const commonComponents = {
     styleOverrides: {
       root: {
         minHeight: 40,
-        borderRadius: 10,
         fontWeight: 600,
         padding: "8px 16px",
         transition:
@@ -117,13 +116,11 @@ const commonComponents = {
       sizeSmall: {
         minHeight: 34,
         padding: "6px 12px",
-        borderRadius: 8,
       },
 
       sizeLarge: {
         minHeight: 46,
         padding: "10px 20px",
-        borderRadius: 11,
       },
 
       containedPrimary: {
@@ -350,10 +347,6 @@ export const lightTheme = createTheme({
 
   typography: commonTypography,
 
-  shape: {
-    borderRadius: 10,
-  },
-
   components: {
     ...commonComponents,
 
@@ -471,10 +464,6 @@ export const darkTheme = createTheme({
   },
 
   typography: commonTypography,
-
-  shape: {
-    borderRadius: 10,
-  },
 
   components: {
     ...commonComponents,

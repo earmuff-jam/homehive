@@ -10,8 +10,7 @@ const ViewPdf = ({ containerRef, activeSigner, setScrollTop }) => {
       sx={{
         height: "800px",
         overflow: "auto",
-        // width: "50%",
-        borderRadius: 1,
+        borderRadius: 2,
         border: "1px solid #ccc",
         display: "flex",
         flexDirection: "column",

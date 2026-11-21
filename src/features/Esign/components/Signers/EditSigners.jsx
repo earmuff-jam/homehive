@@ -26,32 +26,34 @@ const EditSigners = ({ control, errors }) => {
             {...field}
             fullWidth
             label="Name"
-            placeholder="The name of the signer. Eg, Jane Smith"
+            placeholder="Signer name"
             error={!!errors.name}
             errorMsg={errors.name?.message}
           />
         )}
       />
-      <Controller
-        name="email_address"
-        control={control}
-        rules={{
-          required: "Email Address is required",
-          pattern: {
-            value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-            message: "Enter a valid email address",
-          },
-        }}
-        render={({ field }) => (
-          <TextFieldWithLabel
-            {...field}
-            label="Email"
-            error={!!errors.email_address}
-            errorMsg={errors.email_address?.message}
-            placeholder="The email address of the signer"
-          />
-        )}
-      />
+      <Stack>
+        <Controller
+          name="email_address"
+          control={control}
+          rules={{
+            required: "Email Address is required",
+            pattern: {
+              value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+              message: "Enter a valid email address",
+            },
+          }}
+          render={({ field }) => (
+            <TextFieldWithLabel
+              {...field}
+              label="Email"
+              placeholder="Signer email address"
+              error={!!errors.email_address}
+              errorMsg={errors.email_address?.message}
+            />
+          )}
+        />
+      </Stack>
     </Stack>
   );
 };

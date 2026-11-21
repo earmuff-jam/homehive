@@ -1,14 +1,14 @@
 import React from "react";
 
-import ViewSigners from "./ViewSigners";
+import PdfDocumentReviewDialog from "./PdfDocumentReviewDialog";
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 
-describe("ViewSigners Tests", () => {
-  describe("ViewSigners Snapshot Tests", () => {
+describe("PdfDocumentReviewDialog Tests", () => {
+  describe("PdfDocumentReviewDialog Snapshot Tests", () => {
     it("matches snapshot", () => {
       const { container } = render(
-        <ViewSigners
+        <PdfDocumentReviewDialog
           signers={[
             {
               id: "creator",
@@ -30,7 +30,7 @@ describe("ViewSigners Tests", () => {
     });
   });
 
-  describe("ViewSigners Component Tests", () => {
+  describe("PdfDocumentReviewDialog Component Tests", () => {
     const baseSigner = [
       {
         id: "creator",
@@ -50,7 +50,10 @@ describe("ViewSigners Tests", () => {
 
     it("renders assigned signers", () => {
       render(
-        <ViewSigners signers={baseSigner} signatureBoxes={baseSignatureBox} />,
+        <PdfDocumentReviewDialog
+          signers={baseSigner}
+          signatureBoxes={baseSignatureBox}
+        />,
       );
 
       expect(screen.getByText("Assigned Signers:")).toBeInTheDocument();
@@ -60,14 +63,19 @@ describe("ViewSigners Tests", () => {
 
     it("shows success alert when signature box counts match", () => {
       render(
-        <ViewSigners signers={baseSigner} signatureBoxes={baseSignatureBox} />,
+        <PdfDocumentReviewDialog
+          signers={baseSigner}
+          signatureBoxes={baseSignatureBox}
+        />,
       );
 
       expect(screen.getByText(/Found 1 signature boxes/i)).toBeInTheDocument();
     });
 
     it("shows mismatch error when signature boxes are missing fieldType", () => {
-      render(<ViewSigners signers={baseSigner} signatureBoxes={[]} />);
+      render(
+        <PdfDocumentReviewDialog signers={baseSigner} signatureBoxes={[]} />,
+      );
 
       expect(
         screen.getByText(/You have 1 signers but 0 signature boxes/i),
@@ -76,7 +84,7 @@ describe("ViewSigners Tests", () => {
 
     it("shows missing fields error when email is missing", () => {
       render(
-        <ViewSigners
+        <PdfDocumentReviewDialog
           signers={[
             {
               id: "creator",
