@@ -2,14 +2,15 @@ import React from "react";
 
 import { Controller, useForm } from "react-hook-form";
 
+import { CancelRounded } from "@mui/icons-material";
 import {
   Autocomplete,
   Box,
   Divider,
-  FormHelperText,
   TextField,
   Typography,
 } from "@mui/material";
+import AIconButton from "common/AIconButton";
 import { getPreprocessedFile } from "features/Esign/utils/getPreprocessedFile";
 
 // DEFAULT_PDF_FORM_TEMPLATE_OPTIONS ...
@@ -45,7 +46,7 @@ const DefaultPdfFormTemplates = {
   template: null,
 };
 
-const ViewFormTemplates = ({ savedOptions = [], handleUpload }) => {
+const ViewFormTemplates = ({ savedOptions = [], handleUpload, handleRemove }) => {
   const { control } = useForm({
     mode: "onChange",
     defaultValues: DefaultPdfFormTemplates,
@@ -108,6 +109,29 @@ const ViewFormTemplates = ({ savedOptions = [], handleUpload }) => {
               field.onChange(value);
               handleSelect(value);
             }}
+            renderOption={(props, option) => (
+              <li {...props} key={option.id}>
+                <Box
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="space-between"
+                  width="100%"
+                >
+                  {option?.name || `Saved ${option?.fileName}`}
+
+                  {savedOptions.some((saved) => saved.id === option.id) && (
+                    <AIconButton
+                      size="small"
+                      onClick={(event) => {
+                        event.stopPropagation();
+                        handleRemove(option?.id);
+                      }}
+                      label={<CancelRounded fontSize="small" color="error" />}
+                    />
+                  )}
+                </Box>
+              </li>
+            )}
             renderInput={(params) => (
               <TextField
                 {...params}

@@ -19,6 +19,7 @@ import {
   useCreateEsignDocumentMutation,
   useGetEsignDocumentsByUserIdQuery,
   useGetEtssTokensByEmailIdQuery,
+  useRemoveEsignDocumentMutation,
 } from "features/Api/esignApi";
 import { useSendPreparedDocumentMutation } from "features/Api/externalIntegrationMultipart";
 import EditPdfDocumentPanel from "features/Esign/components/EditPdfDocumentPanel/EditPdfDocumentPanel";
@@ -26,10 +27,10 @@ import ViewTokenAlert from "features/Esign/components/Esign/ViewTokenAlert";
 import EsignPdfActionButton from "features/Esign/components/EsignPdfActionButton/EsignPdfActionButton";
 import ViewFormTemplates from "features/Esign/components/FormTemplates/ViewFormTemplates";
 import PdfDocumentReviewBox from "features/Esign/components/PdfDocumentReviewBox/PdfDocumentReviewBox";
+import PdfDocumentWorkHistory from "features/Esign/components/PdfDocumentWorkHistory/PdfDocumentWorkHistory";
 import PdfDocumentReviewDialog from "features/Esign/components/Signers/PdfDocumentReviewDialog";
 import SigningBox from "features/Esign/components/ViewPdf/SigningBox";
 import ViewPdf from "features/Esign/components/ViewPdf/ViewPdf";
-import ViewPlacedFields from "features/Esign/components/ViewPlacedFields/ViewPlacedFields";
 import {
   ACTIVE_FORM_TYPE_ENUM_VALUES,
   COLOR_ENUM_VALUES,
@@ -46,7 +47,6 @@ import withDisclaimer from "features/Esign/withDisclaimer";
 import * as pdfjsLib from "pdfjs-dist";
 import pdfWorker from "pdfjs-dist/build/pdf.worker.min?url";
 import { celebrations } from "src/utils/celebrations";
-import PdfDocumentWorkHistory from "features/Esign/components/PdfDocumentWorkHistory/PdfDocumentWorkHistory";
 
 pdfjsLib.GlobalWorkerOptions.workerSrc = pdfWorker;
 
@@ -78,6 +78,14 @@ const PdfEditor = () => {
       isSuccess: isExecutePreparedDocumentSuccess,
     },
   ] = useSendPreparedDocumentMutation();
+
+  const [
+    removeEsignDocument,
+    {
+      isLoading: isRemoveEsignDocumentLoading,
+      isSuccess: isRemoveEsignDocumentSuccess,
+    },
+  ] = useRemoveEsignDocumentMutation();
 
   const [
     createEsignDocument,
@@ -414,7 +422,7 @@ const PdfEditor = () => {
       false, // Does not draw checkboxes since this is not the final version.
     );
 
-    if (!populatedEsignDocument) return;
+    if (!fileUniqueId || !populatedEsignDocument) return;
 
     const previewPopulatedEsignDocument = new Blob([populatedEsignDocument], {
       type: "application/pdf",
@@ -434,7 +442,10 @@ const PdfEditor = () => {
       createdBy: user?.uid,
     });
 
-    setShowConfirmationBox({ value: true, updateKey: "esign" });
+    setShowConfirmationBox({
+      value: true,
+      updateKey: "review_esign_document",
+    });
   };
 
   const exportPdf = async () => {
@@ -591,6 +602,9 @@ const PdfEditor = () => {
     [getCoordsForCanvas, activeFieldType],
   );
 
+  const shouldReviewEsignDoc =
+    showConfirmationBox?.updateKey === "review_esign_document";
+
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
@@ -603,6 +617,12 @@ const PdfEditor = () => {
       window.removeEventListener("mouseup", handleMouseUp);
     };
   }, [handleMouseDown, handleMouseMove, handleMouseUp]);
+
+  useEffect(() => {
+    if (isRemoveEsignDocumentSuccess && !isRemoveEsignDocumentLoading) {
+      setShowConfirmationBox({ value: false, updateKey: "" });
+    }
+  }, [isRemoveEsignDocumentLoading]);
 
   useEffect(() => {
     if (isExecutePreparedDocumentSuccess) {
@@ -657,8 +677,14 @@ const PdfEditor = () => {
           <Stack>
             <form>
               <ViewFormTemplates
-                handleUpload={getEditablePdfDocument}
                 savedOptions={esignDocuments}
+                handleUpload={getEditablePdfDocument}
+                handleRemove={(id) =>
+                  setShowConfirmationBox({
+                    value: true,
+                    updateKey: id,
+                  })
+                }
               />
               {!file ? (
                 <EmptyComponent caption="Upload pdf file to begin." />
@@ -712,7 +738,10 @@ const PdfEditor = () => {
                       ))}
                     </Box>
                   </Box>
-                    <PdfDocumentWorkHistory removeBox={removeBox} signatureBoxes={signatureBoxes} />
+                  <PdfDocumentWorkHistory
+                    removeBox={removeBox}
+                    signatureBoxes={signatureBoxes}
+                  />
                 </Stack>
               )}
             </form>
@@ -721,26 +750,39 @@ const PdfEditor = () => {
       </Box>
 
       <ConfirmationBox
-        maxWidth="md"
+        maxWidth={shouldReviewEsignDoc ? "md" : undefined}
         isBlocked={validTokensForETSS <= 0}
-        title="Send document to signers?"
-        captionText="Action consumes 1 non-refundable token. Proceed?"
+        title={shouldReviewEsignDoc ? "Send document to signers?" : undefined}
+        captionText={
+          shouldReviewEsignDoc
+            ? "Action consumes 1 non-refundable token. Proceed?"
+            : "Removed esign documents disrupt auto renewal workflow. Are you sure you want to proceed with this action?"
+        }
         isOpen={showConfirmationBox?.value}
         isLoading={isExecutePreparedDocumentLoading}
         handleCancel={() =>
           setShowConfirmationBox({ value: false, updateKey: "" })
         }
-        handleConfirm={exportPdf}
+        handleConfirm={
+          shouldReviewEsignDoc
+            ? () => exportPdf()
+            : () =>
+                removeEsignDocument({
+                  fileId: showConfirmationBox?.updateKey,
+                  path: `esign/${user?.uid}/documents/${showConfirmationBox?.updateKey}`,
+                })
+        }
       >
-        <PdfDocumentReviewDialog
-          signers={signers}
-          tokenCount={validTokensForETSS}
-          signatureBoxes={signatureBoxes}
-          previewData={createEsignDocumentOrginalArgs}
-          isCreateEsignDocumentLoading={isCreateEsignDocumentLoading}
-        />
+        {shouldReviewEsignDoc && (
+          <PdfDocumentReviewDialog
+            signers={signers}
+            tokenCount={validTokensForETSS}
+            signatureBoxes={signatureBoxes}
+            previewData={createEsignDocumentOrginalArgs}
+            isCreateEsignDocumentLoading={isCreateEsignDocumentLoading}
+          />
+        )}
       </ConfirmationBox>
-
       <CustomSnackbar
         showSnackbar={showSnackbar}
         setShowSnackbar={setShowSnackbar}

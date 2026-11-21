@@ -1,13 +1,19 @@
 import { createApi, fakeBaseQuery } from "@reduxjs/toolkit/query/react";
 import {
   collection,
+  deleteDoc,
   doc,
   getDocs,
   query,
   setDoc,
   where,
 } from "firebase/firestore";
-import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import {
+  deleteObject,
+  getDownloadURL,
+  ref,
+  uploadBytes,
+} from "firebase/storage";
 import { authenticatorFirestore as db, firebaseCloudStorage } from "src/config";
 
 const ESIGN_DB_NAME = "esign";
@@ -165,6 +171,32 @@ export const esignApi = createApi({
       },
       providesTags: [EsignApiTagTypes.EsignPrefilledDocument],
     }),
+
+    // removeEsignDocument ...
+    // defines a function that removes a selected pdf document from storage and its metadata
+    removeEsignDocument: builder.mutation({
+      async queryFn({ fileId, path }) {
+        try {
+          const storageRef = ref(firebaseCloudStorage, path);
+          await deleteObject(storageRef);
+
+          const docRef = doc(db, ESIGN_DB_NAME, fileId);
+          await deleteDoc(docRef);
+
+          return {
+            data: { fileId },
+          };
+        } catch (error) {
+          return {
+            error: {
+              message: error?.message ?? "Failed to remove pdf document",
+              code: error?.code,
+            },
+          };
+        }
+      },
+      invalidatesTags: [EsignApiTagTypes.EsignPrefilledDocument],
+    }),
   }),
 });
 
@@ -172,4 +204,5 @@ export const {
   useGetEtssTokensByEmailIdQuery,
   useGetEsignDocumentsByUserIdQuery,
   useCreateEsignDocumentMutation,
+  useRemoveEsignDocumentMutation,
 } = esignApi;
