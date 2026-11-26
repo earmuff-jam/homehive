@@ -52,10 +52,6 @@ const manifestForPlugIn = {
 
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => {
-  const isPlaywrightServer =
-    process.env.VITE_ENABLE_DEV_ENV === "true" &&
-    process.env.VITE_PLAYWRIGHT_TEST === "true";
-
   return {
     plugins: [
       react(),
@@ -83,24 +79,6 @@ export default defineConfig(({ mode }) => {
     },
     resolve: {
       alias: [
-        ...(isPlaywrightServer
-          ? [
-              {
-                find: "features/Auth/AuthenticationGuard",
-                replacement: path.resolve(
-                  __dirname,
-                  "src/features/Auth/AuthenticationGuard.mock.jsx",
-                ),
-              },
-              {
-                find: "features/Subscription/SubscriptionGuard",
-                replacement: path.resolve(
-                  __dirname,
-                  "src/features/Subscription/SubscriptionGuard.mock.jsx",
-                ),
-              },
-            ]
-          : []),
         {
           find: "common",
           replacement: path.resolve(__dirname, "src/common"),

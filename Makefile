@@ -22,12 +22,6 @@ test:
 	cd src
 	npm run test
 
-playwright:
-	npx playwright test
-
-playwright-ui:
-	npx playwright test --ui
-
 start:
 	npx netlify dev
 

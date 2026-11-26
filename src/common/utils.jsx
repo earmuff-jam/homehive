@@ -73,17 +73,7 @@ export function createHelperSentences(verbStr, extraClauseStr) {
 
 // fetchLoggedInUser ...
 // defines a function where we return the user logged in values
-// in emulation mode; secureLocalStorage is unavailable due to node.js env
-export const fetchLoggedInUser = () => {
-  const isDevEnvEnabled = isSelectedFeatureEnabled("devEnv");
-  const isPlaywrightEnabled = isSelectedFeatureEnabled("playwright");
-
-  const isPlaywrightEnvEnabled = isDevEnvEnabled && isPlaywrightEnabled;
-
-  return isPlaywrightEnvEnabled
-    ? JSON.parse(localStorage.getItem("user"))
-    : secureLocalStorage.getItem("user");
-};
+export const fetchLoggedInUser = () => secureLocalStorage.getItem("user");
 
 // isBasePlanUser ...
 // defines a function to determine if a user is without a role
