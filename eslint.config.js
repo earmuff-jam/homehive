@@ -8,18 +8,15 @@ export default [
   {
     ignores: [
       "vite.config.js",
-      "playwright.config.js",
       "**/dist/**",
       "**/dev/**",
       "**/dev-dist/**",
       "**/.netlify/**",
       "**/netlify/**",
-      "**/__mocks__/**",
       "**/*.test.js",
       "**/*.setup.js",
       "**/coverage/**",
       "**/test-results/**",
-      "**/playwright-report/**",
     ],
   },
   {
