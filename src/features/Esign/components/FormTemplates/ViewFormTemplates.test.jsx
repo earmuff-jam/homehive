@@ -139,7 +139,7 @@ describe("ViewFormTemplates", () => {
         target: {
           files: [readableFile],
         },
-        savedFields: [],
+        pdfFormFields: [],
         signatureBoxes: [],
         signers: [],
       });
@@ -152,7 +152,7 @@ describe("ViewFormTemplates", () => {
       name: "Custom Lease",
       fileName: "custom-lease.pdf",
       filePath: "/saved/custom-lease.pdf",
-      fields: [{ name: "tenantName", value: "John" }],
+      pdfFormFields: [{ name: "tenantName", value: "John" }],
       signatureBoxes: [{ fieldType: "signature" }],
       signers: [{ id: "tenant_1" }],
     };
@@ -175,7 +175,7 @@ describe("ViewFormTemplates", () => {
         target: {
           files: [readableFile],
         },
-        savedFields: savedTemplate.fields,
+        pdfFormFields: savedTemplate.pdfFormFields,
         signatureBoxes: savedTemplate.signatureBoxes,
         signers: savedTemplate.signers,
       });
@@ -203,7 +203,7 @@ describe("ViewFormTemplates", () => {
         target: {
           files: [readableFile],
         },
-        savedFields: [],
+        pdfFormFields: [],
         signatureBoxes: [],
         signers: [],
       });

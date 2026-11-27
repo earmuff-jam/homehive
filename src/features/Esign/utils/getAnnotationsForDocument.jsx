@@ -3,7 +3,7 @@ import { DEFAULT_TEXT_SIZE, SCALE } from "features/Esign/constants";
 const buildAnnotationForTxFieldType = (
   annotation,
   newFields,
-  setFields,
+  setPdfFormFields,
   fieldName,
   { leftPx, topPx, widthPx, heightPx, pageDiv, container },
 ) => {
@@ -35,7 +35,7 @@ const buildAnnotationForTxFieldType = (
       value = `${mm}/${dd}/${yyyy}`;
     }
 
-    setFields((prev) => {
+    setPdfFormFields((prev) => {
       const copy = [...prev];
       const existing = copy.find((f) => f.name === fieldName);
       if (existing) existing.value = value;
@@ -73,19 +73,19 @@ const buildAnnotationForTxFieldType = (
 const buildAnnotationForCheckboxFieldType = (
   annotation,
   newFields,
-  setFields,
-  savedFields,
+  setPdfFormFields,
+  pdfFormFields,
   fieldName,
   { leftPx, topPx, widthPx, heightPx, x1, y1, pageDiv, container, pageNumber },
 ) => {
   const input = document.createElement("input");
   input.type = "checkbox";
 
-  const savedField = savedFields?.find(
+  const savedField = pdfFormFields?.find(
     (field) =>
       field.type === "checkbox" &&
       field.name === fieldName &&
-      field.pageNum === pageNumber,
+      field.pageNumber === pageNumber,
   );
 
   const checked = savedField
@@ -105,13 +105,13 @@ const buildAnnotationForCheckboxFieldType = (
     margin: "0",
   });
 
-  input.onChange = () => {
-    setFields((prev) => {
+  input.onchange = () => {
+    setPdfFormFields((prev) => {
       const copy = [...prev];
       const existing = copy.find(
         (f) =>
           f.name === fieldName &&
-          f.pageNum === pageNumber &&
+          f.pageNumber === pageNumber &&
           f.rect?.[0] === x1 &&
           f.rect?.[1] === y1,
       );
@@ -150,8 +150,8 @@ const buildAnnotationForCheckboxFieldType = (
 const getAnnotationsForDocument = (
   annotations = [],
   newFields,
-  setFields,
-  savedFields = [],
+  setPdfFormFields,
+  pdfFormFields = [],
   { pageNumber, viewport, pageDiv, container },
 ) => {
   annotations?.forEach((annotation) => {
@@ -169,7 +169,7 @@ const getAnnotationsForDocument = (
       buildAnnotationForTxFieldType(
         annotation,
         newFields,
-        setFields,
+        setPdfFormFields,
         fieldName,
         { leftPx, topPx, widthPx, heightPx, pageDiv, container },
       );
@@ -179,8 +179,8 @@ const getAnnotationsForDocument = (
       buildAnnotationForCheckboxFieldType(
         annotation,
         newFields,
-        setFields,
-        savedFields,
+        setPdfFormFields,
+        pdfFormFields,
         fieldName,
         {
           leftPx,

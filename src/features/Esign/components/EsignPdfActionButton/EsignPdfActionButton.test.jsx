@@ -13,8 +13,8 @@ vi.mock("uuid", () => ({
 }));
 
 vi.mock("common/AButton", () => ({
-  default: ({ label, onClick, disabled, isLoading }) => (
-    <button onClick={onClick} disabled={disabled} data-loading={isLoading}>
+  default: ({ label, onClick, disabled, loading }) => (
+    <button onClick={onClick} disabled={disabled} data-loading={loading}>
       {label}
     </button>
   ),

@@ -94,7 +94,6 @@ const PdfEditor = () => {
   ] = useCreateEsignDocumentMutation();
 
   const [file, setFile] = useState(null);
-  const [fields, setFields] = useState([]);
   const [scrollTop, setScrollTop] = useState(0);
   const [tokenAnchor, setTokenAnchor] = useState(null);
   const [showSnackbar, setShowSnackbar] = useState(false);
@@ -110,11 +109,17 @@ const PdfEditor = () => {
   } = useForm({
     mode: "onChange",
     defaultValues: {
+      pdfForm: [],
       signatureBoxes: [],
       activeSignerId: null,
       signers: INITIAL_SIGNER_ENUM_VALUES,
       activeFieldType: ACTIVE_FORM_TYPE_ENUM_VALUES.Signature,
     },
+  });
+
+  const { fields: pdfFormFields, replace: replacePdfForm } = useFieldArray({
+    control,
+    name: "pdfForm",
   });
 
   const {
@@ -213,12 +218,23 @@ const PdfEditor = () => {
 
   const removeBox = (boxId) => removeSignatureBox(boxId);
 
+  const setPdfFormFields = (updater) => {
+    const currentFields = getValues("pdfForm") || [];
+
+    const updatedFields =
+      typeof updater === "function" ? updater(currentFields) : updater;
+
+    setValue("pdfForm", updatedFields, {
+      shouldDirty: true,
+    });
+  };
+
   const handlePrepareEsign = async (fileUniqueId) => {
     const signingFormFields = getSigningFields(signatureBoxes);
 
     const { formBytes: populatedEsignDocument } = await getEditablePDFData(
       file,
-      fields,
+      pdfFormFields,
       false, // Does not draw checkboxes since this is not the final version.
     );
 
@@ -235,7 +251,7 @@ const PdfEditor = () => {
       fileName: file?.name,
       userId: user?.uid,
       signers,
-      fields,
+      pdfFormFields,
       signatureBoxes,
       signingFormFields,
       createdAt: dayjs().toISOString(),
@@ -253,7 +269,7 @@ const PdfEditor = () => {
     if (!uploadedFile) {
       setScrollTop(0);
       setFile(null);
-      setFields([]);
+      replacePdfForm([]);
       replaceSigners([]);
       setValue("signatureBoxes", []);
       setValue("activeSignerId", null);
@@ -263,9 +279,11 @@ const PdfEditor = () => {
 
     setScrollTop(0);
     setFile(uploadedFile);
-    setFields(e?.savedFields || []);
+    replacePdfForm(e?.pdfFormFields || []);
     replaceSignatureBox(e?.signatureBoxes || []);
-    replaceSigners(e?.signers || INITIAL_SIGNER_ENUM_VALUES);
+    replaceSigners(
+      e?.signers?.length > 0 ? e?.signers : INITIAL_SIGNER_ENUM_VALUES,
+    );
 
     setValue("activeSignerId", null);
     setValue("activeFieldType", ACTIVE_FORM_TYPE_ENUM_VALUES.Signature);
@@ -302,8 +320,8 @@ const PdfEditor = () => {
       getAnnotationsForDocument(
         annotations,
         newFields,
-        setFields,
-        e?.savedFields,
+        setPdfFormFields,
+        e?.pdfFormFields,
         {
           pageNumber: pageNum,
           viewport,
@@ -315,7 +333,7 @@ const PdfEditor = () => {
       container.appendChild(pageDiv);
     }
 
-    setFields(newFields);
+    replacePdfForm(newFields);
 
     requestAnimationFrame(() => {
       Array.from(container.querySelectorAll("[data-page]")).forEach((div) => {
@@ -330,7 +348,7 @@ const PdfEditor = () => {
       pdfDoc,
       form,
       formBytes: populatedEsignDocument,
-    } = await getEditablePDFData(file, fields);
+    } = await getEditablePDFData(file, pdfFormFields);
 
     if (!populatedEsignDocument || !form) return;
 
@@ -500,8 +518,11 @@ const PdfEditor = () => {
 
   useEffect(() => {
     if (isExecutePreparedDocumentSuccess) {
-      setFields([]);
       setFile(null);
+      replacePdfForm([]);
+      replaceSigners([]);
+      replaceSignatureBox([]);
+
       setShowSnackbar(true);
       setShowConfirmationBox({ value: false, updateKey: "" });
       navigate(0);
@@ -511,45 +532,45 @@ const PdfEditor = () => {
 
   return (
     <Stack data-tour="esign-0">
-      <Stack
-        direction="row"
-        justifyContent="space-between"
-        alignItems="center"
-        paddingBottom="1rem"
-      >
-        <RowHeader
-          title="Create E-signature"
-          caption="Create or revise documents for Esign"
-          sxProps={{
-            textAlign: "left",
-            fontWeight: "bold",
-            color: "text.secondary",
-          }}
-        />
-        <EsignPdfActionButton
-          file={file}
-          fields={fields}
-          tokenAnchor={tokenAnchor}
-          setTokenAnchor={setTokenAnchor}
-          validTokensForETSS={validTokensForETSS}
-          ltMediumFormFactor={ltMediumFormFactor}
-          handlePrepareEsign={handlePrepareEsign}
-          selectedEsignDocument={esignDocuments[0]}
-          getEditablePdfDocument={getEditablePdfDocument}
-          isLoadingValidTokensForETSS={isLoadingValidTokensForETSS}
-          isCreateEsignDocumentLoading={isCreateEsignDocumentLoading}
-        />
-      </Stack>
-      <ViewTokenAlert tokenCount={validTokensForETSS} />
-      <Box>
-        {ltMediumFormFactor ? (
-          <PdfDocumentReviewBox
-            isValid={!ltMediumFormFactor}
-            errorStr="Due to the nature of document security, electronic signatures are prohibited from being created in smaller screen sizes. Please use laptop or a tablet to proceed."
+      <form>
+        <Stack
+          direction="row"
+          justifyContent="space-between"
+          alignItems="center"
+          paddingBottom="1rem"
+        >
+          <RowHeader
+            title="Create E-signature"
+            caption="Create or revise documents for Esign"
+            sxProps={{
+              textAlign: "left",
+              fontWeight: "bold",
+              color: "text.secondary",
+            }}
           />
-        ) : (
-          <Stack>
-            <form>
+          <EsignPdfActionButton
+            file={file}
+            fields={pdfFormFields}
+            tokenAnchor={tokenAnchor}
+            setTokenAnchor={setTokenAnchor}
+            validTokensForETSS={validTokensForETSS}
+            ltMediumFormFactor={ltMediumFormFactor}
+            handlePrepareEsign={handlePrepareEsign}
+            selectedEsignDocument={esignDocuments[0]}
+            getEditablePdfDocument={getEditablePdfDocument}
+            isLoadingValidTokensForETSS={isLoadingValidTokensForETSS}
+            isCreateEsignDocumentLoading={isCreateEsignDocumentLoading}
+          />
+        </Stack>
+        <ViewTokenAlert tokenCount={validTokensForETSS} />
+        <Box>
+          {ltMediumFormFactor ? (
+            <PdfDocumentReviewBox
+              isValid={!ltMediumFormFactor}
+              errorStr="Due to the nature of document security, electronic signatures are prohibited from being created in smaller screen sizes. Please use laptop or a tablet to proceed."
+            />
+          ) : (
+            <Stack>
               <ViewFormTemplates
                 savedOptions={esignDocuments}
                 handleUpload={getEditablePdfDocument}
@@ -611,10 +632,10 @@ const PdfEditor = () => {
                   />
                 </Stack>
               )}
-            </form>
-          </Stack>
-        )}
-      </Box>
+            </Stack>
+          )}
+        </Box>
+      </form>
 
       <ConfirmationBox
         maxWidth={shouldReviewEsignDoc ? "md" : undefined}
