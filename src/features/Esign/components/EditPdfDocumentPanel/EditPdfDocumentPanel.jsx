@@ -22,6 +22,17 @@ import AButton from "common/AButton";
 import AIconButton from "common/AIconButton";
 import { ACTIVE_FORM_TYPE_ENUM_VALUES } from "features/Esign/constants";
 
+const getFieldRules = (fieldName) => ({
+  required: `${fieldName} is required`,
+  validate: (value) =>
+    (value || "").trim().length > 3 ||
+    `${fieldName} must be more than 3 characters`,
+  maxLength: {
+    value: 300,
+    message: `${fieldName} should be less than 300 characters`,
+  },
+});
+
 const EditPdfDocumentPanel = ({
   signerFields = [],
   control,
@@ -34,17 +45,6 @@ const EditPdfDocumentPanel = ({
   addFollowUpSigners,
   handleRemoveSigner,
 }) => {
-  const getFieldRules = (fieldName) => ({
-    required: `${fieldName} is required`,
-    validate: (value) =>
-      (value || "").trim().length > 3 ||
-      `${fieldName} must be more than 3 characters`,
-    maxLength: {
-      value: 300,
-      message: `${fieldName} should be less than 300 characters`,
-    },
-  });
-
   return (
     <Box
       sx={{

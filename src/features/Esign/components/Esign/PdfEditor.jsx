@@ -98,7 +98,6 @@ const PdfEditor = () => {
   const [scrollTop, setScrollTop] = useState(0);
   const [tokenAnchor, setTokenAnchor] = useState(null);
   const [showSnackbar, setShowSnackbar] = useState(false);
-  const [signatureBoxes, setSignatureBoxes] = useState([]);
   const [showConfirmationBox, setShowConfirmationBox] = useState(
     DefaultConfirmationBoxProps,
   );
@@ -111,8 +110,9 @@ const PdfEditor = () => {
   } = useForm({
     mode: "onChange",
     defaultValues: {
-      signers: INITIAL_SIGNER_ENUM_VALUES,
+      signatureBoxes: [],
       activeSignerId: null,
+      signers: INITIAL_SIGNER_ENUM_VALUES,
       activeFieldType: ACTIVE_FORM_TYPE_ENUM_VALUES.Signature,
     },
   });
@@ -126,6 +126,17 @@ const PdfEditor = () => {
     control,
     name: "signers",
     keyName: "fieldId",
+  });
+
+  const {
+    fields: signatureBoxes,
+    append: appendSignatureBox,
+    remove: removeSignatureBox,
+    replace: replaceSignatureBox,
+  } = useFieldArray({
+    control,
+    name: "signatureBoxes",
+    keyName: "signatureBoxId",
   });
 
   const signers =
@@ -178,6 +189,65 @@ const PdfEditor = () => {
     setValue("activeFieldType", fieldType);
   };
 
+  const handleRemoveSigner = (signerId) => {
+    if (signerId === "creator") return;
+
+    const currentSigners = getValues("signers") || [];
+    const signerIndex = currentSigners.findIndex(
+      (signer) => signer.id === signerId,
+    );
+
+    removeSigner(signerIndex);
+
+    // removes all signature boxes for the removed signer
+    removeSignatureBox(
+      signatureBoxes.reduce((acc, el, index) => {
+        if (el.signerId === signerId) acc.push(index);
+        return acc;
+      }, []),
+    );
+
+    getValues("activeSignerId") === signerId &&
+      setValue("activeSignerId", null);
+  };
+
+  const removeBox = (boxId) => removeSignatureBox(boxId);
+
+  const handlePrepareEsign = async (fileUniqueId) => {
+    const signingFormFields = getSigningFields(signatureBoxes);
+
+    const { formBytes: populatedEsignDocument } = await getEditablePDFData(
+      file,
+      fields,
+      false, // Does not draw checkboxes since this is not the final version.
+    );
+
+    if (!fileUniqueId || !populatedEsignDocument) return;
+
+    const previewPopulatedEsignDocument = new Blob([populatedEsignDocument], {
+      type: "application/pdf",
+    });
+
+    createEsignDocument({
+      file: previewPopulatedEsignDocument,
+      path: `esign/${user?.uid}/documents/${fileUniqueId}`,
+      fileId: fileUniqueId,
+      fileName: file?.name,
+      userId: user?.uid,
+      signers,
+      fields,
+      signatureBoxes,
+      signingFormFields,
+      createdAt: dayjs().toISOString(),
+      createdBy: user?.uid,
+    });
+
+    setShowConfirmationBox({
+      value: true,
+      updateKey: "review_esign_document",
+    });
+  };
+
   const getEditablePdfDocument = async (e) => {
     const uploadedFile = e.target.files[0];
     if (!uploadedFile) {
@@ -185,22 +255,20 @@ const PdfEditor = () => {
       setFile(null);
       setFields([]);
       replaceSigners([]);
+      setValue("signatureBoxes", []);
       setValue("activeSignerId", null);
       setValue("activeFieldType", ACTIVE_FORM_TYPE_ENUM_VALUES.Signature);
-      setSignatureBoxes([]);
       return;
     }
 
     setScrollTop(0);
     setFile(uploadedFile);
-    setFields(e?.savedFields?.length > 0 ? e?.savedFields : []);
-    setSignatureBoxes(e?.signatureBoxes?.length > 0 ? e.signatureBoxes : []);
+    setFields(e?.savedFields || []);
+    replaceSignatureBox(e?.signatureBoxes || []);
+    replaceSigners(e?.signers || INITIAL_SIGNER_ENUM_VALUES);
 
     setValue("activeSignerId", null);
     setValue("activeFieldType", ACTIVE_FORM_TYPE_ENUM_VALUES.Signature);
-    replaceSigners(
-      e?.signers?.length > 0 ? e.signers : INITIAL_SIGNER_ENUM_VALUES,
-    );
 
     pageHeights.current = {};
     pageOffsets.current = {};
@@ -254,66 +322,6 @@ const PdfEditor = () => {
         const pn = parseInt(div.dataset.page, 10);
         pageOffsets.current[pn] = div.offsetTop;
       });
-    });
-  };
-
-  const handleRemoveSigner = (signerId) => {
-    if (signerId === "creator") return;
-
-    const currentSigners = getValues("signers") || [];
-    const signerIndex = currentSigners.findIndex(
-      (signer) => signer.id === signerId,
-    );
-
-    if (signerIndex === -1) return;
-
-    removeSigner(signerIndex);
-
-    setSignatureBoxes((prev) =>
-      prev.filter((box) => box.signerId !== signerId),
-    );
-
-    if (getValues("activeSignerId") === signerId) {
-      setValue("activeSignerId", null);
-    }
-  };
-
-  const removeBox = (boxId) => {
-    setSignatureBoxes((prev) => prev.filter((box) => box.id !== boxId));
-  };
-
-  const handlePrepareEsign = async (fileUniqueId) => {
-    const signingFormFields = getSigningFields(signatureBoxes);
-
-    const { formBytes: populatedEsignDocument } = await getEditablePDFData(
-      file,
-      fields,
-      false, // Does not draw checkboxes since this is not the final version.
-    );
-
-    if (!fileUniqueId || !populatedEsignDocument) return;
-
-    const previewPopulatedEsignDocument = new Blob([populatedEsignDocument], {
-      type: "application/pdf",
-    });
-
-    createEsignDocument({
-      file: previewPopulatedEsignDocument,
-      path: `esign/${user?.uid}/documents/${fileUniqueId}`,
-      fileId: fileUniqueId,
-      fileName: file?.name,
-      userId: user?.uid,
-      signers,
-      fields,
-      signatureBoxes,
-      signingFormFields,
-      createdAt: dayjs().toISOString(),
-      createdBy: user?.uid,
-    });
-
-    setShowConfirmationBox({
-      value: true,
-      updateKey: "review_esign_document",
     });
   };
 
@@ -448,25 +456,22 @@ const PdfEditor = () => {
       const pdfW = screenW / SCALE;
       const pdfH = screenH / SCALE;
 
-      setSignatureBoxes((prev) => [
-        ...prev,
-        {
-          id: `sigbox_${uuidv4()}`,
-          signerId: signer.id,
-          signerRole: signer.role,
-          color: signer.color,
-          fieldType: activeFieldType,
-          pageNum,
-          screenX,
-          screenY,
-          screenW,
-          screenH,
-          pdfX,
-          pdfY,
-          pdfW,
-          pdfH,
-        },
-      ]);
+      appendSignatureBox({
+        id: `sigbox_${uuidv4()}`,
+        signerId: signer.id,
+        signerRole: signer.role,
+        color: signer.color,
+        fieldType: activeFieldType,
+        pageNum,
+        screenX,
+        screenY,
+        screenW,
+        screenH,
+        pdfX,
+        pdfY,
+        pdfW,
+        pdfH,
+      });
     },
     [getCoordsForCanvas, activeFieldType],
   );
