@@ -75,7 +75,7 @@ const ViewFormTemplates = ({
       target: {
         files: [readableFile],
       },
-      savedFields: file?.fields || [],
+      pdfFormFields: file?.pdfFormFields || [],
       signatureBoxes: file?.signatureBoxes || [],
       signers: file?.signers || [],
     });

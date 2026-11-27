@@ -5,7 +5,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 describe("getAnnotationsForDocument", () => {
   let newFields;
   let setFields;
-  let savedFields;
+  let pdfFormFields;
   let pageDiv;
   let container;
   let viewport;
@@ -13,7 +13,7 @@ describe("getAnnotationsForDocument", () => {
   beforeEach(() => {
     newFields = [];
     setFields = vi.fn();
-    savedFields = [];
+    pdfFormFields = [];
     pageDiv = document.createElement("div");
     container = document.createElement("div");
     viewport = { height: 800 };
@@ -30,12 +30,18 @@ describe("getAnnotationsForDocument", () => {
   });
 
   const renderAnnotations = (annotations, pageNumber = 1) => {
-    getAnnotationsForDocument(annotations, newFields, setFields, savedFields, {
-      pageNumber,
-      viewport,
-      pageDiv,
-      container,
-    });
+    getAnnotationsForDocument(
+      annotations,
+      newFields,
+      setFields,
+      pdfFormFields,
+      {
+        pageNumber,
+        viewport,
+        pageDiv,
+        container,
+      },
+    );
   };
 
   it("ignores annotations that are not widgets", () => {
@@ -198,12 +204,12 @@ describe("getAnnotationsForDocument", () => {
   });
 
   it("uses saved checkbox values when available", () => {
-    savedFields = [
+    pdfFormFields = [
       {
         name: "testField",
         type: "checkbox",
         value: "Off",
-        pageNum: 1,
+        pageNumber: 1,
       },
     ];
 

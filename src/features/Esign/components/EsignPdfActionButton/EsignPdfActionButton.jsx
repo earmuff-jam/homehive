@@ -85,7 +85,7 @@ const EsignPdfActionButton = ({
               handlePrepareEsign(selectedEsignDocument?.id || uuidv4())
             }
             disabled={!file || fields.length === 0}
-            isLoading={isCreateEsignDocumentLoading}
+            loading={isCreateEsignDocumentLoading}
             label="Prepare Esign"
           />
         </Box>
