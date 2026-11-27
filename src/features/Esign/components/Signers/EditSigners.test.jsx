@@ -47,12 +47,10 @@ describe("EditSigners Tests", () => {
         screen.getByDisplayValue("jane_doe47@gmail.com"),
       ).toBeInTheDocument();
 
-      expect(
-        screen.getByPlaceholderText(/the name of the signer/i),
-      ).toBeInTheDocument();
+      expect(screen.getByPlaceholderText(/signer name/i)).toBeInTheDocument();
 
       expect(
-        screen.getByPlaceholderText(/the email address of the signer/i),
+        screen.getByPlaceholderText(/signer email address/i),
       ).toBeInTheDocument();
     });
   });

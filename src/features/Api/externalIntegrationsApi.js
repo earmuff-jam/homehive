@@ -95,6 +95,10 @@ export const externalIntegrationsApi = createApi({
           payload: data,
         }),
       }),
+      invalidatesTags: [
+        ExternalIntegrationsApiTagTypes.EsignTemplates,
+        ExternalIntegrationsApiTagTypes.EsignWorkspaces,
+      ],
     }),
     // checkStripeAccountStatus ...
     // defines a mutation that checks if the user has a valid stripe account

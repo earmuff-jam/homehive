@@ -3,7 +3,7 @@
 exports[`ViewPdf Tests > ViewPdf Snapshot Tests > matches snapshot 1`] = `
 <div>
   <div
-    class="MuiStack-root css-u57sqq-MuiStack-root"
+    class="MuiStack-root css-1wf5y76-MuiStack-root"
   />
 </div>
 `;

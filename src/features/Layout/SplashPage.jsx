@@ -169,9 +169,6 @@ export default function SplashPage() {
                   endIcon={<ArrowForward />}
                   onClick={() => handleAuthenticate({ isEsign: false })}
                   sx={{
-                    px: 3,
-                    py: 1.2,
-                    borderRadius: "12px",
                     fontWeight: 600,
                     fontSize: "0.95rem",
                     textTransform: "none",
@@ -190,9 +187,6 @@ export default function SplashPage() {
                   size="large"
                   onClick={() => navigate(EditInvoiceRouteUri)}
                   sx={{
-                    px: 3,
-                    py: 1.2,
-                    borderRadius: "12px",
                     fontWeight: 600,
                     fontSize: "0.95rem",
                     textTransform: "none",

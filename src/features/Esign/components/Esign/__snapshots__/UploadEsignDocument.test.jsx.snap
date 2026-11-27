@@ -11,7 +11,7 @@ exports[`UploadEsignDocument Component Tests > UploadEsignDocument Snapshot Test
       role="undefined"
       tabindex="0"
     >
-      Upload files
+      Upload Files
       <input
         class="css-1ukdhoc"
         type="file"

@@ -19,6 +19,7 @@ export const DefaultConfirmationBoxProps = {
 
 export default function ConfirmationBox({
   isOpen,
+  maxWidth = "xs",
   isBlocked = false,
   isLoading = false,
   handleCancel,
@@ -32,7 +33,7 @@ export default function ConfirmationBox({
       open={isOpen}
       keepMounted
       fullWidth
-      maxWidth="xs"
+      maxWidth={maxWidth}
       aria-describedby="alert-dialog-slide-description"
     >
       <DialogTitle>{title}</DialogTitle>
